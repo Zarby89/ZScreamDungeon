@@ -850,54 +850,35 @@
 
 		private void searchtilesButton_Click(object sender, EventArgs e)
 		{
-			Dictionary<ushort, ushort> alltilesIndexed = new Dictionary<ushort, ushort>();
-			int sx = 0;
-			int sy = 0;
+			var alltilesIndexed = new Dictionary<ushort, int>();
 
 			for (ushort i = 0; i < 3750; i++)
 			{
-				alltilesIndexed.Add(i, 0);
+				alltilesIndexed[i] = 0;
 			}
 
-			for (int i = 0; i < 64; i++)
+			ZScreamer.ActiveOW.ForAllScreens(o =>
 			{
-				for (int y = 0; y < 32; y += 1)
+				foreach (var tx in o.Tile16Map)
 				{
-					for (int x = 0; x < 32; x += 1)
-					{
-						alltilesIndexed[ZScreamer.ActiveOW.allmapsTilesLW[x + (sx * 32), y + (sy * 32)]]++;
-						alltilesIndexed[ZScreamer.ActiveOW.allmapsTilesDW[x + (sx * 32), y + (sy * 32)]]++;
-
-						if (i < 32)
-						{
-							alltilesIndexed[ZScreamer.ActiveOW.allmapsTilesSP[x + (sx * 32), y + (sy * 32)]]++;
-						}
-					}
+					alltilesIndexed[tx]++;
 				}
+			});
 
-				foreach (OverlayTile t in ZScreamer.ActiveOW.alloverlays[i].tilesData)
+			foreach (var ol in ZScreamer.ActiveOW.alloverlays)
+			{
+				foreach (var ot in ol.tilesData)
 				{
-					alltilesIndexed[t.Tile16ID]++;
-				}
-
-				foreach (OverlayTile t in ZScreamer.ActiveOW.alloverlays[i + 64].tilesData)
-				{
-					alltilesIndexed[t.Tile16ID]++;
-				}
-
-				sx++;
-				if (sx >= 8)
-				{
-					sy++;
-					sx = 0;
+					alltilesIndexed[ot.Tile16ID]++;
 				}
 			}
 
 			StringBuilder sb = new StringBuilder();
-			foreach (KeyValuePair<ushort, ushort> tiles in alltilesIndexed.OrderBy(key => key.Value))
+
+			foreach (var (id, count) in alltilesIndexed.OrderBy(key => key.Value))
 			{
 				// TODO copy
-				sb.AppendLine("Tile - " + tiles.Key.ToString("X4") + " : " + tiles.Value.ToString("X4"));
+				sb.AppendLine($"Tile {id:X4}: {count}");
 			}
 
 			SearchTilesForm stf = new SearchTilesForm();

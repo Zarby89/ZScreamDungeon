@@ -739,7 +739,6 @@
 
 		public void SaveOverworldScreens()
 		{
-
 			var mapPointers1 = new int[Constants.NumberOfOWMaps];
 			var mapPointers2 = new int[Constants.NumberOfOWMaps];
 
@@ -755,101 +754,84 @@
 				mapPointers2id[i] = -1;
 			}
 
+
+
+
 			int pos = 0x058000;
-			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
+			OverworldManager.ForAllScreens(o =>
 			{
-				int npos = 0;
-				byte[] singlemap1 = new byte[512];
-				byte[] singlemap2 = new byte[512];
+				var (low0, high0) = OverworldManager.CreateTile32MapForScreen(o);
 
-				for (int y = 0; y < 16; y++)
-				{
-					for (int x = 0; x < 16; x++)
-					{
-						singlemap1[npos] = (byte) OverworldManager.t32[npos + (i * 256)];
-						singlemap2[npos] = (byte) (OverworldManager.t32[npos + (i * 256)] >> 8);
-						npos++;
-					}
-				}
+				byte[] a = Compress.ALTTPCompressOverworld(low0, 0, 256);
+				byte[] b = Compress.ALTTPCompressOverworld(high0, 0, 256);
 
-				byte[] a = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap1, 0, 256);
-				byte[] b = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap2, 0, 256);
+				mapDatap1[o.MapID] = new byte[a.Length];
+				mapDatap2[o.MapID] = new byte[b.Length];
 
-				mapDatap1[i] = new byte[a.Length];
-				mapDatap2[i] = new byte[b.Length];
-				if (i == 0x54)
-				{
-					//Console.WriteLine((pos + a.Length).ToString("X6"));
-					//Console.WriteLine((pos + b.Length).ToString("X6"));
-				}
-
-				// 05FE1C
-				// 05FE05
-
-				// 05FFA7
-				// 05FF78
-				if ((pos + a.Length) >= 0x5FE70 && (pos + a.Length) <= 0x60000)
+				if (pos + a.Length is >= 0x5FE70 and <= 0x60000)
 				{
 					pos = 0x60000;
 				}
-				else if ((pos + a.Length) >= 0x6411F && (pos + a.Length) <= 0x70000)
+				else if (pos + a.Length is >= 0x6411F and <= 0x70000)
 				{
 					pos = 0x130000; // 0x0F8780;
 				}
 
-				for (int j = 0; j < i; j++)
+				for (int j = 0; j < o.MapID; j++)
 				{
 					if (CompareByteArray(a, mapDatap1[j]))
 					{
-						mapPointers1id[i] = j;
+						mapPointers1id[o.MapID] = j;
 					}
+
 					if (CompareByteArray(b, mapDatap2[j]))
 					{
-						mapPointers2id[i] = j;
+						mapPointers2id[o.MapID] = j;
 					}
 				}
 
 				// Before Saving it to the ROM check if it match an existing map already
 				int snesPos;
-				if (mapPointers1id[i] == -1)
+				if (mapPointers1id[o.MapID] == -1)
 				{
-					a.CopyTo(mapDatap1[i], 0);
+					a.CopyTo(mapDatap1[o.MapID], 0);
 					snesPos = pos.PCtoSNES();
-					mapPointers1[i] = snesPos;
+					mapPointers1[o.MapID] = snesPos;
 
 					ROM.WriteContinuous(ref pos, a);
 				}
 				else
 				{
-					snesPos = mapPointers1[mapPointers1id[i]];
+					snesPos = mapPointers1[mapPointers1id[o.MapID]];
 				}
 
-				ROM.Write24(Offsets.compressedAllMap32PointersLow + (3 * i), snesPos);
+				ROM.Write24(Offsets.compressedAllMap32PointersLow + (3 * o.MapID), snesPos);
 
-				if ((pos + b.Length) >= 0x5FE70 && (pos + b.Length) <= 0x60000)
+				if (pos + b.Length is >= 0x5FE70 and <= 0x60000)
 				{
 					pos = 0x60000;
 				}
-				else if ((pos + b.Length) >= 0x6411F && (pos + b.Length) <= 0x70000)
+				else if (pos + b.Length is >= 0x6411F and <= 0x70000)
 				{
 					pos = 0x130000;
 				}
 
 				// Map2
-				if (mapPointers2id[i] == -1)
+				if (mapPointers2id[o.MapID] == -1)
 				{
-					b.CopyTo(mapDatap2[i], 0);
+					b.CopyTo(mapDatap2[o.MapID], 0);
 					snesPos = pos.PCtoSNES();
-					mapPointers2[i] = snesPos;
+					mapPointers2[o.MapID] = snesPos;
 
 					ROM.WriteContinuous(ref pos, b);
 				}
 				else
 				{
-					snesPos = mapPointers2[mapPointers2id[i]];
+					snesPos = mapPointers2[mapPointers2id[o.MapID]];
 				}
-				ROM.Write24(Offsets.compressedAllMap32PointersHigh + (3 * i), snesPos);
-			}
+
+				ROM.Write24(Offsets.compressedAllMap32PointersHigh + (3 * o.MapID), snesPos);
+			});
 
 			if (pos > 0x137FFF)
 			{

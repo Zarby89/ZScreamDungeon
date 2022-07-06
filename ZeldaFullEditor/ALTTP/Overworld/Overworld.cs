@@ -2,23 +2,18 @@
 {
 	public class Overworld
 	{
-		public List<Tile32> Tile32List;
 		public Tile16MasterSheet Tile16Sheet { get; } = new Tile16MasterSheet();
 
 		private int[] map32address;
 
-		public List<Tile32> t32Unique = new();
-		public List<ushort> t32;
+		public List<Tile32> Tile32Definitions { get; } = new();
 
 		public OverworldExit[] allexits = new OverworldExit[Constants.NumberOfOverworldExits];
 
-		public byte[] allTilesTypes = new byte[0x200];
+		public byte[] allTilesTypes { get; private set; } = new byte[0x200];
 
 
 		// That must stay global - that's a problem
-		public ushort[,] allmapsTilesLW = new ushort[512, 512]; //64 maps * (32*32 tiles)
-		public ushort[,] allmapsTilesDW = new ushort[512, 512]; //64 maps * (32*32 tiles)
-		public ushort[,] allmapsTilesSP = new ushort[512, 512]; //32 maps * (32*32 tiles)
 		public OverworldScreen[] allmaps = new OverworldScreen[Constants.NumberOfOWMaps];
 		public OverworldEntrance[] allentrances = new OverworldEntrance[129];
 		public OverworldEntrance[] allholes = new OverworldEntrance[0x13];
@@ -50,6 +45,7 @@
 		public List<OverworldTransport> allBirds = new();
 
 		public GameState ActiveGameState { get; set; } = GameState.RescueState;
+
 		public byte ActiveGameStateIndex => (byte) ActiveGameState;
 
 		public Gravestone[] graves = new Gravestone[Constants.NumberOfOverworldGraves];
@@ -61,16 +57,12 @@
 		public Overworld(ZScreamer zs)
 		{
 			ZS = zs;
-			Tile32List = new List<Tile32>();
-
-			t32 = new List<ushort>();
 		}
 
 		public void Init()
 		{
-			AssembleTile32Definitions();
 			AssembleTile16Definitions();
-			DecompressAllMapTiles();
+			AssembleTile32Definitions();
 			loadOverlays();
 			loadTilesTypes();
 			LoadGravestoneData();
@@ -80,6 +72,8 @@
 			{
 				allmaps[i] = new OverworldScreen(i);
 			}
+
+			DecompressAllMapTiles();
 
 			foreach (var map in allmaps)
 			{
@@ -163,26 +157,6 @@
 						}
 						break;
 				}
-
-				// TODO UGH
-				int superY = 32 * (map.VirtualMapID / 8);
-				int superX = 32 * (map.VirtualMapID & 0x7);
-
-				var tilesused = map.World switch
-				{
-					Worldiness.LightWorld => allmapsTilesLW,
-					Worldiness.DarkWorld => allmapsTilesDW,
-					Worldiness.SpecialWorld => allmapsTilesSP,
-					_ => null,
-				};
-
-				for (int yy = 0; yy < 32; yy++)
-				{
-					for (int xx = 0; xx < 32; xx++)
-					{
-						map.SetTile16At(tilesused[xx + superX, yy + superY], xx, yy);
-					}
-				}
 			}
 
 
@@ -197,10 +171,7 @@
 
 		public void loadTilesTypes()
 		{
-			for (var i = 0; i < 0x200; i++)
-			{
-				allTilesTypes[i] = ZS.ROM[ZS.Offsets.overworldTilesType + i];
-			}
+			allTilesTypes = ZS.ROM.Read8Many(ZS.Offsets.overworldTilesType, 0x200);
 		}
 
 		/// <summary>
@@ -242,7 +213,7 @@
 		public void AssembleTile16Definitions()
 		{
 			var tpos = ZS.Offsets.Map16DefinitionAddress;
-			for (ushort i = 0; i < Constants.NumberOfUniqueTile16Definitions; i += 1)
+			for (ushort i = 0; i < Constants.NumberOfUniqueTile16Definitions; i++)
 			{
 				Tile t0 = new(ZS.ROM.Read16(tpos));
 				tpos += 2;
@@ -274,7 +245,7 @@
 
 				for (var t = 0; t < 4; t++)
 				{
-					Tile32List.Add(new(
+					Tile32Definitions.Add(new(
 						GetComponent(tl),
 						GetComponent(tr),
 						GetComponent(bl),
@@ -284,148 +255,43 @@
 					ushort GetComponent(byte[] comp) => t switch
 					{
 						0 => (ushort) (comp[0] | ((comp[4] & 0x0F) << 8)),
-						1 => (ushort) (comp[1] | ((comp[4] & 0xF0) << 4)),
+						1 => (ushort) (comp[1] | ((comp[4] & 0xF0) << 8)),
 						2 => (ushort) (comp[2] | ((comp[5] & 0x0F) << 8)),
-						3 => (ushort) (comp[3] | ((comp[5] & 0xF0) << 4)),
+						3 => (ushort) (comp[3] | ((comp[5] & 0xF0) << 8)),
 						_ => 0
 					};
 				}
 			}
 		}
 
-		public void DecompressAllMapTiles()
+		private void DecompressAllMapTiles()
 		{
-			var lowest = 0x0FFFFF;
-			var highest = 0x0F8000;
-			//int npos = 0;
-			var sx = 0;
-			var sy = 0;
-			var c = 0;
-			//int furthestPtr = 0;
-
-			for (var i = 0; i < Constants.NumberOfOWMaps; i++)
+			ForAllScreens(o =>
 			{
-				var p1 = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersHigh + 3 * i).SNEStoPC();
-				var p2 = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersLow + 3 * i).SNEStoPC();
+				var offset = o.MapID * 3;
 
-				var ttpos = 0;
+				var p1 = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersHigh + offset).SNEStoPC();
+				var p2 = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersLow + offset).SNEStoPC();
+
 				var compressedSize1 = 0;
 				var compressedSize2 = 0;
-
-				if (p1 >= highest)
-				{
-					highest = p1;
-				}
-				if (p2 >= highest)
-				{
-					highest = p2;
-				}
-
-				if (p1 <= lowest && p1 > 0x0F8000)
-				{
-					lowest = p1;
-				}
-				if (p2 <= lowest && p2 > 0x0F8000)
-				{
-					lowest = p2;
-				}
 
 				var bytes = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p2, 1000, ref compressedSize1);
 				var bytes2 = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p1, 1000, ref compressedSize2);
 
-				/* if (p1 > furthestPtr)
-				 {
-					 furthestPtr = p1;
-				 }
-				 if (p2 > furthestPtr)
-				 {
-					 furthestPtr = p2;
-				 }
 
-				 if (i == 159)
-				 {
-					 Console.WriteLine(furthestPtr.ToString("X6") + " Length " + bytes.Length.ToString("X4"));
-				 }*/
-				var buffer = i switch
+				int tpos = 0;
+				for (int yy = 0; yy < 16; yy++)
 				{
-					< 64 => allmapsTilesLW,
-					>= 128 => allmapsTilesSP,
-					_ => allmapsTilesDW,
-				};
-
-				var sx2 = sx << 5;
-				var sy2 = sy << 5;
-
-				for (var y = sy2; y < sy2 + 16 * 2; y += 2)
-				{
-					for (var x = sx2; x < sx2 + 16 * 2; x += 2)
+					for (int xx = 0; xx < 16; xx++)
 					{
-						var tpos = (ushort) (bytes2[ttpos] << 8 | bytes[ttpos]);
-						if (tpos < Tile32List.Count)
-						{
-							//map16tiles[npos] = new Tile32(tiles32[tpos].tile0, tiles32[tpos].tile1, tiles32[tpos].tile2, tiles32[tpos].tile3);
-
-							buffer[x, y] = Tile32List[tpos].Tile0;
-							buffer[x + 1, y] = Tile32List[tpos].Tile1;
-							buffer[x, y + 1] = Tile32List[tpos].Tile2;
-							buffer[x + 1, y + 1] = Tile32List[tpos].Tile3;
-						}
-
-						ttpos++;
+						var tile = Tile32Definitions[(bytes2[tpos] << 8 | bytes[tpos])];
+						o.SetTile32At(tile, xx, yy);
+						tpos++;
 					}
 				}
 
-				sx++;
-				if (sx >= 8)
-				{
-					sy++;
-					sx = 0;
-
-				}
-
-				c++;
-				if (c >= 64)
-				{
-					sx = 0;
-					sy = 0;
-					c = 0;
-				}
-			}
-		}
-
-		public void CreateMap32Definitions()
-		{
-			t32.Clear();
-			tiles32count = 0;
-
-			var creating = new Tile32[Constants.NumberOfTile32Total];
-
-			for (var i = 0; i < Constants.NumberOfTile32Total; i++)
-			{
-				ushort? foundIndex = null;
-				for (var j = 0; j < tiles32count; j++)
-				{
-					if (t32Unique[j].Tile0 == creating[i].Tile0 &&
-						t32Unique[j].Tile1 == creating[i].Tile1 &&
-						t32Unique[j].Tile2 == creating[i].Tile2 &&
-						t32Unique[j].Tile3 == creating[i].Tile3)
-					{
-						foundIndex = (ushort) j;
-						break;
-					}
-				}
-
-				if (foundIndex == null)
-				{
-					t32Unique[tiles32count] = new Tile32(creating[i].Tile0, creating[i].Tile1, creating[i].Tile2, creating[i].Tile3);
-					t32.Add((ushort) tiles32count);
-					tiles32count++;
-				}
-				else
-				{
-					t32.Add((ushort) foundIndex);
-				}
-			}
+			});
 		}
 
 		/*
@@ -536,88 +402,34 @@
 			}
 		}
 
-
-		public void CreateTile32Maps()
+		public void CreateMap32Definitions()
 		{
-			t32Unique.Clear();
-			t32.Clear();
-			// Create tile32 from tiles16
-			var alltiles16 = new List<ulong>();
+			Tile32Definitions.Clear();
 
-			var sx = 0;
-			var sy = 0;
-			var c = 0;
-			for (var i = 0; i < Constants.NumberOfOWMaps; i++)
+			List<Tile32> temp = new();
+
+			ForAllScreens(o =>
 			{
-				var tilesused = i switch
+				for (int y = 0; y < 16; y++)
 				{
-					< 64 => allmapsTilesLW,
-					>= 128 => allmapsTilesSP,
-					_ => allmapsTilesDW,
-				};
-
-				var sx2 = sx << 5;
-				var sy2 = sy << 5;
-				for (var y = sy2; y < sy2 + 32; y += 2)
-				{
-					for (var x = sx2; x < sx2 + 32; x += 2)
+					for (int x = 0; x < 16; x++)
 					{
-						alltiles16.Add(
-							new Tile32(
-								tilesused[x, y],
-								tilesused[x + 1, y],
-								tilesused[x, y + 1],
-								tilesused[x + 1, y + 1]
-							).getLongValue()
-						);
+						temp.Add(o.GetTile32At(x, y));
 					}
 				}
+			});
 
-				sx++;
-				if (sx >= 8)
-				{
-					sy++;
-					sx = 0;
-				}
+			Tile32Definitions.AddRange(temp.Distinct());
 
-				c++;
-				if (c >= 64)
-				{
-					sx = 0;
-					sy = 0;
-					c = 0;
-				}
+
+			while (Tile32Definitions.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
+			{
+				Tile32Definitions.Add(Tile32.Empty);
 			}
 
-			var tiles = alltiles16.Distinct().ToList(); // that get rid of duplicated tiles using linq
-														// alltiles16 = all tiles32...
-														// tiles = all tiles32 that are uniques double are removed
-			var alltilesIndexed = new Dictionary<ulong, ushort>();
-
-			for (var i = 0; i < tiles.Count; i++)
+			if (Tile32Definitions.Count > Constants.MaximumNumberOfTile32)
 			{
-				alltilesIndexed.Add(tiles[i], (ushort) i); // index the uniques tiles with a dictionary
-			}
-
-			for (var i = 0; i < Constants.NumberOfTile32Total; i++)
-			{
-				t32.Add(alltilesIndexed[alltiles16[i]]); //add all tiles32 from all maps
-														 // convert all tiles32 non-unique ids into unique array of ids
-			}
-
-			for (var i = 0; i < tiles.Count; i++) // for each uniques tile32
-			{
-				t32Unique.Add(new Tile32(tiles[i])); // create new tileunique
-			}
-
-			while (t32Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
-			{
-				t32Unique.Add(new Tile32(0));
-			}
-
-			if (t32Unique.Count > Constants.MaximumNumberOfTile32)
-			{
-				if (MessageBox.Show("Unique Tile32 count exceed the limit in the rom\n    ====== " + t32Unique.Count +
+				if (MessageBox.Show("Unique Tile32 count exceed the limit in the rom\n    ====== " + Tile32Definitions.Count +
 					" Used out of " + Constants.MaximumNumberOfTile32 + " ======    \nThe ROM will NOT be saved, would you like to export map data?",
 					"Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				{
@@ -626,79 +438,67 @@
 				throw new ZeldaException("overworld map save failed");
 			}
 
-			alltiles16.Clear();
-
-			var v = t32Unique.Count;
+			var v = Tile32Definitions.Count;
 			for (var i = v; i < Constants.MaximumNumberOfTile32; i++)
 			{
-				t32Unique.Add(Tile32.Empty);
+				Tile32Definitions.Add(Tile32.Empty);
 			}
+
+		}
+
+		public (byte[] low, byte[] high) CreateTile32MapForScreen(OverworldScreen o)
+		{
+			int npos = 0;
+			byte[] singlemap1 = new byte[512];
+			byte[] singlemap2 = new byte[512];
+
+			for (int y = 0; y < 16; y++)
+			{
+				for (int x = 0; x < 16; x++)
+				{
+					var t = Tile32Definitions.FindIndex(p => p == o.GetTile32At(x, y));
+					singlemap1[npos] = (byte) t;
+					singlemap2[npos] = (byte) (t >> 8);
+					npos++;
+				}
+			}
+
+			return (singlemap1, singlemap2);
 		}
 
 		public void ImportMaps()
 		{
 			var path = "";
-			using (FolderBrowserDialog fd = new())
+
+			using FolderBrowserDialog fd = new();
+			
+			if (fd.ShowDialog() == DialogResult.OK)
 			{
-				if (fd.ShowDialog() == DialogResult.OK)
+				if (Directory.Exists(fd.SelectedPath))
 				{
-					if (Directory.Exists(fd.SelectedPath))
-					{
-						path = fd.SelectedPath;
-					}
-				}
-				else
-				{
-					MessageBox.Show("Failed to imports maps");
-					return;
+					path = fd.SelectedPath;
 				}
 			}
-
-			var sx = 0;
-			var sy = 0;
-			var c = 0;
-
-			for (var i = 0; i < Constants.NumberOfOWMaps; i++)
+			else
 			{
-				var bw = new BinaryReader(new FileStream(path + "\\map" + i.ToString(), FileMode.Open, FileAccess.Read));
-				var tilesused = i switch
-				{
-					< 64 => allmapsTilesLW,
-					>= 128 => allmapsTilesSP,
-					_ => allmapsTilesDW,
-				};
+				MessageBox.Show("Failed to imports maps");
+				return;
+			}
 
-				var sx2 = sx << 5;
-				var sy2 = sy << 5;
-				for (var y = sy2; y < sy2 + 32; y++)
+			ForAllScreens(o =>
+			{
+				using var bw = new BinaryReader(new FileStream(UIText.CreateFilePath(path, $"map{o.MapID:X2}"), FileMode.Open, FileAccess.Read));
+
+				for (int y = 0; y < 32; y++)
 				{
-					for (var x = sx2; x < sx2 + 32; x++)
+					for (int x = 0; x < 32; x++)
 					{
-						tilesused[x, y] = bw.ReadUInt16();
-						//alltiles16.Add(new Tile32(tilesused[x + (sx * 32), y + (sy * 32)], tilesused[x + 1 + (sx * 32), y + (sy * 32)],
-						//tilesused[x + (sx * 32), y + 1 + (sy * 32)], tilesused[x + 1 + (sx * 32), y + 1 + (sy * 32)]).getLongValue());
+						o.SetTile16At(bw.ReadUInt16(), x, y);
 					}
-				}
-
-				sx++;
-				if (sx >= 8)
-				{
-					sy++;
-					sx = 0;
-
-				}
-
-				c++;
-				if (c >= 64)
-				{
-					sx = 0;
-					sy = 0;
-					c = 0;
 				}
 
 				bw.Close();
-				allmaps[i].Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
-			}
+			});
 		}
 
 		public void ExportMaps()
@@ -722,53 +522,28 @@
 			var sx = 0;
 			var sy = 0;
 			var c = 0;
-			for (var i = 0; i < Constants.NumberOfOWMaps; i++)
-			{
-				// TODO file name in UIText
-				var bw = new BinaryWriter(new FileStream(path + "\\map" + i.ToString(), FileMode.Create, FileAccess.Write));
-				var tilesused = i switch
-				{
-					< 64 => allmapsTilesLW,
-					>= 128 => allmapsTilesSP,
-					_ => allmapsTilesDW,
-				};
 
-				var sx2 = sx << 5;
-				var sy2 = sy << 5;
-				for (var y = sy2; y < sy2 + 32; y++)
+			ForAllScreens(o =>
+			{
+				using var bw = new BinaryWriter(new FileStream(UIText.CreateFilePath(path, $"map{o.MapID:X2}"), FileMode.Open, FileAccess.Write));
+
+				for (int y = 0; y < 32; y++)
 				{
-					for (var x = sx2; x < sx2 + 32; x++)
+					for (int x = 0; x < 32; x++)
 					{
-						bw.Write(tilesused[x, y]);
-						//alltiles16.Add(new Tile32(tilesused[x + (sx * 32), y + (sy * 32)], tilesused[x + 1 + (sx * 32), y + (sy * 32)],
-						//tilesused[x + (sx * 32), y + 1 + (sy * 32)], tilesused[x + 1 + (sx * 32), y + 1 + (sy * 32)]).getLongValue());
+						bw.Write(o.GetTile16At(x, y));
 					}
 				}
 
-				sx++;
-				if (sx >= 8)
-				{
-					sy++;
-					sx = 0;
-
-				}
-
-				c++;
-				if (c >= 64)
-				{
-					sx = 0;
-					sy = 0;
-					c = 0;
-				}
-
 				bw.Close();
-			}
+			});
 		}
 
 		public void SaveTile32DefinitionsToROM()
 		{
 			var index = 0;
-			var c = t32Unique.Count;
+			var c = Tile32Definitions.Count;
+
 			for (var i = 0; i < c; i += 6, index += 4)
 			{
 				if (index >= 0x4540) // 3C87??
@@ -778,16 +553,16 @@
 
 				for (int j = i, k = index; j < i + 4; j++, k++)
 				{
-					ZS.ROM[ZS.Offsets.Map32DefinitionsTL + j] = (byte) t32Unique[k].Tile0;
-					ZS.ROM[ZS.Offsets.Map32DefinitionsTR + j] = (byte) t32Unique[k].Tile1;
-					ZS.ROM[ZS.Offsets.Map32DefinitionsBL + j] = (byte) t32Unique[k].Tile2;
-					ZS.ROM[ZS.Offsets.Map32DefinitionsBR + j] = (byte) t32Unique[k].Tile3;
+					ZS.ROM[ZS.Offsets.Map32DefinitionsTL + j] = (byte) Tile32Definitions[k].Tile0;
+					ZS.ROM[ZS.Offsets.Map32DefinitionsTR + j] = (byte) Tile32Definitions[k].Tile1;
+					ZS.ROM[ZS.Offsets.Map32DefinitionsBL + j] = (byte) Tile32Definitions[k].Tile2;
+					ZS.ROM[ZS.Offsets.Map32DefinitionsBR + j] = (byte) Tile32Definitions[k].Tile3;
 				}
 
-				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsTL + i + 4, t32Unique[index].Tile0 >> 4 & 0x00F0 | t32Unique[index + 1].Tile0 >> 8 & 0x000F | t32Unique[index + 2].Tile0 << 4 & 0xF000 | t32Unique[index + 3].Tile0 & 0x0F00);
-				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsTR + i + 4, t32Unique[index].Tile1 >> 4 & 0x00F0 | t32Unique[index + 1].Tile1 >> 8 & 0x000F | t32Unique[index + 2].Tile1 << 4 & 0xF000 | t32Unique[index + 3].Tile1 & 0x0F00);
-				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsBL + i + 4, t32Unique[index].Tile2 >> 4 & 0x00F0 | t32Unique[index + 1].Tile2 >> 8 & 0x000F | t32Unique[index + 2].Tile2 << 4 & 0xF000 | t32Unique[index + 3].Tile2 & 0x0F00);
-				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsBR + i + 4, t32Unique[index].Tile3 >> 4 & 0x00F0 | t32Unique[index + 1].Tile3 >> 8 & 0x000F | t32Unique[index + 2].Tile3 << 4 & 0xF000 | t32Unique[index + 3].Tile3 & 0x0F00);
+				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsTL + i + 4, Tile32Definitions[index].Tile0 >> 4 & 0x00F0 | Tile32Definitions[index + 1].Tile0 >> 8 & 0x000F | Tile32Definitions[index + 2].Tile0 << 4 & 0xF000 | Tile32Definitions[index + 3].Tile0 & 0x0F00);
+				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsTR + i + 4, Tile32Definitions[index].Tile1 >> 4 & 0x00F0 | Tile32Definitions[index + 1].Tile1 >> 8 & 0x000F | Tile32Definitions[index + 2].Tile1 << 4 & 0xF000 | Tile32Definitions[index + 3].Tile1 & 0x0F00);
+				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsBL + i + 4, Tile32Definitions[index].Tile2 >> 4 & 0x00F0 | Tile32Definitions[index + 1].Tile2 >> 8 & 0x000F | Tile32Definitions[index + 2].Tile2 << 4 & 0xF000 | Tile32Definitions[index + 3].Tile2 & 0x0F00);
+				ZS.ROM.Write16(ZS.Offsets.Map32DefinitionsBR + i + 4, Tile32Definitions[index].Tile3 >> 4 & 0x00F0 | Tile32Definitions[index + 1].Tile3 >> 8 & 0x000F | Tile32Definitions[index + 2].Tile3 << 4 & 0xF000 | Tile32Definitions[index + 3].Tile3 & 0x0F00);
 
 				c += 2;
 			}

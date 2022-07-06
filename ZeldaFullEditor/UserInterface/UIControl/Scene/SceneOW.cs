@@ -298,7 +298,6 @@
 		/// </summary>
 		public void SaveTiles()
 		{
-			ZS.OverworldManager.CreateTile32Maps();
 			ZS.OverworldManager.SaveTile32DefinitionsToROM();
 			ZS.OverworldManager.SaveTile16DefinitionsToROM();
 		}

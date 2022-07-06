@@ -293,6 +293,8 @@
 
 			try
 			{
+				ZScreamer.ActiveOW.CreateMap32Definitions();
+
 				if (saveSettingsArr[0]) ZScreamer.ActiveScreamer.SaveUnderworldSprites();
 				if (saveSettingsArr[1]) ZScreamer.ActiveScreamer.SaveUnderworldSecrets();
 				if (saveSettingsArr[2]) ZScreamer.ActiveScreamer.SaveUnderworldChests();
@@ -1711,8 +1713,6 @@
 
 		private void exportAllMapsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			int sx = 0;
-			int sy = 0;
 			int p = 0;
 
 			byte[] mapArrayData = new byte[0x50000];
@@ -1721,32 +1721,20 @@
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
 				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-				for (int i = 0; i < 64; i++)
+
+				ZScreamer.ActiveOW.ForAllScreens(o =>
 				{
 					for (int y = 0; y < 32; y++)
 					{
-						for (int x = 0; x < 32; x ++)
+						for (int x = 0; x < 32; x++)
 						{
-							mapArrayData[p++] = (byte) ZScreamer.ActiveOW.allmapsTilesLW[x + sx, y + sy];
-							mapArrayData[p++] = (byte) (ZScreamer.ActiveOW.allmapsTilesLW[x + sx, y + sy] >> 8);
-							mapArrayData[p++] = (byte) ZScreamer.ActiveOW.allmapsTilesDW[x + sx, y + sy];
-							mapArrayData[p++] = (byte) (ZScreamer.ActiveOW.allmapsTilesDW[x + sx, y + sy] >> 8);
-
-							if (i < 32)
-							{
-								mapArrayData[p++] = (byte) ZScreamer.ActiveOW.allmapsTilesSP[x + sx, y + sy];
-								mapArrayData[p++] = (byte) (ZScreamer.ActiveOW.allmapsTilesSP[x + sx, y + sy] >> 8);
-							}
+							var t = o.GetTile16At(x, y);
+							mapArrayData[p++] = (byte) t;
+							mapArrayData[p++] = (byte) (t >> 8);
 						}
 					}
+				});
 
-					sx += 32;
-					if (sx >= (8 * 32))
-					{
-						sy += 32;
-						sx = 0;
-					}
-				}
 
 				fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
 				fileStreamMap.Close();
@@ -1755,48 +1743,49 @@
 
 		private void importAllMapsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			int sx = 0;
-			int sy = 0;
-			int p = 0;
-
-			byte[] mapArrayData = new byte[0x50000];
-			using OpenFileDialog sfd = new OpenFileDialog();
-			sfd.Filter = UIText.ExportedOWMapDataType;
-			if (sfd.ShowDialog() == DialogResult.OK)
-			{
-				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
-				fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
-
-				for (int i = 0; i < 64; i++)
-				{
-					for (int y = 0; y < 32; y += 1)
-					{
-						for (int x = 0; x < 32; x += 1)
-						{
-							ZScreamer.ActiveOW.allmapsTilesLW[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
-							p += 2;
-
-							ZScreamer.ActiveOW.allmapsTilesDW[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
-							p += 2;
-
-							if (i < 32)
-							{
-								ZScreamer.ActiveOW.allmapsTilesSP[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
-								p += 2;
-							}
-						}
-					}
-
-					sx += 32;
-					if (sx >= (8 * 32))
-					{
-						sy += 32;
-						sx = 0;
-					}
-				}
-
-				fileStreamMap.Close();
-			}
+			throw new NotImplementedException();
+			//int sx = 0;
+			//int sy = 0;
+			//int p = 0;
+			//
+			//byte[] mapArrayData = new byte[0x50000];
+			//using OpenFileDialog sfd = new OpenFileDialog();
+			//sfd.Filter = UIText.ExportedOWMapDataType;
+			//if (sfd.ShowDialog() == DialogResult.OK)
+			//{
+			//	FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+			//	fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
+			//
+			//	for (int i = 0; i < 64; i++)
+			//	{
+			//		for (int y = 0; y < 32; y += 1)
+			//		{
+			//			for (int x = 0; x < 32; x += 1)
+			//			{
+			//				ZScreamer.ActiveOW.allmapsTilesLW[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
+			//				p += 2;
+			//
+			//				ZScreamer.ActiveOW.allmapsTilesDW[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
+			//				p += 2;
+			//
+			//				if (i < 32)
+			//				{
+			//					ZScreamer.ActiveOW.allmapsTilesSP[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
+			//					p += 2;
+			//				}
+			//			}
+			//		}
+			//
+			//		sx += 32;
+			//		if (sx >= (8 * 32))
+			//		{
+			//			sy += 32;
+			//			sx = 0;
+			//		}
+			//	}
+			//
+			//	fileStreamMap.Close();
+			//}
 		}
 
 		private void exportAllTilesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1989,6 +1978,7 @@
 		{
 			try
 			{
+				ZScreamer.ActiveOW.CreateMap32Definitions();
 				ZScreamer.ActiveOWScene.SaveTiles();
 				ZScreamer.ActiveScreamer.SaveOverworldScreens();
 

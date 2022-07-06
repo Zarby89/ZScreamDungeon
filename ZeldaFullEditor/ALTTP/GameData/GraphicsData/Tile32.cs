@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData
 {
-	public readonly struct Tile32
+	public readonly struct Tile32 : IEquatable<Tile32>
 	{
 		/// <summary>
 		/// The tile16 in the top-left corner
@@ -43,6 +43,32 @@
 			return (ulong) Tile3 << 48 | (ulong) Tile2 << 32 | (ulong) Tile1 << 16 | Tile0;
 		}
 
+		public static bool operator ==(Tile32 a, Tile32 b)
+		{
+			return a.Tile0 == b.Tile0 && a.Tile1 == b.Tile1 && a.Tile2 == b.Tile2 && a.Tile3 == b.Tile3;
+		}
+
+		public static bool operator !=(Tile32 a, Tile32 b)
+		{
+			return a.Tile0 != b.Tile0 || a.Tile1 != b.Tile1 || a.Tile2 != b.Tile2 || a.Tile3 != b.Tile3;
+		}
+
 		public static readonly Tile32 Empty = new(0, 0, 0, 0);
+
+		public override bool Equals(object obj) => obj switch
+		{
+			Tile32 other => Equals(other),
+			_ => false,
+		};
+
+		public override int GetHashCode()
+		{
+			return (Tile0 | (Tile1 << 16)) ^ (Tile2 | (Tile3 << 16));
+		}
+
+		public bool Equals(Tile32 other)
+		{
+			return Tile0 == other.Tile0 && Tile1 == other.Tile1 && Tile2 == other.Tile2 && Tile3 == other.Tile3;
+		}
 	}
 }

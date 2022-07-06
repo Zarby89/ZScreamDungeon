@@ -291,9 +291,33 @@
 			Redrawing |= NeedsNewArt.UpdatedLayer1Tilemap;
 		}
 
+		public ushort GetTile16At(int x, int y)
+		{
+			return Tile16Map[x + y * Constants.NumberOfTile16PerStrip];
+		}
+
 		public void CopyTile8bpp16(int x, int y, int tile)
 		{
 			//MyArtist.CopyTile8bpp16(x, y, tile);
+		}
+
+		public Tile32 GetTile32At(int x, int y)
+		{
+			int i = (x * 2) + (y * 2 * 32);
+
+			return new(Tile16Map[i], Tile16Map[i + 1], Tile16Map[i + 32], Tile16Map[i + 33]);
+		}
+
+		public void SetTile32At(Tile32 tile, int x, int y)
+		{
+			int i = (x * 2) + (y * 2 * 32);
+
+			Tile16Map[i] = tile.Tile0;
+			Tile16Map[i + 1] = tile.Tile1;
+			Tile16Map[i + 32] = tile.Tile2;
+			Tile16Map[i + 33] = tile.Tile3;
+
+			Redrawing |= NeedsNewArt.UpdatedLayer1Tilemap;
 		}
 	}
 }
