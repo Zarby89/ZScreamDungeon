@@ -253,12 +253,12 @@
 				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 				e.Graphics.CompositingMode = CompositingMode.SourceOver;
 				e.Graphics.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
-					Constants.Rect_0_0_128_4096,
-					Constants.Rect_0_0_128_4096,
+					new Rectangle(0, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
+					new Rectangle(0, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
 					GraphicsUnit.Pixel);
 				e.Graphics.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
-					Constants.Rect_128_0_128_4096,
-					Constants.Rect_0_4096_128_4096,
+					new Rectangle(Tile16MasterSheet.ImageWidth, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
+					new Rectangle(0, Tile16MasterSheet.ImageHeight, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
 					GraphicsUnit.Pixel);
 
 				if (ZScreamer.ActiveOWScene.selectedTile.Length > 0)
@@ -905,7 +905,7 @@
 			{
 				for (int x = 0; x < 32; x++)
 				{
-					ZScreamer.ActiveOWScene.CurrentMap.tilesUsed[x, y] = 0052;
+					ZScreamer.ActiveOWScene.CurrentMap.SetTile16At(0052, x, y);
 
 					//overworld.allmapsTilesLW[x, y] = 0052;
 				}

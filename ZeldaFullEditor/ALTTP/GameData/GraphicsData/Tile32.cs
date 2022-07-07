@@ -30,19 +30,6 @@
 			Tile3 = tile3;
 		}
 
-		public Tile32(ulong tiles)
-		{
-			Tile0 = (ushort) tiles;
-			Tile1 = (ushort) (tiles >> 16);
-			Tile2 = (ushort) (tiles >> 32);
-			Tile3 = (ushort) (tiles >> 48);
-		}
-
-		public ulong getLongValue()
-		{
-			return (ulong) Tile3 << 48 | (ulong) Tile2 << 32 | (ulong) Tile1 << 16 | Tile0;
-		}
-
 		public static bool operator ==(Tile32 a, Tile32 b)
 		{
 			return a.Tile0 == b.Tile0 && a.Tile1 == b.Tile1 && a.Tile2 == b.Tile2 && a.Tile3 == b.Tile3;

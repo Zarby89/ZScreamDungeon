@@ -1866,46 +1866,46 @@
 
 		private void flipMapHorizontallyToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			List<ushort> tile8ids = new List<ushort>();
-			ushort[,] map16 = new ushort[32, 32];
-
-			// Flip all tile8 tiles
-			for (int x = 0; x < 32; x++)
-			{
-				for (int y = 0; y < 32; y++)
-				{
-					if (!tile8ids.Contains(ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
-					{
-						tile8ids.Add(ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
-					}
-					map16[x, y] = ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
-				}
-			}
-
-			for (int i = 0; i < tile8ids.Count; i++)
-			{
-
-				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile0.HFlip ^= true;
-				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile1.HFlip ^= true;
-				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile2.HFlip ^= true;
-				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile3.HFlip ^= true;
-				//
-				//ushort t0 = ZScreamer.ActiveOW.Tile16List[i].tile0.ID;
-				//ushort t2 = ZScreamer.ActiveOW.Tile16List[i].tile2.ID;
-				//
-				//ZScreamer.ActiveOW.Tile16List[i].tile0.ID = ZScreamer.ActiveOW.Tile16List[i].tile1.ID;
-				//ZScreamer.ActiveOW.Tile16List[i].tile1.ID = t0;
-				//ZScreamer.ActiveOW.Tile16List[i].tile2.ID = ZScreamer.ActiveOW.Tile16List[i].tile3.ID;
-				//ZScreamer.ActiveOW.Tile16List[i].tile3.ID = t2;
-
-				for (int x = 0, mx = 31; x < 32; x++, mx--)
-				{
-					for (int y = 0; y < 32; y++)
-					{
-						ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
-					}
-				}
-			}
+			//List<ushort> tile8ids = new List<ushort>();
+			//ushort[,] map16 = new ushort[32, 32];
+			//
+			//// Flip all tile8 tiles
+			//for (int x = 0; x < 32; x++)
+			//{
+			//	for (int y = 0; y < 32; y++)
+			//	{
+			//		if (!tile8ids.Contains(ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
+			//		{
+			//			tile8ids.Add(ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
+			//		}
+			//		map16[x, y] = ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
+			//	}
+			//}
+			//
+			//for (int i = 0; i < tile8ids.Count; i++)
+			//{
+			//
+			//	//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile0.HFlip ^= true;
+			//	//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile1.HFlip ^= true;
+			//	//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile2.HFlip ^= true;
+			//	//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile3.HFlip ^= true;
+			//	//
+			//	//ushort t0 = ZScreamer.ActiveOW.Tile16List[i].tile0.ID;
+			//	//ushort t2 = ZScreamer.ActiveOW.Tile16List[i].tile2.ID;
+			//	//
+			//	//ZScreamer.ActiveOW.Tile16List[i].tile0.ID = ZScreamer.ActiveOW.Tile16List[i].tile1.ID;
+			//	//ZScreamer.ActiveOW.Tile16List[i].tile1.ID = t0;
+			//	//ZScreamer.ActiveOW.Tile16List[i].tile2.ID = ZScreamer.ActiveOW.Tile16List[i].tile3.ID;
+			//	//ZScreamer.ActiveOW.Tile16List[i].tile3.ID = t2;
+			//
+			//	for (int x = 0, mx = 31; x < 32; x++, mx--)
+			//	{
+			//		for (int y = 0; y < 32; y++)
+			//		{
+			//			ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
+			//		}
+			//	}
+			//}
 
 			// ZScreamer.ActiveOW.allmaps[44].BuildMap();
 		}

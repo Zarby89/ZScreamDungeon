@@ -204,8 +204,6 @@
 		public ushort MessageID { get; set; }
 
 		public byte[] staticgfx = new byte[16]; // Need to be used to display map and not pre render it!
-		public ushort[,] tilesUsed;
-
 
 		public FullPalette CGPaletteState0 { get; private set; }
 		public FullPalette CGPaletteState2 { get; private set; }
@@ -303,19 +301,24 @@
 
 		public Tile32 GetTile32At(int x, int y)
 		{
-			int i = (x * 2) + (y * 2 * 32);
+			int i = (x * 2) + (y * Constants.Tile32ToTile16RowCalc);
 
-			return new(Tile16Map[i], Tile16Map[i + 1], Tile16Map[i + 32], Tile16Map[i + 33]);
+			return new(
+				Tile16Map[i],
+				Tile16Map[i + 1],
+				Tile16Map[i + Constants.NumberOfTile16PerStrip],
+				Tile16Map[i + 1 + Constants.NumberOfTile16PerStrip]
+			);
 		}
 
 		public void SetTile32At(Tile32 tile, int x, int y)
 		{
-			int i = (x * 2) + (y * 2 * 32);
+			int i = (x * 2) + (y * Constants.Tile32ToTile16RowCalc);
 
 			Tile16Map[i] = tile.Tile0;
 			Tile16Map[i + 1] = tile.Tile1;
-			Tile16Map[i + 32] = tile.Tile2;
-			Tile16Map[i + 33] = tile.Tile3;
+			Tile16Map[i + Constants.NumberOfTile16PerStrip] = tile.Tile2;
+			Tile16Map[i + 1 + Constants.NumberOfTile16PerStrip] = tile.Tile3;
 
 			Redrawing |= NeedsNewArt.UpdatedLayer1Tilemap;
 		}

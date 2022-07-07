@@ -43,7 +43,7 @@
 				(0, 0) => t16.Tile0,
 				(1, 0) => t16.Tile1,
 				(0, 1) => t16.Tile2,
-				(1, 1) => t16.Tile0,
+				(1, 1) => t16.Tile3,
 				_ => Tile.Empty // No, actually it does handle every case
 			};
 		}

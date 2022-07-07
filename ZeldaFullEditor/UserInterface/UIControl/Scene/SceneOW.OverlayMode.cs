@@ -106,7 +106,7 @@
 						if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 						{
 							selectedTile = new ushort[1] {
-								ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY]
+								ZS.OverworldManager.allmaps[mapId].GetTile16At(localTileDownX, localTileDownY)
 							};
 							selectedTileSizeX = 1;
 						}
@@ -150,7 +150,7 @@
 					{
 						for (int x = 0; x < sizeX; x++)
 						{
-							selectedTile[x + (y * sizeX)] = ZS.OverworldManager.allmaps[mapId].tilesUsed[pX + x, pY + y];
+							selectedTile[x + (y * sizeX)] = ZS.OverworldManager.allmaps[mapId].GetTile16At(pX + x, pY + y);
 						}
 					}
 				}

@@ -30,12 +30,12 @@
 			Tile3 = tile3;
 		}
 
-		public Tile16(ushort a, ushort b, ushort c, ushort d)
+		public Tile16(ushort tile0, ushort tile1, ushort tile2, ushort tile3)
 		{
-			Tile0 = new Tile(a);
-			Tile1 = new Tile(b);
-			Tile2 = new Tile(c);
-			Tile3 = new Tile(d);
+			Tile0 = new Tile(tile0);
+			Tile1 = new Tile(tile1);
+			Tile2 = new Tile(tile2);
+			Tile3 = new Tile(tile3);
 		}
 
 		public Tile16 ChangeTiles(Tile? tile0 = null, Tile? tile1 = null, Tile? tile2 = null, Tile? tile3 = null)

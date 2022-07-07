@@ -19,8 +19,10 @@
 		//must load all current map gfx
 		public ushort[] selectedTile = new ushort[] { 0 };
 		public int selectedTileSizeX = 1;
-		public int globalmouseTileDownX = 0;
-		public int globalmouseTileDownY = 0;
+		private int globalmouseTileDownX = 0;
+		private int globalmouseTileDownY = 0;
+		private int localTileDownX => globalmouseTileDownX / Constants.NumberOfTile16PerStrip;
+		private int localTileDownY => globalmouseTileDownY / Constants.NumberOfTile16PerStrip;
 		public int lastTileHoverX = 0;
 		public int lastTileHoverY = 0;
 		public int lastHover = -1;

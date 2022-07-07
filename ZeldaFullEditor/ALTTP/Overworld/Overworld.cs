@@ -73,8 +73,6 @@
 				allmaps[i] = new OverworldScreen(i);
 			}
 
-			DecompressAllMapTiles();
-
 			foreach (var map in allmaps)
 			{
 				map.MessageID = ZS.ROM.Read16(ZS.Offsets.overworldMessages + map.MapID * 2);
@@ -160,6 +158,7 @@
 			}
 
 
+			DecompressAllMapTiles();
 
 			LoadOverworldExitsFromROM();
 			LoadOverworldEntrancesFromROM();
@@ -255,9 +254,9 @@
 					ushort GetComponent(byte[] comp) => t switch
 					{
 						0 => (ushort) (comp[0] | ((comp[4] & 0x0F) << 8)),
-						1 => (ushort) (comp[1] | ((comp[4] & 0xF0) << 8)),
+						1 => (ushort) (comp[1] | ((comp[4] & 0xF0) << 4)),
 						2 => (ushort) (comp[2] | ((comp[5] & 0x0F) << 8)),
-						3 => (ushort) (comp[3] | ((comp[5] & 0xF0) << 8)),
+						3 => (ushort) (comp[3] | ((comp[5] & 0xF0) << 4)),
 						_ => 0
 					};
 				}
@@ -270,14 +269,14 @@
 			{
 				var offset = o.MapID * 3;
 
-				var p1 = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersHigh + offset).SNEStoPC();
-				var p2 = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersLow + offset).SNEStoPC();
+				var plow = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersLow + offset).SNEStoPC();
+				var phigh = ZS.ROM.Read24(ZS.Offsets.compressedAllMap32PointersHigh + offset).SNEStoPC();
 
 				var compressedSize1 = 0;
 				var compressedSize2 = 0;
 
-				var bytes = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p2, 1000, ref compressedSize1);
-				var bytes2 = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p1, 1000, ref compressedSize2);
+				var blow = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, plow, 1000, ref compressedSize1);
+				var bhigh = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, phigh, 1000, ref compressedSize2);
 
 
 				int tpos = 0;
@@ -285,7 +284,7 @@
 				{
 					for (int xx = 0; xx < 16; xx++)
 					{
-						var tile = Tile32Definitions[(bytes2[tpos] << 8 | bytes[tpos])];
+						var tile = Tile32Definitions[blow[tpos] | (bhigh[tpos] << 8)];
 						o.SetTile32At(tile, xx, yy);
 						tpos++;
 					}

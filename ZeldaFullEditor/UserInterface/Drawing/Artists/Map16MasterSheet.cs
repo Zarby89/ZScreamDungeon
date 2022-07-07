@@ -2,12 +2,12 @@
 {
 	public unsafe class Tile16MasterSheet : IByteable
 	{
-		private const int TileSpan = 16;
+		private const int TileSpan = 17;
 		private const int TilesPerRow = 8;
 		private const int TilesPerColumn = 0xE1;
 		private const int TilesPerBlock = TilesPerRow * TilesPerColumn;
-		private const int ImageWidth = TilesPerRow * TileSpan;
-		private const int ImageHeight = TilesPerColumn * TileSpan * 2;
+		internal static readonly int ImageWidth = TilesPerRow * TileSpan;
+		internal static readonly int ImageHeight = TilesPerColumn * TileSpan;
 
 		private readonly Tile16[] ListOf = new Tile16[Constants.NumberOfUniqueTile16Definitions];
 
@@ -23,12 +23,13 @@
 
 		public Tile16MasterSheet()
 		{
-			PreviewCanvas = new PointeredImage(ImageWidth, ImageHeight);
+			PreviewCanvas = new PointeredImage(ImageWidth, ImageHeight * 2);
 		}
 
 		public void UpdateToMatchScreen(OverworldScreen screen)
 		{
 			Graphics = screen.LoadedGraphics;
+			screen.CGPaletteState0.CopyToImagePalette(PreviewCanvas.Bitmap);
 			RedrawImageForGraphicsSet();
 		}
 

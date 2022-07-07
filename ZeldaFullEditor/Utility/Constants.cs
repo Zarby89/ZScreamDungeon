@@ -29,6 +29,8 @@
 		public const int NumberofTile32PerScreen = 256;
 		public const int NumberOfTile16PerStrip = 32;
 		public const int NumberOfTile16PerScreen = NumberOfTile16PerStrip * NumberOfTile16PerStrip;
+		public const int NumberOfTile32PerStrip = NumberOfTile16PerStrip / 2;
+		public const int Tile32ToTile16RowCalc = NumberOfTile16PerStrip * 2;
 		public const int NumberOfUniqueTile16Definitions = 3752; // 4096
 		public const int NumberOfTile32Total = NumberofTile32PerScreen * NumberOfOWMaps;
 		public const int NumberOfOWSprites = 352;

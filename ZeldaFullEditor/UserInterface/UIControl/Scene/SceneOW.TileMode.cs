@@ -41,11 +41,9 @@
 			int tileY = (e.Y / 16);
 			int superX = (tileX / 32);
 			int superY = (tileY / 32);
-			int mapId = (superY * 8) + superX;
-			globalmouseTileDownX = tileX;
-			globalmouseTileDownY = tileY;
-			globalmouseTileDownXLOCK = tileX;
-			globalmouseTileDownYLOCK = tileY;
+			int mapId = CurrentMapID;
+			globalmouseTileDownX = globalmouseTileDownXLOCK = e.X / 16;
+			globalmouseTileDownY = globalmouseTileDownYLOCK = e.Y / 16;
 
 			//ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].BuildMap();
 
@@ -74,9 +72,9 @@
 							superX = ((tileX + x) / 32);
 							superY = ((tileY + y) / 32);
 							mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
-							if (ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y] == 52)
+							if (ZS.OverworldManager.allmaps[mapId].GetTile16At(localTileDownX + x, localTileDownY + y) == 52)
 							{
-								ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y] = selectedTile[i];
+								ZS.OverworldManager.allmaps[mapId].SetTile16At(selectedTile[i], localTileDownX + x, localTileDownY + y);
 								ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTile[i]);
 							}
 
@@ -88,9 +86,9 @@
 							}
 						}
 					}
-					else if (ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] == 52)
+					else if (ZS.OverworldManager.allmaps[mapId].GetTile16At(localTileDownX, localTileDownY) == 52)
 					{
-						ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] = selectedTile[0];
+						ZS.OverworldManager.allmaps[mapId].SetTile16At(selectedTile[0], localTileDownX, localTileDownY);
 						ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16((tileX * 16) - (superX * 512), (tileY * 16) - (superY * 512), selectedTile[0]);
 					}
 				}
@@ -107,8 +105,8 @@
 							superX = ((tileX + x) / 32);
 							superY = ((tileY + y) / 32);
 							mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
-							undotiles[i] = ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y];
-							ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y] = selectedTile[i];
+							undotiles[i] = ZS.OverworldManager.allmaps[mapId].GetTile16At(localTileDownX + x, localTileDownY + y);
+							ZS.OverworldManager.allmaps[mapId].SetTile16At(selectedTile[i], localTileDownX + x, localTileDownY + y);
 							ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTile[i]);
 
 							x++;
@@ -119,17 +117,17 @@
 							}
 						}
 
-						undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, selectedTileSizeX, undotiles, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
-						redoList.Clear();
+						//undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, selectedTileSizeX, undotiles, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
+						//redoList.Clear();
 					}
 					else
 					{
-						undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, 1, new ushort[] {
-							ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY]
-						}, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
-						redoList.Clear();
-						ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] = selectedTile[0];
-						ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16((tileX * 16) - (superX * 512), (tileY * 16) - (superY * 512), selectedTile[0]);
+						//undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, 1, new ushort[] {
+						//	ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY]
+						//}, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
+						//redoList.Clear();
+						//ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] = selectedTile[0];
+						//ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16((tileX * 16) - (superX * 512), (tileY * 16) - (superY * 512), selectedTile[0]);
 					}
 				}
 			}
@@ -153,7 +151,9 @@
 			{
 				if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 				{
-					selectedTile = new ushort[1] { ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] };
+					selectedTile = new ushort[1] {
+						CurrentMap.GetTile16At(globalmouseTileDownX % Constants.NumberOfTile16PerStrip, globalmouseTileDownY % Constants.NumberOfTile16PerStrip)
+					};
 					selectedTileSizeX = 1;
 				}
 				else
@@ -183,8 +183,7 @@
 						{
 							int pX = reverseX ? tileX : globalmouseTileDownX;
 							int pY = reverseY ? tileY : globalmouseTileDownY;
-							selectedTile[x + (y * sizeX)] =
-								ZS.OverworldManager.allmaps[mapId].tilesUsed[pX + x, pY + y];
+							selectedTile[x + (y * sizeX)] = CurrentMap.GetTile16At(pX + x, pY + y);
 						}
 					}
 				}
@@ -275,9 +274,9 @@
 
 									if (globalmouseTileDownX + x < 256 && globalmouseTileDownY + y < 256)
 									{
-										if (ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y] == 52)
+										if (ZS.OverworldManager.allmaps[mapId].GetTile16At(localTileDownX + x, localTileDownY + y) == 52)
 										{
-											ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y] = selectedTile[i];
+											ZS.OverworldManager.allmaps[mapId].SetTile16At(selectedTile[i], localTileDownX + x, localTileDownY + y);
 											ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTile[i]);
 										}
 									}
@@ -307,9 +306,9 @@
 
 									if (globalmouseTileDownX + x < 256 && globalmouseTileDownY + y < 256)
 									{
-										undotiles[i] = ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y];
-										ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y] = selectedTile[i];
-										ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTile[i]);
+										//undotiles[i] = ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y];
+										//ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX + x, globalmouseTileDownY + y] = selectedTile[i];
+										//ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTile[i]);
 									}
 
 									x++;
@@ -320,7 +319,7 @@
 									}
 								}
 
-								undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, selectedTileSizeX, undotiles, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
+								//undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, selectedTileSizeX, undotiles, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
 								redoList.Clear();
 
 								// }
