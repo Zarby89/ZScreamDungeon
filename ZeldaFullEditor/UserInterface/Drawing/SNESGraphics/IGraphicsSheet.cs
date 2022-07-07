@@ -1,10 +1,9 @@
-﻿namespace ZeldaFullEditor.UserInterface.Drawing.SNESGraphics
+﻿namespace ZeldaFullEditor.UserInterface.Drawing.SNESGraphics;
+
+/// <summary>
+/// Represents an object that is some higher level container of <see cref="GraphicsTile"/> objects.
+/// </summary>
+internal interface IGraphicsSheet
 {
-	/// <summary>
-	/// Represents an object that is some higher level container of <see cref="GraphicsTile"/> objects.
-	/// </summary>
-	internal interface IGraphicsSheet
-	{
-		public GraphicsTile this[int i] { get; }
-	}
+	public GraphicsTile this[int i] { get; }
 }

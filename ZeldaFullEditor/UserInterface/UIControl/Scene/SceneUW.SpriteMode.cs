@@ -1,52 +1,51 @@
-﻿namespace ZeldaFullEditor.UserInterface.UIControl.Scene
+﻿namespace ZeldaFullEditor.UserInterface.UIControl.Scene;
+
+public partial class SceneUW
 {
-	public partial class SceneUW
+	private void OnMouseDown_Sprites(MouseEventArgs e)
 	{
-		private void OnMouseDown_Sprites(MouseEventArgs e)
+		if (ObjectToPlace == null)
 		{
-			if (ObjectToPlace == null)
-			{
-				FindHoveredEntity(Room.SpritesList, e);
-				HandleSelectingHoveredObject();
-			}
-
-			CheckIfObjectIsInvalidForPlacement();
-
-			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode);
-
-			ResetPlacementProperties();
+			FindHoveredEntity(Room.SpritesList, e);
+			HandleSelectingHoveredObject();
 		}
 
-		private void OnMouseUp_Sprites(MouseEventArgs e)
-		{
+		CheckIfObjectIsInvalidForPlacement();
 
-		}
+		Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode);
 
-		private void OnMouseMove_Sprites(MouseEventArgs e)
-		{
+		ResetPlacementProperties();
+	}
 
-		}
-
-		private void Copy_Sprites()
-		{
-
-		}
-
-		private void Paste_Sprites()
-		{
-
-		}
-
-		private void Delete_Sprites()
-		{
-			Room.RemoveCurrentlySelectedObjectsFromList(Room.SpritesList);
-		}
-
-		private void SelectAll_Sprites()
-		{
-			Room.ClearSelectedList();
-			Room.SelectedObjects.AddRange(Room.SpritesList);
-		}
+	private void OnMouseUp_Sprites(MouseEventArgs e)
+	{
 
 	}
+
+	private void OnMouseMove_Sprites(MouseEventArgs e)
+	{
+
+	}
+
+	private void Copy_Sprites()
+	{
+
+	}
+
+	private void Paste_Sprites()
+	{
+
+	}
+
+	private void Delete_Sprites()
+	{
+		Room.RemoveCurrentlySelectedObjectsFromList(Room.SpritesList);
+	}
+
+	private void SelectAll_Sprites()
+	{
+		Room.ClearSelectedList();
+		Room.SelectedObjects.AddRange(Room.SpritesList);
+	}
+
 }

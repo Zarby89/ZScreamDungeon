@@ -1,15 +1,14 @@
-﻿namespace ZeldaFullEditor.ALTTP.GameData
+﻿namespace ZeldaFullEditor.ALTTP.GameData;
+
+class MapIcon
 {
-	class MapIcon
+	public ushort x = 0;
+	public ushort y = 0;
+	public ushort gfx = 0;
+	public MapIcon(ushort x, ushort y, ushort gfx)
 	{
-		public ushort x = 0;
-		public ushort y = 0;
-		public ushort gfx = 0;
-		public MapIcon(ushort x, ushort y, ushort gfx)
-		{
-			this.x = x;
-			this.y = y;
-			this.gfx = gfx;
-		}
+		this.x = x;
+		this.y = y;
+		this.gfx = gfx;
 	}
 }

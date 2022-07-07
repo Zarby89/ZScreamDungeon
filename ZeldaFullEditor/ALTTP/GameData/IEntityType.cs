@@ -1,19 +1,18 @@
-﻿namespace ZeldaFullEditor.ALTTP.GameData
+﻿namespace ZeldaFullEditor.ALTTP.GameData;
+
+/// <summary>
+/// Represents my desire for C# to allow interfaces to declare static methods which their classes must implement.
+/// </summary>
+internal interface IEntityType<T>
 {
 	/// <summary>
-	/// Represents my desire for C# to allow interfaces to declare static methods which their classes must implement.
+	/// This entity type's internal ID that should be used for sorting a publicly viewable list.
 	/// </summary>
-	internal interface IEntityType<T>
-	{
-		/// <summary>
-		/// This entity type's internal ID that should be used for sorting a publicly viewable list.
-		/// </summary>
-		public int ListID { get; }
+	public int ListID { get; }
 
-		public string Name { get; init; }
-		//public static virtual T GetTypeFromID(int id);
-		//public static T[] ListOf { get; }
+	public string Name { get; init; }
+	//public static virtual T GetTypeFromID(int id);
+	//public static T[] ListOf { get; }
 
-		public abstract string ToString();
-	}
+	public abstract string ToString();
 }

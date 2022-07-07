@@ -1,101 +1,100 @@
-﻿namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui;
+
+public partial class DungeonPropertiesForm : Form
 {
-	public partial class DungeonPropertiesForm : Form
+	DungeonProperty[] properties = new DungeonProperty[12];
+
+	bool changedFromForm = false;
+	public DungeonPropertiesForm()
 	{
-		DungeonProperty[] properties = new DungeonProperty[12];
+		InitializeComponent();
+	}
 
-		bool changedFromForm = false;
-		public DungeonPropertiesForm()
+	// TODO move elsewhere for consistency
+	private void DungeonPropertiesForm_Load(object sender, EventArgs e)
+	{
+		listBox1.Items.Add("Pendant 1 - Green (Eastern)");
+		listBox1.Items.Add("Pendant 2 - Blue (Desert)");
+		listBox1.Items.Add("Pendant 3 - Red (Hera)");
+		listBox1.Items.Add("Agahnim 1");
+		listBox1.Items.Add("Crystal 2 (Swamp)");
+		listBox1.Items.Add("Crystal 1 (Darkness)");
+		listBox1.Items.Add("Crystal 3 (Skullswood)");
+		listBox1.Items.Add("Crystal 6 (Mire)");
+		listBox1.Items.Add("Crystal 5 (Ice)");
+		listBox1.Items.Add("Crystal 7 (Turtle)");
+		listBox1.Items.Add("Crystal 4 (Thieves)");
+		listBox1.Items.Add("Agahnim 2");
+
+		for (int i = 0; i < 12; i++)
 		{
-			InitializeComponent();
+			properties[i] = new DungeonProperty
+			(
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_startrooms + i],
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_endrooms + i],
+				ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.dungeons_bossrooms + (i * 2))
+			);
 		}
 
-		// TODO move elsewhere for consistency
-		private void DungeonPropertiesForm_Load(object sender, EventArgs e)
-		{
-			listBox1.Items.Add("Pendant 1 - Green (Eastern)");
-			listBox1.Items.Add("Pendant 2 - Blue (Desert)");
-			listBox1.Items.Add("Pendant 3 - Red (Hera)");
-			listBox1.Items.Add("Agahnim 1");
-			listBox1.Items.Add("Crystal 2 (Swamp)");
-			listBox1.Items.Add("Crystal 1 (Darkness)");
-			listBox1.Items.Add("Crystal 3 (Skullswood)");
-			listBox1.Items.Add("Crystal 6 (Mire)");
-			listBox1.Items.Add("Crystal 5 (Ice)");
-			listBox1.Items.Add("Crystal 7 (Turtle)");
-			listBox1.Items.Add("Crystal 4 (Thieves)");
-			listBox1.Items.Add("Agahnim 2");
+		listBox1.SelectedIndex = 0;
+	}
 
-			for (int i = 0; i < 12; i++)
+	private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		changedFromForm = true;
+		startroomTextbox.Text = properties[listBox1.SelectedIndex].startroom.ToString();
+		endroomTextbox.Text = properties[listBox1.SelectedIndex].endroom.ToString();
+		bossroomTextbox.Text = properties[listBox1.SelectedIndex].bossroom.ToString();
+		changedFromForm = false;
+	}
+
+	private void bossroomTextbox_TextChanged(object sender, EventArgs e)
+	{
+		if (!changedFromForm)
+		{
+			if (int.TryParse(startroomTextbox.Text, out int r))
 			{
-				properties[i] = new DungeonProperty
-				(
-					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_startrooms + i],
-					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_endrooms + i],
-					ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.dungeons_bossrooms + (i * 2))
-				);
+				properties[listBox1.SelectedIndex].startroom = (byte) r;
 			}
-
-			listBox1.SelectedIndex = 0;
-		}
-
-		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			changedFromForm = true;
-			startroomTextbox.Text = properties[listBox1.SelectedIndex].startroom.ToString();
-			endroomTextbox.Text = properties[listBox1.SelectedIndex].endroom.ToString();
-			bossroomTextbox.Text = properties[listBox1.SelectedIndex].bossroom.ToString();
-			changedFromForm = false;
-		}
-
-		private void bossroomTextbox_TextChanged(object sender, EventArgs e)
-		{
-			if (!changedFromForm)
+			if (int.TryParse(endroomTextbox.Text, out r))
 			{
-				if (int.TryParse(startroomTextbox.Text, out int r))
-				{
-					properties[listBox1.SelectedIndex].startroom = (byte) r;
-				}
-				if (int.TryParse(endroomTextbox.Text, out r))
-				{
-					properties[listBox1.SelectedIndex].endroom = (byte) r;
-				}
-				if (int.TryParse(bossroomTextbox.Text, out r))
-				{
-					properties[listBox1.SelectedIndex].bossroom = (ushort) r;
-				}
+				properties[listBox1.SelectedIndex].endroom = (byte) r;
 			}
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			for (int i = 0; i < 12; i++)
+			if (int.TryParse(bossroomTextbox.Text, out r))
 			{
-				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_startrooms + i] = properties[i].startroom;
-				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_endrooms + i] = properties[i].endroom;
-				ZScreamer.ActiveROM.Write16(ZScreamer.ActiveOffsets.dungeons_bossrooms + (i * 2), properties[i].bossroom);
+				properties[listBox1.SelectedIndex].bossroom = (ushort) r;
 			}
-
-			Close();
-		}
-
-		private void button2_Click(object sender, EventArgs e)
-		{
-			Close();
 		}
 	}
 
-	public class DungeonProperty
+	private void button1_Click(object sender, EventArgs e)
 	{
-		public byte startroom = 0;
-		public byte endroom = 0;
-		public ushort bossroom = 0;
-
-		public DungeonProperty(byte startroom, byte endroom, ushort bossroom)
+		for (int i = 0; i < 12; i++)
 		{
-			this.startroom = startroom;
-			this.endroom = endroom;
-			this.bossroom = bossroom;
+			ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_startrooms + i] = properties[i].startroom;
+			ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_endrooms + i] = properties[i].endroom;
+			ZScreamer.ActiveROM.Write16(ZScreamer.ActiveOffsets.dungeons_bossrooms + (i * 2), properties[i].bossroom);
 		}
+
+		Close();
+	}
+
+	private void button2_Click(object sender, EventArgs e)
+	{
+		Close();
+	}
+}
+
+public class DungeonProperty
+{
+	public byte startroom = 0;
+	public byte endroom = 0;
+	public ushort bossroom = 0;
+
+	public DungeonProperty(byte startroom, byte endroom, ushort bossroom)
+	{
+		this.startroom = startroom;
+		this.endroom = endroom;
+		this.bossroom = bossroom;
 	}
 }

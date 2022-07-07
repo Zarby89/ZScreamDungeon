@@ -1,10 +1,9 @@
-﻿namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui;
+
+public partial class DataExtractor : Form
 {
-	public partial class DataExtractor : Form
+	public DataExtractor()
 	{
-		public DataExtractor()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

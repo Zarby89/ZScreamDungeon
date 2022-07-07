@@ -1,82 +1,81 @@
-﻿namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData.Palettes
+﻿namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData.Palettes;
+
+public class FullPalette
 {
-	public class FullPalette
+	private readonly SNESColor[] Palette = new SNESColor[Constants.TotalPaletteSize];
+
+	public SNESColor this[int i] => Palette[i];
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="palette"></param>
+	/// <param name="color"></param>
+	/// <returns></returns>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public SNESColor this[int palette, int color]
 	{
-		private readonly SNESColor[] Palette = new SNESColor[Constants.TotalPaletteSize];
-
-		public SNESColor this[int i] => Palette[i];
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="palette"></param>
-		/// <param name="color"></param>
-		/// <returns></returns>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		public SNESColor this[int palette, int color]
-		{
-			get {
-				if (palette is > 15 or < 0)
-				{
-					throw new ArgumentOutOfRangeException(nameof(palette), "Palette id may not exceed 15.");
-				}
-				else if (color is > 15 or < 0)
-				{
-					throw new ArgumentOutOfRangeException(nameof(color), "Palette index may not exceed 15.");
-				}
-
-				return Palette[palette * 16 + color];
-			}
-		}
-
-		public FullPalette()
-		{
-			
-		}
-
-		public void AddPartialPalette(PartialPalette p, int index)
-		{
-			foreach (var c in p.GetNextColor())
+		get {
+			if (palette is > 15 or < 0)
 			{
-				if (c is not null)
-				{
-					Palette[index] = (SNESColor) c;
-				}
-				index++;
+				throw new ArgumentOutOfRangeException(nameof(palette), "Palette id may not exceed 15.");
 			}
-		}
-
-		public void DuplicateHalfPalette(int source, int destination)
-		{
-			for (int i = 1; i < 8; i++)
+			else if (color is > 15 or < 0)
 			{
-				Palette[destination + i] = Palette[source + i];
+				throw new ArgumentOutOfRangeException(nameof(color), "Palette index may not exceed 15.");
 			}
-		}
 
-		public Color[] ToColorArray()
+			return Palette[palette * 16 + color];
+		}
+	}
+
+	public FullPalette()
+	{
+		
+	}
+
+	public void AddPartialPalette(PartialPalette p, int index)
+	{
+		foreach (var c in p.GetNextColor())
 		{
-			var ret = new Color[Constants.TotalPaletteSize];
-
-			for (int i = 1; i < Constants.TotalPaletteSize; i++)
+			if (c is not null)
 			{
-				ret[i] = Palette[i].RealColor;
+				Palette[index] = (SNESColor) c;
 			}
-
-			ret[0] = Color.FromArgb(0, Palette[0].RealColor);
-
-			return ret;
+			index++;
 		}
+	}
 
-		public void CopyToImagePalette(Bitmap img)
+	public void DuplicateHalfPalette(int source, int destination)
+	{
+		for (int i = 1; i < 8; i++)
 		{
-
-			for (int i = 1; i < Constants.TotalPaletteSize; i++)
-			{
-				img.Palette.Entries[i] = Palette[i].RealColor;
-			}
-
-			img.Palette.Entries[0] = Color.FromArgb(0, Palette[0].RealColor);
+			Palette[destination + i] = Palette[source + i];
 		}
+	}
+
+	public Color[] ToColorArray()
+	{
+		var ret = new Color[Constants.TotalPaletteSize];
+
+		for (int i = 1; i < Constants.TotalPaletteSize; i++)
+		{
+			ret[i] = Palette[i].RealColor;
+		}
+
+		ret[0] = Color.FromArgb(0, Palette[0].RealColor);
+
+		return ret;
+	}
+
+	public void CopyToImagePalette(Bitmap img)
+	{
+
+		for (int i = 1; i < Constants.TotalPaletteSize; i++)
+		{
+			img.Palette.Entries[i] = Palette[i].RealColor;
+		}
+
+		img.Palette.Entries[0] = Color.FromArgb(0, Palette[0].RealColor);
 	}
 }

@@ -1,59 +1,58 @@
-﻿namespace ZeldaFullEditor.UserInterface.UIControl.Scene
+﻿namespace ZeldaFullEditor.UserInterface.UIControl.Scene;
+
+public partial class SceneUW
 {
-	public partial class SceneUW
+	private void OnMouseDown_Blocks(MouseEventArgs e)
 	{
-		private void OnMouseDown_Blocks(MouseEventArgs e)
+		if (ObjectToPlace == null)
 		{
-			if (ObjectToPlace == null)
-			{
-				FindHoveredEntity(Room.BlocksList, e);
-				HandleSelectingHoveredObject();
-			}
-
-			// TODO
+			FindHoveredEntity(Room.BlocksList, e);
+			HandleSelectingHoveredObject();
 		}
 
-		private void OnMouseUp_Blocks(MouseEventArgs e)
+		// TODO
+	}
+
+	private void OnMouseUp_Blocks(MouseEventArgs e)
+	{
+		// Nothing
+	}
+
+	private void OnMouseMove_Blocks(MouseEventArgs e)
+	{
+
+	}
+
+	private void Copy_Blocks()
+	{
+
+	}
+
+	private void Paste_Blocks()
+	{
+
+	}
+
+	private void Delete_Blocks()
+	{
+		Room.RemoveCurrentlySelectedObjectsFromList(Room.BlocksList);
+	}
+
+	private void Insert_Blocks()
+	{
+		var b = new PushableBlock()
 		{
-			// Nothing
-		}
+			GridX = (byte) MouseX,
+			GridY = (byte) MouseY,
+			Layer = 0,
+		};
 
-		private void OnMouseMove_Blocks(MouseEventArgs e)
-		{
+		Room.AttemptToAddEntityAsSelected(b, CurrentMode);
+	}
 
-		}
-
-		private void Copy_Blocks()
-		{
-
-		}
-
-		private void Paste_Blocks()
-		{
-
-		}
-
-		private void Delete_Blocks()
-		{
-			Room.RemoveCurrentlySelectedObjectsFromList(Room.BlocksList);
-		}
-
-		private void Insert_Blocks()
-		{
-			var b = new PushableBlock()
-			{
-				GridX = (byte) MouseX,
-				GridY = (byte) MouseY,
-				Layer = 0,
-			};
-
-			Room.AttemptToAddEntityAsSelected(b, CurrentMode);
-		}
-
-		private void SelectAll_Blocks()
-		{
-			Room.ClearSelectedList();
-			Room.SelectedObjects.AddRange(Room.BlocksList);
-		}
+	private void SelectAll_Blocks()
+	{
+		Room.ClearSelectedList();
+		Room.SelectedObjects.AddRange(Room.BlocksList);
 	}
 }

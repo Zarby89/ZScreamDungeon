@@ -1,124 +1,123 @@
-﻿namespace ZeldaFullEditor.ALTTP.Overworld
+﻿namespace ZeldaFullEditor.ALTTP.Overworld;
+
+/// <summary>
+/// Provides a base class containing properties and methods common to all entities that appear on the overworld.
+/// </summary>
+public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable, IHaveInfo
 {
-	/// <summary>
-	/// Provides a base class containing properties and methods common to all entities that appear on the overworld.
-	/// </summary>
-	public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable, IHaveInfo
+	private ushort globalx, globaly;
+	private byte mapx, mapy;
+
+	public abstract string Name { get; }
+
+	public Rectangle BoundingBox => new(GlobalX, GlobalY, 16, 16);
+
+	public ushort GlobalX
 	{
-		private ushort globalx, globaly;
-		private byte mapx, mapy;
-
-		public abstract string Name { get; }
-
-		public Rectangle BoundingBox => new(GlobalX, GlobalY, 16, 16);
-
-		public ushort GlobalX
+		get => globalx;
+		set
 		{
-			get => globalx;
-			set
-			{
-				globalx = value;
-				RecalculateLocalFromGlobal();
-			}
+			globalx = value;
+			RecalculateLocalFromGlobal();
 		}
+	}
 
-		public ushort GlobalY
+	public ushort GlobalY
+	{
+		get => globaly;
+		set
 		{
-			get => globaly;
-			set
-			{
-				globaly = value;
-				RecalculateLocalFromGlobal();
-			}
+			globaly = value;
+			RecalculateLocalFromGlobal();
 		}
+	}
 
-		public byte MapX
+	public byte MapX
+	{
+		get => mapx;
+		set
 		{
-			get => mapx;
-			set
-			{
-				mapx = value;
-				RecalculateGlobalFromLocal();
-			}
+			mapx = value;
+			RecalculateGlobalFromLocal();
 		}
+	}
 
-		public byte MapY
+	public byte MapY
+	{
+		get => mapy;
+		set
 		{
-			get => mapy;
-			set
-			{
-				mapy = value;
-				RecalculateGlobalFromLocal();
-			}
+			mapy = value;
+			RecalculateGlobalFromLocal();
 		}
+	}
 
-		public int LockedX { get; set; }
-		public int LockedY { get; set; }
+	public int LockedX { get; set; }
+	public int LockedY { get; set; }
 
-		public int RealX
+	public int RealX
+	{
+		get => GlobalX;
+		set => GlobalX = (ushort) value;
+	}
+
+	public int RealY
+	{
+		get => GlobalY;
+		set => GlobalY = (ushort) value;
+	}
+
+	private byte mapid;
+	public byte MapID
+	{
+		get => mapid;
+		set
 		{
-			get => GlobalX;
-			set => GlobalX = (ushort) value;
+			mapid = value;
+			RecalculateLocalFromGlobal();
 		}
+	}
 
-		public int RealY
-		{
-			get => GlobalY;
-			set => GlobalY = (ushort) value;
-		}
+	public byte GridX
+	{
+		get => MapX;
+		set => MapX = value;
+	}
 
-		private byte mapid;
-		public byte MapID
-		{
-			get => mapid;
-			set
-			{
-				mapid = value;
-				RecalculateLocalFromGlobal();
-			}
-		}
+	public byte GridY
+	{
+		get => MapY;
+		set => MapY = value;
+	}
 
-		public byte GridX
-		{
-			get => MapX;
-			set => MapX = value;
-		}
+	public ushort MapPos => (ushort) ((MapY << 6 | MapX & 0x3F) << 1);
 
-		public byte GridY
-		{
-			get => MapY;
-			set => MapY = value;
-		}
+	private void RecalculateLocalFromGlobal()
+	{
+		mapx = (byte) (Math.Abs(GlobalX - (MapID & 0x87) << 9) >> 4);
+		mapy = (byte) (Math.Abs(GlobalY - (MapID & 0x38) << 6) >> 4);
+	}
 
-		public ushort MapPos => (ushort) ((MapY << 6 | MapX & 0x3F) << 1);
+	private void RecalculateGlobalFromLocal()
+	{
+		globalx = (ushort) ((MapID & 0x7) * 512 + mapx * 16);
+		globaly = (ushort) ((MapID & 0x3F) / 8 * 512 + mapy * 16);
+	}
 
-		private void RecalculateLocalFromGlobal()
-		{
-			mapx = (byte) (Math.Abs(GlobalX - (MapID & 0x87) << 9) >> 4);
-			mapy = (byte) (Math.Abs(GlobalY - (MapID & 0x38) << 6) >> 4);
-		}
+	public virtual bool PointIsInHitbox(int x, int y)
+	{
+		return x >= GlobalX && x < GlobalX + 16 && y >= GlobalY && y < GlobalY + 16;
+	}
 
-		private void RecalculateGlobalFromLocal()
-		{
-			globalx = (ushort) ((MapID & 0x7) * 512 + mapx * 16);
-			globaly = (ushort) ((MapID & 0x3F) / 8 * 512 + mapy * 16);
-		}
+	public bool IsInThisWorld(Worldiness world)
+	{
+		var w = (int) world;
+		return MapID >= w && MapID < 64 + w;
+	}
 
-		public virtual bool PointIsInHitbox(int x, int y)
-		{
-			return x >= GlobalX && x < GlobalX + 16 && y >= GlobalY && y < GlobalY + 16;
-		}
-
-		public bool IsInThisWorld(Worldiness world)
-		{
-			var w = (int) world;
-			return MapID >= w && MapID < 64 + w;
-		}
-
-		public virtual void SnapToGrid()
-		{
-			GlobalX &= 0xFFF0;
-			GlobalY &= 0xFFF0;
-		}
+	public virtual void SnapToGrid()
+	{
+		GlobalX &= 0xFFF0;
+		GlobalY &= 0xFFF0;
 	}
 }

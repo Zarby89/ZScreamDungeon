@@ -1,10 +1,9 @@
-﻿namespace ZeldaFullEditor.Gui.ExtraForms
+﻿namespace ZeldaFullEditor.Gui.ExtraForms;
+
+public partial class SearchTilesForm : Form
 {
-	public partial class SearchTilesForm : Form
+	public SearchTilesForm()
 	{
-		public SearchTilesForm()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

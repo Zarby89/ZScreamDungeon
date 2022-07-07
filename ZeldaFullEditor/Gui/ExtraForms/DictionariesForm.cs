@@ -1,10 +1,9 @@
-﻿namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui;
+
+public partial class DictionariesForm : Form
 {
-	public partial class DictionariesForm : Form
+	public DictionariesForm()
 	{
-		public DictionariesForm()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

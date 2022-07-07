@@ -1,232 +1,231 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor;
+
+public partial class ObjectViewer<TPreview> : FlowLayoutPanel where TPreview : IPreview, ITypeID
 {
-	public partial class ObjectViewer<TPreview> : FlowLayoutPanel where TPreview : IPreview, ITypeID
+	private readonly Selectable[] items;
+
+	public bool showName = false;
+
+	private Selectable selectedCell;
+
+	private static readonly Brush SelectedObject = new SolidBrush(Color.FromArgb(150, 0, 50, 200));
+	private class Selectable : UserControl
 	{
-		private readonly Selectable[] items;
+		// TODO move this to dungeonmain
+		bool showName = true;
 
-		public bool showName = false;
+		internal TPreview guy { get; init; }
+		internal bool Selected { get; set; }
 
-		private Selectable selectedCell;
+		private static readonly Font FF = new("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point);
+		private static readonly Font Smaller = new("Microsoft Sans Serif", 7F, FontStyle.Regular, GraphicsUnit.Point);
 
-		private static readonly Brush SelectedObject = new SolidBrush(Color.FromArgb(150, 0, 50, 200));
-		private class Selectable : UserControl
+		private const int DimensionL = 56;
+		public Selectable()
 		{
-			// TODO move this to dungeonmain
-			bool showName = true;
+			Width = DimensionL;
+			Height = DimensionL;
+			Margin = new(0, 0, 1, 1);
+			Font = FF;
+			
+		}
 
-			internal TPreview guy { get; init; }
-			internal bool Selected { get; set; }
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			e.Graphics.Clear(Color.Black);
+			e.Graphics.DrawImage(UXPreviewArtist.GetImageForEntry(guy).Bitmap, new Point(0, 0));
 
-			private static readonly Font FF = new("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point);
-			private static readonly Font Smaller = new("Microsoft Sans Serif", 7F, FontStyle.Regular, GraphicsUnit.Point);
-
-			private const int DimensionL = 56;
-			public Selectable()
+			if (Selected)
 			{
-				Width = DimensionL;
-				Height = DimensionL;
-				Margin = new(0, 0, 1, 1);
-				Font = FF;
-				
+				e.Graphics.FillRectangle(SelectedObject, new Rectangle(0, 0, DimensionL, DimensionL));
 			}
 
-			protected override void OnPaint(PaintEventArgs e)
+			e.Graphics.DrawString(guy.TypeID.ToString("X2"), Font, Brushes.White, new PointF(2F, 2F));
+			if (showName)
 			{
-				e.Graphics.Clear(Color.Black);
-				e.Graphics.DrawImage(UXPreviewArtist.GetImageForEntry(guy).Bitmap, new Point(0, 0));
+				e.Graphics.DrawString(guy.Name, Smaller, Brushes.White,
+					new RectangleF(2F, 30F, DimensionL - 4, 30F));
+			}
+			//e.Graphics.DrawString(showName ? guy.EntityType.ToString() : guy.TypeID.ToString("X2"),
+			//		Font, Brushes.White, new Rectangle(0, 48, 64, 64));
 
-				if (Selected)
+			base.OnPaint(e);
+		}
+	}
+
+
+	private string text = null;
+	public string SearchedText
+	{
+		get => text;
+		set
+		{
+			if (text == value) return;
+			text = value;
+			Refilter();
+		}
+	}
+
+	private GraphicsSet gfx = null;
+	public GraphicsSet SearchedGFX
+	{
+		get => gfx;
+		set
+		{
+			if (gfx == value) return;
+			gfx = value;
+			Refilter();
+		}
+	}
+
+	private List<SearchCategory> cats = null;
+	public List<SearchCategory> SearchedCategories
+	{
+		get => cats;
+		set
+		{
+			if (cats == value) return;
+			cats = value;
+			Refilter();
+		}
+	}
+
+
+
+	public ObjectViewer()
+	{
+		InitializeComponent();
+	}
+
+	public ObjectViewer(ICollection<TPreview> list)
+	{
+		List<Selectable> nlist = new(list.Count);
+		foreach (var p in list)
+		{
+			Selectable add = new()
+			{
+				guy = p
+			};
+			nlist.Add(add);
+
+			ZGUI.toolTip1.SetToolTip(add, $"{p.TypeID:X2} - {p.Name}");
+
+			add.MouseClick += new((sender, e) =>
+			{
+				var ssss = (Selectable) sender;
+				if (ssss is null) return;
+				if (selectedCell is not null)
 				{
-					e.Graphics.FillRectangle(SelectedObject, new Rectangle(0, 0, DimensionL, DimensionL));
+					selectedCell.Selected = false;
+					selectedCell.Invalidate();
 				}
+				ssss.Selected = true;
+				selectedCell = ssss;
+				ssss.Refresh();
+			});
+		}
 
-				e.Graphics.DrawString(guy.TypeID.ToString("X2"), Font, Brushes.White, new PointF(2F, 2F));
-				if (showName)
+
+		items = nlist.ToArray();
+		InitializeComponent();
+		AutoScroll = true;
+		Controls.Clear();
+		Controls.AddRange(items);
+	}
+
+	private void Add_MouseClick(object sender, MouseEventArgs e)
+	{
+		throw new NotImplementedException();
+	}
+
+	public object CreateSelectedObject()
+	{
+		return selectedCell.guy;
+	}
+
+	private void Refilter()
+	{
+		Controls.Clear();
+		selectedCell.Selected = false;
+		Controls.AddRange(Array.FindAll(items, sel =>
+		{
+			if (SearchedText != null && !sel.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
+			{
+				return false;
+			}
+
+			if (SearchedGFX?.CheckIfEntityWillLookGood(sel.guy.EntityType) ?? false)
+			{
+				return false;
+			}
+
+			if (SearchedCategories is not null)
+			{
+				foreach (var cat in cats)
 				{
-					e.Graphics.DrawString(guy.Name, Smaller, Brushes.White,
-						new RectangleF(2F, 30F, DimensionL - 4, 30F));
-				}
-				//e.Graphics.DrawString(showName ? guy.EntityType.ToString() : guy.TypeID.ToString("X2"),
-				//		Font, Brushes.White, new Rectangle(0, 48, 64, 64));
-
-				base.OnPaint(e);
-			}
-		}
-
-
-		private string text = null;
-		public string SearchedText
-		{
-			get => text;
-			set
-			{
-				if (text == value) return;
-				text = value;
-				Refilter();
-			}
-		}
-
-		private GraphicsSet gfx = null;
-		public GraphicsSet SearchedGFX
-		{
-			get => gfx;
-			set
-			{
-				if (gfx == value) return;
-				gfx = value;
-				Refilter();
-			}
-		}
-
-		private List<SearchCategory> cats = null;
-		public List<SearchCategory> SearchedCategories
-		{
-			get => cats;
-			set
-			{
-				if (cats == value) return;
-				cats = value;
-				Refilter();
-			}
-		}
-
-
-
-		public ObjectViewer()
-		{
-			InitializeComponent();
-		}
-
-		public ObjectViewer(ICollection<TPreview> list)
-		{
-			List<Selectable> nlist = new(list.Count);
-			foreach (var p in list)
-			{
-				Selectable add = new()
-				{
-					guy = p
-				};
-				nlist.Add(add);
-
-				ZGUI.toolTip1.SetToolTip(add, $"{p.TypeID:X2} - {p.Name}");
-
-				add.MouseClick += new((sender, e) =>
-				{
-					var ssss = (Selectable) sender;
-					if (ssss is null) return;
-					if (selectedCell is not null)
+					if (sel.guy.Categories.Contains(cat))
 					{
-						selectedCell.Selected = false;
-						selectedCell.Invalidate();
+						return true;
 					}
-					ssss.Selected = true;
-					selectedCell = ssss;
-					ssss.Refresh();
-				});
+				}
+
+				return false;
 			}
 
+			return true;
+		}));
+	}
 
-			items = nlist.ToArray();
-			InitializeComponent();
-			AutoScroll = true;
-			Controls.Clear();
-			Controls.AddRange(items);
-		}
+	private void ObjectViewer_SizeChanged(object sender, EventArgs e)
+	{
+		Refresh();
+	}
 
-		private void Add_MouseClick(object sender, MouseEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
-		public object CreateSelectedObject()
-		{
-			return selectedCell.guy;
-		}
-
-		private void Refilter()
-		{
-			Controls.Clear();
-			selectedCell.Selected = false;
-			Controls.AddRange(Array.FindAll(items, sel =>
-			{
-				if (SearchedText != null && !sel.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
-				{
-					return false;
-				}
-
-				if (SearchedGFX?.CheckIfEntityWillLookGood(sel.guy.EntityType) ?? false)
-				{
-					return false;
-				}
-
-				if (SearchedCategories is not null)
-				{
-					foreach (var cat in cats)
-					{
-						if (sel.guy.Categories.Contains(cat))
-						{
-							return true;
-						}
-					}
-
-					return false;
-				}
-
-				return true;
-			}));
-		}
-
-		private void ObjectViewer_SizeChanged(object sender, EventArgs e)
-		{
-			Refresh();
-		}
-
-		private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
-		{
-			//int w = (Size.Width / 64);
-			//int h = (((displayeditems.Count / w) + 1) * 64);
-			//int xpos = 0;
-			//int ypos = 0;
-			//int index = 0;
-			//Size = new Size(Size.Width, h);
-			//foreach (var o in displayeditems)
-			//{
-			//	if (index < displayeditems.Count)
-			//	{
-			//		Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
-			//		Rectangle itemstarRect = new Rectangle((xpos * 64) + 44, (ypos * 64) + 44, 16, 16);
-			//		if (itemRect.Contains(new Point(e.X, e.Y)))
-			//		{
-			//			selectedIndex = index;
-			//			selectedObject = o;
-			//			if (itemstarRect.Contains((new Point(e.X, e.Y))))
-			//			{
-			//				// Make Favourite or not
-			//				if (Settings.Default.favoriteObjects[o.ID] == "true")
-			//				{
-			//					Settings.Default.favoriteObjects[o.ID] = "false";
-			//				}
-			//				else
-			//				{
-			//					Settings.Default.favoriteObjects[o.ID] = "true";
-			//				}
-			//			}
-			//
-			//			Refresh();
-			//			return;
-			//		}
-			//
-			//		xpos++;
-			//		if (xpos >= w)
-			//		{
-			//			xpos = 0;
-			//			ypos++;
-			//
-			//		}
-			//
-			//		index++;
-			//	}
-			//}
-		}
+	private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
+	{
+		//int w = (Size.Width / 64);
+		//int h = (((displayeditems.Count / w) + 1) * 64);
+		//int xpos = 0;
+		//int ypos = 0;
+		//int index = 0;
+		//Size = new Size(Size.Width, h);
+		//foreach (var o in displayeditems)
+		//{
+		//	if (index < displayeditems.Count)
+		//	{
+		//		Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
+		//		Rectangle itemstarRect = new Rectangle((xpos * 64) + 44, (ypos * 64) + 44, 16, 16);
+		//		if (itemRect.Contains(new Point(e.X, e.Y)))
+		//		{
+		//			selectedIndex = index;
+		//			selectedObject = o;
+		//			if (itemstarRect.Contains((new Point(e.X, e.Y))))
+		//			{
+		//				// Make Favourite or not
+		//				if (Settings.Default.favoriteObjects[o.ID] == "true")
+		//				{
+		//					Settings.Default.favoriteObjects[o.ID] = "false";
+		//				}
+		//				else
+		//				{
+		//					Settings.Default.favoriteObjects[o.ID] = "true";
+		//				}
+		//			}
+		//
+		//			Refresh();
+		//			return;
+		//		}
+		//
+		//		xpos++;
+		//		if (xpos >= w)
+		//		{
+		//			xpos = 0;
+		//			ypos++;
+		//
+		//		}
+		//
+		//		index++;
+		//	}
+		//}
 	}
 }

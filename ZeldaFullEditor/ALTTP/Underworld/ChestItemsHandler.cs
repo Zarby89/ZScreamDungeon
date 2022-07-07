@@ -1,43 +1,42 @@
-﻿namespace ZeldaFullEditor.ALTTP.Underworld
+﻿namespace ZeldaFullEditor.ALTTP.Underworld;
+
+public class ChestItemsHandler : List<ChestItem>, IByteable
 {
-	public class ChestItemsHandler : List<ChestItem>, IByteable
+	public Room Room { get; }
+
+	public ChestItemsHandler(Room room)
 	{
-		public Room Room { get; }
+		Room = room;
+	}
 
-		public ChestItemsHandler(Room room)
+	public void ResetAssociations()
+	{
+		foreach (var c in this)
 		{
-			Room = room;
+			c.AssociatedChest = null;
 		}
+	}
 
-		public void ResetAssociations()
+	public byte[] GetByteData()
+	{
+		var arebigs = Room.GetBigChestListing(Count);
+		var ret = new byte[Count * 3];
+
+		var pos = 0;
+		var i = 0;
+		foreach (var c in this)
 		{
-			foreach (var c in this)
+			var e = Room.RoomID;
+			if (arebigs[i++])
 			{
-				c.AssociatedChest = null;
-			}
-		}
-
-		public byte[] GetByteData()
-		{
-			var arebigs = Room.GetBigChestListing(Count);
-			var ret = new byte[Count * 3];
-
-			var pos = 0;
-			var i = 0;
-			foreach (var c in this)
-			{
-				var e = Room.RoomID;
-				if (arebigs[i++])
-				{
-					e |= 0x8000;
-				}
-
-				ret[pos++] = (byte) e;
-				ret[pos++] = (byte) (e >> 8);
-				ret[pos++] = c.ReceiptType.ID;
+				e |= 0x8000;
 			}
 
-			return ret;
+			ret[pos++] = (byte) e;
+			ret[pos++] = (byte) (e >> 8);
+			ret[pos++] = c.ReceiptType.ID;
 		}
+
+		return ret;
 	}
 }

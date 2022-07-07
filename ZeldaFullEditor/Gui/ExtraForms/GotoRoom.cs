@@ -1,95 +1,94 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor;
+
+public partial class GotoRoom : Form
 {
-	public partial class GotoRoom : Form
+	private int _selectedRoom;
+
+	public GotoRoom()
 	{
-		private int _selectedRoom;
+		InitializeComponent();
+	}
 
-		public GotoRoom()
+	public bool ParseAsHex
+	{
+		get
 		{
-			InitializeComponent();
+			return chkParseAsHex.Checked;
 		}
-
-		public bool ParseAsHex
+		set
 		{
-			get
-			{
-				return chkParseAsHex.Checked;
-			}
-			set
-			{
-				chkParseAsHex.Checked = value;
-			}
+			chkParseAsHex.Checked = value;
 		}
+	}
 
-		public int SelectedRoom
+	public int SelectedRoom
+	{
+		get
 		{
-			get
-			{
-				return _selectedRoom;
-			}
-			set
-			{
-				if (SelectedRoom == value)
-				{
-					return;
-				}
-
-				if (value < 0)
-				{
-					return;
-				}
-
-				_selectedRoom = value;
-				UpdateText();
-			}
+			return _selectedRoom;
 		}
-
-		private NumberStyles NumberStyle
+		set
 		{
-			get
+			if (SelectedRoom == value)
 			{
-				return ParseAsHex
-					? NumberStyles.HexNumber
-					: NumberStyles.Integer & ~NumberStyles.AllowLeadingSign;
-			}
-		}
-
-		private void UpdateText()
-		{
-			tbxRoomNumber.Text = SelectedRoom.ToString
-			(
-				ParseAsHex ? "X" : string.Empty,
-				CultureInfo.CurrentCulture
-			);
-		}
-
-		private void RoomNumber_TextChanged(object sender, EventArgs e)
-		{
-			if (TryGetValue(out var value) || value < 0)
-			{
-				SelectedRoom = value;
-				btnGo.Enabled = true;
-			}
-			else
-			{
-				btnGo.Enabled = false;
+				return;
 			}
 
-			bool TryGetValue(out int result)
+			if (value < 0)
 			{
-				return Int32.TryParse
-				(
-					tbxRoomNumber.Text,
-					NumberStyle,
-					CultureInfo.CurrentCulture,
-					out result
-				);
+				return;
 			}
-		}
 
-		private void ParseAsHex_CheckedChanged(object sender, EventArgs e)
-		{
+			_selectedRoom = value;
 			UpdateText();
 		}
+	}
+
+	private NumberStyles NumberStyle
+	{
+		get
+		{
+			return ParseAsHex
+				? NumberStyles.HexNumber
+				: NumberStyles.Integer & ~NumberStyles.AllowLeadingSign;
+		}
+	}
+
+	private void UpdateText()
+	{
+		tbxRoomNumber.Text = SelectedRoom.ToString
+		(
+			ParseAsHex ? "X" : string.Empty,
+			CultureInfo.CurrentCulture
+		);
+	}
+
+	private void RoomNumber_TextChanged(object sender, EventArgs e)
+	{
+		if (TryGetValue(out var value) || value < 0)
+		{
+			SelectedRoom = value;
+			btnGo.Enabled = true;
+		}
+		else
+		{
+			btnGo.Enabled = false;
+		}
+
+		bool TryGetValue(out int result)
+		{
+			return Int32.TryParse
+			(
+				tbxRoomNumber.Text,
+				NumberStyle,
+				CultureInfo.CurrentCulture,
+				out result
+			);
+		}
+	}
+
+	private void ParseAsHex_CheckedChanged(object sender, EventArgs e)
+	{
+		UpdateText();
 	}
 }

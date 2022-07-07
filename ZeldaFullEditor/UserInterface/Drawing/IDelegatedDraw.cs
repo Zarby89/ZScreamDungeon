@@ -1,13 +1,12 @@
-﻿namespace ZeldaFullEditor.UserInterface.Drawing
+﻿namespace ZeldaFullEditor.UserInterface.Drawing;
+
+/// <summary>
+/// Defines a method for items that require an artist to be passed to refer their drawing to.
+/// </summary>
+public interface IDelegatedDraw
 {
 	/// <summary>
-	/// Defines a method for items that require an artist to be passed to refer their drawing to.
+	/// Draw this object using the specified artist.
 	/// </summary>
-	public interface IDelegatedDraw
-	{
-		/// <summary>
-		/// Draw this object using the specified artist.
-		/// </summary>
-		public void Draw(IDrawArt art);
-	}
+	public void Draw(IDrawArt art);
 }

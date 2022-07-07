@@ -1,71 +1,70 @@
-﻿namespace ZeldaFullEditor.ALTTP.Underworld
+﻿namespace ZeldaFullEditor.ALTTP.Underworld;
+
+[Serializable]
+public class DungeonSecret : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID, IHaveInfo
 {
-	[Serializable]
-	public class DungeonSecret : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID, IHaveInfo
+	private const int Scale = 8;
+
+	public byte GridX { get; set; }
+	public byte GridY { get; set; }
+
+	public int LockedX { get; set; }
+	public int LockedY { get; set; }
+
+	public int RealX
 	{
-		private const int Scale = 8;
+		get => GridX * Scale;
+		set => GridX = (byte) (value / Scale);
+	}
 
-		public byte GridX { get; set; }
-		public byte GridY { get; set; }
+	public int RealY
+	{
+		get => GridY * Scale;
+		set => GridY = (byte) (value / Scale);
+	}
 
-		public int LockedX { get; set; }
-		public int LockedY { get; set; }
+	public byte ID => SecretType.ID;
+	public int TypeID => SecretType.ID;
 
-		public int RealX
-		{
-			get => GridX * Scale;
-			set => GridX = (byte) (value / Scale);
-		}
+	public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
 
-		public int RealY
-		{
-			get => GridY * Scale;
-			set => GridY = (byte) (value / Scale);
-		}
+	public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 
-		public byte ID => SecretType.ID;
-		public int TypeID => SecretType.ID;
+	public SecretItemType SecretType { get; set; }
+	public string Name => SecretType.Name;
 
-		public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
+	public DungeonSecret(SecretItemType s)
+	{
+		SecretType = s;
+	}
 
-		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
+	public void Draw(IDrawArt art)
+	{
+		SecretType.Draw(art, this);
+	}
 
-		public SecretItemType SecretType { get; set; }
-		public string Name => SecretType.Name;
+	public bool PointIsInHitbox(int x, int y)
+	{
+		return x >= GridX * 8 && x <= GridX * 8 + 16 &&
+				y >= GridY * 8 && y <= GridY * 8 + 16;
+	}
 
-		public DungeonSecret(SecretItemType s)
-		{
-			SecretType = s;
-		}
+	public bool Equals(DungeonSecret s)
+	{
+		return GridX == s.GridX && GridY == s.GridY && SecretType.ID == s.SecretType.ID;
+	}
 
-		public void Draw(IDrawArt art)
-		{
-			SecretType.Draw(art, this);
-		}
+	public byte[] GetByteData()
+	{
+		var (low, high) = UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer);
+		return new byte[] { low, high, SecretType.ID };
+		//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
+		//return new byte[]
+		//	{
+		//		(byte) xy,
+		//		(byte) (xy >> 8),
+		//		SecretType.ID
+		//	};
 
-		public bool PointIsInHitbox(int x, int y)
-		{
-			return x >= GridX * 8 && x <= GridX * 8 + 16 &&
-					y >= GridY * 8 && y <= GridY * 8 + 16;
-		}
-
-		public bool Equals(DungeonSecret s)
-		{
-			return GridX == s.GridX && GridY == s.GridY && SecretType.ID == s.SecretType.ID;
-		}
-
-		public byte[] GetByteData()
-		{
-			var (low, high) = UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer);
-			return new byte[] { low, high, SecretType.ID };
-			//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
-			//return new byte[]
-			//	{
-			//		(byte) xy,
-			//		(byte) (xy >> 8),
-			//		SecretType.ID
-			//	};
-
-		}
 	}
 }

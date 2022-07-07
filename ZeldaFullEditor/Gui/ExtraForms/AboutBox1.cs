@@ -1,21 +1,20 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor;
+
+partial class AboutBox1 : Form
 {
-	partial class AboutBox1 : Form
+	public AboutBox1()
 	{
-		public AboutBox1()
-		{
-			InitializeComponent();
-			AboutVersion.Text = $"Version: {UIText.VERSION}";
-		}
+		InitializeComponent();
+		AboutVersion.Text = $"Version: {UIText.VERSION}";
+	}
 
-		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			Process.Start(UIText.GITHUB);
-		}
+	private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+	{
+		Process.Start(UIText.GITHUB);
+	}
 
-		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			Process.Start(UIText.DISCORD);
-		}
+	private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+	{
+		Process.Start(UIText.DISCORD);
 	}
 }

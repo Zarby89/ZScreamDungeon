@@ -1,108 +1,107 @@
-﻿namespace ZeldaFullEditor.ALTTP.Underworld
+﻿namespace ZeldaFullEditor.ALTTP.Underworld;
+
+/// <summary>
+/// Represents a door or door modifier that controls transitions in and out of dungeon rooms.
+/// </summary>
+[Serializable]
+public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveInfo
 {
-	/// <summary>
-	/// Represents a door or door modifier that controls transitions in and out of dungeon rooms.
-	/// </summary>
-	[Serializable]
-	public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveInfo
+	public byte ID => DoorType.ID;
+
+	public int RealX => NewX * 8;
+	public int RealY => NewY * 8;
+
+	public byte Grid { get; set; }
+	public byte GridY { get; set; }
+
+	// TODO need a way to change shape for the special door draws
+	public Rectangle BoundingBox
 	{
-		public byte ID => DoorType.ID;
-
-		public int RealX => NewX * 8;
-		public int RealY => NewY * 8;
-
-		public byte Grid { get; set; }
-		public byte GridY { get; set; }
-
-		// TODO need a way to change shape for the special door draws
-		public Rectangle BoundingBox
+		get
 		{
-			get
+			if (DoorPosition.IsHorizontal)
 			{
-				if (DoorPosition.IsHorizontal)
-				{
-					return new Rectangle(RealX, RealY, 16, 24);
-				}
-
-				return new Rectangle(RealX, RealY, 24, 16);
+				return new Rectangle(RealX, RealY, 16, 24);
 			}
-		}
 
-		private byte nx, ny;
-		public byte NewX
-		{
-			get => nx;
-			set => nx = value.Clamp(0, 63);
-		}
-		public byte NewY
-		{
-			get => ny;
-			set => ny = value.Clamp(0, 63);
-		}
-
-		public DungeonDoorType DoorType { get; set; } = DungeonDoorType.DoorType00;
-
-		private DungeonDoorDraw position;
-		public DungeonDoorDraw DoorPosition
-		{
-			get => position;
-			set
-			{
-				position = value;
-				Tiles = DoorTiles[DoorPosition.Direction];
-			}
-		}
-
-		private DoorTilesList doorset;
-
-		public DoorTilesList DoorTiles
-		{
-			get => doorset;
-			set
-			{
-				doorset = value;
-				Tiles = DoorTiles[DoorPosition.Direction];
-			}
-		}
-
-		public TilesList Tiles { get; private set; }
-
-		public string Name => DoorType.Name;
-
-		public DungeonDoor(DungeonDoorDraw position, DoorTilesList tiles)
-		{
-			this.position = position;
-			DoorTiles = tiles;
-		}
-
-		public void Draw(IDrawArt artist)
-		{
-			var art = (TilemapArtist) artist;
-			if (art is null) return;
-
-			if (DoorType.SpecialDraw != null)
-			{
-				DoorType.SpecialDraw(art, this);
-				return;
-			}
-			DoorPosition.Draw(art, this);
-		}
-
-		public bool PointIsInHitbox(int x, int y)
-		{
-			throw new NotImplementedException();
-		}
-
-		public byte[] GetByteData()
-		{
-			return new byte[] { ID, DoorPosition.Token };
+			return new Rectangle(RealX, RealY, 24, 16);
 		}
 	}
 
-	public class DungeonDoorPreview : DungeonDoor
+	private byte nx, ny;
+	public byte NewX
 	{
-		public DungeonDoorPreview(DungeonDoorDraw position, DoorTilesList tiles) : base(position, tiles)
+		get => nx;
+		set => nx = value.Clamp(0, 63);
+	}
+	public byte NewY
+	{
+		get => ny;
+		set => ny = value.Clamp(0, 63);
+	}
+
+	public DungeonDoorType DoorType { get; set; } = DungeonDoorType.DoorType00;
+
+	private DungeonDoorDraw position;
+	public DungeonDoorDraw DoorPosition
+	{
+		get => position;
+		set
 		{
+			position = value;
+			Tiles = DoorTiles[DoorPosition.Direction];
 		}
+	}
+
+	private DoorTilesList doorset;
+
+	public DoorTilesList DoorTiles
+	{
+		get => doorset;
+		set
+		{
+			doorset = value;
+			Tiles = DoorTiles[DoorPosition.Direction];
+		}
+	}
+
+	public TilesList Tiles { get; private set; }
+
+	public string Name => DoorType.Name;
+
+	public DungeonDoor(DungeonDoorDraw position, DoorTilesList tiles)
+	{
+		this.position = position;
+		DoorTiles = tiles;
+	}
+
+	public void Draw(IDrawArt artist)
+	{
+		var art = (TilemapArtist) artist;
+		if (art is null) return;
+
+		if (DoorType.SpecialDraw != null)
+		{
+			DoorType.SpecialDraw(art, this);
+			return;
+		}
+		DoorPosition.Draw(art, this);
+	}
+
+	public bool PointIsInHitbox(int x, int y)
+	{
+		throw new NotImplementedException();
+	}
+
+	public byte[] GetByteData()
+	{
+		return new byte[] { ID, DoorPosition.Token };
+	}
+}
+
+public class DungeonDoorPreview : DungeonDoor
+{
+	public DungeonDoorPreview(DungeonDoorDraw position, DoorTilesList tiles) : base(position, tiles)
+	{
 	}
 }

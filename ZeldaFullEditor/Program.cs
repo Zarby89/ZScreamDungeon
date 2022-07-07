@@ -45,71 +45,70 @@ global using ZeldaFullEditor.UserInterface.UIControl.Scene;
 
 global using static ZeldaFullEditor.TheGUI;
 
-namespace ZeldaFullEditor
+namespace ZeldaFullEditor;
+
+internal static class TheGUI {
+	public static RoomArtist RoomEditingArtist { get; } = new();
+	public static RoomArtist RoomPreviewArtist { get; } = new();
+	public static PreviewArtist UXPreviewArtist { get; } = new();
+
+	public static ZScreamForm ZGUI = new();
+}
+
+static class Program
 {
-	internal static class TheGUI {
-		public static RoomArtist RoomEditingArtist { get; } = new();
-		public static RoomArtist RoomPreviewArtist { get; } = new();
-		public static PreviewArtist UXPreviewArtist { get; } = new();
+	// var to keep track whether to show the console or not
+	// 0 = dont show
+	// 5 = show
+	private static int showConsole = 0;
 
-		public static ZScreamForm ZGUI = new();
-	}
-	
-	static class Program
+	[DllImport("kernel32.dll")]
+	static extern IntPtr GetConsoleWindow();
+
+	[DllImport("user32.dll")]
+	static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+
+	/// <summary>
+	/// The main entry point for the application.
+	/// </summary>
+	[STAThread]
+	static void Main(string[] args)
 	{
-		// var to keep track whether to show the console or not
-		// 0 = dont show
-		// 5 = show
-		private static int showConsole = 0;
+		Application.EnableVisualStyles();
+		Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
+		Application.SetCompatibleTextRenderingDefault(false);
 
-		[DllImport("kernel32.dll")]
-		static extern IntPtr GetConsoleWindow();
-
-		[DllImport("user32.dll")]
-		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main(string[] args)
+		// Look for Command Line Arguments
+		if (args != null)
 		{
-			Application.EnableVisualStyles();
-			Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
-			Application.SetCompatibleTextRenderingDefault(false);
-
-			// Look for Command Line Arguments
-			if (args != null)
+			// Loop through them all
+			foreach (string arg in args)
 			{
-				// Loop through them all
-				foreach (string arg in args)
+				// Look for hide console arg
+				if (arg.Equals("-hideConsole"))
 				{
-					// Look for hide console arg
-					if (arg.Equals("-hideConsole"))
-					{
-						showConsole = 0;
-					}
-
-					// Look for show console arg
-					if (arg.Equals("-showConsole"))
-					{
-						showConsole = 5;
-					}
-
-					// TODO: add other args
+					showConsole = 0;
 				}
+
+				// Look for show console arg
+				if (arg.Equals("-showConsole"))
+				{
+					showConsole = 5;
+				}
+
+				// TODO: add other args
 			}
-
-			// Hide console
-			var handle = GetConsoleWindow();
-			ShowWindow(handle, showConsole);
-
-			// Run the app
-			ZScreamer ZS = new ZScreamer();
-			ZS.SetAsActiveScreamer();
-
-			Application.Run(ZGUI);
 		}
+
+		// Hide console
+		var handle = GetConsoleWindow();
+		ShowWindow(handle, showConsole);
+
+		// Run the app
+		ZScreamer ZS = new ZScreamer();
+		ZS.SetAsActiveScreamer();
+
+		Application.Run(ZGUI);
 	}
 }

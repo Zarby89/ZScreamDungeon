@@ -1,91 +1,90 @@
-﻿namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui;
+
+public partial class SearchForm : Form
 {
-	public partial class SearchForm : Form
+
+	public SearchForm()
 	{
+		InitializeComponent();
+	}
 
-		public SearchForm()
+	private void button2_Click(object sender, EventArgs e)
+	{
+		richTextBox1.Clear();
+	}
+
+	private void tileRadio_CheckedChanged(object sender, EventArgs e)
+	{
+		comboBox1.Items.Clear();
+		if (tileRadio.Checked)
 		{
-			InitializeComponent();
+			comboBox1.DataSource = RoomObjectName.ListOfSubtype1RoomObjects
+				.Concat(RoomObjectName.ListOfSubtype2RoomObjects)
+				.Concat(RoomObjectName.ListOfSubtype3RoomObjects);
 		}
-
-		private void button2_Click(object sender, EventArgs e)
+		else if (spriteRadio.Checked)
 		{
-			richTextBox1.Clear();
+			comboBox1.DataSource = SpriteName.ListOfSprites;
 		}
-
-		private void tileRadio_CheckedChanged(object sender, EventArgs e)
+		else if (itemRadio.Checked)
 		{
-			comboBox1.Items.Clear();
-			if (tileRadio.Checked)
-			{
-				comboBox1.DataSource = RoomObjectName.ListOfSubtype1RoomObjects
-					.Concat(RoomObjectName.ListOfSubtype2RoomObjects)
-					.Concat(RoomObjectName.ListOfSubtype3RoomObjects);
-			}
-			else if (spriteRadio.Checked)
-			{
-				comboBox1.DataSource = SpriteName.ListOfSprites;
-			}
-			else if (itemRadio.Checked)
-			{
-				comboBox1.DataSource = SecretsName.ListOfVanillaNames;
-			}
-			else if (chestRadio.Checked)
-			{
-				comboBox1.DataSource = ItemReceiptName.ListOfVanillaNames;
-			}
+			comboBox1.DataSource = SecretsName.ListOfVanillaNames;
 		}
-
-		private void button1_Click(object sender, EventArgs e)
+		else if (chestRadio.Checked)
 		{
-			var v = (EntityName) comboBox1.SelectedItem;
+			comboBox1.DataSource = ItemReceiptName.ListOfVanillaNames;
+		}
+	}
 
-			var f = new Func<ITypeID, bool>(o => o.TypeID == v.ID);
+	private void button1_Click(object sender, EventArgs e)
+	{
+		var v = (EntityName) comboBox1.SelectedItem;
 
-			if (tileRadio.Checked)
+		var f = new Func<ITypeID, bool>(o => o.TypeID == v.ID);
+
+		if (tileRadio.Checked)
+		{
+			foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				int l = r.Layer1Objects.Count(f);
+				l += r.Layer2Objects.Count(f);
+				l += r.Layer3Objects.Count(f);
+				if (l > 0)
 				{
-					int l = r.Layer1Objects.Count(f);
-					l += r.Layer2Objects.Count(f);
-					l += r.Layer3Objects.Count(f);
-					if (l > 0)
-					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x object {v.ID:X3}\r\n");
-					}
+					richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x object {v.ID:X3}\r\n");
 				}
 			}
-			else if (spriteRadio.Checked)
+		}
+		else if (spriteRadio.Checked)
+		{
+			foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				int l = r.SpritesList.Count(f);
+				if (l > 0)
 				{
-					int l = r.SpritesList.Count(f);
-					if (l > 0)
-					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x sprite {v.ID:X2}\r\n");
-					}
+					richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x sprite {v.ID:X2}\r\n");
 				}
 			}
-			else if (itemRadio.Checked)
+		}
+		else if (itemRadio.Checked)
+		{
+			foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				int l = r.SecretsList.Count(f);
+				if (l > 0)
 				{
-					int l = r.SecretsList.Count(f);
-					if (l > 0)
-					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x secret {v.ID:X2}\r\n");
-					}
+					richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x secret {v.ID:X2}\r\n");
 				}
 			}
-			else if (chestRadio.Checked)
+		}
+		else if (chestRadio.Checked)
+		{
+			foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				int l = r.ChestList.Count(f);
+				if (l > 0)
 				{
-					int l = r.ChestList.Count(f);
-					if (l > 0)
-					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x item receipt {v.ID:X2}\r\n");
-					}
+					richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x item receipt {v.ID:X2}\r\n");
 				}
 			}
 		}

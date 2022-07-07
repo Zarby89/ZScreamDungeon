@@ -1,8 +1,7 @@
-﻿namespace ZeldaFullEditor.UserInterface.Drawing.Artists
+﻿namespace ZeldaFullEditor.UserInterface.Drawing.Artists;
+
+public interface IDrawArt
 {
-	public interface IDrawArt
-	{
-		public GraphicsSet LoadedGraphics { get; }
-		public NeedsNewArt Redrawing { get; }
-	}
+	public GraphicsSet LoadedGraphics { get; }
+	public NeedsNewArt Redrawing { get; }
 }

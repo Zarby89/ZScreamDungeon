@@ -1,52 +1,51 @@
-﻿namespace ZeldaFullEditor.ALTTP.Underworld
+﻿namespace ZeldaFullEditor.ALTTP.Underworld;
+
+public class LightableTorch : IDungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable, IHaveInfo
 {
-	public class LightableTorch : IDungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable, IHaveInfo
+	private const int Scale = 8;
+	public byte GridX { get; set; }
+	public byte GridY { get; set; }
+
+	public int LockedX { get; set; }
+	public int LockedY { get; set; }
+
+	public int RealX
 	{
-		private const int Scale = 8;
-		public byte GridX { get; set; }
-		public byte GridY { get; set; }
+		get => GridX * Scale;
+		set => GridX = (byte) (value / Scale);
+	}
 
-		public int LockedX { get; set; }
-		public int LockedY { get; set; }
+	public int RealY
+	{
+		get => GridY * Scale;
+		set => GridY = (byte) (value / Scale);
+	}
 
-		public int RealX
-		{
-			get => GridX * Scale;
-			set => GridX = (byte) (value / Scale);
-		}
+	public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 
-		public int RealY
-		{
-			get => GridY * Scale;
-			set => GridY = (byte) (value / Scale);
-		}
+	public bool Lit { get; set; } = false;
 
-		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
+	public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
 
-		public bool Lit { get; set; } = false;
+	public string Name => "Torch";
 
-		public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
+	public LightableTorch()
+	{
+	}
 
-		public string Name => "Torch";
+	public void Draw(IDrawArt art)
+	{
+		throw new NotImplementedException();
+	}
 
-		public LightableTorch()
-		{
-		}
+	public bool PointIsInHitbox(int x, int y)
+	{
+		return this.PointIsInBoundingBox(x, y);
+	}
 
-		public void Draw(IDrawArt art)
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool PointIsInHitbox(int x, int y)
-		{
-			return this.PointIsInBoundingBox(x, y);
-		}
-
-		public byte[] GetByteData()
-		{
-			var (low, high) = UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer);
-			return new byte[] { low, high };
-		}
+	public byte[] GetByteData()
+	{
+		var (low, high) = UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer);
+		return new byte[] { low, high };
 	}
 }

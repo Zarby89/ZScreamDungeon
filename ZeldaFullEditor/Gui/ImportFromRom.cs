@@ -1,10 +1,9 @@
-﻿namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui;
+
+public partial class ImportFromRom : Form
 {
-	public partial class ImportFromRom : Form
+	public ImportFromRom()
 	{
-		public ImportFromRom()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }
