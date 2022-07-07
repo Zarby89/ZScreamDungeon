@@ -58,7 +58,7 @@
 				CameraTriggerY = ZS.ROM.Read16(ZS.Offsets.startingentrance_cameraytrigger + entranceId * 2);
 				CameraTriggerX = ZS.ROM.Read16(ZS.Offsets.startingentrance_cameraxtrigger + entranceId * 2);
 				Blockset = ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId];
-				Music = DefaultEntities.ListOfUnderworldMusics.GetObjectFromEntityList(ZS.ROM[ZS.Offsets.startingentrance_music + entranceId]);
+				Music = MusicName.ListOfUnderworldMusics.GetObjectFromEntityList(ZS.ROM[ZS.Offsets.startingentrance_music + entranceId]);
 				Dungeon = ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId];
 				Floor = ZS.ROM[ZS.Offsets.startingentrance_floor + entranceId];
 				Door = ZS.ROM[ZS.Offsets.startingentrance_door + entranceId];
@@ -86,7 +86,7 @@
 				CameraTriggerY = ZS.ROM.Read16(ZS.Offsets.entrance_cameraytrigger + entranceId * 2);
 				CameraTriggerX = ZS.ROM.Read16(ZS.Offsets.entrance_cameraxtrigger + entranceId * 2);
 				Blockset = ZS.ROM[ZS.Offsets.entrance_blockset + entranceId];
-				Music = DefaultEntities.ListOfUnderworldMusics.GetObjectFromEntityList(ZS.ROM[ZS.Offsets.entrance_music + entranceId]);
+				Music = MusicName.ListOfUnderworldMusics.GetObjectFromEntityList(ZS.ROM[ZS.Offsets.entrance_music + entranceId]);
 				Dungeon = ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId];
 				Floor = ZS.ROM[ZS.Offsets.entrance_floor + entranceId];
 				Door = ZS.ROM[ZS.Offsets.entrance_door + entranceId];

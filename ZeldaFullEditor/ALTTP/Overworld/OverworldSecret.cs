@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.ALTTP.Overworld
 {
-	public class OverworldSecret : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, ITypeID, IComparable<OverworldSecret>
+	public class OverworldSecret : OverworldEntity, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, ITypeID, IComparable<OverworldSecret>
 	{
 		public byte ID => SecretType?.ID ?? 0;
 		public SecretItemType SecretType { get; set; }
@@ -21,11 +21,6 @@
 		public override bool PointIsInHitbox(int x, int y)
 		{
 			return base.PointIsInHitbox(x, y);
-		}
-
-		public byte[] GetByteData()
-		{
-			throw new NotImplementedException();
 		}
 
 		internal object Clone()

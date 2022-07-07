@@ -5,7 +5,7 @@
 		public SpriteEditor()
 		{
 			InitializeComponent();
-			SpritePropChooser.DataSource = DefaultEntities.ListOfSprites;
+			SpritePropChooser.DataSource = SpriteName.ListOfSprites;
 		}
 
 		private SpriteProperties SelectedSprite = SpriteProperties.Empty;

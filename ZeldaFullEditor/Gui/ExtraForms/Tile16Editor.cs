@@ -298,7 +298,7 @@
 		private void Tile16Editor_Load(object sender, EventArgs e)
 		{
 			throw new NotImplementedException();
-			tileTypeBox.DataSource = DefaultEntities.ListOfTileTypes;
+			tileTypeBox.DataSource = TileTypeName.ListOfVanillaNames;
 
 			for (int i = 0; i < 0x200; i++)
 			{

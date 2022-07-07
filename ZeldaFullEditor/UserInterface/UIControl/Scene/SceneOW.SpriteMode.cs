@@ -117,7 +117,7 @@
 					lastselectedSprite.ID,
 					lastselectedSprite.MapX,
 					lastselectedSprite.MapY);
-				ZGUI.OverworldEditor.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
+				ZGUI.OverworldEditor.objCombobox.DataSource = SpriteName.ListOfSprites;
 				ZGUI.OverworldEditor.objCombobox.SelectedIndex = lastselectedSprite.ID;
 
 				ZGUI.OverworldEditor.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;

@@ -82,6 +82,7 @@
 			this.label8 = new System.Windows.Forms.Label();
 			this.objCombobox = new System.Windows.Forms.ComboBox();
 			this.mapGroupbox = new System.Windows.Forms.GroupBox();
+			this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
 			this.OWProperty_MessageID = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
 			this.OWProperty_SPRPalette = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
 			this.OWProperty_SPRGFX = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
@@ -101,7 +102,6 @@
 			this.selectedTileLabel = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.stateCombobox = new System.Windows.Forms.ComboBox();
-			this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -127,9 +127,9 @@
 			this.owPropertyPanel.SuspendLayout();
 			this.objectGroupbox.SuspendLayout();
 			this.mapGroupbox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
 			this.groupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -150,7 +150,7 @@
 			this.splitContainer1.Panel2.AutoScroll = true;
 			this.splitContainer1.Panel2.Controls.Add(this.thumbnailBox);
 			this.splitContainer1.Size = new System.Drawing.Size(953, 644);
-			this.splitContainer1.SplitterDistance = 288;
+			this.splitContainer1.SplitterDistance = 300;
 			this.splitContainer1.TabIndex = 1;
 			// 
 			// OverworldAuxSideTabs
@@ -166,7 +166,7 @@
 			this.OverworldAuxSideTabs.Multiline = true;
 			this.OverworldAuxSideTabs.Name = "OverworldAuxSideTabs";
 			this.OverworldAuxSideTabs.SelectedIndex = 0;
-			this.OverworldAuxSideTabs.Size = new System.Drawing.Size(288, 644);
+			this.OverworldAuxSideTabs.Size = new System.Drawing.Size(300, 644);
 			this.OverworldAuxSideTabs.TabIndex = 1;
 			this.OverworldAuxSideTabs.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
@@ -177,7 +177,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 40);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(280, 600);
+			this.tabPage1.Size = new System.Drawing.Size(292, 600);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Tile 16";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -186,7 +186,7 @@
 			// 
 			this.tilePictureBox.Location = new System.Drawing.Point(3, 3);
 			this.tilePictureBox.Name = "tilePictureBox";
-			this.tilePictureBox.Size = new System.Drawing.Size(256, 4096);
+			this.tilePictureBox.Size = new System.Drawing.Size(272, 4096);
 			this.tilePictureBox.TabIndex = 0;
 			this.tilePictureBox.TabStop = false;
 			this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
@@ -201,7 +201,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 44);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(280, 571);
+			this.tabPage2.Size = new System.Drawing.Size(280, 596);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Tile 16 scratchpad";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -224,7 +224,7 @@
 			this.Tiles8.Controls.Add(this.panel1);
 			this.Tiles8.Location = new System.Drawing.Point(4, 44);
 			this.Tiles8.Name = "Tiles8";
-			this.Tiles8.Size = new System.Drawing.Size(280, 571);
+			this.Tiles8.Size = new System.Drawing.Size(280, 596);
 			this.Tiles8.TabIndex = 2;
 			this.Tiles8.Text = "Tile 8";
 			this.Tiles8.UseVisualStyleBackColor = true;
@@ -236,7 +236,7 @@
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel2.Location = new System.Drawing.Point(0, 217);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(280, 354);
+			this.panel2.Size = new System.Drawing.Size(280, 379);
 			this.panel2.TabIndex = 3;
 			// 
 			// pictureBox1
@@ -319,7 +319,7 @@
 			this.OWTabExitProps.Controls.Add(this.OWExitPanel);
 			this.OWTabExitProps.Location = new System.Drawing.Point(4, 44);
 			this.OWTabExitProps.Name = "OWTabExitProps";
-			this.OWTabExitProps.Size = new System.Drawing.Size(280, 571);
+			this.OWTabExitProps.Size = new System.Drawing.Size(280, 596);
 			this.OWTabExitProps.TabIndex = 3;
 			this.OWTabExitProps.Text = "Exit";
 			this.OWTabExitProps.UseVisualStyleBackColor = true;
@@ -418,7 +418,7 @@
 			this.OWTabEntranceProps.Controls.Add(this.OWEntrancePanel);
 			this.OWTabEntranceProps.Location = new System.Drawing.Point(4, 44);
 			this.OWTabEntranceProps.Name = "OWTabEntranceProps";
-			this.OWTabEntranceProps.Size = new System.Drawing.Size(280, 571);
+			this.OWTabEntranceProps.Size = new System.Drawing.Size(280, 596);
 			this.OWTabEntranceProps.TabIndex = 4;
 			this.OWTabEntranceProps.Text = "Entrance";
 			this.OWTabEntranceProps.UseVisualStyleBackColor = true;
@@ -517,7 +517,7 @@
 			this.OWTabTransportProps.Controls.Add(this.OWTransportPanel);
 			this.OWTabTransportProps.Location = new System.Drawing.Point(4, 44);
 			this.OWTabTransportProps.Name = "OWTabTransportProps";
-			this.OWTabTransportProps.Size = new System.Drawing.Size(280, 571);
+			this.OWTabTransportProps.Size = new System.Drawing.Size(280, 596);
 			this.OWTabTransportProps.TabIndex = 5;
 			this.OWTabTransportProps.Text = "Transport";
 			this.OWTabTransportProps.UseVisualStyleBackColor = true;
@@ -734,6 +734,17 @@
 			this.mapGroupbox.TabStop = false;
 			this.mapGroupbox.Text = "Selected map";
 			// 
+			// previewTextPicturebox
+			// 
+			this.previewTextPicturebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.previewTextPicturebox.Location = new System.Drawing.Point(214, 53);
+			this.previewTextPicturebox.Name = "previewTextPicturebox";
+			this.previewTextPicturebox.Size = new System.Drawing.Size(16, 16);
+			this.previewTextPicturebox.TabIndex = 2;
+			this.previewTextPicturebox.TabStop = false;
+			this.previewTextPicturebox.Visible = false;
+			this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
+			// 
 			// OWProperty_MessageID
 			// 
 			this.OWProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -940,17 +951,6 @@
 			this.stateCombobox.TabIndex = 1;
 			this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
 			// 
-			// previewTextPicturebox
-			// 
-			this.previewTextPicturebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.previewTextPicturebox.Location = new System.Drawing.Point(214, 53);
-			this.previewTextPicturebox.Name = "previewTextPicturebox";
-			this.previewTextPicturebox.Size = new System.Drawing.Size(16, 16);
-			this.previewTextPicturebox.TabIndex = 2;
-			this.previewTextPicturebox.TabStop = false;
-			this.previewTextPicturebox.Visible = false;
-			this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-			// 
 			// OverworldEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -991,10 +991,10 @@
 			this.objectGroupbox.PerformLayout();
 			this.mapGroupbox.ResumeLayout(false);
 			this.mapGroupbox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
 			this.ResumeLayout(false);
 
         }

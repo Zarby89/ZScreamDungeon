@@ -19,7 +19,7 @@
 
 		private void AddSprite_Load(object sender, EventArgs e)
 		{
-			spriteListBox.DataSource = DefaultEntities.ListOfSprites;
+			spriteListBox.DataSource = SpriteName.ListOfSprites;
 			spriteListBox.SelectedIndex = 0;
 		}
 	}

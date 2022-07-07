@@ -197,7 +197,7 @@
 		{
 			RoomID = id;
 			ZS = zs;
-			Name = DefaultEntities.ListOfRoomNames[id].Name;
+			Name = RoomName.ListOfVanillaNames[id].Name;
 			ChestList = new ChestItemsHandler(this);
 		}
 

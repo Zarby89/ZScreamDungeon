@@ -13,7 +13,7 @@
 		private SecretItemType(byte id, DrawSecret d)
 		{
 			ID = id;
-			Name = DefaultEntities.ListOfSecrets.GetNameFromEntityList(id);
+			Name = SecretsName.ListOfVanillaNames.GetNameFromEntityList(id);
 			Draw = d;
 		}
 

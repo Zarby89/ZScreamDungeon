@@ -25,8 +25,8 @@ namespace ZeldaFullEditor.ALTTP.GameData
 
 			// intentionally doing this stupid shit because it looks funny
 			Name = (IsOverlord = overlord)
-				? DefaultEntities.ListOfOverlords[id].Name
-				: DefaultEntities.ListOfSprites[id].Name;
+				? SpriteName.ListOfOverlords[id].Name
+				: SpriteName.ListOfSprites[id].Name;
 		}
 
 		public override string ToString() => Name;

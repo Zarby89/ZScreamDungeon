@@ -92,7 +92,7 @@
 					LastSelectedSecret.MapX,
 					LastSelectedSecret.MapY);
 
-				ZGUI.OverworldEditor.objCombobox.DataSource = DefaultEntities.ListOfSecrets;
+				ZGUI.OverworldEditor.objCombobox.DataSource = SecretsName.ListOfVanillaNames;
 
 				// TODO
 				//ZGUI.OverworldEditor.objCombobox.SelectedItem = 

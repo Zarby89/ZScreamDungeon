@@ -35,15 +35,15 @@
 			roomProperty_effect.DataSource = LayerEffectType.ListOf;
 			roomProperty_tag1.DataSource = RoomTagType.ListOf;
 			roomProperty_tag2.DataSource = RoomTagType.ListOf;
-			EntranceMusicBox.DataSource = DefaultEntities.ListOfUnderworldMusics;
+			EntranceMusicBox.DataSource = MusicName.ListOfUnderworldMusics;
 
 			mapPicturebox.Image = new Bitmap(256, 304);
 			thumbnailBox.Size = new Size(256, 256);
 
 			DoorTypeComboBox.DataSource = DungeonDoorType.ListOf;
-			tileTypeCombobox.DataSource = DefaultEntities.ListOfTileTypes;
+			tileTypeCombobox.DataSource = TileTypeName.ListOfVanillaNames;
 			EntranceProperties_FloorSel.DataSource = FloorNumber.ListOf;
-			selecteditemobjectCombobox.DataSource = DefaultEntities.ListOfSecrets;
+			selecteditemobjectCombobox.DataSource = SecretsName.ListOfVanillaNames;
 		}
 
 		public void OnProjectLoad()
@@ -71,7 +71,7 @@
 			for (int i = 0; i < 0x07; i++)
 			{
 				ZScreamer.ActiveScreamer.starting_entrances[i] = new UnderworldEntrance(ZScreamer.ActiveScreamer, (byte) i, true);
-				string tname = $"[{i:X2}] - {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.starting_entrances[i].RoomID]:X3}";
+				string tname = $"[{i:X2}] - {RoomName.ListOfVanillaNames[ZScreamer.ActiveScreamer.starting_entrances[i].RoomID]:X3}";
 
 				entrancetreeView.Nodes[1].Nodes.Add(
 					new TreeNode(tname)
@@ -84,7 +84,7 @@
 			for (int i = 0; i < Constants.NumberOfEntrances; i++)
 			{
 				ZScreamer.ActiveScreamer.entrances[i] = new(ZScreamer.ActiveScreamer, (byte) i, false);
-				string tname = $"[{i:X2}] - {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.entrances[i].RoomID]:X3}";
+				string tname = $"[{i:X2}] - {RoomName.ListOfVanillaNames[ZScreamer.ActiveScreamer.entrances[i].RoomID]:X3}";
 
 				entrancetreeView.Nodes[0].Nodes.Add(
 					new TreeNode(tname)

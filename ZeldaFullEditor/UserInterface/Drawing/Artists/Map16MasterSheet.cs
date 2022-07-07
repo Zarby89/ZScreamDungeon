@@ -2,12 +2,12 @@
 {
 	public unsafe class Tile16MasterSheet : IByteable
 	{
-		private const int TileSpan = 17;
-		private const int TilesPerRow = 8;
-		private const int TilesPerColumn = 0xE1;
-		private const int TilesPerBlock = TilesPerRow * TilesPerColumn;
-		internal static readonly int ImageWidth = TilesPerRow * TileSpan;
-		internal static readonly int ImageHeight = TilesPerColumn * TileSpan;
+		internal const int TileSpan = 17;
+		internal const int TilesPerRow = 8;
+		internal const int TilesPerColumn = 0xE1;
+		internal const int TilesPerBlock = TilesPerRow * TilesPerColumn;
+		internal const int ImageWidth = TilesPerRow * TileSpan;
+		internal const int ImageHeight = TilesPerColumn * TileSpan;
 
 		private readonly Tile16[] ListOf = new Tile16[Constants.NumberOfUniqueTile16Definitions];
 

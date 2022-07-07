@@ -4,8 +4,7 @@
 	{
 		// TODO move to Constants
 		private const int ScratchPadSize = 225 * 16 * 2;
-		private const int Tile16EntryWidth = 16;
-		private const int Tile16RowWidth = 8 * Tile16EntryWidth;
+		private const int Tile16RowWidth = 8 * Tile16MasterSheet.TileSpan;
 
 		public bool propertiesChangedFromForm = false;
 		public Bitmap scratchPadBitmap = new(256, 3600);
@@ -244,7 +243,7 @@
 		}
 
 		private static readonly RectangleF TileRect =
-			new(8 * Tile16EntryWidth, 213 * Tile16EntryWidth, 8 * Tile16EntryWidth, 43 * Tile16EntryWidth);
+			new(8 * Tile16MasterSheet.TileSpan, 213 * Tile16MasterSheet.TileSpan, 8 * Tile16MasterSheet.TileSpan, 43 * Tile16MasterSheet.TileSpan);
 
 		private void tilePictureBox_Paint(object sender, PaintEventArgs e)
 		{
@@ -263,17 +262,17 @@
 
 				if (ZScreamer.ActiveOWScene.selectedTile.Length > 0)
 				{
-					int x = ZScreamer.ActiveOWScene.selectedTile[0] % 8 * Tile16EntryWidth;
-					int y = ZScreamer.ActiveOWScene.selectedTile[0] / 8 * Tile16EntryWidth;
+					int x = ZScreamer.ActiveOWScene.selectedTile[0] % 8 * Tile16MasterSheet.TileSpan;
+					int y = ZScreamer.ActiveOWScene.selectedTile[0] / 8 * Tile16MasterSheet.TileSpan;
 
-					if (ZScreamer.ActiveOWScene.selectedTile[0] >= 2048)
+					if (ZScreamer.ActiveOWScene.selectedTile[0] >= Tile16MasterSheet.TilesPerBlock)
 					{
-						y -= 256 * Tile16EntryWidth;
-						x += 8 * Tile16EntryWidth;
+						y -= Tile16MasterSheet.ImageHeight;
+						x += Tile16MasterSheet.ImageWidth;
 					}
 
 					// TODO copy
-					e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, Tile16EntryWidth, Tile16EntryWidth));
+					e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x-1, y-1, Tile16MasterSheet.TileSpan, Tile16MasterSheet.TileSpan));
 					selectedTileLabel.Text = "Selected tile: " + ZScreamer.ActiveOWScene.selectedTile[0].ToString("X4");
 				}
 
@@ -286,19 +285,22 @@
 			if (!ZScreamer.Active) return;
 
 			ZScreamer.ActiveOWScene.selectedTileSizeX = 1;
-			if (e.X > 128)
+			int x = (e.X % Tile16MasterSheet.ImageWidth) / Tile16MasterSheet.TileSpan;
+			int y = e.Y / Tile16MasterSheet.TileSpan;
+
+			ushort tile = (ushort) (x + y * Tile16MasterSheet.TilesPerRow);
+
+			if (e.X >= Tile16MasterSheet.ImageWidth)
 			{
-				ZScreamer.ActiveOWScene.selectedTile = new ushort[1]
-					{ (ushort) (((e.X - Tile16RowWidth) / Tile16EntryWidth) + (e.Y / Tile16EntryWidth * 8) + (128 * Tile16EntryWidth)) };
-				if (ZScreamer.ActiveOWScene.selectedTile[0] > 3751)
-				{
-					ZScreamer.ActiveOWScene.selectedTile[0] = 3751;
-				}
+				tile += Tile16MasterSheet.TilesPerBlock;
 			}
-			else
+
+			if (tile > 3751)
 			{
-				ZScreamer.ActiveOWScene.selectedTile = new ushort[1] { (ushort) ((e.X / Tile16EntryWidth) + (e.Y / Tile16EntryWidth * 8)) };
+				tile = 3751;
 			}
+
+			ZScreamer.ActiveOWScene.selectedTile = new ushort[1] { tile };
 
 			tilePictureBox.Refresh();
 		}
@@ -439,8 +441,8 @@
 
 		private void scratchPicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
-			globalmouseTileDownX = e.X / Tile16EntryWidth;
-			globalmouseTileDownY = e.Y / Tile16EntryWidth;
+			globalmouseTileDownX = e.X / Tile16MasterSheet.TileSpan;
+			globalmouseTileDownY = e.Y / Tile16MasterSheet.TileSpan;
 
 			if (ZScreamer.ActiveOWScene.TriggerRefresh)
 			{
@@ -492,8 +494,8 @@
 		{
 			if (MouseIsDown)
 			{
-				int tileX = e.X / Tile16EntryWidth;
-				int tileY = e.Y / Tile16EntryWidth;
+				int tileX = e.X / Tile16MasterSheet.TileSpan;
+				int tileY = e.Y / Tile16MasterSheet.TileSpan;
 
 				if (e.Button == MouseButtons.Right)
 				{
@@ -548,8 +550,8 @@
 			
 			mouseX_Real = e.X;
 			mouseY_Real = e.Y;
-			int mouseTileX = e.X / Tile16EntryWidth;
-			int mouseTileY = e.Y / Tile16EntryWidth;
+			int mouseTileX = e.X / Tile16MasterSheet.TileSpan;
+			int mouseTileY = e.Y / Tile16MasterSheet.TileSpan;
 
 			if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
 			{
@@ -557,8 +559,8 @@
 				{
 					if (e.Button == MouseButtons.Left)
 					{
-						int tileX = e.X / Tile16EntryWidth;
-						int tileY = e.Y / Tile16EntryWidth;
+						int tileX = e.X / Tile16MasterSheet.TileSpan;
+						int tileY = e.Y / Tile16MasterSheet.TileSpan;
 						if (tileX <= 0) { tileX = 0; }
 						if (tileY <= 0) { tileY = 0; }
 						if (tileX > 16) { tileX = 16; }
@@ -624,12 +626,12 @@
 
 				if (selecting)
 				{
-					g.DrawRectangle(Pens.White, new Rectangle(globalmouseTileDownX * Tile16EntryWidth, globalmouseTileDownY * Tile16EntryWidth, (((mouseX_Real / Tile16EntryWidth) - globalmouseTileDownX) * Tile16EntryWidth) + Tile16EntryWidth, (((mouseY_Real / Tile16EntryWidth) - globalmouseTileDownY) * Tile16EntryWidth) + Tile16EntryWidth));
+					g.DrawRectangle(Pens.White, new Rectangle(globalmouseTileDownX * Tile16MasterSheet.TileSpan, globalmouseTileDownY * Tile16MasterSheet.TileSpan, (((mouseX_Real / Tile16MasterSheet.TileSpan) - globalmouseTileDownX) * Tile16MasterSheet.TileSpan) + Tile16MasterSheet.TileSpan, (((mouseY_Real / Tile16MasterSheet.TileSpan) - globalmouseTileDownY) * Tile16MasterSheet.TileSpan) + Tile16MasterSheet.TileSpan));
 				}
 
-				Rectangle r = new Rectangle(mouseX_Real & ~0xF, mouseY_Real & ~0xF, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth);
+				Rectangle r = new Rectangle(mouseX_Real & ~0xF, mouseY_Real & ~0xF, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan);
 
-				g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth, GraphicsUnit.Pixel, ia);
+				g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan, GraphicsUnit.Pixel, ia);
 				g.DrawRectangle(Pens.LightGreen, r);
 				//g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * 16, (ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
 				//g.DrawRectangle(Pens.LightGreen, r);
@@ -680,7 +682,7 @@
 			int y = tile8selected / 16;
 			int x = tile8selected & 0xF;
 
-			e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * Tile16EntryWidth, y * Tile16EntryWidth, Tile16EntryWidth, Tile16EntryWidth));
+			e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * Tile16MasterSheet.TileSpan, y * Tile16MasterSheet.TileSpan, Tile16MasterSheet.TileSpan, Tile16MasterSheet.TileSpan));
 		}
 
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)

@@ -18,21 +18,21 @@
 			comboBox1.Items.Clear();
 			if (tileRadio.Checked)
 			{
-				comboBox1.DataSource = DefaultEntities.ListOfSubtype1RoomObjects
-					.Concat(DefaultEntities.ListOfSubtype2RoomObjects)
-					.Concat(DefaultEntities.ListOfSubtype3RoomObjects);
+				comboBox1.DataSource = RoomObjectName.ListOfSubtype1RoomObjects
+					.Concat(RoomObjectName.ListOfSubtype2RoomObjects)
+					.Concat(RoomObjectName.ListOfSubtype3RoomObjects);
 			}
 			else if (spriteRadio.Checked)
 			{
-				comboBox1.DataSource = DefaultEntities.ListOfSprites;
+				comboBox1.DataSource = SpriteName.ListOfSprites;
 			}
 			else if (itemRadio.Checked)
 			{
-				comboBox1.DataSource = DefaultEntities.ListOfSecrets;
+				comboBox1.DataSource = SecretsName.ListOfVanillaNames;
 			}
 			else if (chestRadio.Checked)
 			{
-				comboBox1.DataSource = DefaultEntities.ListOfItemReceipts;
+				comboBox1.DataSource = ItemReceiptName.ListOfVanillaNames;
 			}
 		}
 

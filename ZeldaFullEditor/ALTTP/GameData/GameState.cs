@@ -25,5 +25,10 @@
 			new("Zelda rescued (2)", GameState.RescueState),
 			new("Agahnim defeated (3)", GameState.AgaState),
 		}.ToImmutableArray();
+
+		public override string ToString()
+		{
+			return Name;
+		}
 	}
 }

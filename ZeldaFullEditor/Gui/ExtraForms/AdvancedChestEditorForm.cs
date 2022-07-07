@@ -14,7 +14,7 @@
 		{
 			for (int i = 0; i < 76; i++)
 			{
-				listBox1.Items.Add(DefaultEntities.ListOfItemReceipts[i].Name);
+				listBox1.Items.Add(ItemReceiptName.ListOfVanillaNames[i].Name);
 
 				chestsdata[i] = new ChestAdvancedData
 				(
@@ -79,7 +79,7 @@
 			}
 			else
 			{
-				label8.Text = DefaultEntities.ListOfItemReceipts[chestsdata[listBox1.SelectedIndex].backupitems].Name;
+				label8.Text = ItemReceiptName.ListOfVanillaNames[chestsdata[listBox1.SelectedIndex].backupitems].Name;
 			}
 		}
 

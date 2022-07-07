@@ -39,9 +39,9 @@ namespace ZeldaFullEditor.Data
 
 			string name = ObjectSet switch
 			{
-				ObjectSubtype.Subtype1 => DefaultEntities.ListOfSubtype1RoomObjects[(byte) objectid].Name,
-				ObjectSubtype.Subtype2 => DefaultEntities.ListOfSubtype2RoomObjects[(byte) objectid].Name,
-				ObjectSubtype.Subtype3 => DefaultEntities.ListOfSubtype3RoomObjects[(byte) objectid].Name,
+				ObjectSubtype.Subtype1 => RoomObjectName.ListOfSubtype1RoomObjects[(byte) objectid].Name,
+				ObjectSubtype.Subtype2 => RoomObjectName.ListOfSubtype2RoomObjects[(byte) objectid].Name,
+				ObjectSubtype.Subtype3 => RoomObjectName.ListOfSubtype3RoomObjects[(byte) objectid].Name,
 				_ => "PROBLEM",
 			};
 

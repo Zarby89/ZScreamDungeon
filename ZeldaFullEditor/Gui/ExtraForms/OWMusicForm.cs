@@ -52,10 +52,10 @@
 
 		private void OWMusicForm_Load(object sender, EventArgs e)
 		{
-			music1Box.DataSource = DefaultEntities.ListOfOverworldMusics;
-			music2Box.DataSource = DefaultEntities.ListOfOverworldMusics;
-			music3Box.DataSource = DefaultEntities.ListOfOverworldMusics;
-			music4Box.DataSource = DefaultEntities.ListOfOverworldMusics;
+			music1Box.DataSource = MusicName.ListOfOverworldMusics;
+			music2Box.DataSource = MusicName.ListOfOverworldMusics;
+			music3Box.DataSource = MusicName.ListOfOverworldMusics;
+			music4Box.DataSource = MusicName.ListOfOverworldMusics;
 
 			ambient1Box.Items.AddRange(ambientNames);
 			ambient2Box.Items.AddRange(ambientNames);

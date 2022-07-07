@@ -19,7 +19,7 @@
 		private ItemReceipt(byte id, DrawReceipt d)
 		{
 			ID = id;
-			Name = DefaultEntities.ListOfItemReceipts.GetNameFromEntityList(id);
+			Name = ItemReceiptName.ListOfVanillaNames.GetNameFromEntityList(id);
 			Draw = d;
 		}
 
