@@ -20,8 +20,6 @@ public class Scene : PictureBox
 
 	protected ModeActions ActiveMode { get; set; } = ModeActions.Nothing;
 
-	public bool TriggerRefresh { get; set; }
-
 	protected Scene()
 	{
 		DoubleBuffered = true;

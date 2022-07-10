@@ -71,11 +71,14 @@ public class FullPalette
 	public void CopyToImagePalette(Bitmap img)
 	{
 
+		var cp = img.Palette;
 		for (int i = 1; i < Constants.TotalPaletteSize; i++)
 		{
-			img.Palette.Entries[i] = Palette[i].RealColor;
+			cp.Entries[i] = Palette[i].RealColor;
 		}
 
-		img.Palette.Entries[0] = Color.FromArgb(0, Palette[0].RealColor);
+		cp.Entries[0] = Color.FromArgb(0, Palette[0].RealColor);
+
+		img.Palette = cp;
 	}
 }

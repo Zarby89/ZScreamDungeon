@@ -24,6 +24,18 @@ public partial class OverworldEditor : UserControl
 	byte palSelected = 0;
 	int tile8selected = 0;
 
+	private ushort? _seltile;
+	public ushort? SelectedTile {
+		get => _seltile;
+		set
+		{
+			if (_seltile == value) return;
+			_seltile = value;
+			selectedTileLabel.Text = $"Selected tile: {value ?? 0:X3}";
+		}
+	}
+
+
 	public int BGColorToUpdate = 0;
 
 	readonly ColorDialog cd = new();
@@ -40,7 +52,6 @@ public partial class OverworldEditor : UserControl
 		//scene = new SceneOW(this, mainForm);
 		splitContainer1.Panel2.Controls.Clear();
 		splitContainer1.Panel2.Controls.Add(ZScreamer.ActiveOWScene);
-		ZScreamer.ActiveOWScene.CreateScene();
 		ZScreamer.ActiveOWScene.Refresh();
 		stateCombobox.SelectedIndex = 1;
 		scratchPicturebox.Image = scratchPadBitmap;
@@ -204,6 +215,22 @@ public partial class OverworldEditor : UserControl
 		ZScreamer.ActiveOW.ActiveGameState = ((GameStateInfo) stateCombobox.SelectedItem).State;
 	}
 
+	public void ScrollToTile(ushort? s)
+	{
+		int scrollpos = (s ?? 0) / Tile16MasterSheet.TilesPerRow * Tile16MasterSheet.TileSpan;
+
+		if (scrollpos >= splitContainer1.Panel1.VerticalScroll.Maximum)
+		{
+			scrollpos = splitContainer1.Panel1.VerticalScroll.Maximum;
+		}
+
+		splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
+
+		tilePictureBox.Refresh();
+	}
+
+
+
 	private void saveButton_Click(object sender, EventArgs e)
 	{
 		ZGUI.saveToolStripMenuItem_Click(sender, e);
@@ -247,36 +274,37 @@ public partial class OverworldEditor : UserControl
 
 	private void tilePictureBox_Paint(object sender, PaintEventArgs e)
 	{
-		if (ZScreamer.ActiveOW?.Tile16Sheet != null)
+		var g = e.Graphics;
+
+		g.Clear(Color.Black);
+
+		if (ZScreamer.ActiveOW?.Tile16Sheet == null) return;
+		g.InterpolationMode = InterpolationMode.NearestNeighbor;
+		g.CompositingMode = CompositingMode.SourceOver;
+		g.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
+			new Rectangle(0, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
+			new Rectangle(0, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
+			GraphicsUnit.Pixel);
+		g.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
+			new Rectangle(Tile16MasterSheet.ImageWidth, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
+			new Rectangle(0, Tile16MasterSheet.ImageHeight, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
+			GraphicsUnit.Pixel);
+
+		g.FillRectangle(Brushes.Black, TileRect);
+
+		if (SelectedTile is ushort tile)
 		{
-			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			e.Graphics.CompositingMode = CompositingMode.SourceOver;
-			e.Graphics.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
-				new Rectangle(0, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
-				new Rectangle(0, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
-				GraphicsUnit.Pixel);
-			e.Graphics.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
-				new Rectangle(Tile16MasterSheet.ImageWidth, 0, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
-				new Rectangle(0, Tile16MasterSheet.ImageHeight, Tile16MasterSheet.ImageWidth, Tile16MasterSheet.ImageHeight),
-				GraphicsUnit.Pixel);
+			int x = tile % 8 * Tile16MasterSheet.TileSpan;
+			int y = tile / 8 * Tile16MasterSheet.TileSpan;
 
-			if (ZScreamer.ActiveOWScene.selectedTile.Length > 0)
+			if (tile >= Tile16MasterSheet.TilesPerBlock)
 			{
-				int x = ZScreamer.ActiveOWScene.selectedTile[0] % 8 * Tile16MasterSheet.TileSpan;
-				int y = ZScreamer.ActiveOWScene.selectedTile[0] / 8 * Tile16MasterSheet.TileSpan;
-
-				if (ZScreamer.ActiveOWScene.selectedTile[0] >= Tile16MasterSheet.TilesPerBlock)
-				{
-					y -= Tile16MasterSheet.ImageHeight;
-					x += Tile16MasterSheet.ImageWidth;
-				}
-
-				// TODO copy
-				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x-1, y-1, Tile16MasterSheet.TileSpan, Tile16MasterSheet.TileSpan));
-				selectedTileLabel.Text = "Selected tile: " + ZScreamer.ActiveOWScene.selectedTile[0].ToString("X4");
+				y -= Tile16MasterSheet.ImageHeight;
+				x += Tile16MasterSheet.ImageWidth;
 			}
 
-			e.Graphics.FillRectangle(Brushes.Black, TileRect);
+			// TODO copy
+			g.DrawRectangle(Pens.LimeGreen, new Rectangle(x - 1, y - 1, Tile16MasterSheet.TileSpan, Tile16MasterSheet.TileSpan));
 		}
 	}
 
@@ -284,7 +312,6 @@ public partial class OverworldEditor : UserControl
 	{
 		if (!ZScreamer.Active) return;
 
-		ZScreamer.ActiveOWScene.selectedTileSizeX = 1;
 		int x = (e.X % Tile16MasterSheet.ImageWidth) / Tile16MasterSheet.TileSpan;
 		int y = e.Y / Tile16MasterSheet.TileSpan;
 
@@ -297,10 +324,11 @@ public partial class OverworldEditor : UserControl
 
 		if (tile > 3751)
 		{
-			tile = 3751;
+			return;
 		}
 
-		ZScreamer.ActiveOWScene.selectedTile = new ushort[1] { tile };
+		SelectedTile = tile;
+		ZScreamer.ActiveOWScene.SetOnlySelectedTile(tile);
 
 		tilePictureBox.Refresh();
 	}
@@ -343,7 +371,6 @@ public partial class OverworldEditor : UserControl
 
 	private void RefreshAllMaps()
 	{
-		Thread.CurrentThread.IsBackground = true;
 		ZScreamer.ActiveOW.ForAllScreens(map => map.InvalidateArt());
 	}
 
@@ -353,7 +380,7 @@ public partial class OverworldEditor : UserControl
 		Tile16Editor ted = new Tile16Editor();
 		if (ted.ShowDialog() == DialogResult.OK)
 		{
-			new Thread(RefreshAllMaps).Start();
+			RefreshAllMaps();
 		}
 	}
 
@@ -369,7 +396,7 @@ public partial class OverworldEditor : UserControl
 
 	private void refreshToolStrip_Click(object sender, EventArgs e)
 	{
-		new Thread(RefreshAllMaps).Start();
+		RefreshAllMaps();
 	}
 
 	private void musicButton_Click(object sender, EventArgs e)
@@ -444,12 +471,6 @@ public partial class OverworldEditor : UserControl
 		globalmouseTileDownX = e.X / Tile16MasterSheet.TileSpan;
 		globalmouseTileDownY = e.Y / Tile16MasterSheet.TileSpan;
 
-		if (ZScreamer.ActiveOWScene.TriggerRefresh)
-		{
-			ZScreamer.ActiveOWScene.TriggerRefresh = false;
-			return;
-		}
-
 		MouseIsDown = true;
 
 		if (e.Button == MouseButtons.Left)
@@ -462,23 +483,19 @@ public partial class OverworldEditor : UserControl
 
 				for (int i = 0; i < ZScreamer.ActiveOWScene.selectedTile.Length; i++)
 				{
-					if (globalmouseTileDownX + x <= 15)
+					if (ZScreamer.ActiveOWScene.selectedTile[i] is ushort ot && globalmouseTileDownX + x <= 15)
 					{
-						scratchPadTiles[globalmouseTileDownX + x, globalmouseTileDownY + y] = ZScreamer.ActiveOWScene.selectedTile[i];
+						scratchPadTiles[globalmouseTileDownX + x, globalmouseTileDownY + y] = ot;
 					}
 
 					x++;
 
-					if (x >= ZScreamer.ActiveOWScene.selectedTileSizeX)
+					if (x >= ZScreamer.ActiveOWScene.selectedTileSpan)
 					{
 						y++;
 						x = 0;
 					}
 				}
-			}
-			else
-			{
-				scratchPadTiles[globalmouseTileDownX, globalmouseTileDownY] = ZScreamer.ActiveOWScene.selectedTile[0];
 			}
 		}
 		else if (e.Button == MouseButtons.Right)
@@ -501,8 +518,7 @@ public partial class OverworldEditor : UserControl
 			{
 				if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 				{
-					ZScreamer.ActiveOWScene.selectedTile = new ushort[1] { scratchPadTiles[globalmouseTileDownX, globalmouseTileDownY] };
-					ZScreamer.ActiveOWScene.selectedTileSizeX = 1;
+					ZScreamer.ActiveOWScene.SetOnlySelectedTile(scratchPadTiles[globalmouseTileDownX, globalmouseTileDownY]);
 				}
 				else
 				{
@@ -522,8 +538,8 @@ public partial class OverworldEditor : UserControl
 						reverseY = true;
 					}
 
-					ZScreamer.ActiveOWScene.selectedTileSizeX = sizeX;
-					ZScreamer.ActiveOWScene.selectedTile = new ushort[sizeX * sizeY];
+					ZScreamer.ActiveOWScene.selectedTileSpan = sizeX;
+					ZScreamer.ActiveOWScene.selectedTile = new ushort?[sizeX * sizeY];
 
 					int pX = reverseX ? tileX : globalmouseTileDownX;
 					int pY = reverseY ? tileY : globalmouseTileDownY;
@@ -576,12 +592,12 @@ public partial class OverworldEditor : UserControl
 						{
 							if (globalmouseTileDownX + x < 16 && globalmouseTileDownY + y < 225)
 							{
-								scratchPadTiles[globalmouseTileDownX + x, globalmouseTileDownY + y] = ZScreamer.ActiveOWScene.selectedTile[i];
+								scratchPadTiles[globalmouseTileDownX + x, globalmouseTileDownY + y] = ZScreamer.ActiveOWScene.selectedTile[i] ?? 0;
 							}
 
 							x++;
 
-							if (x >= ZScreamer.ActiveOWScene.selectedTileSizeX)
+							if (x >= ZScreamer.ActiveOWScene.selectedTileSpan)
 							{
 								y++;
 								x = 0;
@@ -629,9 +645,9 @@ public partial class OverworldEditor : UserControl
 				g.DrawRectangle(Pens.White, new Rectangle(globalmouseTileDownX * Tile16MasterSheet.TileSpan, globalmouseTileDownY * Tile16MasterSheet.TileSpan, (((mouseX_Real / Tile16MasterSheet.TileSpan) - globalmouseTileDownX) * Tile16MasterSheet.TileSpan) + Tile16MasterSheet.TileSpan, (((mouseY_Real / Tile16MasterSheet.TileSpan) - globalmouseTileDownY) * Tile16MasterSheet.TileSpan) + Tile16MasterSheet.TileSpan));
 			}
 
-			Rectangle r = new Rectangle(mouseX_Real & ~0xF, mouseY_Real & ~0xF, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan);
+			Rectangle r = new Rectangle(mouseX_Real & ~0xF, mouseY_Real & ~0xF, ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan);
 
-			g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16MasterSheet.TileSpan, GraphicsUnit.Pixel, ia);
+			g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, GraphicsUnit.Pixel, ia);
 			g.DrawRectangle(Pens.LightGreen, r);
 			//g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * 16, (ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
 			//g.DrawRectangle(Pens.LightGreen, r);
@@ -1138,10 +1154,7 @@ public partial class OverworldEditor : UserControl
 	/// </summary>
 	public void clearOverworldOverlays()
 	{
-		foreach (var overlay in ZScreamer.ActiveOW.alloverlays)
-		{
-			overlay.tilesData.Clear();
-		}
+		ZScreamer.ActiveOW.ForAllMainScreens(o => o.DeleteOverlay());
 	}
 
 	private static readonly Predicate<OverworldEntity> removeFromMap =
@@ -1221,7 +1234,7 @@ public partial class OverworldEditor : UserControl
 	/// </summary>
 	public void clearAreaOverlays()
 	{
-		ZScreamer.ActiveOW.alloverlays[ZScreamer.ActiveOWScene.CurrentParentMapID].tilesData.Clear();
+		ZScreamer.ActiveOW.ForAllRelatedScreens(ZScreamer.ActiveOWScene.CurrentMap, o => o.DeleteOverlay());
 		ZScreamer.ActiveOWScene.Refresh();
 	}
 

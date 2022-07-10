@@ -17,15 +17,21 @@ public partial class SceneOW : Scene
 
 	//public int lockedMap = -1;
 	//must load all current map gfx
-	public ushort[] selectedTile = new ushort[] { 0 };
-	public int selectedTileSizeX = 1;
+	public ushort?[] selectedTile = new ushort?[] { 0 };
+	public int selectedTileSpan = 1;
 	private int globalmouseTileDownX = 0;
 	private int globalmouseTileDownY = 0;
+
+	private int currentTileX = 0;
+	private int currentTileY = 0;
 	private int localTileDownX => globalmouseTileDownX / Constants.NumberOfTile16PerStrip;
 	private int localTileDownY => globalmouseTileDownY / Constants.NumberOfTile16PerStrip;
+
 	public int lastTileHoverX = 0;
 	public int lastTileHoverY = 0;
+
 	public int lastHover = -1;
+
 	public bool selecting = false;
 	public IntPtr overlaygfxPtr = Marshal.AllocHGlobal(1024 * 1024);
 	public IntPtr temptilesgfxPtr = Marshal.AllocHGlobal(1024 * 1024);
@@ -122,13 +128,6 @@ public partial class SceneOW : Scene
 		};
 	}
 
-
-	public void CreateScene()
-	{
-		//tileBitmapPtr = ZS.OverworldManager.allmaps[0].blockset16;
-		//tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
-	}
-
 	protected override void OnMouseWheel(object sender, MouseEventArgs e)
 	{
 		((HandledMouseEventArgs) e).Handled = true;
@@ -174,14 +173,14 @@ public partial class SceneOW : Scene
 
 	protected override void OnMouseDown(MouseEventArgs e)
 	{
-		int tileX = e.X / 16;
-		int tileY = e.Y / 16;
-		int mapId = (tileY / 32 * 8) + (tileX / 32);
+		currentTileX = e.X / 16;
+		currentTileY = e.Y / 16;
+		int mapId = (currentTileY / 32 * 8) + (currentTileX / 32);
 
 		if (mapId < ZS.OverworldManager.allmaps.Length)
 		{
-			globalmouseTileDownX = tileX;
-			globalmouseTileDownY = tileY;
+			globalmouseTileDownX = currentTileX;
+			globalmouseTileDownY = currentTileY;
 
 			HasUnsavedChanges = true;
 			CurrentMapID = mapId + ZS.OverworldManager.WorldOffset;
@@ -214,17 +213,11 @@ public partial class SceneOW : Scene
 		hoveredEntity = null;
 	}
 
-	protected override void OnMouseMove(MouseEventArgs e)
-	{
-		hoveredEntity = null;
-		Cursor = Cursors.Default;
-		snapToGrid = ModifierKeys != Keys.Control;
-		hoveredMap = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
-		base.OnMouseMove(e);
-	}
-
 	protected override void OnMouseUp(object sender, MouseEventArgs e)
 	{
+		currentTileX = e.X / 16;
+		currentTileY = e.Y / 16;
+
 		selecting = false;
 
 		ZGUI.OverworldEditor.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
@@ -264,7 +257,19 @@ public partial class SceneOW : Scene
 
 	protected override void OnMouseMove(object sender, MouseEventArgs e)
 	{
+		currentTileX = e.X / 16;
+		currentTileY = e.Y / 16;
+
+		hoveredEntity = null;
+		Cursor = Cursors.Default;
+		snapToGrid = ModifierKeys != Keys.Control;
+		hoveredMap = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
+
 		base.OnMouseMove(sender, e);
+
+		lastTileHoverX = currentTileX;
+		lastTileHoverY = currentTileY;
+		lastHover = hoveredMap;
 	}
 
 	public override void Undo()
@@ -418,8 +423,8 @@ public partial class SceneOW : Scene
 		//if (ZS.CurrentOWMode == ObjectMode.OWDoor || ZS.CurrentOWMode == OverworldEditMode.Tile16)
 		if (ZS.CurrentOWMode == OverworldEditMode.Tile16)
 		{
-			int wid = selectedTileSizeX * 16;
-			int hei = selectedTile.Length / selectedTileSizeX * 16;
+			int wid = selectedTileSpan * 16;
+			int hei = selectedTile.Length / selectedTileSpan * 16;
 			Rectangle temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, wid, hei);
 			g.DrawImage(tilesgfxBitmap, temp, 0, 0, wid, hei, GraphicsUnit.Pixel, ia);
 			g.DrawRectangle(Pens.LightGreen, temp);
@@ -488,16 +493,28 @@ public partial class SceneOW : Scene
 			g.DrawText(0 + 4, 0 + 80, "Selected Map PARENT : " + CurrentParentMapID.ToString());
 			g.DrawText(msx + 4, msy + 4, "use ctrl key + click to delete overlay tiles");
 
-			for (int i = 0; i < ZS.OverworldManager.alloverlays[mid].tilesData.Count; i++)
+			foreach(var ot in CurrentMap.OverlayTiles)
 			{
-				int xo = ZS.OverworldManager.alloverlays[mid].tilesData[i].MapX * 16;
-				int yo = ZS.OverworldManager.alloverlays[mid].tilesData[i].MapY * 16;
-				int to = ZS.OverworldManager.alloverlays[mid].tilesData[i].Tile16ID;
+				int xo = ot.MapX * 16;
+				int yo = ot.MapY * 16;
+				int to = ot.Tile16ID;
 				int toy = (to / 8) * 16;
 				int tox = (to % 8) * 16;
 				g.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap, new Rectangle(msx + xo, msy + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
 				//g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-				byte detect = CompareTilePos(ZS.OverworldManager.alloverlays[mid].tilesData[i], ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+
+				// 0 = none
+				// 1 = left
+				// 2 = up
+				// 4 = right
+				// 8 = bottom
+
+				byte detect = IntFunctions.SetFieldBits(
+					bit0: CurrentMap.GetOverlayTile16At(ot.MapX - 1, ot.MapY) is not null,
+					bit1: CurrentMap.GetOverlayTile16At(ot.MapX, ot.MapY - 1) is not null,
+					bit2: CurrentMap.GetOverlayTile16At(ot.MapX + 1, ot.MapY) is not null,
+					bit3: CurrentMap.GetOverlayTile16At(ot.MapX, ot.MapY + 1) is not null
+				);
 
 				if (detect == 0)
 				{
@@ -521,8 +538,8 @@ public partial class SceneOW : Scene
 				}
 			}
 
-			var temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, selectedTileSizeX * 16, selectedTile.Length / selectedTileSizeX * 16);
-			g.DrawImage(tilesgfxBitmap, temp, 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+			var temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, selectedTileSpan * 16, selectedTile.Length / selectedTileSpan * 16);
+			g.DrawImage(tilesgfxBitmap, temp, 0, 0, selectedTileSpan * 16, (selectedTile.Length / selectedTileSpan) * 16, GraphicsUnit.Pixel, ia);
 			g.DrawRectangle(Pens.LightGreen, temp);
 
 			g.DrawText(4, 24, globalmouseTileDownX.ToString());
@@ -556,58 +573,30 @@ public partial class SceneOW : Scene
 
 	}
 
-	// 0 = none
-	// 1 = left
-	// 2 = up
-	// 4 = right
-	// 8 = bottom
-
-	private static byte CompareTilePos(OverlayTile tpc, OverlayTile[] tpa)
-	{
-		byte detected = 0;
-		foreach (OverlayTile t in tpa)
-		{
-			if (t.MapX == tpc.MapX - 1 && t.MapY == tpc.MapY)
-			{
-				detected |= 0x01;
-			}
-			else if (t.MapX == tpc.MapX + 1 && t.MapY == tpc.MapY)
-			{
-				detected |= 0x04;
-			}
-			else if (t.MapX == tpc.MapX && t.MapY == tpc.MapY - 1)
-			{
-				detected |= 0x02;
-			}
-			else if (t.MapX == tpc.MapX && t.MapY == tpc.MapY + 1)
-			{
-				detected |= 0x08;
-			}
-			else if (t.MapX == tpc.MapX && t.MapY == tpc.MapY)
-			{
-				detected |= 0x80;
-			}
-		}
-
-		return detected;
-	}
-
-	private static OverlayTile CompareTilePosButZarbyGaveThisADumbName(OverlayTile tpc, OverlayTile[] tpa)
-	{
-		foreach (OverlayTile t in tpa)
-		{
-			if (t.MapX == tpc.MapX && t.MapY == tpc.MapY)
-			{
-				return t;
-			}
-		}
-		return OverlayTile.GarbageTile;
-	}
-
 	public override void Refresh()
 	{
 		if (!CanIRefresh()) return;
 		//InvalidateScreens();
 		base.Refresh();
+	}
+
+
+
+	public (OverworldScreen, int x, int y) GetScreenCoordinatesFromGlobalXY(int x, int y)
+	{
+		if (x >= (Constants.NumberOfTile16PerStrip * 8) || y >= (Constants.NumberOfTile16PerStrip * 8))
+		{
+			return (null, 0, 0);
+		}
+
+		int xx = x / Constants.NumberOfTile16PerStrip;
+		int yy = y / Constants.NumberOfTile16PerStrip;
+
+		int id = xx + (yy * 8);
+
+		return (ZScreamer.ActiveOW.GetScreenWithVirtualIDFromCurrentWorld(id),
+			x % Constants.NumberOfTile16PerStrip,
+			y % Constants.NumberOfTile16PerStrip);
+
 	}
 }

@@ -63,9 +63,7 @@ public class Overworld
 	{
 		AssembleTile16Definitions();
 		AssembleTile32Definitions();
-		loadOverlays();
 		loadTilesTypes();
-		LoadGravestoneData();
 
 		// initialize as objects first to avoid null pointers
 		for (byte i = 0; i < Constants.NumberOfOWMaps; i++)
@@ -160,6 +158,12 @@ public class Overworld
 
 		DecompressAllMapTiles();
 
+
+		loadOverlays();
+		LoadGravestoneData();
+
+
+
 		LoadOverworldExitsFromROM();
 		LoadOverworldEntrancesFromROM();
 		LoadOverworldSecretsFromROM();
@@ -195,6 +199,19 @@ public class Overworld
 		}
 	}
 
+	public void ForAllRelatedScreens(OverworldScreen member, Action<OverworldScreen> action)
+	{
+		if (!member.IsPartOfLargeMap)
+		{
+			action(member);
+		}
+
+		int parent = member.ParentMapID;
+		action(allmaps[parent]);
+		action(allmaps[parent + 1]);
+		action(allmaps[parent + 8]);
+		action(allmaps[parent + 9]);
+	}
 
 
 	public void LoadGravestoneData()
@@ -657,37 +674,36 @@ public class Overworld
 					MapID = map.MapID,
 					MapX = (byte) (p & 0x3F),
 					MapY = (byte) (p >> 6),
-
 				});
 			}
 		});
 	}
 
-	public void loadOverlays()
+	private void loadOverlays()
 	{
 		/*
             0x7765B: ;Original byte = 0x0A
             22 9C 87 00 EA ;JSL long jump table
             */
 
-		for (var index = 0; index < 128; index++)
+		ForAllMainScreens(screen =>
 		{
-			alloverlays[index] = new();
 			// OverlayPointers
+			if (!screen.IsOwnParent) return;
 
-			var addr = ZS.Offsets.overlayPointersBank.PCtoSNES() | ZS.ROM.Read16(ZS.Offsets.overlayPointers + index * 2);
+			var addr = ZS.Offsets.overlayPointersBank.PCtoSNES() | ZS.ROM.Read16(ZS.Offsets.overlayPointers + screen.MapID * 2);
 			addr = addr.SNEStoPC();
 
 			// TODO magic numbers
 			if (ZS.ROM[0x77676] == 0x6B)
 			{
-				addr = SNESFunctions.SNEStoPC(ZS.ROM.Read16(0x077677 + index * 3));
+				addr = SNESFunctions.SNEStoPC(ZS.ROM.Read16(0x077677 + screen.MapID * 3));
 				// Load New Address
 			}
 
-			var a = 0;
-			var x = 0;
-			var sta = 0;
+			int a = 0;
+			int x = 0;
+			int loc;
 
 			// 16-bit mode : 
 			// A9 (LDA #$)
@@ -700,81 +716,68 @@ public class Overworld
 			// 60 (END)
 
 			byte b = 0;
-			while (b != 0x60)
+			while (true)
 			{
-				b = ZS.ROM[addr];
-				if (b == 0xFF)
-				{
-					break;
-				}
-				else if (b == 0xA9) // LDA #$xxxx (Increase addr+3)
-				{
-					a = ZS.ROM.Read16(addr + 1);
-					addr += 3;
-					continue;
-				}
-				else if (b == 0xA2) // LDX #$xxxx (Increase addr+3)
-				{
-					x = ZS.ROM.Read16(addr + 1);
-					addr += 3;
-					continue;
-				}
-				else if (b == 0x8D) // STA $xxxx (Increase addr+3)
-				{
-					sta = ZS.ROM.Read16(addr + 1) & 0x1FFF;
-					var yp = sta / 2 / 0x40;
-					var xp = sta / 2 - yp * 0x40;
-					alloverlays[index].tilesData.Add(new OverlayTile((byte) xp, (byte) yp, (ushort) a));
-					addr += 3;
-					continue;
-				}
-				else if (b == 0x9D) // STA $xxxx, x (Increase addr+3)
-				{
-					sta = ZS.ROM.Read16(addr + 1);
-					// Draw tile at sta,X position
+				b = ZS.ROM[addr++];
 
-					var stax = (sta & 0x1FFF) + x;
-					var yp = stax / 2 / 0x40;
-					var xp = stax / 2 - yp * 0x40;
-					alloverlays[index].tilesData.Add(new OverlayTile((byte) xp, (byte) yp, (ushort) a));
+				switch (b)
+				{
+					case 0xA9: // LDA #i
+						a = ReadNext16();
+						break;
 
-					addr += 3;
-					continue;
-				}
-				else if (b == 0x8F) // STA $xxxxxx (Increase addr+4)
-				{
-					sta = ZS.ROM.Read16(addr + 1);
+					case 0xA2: // LDX #i
+						x = ReadNext16();
+						break;
 
-					var stax = (sta & 0x1FFF) + x;
-					var yp = stax / 2 / 0x40;
-					var xp = stax / 2 - yp * 0x40;
-					alloverlays[index].tilesData.Add(new OverlayTile((byte) xp, (byte) yp, (ushort) a));
+					case 0x8D: // STA abs
+						loc = ReadNext16() & 0x1FFF;
+						GetXandYandSet(loc);
+						break;
 
-					addr += 4;
-					continue;
-				}
-				else if (b == 0x1A) // INC A (Increase addr+1)
-				{
-					a += 1;
-					addr += 1;
-					continue;
-				}
-				else if (b == 0x4C) // JMP $xxxx (move addr to the new address)
-				{
-					addr = (ZS.Offsets.overlayPointersBank.PCtoSNES() | ZS.ROM.Read16(addr + 1)).SNEStoPC();
-					// THAT SHOULD NOT EXIST IN MOVED CODE SO NO NEED TO CHANGE IT
-					continue;
-				}
-				else if (b == 0x60) // RTS
-				{
-					break; // Just to be sure
-				}
-				else if (b == 0x6B) // RTL
-				{
-					break; // Just to be sure
+					case 0x9D: // STA abs,X
+						loc = ReadNext16() & 0x1FFF;
+						GetXandYandSet(loc + x);
+						break;
+
+					case 0x8F: // STA long
+						loc = ReadNext16() & 0x1FFF;
+						GetXandYandSet(loc);
+						addr++;
+						break;
+
+					case 0x1A: // INC
+						a++;
+						break;
+
+					case 0x4C: // JMP
+						loc = ReadNext16();
+						addr = (ZS.Offsets.overlayPointersBank.PCtoSNES() | loc).SNEStoPC();
+						break;
+
+
+					case 0x60: // RTS
+					case 0x6B: // RTL
+					case 0xFF: // Bad
+					default:
+						return;
 				}
 			}
-		}
+
+			int ReadNext16()
+			{
+				int ret = ZS.ROM.Read16(addr);
+				addr += 2;
+				return ret;
+			}
+
+			void GetXandYandSet(int xy)
+			{
+				int yp = xy / 2 / 0x40;
+				int xp = xy / 2 - yp * 0x40;
+				screen.SetOverlayTile16At((ushort) a, xp, yp);
+			}
+		});
 	}
 
 	private void LoadScreenOfSprites(GameState gamestate, byte screen)
@@ -840,6 +843,20 @@ public class Overworld
 			}
 		}
 	}
+
+	public OverworldScreen GetScreenWithVirtualIDFromCurrentWorld(int i)
+	{
+		int g = WorldOffset + i;
+
+		if (g >= allmaps.Length) return null;
+
+		return allmaps[g];
+	}
+
+
+
+
+
 
 	public bool CreateMap16Maps()
 	{

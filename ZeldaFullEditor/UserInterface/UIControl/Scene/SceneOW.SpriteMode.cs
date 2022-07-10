@@ -40,6 +40,7 @@ public partial class SceneOW
 	private void Paste_Sprites()
 	{
 		int data = (int) Clipboard.GetData(Constants.OverworldSpriteClipboardData);
+
 		if (data != -1)
 		{
 			selectedFormSprite = new(SpriteType.Sprite00)

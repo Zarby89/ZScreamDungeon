@@ -66,7 +66,7 @@ public abstract class TilemapArtist : IDrawArt
 
 	protected void Revalidate()
 	{
-		if (Redrawing == NeedsNewArt.Nothing || Valid) return;
+		if (!(Redrawing != NeedsNewArt.Nothing || !Valid)) return;
 
 		if (Redrawing.HasFlag(NeedsNewArt.UpdatedAllPalettes))
 		{

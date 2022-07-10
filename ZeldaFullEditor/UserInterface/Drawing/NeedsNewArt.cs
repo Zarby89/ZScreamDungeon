@@ -21,6 +21,8 @@ public enum NeedsNewArt
 	UpdatedSpritesLayer = 1 << 10,
 	UpdatedAllTilemaps = UpdatedLayer1Tilemap | UpdatedLayer2Tilemap,
 
+	UpdatedOverlay = 1 << 11,
+
 	UpdatedLayering = 1 << 12,
 
 	BitmapRepaint = 1 << 15,

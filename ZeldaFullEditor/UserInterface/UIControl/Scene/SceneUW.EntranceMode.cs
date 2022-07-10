@@ -108,7 +108,5 @@ public partial class SceneUW
 		}
 
 		sel.AutoCalculateScrollBoundaries();
-
-		TriggerRefresh = true;
 	}
 }

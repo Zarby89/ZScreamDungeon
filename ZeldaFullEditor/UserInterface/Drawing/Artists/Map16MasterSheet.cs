@@ -24,6 +24,7 @@ public unsafe class Tile16MasterSheet : IByteable
 	public Tile16MasterSheet()
 	{
 		PreviewCanvas = new PointeredImage(ImageWidth, ImageHeight * 2);
+		PreviewCanvas.ClearBitmap();
 	}
 
 	public void UpdateToMatchScreen(OverworldScreen screen)

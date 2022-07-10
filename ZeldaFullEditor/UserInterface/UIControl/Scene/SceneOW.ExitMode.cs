@@ -27,8 +27,8 @@ public partial class SceneOW
 			if (exit.Deleted)
 			{
 				exit.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-				exit.GlobalX = (ushort) (mxRightclick & ~0xF);
-				exit.GlobalY = (ushort) (myRightclick & ~0xF);
+				exit.GlobalX = (ushort) (RightClickedXAt & ~0xF);
+				exit.GlobalY = (ushort) (RightClickedYAt & ~0xF);
 
 				if (clipboard)
 				{
@@ -124,8 +124,6 @@ public partial class SceneOW
 
 		if (!clickedon)
 		{
-			mxRightclick = e.X;
-			myRightclick = e.Y;
 			menu.Items.Add("Insert Exit");
 			menu.Items[0].Click += insertExit_Click;
 			menu.Show(Cursor.Position);

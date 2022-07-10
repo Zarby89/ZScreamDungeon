@@ -623,6 +623,8 @@ public partial class ZScreamer
 		};
 
 		// Pointers
+		const int ptrloc = 0x77657 + 32;
+
 
 		ROM.Write(0x77657, newOverlayCode);
 
@@ -640,24 +642,38 @@ public partial class ZScreamer
 
 		// 0x058000
 		int pos = 0x120000;
-		int ptrPos = 0x77657 + 32;
-		for (int i = 0; i < 128; i++)
-		{
-			int snesaddr = pos.PCtoSNES();
-			ROM.Write24(ptrPos, snesaddr);
-			ptrPos += 3;
 
-			for (int t = 0; t < OverworldManager.alloverlays[i].tilesData.Count; t++)
+		OverworldManager.ForAllMainScreens(o =>
+		{
+			if (!o.IsOwnParent)
 			{
-				ushort addr = (ushort) ((OverworldManager.alloverlays[i].tilesData[t].MapX * 2) + (OverworldManager.alloverlays[i].tilesData[t].MapY * 128) + 0x2000);
+				int ptr = ROM.Read24(ptrloc + o.ParentMapID * 3);
+				ROM.Write24(ptrloc + o.MapID * 3, ptr);
+				return;
+			}
+
+			int snesaddr = pos.PCtoSNES();
+			ROM.Write24(ptrloc + o.MapID * 3, snesaddr);
+
+
+			// TODO optimize and improve the writing for these
+			List<OverlayTile> list = new();
+
+			OverworldManager.ForAllRelatedScreens(o, s => list.AddRange(s.OverlayTiles));
+
+			// TODO this calculation needs to be moved to some static class
+			foreach (var t in list)
+			{
 				// LDA TileID : STA $addr
 				// A9 (LDA #$)
 				// A2 (LDX #$)
 				// 8D (STA $xxxx)
 
+				ushort addr = (ushort) ((t.MapX * 2) + (t.MapY * 128) + 0x2000);
+
 				// LDA :
 				ROM[pos++] = 0xA9;
-				ROM.Write16(pos, OverworldManager.alloverlays[i].tilesData[t].Tile16ID);
+				ROM.Write16(pos, t.Tile16ID);
 				pos += 2;
 
 				// STA : 
@@ -666,8 +682,9 @@ public partial class ZScreamer
 				pos += 2;
 			}
 
+
 			ROM[pos++] = 0x6B;
-		}
+		});
 	}
 
 	public void saveOverworldTilesType()

@@ -58,8 +58,8 @@ public partial class SceneOW
 		}
 
 		found.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-		found.GlobalX = (ushort) (mxRightclick & ~0x0F);
-		found.GlobalY = (ushort) (myRightclick & ~0x0F);
+		found.GlobalX = (ushort) (RightClickedXAt & ~0x0F);
+		found.GlobalY = (ushort) (RightClickedYAt & ~0x0F);
 		found.TargetEntranceID = entranceID;
 
 		SelectedEntrance = found;
@@ -78,12 +78,6 @@ public partial class SceneOW
 		{
 			SelectedEntrance = LastSelectedEntrance;
 		}
-		else if (e.Button == MouseButtons.Right)
-		{
-			mxRightclick = e.X;
-			myRightclick = e.Y;
-		}
-
 
 		if (SelectedEntrance == null) return;
 
@@ -169,7 +163,6 @@ public partial class SceneOW
 			if (hoveredEntity == null)
 			{
 				FindHoveredEntity(ZS.OverworldManager.allholes, e);
-
 			}
 
 			return;
@@ -183,9 +176,6 @@ public partial class SceneOW
 		}
 	}
 
-
-	int mxRightclick = 0;
-	int myRightclick = 0;
 	private void OnMouseUp_Entrance(MouseEventArgs e)
 	{
 		if (e.Button == MouseButtons.Left)
@@ -266,8 +256,8 @@ public partial class SceneOW
 			if (ZS.OverworldManager.allentrances[i].Deleted)
 			{
 				ZS.OverworldManager.allentrances[i].MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-				ZS.OverworldManager.allentrances[i].GlobalX = (ushort) (mxRightclick & ~0xF);
-				ZS.OverworldManager.allentrances[i].GlobalY = (ushort) (myRightclick & ~0xF);
+				ZS.OverworldManager.allentrances[i].GlobalX = (ushort) (RightClickedXAt & ~0xF);
+				ZS.OverworldManager.allentrances[i].GlobalY = (ushort) (RightClickedYAt & ~0xF);
 				return;
 			}
 		}

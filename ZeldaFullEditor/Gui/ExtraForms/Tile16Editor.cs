@@ -147,8 +147,8 @@ public partial class Tile16Editor : Form
 			}
 		}
 
-		int xP = (ZScreamer.ActiveOWScene.selectedTile[0] % 8) * 32;
-		int yP = (ZScreamer.ActiveOWScene.selectedTile[0] / 8) * 32;
+		int xP = ((ZScreamer.ActiveOWScene.selectedTile[0] ?? 0) % 8) * 32;
+		int yP = ((ZScreamer.ActiveOWScene.selectedTile[0] ?? 0) / 8) * 32;
 
 		if (searchedTile != 0xFFFF)
 		{
@@ -381,7 +381,7 @@ public partial class Tile16Editor : Form
 
 	private void Tile16Editor_Shown(object sender, EventArgs e)
 	{
-		panel1.VerticalScroll.Value = ZScreamer.ActiveOWScene.selectedTile[0] / 8 * 32;
+		panel1.VerticalScroll.Value = (ZScreamer.ActiveOWScene.selectedTile[0] ?? 0) / 8 * 32;
 		panel1.PerformLayout();
 	}
 

@@ -26,6 +26,9 @@ public class OverworldScreen
 	/// </summary>
 	public ScreenArtist MyArtist { get; }
 
+	public List<OverlayTile> OverlayTiles { get; } = new();
+
+
 	private OverworldScreen parent;
 	/// <summary>
 	/// The <see cref="OverworldScreen"/> from which this screen should derive its graphics, sprites, and others properties.
@@ -283,9 +286,11 @@ public class OverworldScreen
 		_ => 0x00,
 	};
 
-	public void SetTile16At(ushort tile, int x, int y)
+	public void SetTile16At(ushort? tile, int x, int y)
 	{
-		Tile16Map[x + y * Constants.NumberOfTile16PerStrip] = tile;
+		if (tile is null) return;
+
+		Tile16Map[x + y * Constants.NumberOfTile16PerStrip] = (ushort) tile;
 		Redrawing |= NeedsNewArt.UpdatedLayer1Tilemap;
 	}
 
@@ -294,10 +299,40 @@ public class OverworldScreen
 		return Tile16Map[x + y * Constants.NumberOfTile16PerStrip];
 	}
 
-	public void CopyTile8bpp16(int x, int y, int tile)
+	public ushort? GetTile16AtSafe(int x, int y)
 	{
-		//MyArtist.CopyTile8bpp16(x, y, tile);
+		if (x < 0 || y < 0) return null;
+
+		return Tile16Map[x + y * Constants.NumberOfTile16PerStrip];
 	}
+
+
+	public void DeleteOverlay()
+	{
+		OverlayTiles.Clear();
+	}
+
+	public void SetOverlayTile16At(ushort? tile, int x, int y)
+	{
+		if (tile is null) return;
+
+		DeleteOverlayTile16At(x, y);
+		OverlayTiles.Add(new OverlayTile((ushort) tile, x, y));
+		Redrawing |= NeedsNewArt.UpdatedLayer1Tilemap;
+	}
+
+	public void DeleteOverlayTile16At(int x, int y)
+	{
+		OverlayTiles.RemoveAll(t => t.MapX == x && t.MapY == y);
+		Redrawing |= NeedsNewArt.UpdatedOverlay;
+	}
+
+	public ushort? GetOverlayTile16At(int x, int y)
+	{
+		var t = OverlayTiles.FirstOrDefault(t => t.MapX == x && t.MapY == y, OverlayTile.GarbageTile);
+		return t.IsGarbage ? null : t.Tile16ID;
+	}
+
 
 	public Tile32 GetTile32At(int x, int y)
 	{
