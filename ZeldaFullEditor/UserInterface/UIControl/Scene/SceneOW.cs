@@ -18,6 +18,7 @@ public partial class SceneOW : Scene
 	//public int lockedMap = -1;
 	//must load all current map gfx
 	public ushort?[] selectedTile = new ushort?[] { 0 };
+
 	public int selectedTileSpan = 1;
 	private int globalmouseTileDownX = 0;
 	private int globalmouseTileDownY = 0;
@@ -35,9 +36,7 @@ public partial class SceneOW : Scene
 	public bool selecting = false;
 	public IntPtr overlaygfxPtr = Marshal.AllocHGlobal(1024 * 1024);
 	public IntPtr temptilesgfxPtr = Marshal.AllocHGlobal(1024 * 1024);
-	public Bitmap tilesgfxBitmap;
-	public Bitmap tileBitmap;
-	public IntPtr tileBitmapPtr;
+	public PointeredImage tilesgfxBitmap = new(512, 512);
 	public OverworldSprite selectedFormSprite;
 
 
@@ -71,11 +70,6 @@ public partial class SceneOW : Scene
 	{
 
 		Size = Constants.FullOverworldSize;
-
-		//graphics = Graphics.FromImage(scene_bitmap);
-		//this.Image = new Bitmap(4096, 4096);
-		tilesgfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, temptilesgfxPtr);
-
 
 		tilemode = new ModeActions(OnMouseDown_Tiles, OnMouseUp_Tiles, OnMouseMove_Tiles, null,
 			Copy_Tiles, Paste_Tiles, null, Delete_Tiles, null);
@@ -426,7 +420,7 @@ public partial class SceneOW : Scene
 			int wid = selectedTileSpan * 16;
 			int hei = selectedTile.Length / selectedTileSpan * 16;
 			Rectangle temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, wid, hei);
-			g.DrawImage(tilesgfxBitmap, temp, 0, 0, wid, hei, GraphicsUnit.Pixel, ia);
+			g.DrawImage(tilesgfxBitmap.Bitmap, temp, 0, 0, wid, hei, GraphicsUnit.Pixel, ia);
 			g.DrawRectangle(Pens.LightGreen, temp);
 		}
 
@@ -539,7 +533,7 @@ public partial class SceneOW : Scene
 			}
 
 			var temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, selectedTileSpan * 16, selectedTile.Length / selectedTileSpan * 16);
-			g.DrawImage(tilesgfxBitmap, temp, 0, 0, selectedTileSpan * 16, (selectedTile.Length / selectedTileSpan) * 16, GraphicsUnit.Pixel, ia);
+			g.DrawImage(tilesgfxBitmap.Bitmap, temp, 0, 0, selectedTileSpan * 16, (selectedTile.Length / selectedTileSpan) * 16, GraphicsUnit.Pixel, ia);
 			g.DrawRectangle(Pens.LightGreen, temp);
 
 			g.DrawText(4, 24, globalmouseTileDownX.ToString());

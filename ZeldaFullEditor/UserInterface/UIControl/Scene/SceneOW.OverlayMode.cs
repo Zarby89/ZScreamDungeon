@@ -111,6 +111,7 @@ public partial class SceneOW
 
 				selectedTile = GetBlockOfOverlayTiles(xx, yy, w, h);
 				selectedTileSpan = w;
+				RefreshTilePreview();
 			}
 
 			if (selectedTile.Length == 1)

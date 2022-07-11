@@ -37,6 +37,16 @@ public unsafe class PointeredImage : IGraphicsCanvas
 		Bitmap = new Bitmap(width, height, width, PixelFormat.Format8bppIndexed, ptr);
 	}
 
+	public void CopyPalette(ColorPalette c)
+	{
+		var pal = Palette;
+		for (int i = 0; i < 256; i++)
+		{
+			pal.Entries[i] = c.Entries[i];
+		}
+		Palette = pal;
+	}
+
 	public void ClearBitmap()
 	{
 		var a = Pointer;

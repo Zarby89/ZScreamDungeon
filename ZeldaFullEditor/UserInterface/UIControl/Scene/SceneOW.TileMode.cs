@@ -5,19 +5,55 @@ public partial class SceneOW
 	private readonly List<TileUndo> undoList = new();
 	private readonly List<TileUndo> redoList = new();
 
-	int globalmouseTileDownXLOCK = 0;
-	int globalmouseTileDownYLOCK = 0;
+	private int globalmouseTileDownXLOCK = 0;
+	private int globalmouseTileDownYLOCK = 0;
 
 	// TODO make an enum
-	byte lockedDirection = 0x00;
+	private LockingDirection lockedDirection = LockingDirection.None;
 
 	private enum LockingDirection
 	{
 		None = 0,
-		Up = 1,
-		Down = 2,
-		Left = 4,
-		Right = 8
+		Vertical = 1,
+		Horizontal = 2,
+	}
+
+	public void RefreshTilePreview()
+	{
+		int xx = 0;
+		int yy = 0;
+
+		tilesgfxBitmap.ClearBitmap();
+		tilesgfxBitmap.CopyPalette(ZS.OverworldManager.Tile16Sheet.Palette);
+
+		var sheet = ZScreamer.ActiveOW.Tile16Sheet;
+		var gfx = sheet.Graphics;
+
+		foreach (var t in selectedTile)
+		{
+			if (t is ushort ttt)
+			{
+				var t16 = sheet.GetTile16At(ttt);
+
+				var (t0, p0) = gfx.GetBackgroundTileWithPalette(t16.Tile0);
+				t0.DrawToCanvas(tilesgfxBitmap, xx * 16, yy * 16, (byte) p0, t16.Tile0.HFlip, t16.Tile0.VFlip);
+
+				var (t1, p1) = gfx.GetBackgroundTileWithPalette(t16.Tile1);
+				t1.DrawToCanvas(tilesgfxBitmap, xx * 16 + 8, yy * 16, (byte) p1, t16.Tile1.HFlip, t16.Tile1.VFlip);
+
+				var (t2, p2) = gfx.GetBackgroundTileWithPalette(t16.Tile2);
+				t2.DrawToCanvas(tilesgfxBitmap, xx * 16, yy * 16 + 8, (byte) p2, t16.Tile2.HFlip, t16.Tile2.VFlip);
+
+				var (t3, p3) = gfx.GetBackgroundTileWithPalette(t16.Tile3);
+				t3.DrawToCanvas(tilesgfxBitmap, xx * 16 + 8, yy * 16 + 8, (byte) p3, t16.Tile3.HFlip, t16.Tile3.VFlip);
+			}
+
+			if (++xx == selectedTileSpan)
+			{
+				xx = 0;
+				yy++;
+			}
+		}
 	}
 
 	private void Copy_Tiles()
@@ -40,6 +76,7 @@ public partial class SceneOW
 		{
 			selectedTile = data.tiles;
 			selectedTileSpan = data.length;
+			RefreshTilePreview();
 		}
 	}
 
@@ -92,7 +129,7 @@ public partial class SceneOW
 			s
 		};
 
-		return;
+		RefreshTilePreview();
 	}
 
 
@@ -125,34 +162,7 @@ public partial class SceneOW
 		{
 			if (ModifierKeys == Keys.Control)
 			{
-				throw new NotImplementedException();
-				//if (selectedTile.Length >= 1)
-				//{
-				//	int y = 0;
-				//	int x = 0;
-				//
-				//	for (int i = 0; i < selectedTile.Length; i++)
-				//	{
-				//		superX = ((tileX + x) / 32);
-				//		superY = ((tileY + y) / 32);
-				//		mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
-				//		if (ZS.OverworldManager.allmaps[mapId].GetTile16At(localTileDownX + x, localTileDownY + y) == 52)
-				//		{
-				//			ZS.OverworldManager.allmaps[mapId].SetTile16At(selectedTile[i], localTileDownX + x, localTileDownY + y);
-				//		}
-				//
-				//		x++;
-				//		if (x >= selectedTileSpan)
-				//		{
-				//			y++;
-				//			x = 0;
-				//		}
-				//	}
-				//}
-				//else if (ZS.OverworldManager.allmaps[mapId].GetTile16At(localTileDownX, localTileDownY) == 52)
-				//{
-				//	ZS.OverworldManager.allmaps[mapId].SetTile16At(selectedTile[0], localTileDownX, localTileDownY);
-				//}
+
 			}
 			else
 			{
@@ -167,7 +177,7 @@ public partial class SceneOW
 
 	private void OnMouseUp_Tiles(MouseEventArgs e)
 	{
-		lockedDirection = 0x00;
+		lockedDirection = LockingDirection.None;
 
 		if (e.Button == MouseButtons.Right)
 		{
@@ -185,6 +195,7 @@ public partial class SceneOW
 
 				selectedTile = GetBlockOfTiles(xx, yy, w, h);
 				selectedTileSpan = w;
+				RefreshTilePreview();
 			}
 
 			if (selectedTile.Length == 1)
@@ -209,34 +220,40 @@ public partial class SceneOW
 		
 		if (e.Button == MouseButtons.Left)
 		{
-			int tileX = (e.X / 16).Clamp(0, 255);
-			int tileY = (e.Y / 16).Clamp(0, 255);
-			int superX = (tileX / 32);
-			int superY = (tileY / 32);
-			int mapId = (superY * 8) + superX;
-			globalmouseTileDownX = tileX;
-			globalmouseTileDownY = tileY;
-
-			if (ModifierKeys == Keys.Shift && lockedDirection == 0x00)
+			if (ModifierKeys == Keys.Shift)
 			{
-				if (lastTileHoverX != currentTileX)
+				if (lockedDirection == LockingDirection.None)
 				{
-					lockedDirection = 0x01;
-				}
-				if (lastTileHoverY != currentTileY)
-				{
-					lockedDirection = 0x02;
+					if (lastTileHoverX != currentTileX)
+					{
+						lockedDirection = LockingDirection.Horizontal;
+						globalmouseTileDownYLOCK = currentTileY;
+					}
+					else if (lastTileHoverY != currentTileY)
+					{
+						lockedDirection = LockingDirection.Vertical;
+						globalmouseTileDownXLOCK = currentTileX;
+					}
 				}
 			}
+			else
+			{
+				lockedDirection = LockingDirection.None;
+			}
 
-			if (lockedDirection == 0x01)
+			int useX = lockedDirection switch
 			{
-				globalmouseTileDownY = tileY = globalmouseTileDownYLOCK;
-			}
-			else if (lockedDirection == 0x02)
+				LockingDirection.Vertical => globalmouseTileDownXLOCK,
+				_ => currentTileX
+			};
+
+			int useY = lockedDirection switch
 			{
-				globalmouseTileDownX = tileX = globalmouseTileDownXLOCK;
-			}
+				LockingDirection.Horizontal => globalmouseTileDownYLOCK,
+				_ => currentTileY
+			};
+
+			PlaceSelectedTiles(useX, useY);
 		}
 	}
 }

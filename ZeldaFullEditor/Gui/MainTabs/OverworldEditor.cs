@@ -647,7 +647,7 @@ public partial class OverworldEditor : UserControl
 
 			Rectangle r = new Rectangle(mouseX_Real & ~0xF, mouseY_Real & ~0xF, ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan);
 
-			g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, GraphicsUnit.Pixel, ia);
+			g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap.Bitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSpan * Tile16MasterSheet.TileSpan, GraphicsUnit.Pixel, ia);
 			g.DrawRectangle(Pens.LightGreen, r);
 			//g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * 16, (ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
 			//g.DrawRectangle(Pens.LightGreen, r);
