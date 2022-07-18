@@ -27,7 +27,6 @@ public partial class ObjectViewer<TPreview> : FlowLayoutPanel where TPreview : I
 			Height = DimensionL;
 			Margin = new(0, 0, 1, 1);
 			Font = FF;
-			
 		}
 
 		protected override void OnPaint(PaintEventArgs e)

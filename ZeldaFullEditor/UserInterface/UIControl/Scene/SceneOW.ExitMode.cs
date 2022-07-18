@@ -168,7 +168,7 @@ public partial class SceneOW
 	//	selectedTile[1] = 3503;
 	//}
 
-	public void Draw_Exit(Graphics g)
+	public void DrawExit(Graphics g)
 	{
 		Brush bgrBrush;
 		Pen outline;

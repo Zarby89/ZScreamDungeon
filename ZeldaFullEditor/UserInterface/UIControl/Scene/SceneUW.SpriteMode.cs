@@ -17,6 +17,26 @@ public partial class SceneUW
 		ResetPlacementProperties();
 	}
 
+	private void OnMouseWheel_Sprites(MouseEventArgs e)
+	{
+		return;
+
+		// TODO do we want this?
+		if (Room?.OnlySelectedObject is DungeonSprite d)
+		{
+			int i = d.ID;
+
+			e.ScrollByValue(ref i, 1);
+
+			i = i.Clamp(0,
+				d.IsCurrentlyOverlord
+				? OverlordType.ListOf.Length
+				: SpriteType.ListOf.Length
+			);
+		}
+	}
+
+
 	private void OnMouseUp_Sprites(MouseEventArgs e)
 	{
 
@@ -24,7 +44,10 @@ public partial class SceneUW
 
 	private void OnMouseMove_Sprites(MouseEventArgs e)
 	{
-
+		if (!MouseIsDown)
+		{
+			FindHoveredEntity(Room.SpritesList, e);
+		}
 	}
 
 	private void Copy_Sprites()

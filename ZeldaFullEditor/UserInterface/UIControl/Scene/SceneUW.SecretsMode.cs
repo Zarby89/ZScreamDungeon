@@ -20,13 +20,25 @@ public partial class SceneUW
 
 	private void OnMouseMove_Secrets(MouseEventArgs e)
 	{
-
+		if (!MouseIsDown)
+		{
+			FindHoveredEntity(Room.SecretsList, e);
+		}
 	}
 
 	// TODO make this change secrets type
 	private void OnMouseWheel_Secrets(MouseEventArgs e)
 	{
+		if (Room.OnlySelectedObject is DungeonSecret s)
+		{
+			int i = e.ScrollByValue(s.ID, 1);
+			var sn = SecretItemType.ListOf.GetNextOrPreviousInGlobalList(s.SecretType, i);
 
+			if (sn is null) return;
+
+			s.SecretType = sn;
+			Room.Redrawing |= NeedsNewArt.UpdatedSpritesLayer;
+		}
 	}
 
 	private void Copy_Secrets()

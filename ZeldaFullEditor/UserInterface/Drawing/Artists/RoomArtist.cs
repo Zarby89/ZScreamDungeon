@@ -48,7 +48,7 @@ public class RoomArtist : TilemapArtist
 	}
 
 
-	protected override void RedrawSpriteLayer()
+	protected override void RebuildSprites()
 	{
 		if (CurrentRoom == null) return;
 
@@ -57,8 +57,6 @@ public class RoomArtist : TilemapArtist
 		DrawEntireList(CurrentRoom.SpritesList);
 		DrawEntireList(CurrentRoom.SecretsList);
 		DrawEntireList(CurrentRoom.ChestList);
-
-		base.RedrawSpriteLayer();
 	}
 
 	public override Tile GetLayer1TileAt(int x, int y) => new(Layer1TileMap[x + 64 * y]);
@@ -66,7 +64,7 @@ public class RoomArtist : TilemapArtist
 
 	protected override void RebuildLayer1()
 	{
-		if (CurrentRoom == null) return;
+		if (CurrentRoom is null) return;
 
 		RebuildTileMap();
 

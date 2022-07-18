@@ -21,7 +21,10 @@ public partial class SceneUW
 
 	private void OnMouseMove_Torch(MouseEventArgs e)
 	{
-
+		if (!MouseIsDown)
+		{
+			FindHoveredEntity(Room.TorchList, e);
+		}
 	}
 
 	private void Copy_Torch()

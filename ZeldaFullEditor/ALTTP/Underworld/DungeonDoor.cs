@@ -1,5 +1,7 @@
 ﻿namespace ZeldaFullEditor.ALTTP.Underworld;
 
+internal delegate void DoorDrawFunction(TilemapArtist art, DungeonDoor door);
+
 /// <summary>
 /// Represents a door or door modifier that controls transitions in and out of dungeon rooms.
 /// </summary>
@@ -8,100 +10,79 @@ public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveIn
 {
 	public byte ID => DoorType.ID;
 
-	public int RealX => NewX * 8;
-	public int RealY => NewY * 8;
-
-	public byte Grid { get; set; }
-	public byte GridY { get; set; }
+	public int RealX => position.RealX;
+	public int RealY => position.RealY;
 
 	// TODO need a way to change shape for the special door draws
-	public Rectangle BoundingBox
-	{
-		get
-		{
-			if (DoorPosition.IsHorizontal)
-			{
-				return new Rectangle(RealX, RealY, 16, 24);
-			}
+	public Rectangle BoundingBox => position.BoundingBox;
 
-			return new Rectangle(RealX, RealY, 24, 16);
+	private DungeonDoorType doortype = DungeonDoorType.DoorType00;
+	public DungeonDoorType DoorType {
+		get => doortype;
+		set
+		{
+			doortype = value;
+			//FindNewTileSet();
 		}
 	}
 
-	private byte nx, ny;
-	public byte NewX
-	{
-		get => nx;
-		set => nx = value.Clamp(0, 63);
-	}
-	public byte NewY
-	{
-		get => ny;
-		set => ny = value.Clamp(0, 63);
-	}
-
-	public DungeonDoorType DoorType { get; set; } = DungeonDoorType.DoorType00;
-
-	private DungeonDoorDraw position;
-	public DungeonDoorDraw DoorPosition
+	private DungeonDoorPosition position = DungeonDoorPosition.North00;
+	public DungeonDoorPosition Position
 	{
 		get => position;
 		set
 		{
 			position = value;
-			Tiles = DoorTiles[DoorPosition.Direction];
+			//UpdateTilesForPosition();
 		}
 	}
 
-	private DoorTilesList doorset;
-
-	public DoorTilesList DoorTiles
-	{
-		get => doorset;
-		set
-		{
-			doorset = value;
-			Tiles = DoorTiles[DoorPosition.Direction];
-		}
-	}
+	private DoorTilesList DoorTiles = DoorTilesList.EmptySet;
 
 	public TilesList Tiles { get; private set; }
 
 	public string Name => DoorType.Name;
 
-	public DungeonDoor(DungeonDoorDraw position, DoorTilesList tiles)
+	public DungeonDoor(DungeonDoorType type, DungeonDoorPosition position)
 	{
 		this.position = position;
-		DoorTiles = tiles;
+		DoorType = type;
+	}
+
+	private void FindNewTileSet()
+	{
+		DoorTiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(ID);
+		UpdateTilesForPosition();
+	}
+
+	private void UpdateTilesForPosition()
+	{
+		Tiles = DoorTiles[Position.Direction];
 	}
 
 	public void Draw(IDrawArt artist)
 	{
 		var art = (TilemapArtist) artist;
+
 		if (art is null) return;
 
-		if (DoorType.SpecialDraw != null)
-		{
-			DoorType.SpecialDraw(art, this);
-			return;
-		}
-		DoorPosition.Draw(art, this);
+		DoorType.Draw(art, this);
 	}
 
 	public bool PointIsInHitbox(int x, int y)
 	{
-		throw new NotImplementedException();
+		return Position.BoundingBox.Contains(x, y);
 	}
 
 	public byte[] GetByteData()
 	{
-		return new byte[] { ID, DoorPosition.Token };
+		return new byte[] { ID, Position.Token };
 	}
 }
 
 public class DungeonDoorPreview : DungeonDoor
 {
-	public DungeonDoorPreview(DungeonDoorDraw position, DoorTilesList tiles) : base(position, tiles)
+	public DungeonDoorPreview(DungeonDoorType type, DungeonDoorPosition position) : base(type, position)
 	{
 	}
 }

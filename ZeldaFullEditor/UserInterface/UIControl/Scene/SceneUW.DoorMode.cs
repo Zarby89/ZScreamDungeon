@@ -5,7 +5,11 @@ public partial class SceneUW
 
 	private void OnMouseDown_Door(MouseEventArgs e)
 	{
-
+		if (ObjectToPlace is null)
+		{
+			FindHoveredEntity(Room.DoorsList, e);
+			Room.OnlySelectedObject = hoveredEntity;
+		}
 	}
 
 	private void OnMouseUp_Door(MouseEventArgs e)
@@ -21,7 +25,17 @@ public partial class SceneUW
 	// TO make this change the door type
 	private void OnMouseWheel_Door(MouseEventArgs e)
 	{
+		if (Room?.OnlySelectedObject is DungeonDoor d)
+		{
+			int i = e.ScrollByValue(d.ID, 1);
+			var dn = DungeonDoorType.ListOf.GetNextOrPreviousInGlobalList(d.DoorType, i);
 
+			if (dn is null) return;
+
+			d.DoorType = dn;
+			Room.Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
+			UpdateDungeonForm();
+		}
 	}
 
 	private void Copy_Door()
@@ -41,7 +55,7 @@ public partial class SceneUW
 
 	private void Insert_Door()
 	{
-		var d = new DungeonDoor(DungeonDoorDraw.North00, ZS.TileLister.GetDoorTileSet(0));
+		var d = new DungeonDoor(DungeonDoorType.DoorType00, DungeonDoorPosition.North00);
 		Room.AttemptToAddEntityAsSelected(d, CurrentMode);
 	}
 

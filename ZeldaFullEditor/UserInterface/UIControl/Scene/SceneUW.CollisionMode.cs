@@ -17,7 +17,7 @@ public partial class SceneUW
 
 	}
 
-	private void Draw_Collision(Graphics g)
+	private void DrawCustomCollision(Graphics g)
 	{
 		int i = 0;
 		foreach (byte? b in Room.CollisionMap)

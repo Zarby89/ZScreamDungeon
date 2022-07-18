@@ -14,6 +14,17 @@ public static class IntFunctions
 	public static bool BitIsOn(this ushort b, ushort test) => (b & test) != 0;
 	public static bool BitsAllSet(this ushort b, ushort test) => (b & test) == test;
 
+	public static byte GetMaskWithLowSignificance(this byte b, byte mask)
+	{
+		int i = 0;
+		for (; i < 8; i++)
+		{
+			if (mask.BitIsOn((byte) (1 << i))) break;
+		}
+
+		return (byte) ((b & mask) >> i);
+	}
+
 	public static byte SetFieldBits(byte baseval = 0,
 		bool bit0 = false, bool bit1 = false, bool bit2 = false, bool bit3 = false,
 		bool bit4 = false, bool bit5 = false, bool bit6 = false, bool bit7 = false)

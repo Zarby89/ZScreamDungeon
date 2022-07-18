@@ -50,7 +50,7 @@ public partial class SceneOW
 	}
 
 
-	public void Draw_Graves(Graphics g)
+	public void DrawGraves(Graphics g)
 	{
 		Pen bgrBrush = Constants.Magenta200Pen;
 		g.CompositingMode = CompositingMode.SourceOver;

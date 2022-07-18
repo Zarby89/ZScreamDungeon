@@ -15,7 +15,6 @@ public partial class SceneUW
 
 	private void OnMouseMove_Entrance(MouseEventArgs e)
 	{
-
 		UnderworldEntrance sel = ZGUI.DungeonEditor.selectedEntrance;
 
 		if (sel == null) return;

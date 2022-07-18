@@ -60,7 +60,7 @@ public class ScreenArtist : TilemapArtist
 		}
 	}
 
-	protected override void RedrawSpriteLayer()
+	protected override void RebuildSprites()
 	{
 		// TODO how to do this?
 		//DrawEntireList(CurrentRoom.SpritesList);

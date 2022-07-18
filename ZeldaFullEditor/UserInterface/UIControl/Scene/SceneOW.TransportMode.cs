@@ -59,7 +59,7 @@ public partial class SceneOW
 		}
 	}
 
-	public void Draw_Transports(Graphics g)
+	public void DrawTransports(Graphics g)
 	{
 		Brush bgrBrush;
 		Pen outline;

@@ -184,6 +184,18 @@ internal static class Utils
 		return list.FirstOrDefault(o => o.ListID == id);
 	}
 
+	internal static T GetNextOrPreviousInGlobalList<T>(this ImmutableArray<T> list, T item, int offset) where T : class, IEntityType<T>
+	{
+		int i = list.IndexOf(item);
+
+		if (i == -1) return null;
+
+		i += offset;
+
+		if (i < 0 || i >= list.Length) return null;
+
+		return list[i];
+	}
 
 	public static void AddMany<T>(this List<T> list, params T[] add)
 	{

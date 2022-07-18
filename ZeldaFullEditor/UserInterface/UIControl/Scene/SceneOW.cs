@@ -7,7 +7,7 @@ public partial class SceneOW : Scene
 	//int selectedIndex = 0;
 	public int CurrentMapID {
 		get => CurrentMap.MapID;
-		set => CurrentMap = ZScreamer.ActiveOW.allmaps[value];
+		set => CurrentMap = ZS.OverworldManager.allmaps[value];
 	}
 
 	public OverworldScreen CurrentMap { get; set; }
@@ -28,8 +28,8 @@ public partial class SceneOW : Scene
 	private int localTileDownX => globalmouseTileDownX / Constants.NumberOfTile16PerStrip;
 	private int localTileDownY => globalmouseTileDownY / Constants.NumberOfTile16PerStrip;
 
-	public int lastTileHoverX = 0;
-	public int lastTileHoverY = 0;
+	private int lastTileHoverX = 0;
+	private int lastTileHoverY = 0;
 
 	public int lastHover = -1;
 
@@ -305,20 +305,20 @@ public partial class SceneOW : Scene
 
 	private void MoveDestinationToMouse(OverworldDestination dest, MouseEventArgs e)
 	{
-		if (dest != null)
+		if (dest is null) return;
+		
+		dest.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
+
+		dest.GlobalX = (ushort) e.X;
+		dest.GlobalY = (ushort) e.Y;
+
+		if (snapToGrid)
 		{
-			dest.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-
-			dest.GlobalX = (ushort) e.X;
-			dest.GlobalY = (ushort) e.Y;
-
-			if (snapToGrid)
-			{
-				dest.SnapToGrid();
-			}
-
-			dest.UpdateMapProperties(ZS.OverworldManager.allmaps[dest.MapID].IsPartOfLargeMap);
+			dest.SnapToGrid();
 		}
+
+		dest.UpdateMapProperties(ZS.OverworldManager.allmaps[dest.MapID].IsPartOfLargeMap);
+		
 	}
 
 
@@ -386,6 +386,7 @@ public partial class SceneOW : Scene
 					};
 					g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[grass]), new Rectangle(x, y, 512, 512));
 				}
+
 				ZS.OverworldManager.allmaps[i].MyArtist.DrawSelfToImage(g, new PointF(x, y));
 
 				if (ZGUI.overworldOverlayVisibleToolStripMenuItem.Checked)
@@ -437,30 +438,30 @@ public partial class SceneOW : Scene
 
 		if (ZGUI.showExits)
 		{
-			Draw_Exit(g);
+			DrawExit(g);
 		}
 
 		if (ZGUI.showEntrances)
 		{
-			Draw_Entrance(g);
+			DrawEntrance(g);
 		}
 
 		if (ZGUI.showItems)
 		{
-			Draw_Secrets(g);
+			DrawSecrets(g);
 		}
 
-		Draw_Graves(g);
+		DrawGraves(g);
 
 
 		if (ZGUI.showFlute)
 		{
-			Draw_Transports(g);
+			DrawTransports(g);
 		}
 
 		if (ZGUI.ShowSprites)
 		{
-			Draw_Sprites(g);
+			DrawSprites(g);
 		}
 
 
@@ -468,7 +469,7 @@ public partial class SceneOW : Scene
 
 		if (entrancePreview)
 		{
-			OverworldEntity prev = (OverworldEntity)SelectedEntrance ?? SelectedExit;
+			var prev = (OverworldEntity) SelectedEntrance ?? SelectedExit;
 
 			if (prev != null)
 			{
@@ -478,11 +479,10 @@ public partial class SceneOW : Scene
 
 		if (ZS.CurrentOWMode == OverworldEditMode.Overlay)
 		{
-			int mid = CurrentParentMapID;
 			int msy = 512 * (CurrentParentVirtualMapID / 8);
 			int msx = 512 * (CurrentParentVirtualMapID - (msy * 8));
 		
-			// TODO ugh wtf COPY	
+			// TODO ugh wtf COPY
 			g.DrawText(0 + 4, 0 + 64, "Selected Map : " + CurrentMapID.ToString());
 			g.DrawText(0 + 4, 0 + 80, "Selected Map PARENT : " + CurrentParentMapID.ToString());
 			g.DrawText(msx + 4, msy + 4, "use ctrl key + click to delete overlay tiles");
@@ -563,8 +563,6 @@ public partial class SceneOW : Scene
 		}
 
 		g.CompositingMode = CompositingMode.SourceCopy;
-		//hideText = false;
-
 	}
 
 	public override void Refresh()
@@ -573,8 +571,6 @@ public partial class SceneOW : Scene
 		//InvalidateScreens();
 		base.Refresh();
 	}
-
-
 
 	public (OverworldScreen, int x, int y) GetScreenCoordinatesFromGlobalXY(int x, int y)
 	{
@@ -588,9 +584,8 @@ public partial class SceneOW : Scene
 
 		int id = xx + (yy * 8);
 
-		return (ZScreamer.ActiveOW.GetScreenWithVirtualIDFromCurrentWorld(id),
+		return (ZS.OverworldManager.GetScreenWithVirtualIDFromCurrentWorld(id),
 			x % Constants.NumberOfTile16PerStrip,
 			y % Constants.NumberOfTile16PerStrip);
-
 	}
 }

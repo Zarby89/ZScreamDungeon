@@ -85,7 +85,12 @@ public abstract class TilemapArtist : IDrawArt
 
 		if (Redrawing.HasFlag(NeedsNewArt.UpdatedSpritesLayer))
 		{
-			RedrawSpriteLayer();
+			RebuildSprites();
+		}
+
+		if (Redrawing.HasFlag(NeedsNewArt.UpdatedSpritesLayer | NeedsNewArt.UpdatedSpriteTileset))
+		{
+			RedrawSprites();
 		}
 
 		RebuildBitMap();
@@ -101,6 +106,9 @@ public abstract class TilemapArtist : IDrawArt
 		ReloadPalettes();
 		RebuildLayer1();
 		RebuildLayer2();
+		RebuildSprites();
+		RedrawSprites();
+
 		RebuildBitMap();
 
 		Valid = true;
@@ -110,7 +118,7 @@ public abstract class TilemapArtist : IDrawArt
 	public abstract void RebuildBitMap();
 
 
-	public void ResetSpritesList()
+	protected void ResetSpritesList()
 	{
 		SpriteDrawInstructions.Clear();
 	}
@@ -170,7 +178,9 @@ public abstract class TilemapArtist : IDrawArt
 
 	public abstract void DrawTileForPreview(Tile t, int indexoff);
 
-	protected virtual void RedrawSpriteLayer()
+	protected abstract void RebuildSprites();
+
+	protected virtual void RedrawSprites()
 	{
 		SpriteCanvas.ClearBitmap();
 

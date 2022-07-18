@@ -198,7 +198,7 @@ public partial class SceneOW
 		lastselectedSprite = null;
 	}
 
-	public void Draw_Sprites(Graphics g)
+	public void DrawSprites(Graphics g)
 	{
 		Brush bgrBrush;
 		Pen outline;

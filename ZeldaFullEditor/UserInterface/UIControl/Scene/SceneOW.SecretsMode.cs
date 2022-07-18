@@ -141,7 +141,7 @@ public partial class SceneOW
 		}
 	}
 
-	public void Draw_Secrets(Graphics g)
+	public void DrawSecrets(Graphics g)
 	{
 		Brush bgrBrush;
 		Pen outline;

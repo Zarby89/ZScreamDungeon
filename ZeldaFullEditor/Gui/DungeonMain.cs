@@ -581,7 +581,7 @@ public partial class ZScreamForm : Form
 		}
 		else if (editorsTabControl.SelectedIndex == 2) // gfx editor
 		{
-			gfxEditor.paste();
+			gfxEditor.Paste();
 		}
 		else if (editorsTabControl.SelectedIndex == 3) // Text editor
 		{

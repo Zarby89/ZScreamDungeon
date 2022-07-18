@@ -21,6 +21,7 @@ public class Room
 	public DungeonSpritesList SpritesList { get; } = new();
 	public DungeonBlocksList BlocksList { get; } = new();
 	public DungeonTorchList TorchList { get; } = new();
+
 	public List<IDungeonPlaceable> SelectedObjects { get; } = new();
 
 	public FullPalette CGPalette { get; private set; }
@@ -44,7 +45,10 @@ public class Room
 		internal set
 		{
 			SelectedObjects.Clear();
-			SelectedObjects.Add(value);
+			if (value is not null)
+			{
+				SelectedObjects.Add(value);
+			}
 		}
 	}
 
@@ -76,20 +80,8 @@ public class Room
 		set
 		{
 			moam = value;
+			// TODO might add things for redrawing this properly
 		}
-	}
-
-	public bool IsEmpty
-	{
-		get => Layer1Objects.Count == 0 &&
-				Layer2Objects.Count == 0 &&
-				Layer3Objects.Count == 0 &&
-				DoorsList.Count == 0 &&
-				ChestList.Count == 0 &&
-				SecretsList.Count == 0 &&
-				SpritesList.Count == 0 &&
-				BlocksList.Count == 0 &&
-				TorchList.Count == 0;
 	}
 
 	public ushort MessageID { get; set; }
@@ -138,7 +130,7 @@ public class Room
 		{
 			if (f1gfx == value) return;
 			f1gfx = value;
-			Redrawing = NeedsNewArt.UpdatedAllTilemaps;
+			Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
 		}
 	}
 	
@@ -148,7 +140,7 @@ public class Room
 		{
 			if (f2gfx == value) return;
 			f2gfx = value;
-			Redrawing = NeedsNewArt.UpdatedAllTilemaps;
+			Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
 		}
 	}
 
@@ -161,7 +153,7 @@ public class Room
 		{
 			if (coupling == value) return;
 			coupling = value;
-			Redrawing = NeedsNewArt.UpdatedLayering;
+			Redrawing |= NeedsNewArt.UpdatedLayering;
 		}
 	}
 	public RoomTagType Tag1 { get; set; }
@@ -221,11 +213,10 @@ public class Room
 
 		LayerCoupling = LayerCouplingType.ListOf[b >> 5];
 		LayerCollision = LayerCollisionType.ListOf[(b & 0x0C) >> 2];
-		IsDark = (b & 0x01) == 0x01;
+		IsDark = b.BitIsOn(0x01);
 		pal = ZS.ROM[hpos++];
 		bgtiles = ZS.ROM[hpos++];
 		sprtiles = ZS.ROM[hpos++];
-		//LayerMerging = LayerMergeType.ListOf[ZS.ROM[hpos++]];
 		LayerEffect = LayerEffectType.ListOf[ZS.ROM[hpos++]];
 		Tag1 = RoomTagType.GetTypeFromID(ZS.ROM[hpos++]);
 		Tag2 = RoomTagType.GetTypeFromID(ZS.ROM[hpos++]);
@@ -233,9 +224,9 @@ public class Room
 		b = ZS.ROM[hpos++];
 
 		Pits.TargetLayer = (byte) (b & 0x03);
-		Stair1.TargetLayer = (byte) (b >> 2 & 0x03);
-		Stair2.TargetLayer = (byte) (b >> 4 & 0x03);
-		Stair3.TargetLayer = (byte) (b >> 6 & 0x03);
+		Stair1.TargetLayer = (byte) ((b >> 2) & 0x03);
+		Stair2.TargetLayer = (byte) ((b >> 4) & 0x03);
+		Stair3.TargetLayer = (byte) ((b >> 6) & 0x03);
 		Stair4.TargetLayer = (byte) (ZS.ROM[hpos++] & 0x03);
 
 		Pits.Target = ZS.ROM[hpos++];
@@ -265,14 +256,11 @@ public class Room
 		LoadSecrets();
 		ResyncAllLists();
 
-		LoadCustomCollisionFromRom();
+		LoadCustomCollisionFromROM();
 		RefreshPalette();
 		RefreshTilesets();
-	}
 
-	public void InvalidateTilemaps()
-	{
-		Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
+		Redrawing = NeedsNewArt.LiterallyEverything;
 	}
 
 	public void RefreshTilesets()
@@ -282,7 +270,6 @@ public class Room
 			SpriteTileset,
 			BackgroundTileset);
 		Redrawing |= NeedsNewArt.UpdatedAllTilesets;
-		Redrawing |= NeedsNewArt.UpdatedSpriteTileset;
 	}
 
 	public void RefreshPalette()
@@ -323,30 +310,18 @@ public class Room
 
 	public void RemoveIfThereOrAddToSelectedObjects(IDungeonPlaceable d)
 	{
-		if (SelectedObjects.Contains(d))
-		{
-			SelectedObjects.Remove(d);
-			return;
-		}
+		bool hadD = SelectedObjects.Remove(d);
+
+		if (hadD) return;
+
 		SelectedObjects.Add(d);
 	}
 
-	public void DoForAllRoomObjects(Action<RoomObject> act)
+	public void ForAllRoomObjects(Action<RoomObject> act)
 	{
-		foreach (var r in Layer1Objects)
-		{
-			act(r);
-		}
-
-		foreach (var r in Layer2Objects)
-		{
-			act(r);
-		}
-
-		foreach (var r in Layer3Objects)
-		{
-			act(r);
-		}
+		Layer1Objects.ForEach(act);
+		Layer2Objects.ForEach(act);
+		Layer3Objects.ForEach(act);
 	}
 
 	public void Undo()
@@ -419,7 +394,7 @@ public class Room
 			var room = ZS.ROM.Read16(pos);
 			pos += 2;
 
-			var correctRoom = room == RoomID;
+			bool correctRoom = room == RoomID;
 
 			var tpos = room; // assign it now to catch that one deleted thing in vanilla
 
@@ -491,7 +466,7 @@ public class Room
 	}
 
 
-	public static RoomObject ParseRoomObject(ZScreamer ZS, byte b1, byte b2, byte b3)
+	public static RoomObject ParseRoomObject(ZScreamer zs, byte b1, byte b2, byte b3)
 	{
 		byte size, posX, posY;
 		ushort oid;
@@ -519,23 +494,17 @@ public class Room
 		}
 
 		var rtype = RoomObjectType.GetTypeFromID(oid);
-		if (rtype == null)
-		{
-			return null;
-		}
+		if (rtype is null) return null;
 
-		var defn = ZS.TileLister[oid];
-		if (defn == null)
-		{
-			return null;
-		}
+		var defn = zs.TileLister[oid];
+		if (defn is null) return null;
 
-		if (rtype.Resizeability == ObjectResizability.None)
+		if (rtype.Resizeability is ObjectResizability.None)
 		{
 			size = 0;
 		}
 
-		return new(rtype, defn)
+		return new RoomObject(rtype, defn)
 		{
 			GridX = posX,
 			GridY = posY,
@@ -548,11 +517,11 @@ public class Room
 		CollisionMap = new byte?[Constants.TilesPerTilemap];
 	}
 
-	private void LoadCustomCollisionFromRom()
+	private void LoadCustomCollisionFromROM()
 	{
 		int offset = ZS.ROM.Read24(ZS.Offsets.CustomCollisionTable + (3 * RoomID));
 
-		if (offset == 0) return;
+		if (offset is 0) return;
 
 		offset = offset.SNEStoPC();
 
@@ -580,7 +549,7 @@ public class Room
 
 		next = ZS.ROM.Read16Continuous(ref offset);
 
-		while (next != Constants.ObjectSentinel)
+		while (next is not Constants.ObjectSentinel)
 		{
 			byte tile = ZS.ROM[offset++];
 			CollisionMap[next / 2] = tile;
@@ -589,12 +558,12 @@ public class Room
 		}
 	}
 
-	private DungeonDoor ParseDoorObject(byte b1, byte b2)
+	private static DungeonDoor ParseDoorObject(byte b1, byte b2)
 	{
 		return new DungeonDoor(
-				DungeonDoorDraw.GetDirectionFromToken(b1),
-				ZS.TileLister.GetDoorTileSet(b2)
-			);
+			DungeonDoorType.GetTypeFromID(b2),
+			DungeonDoorPosition.GetLocationFromToken(b1)
+		);
 	}
 
 	public void LoadObjectsFromArray(byte[] data, int offset = 0)
@@ -660,7 +629,7 @@ public class Room
 				b3 = data[offset++];
 				var r = ParseRoomObject(b1, b2, b3);
 
-				if (r != null)
+				if (r is not null)
 				{
 					r.Layer = (RoomLayer) layer;
 					currentList.Add(r);
@@ -739,6 +708,8 @@ public class Room
 		TorchList.Clear();
 		BlocksList.Clear();
 		ChestList.Clear();
+		SelectedObjects.Clear();
+		Redrawing = NeedsNewArt.LiterallyEverything;
 		ResyncAllLists();
 	}
 
@@ -771,9 +742,9 @@ public class Room
 		if (count > limit)
 		{
 			UIText.GeneralWarning(
-			$"There are too many {entity}." +
-			$"\nOnly {limit} may be placed in a single room." +
-			$"\nYou may continue working, but be aware that staying in this state will likely cause corruption."
+				$"There are too many {entity}." +
+				$"\nOnly {limit} may be placed in a single room." +
+				$"\nYou may continue working, but be aware that staying in this state will likely cause corruption."
 			);
 		}
 	}
@@ -784,11 +755,11 @@ public class Room
 	{
 		var lim = o.LimitClass;
 
-		if (lim == DungeonLimits.GeneralManipulable || lim == DungeonLimits.GeneralManipulable4x)
+		if (lim is DungeonLimits.GeneralManipulable or DungeonLimits.GeneralManipulable4x)
 		{
 			ValidateManipulables();
 		}
-		else if (lim != DungeonLimits.None)
+		else if (lim is not DungeonLimits.None)
 		{
 			var count = CountLimitedObjects(lim);
 			// TODO fill in limits
@@ -803,7 +774,7 @@ public class Room
 		}
 
 		l.Add(o);
-
+		Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
 		HasUnsavedChanges = true;
 		return true;
 	}
@@ -829,7 +800,7 @@ public class Room
 		WarnIfTooMany("non-overlord sprites", sprites, 16);
 
 		SpritesList.Add(s);
-
+		Redrawing |= NeedsNewArt.UpdatedSpritesLayer;
 		HasUnsavedChanges = true;
 		return true;
 	}
@@ -838,7 +809,7 @@ public class Room
 	{
 		var count = 0;
 
-		DoForAllRoomObjects(o =>
+		ForAllRoomObjects(o =>
 		{
 			if (o.LimitClass == type)
 			{
@@ -853,15 +824,17 @@ public class Room
 	{
 		var count = BlocksList.Count;
 
-		DoForAllRoomObjects(o =>
+		ForAllRoomObjects(o =>
 		{
-			if (o.LimitClass == DungeonLimits.GeneralManipulable)
+			switch (o.LimitClass)
 			{
-				count += o.Size + 1;
-			}
-			else if (o.LimitClass == DungeonLimits.GeneralManipulable4x)
-			{
-				count += 4;
+				case DungeonLimits.GeneralManipulable:
+					count += o.Size + 1;
+					break;
+
+				case DungeonLimits.GeneralManipulable4x:
+					count += 4;
+					break;
 			}
 		});
 
@@ -904,6 +877,7 @@ public class Room
 	private IDungeonPlaceable FindRelevantEntityUnderMouseForMode(DungeonEditMode em, int x, int y)
 	{
 		var l = FindRelevantListForMode(em);
+
 		if (l is null) return null;
 
 		return FindEntityUnderMouseInList(l, x, y);
@@ -927,15 +901,7 @@ public class Room
 
 	private static IDungeonPlaceable FindEntityUnderMouseInList(IList<IDungeonPlaceable> l, int x, int y)
 	{
-		for (var i = l.Count - 1; i >= 0; i--) // count down because the objects on top are the most visible
-		{
-			var o = l[i];
-			if (o.PointIsInHitbox(x, y))
-			{
-				return o;
-			}
-		}
-		return null;
+		return l.LastOrDefault(o => o.PointIsInHitbox(x, y), null);
 	}
 
 	private void ResyncAllLists()
@@ -1003,19 +969,13 @@ public class Room
 
 	public void SendAllSelectedToFront()
 	{
-		foreach (var o in SelectedObjects)
-		{
-			SendOneToFront(o);
-		}
+		SelectedObjects.ForEach(SendOneToFront);
 		ResyncAllLists();
 	}
 
 	public void SendAllSelectedToBack()
 	{
-		foreach (var o in SelectedObjects)
-		{
-			SendOneToBack(o);
-		}
+		SelectedObjects.ForEach(SendOneToBack);
 		ResyncAllLists();
 	}
 
@@ -1047,6 +1007,7 @@ public class Room
 				SendOneToLayer(m, layer);
 			}
 		}
+		Redrawing |= NeedsNewArt.UpdatedAllTilemaps | NeedsNewArt.UpdatedSpritesLayer;
 		ResyncAllLists();
 	}
 
@@ -1054,14 +1015,25 @@ public class Room
 	{
 		var check = new List<IDungeonPlaceable>();
 		check.AddRange(SelectedObjects);
+
 		foreach (var o in check)
 		{
 			if (o is T r)
 			{
-				thisList.Remove(r);
+				bool rem = thisList.Remove(r);
+				if (!rem) continue;
 				SelectedObjects.Remove(o);
 			}
 		}
+
+		Redrawing |= thisList switch
+		{
+			List<DungeonSprite> => NeedsNewArt.UpdatedSpritesLayer,
+			List<DungeonSecret> => NeedsNewArt.UpdatedSpritesLayer,
+			List<ChestItem> => NeedsNewArt.UpdatedSpritesLayer,
+			_ => NeedsNewArt.UpdatedAllTilemaps,
+		};
+
 		ResyncAllLists();
 	}
 
@@ -1097,6 +1069,8 @@ public class Room
 		DoorsList.AddRange(shutterdoors);
 		DoorsList.AddRange(otherdoors);
 
+		Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
+
 		ResyncAllLists();
 		WarnIfTooMany("openable + shutter doors", openabledoors.Count + shutterdoors.Count, 4);
 	}
@@ -1129,10 +1103,7 @@ public class Room
 				if (r.IsChest)
 				{
 					ret[cur++] = r.IsBigChest;
-					if (cur == count)
-					{
-						return ret;
-					}
+					if (cur == count) return ret;
 				}
 			}
 		}
@@ -1153,15 +1124,16 @@ public class Room
 	{
 		var chests = FindAllObjects(o => o.IsChest);
 
-		var i = 0;
+		int i = 0;
+
 		foreach (var c in ChestList)
 		{
-			c.AssociatedChest = null;
-			if (i >= chests.Count) continue;
-
-			c.AssociatedChest = chests[i++];
+			c.AssociatedChest = (i >= chests.Count)
+				? null
+				: c.AssociatedChest = chests[i++];
 		}
 
+		Redrawing |= NeedsNewArt.UpdatedAllTilemaps | NeedsNewArt.UpdatedSpritesLayer;
 		HasUnsavedChanges = true;
 	}
 
@@ -1169,7 +1141,7 @@ public class Room
 	{
 		var stairs = FindAllObjects(o => o.IsStairs);
 
-		var count = stairs.Count;
+		int count = stairs.Count;
 
 		Stair1.AssociatedObject = count > 0 ? stairs[0] : null;
 		Stair2.AssociatedObject = count > 1 ? stairs[1] : null;
@@ -1179,10 +1151,22 @@ public class Room
 		HasUnsavedChanges = true;
 	}
 
-
 	public void ClearSelectedList()
 	{
 		SelectedObjects.Clear();
+	}
+
+	public bool IsEmpty()
+	{
+		return Layer1Objects.Count == 0 &&
+				Layer2Objects.Count == 0 &&
+				Layer3Objects.Count == 0 &&
+				DoorsList.Count == 0 &&
+				ChestList.Count == 0 &&
+				SecretsList.Count == 0 &&
+				SpritesList.Count == 0 &&
+				BlocksList.Count == 0 &&
+				TorchList.Count == 0;
 	}
 
 	//================================================================================================
@@ -1222,17 +1206,7 @@ public class Room
 		return ret.ToArray();
 	}
 
-	public bool HasNonemptyCustomCollision()
-	{
-		foreach (var b in CollisionMap)
-		{
-			if (b != null)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+	public bool HasNonemptyCustomCollision() => !CollisionMap.All(o => o is null);
 
 	public byte[] GetCollisionData()
 	{

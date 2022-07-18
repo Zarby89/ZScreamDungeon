@@ -270,7 +270,7 @@ public partial class SceneOW
 		Delete_Exit();
 	}
 
-	private void Draw_Entrance(Graphics g)
+	private void DrawEntrance(Graphics g)
 	{
 		Brush bgrBrush;
 		Pen outline;

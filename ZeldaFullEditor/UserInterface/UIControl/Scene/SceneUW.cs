@@ -53,7 +53,7 @@ public partial class SceneUW : Scene
 		doorMode = new ModeActions(OnMouseDown_Door, OnMouseUp_Door, OnMouseMove_Door, OnMouseWheel_Door,
 			Copy_Door, Paste_Door, Insert_Door, Delete_Door, SelectAll_Door);
 
-		spriteMode = new ModeActions(OnMouseDown_Sprites, OnMouseUp_Sprites, OnMouseMove_Sprites, null,
+		spriteMode = new ModeActions(OnMouseDown_Sprites, OnMouseUp_Sprites, OnMouseMove_Sprites, OnMouseWheel_Sprites,
 			Copy_Sprites, Paste_Sprites, null, Delete_Sprites, SelectAll_Sprites);
 
 		secretsMode = new ModeActions(OnMouseDown_Secrets, OnMouseUp_Secrets, OnMouseMove_Secrets, OnMouseWheel_Secrets,
@@ -110,6 +110,8 @@ public partial class SceneUW : Scene
 
 	private void UpdateDungeonForm()
 	{
+		if (Room is null) return;
+
 		if (Room.SelectedObjects.Count > 1)
 		{
 			ZGUI.DungeonEditor.UpdateFormForManySelectedObjects(Room.SelectedObjects);
@@ -153,11 +155,20 @@ public partial class SceneUW : Scene
 
 	public void MoveSelectedObjects()
 	{
-		foreach (var o in Room.SelectedObjects)
+		if (Room.OnlySelectedObject is DungeonDoor d)
 		{
-			if (o is IFreelyPlaceable gg)
+			var loc = DungeonDoorPosition.ListOf.FirstOrDefault(p => p.BoundingBox.Contains(MouseX, MouseY), null);
+			if (loc is null) return;
+			d.Position = loc;
+		}
+		else
+		{
+			foreach (var o in Room.SelectedObjects)
 			{
-				gg.MoveByDelta(MoveX, MoveY);
+				if (o is IFreelyPlaceable gg)
+				{
+					gg.MoveByDelta(MoveX, MoveY);
+				}
 			}
 		}
 
@@ -209,7 +220,18 @@ public partial class SceneUW : Scene
 
 	private void InvalidateRoomTilemapAndArtist()
 	{
-		Room.InvalidateTilemaps();
+
+		Room.Redrawing |= CurrentMode switch
+		{
+			DungeonEditMode.Layer1 => NeedsNewArt.UpdatedAllTilemaps,
+			DungeonEditMode.Layer2 => NeedsNewArt.UpdatedAllTilemaps,
+			DungeonEditMode.LayerAll => NeedsNewArt.UpdatedAllTilemaps,
+			DungeonEditMode.Sprites => NeedsNewArt.UpdatedSpritesLayer,
+			DungeonEditMode.Secrets => NeedsNewArt.UpdatedSpritesLayer,
+			DungeonEditMode.Entrances => NeedsNewArt.Nothing,
+			_ => NeedsNewArt.UpdatedAllTilemaps
+		};
+
 		RoomEditingArtist.Invalidate();
 	}
 
@@ -284,7 +306,7 @@ public partial class SceneUW : Scene
 
 		if (invisibles is not null)
 		{
-			Room.DoForAllRoomObjects(invisibles);
+			Room.ForAllRoomObjects(invisibles);
 		}
 
 		// Draw chest numbers
@@ -361,14 +383,13 @@ public partial class SceneUW : Scene
 		}
 
 		// Draw selected entrance position
-		if (ZGUI.DungeonEditor.selectedEntrance != null && ZGUI.entrancePositionToolStripMenuItem.Checked)
+		if (ZGUI.entrancePositionToolStripMenuItem.Checked && ZGUI.DungeonEditor.selectedEntrance is UnderworldEntrance enn)
 		{
-			var n = ZGUI.DungeonEditor.selectedEntrance;
-			if (n.RoomID == Room.RoomID)
+			if (enn.RoomID == Room.RoomID)
 			{
-				g.DrawRectangle(Pens.Orange, n.CameraTriggerX - 128, n.CameraTriggerY - 116, 256, 224);
-				int xx = n.XPosition & 0x1FF;
-				int yy = n.YPosition & 0x1FF;
+				g.DrawRectangle(Pens.Orange, enn.CameraTriggerX - 128, enn.CameraTriggerY - 116, 256, 224);
+				int xx = enn.XPosition & 0x1FF;
+				int yy = enn.YPosition & 0x1FF;
 				g.DrawLine(Pens.White, xx - 4, yy, xx + 4, yy);
 				g.DrawLine(Pens.White, xx, yy - 4, xx, yy + 4);
 			}
@@ -387,11 +408,27 @@ public partial class SceneUW : Scene
 		// Done
 		if (CurrentMode == DungeonEditMode.Doors)
 		{
-			g.DrawRectangles(Constants.ThirdGreenPen, DoorRectangles);
+			foreach (var d in DungeonDoorPosition.ListOf)
+			{
+				g.DrawRectangle(Pens.Red, d.BoundingBox);
+			}
+
+			foreach (var d in Room.DoorsList)
+			{
+				g.DrawRectangle(Pens.Yellow, d.BoundingBox);
+
+				if (d.DoorType.Category == DoorCategory.Meta) continue;
+
+				var od = d.Position.Partner;
+				if (od is not null)
+				{
+					g.DrawRectangle(Pens.GreenYellow, od.BoundingBox);
+				}
+			}
 		}
 		else if (CurrentMode == DungeonEditMode.CollisionMap)
 		{
-			Draw_Collision(g);
+			DrawCustomCollision(g);
 		}
 
 		// Draw selected objects
@@ -417,28 +454,24 @@ public partial class SceneUW : Scene
 	// TODO
 	private bool CheckIfObjectIsInvalidForPlacement()
 	{
-		ZeldaException spaghetti = null;
+		ZeldaException spaghetti = (ObjectToPlace, ZS.CurrentUWMode) switch
+		{
+			(DungeonSprite, not DungeonEditMode.Sprites)
+				=> new ZeldaException("Sprites can only be placed while working in sprite mode."),
 
-		// TODO probably a switch statement here
-		// or maybe even delegates? idk
-		if (ObjectToPlace is DungeonSprite && ZS.CurrentUWMode != DungeonEditMode.Sprites)
-		{
-			spaghetti = new ZeldaException("Sprites can only be placed while working in sprite mode.");
-		}
-		else if (ObjectToPlace is RoomObject && ZS.CurrentUWMode > DungeonEditMode.Layer3)
-		{
-			spaghetti = new ZeldaException("Objects can only be placed while working on backgrounds 1, 2, or 3.");
-		}
-		else if (ObjectToPlace is LightableTorch && ZS.CurrentUWMode != DungeonEditMode.Torches)
-		{
-			spaghetti = new ZeldaException("TORCHES");
-		}
-		else if (ObjectToPlace is PushableBlock && ZS.CurrentUWMode != DungeonEditMode.Blocks)
-		{
-			spaghetti = new ZeldaException("BLOCKS");
-		}
+			(RoomObject, not (DungeonEditMode.Layer1 or DungeonEditMode.Layer2 or DungeonEditMode.Layer3))
+				=> new ZeldaException("Objects can only be placed while working on backgrounds 1, 2, or 3."),
 
-		if (spaghetti != null)
+			(LightableTorch, not DungeonEditMode.Torches)
+				=> new ZeldaException("TORCHES"),
+
+			(PushableBlock, not DungeonEditMode.Blocks)
+				=> new ZeldaException("BLOCKS"),
+
+			_ => null
+		};
+
+		if (spaghetti is not null)
 		{
 			MouseIsDown = false;
 			ObjectToPlace = null;

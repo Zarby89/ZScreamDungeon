@@ -41,6 +41,9 @@ public partial class DungeonEditor : UserControl
 		thumbnailBox.Size = new Size(256, 256);
 
 		DoorTypeComboBox.DataSource = DungeonDoorType.ListOf;
+		DoorTypeComboBox.ValueMember = "Name";
+
+
 		tileTypeCombobox.DataSource = TileTypeName.ListOfVanillaNames;
 		EntranceProperties_FloorSel.DataSource = FloorNumber.ListOf;
 		selecteditemobjectCombobox.DataSource = SecretsName.ListOfVanillaNames;
@@ -122,7 +125,8 @@ public partial class DungeonEditor : UserControl
 				break;
 
 			case DungeonDoor d:
-				throw new NotImplementedException();
+				DoorTypeComboBox.SelectedValue = d.DoorType;
+				break;
 
 			case DungeonSecret x:
 				throw new NotImplementedException();
@@ -211,6 +215,8 @@ public partial class DungeonEditor : UserControl
 		{
 			room.ClearSelectedList(); // TODO necessary?
 		}
+
+		UnderWorldSceneHolder.Refresh();
 	}
 
 	public void UpdateRoomInfo()
@@ -731,7 +737,7 @@ public partial class DungeonEditor : UserControl
 
 			e.Graphics.DrawFilledRectangleWithOutline(xd, yd + yoff, 16, 16,
 				Pens.LightSlateGray,
-				new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor))
+				new SolidBrush(Color.FromArgb(alpha, room.IsEmpty() ? Color.Black : room.RoomColor))
 			);
 
 			Pen outline = (selroom == room, opened.Contains(room), selectedMapPng.Contains((ushort) i)) switch
@@ -903,17 +909,16 @@ public partial class DungeonEditor : UserControl
 	{
 		if (e.Button == MouseButtons.Right)
 		{
-			if (e.Y >= 256 && e.Y <= 264)
+			if (e.Y is >= 256 and <= 264) return;
+
+			if (HoveredRoom > 295)
 			{
 				return;
 			}
 
 			thumbnailBox.Visible = true;
 			
-			if (HoveredRoom > 295)
-			{
-				return;
-			}
+
 
 			thumbnailBox.Refresh();
 		}
@@ -935,35 +940,31 @@ public partial class DungeonEditor : UserControl
 
 	private void mapPicturebox_MouseMove(object sender, MouseEventArgs e)
 	{
-		if (maphoverCheckbox.Checked)
+		if (!maphoverCheckbox.Checked) return;
+		
+		HoveredRoom = -1;
+		thumbnailBox.Visible = false;
+
+		if (e.Y is >= 256 and <= 264) return;
+
+		int yc = e.Y;
+		if (e.Y > 256)
 		{
-			if (e.Y >= 256 && e.Y <= 264)
-			{
-				thumbnailBox.Visible = false;
-				HoveredRoom = -1;
-				return;
-			}
-
-			thumbnailBox.Visible = true;
-
-			int yc = e.Y;
-			if (e.Y > 256)
-			{
-				yc -= 8;
-			}
-			HoveredRoom = (e.X / 16) + (yc & ~0xF);
-
-			if (HoveredRoom >= Constants.NumberOfRooms)
-			{
-				HoveredRoom = -1;
-				thumbnailBox.Visible = false;
-				return;
-			}
-
-			RoomPreviewArtist.CurrentRoom = ZScreamer.ActiveScreamer.all_rooms[HoveredRoom];
-			mapPicturebox.Refresh();
-			thumbnailBox.Refresh();
+			yc -= 8;
 		}
+
+		int r = (e.X / 16) + (yc & ~0xF);
+
+		if (r >= Constants.NumberOfRooms) return;
+
+		HoveredRoom = r;
+
+		thumbnailBox.Visible = true;
+
+		RoomPreviewArtist.CurrentRoom = ZScreamer.ActiveScreamer.all_rooms[HoveredRoom];
+		mapPicturebox.Refresh();
+		thumbnailBox.Refresh();
+		
 	}
 
 
@@ -991,7 +992,7 @@ public partial class DungeonEditor : UserControl
 
 	private void selecteditemobjectCombobox_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		if (selecteditemobjectCombobox.SelectedIndex != -1 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonSecret p)
+		if (selecteditemobjectCombobox.SelectedIndex > -1 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonSecret p)
 		{
 			p.SecretType = SecretItemType.GetTypeFromID((byte) (selecteditemobjectCombobox.SelectedItem as SecretsName).ID);
 			ZScreamer.ActiveUWScene.Refresh();
@@ -1001,10 +1002,9 @@ public partial class DungeonEditor : UserControl
 	private void DoorTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
 	{
 		// Doors
-		if (DoorTypeComboBox.SelectedIndex > 0 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonDoor d)
+		if (DoorTypeComboBox.SelectedIndex > -1 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonDoor d)
 		{
 			var door = (DungeonDoorType) DoorTypeComboBox.SelectedItem;
-			d.DoorTiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(door.ID);
 			d.DoorType = door;
 			ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
 			ZScreamer.ActiveUWScene.HardRefresh();
@@ -1014,17 +1014,9 @@ public partial class DungeonEditor : UserControl
 
 	public void addRoomTab(ushort roomId)
 	{
-		bool alreadyFound = false;
-		foreach (Room room in opened_rooms)
-		{
-			if (room.RoomID == roomId)
-			{
-				alreadyFound = true;
-				break;
-			}
-		}
+		var room = opened_rooms.FirstOrDefault(r => r.RoomID == roomId, null);
 
-		if (alreadyFound)
+		if (room is not null)
 		{
 			// Display message error room already opened
 			//MessageBox.Show("That room is already opened !");
@@ -1043,8 +1035,7 @@ public partial class DungeonEditor : UserControl
 		}
 		else
 		{
-			var r = ZScreamer.ActiveScreamer.all_rooms[roomId];
-
+			room = ZScreamer.ActiveScreamer.all_rooms[roomId];
 			/*
                 if (DungeonsData.undoRoom[r.index].Count == 0)
                 {
@@ -1075,18 +1066,18 @@ public partial class DungeonEditor : UserControl
 
 			//mapPropertyGrid.SelectedObject = r;
 
-			opened_rooms.Add(r); // Add the double clicked room into rooms list     
-			ZScreamer.ActiveUWScene.Room = r;
+			opened_rooms.Add(room); // Add the double clicked room into rooms list     
+			ZScreamer.ActiveUWScene.Room = room;
 
 			//string tn = r.index.ToString("D3");
 			//if (showRoomsInHexToolStripMenuItem.Checked)
 			//{
-			string tn = r.RoomID.ToString("X3");
+			string tn = room.RoomID.ToString("X3");
 			//}
 
 			TabPage tp = new TabPage(tn)
 			{
-				Tag = r
+				Tag = room
 			};
 			RoomTabControl.TabPages.Add(tp);
 			//objectsListbox.ClearSelected();
@@ -1109,7 +1100,7 @@ public partial class DungeonEditor : UserControl
 	{
 		if (e.Node.Tag != null)
 		{
-			var list = (e.Node.Parent == entrancetreeView.Nodes[0])
+			var list = e.Node.Parent == entrancetreeView.Nodes[0]
 				? ZScreamer.ActiveScreamer.entrances
 				: ZScreamer.ActiveScreamer.starting_entrances;
 			addRoomTab(list[(int) e.Node.Tag].RoomID);
@@ -1119,7 +1110,7 @@ public partial class DungeonEditor : UserControl
 	private void mapPicturebox_MouseDoubleClick(object sender, MouseEventArgs e)
 	{
 
-		if (e.Y >= 256 && e.Y <= 264)
+		if (e.Y is >= 256 and <= 264)
 		{
 			return;
 		}
@@ -1138,21 +1129,9 @@ public partial class DungeonEditor : UserControl
 		if (ModifierKeys == Keys.Control)
 		{
 			// Check if map is already in
-			ushort? alreadyIn = null;
-			foreach (ushort s in selectedMapPng)
-			{
-				// If it was already in delete it
-				if (s == roomId)
-				{
-					alreadyIn = s;
-				}
-			}
+			bool alreadyIn = selectedMapPng.Remove(roomId);
 
-			if (alreadyIn != null)
-			{
-				selectedMapPng.Remove((ushort) alreadyIn);
-			}
-			else
+			if (!alreadyIn)
 			{
 				selectedMapPng.Add(roomId);
 			}

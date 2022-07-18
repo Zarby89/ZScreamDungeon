@@ -269,7 +269,7 @@ public unsafe partial class GfxImportExport : UserControl
 		ImgClipboard.SetImageDataWithPal(sdata, CopyPaletteData());
 	}
 
-	public void paste()
+	public void Paste()
 	{
 		if (!Clipboard.ContainsImage()) return;
 		Bitmap b = (Bitmap) Clipboard.GetImage();
@@ -306,7 +306,7 @@ public unsafe partial class GfxImportExport : UserControl
 
 	private void paste24bpp_Click(object sender, EventArgs e)
 	{
-		paste();
+		Paste();
 	}
 
 	public byte matchPalette(Color c)
@@ -348,10 +348,9 @@ public unsafe partial class GfxImportExport : UserControl
 
 		if (ofd.ShowDialog() == DialogResult.OK)
 		{
-			FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
+			using var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
 			if (fs.Length > Constants.UncompressedSheetSize)
 			{
-				
 				if (!UIText.VerifyWarning("You are trying to import a sheet that appears to be too large."))
 				{
 					fs.Close();

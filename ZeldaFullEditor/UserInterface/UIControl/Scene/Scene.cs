@@ -64,6 +64,11 @@ public class Scene : PictureBox
 
 	protected virtual void OnMouseDown(object sender, MouseEventArgs e)
 	{
+		if (!Focused)
+		{
+			Focus();
+		}
+
 		if (!MouseIsDown)
 		{
 			IsLeftPress = e.Button == MouseButtons.Left;

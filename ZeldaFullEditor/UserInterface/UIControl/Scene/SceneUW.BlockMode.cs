@@ -4,7 +4,7 @@ public partial class SceneUW
 {
 	private void OnMouseDown_Blocks(MouseEventArgs e)
 	{
-		if (ObjectToPlace == null)
+		if (ObjectToPlace is null)
 		{
 			FindHoveredEntity(Room.BlocksList, e);
 			HandleSelectingHoveredObject();
@@ -20,7 +20,10 @@ public partial class SceneUW
 
 	private void OnMouseMove_Blocks(MouseEventArgs e)
 	{
-
+		if (!MouseIsDown)
+		{
+			FindHoveredEntity(Room.BlocksList, e);
+		}
 	}
 
 	private void Copy_Blocks()

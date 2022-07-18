@@ -11,7 +11,7 @@ public unsafe class Tile16MasterSheet : IByteable
 
 	private readonly Tile16[] ListOf = new Tile16[Constants.NumberOfUniqueTile16Definitions];
 
-	public GraphicsSet Graphics { get; set; }
+	public GraphicsSet Graphics { get; private set; }
 
 	public PointeredImage PreviewCanvas { get; }
 
@@ -46,10 +46,10 @@ public unsafe class Tile16MasterSheet : IByteable
 
 	private static int GetIndexFromXY(int x, int y)
 	{
-		var X = x / TileSpan / TilesPerRow;
-		var block = X / TilesPerBlock * TilesPerBlock;
+		int X = x / TileSpan / TilesPerRow;
+		int block = X / TilesPerBlock * TilesPerBlock;
 		X %= TilesPerBlock;
-		var Y = TilesPerRow * (y / TileSpan / TilesPerColumn);
+		int Y = TilesPerRow * (y / TileSpan / TilesPerColumn);
 		return block + X + Y;
 	}
 

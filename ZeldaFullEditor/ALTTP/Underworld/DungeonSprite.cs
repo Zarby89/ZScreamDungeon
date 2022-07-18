@@ -88,7 +88,7 @@ public class DungeonSprite : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDe
 	}
 	public byte[] GetByteData()
 	{
-		var size = KeyDrop == 1 || KeyDrop == 2 ? 6 : 3;
+		var size = KeyDrop is 1 or 2 ? 6 : 3;
 		var ret = new byte[size];
 		ret[0] = (byte) ((int) Layer << 7 | (Subtype & 0x18) << 2 | GridY);
 		ret[1] = (byte) (Subtype << 5 | GridX);
