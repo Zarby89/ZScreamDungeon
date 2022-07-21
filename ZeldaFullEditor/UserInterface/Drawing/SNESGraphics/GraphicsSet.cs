@@ -95,14 +95,15 @@ public unsafe class GraphicsSet : IGraphicsSheet
 	public (GraphicsTile, PaletteID) GetBackgroundTileWithPalette(ushort tile, byte pal)
 	{
 		var r1 = GetSheetForID(tile);
-		var r2 = (r1.RightSide ? 0x08 : 0x00) | (pal << 4);
+		var r2 = (int) (r1.RightSide ? PaletteID.RightPalette : PaletteID.LeftPalette) | (pal << 4);
 		return (r1.Sheet[tile & 0x3F], (PaletteID) r2);
 	}
 
 	public (GraphicsTile, PaletteID) GetSpriteTileWithPalette(ushort tile, byte pal)
 	{
 		tile |= 0x200;
-		return GetBackgroundTileWithPalette(tile, pal);
+		var (t, p) = GetBackgroundTileWithPalette(tile, pal);
+		return (t, p | PaletteID.SpritePalette);
 	}
 
 	public (GraphicsTile, PaletteID) GetBackgroundTileWithPalette(Tile tile)

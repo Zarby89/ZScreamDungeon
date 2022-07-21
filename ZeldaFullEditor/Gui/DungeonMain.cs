@@ -2257,7 +2257,7 @@ public partial class ZScreamForm : Form
 	// TODO magic points and merge identical functions
 	private void DungeonMain_SizeChanged(object sender, EventArgs e)
 	{
-		if (true) return; // not sure if we need this method
+		return; // not sure if we need this method
 		throw new NotImplementedException();
 	}
 

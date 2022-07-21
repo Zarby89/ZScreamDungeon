@@ -94,6 +94,7 @@ public class UnderworldEntrance
 			Scrolling = ZS.ROM[ZS.Offsets.entrance_scrolling + entranceId];
 			Scrollquadrant = ZS.ROM[ZS.Offsets.entrance_scrollquadrant + entranceId];
 			OverworldEntranceLocation = ZS.ROM.Read16(ZS.Offsets.entrance_exit + entranceId * 2);
+
 			assent = entranceId;
 
 			cameraBoundaryQN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 0 + entranceId * 8];

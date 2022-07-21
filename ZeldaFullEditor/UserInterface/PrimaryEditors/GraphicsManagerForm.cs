@@ -51,10 +51,7 @@ public partial class GraphicsManagerForm : UserControl
 
 	private void panel1_Paint(object sender, PaintEventArgs e)
 	{
-		if (selectedSheet is null)
-		{
-			return;
-		}
+		if (selectedSheet is null) return;
 
 		e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 		e.Graphics.SmoothingMode = SmoothingMode.None;

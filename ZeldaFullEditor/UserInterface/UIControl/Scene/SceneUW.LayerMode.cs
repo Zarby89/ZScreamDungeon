@@ -21,7 +21,7 @@ public partial class SceneUW
 
 	private void OnMouseUp_Layer(MouseEventArgs e)
 	{
-
+		SelectAllEntitiesInRectangle(Room.GetLayerList(Layer));
 	}
 
 	private void OnMouseMove_Layer(MouseEventArgs e)

@@ -76,7 +76,7 @@ public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveIn
 
 	public byte[] GetByteData()
 	{
-		return new byte[] { ID, Position.Token };
+		return new byte[] { Position.Token, ID };
 	}
 }
 

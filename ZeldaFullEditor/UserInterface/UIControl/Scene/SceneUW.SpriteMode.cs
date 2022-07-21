@@ -39,7 +39,7 @@ public partial class SceneUW
 
 	private void OnMouseUp_Sprites(MouseEventArgs e)
 	{
-
+		SelectAllEntitiesInRectangle(Room.SpritesList);
 	}
 
 	private void OnMouseMove_Sprites(MouseEventArgs e)

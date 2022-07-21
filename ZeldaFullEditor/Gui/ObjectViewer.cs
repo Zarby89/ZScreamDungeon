@@ -53,14 +53,25 @@ public partial class ObjectViewer<TPreview> : FlowLayoutPanel where TPreview : I
 	}
 
 
-	private string text = null;
+	private string text = string.Empty;
 	public string SearchedText
 	{
 		get => text;
 		set
 		{
 			if (text == value) return;
-			text = value;
+
+			if (string.IsNullOrWhiteSpace(value))
+			{
+				if (text == string.Empty) return; // don't refilter if we're already empty
+
+				text = string.Empty;
+			}
+			else
+			{
+				text = value;
+			}
+
 			Refilter();
 		}
 	}
@@ -132,11 +143,6 @@ public partial class ObjectViewer<TPreview> : FlowLayoutPanel where TPreview : I
 		Controls.AddRange(items);
 	}
 
-	private void Add_MouseClick(object sender, MouseEventArgs e)
-	{
-		throw new NotImplementedException();
-	}
-
 	public object CreateSelectedObject()
 	{
 		return selectedCell.guy;
@@ -146,9 +152,10 @@ public partial class ObjectViewer<TPreview> : FlowLayoutPanel where TPreview : I
 	{
 		Controls.Clear();
 		selectedCell.Selected = false;
+
 		Controls.AddRange(Array.FindAll(items, sel =>
 		{
-			if (SearchedText != null && !sel.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
+			if (!string.IsNullOrWhiteSpace(SearchedText) && !sel.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
 			{
 				return false;
 			}

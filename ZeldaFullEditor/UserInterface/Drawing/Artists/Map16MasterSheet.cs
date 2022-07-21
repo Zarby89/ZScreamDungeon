@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.UserInterface.Drawing.Artists;
 
-public unsafe class Tile16MasterSheet : IByteable
+public class Tile16MasterSheet : IByteable
 {
 	internal const int TileSpan = 17;
 	internal const int TilesPerRow = 8;

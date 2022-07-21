@@ -16,7 +16,8 @@ public class DungeonDoorType : IEntityType<DungeonDoorType>
 
 	internal DungeonDoorType OppositeDoor { get; }
 
-	// TODO not sure how to handle doors anymore
+	public bool LowerLayer { get; init; }
+
 	private DungeonDoorType(byte id, string name, DoorCategory category)
 	{
 		ID = id;
@@ -41,18 +42,23 @@ public class DungeonDoorType : IEntityType<DungeonDoorType>
 	public static readonly DungeonDoorType DoorType00 = new(0x00, "Normal door", Unspecial);
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType02 = new(0x02, "Normal door (lower layer)", Unspecial);
+	public static readonly DungeonDoorType DoorType02 = new(0x02, "Normal door (lower layer)", Unspecial)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType04 = new(0x04, "Exit (lower layer)", Unspecial)
 	{
 		IsExit = true,
+		LowerLayer = true,
 	};
 
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType06 = new(0x06, "Unused cave exit (lower layer)", Unspecial)
 	{
 		IsExit = true,
+		LowerLayer = true,
 	};
 
 	[PredefinedInstance]
@@ -69,6 +75,7 @@ public class DungeonDoorType : IEntityType<DungeonDoorType>
 	public static readonly DungeonDoorType DoorType0C = new(0x0C, "Fancy dungeon exit (lower layer)", Fancy)
 	{
 		IsExit = true,
+		LowerLayer = true,
 		Draw = DrawFancyEntrance,
 	};
 
@@ -81,6 +88,7 @@ public class DungeonDoorType : IEntityType<DungeonDoorType>
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType10 = new(0x10, "Lit cave exit (lower layer)", Unspecial)
 	{
+		LowerLayer = true,
 		IsExit = true,
 	};
 
@@ -118,25 +126,27 @@ public class DungeonDoorType : IEntityType<DungeonDoorType>
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType20 = new(0x20, "Small key stairs (upwards)", Openable)
 	{
-		Draw = DrawKeyStairsUp,
+		Draw = DrawKeyStairs,
 	};
 
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType22 = new(0x22, "Small key stairs (downwards)", Openable)
 	{
-		Draw = DrawKeyStairsDown,
+		Draw = DrawKeyStairs,
 	};
 
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType24 = new(0x24, "Small key stairs (lower layer; upwards)", Openable)
 	{
-		Draw = DrawKeyStairsUp,
+		LowerLayer = true,
+		Draw = DrawKeyStairs,
 	};
 
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType26 = new(0x26, "Small key stairs (lower layer; downwards)", Openable)
 	{
-		Draw = DrawKeyStairsDown,
+		LowerLayer = true,
+		Draw = DrawKeyStairs,
 	};
 
 	[PredefinedInstance]
@@ -173,73 +183,136 @@ public class DungeonDoorType : IEntityType<DungeonDoorType>
 	public static readonly DungeonDoorType DoorType38 = new(0x38, "Top-sided shutter door", Shutter);
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType3A = new(0x3A, "Unusable normal door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType3A = new(0x3A, "Unusable normal door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType3C = new(0x3C, "Unusable normal door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType3C = new(0x3C, "Unusable normal door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType3E = new(0x3E, "Unusable normal door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType3E = new(0x3E, "Unusable normal door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType40 = new(0x40, "Normal door (lower layer; used with one-sided shutters)", Unspecial);
+	public static readonly DungeonDoorType DoorType40 = new(0x40, "Normal door (lower layer; used with one-sided shutters)", Unspecial)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType42 = new(0x42, "Unused double-sided shutter", Shutter);
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType44 = new(0x44, "Double-sided shutter (lower layer)", Shutter);
+	public static readonly DungeonDoorType DoorType44 = new(0x44, "Double-sided shutter (lower layer)", Shutter)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
 	public static readonly DungeonDoorType DoorType46 = new(0x46, "Explicit room door", Meta);
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType48 = new(0x48, "Bottom-sided shutter door (lower layer)", Shutter);
+	public static readonly DungeonDoorType DoorType48 = new(0x48, "Bottom-sided shutter door (lower layer)", Shutter)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType4A = new(0x4A, "Top-sided shutter door (lower layer)", Shutter);
+	public static readonly DungeonDoorType DoorType4A = new(0x4A, "Top-sided shutter door (lower layer)", Shutter)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType4C = new(0x4C, "Unusable normal door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType4C = new(0x4C, "Unusable normal door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType4E = new(0x4E, "Unusable normal door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType4E = new(0x4E, "Unusable normal door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType50 = new(0x50, "Unusable normal door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType50 = new(0x50, "Unusable normal door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType52 = new(0x52, "Unusable bombed-open door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType52 = new(0x52, "Unusable bombed-open door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType54 = new(0x54, "Unusable glitchy door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType54 = new(0x54, "Unusable glitchy door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType56 = new(0x56, "Unusable glitchy door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType56 = new(0x56, "Unusable glitchy door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType58 = new(0x58, "Unusable normal door (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType58 = new(0x58, "Unusable normal door (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType5A = new(0x5A, "Unusable glitchy/stairs up (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType5A = new(0x5A, "Unusable glitchy/stairs up (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType5C = new(0x5C, "Unusable glitchy/stairs up (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType5C = new(0x5C, "Unusable glitchy/stairs up (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType5E = new(0x5E, "Unusable glitchy/stairs up (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType5E = new(0x5E, "Unusable glitchy/stairs up (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType60 = new(0x60, "Unusable glitchy/stairs up (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType60 = new(0x60, "Unusable glitchy/stairs up (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType62 = new(0x62, "Unusable glitchy/stairs down (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType62 = new(0x62, "Unusable glitchy/stairs down (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType64 = new(0x64, "Unusable glitchy/stairs up (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType64 = new(0x64, "Unusable glitchy/stairs up (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 	[PredefinedInstance]
-	public static readonly DungeonDoorType DoorType66 = new(0x66, "Unusable glitchy/stairs down (lower layer)", Garbage);
+	public static readonly DungeonDoorType DoorType66 = new(0x66, "Unusable glitchy/stairs down (lower layer)", Garbage)
+	{
+		LowerLayer = true,
+	};
 
 
 
@@ -248,163 +321,152 @@ public class DungeonDoorType : IEntityType<DungeonDoorType>
 		// this page left intentionally blank
 	}
 
-	private static void DrawStandardDoor(TilemapArtist art, DungeonDoor door)
+	private static void DrawOneStandard(TilemapArtist art, DungeonDoor door, DungeonDoorPosition position)
 	{
-		bool layer2 = false;
-		DrawOne(door.Position);
-		DrawOne(door.Position.Partner);
+		// TODO figure out
+		bool trimLoc = false;
 
-		void DrawOne(DungeonDoorPosition d)
+		switch (position?.Direction)
 		{
-			switch (d?.Direction)
-			{
-				case DoorDirection.North:
-					DrawNorth(art, door, d, door.DoorType, layer2);
-					break;
+			case DoorDirection.North:
+				DrawTiles(art, position, door.DoorType, trimLoc, position.TilemapPosition, new DrawInfo(0, 0, 0),
+					new DrawInfo(3, 8, 0),
+					new DrawInfo(6, 16, 0),
+					new DrawInfo(9, 24, 0)
+				);
 
-				case DoorDirection.South:
-					DrawSouth(art, door, d, door.DoorType, layer2);
-					break;
+				DrawTiles(art, position, door.DoorType, door.DoorType.LowerLayer, position.TilemapPosition, new DrawInfo(1, 0, 8),
+					new DrawInfo(4, 8, 8),
+					new DrawInfo(7, 16, 8),
+					new DrawInfo(10, 24, 8),
 
-				case DoorDirection.West:
-					DrawWest(art, door, d, door.DoorType, layer2);
-					break;
+					new DrawInfo(2, 0, 16),
+					new DrawInfo(5, 8, 16),
+					new DrawInfo(8, 16, 16),
+					new DrawInfo(11, 24, 16)
+				);
 
-				case DoorDirection.East:
-					DrawEast(art, door, d, door.DoorType, layer2);
-					break;
-			}
+				break;
+
+			case DoorDirection.South:
+				DrawTiles(art, position, door.DoorType, trimLoc, position.TilemapPosition, new DrawInfo(2, 0, 16),
+					new DrawInfo(5, 8, 16),
+					new DrawInfo(8, 16, 16),
+					new DrawInfo(11, 24, 16)
+				);
+
+				DrawTiles(art, position, door.DoorType, door.DoorType.LowerLayer, position.TilemapPosition, new DrawInfo(0, 0, 0),
+					new DrawInfo(3, 8, 0),
+					new DrawInfo(6, 16, 0),
+					new DrawInfo(9, 24, 0),
+
+					new DrawInfo(1, 0, 8),
+					new DrawInfo(4, 8, 8),
+					new DrawInfo(7, 16, 8),
+					new DrawInfo(10, 24, 8)
+				);
+				break;
+
+			case DoorDirection.West:
+				DrawTiles(art, position, door.DoorType, trimLoc, position.TilemapPosition, new DrawInfo(0, 0, 0),
+					new DrawInfo(1, 0, 8),
+					new DrawInfo(2, 0, 16),
+					new DrawInfo(3, 0, 24)
+				);
+
+				DrawTiles(art, position, door.DoorType, door.DoorType.LowerLayer, position.TilemapPosition, new DrawInfo(4, 8, 0),
+					new DrawInfo(5, 8, 8),
+					new DrawInfo(6, 8, 16),
+					new DrawInfo(7, 8, 24),
+
+					new DrawInfo(8, 16, 0),
+					new DrawInfo(9, 16, 8),
+					new DrawInfo(10, 16, 16),
+					new DrawInfo(11, 16, 24)
+				);
+				break;
+
+			case DoorDirection.East:
+				DrawTiles(art, position, door.DoorType, trimLoc, position.TilemapPosition, new DrawInfo(8, 16, 0),
+					new DrawInfo(9, 16, 8),
+					new DrawInfo(10, 16, 16),
+					new DrawInfo(11, 16, 24)
+				);
+
+				DrawTiles(art, position, door.DoorType, door.DoorType.LowerLayer, position.TilemapPosition, new DrawInfo(0, 0, 0),
+					new DrawInfo(1, 0, 8),
+					new DrawInfo(2, 0, 16),
+					new DrawInfo(3, 0, 24),
+
+					new DrawInfo(4, 8, 0),
+					new DrawInfo(5, 8, 8),
+					new DrawInfo(6, 8, 16),
+					new DrawInfo(7, 8, 24)
+				);
+				break;
 		}
-
 	}
 
-
+	private static void DrawStandardDoor(TilemapArtist art, DungeonDoor door)
+	{
+		DrawOneStandard(art, door, door.Position);
+		DrawOneStandard(art, door, door.Position.Partner);
+	}
 
 	private static void DrawFancyEntrance(TilemapArtist art, DungeonDoor door)
 	{
-		throw new NotImplementedException();
+		if (door.Position.Direction != DoorDirection.South)
+		{
+			DrawStandardDoor(art, door);
+			return;
+		}
+
+		ushort tmap = (ushort) (door.Position.TilemapPosition - (64 * 5) - 3);
+		var tiles = ZScreamer.ActiveScreamer.TileLister.FancyEntrance;
+
+		var instructions = new DrawInfo[80];
+		int i = 0;
+
+		for (int y = 0; y < 8 * 8; y += 8)
+		{
+			for (int x = 0; x < 10 * 8; x += 8)
+			{
+				instructions[i] = new(i++, x, y);
+			}
+		}
+
+		DrawTiles(art, tiles, door.DoorType.LowerLayer, tmap, instructions);
 	}
 
 	private static void DrawExplodingWall(TilemapArtist art, DungeonDoor door)
 	{
-		throw new NotImplementedException();
+		if (door.Position.Direction != DoorDirection.North)
+		{
+			DrawStandardDoor(art, door);
+			return;
+		}
 	}
 
-	private static void DrawKeyStairsUp(TilemapArtist art, DungeonDoor door)
+	private static void DrawKeyStairs(TilemapArtist art, DungeonDoor door)
 	{
-		throw new NotImplementedException();
-	}
 
-	private static void DrawKeyStairsDown(TilemapArtist art, DungeonDoor door)
-	{
-		throw new NotImplementedException();
-	}
+		DrawOneStandard(art, door, door.Position);
 
-	private static void DrawNorth(TilemapArtist art, DungeonDoor door, DungeonDoorPosition pos, DungeonDoorType type, bool bg2)
-	{
-		ushort tmap = pos.TilemapPosition;
+		if (door.Position.Direction == DoorDirection.North) return;
 
-		// trim always goes on top
-		DrawTiles(art, door, pos, type, false, tmap,
-			new DrawInfo(0, 0, 0),
-			new DrawInfo(3, 8, 0),
-			new DrawInfo(6, 16, 0),
-			new DrawInfo(9, 24, 0)
-		);
-
-		DrawTiles(art, door, pos, type, bg2, tmap,
-			new DrawInfo(1, 0, 8),
-			new DrawInfo(4, 8, 8),
-			new DrawInfo(7, 16, 8),
-			new DrawInfo(10, 24, 8),
-
-			new DrawInfo(2, 0, 16),
-			new DrawInfo(5, 8, 16),
-			new DrawInfo(8, 16, 16),
-			new DrawInfo(11, 24, 16)
-		);
-	}
-
-	private static void DrawSouth(TilemapArtist art, DungeonDoor door, DungeonDoorPosition pos, DungeonDoorType type, bool bg2)
-	{
-		ushort tmap = pos.TilemapPosition;
-
-		// trim always goes on top
-		DrawTiles(art, door, pos, type, false, tmap,
-			new DrawInfo(2, 0, 16),
-			new DrawInfo(5, 8, 16),
-			new DrawInfo(8, 16, 16),
-			new DrawInfo(11, 24, 16)
-		);
-
-		DrawTiles(art, door, pos, type, bg2, tmap,
-			new DrawInfo(0, 0, 0),
-			new DrawInfo(3, 8, 0),
-			new DrawInfo(6, 16, 0),
-			new DrawInfo(9, 24, 0),
-
-			new DrawInfo(1, 0, 8),
-			new DrawInfo(4, 8, 8),
-			new DrawInfo(7, 16, 8),
-			new DrawInfo(10, 24, 8)
-		);
-	}
-
-	private static void DrawWest(TilemapArtist art, DungeonDoor door, DungeonDoorPosition pos, DungeonDoorType type, bool bg2)
-	{
-		ushort tmap = pos.TilemapPosition;
-
-		// trim always goes on top
-		DrawTiles(art, door, pos, type, false, tmap,
-			new DrawInfo(0, 0, 0),
-			new DrawInfo(1, 0, 8),
-			new DrawInfo(2, 0, 16),
-			new DrawInfo(3, 0, 24)
-		);
-
-		DrawTiles(art, door, pos, type, bg2, tmap,
-			new DrawInfo(4, 8, 0),
-			new DrawInfo(5, 8, 8),
-			new DrawInfo(6, 8, 16),
-			new DrawInfo(7, 8, 24),
-
-			new DrawInfo(8, 16, 0),
-			new DrawInfo(9, 16, 8),
-			new DrawInfo(10, 16, 16),
-			new DrawInfo(11, 16, 24)
-		);
-	}
-
-	private static void DrawEast(TilemapArtist art, DungeonDoor door, DungeonDoorPosition pos, DungeonDoorType type, bool bg2)
-	{
-		ushort tmap = pos.TilemapPosition;
-
-		// trim always goes on top
-		DrawTiles(art, door, pos, type, false, tmap,
-			new DrawInfo(8, 16, 0),
-			new DrawInfo(9, 16, 8),
-			new DrawInfo(10, 16, 16),
-			new DrawInfo(11, 16, 24)
-		);
-
-		DrawTiles(art, door, pos, type, bg2, tmap,
-			new DrawInfo(0, 0, 0),
-			new DrawInfo(1, 0, 8),
-			new DrawInfo(2, 0, 16),
-			new DrawInfo(3, 0, 24),
-
-			new DrawInfo(4, 8, 0),
-			new DrawInfo(5, 8, 8),
-			new DrawInfo(6, 8, 16),
-			new DrawInfo(7, 8, 24)
-		);
+		DrawOneStandard(art, door, door.Position.Partner);
 	}
 
 
-	private static void DrawTiles(TilemapArtist art, DungeonDoor door, DungeonDoorPosition pos, DungeonDoorType type, bool bg2, ushort tmap, params DrawInfo[] instructions)
+	private static void DrawTiles(TilemapArtist art, DungeonDoorPosition pos, DungeonDoorType type, bool bg2, ushort tmap, params DrawInfo[] instructions)
 	{
 		var tiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(type.ID)[pos.Direction];
 
+		DrawTiles(art, tiles, bg2, tmap, instructions);
+	}
+
+	private static void DrawTiles(TilemapArtist art, TilesList tiles, bool bg2, ushort tmap, params DrawInfo[] instructions)
+	{
 		foreach (var d in instructions)
 		{
 			var tm = tmap + d.XOff / 8 + d.YOff / 8 * 64;

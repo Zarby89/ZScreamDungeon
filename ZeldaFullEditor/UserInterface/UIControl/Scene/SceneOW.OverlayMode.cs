@@ -150,6 +150,7 @@ public partial class SceneOW
 
 	private void Delete_Overlay()
 	{
+		return;
 		throw new NotImplementedException();
 	}
 }

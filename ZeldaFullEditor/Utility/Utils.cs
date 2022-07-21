@@ -66,6 +66,13 @@ internal static class Utils
 		return value;
 	}
 
+	public static int GetDeltaParity(this MouseEventArgs e) => e.Delta switch
+	{
+		> 0 => 1,
+		< 0 => -1,
+		_ => 0
+	};
+
 	public static void DrawFilledRectangleWithOutline(this Graphics g, int x, int y, int w, int h, Pen outline, Brush fill)
 	{
 		var r = new Rectangle(x, y, w, h);
@@ -186,6 +193,8 @@ internal static class Utils
 
 	internal static T GetNextOrPreviousInGlobalList<T>(this ImmutableArray<T> list, T item, int offset) where T : class, IEntityType<T>
 	{
+		if (offset == 0) return null;
+
 		int i = list.IndexOf(item);
 
 		if (i == -1) return null;

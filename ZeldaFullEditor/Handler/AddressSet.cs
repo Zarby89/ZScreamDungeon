@@ -7,6 +7,7 @@ public class AddressSet
 	public int subtype1_tiles => new ROMAddress(0x018000, 0x018000).GetOffsetForVersion(Version);
 	public int subtype2_tiles => new ROMAddress(0x0183F0, 0x0183F0).GetOffsetForVersion(Version);
 	public int subtype3_tiles => new ROMAddress(0x0184F0, 0x0184F0).GetOffsetForVersion(Version);
+	public int FancyEntranceTiles => new ROMAddress(0x00C1A8, 0x00C1A8).GetOffsetForVersion(Version);
 	public int gfx_animated_pointer => new ROMAddress(0x028624, 0x028275).GetOffsetForVersion(Version);
 	public int overworldgfxGroups2 => new ROMAddress(0x00E0B3, 0x00E073).GetOffsetForVersion(Version);
 	public int gfx_1_pointer => new ROMAddress(0x00E7D0, 0x00E790).GetOffsetForVersion(Version);

@@ -9,6 +9,7 @@ public partial class SceneUW
 		{
 			FindHoveredEntity(Room.DoorsList, e);
 			Room.OnlySelectedObject = hoveredEntity;
+			UpdateDungeonForm();
 		}
 	}
 
@@ -27,8 +28,7 @@ public partial class SceneUW
 	{
 		if (Room?.OnlySelectedObject is DungeonDoor d)
 		{
-			int i = e.ScrollByValue(d.ID, 1);
-			var dn = DungeonDoorType.ListOf.GetNextOrPreviousInGlobalList(d.DoorType, i);
+			var dn = DungeonDoorType.ListOf.GetNextOrPreviousInGlobalList(d.DoorType, e.GetDeltaParity());
 
 			if (dn is null) return;
 

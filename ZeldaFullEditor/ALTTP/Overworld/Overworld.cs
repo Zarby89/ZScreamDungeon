@@ -4,8 +4,6 @@ public class Overworld
 {
 	public Tile16MasterSheet Tile16Sheet { get; } = new Tile16MasterSheet();
 
-	private int[] map32address;
-
 	public List<Tile32> Tile32Definitions { get; } = new();
 
 	public OverworldExit[] allexits = new OverworldExit[Constants.NumberOfOverworldExits];
@@ -49,8 +47,6 @@ public class Overworld
 	public byte ActiveGameStateIndex => (byte) ActiveGameState;
 
 	public Gravestone[] graves = new Gravestone[Constants.NumberOfOverworldGraves];
-
-	public int tiles32count = 0;
 
 	public ZScreamer ZS { get; }
 

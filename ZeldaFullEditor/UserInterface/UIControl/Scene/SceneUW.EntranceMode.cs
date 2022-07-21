@@ -4,24 +4,18 @@ public partial class SceneUW
 {
 	private void OnMouseDown_Entrance(MouseEventArgs e)
 	{
-		ZGUI.DungeonEditor.entrancetreeView_AfterSelect(null, null);
+		ZGUI.DungeonEditor.UpdateFormForEntrance();
 		ZS.CurrentUWMode = DungeonEditMode.LayerAll;
-	}
-
-	private void OnMouseUp_Entrance(MouseEventArgs e)
-	{
-
 	}
 
 	private void OnMouseMove_Entrance(MouseEventArgs e)
 	{
-		UnderworldEntrance sel = ZGUI.DungeonEditor.selectedEntrance;
+		var sel = ZGUI.DungeonEditor.selectedEntrance;
 
-		if (sel == null) return;
+		if (sel is null) return;
 
-		int ey = Room.RoomID >> 4;
-		int ex = Room.RoomID & 0xF;
-
+		int ey = 512 * (Room.RoomID >> 4);
+		int ex = 512 * (Room.RoomID & 0xF);
 
 		int MX = MouseX;
 		int MY = MouseY;
@@ -32,79 +26,50 @@ public partial class SceneUW
 			MY &= ~0x7;
 		}
 
-		sel.XPosition = (ushort) (MX + (ex * 512));
-		sel.YPosition = (ushort) (MY + (ey * 512));
-		sel.CameraTriggerX = (ushort) MX;
-		sel.CameraTriggerY = (ushort) MY;
+		sel.XPosition = (ushort) (MX + ex);
+		sel.YPosition = (ushort) (MY + ey);
+
 		sel.RoomID = Room.RoomID;
 
-		if (sel.CameraTriggerX > 383)
+		sel.CameraTriggerX = (ushort) (MX switch
 		{
-			sel.CameraTriggerX = 383;
-		}
-		if (sel.CameraTriggerY > 392)
-		{
-			sel.CameraTriggerY = 392;
-		}
-		if (sel.CameraTriggerX < 128)
-		{
-			sel.CameraTriggerX = 128;
-		}
-		if (sel.CameraTriggerY < 112)
-		{
-			sel.CameraTriggerY = 112;
-		}
+			> 383 => 383,
+			< 128 => 128,
+			_ => MX
+		});
 
-		sel.CameraY = (ushort) (sel.CameraTriggerX + (ex * 512));
-		sel.CameraX = (ushort) (sel.CameraTriggerY + (ey * 512));
+		sel.CameraTriggerY = (ushort) (MY switch
+		{
+			> 392 => 392,
+			< 112 => 112,
+			_ => MY
+		});
 
-		if (MX < 256 && MY < 256) // Top left quadrant
-		{
-			sel.Scrollquadrant = 0x00;
-		}
-		else if (MX > 256 && MY < 256) // Top right quadrant
-		{
-			sel.Scrollquadrant = 0x10;
-		}
-		else if (MX < 256 && MY > 256) // Bottom left quadrant
-		{
-			sel.Scrollquadrant = 0x02;
-		}
-		else if (MX > 256 && MY > 256) // Bottom right quadrant
-		{
-			sel.Scrollquadrant = 0x12;
-		}
+		// TODO ???
+		// sel.CameraY = (ushort) (sel.CameraTriggerX + (ex * 512));
+		// sel.CameraX = (ushort) (sel.CameraTriggerY + (ey * 512));
 
-		sel.CameraY = sel.XPosition;
-		sel.CameraX = sel.YPosition;
+		sel.Scrollquadrant = (MX < 256, MY < 256) switch
+		{
+			(true, true) => 0x00,
+			(false, true) => 0x10,
+			(true, false) => 0x02,
+			(false, false) => 0x12,
+		};
 
-		int scrollXRange = sel.CameraX % 512;
-		if (scrollXRange >= 350)
+		sel.CameraX = (ushort) ((sel.YPosition % 512) switch
 		{
-			sel.CameraX = (ushort) ((ey * 512) + 256 + 16);
-		}
-		else if (scrollXRange <= 150)
-		{
-			sel.CameraX = (ushort) (ey * 512);
-		}
-		else
-		{
-			sel.CameraX = (ushort) (sel.YPosition - 112);
-		}
+			<= 150 => ey,
+			>= 350 => ey + 256 + 16,
+			_ => sel.YPosition - 112,
+		});
 
-		int scrollYRange = sel.CameraY % 512;
-		if (scrollYRange >= 350)
+		sel.CameraY = (ushort) ((sel.XPosition % 512) switch
 		{
-			sel.CameraY = (ushort) ((ex * 512) + 256);
-		}
-		else if (scrollYRange <= 150)
-		{
-			sel.CameraY = (ushort) (ex * 512);
-		}
-		else
-		{
-			sel.CameraY = (ushort) (sel.XPosition - 128);
-		}
+			<= 150 => ex,
+			>= 350 => ex + 256,
+			_ => sel.XPosition - 128,
+		});
 
 		sel.AutoCalculateScrollBoundaries();
 	}

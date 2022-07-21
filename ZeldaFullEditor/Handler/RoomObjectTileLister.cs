@@ -34,6 +34,8 @@ public class RoomObjectTileLister
 		}
 	}
 
+	public TilesList FancyEntrance { get; private init; }
+
 	private RoomObjectTileLister(TilesList[] tiles, DoorTilesList[] doors)
 	{
 		_list = tiles;
@@ -567,10 +569,10 @@ public class RoomObjectTileLister
 		AutoFindDoorTiles(0x64);
 		AutoFindDoorTiles(0x66);
 
-		return new RoomObjectTileLister(list, doors);
-
-
-
+		return new RoomObjectTileLister(list, doors)
+		{
+			FancyEntrance = GetExtraTileListings(ZS.Offsets.FancyEntranceTiles, 80),
+		};
 
 		void AutoFindTiles(ushort id, int count)
 		{
@@ -606,6 +608,11 @@ public class RoomObjectTileLister
 		void SetTilesFromMultipleAddresses(ushort id, params (int address, int count)[] sources)
 		{
 			list[id] = TilesList.CreateNewDefinitionFromMultipleAddresses(ZS, sources);
+		}
+
+		TilesList GetExtraTileListings(int offset, int count)
+		{
+			return TilesList.CreateNewDefinition(ZS, offset, count);
 		}
 
 		void AutoFindDoorTiles(byte id)

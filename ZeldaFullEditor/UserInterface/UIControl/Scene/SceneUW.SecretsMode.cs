@@ -15,7 +15,7 @@ public partial class SceneUW
 
 	private void OnMouseUp_Secrets(MouseEventArgs e)
 	{
-
+		SelectAllEntitiesInRectangle(Room.SecretsList);
 	}
 
 	private void OnMouseMove_Secrets(MouseEventArgs e)
@@ -31,8 +31,7 @@ public partial class SceneUW
 	{
 		if (Room.OnlySelectedObject is DungeonSecret s)
 		{
-			int i = e.ScrollByValue(s.ID, 1);
-			var sn = SecretItemType.ListOf.GetNextOrPreviousInGlobalList(s.SecretType, i);
+			var sn = SecretItemType.ListOf.GetNextOrPreviousInGlobalList(s.SecretType, e.GetDeltaParity());
 
 			if (sn is null) return;
 

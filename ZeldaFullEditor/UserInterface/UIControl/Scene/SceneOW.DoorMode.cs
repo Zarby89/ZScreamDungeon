@@ -36,9 +36,4 @@ public partial class SceneOW
 	{
 		throw new NotImplementedException();
 	}
-
-	private void SelectAll_OWDoor()
-	{
-		throw new NotImplementedException();
-	}
 }

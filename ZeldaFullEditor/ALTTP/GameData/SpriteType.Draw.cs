@@ -34,16 +34,19 @@ public partial class SpriteType
 
 	public static void SpriteDraw_SmallKeyDrop(IDrawArt artist, IDrawableSprite spr)
 	{
+		return;
 		throw new NotImplementedException();
 	}
 
 	public static void SpriteDraw_BigKeyDrop(IDrawArt artist, IDrawableSprite spr)
 	{
+		return;
 		throw new NotImplementedException();
 	}
 
 	public static void SpriteDraw_GreenRupeeDrop(IDrawArt artist, IDrawableSprite spr)
 	{
+		return;
 		throw new NotImplementedException();
 	}
 
@@ -2312,6 +2315,7 @@ public partial class SpriteType
 
 	protected static void SpriteDraw_Overlord01(IDrawArt artist, IDrawableSprite spr)
 	{
+		return;
 		throw new NotImplementedException();
 	}
 

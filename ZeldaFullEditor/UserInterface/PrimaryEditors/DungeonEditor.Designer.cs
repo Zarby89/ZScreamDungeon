@@ -282,6 +282,7 @@
 			this.entrancetreeView.Size = new System.Drawing.Size(272, 348);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.TabStop = false;
+			this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
 			this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
 			// 
 			// mouseEntranceButton
@@ -1014,10 +1015,10 @@
 			// 
 			this.SpritesTabPage.Controls.Add(this.SpriteListPanel);
 			this.SpritesTabPage.Controls.Add(this.SpriteSearchPanel);
-			this.SpritesTabPage.Location = new System.Drawing.Point(4, 22);
+			this.SpritesTabPage.Location = new System.Drawing.Point(4, 24);
 			this.SpritesTabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.SpritesTabPage.Name = "SpritesTabPage";
-			this.SpritesTabPage.Size = new System.Drawing.Size(278, 669);
+			this.SpritesTabPage.Size = new System.Drawing.Size(278, 667);
 			this.SpritesTabPage.TabIndex = 10;
 			this.SpritesTabPage.Text = "Sprites";
 			this.SpritesTabPage.UseVisualStyleBackColor = true;
@@ -1027,7 +1028,7 @@
 			this.SpriteListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SpriteListPanel.Location = new System.Drawing.Point(0, 71);
 			this.SpriteListPanel.Name = "SpriteListPanel";
-			this.SpriteListPanel.Size = new System.Drawing.Size(278, 598);
+			this.SpriteListPanel.Size = new System.Drawing.Size(278, 596);
 			this.SpriteListPanel.TabIndex = 3;
 			// 
 			// SpriteSearchPanel

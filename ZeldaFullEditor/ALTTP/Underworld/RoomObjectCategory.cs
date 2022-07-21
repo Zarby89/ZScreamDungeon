@@ -136,21 +136,21 @@ public sealed class RoomObjectCategory : SearchCategory
 	public static readonly RoomObjectCategory ShallowWater = new()
 	{
 		Name = "Shallow water",
-		Description = "Objects that behave as shallow water.",
+		Description = "Objects that, in the correct tileset, behave as shallow water.",
 	};
 
 	[PredefinedInstance]
 	public static readonly RoomObjectCategory DeepWater = new()
 	{
 		Name = "Deep water",
-		Description = "Objects that behave as deep water.",
+		Description = "Objects that, in the correct tileset, behave as deep water.",
 	};
 
 	[PredefinedInstance]
 	public static readonly RoomObjectCategory IcyFloor = new()
 	{
 		Name = "Icy floor",
-		Description = "Objects that behave as an icy floor of either variety.",
+		Description = "Objects that, in the correct tileset, behave as an icy floor of either variety.",
 	};
 
 	[PredefinedInstance]

@@ -74,17 +74,20 @@ public class Scene : PictureBox
 			IsLeftPress = e.Button == MouseButtons.Left;
 		}
 
+		MoveX = 0;
+		MoveY = 0;
+
 		switch (e.Button)
 		{
 			case MouseButtons.Right:
-				RightClickedXAt = e.X;
-				RightClickedYAt = e.Y;
+				MouseX = RightClickedXAt = e.X;
+				MouseY = RightClickedYAt = e.Y;
 				// TODO context menu
 				return;
 
 			case MouseButtons.Left:
-				LastX = e.X;
-				LastY = e.Y;
+				MouseX = LastX = e.X;
+				MouseY = LastY = e.Y;
 				break;
 		}
 

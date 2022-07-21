@@ -15,7 +15,7 @@ public abstract class TilemapArtist : IDrawArt
 	/// </summary>
 	public abstract Bitmap FinalOutput { get; }
 
-	protected List<(OAMDrawInfo t, bool g)> SpriteDrawInstructions { get; } = new();
+	protected List<(OAMDrawInfo, bool)> SpriteDrawInstructions { get; } = new();
 
 	public bool Valid { get; private set; }
 

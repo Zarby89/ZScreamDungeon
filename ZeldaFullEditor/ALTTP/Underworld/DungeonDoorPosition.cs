@@ -76,7 +76,6 @@ public class DungeonDoorPosition : IEntityType<DungeonDoorPosition>
 		foreach (var (a, b) in pairs)
 		{
 			a.Partner = b;
-			b.Partner = a;
 		}
 	}
 

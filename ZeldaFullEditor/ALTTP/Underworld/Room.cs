@@ -1011,6 +1011,13 @@ public class Room
 		ResyncAllLists();
 	}
 
+	public void AddObjectToSelectedIfItIsntThere(IDungeonPlaceable item)
+	{
+		if (SelectedObjects.Contains(item)) return;
+		SelectedObjects.Add(item);
+	}
+
+
 	public void RemoveCurrentlySelectedObjectsFromList<T>(List<T> thisList) where T : IDungeonPlaceable
 	{
 		var check = new List<IDungeonPlaceable>();

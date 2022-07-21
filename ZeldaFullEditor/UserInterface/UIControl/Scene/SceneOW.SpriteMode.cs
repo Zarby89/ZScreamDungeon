@@ -255,6 +255,7 @@ public partial class SceneOW
 
 	private void SelectAll_Sprites()
 	{
+		return;
 		throw new NotImplementedException();
 	}
 }

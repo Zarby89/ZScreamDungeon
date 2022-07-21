@@ -24,7 +24,7 @@ public class GraphicsTile
 	{
 		if (data.Length != 64)
 		{
-			throw new ArgumentException($"{typeof(GraphicsTile).Name} instances must be initialized with an array exactly of length 64.");
+			throw new ArgumentException($"{nameof(GraphicsTile)} instances must be initialized with an array exactly of length 64.");
 		}
 		_data = data.DeepCopy();
 	}

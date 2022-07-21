@@ -2,11 +2,9 @@
 
 public partial class SceneUW : Scene
 {
-	Rectangle lastSelectedRectangle;
-
 	public DungeonEditMode CurrentMode => ZS.CurrentUWMode;
 
-	bool resizing = false;
+	private bool Selecting = false;
 
 	private IDungeonPlaceable hoveredEntity = null;
 
@@ -65,7 +63,7 @@ public partial class SceneUW : Scene
 		torchMode = new ModeActions(OnMouseDown_Torch, OnMouseUp_Torch, OnMouseMove_Torch, null,
 			Copy_Torch, Paste_Torch, Insert_Torch, Delete_Torch, SelectAll_Torch);
 
-		entranceMode = new ModeActions(OnMouseDown_Entrance, OnMouseUp_Entrance, OnMouseMove_Entrance,
+		entranceMode = new ModeActions(OnMouseDown_Entrance, null, OnMouseMove_Entrance,
 			null, null, null, null, null, null);
 
 		collisionMode = new ModeActions(OnMouseDown_Collision, OnMouseUp_Collision, OnMouseMove_Collision, null,
@@ -103,10 +101,38 @@ public partial class SceneUW : Scene
 		};
 	}
 
-	private void FindHoveredEntity<T>(IEnumerable<T> list, MouseEventArgs e) where T : IDungeonPlaceable
+	private Rectangle GetSelectionRectangle()
+	{
+		return new Rectangle(
+			Math.Min(MouseX, LastX),
+			Math.Min(MouseY, LastY),
+			Math.Abs(MoveX),
+			Math.Abs(MoveY)
+		);
+	}
+
+	private void FindHoveredEntity(IEnumerable<IDungeonPlaceable> list, MouseEventArgs e)
 	{
 		hoveredEntity = list.LastOrDefault(o => o.MouseIsInHitbox(e));
 	}
+	
+	private void SelectAllEntitiesInRectangle(IEnumerable<IDungeonPlaceable> list)
+	{
+		if (!Selecting) return;
+
+		var rect = GetSelectionRectangle();
+
+		foreach (var o in list)
+		{
+			if (o.IsCapturedByRectangle(rect))
+			{
+				Room.AddObjectToSelectedIfItIsntThere(o);
+			}
+		}
+
+		UpdateDungeonForm();
+	}
+
 
 	private void UpdateDungeonForm()
 	{
@@ -131,6 +157,7 @@ public partial class SceneUW : Scene
 		{
 			if (hoveredEntity is null)
 			{
+				Selecting = true;
 				return;
 			}
 			Room.RemoveIfThereOrAddToSelectedObjects(hoveredEntity);
@@ -140,6 +167,7 @@ public partial class SceneUW : Scene
 			if (hoveredEntity is null)
 			{
 				Room.ClearSelectedList();
+				Selecting = true;
 			}
 			else if (Room.SelectedObjects.Contains(hoveredEntity))
 			{
@@ -155,6 +183,8 @@ public partial class SceneUW : Scene
 
 	public void MoveSelectedObjects()
 	{
+		if (Room is null) return;
+
 		if (Room.OnlySelectedObject is DungeonDoor d)
 		{
 			var loc = DungeonDoorPosition.ListOf.FirstOrDefault(p => p.BoundingBox.Contains(MouseX, MouseY), null);
@@ -207,19 +237,25 @@ public partial class SceneUW : Scene
 	{
 		if (Room is null) return;
 
-		foreach (var o in Room.SelectedObjects)
+		if (!Selecting)
 		{
-			if (o is IFreelyPlaceable f)
+			foreach (var o in Room.SelectedObjects)
 			{
-				f.LockPosition();
+				if (o is IFreelyPlaceable f)
+				{
+					f.LockPosition();
+				}
 			}
 		}
 
 		base.OnMouseUp(sender, e);
+
+		Selecting = false;
 	}
 
 	private void InvalidateRoomTilemapAndArtist()
 	{
+		if (Room is null) return;
 
 		Room.Redrawing |= CurrentMode switch
 		{
@@ -237,7 +273,7 @@ public partial class SceneUW : Scene
 
 	protected override void OnMouseMove(object sender, MouseEventArgs e)
 	{
-		if (MouseIsDown)
+		if (MouseIsDown && !Selecting)
 		{
 			if (MouseX != LastX || MouseY != LastY)
 			{
@@ -249,7 +285,7 @@ public partial class SceneUW : Scene
 
 	public void clearCustomCollisionMap()
 	{
-		throw new NotImplementedException();
+		Room?.ClearCollisionLayout();
 	}
 
 	public void getObjectsRectangle()
@@ -259,19 +295,19 @@ public partial class SceneUW : Scene
 
 	public override void Undo()
 	{
-		Room.Undo();
+		Room?.Undo();
 	}
 
 	public override void Redo()
 	{
-		Room.Redo();
+		Room?.Redo();
 	}
 
 	private void SceneUW_Paint(object sender, PaintEventArgs e)
 	{
 		Graphics g = e.Graphics;
 
-		if (Room == null)
+		if (Room is null)
 		{
 			g.Clear(BackColor);
 			return;
@@ -330,19 +366,19 @@ public partial class SceneUW : Scene
 		{
 			foreach (var d in Room.DoorsList)
 			{
-				g.DrawText(d.RealX + 12, d.RealY + 8, id.ToString());
+				g.DrawText(d.RealX + 12, d.RealY + 4, id.ToString());
 
 				if (d.DoorType.IsExit)
 				{
-					g.DrawText(d.RealX + 6, d.RealY + 10, "Exit");
+					g.DrawText(d.RealX + 6, d.RealY + 13, "Exit");
 				}
 				else if (d.DoorType.Category == DoorCategory.LayerSwap)
 				{
-					g.DrawText(d.RealX + 6, d.RealY + 10, "Layer swap");
+					g.DrawText(d.RealX - 8, d.RealY + 13, "Layer swap");
 				}
 				else if (d.DoorType.Category == DoorCategory.DungeonSwap)
 				{
-					g.DrawText(d.RealX + 6, d.RealY + 10, "Dungeon swap");
+					g.DrawText(d.RealX - 13, d.RealY + 13, "Dungeon swap");
 				}
 
 				id++;
@@ -360,7 +396,7 @@ public partial class SceneUW : Scene
 		{
 			if (s.IsAssociated)
 			{
-				g.DrawText(s.RealX, s.RealY + 18, s.ToString());
+				g.DrawText(s.RealX, s.RealY + 13, s.ToString());
 			}
 		}
 
@@ -441,6 +477,11 @@ public partial class SceneUW : Scene
 		if (hoveredEntity is not null)
 		{
 			g.DrawRectangle(Pens.Aqua, hoveredEntity.BoundingBox);
+		}
+
+		if (Selecting)
+		{
+			g.DrawRectangle(Pens.CornflowerBlue, GetSelectionRectangle());
 		}
 
 	} // End Paint();

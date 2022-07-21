@@ -70,35 +70,35 @@ public partial class DungeonEditor : UserControl
 
 	private void initEntrancesList()
 	{
+		int i;
 		// Entrances
-		for (int i = 0; i < 0x07; i++)
+		for (i = 0; i < 0x07; i++)
 		{
-			ZScreamer.ActiveScreamer.starting_entrances[i] = new UnderworldEntrance(ZScreamer.ActiveScreamer, (byte) i, true);
-			string tname = $"[{i:X2}] - {RoomName.ListOfVanillaNames[ZScreamer.ActiveScreamer.starting_entrances[i].RoomID]:X3}";
+			var eee = new UnderworldEntrance(ZScreamer.ActiveScreamer, (byte) i, true);
+			ZScreamer.ActiveScreamer.starting_entrances[i] = eee;
 
-			entrancetreeView.Nodes[1].Nodes.Add(
-				new TreeNode(tname)
-				{
-					Tag = i,
-				}
-			);
+			entrancetreeView.Nodes[1].Nodes.Add(CreateNode(eee));
 		}
 
-		for (int i = 0; i < Constants.NumberOfEntrances; i++)
+		for (i = 0; i < Constants.NumberOfEntrances; i++)
 		{
-			ZScreamer.ActiveScreamer.entrances[i] = new(ZScreamer.ActiveScreamer, (byte) i, false);
-			string tname = $"[{i:X2}] - {RoomName.ListOfVanillaNames[ZScreamer.ActiveScreamer.entrances[i].RoomID]:X3}";
+			var eee = new UnderworldEntrance(ZScreamer.ActiveScreamer, (byte) i, false);
+			ZScreamer.ActiveScreamer.entrances[i] = eee;
 
-			entrancetreeView.Nodes[0].Nodes.Add(
-				new TreeNode(tname)
-				{
-					Tag = i,
-				}
-			);
+			entrancetreeView.Nodes[0].Nodes.Add(CreateNode(eee));
 		}
 
 		entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
 		selectedEntrance = ZScreamer.ActiveScreamer.entrances[0];
+
+		TreeNode CreateNode(UnderworldEntrance ee)
+		{
+			string tname = $"[{i:X2}] - {RoomName.ListOfVanillaNames[ee.RoomID]:X3}";
+			return new(tname)
+			{
+				Tag = ee
+			};
+		}
 	}
 
 	public void SaveRooms()
@@ -129,7 +129,8 @@ public partial class DungeonEditor : UserControl
 				break;
 
 			case DungeonSecret x:
-				throw new NotImplementedException();
+				selecteditemobjectCombobox.SelectedValue = x.SecretType;
+				break;
 		}
 
 		ZGUI.UpdateFormForSelectedObject(o);
@@ -268,7 +269,8 @@ public partial class DungeonEditor : UserControl
 		}
 	}
 
-	public void updateEntranceInfos()
+
+	private void updateEntranceInfos()
 	{
 		if (!propertiesChangedFromForm && selectedEntrance != null)
 		{
@@ -360,91 +362,81 @@ public partial class DungeonEditor : UserControl
 	}
 
 
-	public void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
+	public void UpdateFormForEntrance()
 	{
 		propertiesChangedFromForm = true;
-		var en = selectedEntrance;
-		if (e?.Node?.Tag is not null)
-		{
-			// TODO gross
-			en = ZScreamer.ActiveScreamer.entrances[(int) e.Node.Tag];
-			if (e.Node.Parent?.Name == "StartingEntranceNode")
-			{
-				en = ZScreamer.ActiveScreamer.starting_entrances[(int) e.Node.Tag];
-			}
-		}
 
 		//propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
 		entranceProperty_bg.Checked = false;
 
-		EntranceProperties_RoomID.HexValue = en.RoomID;
-		EntranceProperties_DungeonID.HexValue = en.Dungeon;
-		EntranceProperties_Blockset.HexValue = en.Blockset;
-		EntranceMusicBox.SelectedItem = en.Music;
-		EntranceProperties_Entrance.HexValue = en.AssociatedEntrance;
+		EntranceProperties_RoomID.HexValue = selectedEntrance.RoomID;
+		EntranceProperties_DungeonID.HexValue = selectedEntrance.Dungeon;
+		EntranceProperties_Blockset.HexValue = selectedEntrance.Blockset;
+		EntranceMusicBox.SelectedItem = selectedEntrance.Music;
+		EntranceProperties_Entrance.HexValue = selectedEntrance.AssociatedEntrance;
 
-		EntranceProperties_Entrance.Enabled = en.IsSpawnPoint;
+		EntranceProperties_Entrance.Enabled = selectedEntrance.IsSpawnPoint;
 
-		EntranceProperties_PlayerX.HexValue = en.XPosition;
-		EntranceProperties_PlayerY.HexValue = en.YPosition;
-		EntranceProperties_CameraX.HexValue = en.CameraX;
-		EntranceProperties_CameraY.HexValue = en.CameraY;
-		EntranceProperties_CameraTriggerX.HexValue = en.CameraTriggerX;
-		EntranceProperties_CameraTriggerY.HexValue = en.CameraTriggerY;
+		EntranceProperties_PlayerX.HexValue = selectedEntrance.XPosition;
+		EntranceProperties_PlayerY.HexValue = selectedEntrance.YPosition;
+		EntranceProperties_CameraX.HexValue = selectedEntrance.CameraX;
+		EntranceProperties_CameraY.HexValue = selectedEntrance.CameraY;
+		EntranceProperties_CameraTriggerX.HexValue = selectedEntrance.CameraTriggerX;
+		EntranceProperties_CameraTriggerY.HexValue = selectedEntrance.CameraTriggerY;
 
 
-		EntranceProperties_FloorSel.SelectedItem = FloorNumber.FindFloor(en.Floor);
+		EntranceProperties_FloorSel.SelectedItem = FloorNumber.FindFloor(selectedEntrance.Floor);
 
-		EntranceProperties_Entrance.HexValue = en.OverworldEntranceLocation;
+		EntranceProperties_Entrance.HexValue = selectedEntrance.OverworldEntranceLocation;
 
-		if (en.Ladderbg.BitIsOn(0x10))
+		if (selectedEntrance.Ladderbg.BitIsOn(0x10))
 		{
 			entranceProperty_bg.Checked = true;
 		}
 
-		if (ZScreamer.ActiveUWScene.Room is not null)
-		{
-			selectedEntrance = en;
-
-			ZScreamer.ActiveUWScene.HardRefresh();
-		}
-
-		entranceProperty_vscroll.Checked = en.Scrolling.BitIsOn(0x02);
-		entranceProperty_hscroll.Checked = en.Scrolling.BitIsOn(0x20);
+		entranceProperty_vscroll.Checked = selectedEntrance.Scrolling.BitIsOn(0x02);
+		entranceProperty_hscroll.Checked = selectedEntrance.Scrolling.BitIsOn(0x20);
 		entranceProperty_quadbr.Checked = false;
 		entranceProperty_quadbl.Checked = false;
 		entranceProperty_quadtl.Checked = false;
 		entranceProperty_quadtr.Checked = false;
 
-		EntranceProperty_BoundaryQN.HexValue = en.cameraBoundaryQN;
-		EntranceProperty_BoundaryFN.HexValue = en.cameraBoundaryFN;
-		EntranceProperty_BoundaryQS.HexValue = en.cameraBoundaryQS;
-		EntranceProperty_BoundaryFS.HexValue = en.cameraBoundaryFS;
-		EntranceProperty_BoundaryQW.HexValue = en.cameraBoundaryQW;
-		EntranceProperty_BoundaryFW.HexValue = en.cameraBoundaryFW;
-		EntranceProperty_BoundaryQE.HexValue = en.cameraBoundaryQE;
-		EntranceProperty_BoundaryFE.HexValue = en.cameraBoundaryFE;
+		EntranceProperty_BoundaryQN.HexValue = selectedEntrance.cameraBoundaryQN;
+		EntranceProperty_BoundaryFN.HexValue = selectedEntrance.cameraBoundaryFN;
+		EntranceProperty_BoundaryQS.HexValue = selectedEntrance.cameraBoundaryQS;
+		EntranceProperty_BoundaryFS.HexValue = selectedEntrance.cameraBoundaryFS;
+		EntranceProperty_BoundaryQW.HexValue = selectedEntrance.cameraBoundaryQW;
+		EntranceProperty_BoundaryFW.HexValue = selectedEntrance.cameraBoundaryFW;
+		EntranceProperty_BoundaryQE.HexValue = selectedEntrance.cameraBoundaryQE;
+		EntranceProperty_BoundaryFE.HexValue = selectedEntrance.cameraBoundaryFE;
 
-		int p = (en.OverworldEntranceLocation & 0x7FFF) >> 1;
+		int p = (selectedEntrance.OverworldEntranceLocation & 0x7FFF) >> 1;
 		doorxTextbox.Text = (p % 64).ToString("X2");
 		dooryTextbox.Text = (p >> 6).ToString("X2");
 
-		if (en.Scrollquadrant == 0x12) // Bottom right
+		if (selectedEntrance.Scrollquadrant == 0x12) // Bottom right
 		{
 			entranceProperty_quadbr.Checked = true;
 		}
-		else if (en.Scrollquadrant == 0x02) // Bottom left
+		else if (selectedEntrance.Scrollquadrant == 0x02) // Bottom left
 		{
 			entranceProperty_quadbl.Checked = true;
 		}
-		else if (en.Scrollquadrant == 0x00) // Top left
+		else if (selectedEntrance.Scrollquadrant == 0x00) // Top left
 		{
 			entranceProperty_quadtl.Checked = true;
 		}
-		else if (en.Scrollquadrant == 0x10) // Top right
+		else if (selectedEntrance.Scrollquadrant == 0x10) // Top right
 		{
 			entranceProperty_quadtr.Checked = true;
 		}
+
+
+		if (ZScreamer.ActiveUWScene.Room is not null)
+		{
+			ZScreamer.ActiveUWScene.HardRefresh();
+		}
+
 
 		propertiesChangedFromForm = false;
 	}
@@ -1098,12 +1090,23 @@ public partial class DungeonEditor : UserControl
 
 	private void entrancetreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
 	{
-		if (e.Node.Tag != null)
+		if (e.Node.Tag is UnderworldEntrance en)
 		{
-			var list = e.Node.Parent == entrancetreeView.Nodes[0]
-				? ZScreamer.ActiveScreamer.entrances
-				: ZScreamer.ActiveScreamer.starting_entrances;
-			addRoomTab(list[(int) e.Node.Tag].RoomID);
+			if (selectedEntrance != en)
+			{
+				selectedEntrance = en;
+				UpdateFormForEntrance();
+			}
+			addRoomTab(en.RoomID);
+		}
+	}
+
+	private void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
+	{
+		if (e.Node.Tag is UnderworldEntrance en)
+		{
+			selectedEntrance = en;
+			UpdateFormForEntrance();
 		}
 	}
 

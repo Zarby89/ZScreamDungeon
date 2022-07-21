@@ -15,7 +15,7 @@ public partial class SceneUW
 
 	private void OnMouseUp_Blocks(MouseEventArgs e)
 	{
-		// Nothing
+		SelectAllEntitiesInRectangle(Room.BlocksList);
 	}
 
 	private void OnMouseMove_Blocks(MouseEventArgs e)

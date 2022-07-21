@@ -4,7 +4,6 @@ public partial class SceneUW
 {
 	private void OnMouseDown_Torch(MouseEventArgs e)
 	{
-
 		if (ObjectToPlace == null)
 		{
 			FindHoveredEntity(Room.TorchList, e);
@@ -16,7 +15,7 @@ public partial class SceneUW
 
 	private void OnMouseUp_Torch(MouseEventArgs e)
 	{
-
+		SelectAllEntitiesInRectangle(Room.TorchList);
 	}
 
 	private void OnMouseMove_Torch(MouseEventArgs e)

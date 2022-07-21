@@ -78,7 +78,7 @@ public partial class SceneOW : Scene
 			null, null, null, Delete_Exit, null);
 
 		doorMode = new ModeActions(OnMouseDown_OWDoor, OnMouseUp_OWDoor, OnMouseMove_OWDoor, null,
-			null, null, null, Delete_OWDoor, SelectAll_OWDoor);
+			null, null, null, Delete_OWDoor, null);
 
 		entranceMode = new ModeActions(OnMouseDown_Entrance, OnMouseUp_Entrance, OnMouseMove_Entrance, null,
 			null, null, null, Delete_Entrance, null);
