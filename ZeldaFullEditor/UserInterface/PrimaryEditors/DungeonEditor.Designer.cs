@@ -1792,10 +1792,10 @@
 			this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
 			this.spritepropertyPanel.Controls.Add(this.label23);
 			this.spritepropertyPanel.Controls.Add(this.KeyDropComboBox);
-			this.spritepropertyPanel.Location = new System.Drawing.Point(5, 55);
+			this.spritepropertyPanel.Location = new System.Drawing.Point(2, 42);
 			this.spritepropertyPanel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.spritepropertyPanel.Name = "spritepropertyPanel";
-			this.spritepropertyPanel.Size = new System.Drawing.Size(252, 50);
+			this.spritepropertyPanel.Size = new System.Drawing.Size(252, 60);
 			this.spritepropertyPanel.TabIndex = 12;
 			this.spritepropertyPanel.Visible = false;
 			// 
@@ -1947,7 +1947,6 @@
 			// potitemobjectPanel
 			// 
 			this.potitemobjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.potitemobjectPanel.Controls.Add(this.selecteditemobjectCombobox);
 			this.potitemobjectPanel.Controls.Add(this.label31);
 			this.potitemobjectPanel.Location = new System.Drawing.Point(848, 235);
 			this.potitemobjectPanel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -1962,10 +1961,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.selecteditemobjectCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.selecteditemobjectCombobox.FormattingEnabled = true;
-			this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
+			this.selecteditemobjectCombobox.Location = new System.Drawing.Point(7, 88);
 			this.selecteditemobjectCombobox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
-			this.selecteditemobjectCombobox.Size = new System.Drawing.Size(79, 21);
+			this.selecteditemobjectCombobox.Size = new System.Drawing.Size(161, 21);
 			this.selecteditemobjectCombobox.TabIndex = 8;
 			// 
 			// label31
@@ -2071,6 +2070,7 @@
 			// 
 			// panel2
 			// 
+			this.panel2.Controls.Add(this.selecteditemobjectCombobox);
 			this.panel2.Controls.Add(this.thumbnailBox);
 			this.panel2.Controls.Add(this.mapInfosLabel);
 			this.panel2.Controls.Add(this.maphoverCheckbox);

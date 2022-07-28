@@ -138,11 +138,15 @@ public partial class SceneUW : Scene
 	{
 		if (Room is null) return;
 
+		ZGUI.DungeonEditor.MatchComboboxesToSelection(Room.OnlySelectedObject);
+
 		if (Room.SelectedObjects.Count > 1)
 		{
 			ZGUI.DungeonEditor.UpdateFormForManySelectedObjects(Room.SelectedObjects);
+			
 			return;
 		}
+
 		ZGUI.DungeonEditor.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 	}
 
@@ -161,6 +165,7 @@ public partial class SceneUW : Scene
 				return;
 			}
 			Room.RemoveIfThereOrAddToSelectedObjects(hoveredEntity);
+			Cursor = Cursors.SizeAll;
 		}
 		else
 		{
@@ -171,11 +176,13 @@ public partial class SceneUW : Scene
 			}
 			else if (Room.SelectedObjects.Contains(hoveredEntity))
 			{
+				Cursor = Cursors.SizeAll;
 				return;
 			}
 			else
 			{
 				Room.OnlySelectedObject = hoveredEntity;
+				Cursor = Cursors.SizeAll;
 			}
 		}
 		UpdateDungeonForm();
@@ -214,6 +221,8 @@ public partial class SceneUW : Scene
 
 	public void HardRefresh()
 	{
+		if (Room is null) return;
+
 		InvalidateRoomTilemapAndArtist();
 		Refresh();
 	}
@@ -237,18 +246,19 @@ public partial class SceneUW : Scene
 	{
 		if (Room is null) return;
 
-		if (!Selecting)
-		{
-			foreach (var o in Room.SelectedObjects)
-			{
-				if (o is IFreelyPlaceable f)
-				{
-					f.LockPosition();
-				}
-			}
-		}
+
+
+		Cursor = Cursors.Default;
 
 		base.OnMouseUp(sender, e);
+
+		foreach (var o in Room.SelectedObjects)
+		{
+			if (o is IFreelyPlaceable f)
+			{
+				f.LockPosition();
+			}
+		}
 
 		Selecting = false;
 	}
@@ -280,6 +290,7 @@ public partial class SceneUW : Scene
 				MoveSelectedObjects();
 			}
 		}
+
 		base.OnMouseMove(sender, e);
 	}
 

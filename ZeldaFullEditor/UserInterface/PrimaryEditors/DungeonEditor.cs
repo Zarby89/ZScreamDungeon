@@ -91,6 +91,7 @@ public partial class DungeonEditor : UserControl
 		entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
 		selectedEntrance = ZScreamer.ActiveScreamer.entrances[0];
 
+		// local function for both types of entrance
 		TreeNode CreateNode(UnderworldEntrance ee)
 		{
 			string tname = $"[{i:X2}] - {RoomName.ListOfVanillaNames[ee.RoomID]:X3}";
@@ -114,6 +115,15 @@ public partial class DungeonEditor : UserControl
 		}
 	}
 
+	public void MatchComboboxesToSelection(IHaveInfo o)
+	{
+		spritepropertyPanel.Visible = o is DungeonSprite;
+		doorselectPanel.Visible = o is DungeonDoor;
+
+		selecteditemobjectCombobox.Visible = o is DungeonSecret;
+	}
+
+
 	public void UpdateFormForSelectedObject(IHaveInfo o)
 	{
 		switch (o)
@@ -136,17 +146,14 @@ public partial class DungeonEditor : UserControl
 		ZGUI.UpdateFormForSelectedObject(o);
 	}
 
-	public void UpdateFormForManySelectedObjects<T>(IEnumerable<T> l) where T : IHaveInfo
+	public void UpdateFormForManySelectedObjects(IEnumerable<IHaveInfo> l)
 	{
 		ZGUI.UpdateFormForManySelectedObjects(l);
 	}
 
 	public void UpdateUIForRoom(Room room, bool prevent = true)
 	{
-		if (room == null)
-		{
-			return;
-		}
+		if (room is null) return;
 
 		propertiesChangedFromForm = prevent;
 
@@ -187,7 +194,7 @@ public partial class DungeonEditor : UserControl
 	{
 		foreach (TabPage p in RoomTabControl.TabPages)
 		{
-			if ((p.Tag as Room).HasUnsavedChanges)
+			if ((p.Tag as Room)?.HasUnsavedChanges ?? false)
 			{
 				ZGUI.anychange = true;
 				if (!p.Text.Contains('*'))
@@ -272,7 +279,7 @@ public partial class DungeonEditor : UserControl
 
 	private void updateEntranceInfos()
 	{
-		if (!propertiesChangedFromForm && selectedEntrance != null)
+		if (!propertiesChangedFromForm && selectedEntrance is not null)
 		{
 			selectedEntrance.Blockset = (byte) EntranceProperties_Blockset.HexValue;
 			selectedEntrance.RoomID = (ushort) EntranceProperties_RoomID.HexValue;
@@ -349,16 +356,12 @@ public partial class DungeonEditor : UserControl
 
 	public void closeRoom(int index)
 	{
-		for (int j = 0; j < opened_rooms.Count; j++)
-		{
-			var room = opened_rooms[j];
-			if (room.RoomID == index)
-			{
-				room.ClearSelectedList();
-				opened_rooms.RemoveAt(j);
-				return;
-			}
-		}
+		var room = opened_rooms.FirstOrDefault(r => r.RoomID == index, null);
+
+		if (room is null) return;
+
+		room.ClearSelectedList();
+		opened_rooms.Remove(room);
 	}
 
 
@@ -414,29 +417,27 @@ public partial class DungeonEditor : UserControl
 		doorxTextbox.Text = (p % 64).ToString("X2");
 		dooryTextbox.Text = (p >> 6).ToString("X2");
 
-		if (selectedEntrance.Scrollquadrant == 0x12) // Bottom right
+		switch (selectedEntrance.Scrollquadrant)
 		{
-			entranceProperty_quadbr.Checked = true;
-		}
-		else if (selectedEntrance.Scrollquadrant == 0x02) // Bottom left
-		{
-			entranceProperty_quadbl.Checked = true;
-		}
-		else if (selectedEntrance.Scrollquadrant == 0x00) // Top left
-		{
-			entranceProperty_quadtl.Checked = true;
-		}
-		else if (selectedEntrance.Scrollquadrant == 0x10) // Top right
-		{
-			entranceProperty_quadtr.Checked = true;
+			case 0x02:
+				entranceProperty_quadbl.Checked = true;
+				break;
+
+			case 0x00:
+				entranceProperty_quadtl.Checked = true;
+				break;
+
+			case 0x10:
+				entranceProperty_quadtr.Checked = true;
+				break;
+
+			case 0x12:
+				entranceProperty_quadbr.Checked = true;
+				break;
 		}
 
 
-		if (ZScreamer.ActiveUWScene.Room is not null)
-		{
-			ZScreamer.ActiveUWScene.HardRefresh();
-		}
-
+		ZScreamer.ActiveUWScene?.HardRefresh();
 
 		propertiesChangedFromForm = false;
 	}
@@ -1112,7 +1113,6 @@ public partial class DungeonEditor : UserControl
 
 	private void mapPicturebox_MouseDoubleClick(object sender, MouseEventArgs e)
 	{
-
 		if (e.Y is >= 256 and <= 264)
 		{
 			return;
