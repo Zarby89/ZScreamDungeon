@@ -4113,10 +4113,7 @@ namespace ZeldaFullEditor
 			int sy = 0;
 			int p = 0;
 
-			byte[] mapArrayData1 = new byte[0x5000];
-			byte[] mapArrayData2 = new byte[0x5000];
-			byte[] mapArrayData3 = new byte[0x5000];
-			byte[] mapArrayData4 = new byte[0x5000];
+			byte[] mapArrayData1 = new byte[0x50000];
 			using (OpenFileDialog sfd = new OpenFileDialog())
 			{
 				sfd.Filter = UIText.ExportedOWMapDataType;
@@ -4125,54 +4122,33 @@ namespace ZeldaFullEditor
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
 					fileStreamMap.Read(mapArrayData1, 0, (int)fileStreamMap.Length);
 					fileStreamMap.Close();
-					fileStreamMap = new FileStream(sfd.FileName+"1", FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(mapArrayData2, 0, (int) fileStreamMap.Length);
-					fileStreamMap.Close();
-					fileStreamMap = new FileStream(sfd.FileName+"2", FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(mapArrayData3, 0, (int) fileStreamMap.Length);
-					fileStreamMap.Close();
-					fileStreamMap = new FileStream(sfd.FileName+"3", FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(mapArrayData4, 0, (int) fileStreamMap.Length);
-					fileStreamMap.Close();
 
-					//for (int i = 0; i < 64; i++)
-					//{
-					for (int y = 0; y < 32; y += 1)
+					for (int i = 0; i < 64; i++)
+					{
+						for (int y = 0; y < 32; y += 1)
 						{
 							for (int x = 0; x < 32; x += 1)
 							{
-								overworldEditor.overworld.allmapsTilesLW[x+(32*5), y] = (ushort) ((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+								overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
 								p += 2;
+								overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+								p += 2;
+
+								if (i < 32)
+								{
+									overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+									p += 2;
+								}
 							}
 						}
-					p = 0;
-					for (int y = 0; y < 32; y += 1)
-					{
-						for (int x = 0; x < 32; x += 1)
+
+						sx++;
+						if (sx >= 8)
 						{
-							overworldEditor.overworld.allmapsTilesLW[x + (32 * 6), y] = (ushort) ((mapArrayData2[p + 1] << 8) + mapArrayData2[p]);
-							p += 2;
+							sy++;
+							sx = 0;
 						}
 					}
-					p = 0;
-					for (int y = 0; y < 32; y += 1)
-					{
-						for (int x = 0; x < 32; x += 1)
-						{
-							overworldEditor.overworld.allmapsTilesLW[x + (32 * 5), y+32] = (ushort) ((mapArrayData3[p + 1] << 8) + mapArrayData3[p]);
-							p += 2;
-						}
-					}
-					p = 0;
-					for (int y = 0; y < 32; y += 1)
-					{
-						for (int x = 0; x < 32; x += 1)
-						{
-							overworldEditor.overworld.allmapsTilesLW[x + (32 * 6), y+32] = (ushort) ((mapArrayData4[p + 1] << 8) + mapArrayData4[p]);
-							p += 2;
-						}
-					}
-					//}
 
 					fileStreamMap.Close();
 				}

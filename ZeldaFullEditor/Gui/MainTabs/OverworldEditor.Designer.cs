@@ -365,7 +365,7 @@
             this.gravestoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.gravestoneButton.Name = "gravestoneButton";
             this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
-            this.gravestoneButton.Text = "Overlay";
+            this.gravestoneButton.Text = "Grave Stones";
             this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // searchtilesButton
