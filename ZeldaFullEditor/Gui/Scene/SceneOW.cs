@@ -853,8 +853,11 @@ namespace ZeldaFullEditor
 						gridsize = 1024;
 					}
 
-					int x = ow.allmaps[selectedMap].parent % 8;
-					int y = ow.allmaps[selectedMap].parent / 8;
+					int temp = selectedMap;
+					temp = temp % 64;
+
+					int x = ow.allmaps[temp].parent % 8;
+					int y = ow.allmaps[temp].parent / 8;
 
 					for (int gx = 0; gx < (gridsize / owForm.gridDisplay); gx++)
 					{
