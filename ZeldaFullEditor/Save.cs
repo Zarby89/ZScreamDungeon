@@ -171,8 +171,8 @@ namespace ZeldaFullEditor
                 if < offset > == $FFFF, stop
             */
 
-			int room_pointer = 0x128090; // @zarby: save all 320 rooms pointers to 0x128000
-			int data_pointer = 0x128450; // @zarby: the actual data at 0x1283C0
+			int room_pointer = Constants.customCollisionRoomPointers; // @zarby: save all 320 rooms pointers to 0x128000
+			int data_pointer = Constants.customCollisionDataPosition; // @zarby: the actual data at 0x1283C0
 
 			Console.WriteLine(room_pointer + " " + data_pointer);
 

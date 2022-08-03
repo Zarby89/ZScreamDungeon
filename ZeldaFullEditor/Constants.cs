@@ -495,6 +495,7 @@ namespace ZeldaFullEditor
 		public static int overworldMiniMapPalettes = 0x55B27;
 		public static int triforcePalette = 0x64425;
 		public static int crystalPalette = 0xF4CD3;
+		public static int customAreaSpecificBGPalette = 0x130000; // 2 bytes for each overworld area (320)
 
 		//===========================================================================================
 		// Dungeon Map Related Variables
@@ -523,6 +524,12 @@ namespace ZeldaFullEditor
 		public static int titleScreenSpritesGFX = 0x6420C; // 1 Byte
 		public static int titleScreenExtraTilesGFX = 0x64211; // 1 Byte
 		public static int titleScreenExtraSpritesGFX = 0x64216; // 1 Byte
+
+		//===========================================================================================
+		// Custom Collision
+		//===========================================================================================
+		public static int customCollisionRoomPointers = 0x128090; // Array 3 bytes per room
+		public static int customCollisionDataPosition = 0x128450; // A bunch of FFFF ended arrays
 
 		//===========================================================================================
 		// End Main Addresses

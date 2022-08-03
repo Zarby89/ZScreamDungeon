@@ -445,12 +445,12 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public void LoadCustomCollisionFromRom()
 		{
-			int room_pointer = 0x128090;
+			int room_pointer = Constants.customCollisionRoomPointers;
 			room_pointer = room_pointer + (3 * index);
 
 			int data_pointer = ROM.ReadLong(room_pointer);
 
-			if (data_pointer >= 0x128450)
+			if (data_pointer >= Constants.customCollisionDataPosition)
 			{
 				Console.WriteLine("valid Custom collision data pointer found for room " + index + " " + data_pointer.ToString("X"));
 
