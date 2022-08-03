@@ -5132,5 +5132,13 @@ namespace ZeldaFullEditor
 		{
 			overworldEditor.overworld.showTile32Count();
 		}
+
+		private void useAreaSpecificBGColorToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+		{
+			overworldEditor.UpdateBGColorVisibility(useAreaSpecificBGColorToolStripMenuItem.Checked);
+
+			OverworldEditor.UseAreaSpecificBgColor = useAreaSpecificBGColorToolStripMenuItem.Checked;
+			overworldEditor.Refresh();
+		}
 	}
 }

@@ -626,7 +626,7 @@ namespace ZeldaFullEditor.Gui
 
 					for (int i = 0; i < 159; i++)
 					{
-						mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+						mainForm.overworldEditor.overworld.allmaps[i].LoadPalette();
 					}
 
 					mainForm.overworldEditor.scene.Refresh();
@@ -642,7 +642,7 @@ namespace ZeldaFullEditor.Gui
 				selectedPalette[tempIndex] = tempColor;
 				for (int i = 0; i < 159; i++)
 				{
-					mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+					mainForm.overworldEditor.overworld.allmaps[i].LoadPalette();
 				}
 
 				mainForm.overworldEditor.scene.Refresh();
@@ -669,7 +669,7 @@ namespace ZeldaFullEditor.Gui
 
 				for (int i = 0; i < 159; i++)
 				{
-					mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+					mainForm.overworldEditor.overworld.allmaps[i].LoadPalette();
 				}
 
 				refreshallGfx();

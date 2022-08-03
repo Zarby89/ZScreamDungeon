@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
@@ -318,11 +319,6 @@ namespace ZeldaFullEditor
 			//Console.WriteLine("Map Tileset16 Generated in : " + sw.ElapsedMilliseconds);
 		}
 
-		public void ReloadPalettes()
-		{
-			LoadPalette();
-		}
-
 		private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
 		{
 			int mx = x;
@@ -445,7 +441,15 @@ namespace ZeldaFullEditor
 			{
 				// Default LW Palette
 				pal0 = 0;
-				bgr = Palettes.overworld_GrassPalettes[0];
+				
+				if(OverworldEditor.UseAreaSpecificBgColor)
+				{
+					bgr = Palettes.overworld_BackgroundPalette[parent];
+				}
+				else
+				{
+					bgr = Palettes.overworld_GrassPalettes[0];
+				}
 
 				// Hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
 				if ((parent >= 0x03 && parent <= 0x07))
@@ -461,7 +465,14 @@ namespace ZeldaFullEditor
 			{
 				// Default DW Palette
 				pal0 = 1;
-				bgr = Palettes.overworld_GrassPalettes[1];
+				if (OverworldEditor.UseAreaSpecificBgColor)
+				{
+					bgr = Palettes.overworld_BackgroundPalette[parent];
+				}
+				else
+				{
+					bgr = Palettes.overworld_GrassPalettes[1];
+				}
 
 				// Hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
 				if (parent >= 0x43 && parent <= 0x47)
@@ -477,7 +488,15 @@ namespace ZeldaFullEditor
 			{
 				// Default SP Palette
 				pal0 = 0;
-				bgr = Palettes.overworld_GrassPalettes[2];
+
+				if (OverworldEditor.UseAreaSpecificBgColor)
+				{
+					bgr = Palettes.overworld_BackgroundPalette[parent];
+				}
+				else
+				{
+					bgr = Palettes.overworld_GrassPalettes[2];
+				}
 			}
 
 			if (parent == 0x88)

@@ -45,6 +45,8 @@ namespace ZeldaFullEditor.Gui
 
 		readonly ColorDialog cd = new ColorDialog();
 
+		public static bool UseAreaSpecificBgColor = false;
+
 		public OverworldEditor()
 		{
 			InitializeComponent();
@@ -131,8 +133,8 @@ namespace ZeldaFullEditor.Gui
 
 			largemapCheckbox.Checked = m.largeMap;
 			BGColorToUpdate = m.parent;
-
 		}
+
 		private void ModeButton_Click(object sender, EventArgs e)
 		{
 			for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck all the other modes.
@@ -2061,7 +2063,7 @@ namespace ZeldaFullEditor.Gui
 				areaBGColorPictureBox.Refresh();
 			}
 
-			mainForm.overworldEditor.overworld.allmaps[scene.selectedMap].ReloadPalettes();
+			mainForm.overworldEditor.overworld.allmaps[scene.selectedMap].LoadPalette();
 		}
 
 		/// <summary>
@@ -2088,7 +2090,22 @@ namespace ZeldaFullEditor.Gui
 		{
 			Bitmap temp = new Bitmap(4096, 4096);
 			Graphics g = Graphics.FromImage(temp);
-			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
+
+			if(UseAreaSpecificBgColor)
+			{
+				for (int i = 0; i < 64; i++)
+				{
+					int x = (i % 8) * 512;
+					int y = (i / 8) * 512;
+
+					int k = overworld.allmaps[i].parent;
+					g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k]), new Rectangle(x, y, 512, 512));
+				}
+			}
+			else
+			{
+				g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
+			}
 
 			for (int i = 0; i < 64; i++)
 			{
@@ -2102,7 +2119,22 @@ namespace ZeldaFullEditor.Gui
 
 			temp = new Bitmap(4096, 4096);
 			g = Graphics.FromImage(temp);
-			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+
+			if (UseAreaSpecificBgColor)
+			{
+				for (int i = 0; i < 64; i++)
+				{
+					int x = (i % 8) * 512;
+					int y = (i / 8) * 512;
+
+					int k = overworld.allmaps[i].parent;
+					g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 64]), new Rectangle(x, y, 512, 512));
+				}
+			}
+			else
+			{
+				g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+			}
 
 			for (int i = 0; i < 64; i++)
 			{
@@ -2116,7 +2148,22 @@ namespace ZeldaFullEditor.Gui
 
 			temp = new Bitmap(4096, 4096);
 			g = Graphics.FromImage(temp);
-			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[2]), new Rectangle(0, 0, 4096, 4096));
+
+			if (UseAreaSpecificBgColor)
+			{
+				for (int i = 0; i < 32; i++)
+				{
+					int x = (i % 8) * 512;
+					int y = (i / 8) * 512;
+
+					int k = overworld.allmaps[i].parent;
+					g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 128]), new Rectangle(x, y, 512, 512));
+				}
+			}
+			else
+			{
+				g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+			}
 
 			for (int i = 0; i < 32; i++)
 			{
@@ -2127,6 +2174,12 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			temp.Save("SP.png");
+		}
+
+		public void UpdateBGColorVisibility(bool x)
+		{
+			label7.Visible = x;
+			areaBGColorPictureBox.Visible = x;
 		}
 	}
 }
