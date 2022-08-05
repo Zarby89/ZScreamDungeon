@@ -41,8 +41,6 @@ namespace ZeldaFullEditor.Gui
 		byte palSelected = 0;
 		int tile8selected = 0;
 
-		public int BGColorToUpdate = 0;
-
 		readonly ColorDialog cd = new ColorDialog();
 
 		public static bool UseAreaSpecificBgColor = false;
@@ -132,7 +130,6 @@ namespace ZeldaFullEditor.Gui
 			OWProperty_SPRPalette.HexValue = m.sprpalette[gamestate];
 
 			largemapCheckbox.Checked = m.largeMap;
-			BGColorToUpdate = m.parent;
 		}
 
 		private void ModeButton_Click(object sender, EventArgs e)
@@ -2056,14 +2053,16 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="e"></param>
 		private void AreaBGColorPicturebox_MouseDoubleClick(object sender, EventArgs e)
 		{
-			cd.Color = Palettes.overworld_BackgroundPalette[BGColorToUpdate];
+			int selectedParent = scene.ow.allmaps[scene.selectedMap].parent;
+			
+			cd.Color = Palettes.overworld_BackgroundPalette[selectedParent];
 			if (cd.ShowDialog() == DialogResult.OK)
 			{
-				Palettes.overworld_BackgroundPalette[BGColorToUpdate] = cd.Color;
+				Palettes.overworld_BackgroundPalette[selectedParent] = cd.Color;
 				areaBGColorPictureBox.Refresh();
 			}
 
-			mainForm.overworldEditor.overworld.allmaps[scene.selectedMap].LoadPalette();
+			mainForm.overworldEditor.overworld.allmaps[selectedParent].LoadPalette();
 		}
 
 		/// <summary>
@@ -2073,9 +2072,15 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="e"></param>
 		private void AreaBGColorPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (BGColorToUpdate < Palettes.overworld_BackgroundPalette.Length)
+			int selectedParent = scene.ow.allmaps[scene.selectedMap].parent;
+
+			if (selectedParent < Palettes.overworld_BackgroundPalette.Length)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[BGColorToUpdate]), Constants.Rect_0_0_24_24);
+				e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[selectedParent]), Constants.Rect_0_0_24_24);
+			}
+			else
+			{
+				e.Graphics.FillRectangle(new SolidBrush(Color.Black), Constants.Rect_0_0_24_24);
 			}
 		}
 

@@ -495,7 +495,10 @@ namespace ZeldaFullEditor
 		public static int overworldMiniMapPalettes = 0x55B27;
 		public static int triforcePalette = 0x64425;
 		public static int crystalPalette = 0xF4CD3;
+
 		public static int customAreaSpecificBGPalette = 0x130000; // 2 bytes for each overworld area (320)
+		public static int customAreaSpecificBGASM = 0x130150;
+		public static int customAreaSpecificBGEnabled = 0x130140; // 1 byte, not 0 if enabled
 
 		//===========================================================================================
 		// Dungeon Map Related Variables
@@ -505,7 +508,6 @@ namespace ZeldaFullEditor
 
 		public static int dungeonMap_gfx_ptr = 0x57BE4; // 14 pointers of gfx data
 		public static int dungeonMap_datastart = 0x57039; // Data start for floors/gfx MUST skip 575D9 to 57621 (pointers)
-
 
 		public static int dungeonMap_expCheck = 0x56652; // IF Byte = 0xB9 dungeon maps are not expanded
 		public static int dungeonMap_tile16 = 0x57009;

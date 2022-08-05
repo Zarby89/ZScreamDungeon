@@ -309,7 +309,9 @@ namespace ZeldaFullEditor
 				WritePalette(romData, Constants.overworldMiniMapPalettes + (i * 256), overworld_Mini_Map_Palettes[i]);
 			}
 
-			WritePalette(romData, Constants.customAreaSpecificBGPalette, overworld_BackgroundPalette);
+			// TODO:
+			// set to 147 and not 160 because it seems the area numbers for all areas after 147 are messed up and it causes the palettes to save over eachother. 
+			WritePalette(romData, Constants.customAreaSpecificBGPalette, overworld_BackgroundPalette, 147);
 
 			return false;
 		}

@@ -242,6 +242,37 @@ namespace ZeldaFullEditor
 			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
 			{
 				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool saveAreaSpecificBG(bool enabled)
+		{
+			Console.WriteLine("Saving Area Specific BG colors ASM");
+
+			if (enabled)
+			{
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF);
+			}
+			else
+			{
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00);
+			}
+			
+			AsarCLR.Asar.init();
+
+			// TODO handle differently in projects
+			if (File.Exists("CustomCollision.asm"))
+			{
+				AsarCLR.Asar.patch("AreaSpecificBGColor.asm", ref ROM.DATA);
+			}
+
+			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+			{
+				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
 			}
 
 			return false;

@@ -73,6 +73,7 @@ namespace ZeldaFullEditor.Gui
 			saveArr[38] = checkBox39.Checked; //save dungeon maps
 			saveArr[39] = checkBox40.Checked; //misc triforce
 			saveArr[40] = checkBox41.Checked; //overworld message IDs
+			saveArr[41] = checkBox42.Checked; //overworld area specific BG color
 
 			dungeonMain.saveSettingsArr = saveArr;
 
@@ -92,6 +93,11 @@ namespace ZeldaFullEditor.Gui
 		public void LoadSaveSettings()
 		{
 			saveArr = dungeonMain.saveSettingsArr;
+
+			if(ROM.DATA[Constants.customAreaSpecificBGEnabled] != 0x00)
+			{
+				saveArr[41] = true;
+			}
 
 			checkBox1.Checked = saveArr[0];   //save dungeon sprites
 			checkBox2.Checked = saveArr[1];   //save dungeon pot items
@@ -134,6 +140,7 @@ namespace ZeldaFullEditor.Gui
 			checkBox39.Checked = saveArr[38]; //save dungeon maps
 			checkBox40.Checked = saveArr[39]; //save misc triforce
 			checkBox41.Checked = saveArr[40]; //overworld message IDs
+			checkBox42.Checked = saveArr[41]; //overworld area specific BG color
 		}
 
 		private void button3_Click(object sender, EventArgs e)
@@ -189,6 +196,7 @@ namespace ZeldaFullEditor.Gui
 			checkBox39.Checked = v; //save dungeon maps
 			checkBox40.Checked = v; //save misc triforce
 			checkBox41.Checked = v; //overworld message IDs
+			checkBox42.Checked = v; //overworld area specific BG color
 		}
 	}
 }

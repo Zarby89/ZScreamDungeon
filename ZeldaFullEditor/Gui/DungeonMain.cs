@@ -111,7 +111,7 @@ namespace ZeldaFullEditor
 			true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true, true, true, true, true,
-			true
+			true, false
 		};
 
 		// Constuctor 
@@ -439,6 +439,11 @@ namespace ZeldaFullEditor
 					break;
 				}
 				if (saveSettingsArr[40] && save.saveOverworldMessagesIds(overworldEditor.scene))
+				{
+					UIText.CryAboutSaving("problem saving  overworld map tiles Types ???");
+					break;
+				}
+				if (save.saveAreaSpecificBG(saveSettingsArr[41]))
 				{
 					UIText.CryAboutSaving("problem saving  overworld map tiles Types ???");
 					break;
