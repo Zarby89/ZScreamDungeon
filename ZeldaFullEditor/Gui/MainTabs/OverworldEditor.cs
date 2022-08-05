@@ -44,6 +44,7 @@ namespace ZeldaFullEditor.Gui
 		readonly ColorDialog cd = new ColorDialog();
 
 		public static bool UseAreaSpecificBgColor = false;
+		public static bool scratchPadGrid = false;
 
 		public OverworldEditor()
 		{
@@ -608,6 +609,26 @@ namespace ZeldaFullEditor.Gui
 				// DRAW ALL THE TILES 16x225
 
 				g.CompositingMode = CompositingMode.SourceOver;
+
+				if (scratchPadGrid)
+				{
+					int gridsizeX = 256;
+					int gridsizeY = 3600;
+
+					for (int gx = 0; gx < (gridsizeX / 32); gx++)
+					{
+						g.DrawLine(Constants.ThirdWhitePen1,
+							new Point(gx * 32, 0),
+							new Point(gx * 32, gridsizeY));
+					}
+
+					for (int gy = 0; gy < ((gridsizeY / 32) + 1); gy++)
+					{
+						g.DrawLine(Constants.ThirdWhitePen1,
+							new Point(0, (gy * 32)),
+							new Point(gridsizeX, (gy * 32)));
+					}
+				}
 
 				if (selecting)
 				{

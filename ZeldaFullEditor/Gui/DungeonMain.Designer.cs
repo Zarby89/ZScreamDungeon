@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -411,6 +411,7 @@ namespace ZeldaFullEditor
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1832,13 +1833,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode3.Name = "EntranceNode";
-            treeNode3.Text = "Entrances";
-            treeNode4.Name = "StartingEntranceNode";
-            treeNode4.Text = "Spawn points";
+            treeNode7.Name = "EntranceNode";
+            treeNode7.Text = "Entrances";
+            treeNode8.Name = "StartingEntranceNode";
+            treeNode8.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode7,
+            treeNode8});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -3955,7 +3956,8 @@ namespace ZeldaFullEditor
             this.showEntranceExitPreviewToolStripMenuItem,
             this.overworldOverlayVisibleToolStripMenuItem,
             this.showGridToolStripMenuItem1,
-            this.useAreaSpecificBGColorToolStripMenuItem});
+            this.useAreaSpecificBGColorToolStripMenuItem,
+            this.showScratchPadGridToolStripMenuItem});
             this.overworldViewToolStripMenuItem.Enabled = false;
             this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
             this.overworldViewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -4432,6 +4434,14 @@ namespace ZeldaFullEditor
             this.customPanel3.Size = new System.Drawing.Size(603, 523);
             this.customPanel3.TabIndex = 19;
             // 
+            // showScratchPadGridToolStripMenuItem
+            // 
+            this.showScratchPadGridToolStripMenuItem.CheckOnClick = true;
+            this.showScratchPadGridToolStripMenuItem.Name = "showScratchPadGridToolStripMenuItem";
+            this.showScratchPadGridToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showScratchPadGridToolStripMenuItem.Text = "Show Scratch Pad Grid";
+            this.showScratchPadGridToolStripMenuItem.Click += new System.EventHandler(this.showScratchPadGridToolStripMenuItem_Click);
+            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4892,6 +4902,7 @@ namespace ZeldaFullEditor
 		private System.Windows.Forms.ToolStripMenuItem copyLWToDWToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showTiles32CountToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem useAreaSpecificBGColorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showScratchPadGridToolStripMenuItem;
 	}
 }
 

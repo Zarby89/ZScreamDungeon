@@ -5145,5 +5145,11 @@ namespace ZeldaFullEditor
 			OverworldEditor.UseAreaSpecificBgColor = useAreaSpecificBGColorToolStripMenuItem.Checked;
 			overworldEditor.Refresh();
 		}
+
+		private void showScratchPadGridToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			OverworldEditor.scratchPadGrid = showScratchPadGridToolStripMenuItem.Checked;
+			overworldEditor.Refresh();
+		}
 	}
 }
