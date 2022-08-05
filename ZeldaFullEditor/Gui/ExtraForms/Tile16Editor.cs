@@ -211,6 +211,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			int tid = (e.X / 16) + ((e.Y / 16) * 16);
 			tileUpDown.Text = tid.ToString("X2");
+			tileTypeBox.SelectedIndex = tempTiletype[tid];
 			pictureboxTile8.Refresh();
 
 			updateTiles();
