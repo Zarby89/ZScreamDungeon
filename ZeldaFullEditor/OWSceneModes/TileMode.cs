@@ -287,9 +287,9 @@ namespace ZeldaFullEditor.OWSceneModes
 						{
 							scene.owForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
 						}
-
-						scene.owForm.tilePictureBox.Refresh();
 					}
+
+					scene.owForm.AdjustTile16BoxScrollBar();
 				}
 			}
 

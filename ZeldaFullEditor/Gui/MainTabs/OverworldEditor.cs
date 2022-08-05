@@ -250,6 +250,30 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
+		public void AdjustTile16BoxScrollBar()
+		{
+			int y = ((scene.selectedTile[0] / 8)) * 16;
+
+			if (scene.selectedTile[0] >= 2048)
+			{
+				y -= 4096;
+			}
+
+			if (y + tabPage1.Size.Height > tilePictureBox.Size.Height )
+			{
+				y = tilePictureBox.Size.Height - tabPage1.Size.Height;
+			}
+
+			// TODO: fix this garbage, it doesn't update all of the time for some reason but works better without the if. -Jared_Brian_
+			//if (y < tabPage1.VerticalScroll.Value || y > tabPage1.VerticalScroll.Value + tabPage1.Size.Height)
+			//{
+			tabPage1.VerticalScroll.Value = y;
+			tilePictureBox.Refresh();
+			tabPage1.Update();
+			tabPage1.Refresh();
+			//
+		}
+
 		private void tilePictureBox_MouseClick(object sender, MouseEventArgs e)
 		{
 			scene.selectedTileSizeX = 1;
