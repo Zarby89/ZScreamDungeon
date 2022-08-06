@@ -276,6 +276,9 @@ namespace ZeldaFullEditor
 		public static int transition_target_north = 0x13ee2;
 		public static int transition_target_west = 0x13f62;
 
+		public static int overworldCustomMosaicASM = 0x1301D0;
+		public static int overworldCustomMosaicArray = 0x1301F0;
+
 		//===========================================================================================
 		// Overworld Exits/Entrances Variables
 		//===========================================================================================

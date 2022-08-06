@@ -91,7 +91,7 @@ namespace ZeldaFullEditor.Gui
 			int t = 0;
 			for (ushort x = 0; x < 225; x++)
 			{
-				for (ushort y = 0; y < 16; y++, t+=2)
+				for (ushort y = 0; y < 16; y++, t += 2)
 				{
 					scratchPadTiles[y, x] = fromFile ? (ushort) ((file[t] << 8) + file[t + 1]) : (ushort) 0;
 				}
@@ -131,6 +131,7 @@ namespace ZeldaFullEditor.Gui
 			OWProperty_SPRPalette.HexValue = m.sprpalette[gamestate];
 
 			largemapCheckbox.Checked = m.largeMap;
+			mosaicCheckBox.Checked = m.mosaic;
 		}
 
 		private void ModeButton_Click(object sender, EventArgs e)
@@ -259,7 +260,7 @@ namespace ZeldaFullEditor.Gui
 				y -= 4096;
 			}
 
-			if (y + tabPage1.Size.Height > tilePictureBox.Size.Height )
+			if (y + tabPage1.Size.Height > tilePictureBox.Size.Height)
 			{
 				y = tilePictureBox.Size.Height - tabPage1.Size.Height;
 			}
@@ -2099,7 +2100,7 @@ namespace ZeldaFullEditor.Gui
 		private void AreaBGColorPicturebox_MouseDoubleClick(object sender, EventArgs e)
 		{
 			int selectedParent = scene.ow.allmaps[scene.selectedMap].parent;
-			
+
 			cd.Color = Palettes.overworld_BackgroundPalette[selectedParent];
 			if (cd.ShowDialog() == DialogResult.OK)
 			{
@@ -2141,7 +2142,7 @@ namespace ZeldaFullEditor.Gui
 			Bitmap temp = new Bitmap(4096, 4096);
 			Graphics g = Graphics.FromImage(temp);
 
-			if(UseAreaSpecificBgColor)
+			if (UseAreaSpecificBgColor)
 			{
 				for (int i = 0; i < 64; i++)
 				{
@@ -2161,7 +2162,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				int x = (i % 8) * 512;
 				int y = (i / 8) * 512;
-				
+
 				g.DrawImage(overworld.allmaps[i].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
 			}
 
@@ -2230,6 +2231,11 @@ namespace ZeldaFullEditor.Gui
 		{
 			label7.Visible = x;
 			areaBGColorPictureBox.Visible = x;
+		}
+
+		private void mosaicCheckBox_Click(object sender, EventArgs e)
+		{
+			scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent].mosaic = mosaicCheckBox.Checked;
 		}
 	}
 }

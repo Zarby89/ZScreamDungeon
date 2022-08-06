@@ -8,15 +8,6 @@ using System.Windows.Forms;
 using System.IO.Compression;
 namespace ZeldaFullEditor
 {
-	// TODO LIST
-	// 
-	// 
-	// 
-	// 
-	// 
-	// 
-	// 
-
 	class Save
 	{
 		// ROM.DATA is a base rom loaded to get basic information it can either be JP1.0 or US1.2
@@ -264,9 +255,42 @@ namespace ZeldaFullEditor
 			AsarCLR.Asar.init();
 
 			// TODO handle differently in projects
-			if (File.Exists("CustomCollision.asm"))
+			if (File.Exists("AreaSpecificBGColor.asm"))
 			{
 				AsarCLR.Asar.patch("AreaSpecificBGColor.asm", ref ROM.DATA);
+			}
+
+			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+			{
+				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool saveOverworldMosaic(SceneOW scene)
+		{
+			Console.WriteLine("Saving Overworld Custom Mosaic ASM");
+
+			for (int i = 0; i < scene.ow.allmaps.Length; i++)
+			{
+				if (scene.ow.allmaps[i].mosaic)
+				{
+					ROM.Write(Constants.overworldCustomMosaicArray + i, 0x01);
+				}
+				else
+				{
+					ROM.Write(Constants.overworldCustomMosaicArray + i, 0x00);
+				}
+			}
+
+			AsarCLR.Asar.init();
+
+			// TODO handle differently in projects
+			if (File.Exists("MosaicChange.asm"))
+			{
+				AsarCLR.Asar.patch("MosaicChange.asm", ref ROM.DATA);
 			}
 
 			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())

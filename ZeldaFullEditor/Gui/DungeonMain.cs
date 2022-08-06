@@ -445,7 +445,12 @@ namespace ZeldaFullEditor
 				}
 				if (save.saveAreaSpecificBG(saveSettingsArr[41]))
 				{
-					UIText.CryAboutSaving("problem saving  overworld map tiles Types ???");
+					UIText.CryAboutSaving("problem saving  overworld area specific BG color ASM");
+					break;
+				}
+				if (save.saveOverworldMosaic(overworldEditor.scene))
+				{
+					UIText.CryAboutSaving("problem saving  overworld custom mosaic ASM");
 					break;
 				}
 

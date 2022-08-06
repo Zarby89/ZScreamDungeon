@@ -23,6 +23,7 @@ namespace ZeldaFullEditor
 		public bool firstLoad = false;
 		public short messageID = 0;
 		public bool largeMap = false;
+		public bool mosaic = false;
 		public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512); // Needs to be removed
 																//public IntPtr blockset16 = Marshal.AllocHGlobal(1048576); // Needs to be removed
 																//public Bitmap blocksetBitmap; // Needs to be removed
@@ -52,6 +53,18 @@ namespace ZeldaFullEditor
 				else
 				{
 					largeMap = (index == 129 || index == 130 || index == 137 || index == 138);
+				}
+			}
+
+			if (ROM.DATA[Constants.overworldCustomMosaicASM] == 0x00)
+			{
+				mosaic = (index == 0 || index == 64 || index == 128 || index == 129 || index == 136);
+			}
+			else
+			{
+				if (ROM.DATA[Constants.overworldCustomMosaicArray + index] != 0x00)
+				{
+					mosaic = true;
 				}
 			}
 
