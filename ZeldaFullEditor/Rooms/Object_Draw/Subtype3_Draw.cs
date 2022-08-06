@@ -973,6 +973,7 @@ namespace ZeldaFullEditor
 	{
 		public object_FA7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
 		{
+			id = 3999; // Added just to change the draw to be like object F9F because this objects draw is wrong for some reason -Jared_Brain_
 			name = Constants.Type3RoomObjectNames[0x27];
 			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
 			sort = Sorting.NonScalable | Sorting.Stairs;
@@ -1140,6 +1141,16 @@ namespace ZeldaFullEditor
 			int pos = Constants.tile_address + 0x1B4A;
 			sort = Sorting.NonScalable;
 			addTiles(84, pos); // ??
+
+			// Manually changing the incorrect corners
+			tiles[0].id = tiles[13].id;
+			tiles[0].VFlip = true;
+
+			tiles[14].VFlip = true;
+			tiles[28].VFlip = true;
+			tiles[42].VFlip = true;
+			tiles[56].VFlip = true;
+			tiles[70].VFlip = true;
 		}
 
 		public override void Draw()
@@ -1162,14 +1173,14 @@ namespace ZeldaFullEditor
 				draw_tile(tiles[tid + 42], (4) * 8, (yy) * 8);
 				tiles[tid + 56].HFlip = false;
 				draw_tile(tiles[tid + 56], (5) * 8, (yy) * 8);
-
 				tiles[tid + 70].HFlip = false;
 				draw_tile(tiles[tid + 70], (6) * 8, (yy) * 8);
+
 				tiles[tid + 70].HFlip = true;
 				draw_tile(tiles[tid + 70], (7) * 8, (yy) * 8);
 				tiles[tid + 56].HFlip = true;
 				draw_tile(tiles[tid + 56], (8) * 8, (yy) * 8);
-				tiles[tid + 48].HFlip = true;
+				tiles[tid + 42].HFlip = false;
 				draw_tile(tiles[tid + 42], (9) * 8, (yy) * 8);
 				tiles[tid + 28].HFlip = true;
 				draw_tile(tiles[tid + 28], (10) * 8, (yy) * 8);
