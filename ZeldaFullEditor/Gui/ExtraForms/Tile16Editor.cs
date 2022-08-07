@@ -21,6 +21,8 @@ namespace ZeldaFullEditor.Gui
 
 		ushort searchedTile = 0xFFFF;
 
+		Tile16 copiedTile;
+
 		public Tile16Editor(SceneOW scene)
 		{
 			this.scene = scene;
@@ -232,6 +234,10 @@ namespace ZeldaFullEditor.Gui
 			int t8y = (e.Y / 16) & 0x01;
 			int t8i = 0;
 
+			scene.selectedTile = new ushort[1] { (ushort) t16 };
+
+			tile16GroupBox.Text = "Selected tile 16: " + t16.ToString("X4");
+
 			// When left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
 			if (e.Button == MouseButtons.Left)
 			{
@@ -258,7 +264,6 @@ namespace ZeldaFullEditor.Gui
 				}
 
 				BuildTiles16Gfx();
-				pictureboxTile16.Refresh();
 			}
 			// When right clicked, get the select the tile 8 from the corrisponding quadrant of the tile 16
 			else
@@ -280,6 +285,8 @@ namespace ZeldaFullEditor.Gui
 					updateTileInfoFrom16(allTiles[t16].tile3);
 				}
 			}
+
+			pictureboxTile16.Refresh();
 		}
 
 		private void updateTileInfoFrom16(TileInfo t)
@@ -551,6 +558,20 @@ namespace ZeldaFullEditor.Gui
 			searchedTile = tsearch;
 			panel1.VerticalScroll.Value = ((searchedTile / 8) * 32);
 			panel1.PerformLayout();
+		}
+
+		private void Tile16CopyBtn_Click(object sender, EventArgs e)
+		{
+			copiedTileLabel.Text = "Copied Tile: " + scene.selectedTile[0].ToString("X4");
+			copiedTile = allTiles[scene.selectedTile[0]];
+		}
+
+		private void Tile16PasteBtn_Click(object sender, EventArgs e)
+		{
+			allTiles[scene.selectedTile[0]] = copiedTile;
+
+			BuildTiles16Gfx();
+			pictureboxTile16.Refresh();
 		}
 	}
 }
