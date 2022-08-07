@@ -465,11 +465,19 @@ namespace ZeldaFullEditor
 				}
 
 				// Hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
+				// Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later
+				/*
 				if ((parent >= 0x03 && parent <= 0x07))
 				{
 					pal0 = 2;
 				}
 				else if (parent >= 0x0B && parent <= 0x0E)
+				{
+					pal0 = 2;
+				}
+				*/
+
+				if (parent == 0x03 || parent == 0x05 || parent == 0x07)
 				{
 					pal0 = 2;
 				}
@@ -488,6 +496,8 @@ namespace ZeldaFullEditor
 				}
 
 				// Hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
+				// Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later
+				/*
 				if (parent >= 0x43 && parent <= 0x47)
 				{
 					pal0 = 3;
@@ -495,6 +505,12 @@ namespace ZeldaFullEditor
 				else if (parent >= 0x4B && parent <= 0x4E)
 				{
 					pal0 = 3;
+				}
+				*/
+
+				if (parent == 0x43 || parent == 0x45 || parent == 0x47)
+				{
+					pal0 = 2;
 				}
 			}
 			else if (parent >= 128 && parent < Constants.NumberOfOWMaps)
@@ -777,11 +793,27 @@ namespace ZeldaFullEditor
 			}
 
 			// Hardcoded overworld GFX Values, for death mountain
+			// Commented out in favor of just checking for area's 3, 5, and 7 and their DW equivilants for the sake of consistency, but may need to be changed later. -Jared_Brian_
+			/*
 			if ((parent >= 0x03 && parent <= 0x07) || (parent >= 0x0B && parent <= 0x0E))
 			{
 				staticgfx[7] = 89;
 			}
 			else if ((parent >= 0x43 && parent <= 0x47) || (parent >= 0x4B && parent <= 0x4E))
+			{
+				staticgfx[7] = 89;
+			}
+			else
+			{
+				staticgfx[7] = 91;
+			}
+			*/
+
+			if (parent == 0x03 || parent == 0x05 || parent == 0x07)
+			{
+				staticgfx[7] = 89;
+			}
+			else if (parent == 0x43 || parent == 0x45 || parent == 0x47)
 			{
 				staticgfx[7] = 89;
 			}

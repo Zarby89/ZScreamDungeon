@@ -1420,7 +1420,7 @@ namespace ZeldaFullEditor
 		/// <returns></returns>
 		public bool SaveLargeMaps(SceneOW scene)
 		{
-			// TODO: these temp vars can be removed along with thier print once testing is done
+			// TODO: these temp vars can be removed along with their print once testing is done
 			string parentMapLine = "";
 
 			string[] parentMap = new string[8];
