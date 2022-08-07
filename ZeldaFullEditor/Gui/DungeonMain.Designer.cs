@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -373,6 +373,7 @@ namespace ZeldaFullEditor
             this.x16ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.x32ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useAreaSpecificBGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -410,6 +411,7 @@ namespace ZeldaFullEditor
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1831,13 +1833,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode7.Name = "EntranceNode";
+            treeNode7.Text = "Entrances";
+            treeNode8.Name = "StartingEntranceNode";
+            treeNode8.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode7,
+            treeNode8});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -2540,7 +2542,7 @@ namespace ZeldaFullEditor
             this.RoomProperty_Palette.HexValue = 0;
             this.RoomProperty_Palette.Location = new System.Drawing.Point(246, 62);
             this.RoomProperty_Palette.MaxLength = 2;
-            this.RoomProperty_Palette.MaxValue = 28;
+            this.RoomProperty_Palette.MaxValue = 40;
             this.RoomProperty_Palette.MinValue = 0;
             this.RoomProperty_Palette.Name = "RoomProperty_Palette";
             this.RoomProperty_Palette.Size = new System.Drawing.Size(49, 20);
@@ -3312,7 +3314,7 @@ namespace ZeldaFullEditor
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
             this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.runToolStripMenuItem.Text = "Run…";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
@@ -3320,7 +3322,7 @@ namespace ZeldaFullEditor
             // 
             this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
             this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.debugRunToolStripMenuItem.Text = "Debug Run…";
             // 
             // roomToolStripMenuItem
@@ -3953,7 +3955,9 @@ namespace ZeldaFullEditor
             this.showItemsToolStripMenuItem,
             this.showEntranceExitPreviewToolStripMenuItem,
             this.overworldOverlayVisibleToolStripMenuItem,
-            this.showGridToolStripMenuItem1});
+            this.showGridToolStripMenuItem1,
+            this.useAreaSpecificBGColorToolStripMenuItem,
+            this.showScratchPadGridToolStripMenuItem});
             this.overworldViewToolStripMenuItem.Enabled = false;
             this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
             this.overworldViewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -4067,6 +4071,16 @@ namespace ZeldaFullEditor
             this.noneToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.noneToolStripMenuItem.Text = "None";
             this.noneToolStripMenuItem.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
+            // 
+            // useAreaSpecificBGColorToolStripMenuItem
+            // 
+            this.useAreaSpecificBGColorToolStripMenuItem.CheckOnClick = true;
+            this.useAreaSpecificBGColorToolStripMenuItem.Name = "useAreaSpecificBGColorToolStripMenuItem";
+            this.useAreaSpecificBGColorToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.useAreaSpecificBGColorToolStripMenuItem.Text = "Use Area Specific BG Color";
+            this.useAreaSpecificBGColorToolStripMenuItem.ToolTipText = "For this to work in game, the \"Area Specific BG Color\" setting in project setting" +
+    "s needs to be enabled.";
+            this.useAreaSpecificBGColorToolStripMenuItem.CheckedChanged += new System.EventHandler(this.useAreaSpecificBGColorToolStripMenuItem_CheckedChanged);
             // 
             // naviguateToolStripMenuItem
             // 
@@ -4284,21 +4298,21 @@ namespace ZeldaFullEditor
             // howToUseToolStripMenuItem
             // 
             this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.howToUseToolStripMenuItem.Text = "How to Use";
             this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
             // 
             // patchNotesToolStripMenuItem
             // 
             this.patchNotesToolStripMenuItem.Name = "patchNotesToolStripMenuItem";
-            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.patchNotesToolStripMenuItem.Text = "Patch Notes";
             this.patchNotesToolStripMenuItem.Click += new System.EventHandler(this.patchNotesToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -4420,6 +4434,14 @@ namespace ZeldaFullEditor
             this.customPanel3.Size = new System.Drawing.Size(603, 523);
             this.customPanel3.TabIndex = 19;
             // 
+            // showScratchPadGridToolStripMenuItem
+            // 
+            this.showScratchPadGridToolStripMenuItem.CheckOnClick = true;
+            this.showScratchPadGridToolStripMenuItem.Name = "showScratchPadGridToolStripMenuItem";
+            this.showScratchPadGridToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showScratchPadGridToolStripMenuItem.Text = "Show Scratch Pad Grid";
+            this.showScratchPadGridToolStripMenuItem.Click += new System.EventHandler(this.showScratchPadGridToolStripMenuItem_Click);
+            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4436,7 +4458,7 @@ namespace ZeldaFullEditor
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
-            this.Text = "ZScream Magic - 3.0.3";
+            this.Text = "ZScream Magic - 3.0.4";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);
@@ -4879,6 +4901,8 @@ namespace ZeldaFullEditor
 		private System.Windows.Forms.ToolStripMenuItem clearDWTilesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem copyLWToDWToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showTiles32CountToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem useAreaSpecificBGColorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showScratchPadGridToolStripMenuItem;
 	}
 }
 

@@ -626,7 +626,7 @@ namespace ZeldaFullEditor.Gui
 
 					for (int i = 0; i < 159; i++)
 					{
-						mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+						mainForm.overworldEditor.overworld.allmaps[i].LoadPalette();
 					}
 
 					mainForm.overworldEditor.scene.Refresh();
@@ -642,7 +642,7 @@ namespace ZeldaFullEditor.Gui
 				selectedPalette[tempIndex] = tempColor;
 				for (int i = 0; i < 159; i++)
 				{
-					mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+					mainForm.overworldEditor.overworld.allmaps[i].LoadPalette();
 				}
 
 				mainForm.overworldEditor.scene.Refresh();
@@ -669,7 +669,7 @@ namespace ZeldaFullEditor.Gui
 
 				for (int i = 0; i < 159; i++)
 				{
-					mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+					mainForm.overworldEditor.overworld.allmaps[i].LoadPalette();
 				}
 
 				refreshallGfx();
@@ -679,7 +679,7 @@ namespace ZeldaFullEditor.Gui
 		// Is called when the export palettes button is clicked, writes a .zpd file with all the palette colors.
 		private void exportAllPalettes(object sender, EventArgs e)
 		{
-			byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3143 total colors * 4 for 4 bytes
+			byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3415 total colors * 4 for 4 bytes
 			using (SaveFileDialog sfd = new SaveFileDialog())
 			{
 				sfd.Filter = UIText.ExportedPaletteDataType;
@@ -878,7 +878,7 @@ namespace ZeldaFullEditor.Gui
 		private void importAllPalettes(object sender, EventArgs e)
 		{
 
-			byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3143 total colors * 4 for 4 bytes
+			byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3415 total colors * 4 for 4 bytes
 			using (OpenFileDialog sfd = new OpenFileDialog())
 			{
 				sfd.Filter = UIText.ExportedPaletteDataType;

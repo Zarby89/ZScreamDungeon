@@ -470,18 +470,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		public void updateGFXGroup()
 		{
-
 			titleScreenTilesGFX = (int) tilesNumBox.Value;
 			titleScreenExtraTilesGFX = (int) extraTilesNumBox.Value;
 			titleScreenSpritesGFX = (int) spritesNumBox.Value;
 			titleScreenExtraSpritesGFX = (int) extraSpritesNumBox.Value;
 
-
 			Buildtileset();
 			updateTiles();
 			screenBox.Refresh();
 		}
-
 
 		public void Buildtilesetmap()
 		{

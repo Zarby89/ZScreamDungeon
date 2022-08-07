@@ -154,6 +154,8 @@ namespace ZeldaFullEditor
 			{
 				overworld_BackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
 			}
+
+			overworld_BackgroundPalette = ReadPalette(romData, Constants.customAreaSpecificBGPalette, 160);
 		}
 
 		public static Color getColorShade(Color col, byte shade)
@@ -306,6 +308,10 @@ namespace ZeldaFullEditor
 			{
 				WritePalette(romData, Constants.overworldMiniMapPalettes + (i * 256), overworld_Mini_Map_Palettes[i]);
 			}
+
+			// TODO:
+			// set to 147 and not 160 because it seems the area numbers for all areas after 147 are messed up and it causes the palettes to save over eachother. 
+			WritePalette(romData, Constants.customAreaSpecificBGPalette, overworld_BackgroundPalette, 147);
 
 			return false;
 		}

@@ -44,7 +44,7 @@ namespace ZeldaFullEditor
 		public const int NumberOfMap16 = 3752; // 4096
 		public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
 		public const int NumberOfOWSprites = 352;
-		public const int NumberOfColors = 3143;
+		public const int NumberOfColors = 3415; //3143
 
 		// TODO zarby stop making magic numbers
 		public const int IDKZarby = 0x54727;
@@ -276,6 +276,9 @@ namespace ZeldaFullEditor
 		public static int transition_target_north = 0x13ee2;
 		public static int transition_target_west = 0x13f62;
 
+		public static int overworldCustomMosaicASM = 0x1301D0;
+		public static int overworldCustomMosaicArray = 0x1301F0;
+
 		//===========================================================================================
 		// Overworld Exits/Entrances Variables
 		//===========================================================================================
@@ -496,6 +499,10 @@ namespace ZeldaFullEditor
 		public static int triforcePalette = 0x64425;
 		public static int crystalPalette = 0xF4CD3;
 
+		public static int customAreaSpecificBGPalette = 0x130000; // 2 bytes for each overworld area (320)
+		public static int customAreaSpecificBGASM = 0x130150;
+		public static int customAreaSpecificBGEnabled = 0x130140; // 1 byte, not 0 if enabled
+
 		//===========================================================================================
 		// Dungeon Map Related Variables
 		//===========================================================================================
@@ -504,7 +511,6 @@ namespace ZeldaFullEditor
 
 		public static int dungeonMap_gfx_ptr = 0x57BE4; // 14 pointers of gfx data
 		public static int dungeonMap_datastart = 0x57039; // Data start for floors/gfx MUST skip 575D9 to 57621 (pointers)
-
 
 		public static int dungeonMap_expCheck = 0x56652; // IF Byte = 0xB9 dungeon maps are not expanded
 		public static int dungeonMap_tile16 = 0x57009;
@@ -523,6 +529,12 @@ namespace ZeldaFullEditor
 		public static int titleScreenSpritesGFX = 0x6420C; // 1 Byte
 		public static int titleScreenExtraTilesGFX = 0x64211; // 1 Byte
 		public static int titleScreenExtraSpritesGFX = 0x64216; // 1 Byte
+
+		//===========================================================================================
+		// Custom Collision
+		//===========================================================================================
+		public static int customCollisionRoomPointers = 0x128090; // Array 3 bytes per room
+		public static int customCollisionDataPosition = 0x128450; // A bunch of FFFF ended arrays
 
 		//===========================================================================================
 		// End Main Addresses

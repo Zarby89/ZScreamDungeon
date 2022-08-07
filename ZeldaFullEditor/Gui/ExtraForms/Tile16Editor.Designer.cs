@@ -47,12 +47,17 @@
             this.gridcheckBox = new System.Windows.Forms.CheckBox();
             this.tile16searchTextbox = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.tile16GroupBox = new System.Windows.Forms.GroupBox();
+            this.Tile16CopyBtn = new System.Windows.Forms.Button();
+            this.Tile16PasteBtn = new System.Windows.Forms.Button();
+            this.copiedTileLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile8)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
+            this.tile16GroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureboxTile16
@@ -242,7 +247,7 @@
             // 
             // tile16searchTextbox
             // 
-            this.tile16searchTextbox.Location = new System.Drawing.Point(555, 388);
+            this.tile16searchTextbox.Location = new System.Drawing.Point(555, 348);
             this.tile16searchTextbox.Name = "tile16searchTextbox";
             this.tile16searchTextbox.Size = new System.Drawing.Size(120, 20);
             this.tile16searchTextbox.TabIndex = 10;
@@ -250,7 +255,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(555, 355);
+            this.button3.Location = new System.Drawing.Point(555, 315);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(119, 27);
             this.button3.TabIndex = 11;
@@ -258,11 +263,53 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // tile16GroupBox
+            // 
+            this.tile16GroupBox.Controls.Add(this.copiedTileLabel);
+            this.tile16GroupBox.Controls.Add(this.Tile16PasteBtn);
+            this.tile16GroupBox.Controls.Add(this.Tile16CopyBtn);
+            this.tile16GroupBox.Location = new System.Drawing.Point(549, 408);
+            this.tile16GroupBox.Name = "tile16GroupBox";
+            this.tile16GroupBox.Size = new System.Drawing.Size(200, 85);
+            this.tile16GroupBox.TabIndex = 12;
+            this.tile16GroupBox.TabStop = false;
+            this.tile16GroupBox.Text = "Selected tile 16: ";
+            // 
+            // Tile16CopyBtn
+            // 
+            this.Tile16CopyBtn.Location = new System.Drawing.Point(6, 19);
+            this.Tile16CopyBtn.Name = "Tile16CopyBtn";
+            this.Tile16CopyBtn.Size = new System.Drawing.Size(91, 27);
+            this.Tile16CopyBtn.TabIndex = 12;
+            this.Tile16CopyBtn.Text = "Copy";
+            this.Tile16CopyBtn.UseVisualStyleBackColor = true;
+            this.Tile16CopyBtn.Click += new System.EventHandler(this.Tile16CopyBtn_Click);
+            // 
+            // Tile16PasteBtn
+            // 
+            this.Tile16PasteBtn.Location = new System.Drawing.Point(103, 19);
+            this.Tile16PasteBtn.Name = "Tile16PasteBtn";
+            this.Tile16PasteBtn.Size = new System.Drawing.Size(91, 27);
+            this.Tile16PasteBtn.TabIndex = 13;
+            this.Tile16PasteBtn.Text = "Paste";
+            this.Tile16PasteBtn.UseVisualStyleBackColor = true;
+            this.Tile16PasteBtn.Click += new System.EventHandler(this.Tile16PasteBtn_Click);
+            // 
+            // copiedTileLabel
+            // 
+            this.copiedTileLabel.AutoSize = true;
+            this.copiedTileLabel.Location = new System.Drawing.Point(12, 54);
+            this.copiedTileLabel.Name = "copiedTileLabel";
+            this.copiedTileLabel.Size = new System.Drawing.Size(66, 13);
+            this.copiedTileLabel.TabIndex = 14;
+            this.copiedTileLabel.Text = "Copied Tile: ";
+            // 
             // Tile16Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(765, 578);
+            this.Controls.Add(this.tile16GroupBox);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.tile16searchTextbox);
             this.Controls.Add(this.gridcheckBox);
@@ -282,6 +329,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
+            this.tile16GroupBox.ResumeLayout(false);
+            this.tile16GroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -308,5 +357,9 @@
         private System.Windows.Forms.TextBox tileUpDown;
         private System.Windows.Forms.TextBox tile16searchTextbox;
         private System.Windows.Forms.Button button3;
-    }
+		private System.Windows.Forms.GroupBox tile16GroupBox;
+		private System.Windows.Forms.Label copiedTileLabel;
+		private System.Windows.Forms.Button Tile16PasteBtn;
+		private System.Windows.Forms.Button Tile16CopyBtn;
+	}
 }

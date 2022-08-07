@@ -153,7 +153,7 @@ namespace ZeldaFullEditor
 
 				owForm.mapGroupbox.Text = string.Format(
 					mainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
-					map.parent
+					map.parent.ToString("X2")
 					);
 
 				owForm.OWProperty_MessageID.HexValue = ow.allmaps[map.parent].messageID;
@@ -599,7 +599,15 @@ namespace ZeldaFullEditor
 
 					if (ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
 					{
-						g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
+						if(OverworldEditor.UseAreaSpecificBgColor)
+						{
+							g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.allmaps[selectedMap].parent]), new RectangleF(x * 512, y * 512, 1024, 1024));
+						}
+						else
+						{
+							g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
+						}	
+						
 						g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent].gfxBitmap, new PointF(x * 512, y * 512));
 						g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent + 1].gfxBitmap, new PointF((x + 1) * 512, y * 512));
 						g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent + 8].gfxBitmap, new PointF((x) * 512, (y + 1) * 512));
@@ -607,7 +615,15 @@ namespace ZeldaFullEditor
 					}
 					else
 					{
-						g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
+						if (OverworldEditor.UseAreaSpecificBgColor)
+						{
+							g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.allmaps[selectedMap].parent]), new RectangleF(x * 512, y * 512, 512, 512));
+						}
+						else
+						{
+							g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
+						}
+
 						g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent].gfxBitmap, new PointF(x * 512, y * 512));
 					}
 				}
@@ -676,17 +692,41 @@ namespace ZeldaFullEditor
 								if (i < 64)
 								{
 									g.CompositingMode = CompositingMode.SourceOver;
-									g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[0]), new Rectangle(x * 512, y * 512, 512, 512));
+
+									if (OverworldEditor.UseAreaSpecificBgColor)
+									{
+										g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.allmaps[i].parent]), new RectangleF(x * 512, y * 512, 512, 512));
+									}
+									else
+									{
+										g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
+									}
 								}
 								else if (i >= 64 && i < 128)
 								{
 									g.CompositingMode = CompositingMode.SourceOver;
-									g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[1]), new Rectangle(x * 512, y * 512, 512, 512));
+
+									if (OverworldEditor.UseAreaSpecificBgColor)
+									{
+										g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.allmaps[i].parent]), new RectangleF(x * 512, y * 512, 512, 512));
+									}
+									else
+									{
+										g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new RectangleF(x * 512, y * 512, 512, 512));
+									}
 								}
 								else
 								{
 									g.CompositingMode = CompositingMode.SourceOver;
-									g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[2]), new Rectangle(x * 512, y * 512, 512, 512));
+
+									if (OverworldEditor.UseAreaSpecificBgColor)
+									{
+										g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.allmaps[i].parent]), new RectangleF(x * 512, y * 512, 512, 512));
+									}
+									else
+									{
+										g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[2]), new RectangleF(x * 512, y * 512, 512, 512));
+									}
 								}
 							}
 
@@ -801,8 +841,8 @@ namespace ZeldaFullEditor
 					int mid = ow.allmaps[selectedMap].parent;
 					int msy = ((ow.allmaps[selectedMap].parent - ow.worldOffset) / 8);
 					int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (msy * 8);
-					drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString());
-					drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString());
+					drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString("X2"));
+					drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString("X2"));
 					drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
 
 					for (int i = 0; i < ow.alloverlays[mid].tilesData.Count; i++)
@@ -853,8 +893,11 @@ namespace ZeldaFullEditor
 						gridsize = 1024;
 					}
 
-					int x = ow.allmaps[selectedMap].parent % 8;
-					int y = ow.allmaps[selectedMap].parent / 8;
+					int temp = selectedMap;
+					temp = temp % 64;
+
+					int x = ow.allmaps[temp].parent % 8;
+					int y = ow.allmaps[temp].parent / 8;
 
 					for (int gx = 0; gx < (gridsize / owForm.gridDisplay); gx++)
 					{

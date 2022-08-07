@@ -8,15 +8,6 @@ using System.Windows.Forms;
 using System.IO.Compression;
 namespace ZeldaFullEditor
 {
-	// TODO LIST
-	// 
-	// 
-	// 
-	// 
-	// 
-	// 
-	// 
-
 	class Save
 	{
 		// ROM.DATA is a base rom loaded to get basic information it can either be JP1.0 or US1.2
@@ -171,8 +162,8 @@ namespace ZeldaFullEditor
                 if < offset > == $FFFF, stop
             */
 
-			int room_pointer = 0x128090; // @zarby: save all 320 rooms pointers to 0x128000
-			int data_pointer = 0x128450; // @zarby: the actual data at 0x1283C0
+			int room_pointer = Constants.customCollisionRoomPointers; // @zarby: save all 320 rooms pointers to 0x128000
+			int data_pointer = Constants.customCollisionDataPosition; // @zarby: the actual data at 0x1283C0
 
 			Console.WriteLine(room_pointer + " " + data_pointer);
 
@@ -242,6 +233,70 @@ namespace ZeldaFullEditor
 			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
 			{
 				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool saveAreaSpecificBG(bool enabled)
+		{
+			Console.WriteLine("Saving Area Specific BG colors ASM");
+
+			if (enabled)
+			{
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF);
+			}
+			else
+			{
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00);
+			}
+			
+			AsarCLR.Asar.init();
+
+			// TODO handle differently in projects
+			if (File.Exists("AreaSpecificBGColor.asm"))
+			{
+				AsarCLR.Asar.patch("AreaSpecificBGColor.asm", ref ROM.DATA);
+			}
+
+			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+			{
+				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool saveOverworldMosaic(SceneOW scene)
+		{
+			Console.WriteLine("Saving Overworld Custom Mosaic ASM");
+
+			for (int i = 0; i < scene.ow.allmaps.Length; i++)
+			{
+				if (scene.ow.allmaps[i].mosaic)
+				{
+					ROM.Write(Constants.overworldCustomMosaicArray + i, 0x01);
+				}
+				else
+				{
+					ROM.Write(Constants.overworldCustomMosaicArray + i, 0x00);
+				}
+			}
+
+			AsarCLR.Asar.init();
+
+			// TODO handle differently in projects
+			if (File.Exists("MosaicChange.asm"))
+			{
+				AsarCLR.Asar.patch("MosaicChange.asm", ref ROM.DATA);
+			}
+
+			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+			{
+				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
 			}
 
 			return false;
@@ -1365,7 +1420,7 @@ namespace ZeldaFullEditor
 		/// <returns></returns>
 		public bool SaveLargeMaps(SceneOW scene)
 		{
-			// TODO: these temp vars can be removed along with thier print once testing is done
+			// TODO: these temp vars can be removed along with their print once testing is done
 			string parentMapLine = "";
 
 			string[] parentMap = new string[8];

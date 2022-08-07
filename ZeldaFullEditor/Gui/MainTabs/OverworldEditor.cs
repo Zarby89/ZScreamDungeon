@@ -41,9 +41,10 @@ namespace ZeldaFullEditor.Gui
 		byte palSelected = 0;
 		int tile8selected = 0;
 
-		public int BGColorToUpdate = 0;
-
 		readonly ColorDialog cd = new ColorDialog();
+
+		public static bool UseAreaSpecificBgColor = false;
+		public static bool scratchPadGrid = false;
 
 		public OverworldEditor()
 		{
@@ -90,7 +91,7 @@ namespace ZeldaFullEditor.Gui
 			int t = 0;
 			for (ushort x = 0; x < 225; x++)
 			{
-				for (ushort y = 0; y < 16; y++, t+=2)
+				for (ushort y = 0; y < 16; y++, t += 2)
 				{
 					scratchPadTiles[y, x] = fromFile ? (ushort) ((file[t] << 8) + file[t + 1]) : (ushort) 0;
 				}
@@ -130,9 +131,9 @@ namespace ZeldaFullEditor.Gui
 			OWProperty_SPRPalette.HexValue = m.sprpalette[gamestate];
 
 			largemapCheckbox.Checked = m.largeMap;
-			BGColorToUpdate = m.parent;
-
+			mosaicCheckBox.Checked = m.mosaic;
 		}
+
 		private void ModeButton_Click(object sender, EventArgs e)
 		{
 			for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck all the other modes.
@@ -248,6 +249,30 @@ namespace ZeldaFullEditor.Gui
 
 				e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
 			}
+		}
+
+		public void AdjustTile16BoxScrollBar()
+		{
+			int y = ((scene.selectedTile[0] / 8)) * 16;
+
+			if (scene.selectedTile[0] >= 2048)
+			{
+				y -= 4096;
+			}
+
+			if (y + tabPage1.Size.Height > tilePictureBox.Size.Height)
+			{
+				y = tilePictureBox.Size.Height - tabPage1.Size.Height;
+			}
+
+			// TODO: fix this garbage, it doesn't update all of the time for some reason but works better without the if. -Jared_Brian_
+			//if (y < tabPage1.VerticalScroll.Value || y > tabPage1.VerticalScroll.Value + tabPage1.Size.Height)
+			//{
+			tabPage1.VerticalScroll.Value = y;
+			tilePictureBox.Refresh();
+			tabPage1.Update();
+			tabPage1.Refresh();
+			//
 		}
 
 		private void tilePictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -609,6 +634,26 @@ namespace ZeldaFullEditor.Gui
 				// DRAW ALL THE TILES 16x225
 
 				g.CompositingMode = CompositingMode.SourceOver;
+
+				if (scratchPadGrid)
+				{
+					int gridsizeX = 256;
+					int gridsizeY = 3600;
+
+					for (int gx = 0; gx < (gridsizeX / 32); gx++)
+					{
+						g.DrawLine(Constants.ThirdWhitePen1,
+							new Point(gx * 32, 0),
+							new Point(gx * 32, gridsizeY));
+					}
+
+					for (int gy = 0; gy < ((gridsizeY / 32) + 1); gy++)
+					{
+						g.DrawLine(Constants.ThirdWhitePen1,
+							new Point(0, (gy * 32)),
+							new Point(gridsizeX, (gy * 32)));
+					}
+				}
 
 				if (selecting)
 				{
@@ -2054,14 +2099,16 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="e"></param>
 		private void AreaBGColorPicturebox_MouseDoubleClick(object sender, EventArgs e)
 		{
-			cd.Color = Palettes.overworld_BackgroundPalette[BGColorToUpdate];
+			int selectedParent = scene.ow.allmaps[scene.selectedMap].parent;
+
+			cd.Color = Palettes.overworld_BackgroundPalette[selectedParent];
 			if (cd.ShowDialog() == DialogResult.OK)
 			{
-				Palettes.overworld_BackgroundPalette[BGColorToUpdate] = cd.Color;
+				Palettes.overworld_BackgroundPalette[selectedParent] = cd.Color;
 				areaBGColorPictureBox.Refresh();
 			}
 
-			mainForm.overworldEditor.overworld.allmaps[scene.selectedMap].ReloadPalettes();
+			mainForm.overworldEditor.overworld.allmaps[selectedParent].LoadPalette();
 		}
 
 		/// <summary>
@@ -2071,9 +2118,15 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="e"></param>
 		private void AreaBGColorPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (BGColorToUpdate < Palettes.overworld_BackgroundPalette.Length)
+			int selectedParent = scene.ow.allmaps[scene.selectedMap].parent;
+
+			if (selectedParent < Palettes.overworld_BackgroundPalette.Length)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[BGColorToUpdate]), Constants.Rect_0_0_24_24);
+				e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[selectedParent]), Constants.Rect_0_0_24_24);
+			}
+			else
+			{
+				e.Graphics.FillRectangle(new SolidBrush(Color.Black), Constants.Rect_0_0_24_24);
 			}
 		}
 
@@ -2088,13 +2141,28 @@ namespace ZeldaFullEditor.Gui
 		{
 			Bitmap temp = new Bitmap(4096, 4096);
 			Graphics g = Graphics.FromImage(temp);
-			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
+
+			if (UseAreaSpecificBgColor)
+			{
+				for (int i = 0; i < 64; i++)
+				{
+					int x = (i % 8) * 512;
+					int y = (i / 8) * 512;
+
+					int k = overworld.allmaps[i].parent;
+					g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k]), new Rectangle(x, y, 512, 512));
+				}
+			}
+			else
+			{
+				g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
+			}
 
 			for (int i = 0; i < 64; i++)
 			{
 				int x = (i % 8) * 512;
 				int y = (i / 8) * 512;
-				
+
 				g.DrawImage(overworld.allmaps[i].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
 			}
 
@@ -2102,7 +2170,22 @@ namespace ZeldaFullEditor.Gui
 
 			temp = new Bitmap(4096, 4096);
 			g = Graphics.FromImage(temp);
-			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+
+			if (UseAreaSpecificBgColor)
+			{
+				for (int i = 0; i < 64; i++)
+				{
+					int x = (i % 8) * 512;
+					int y = (i / 8) * 512;
+
+					int k = overworld.allmaps[i].parent;
+					g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 64]), new Rectangle(x, y, 512, 512));
+				}
+			}
+			else
+			{
+				g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+			}
 
 			for (int i = 0; i < 64; i++)
 			{
@@ -2116,7 +2199,22 @@ namespace ZeldaFullEditor.Gui
 
 			temp = new Bitmap(4096, 4096);
 			g = Graphics.FromImage(temp);
-			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[2]), new Rectangle(0, 0, 4096, 4096));
+
+			if (UseAreaSpecificBgColor)
+			{
+				for (int i = 0; i < 32; i++)
+				{
+					int x = (i % 8) * 512;
+					int y = (i / 8) * 512;
+
+					int k = overworld.allmaps[i].parent;
+					g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 128]), new Rectangle(x, y, 512, 512));
+				}
+			}
+			else
+			{
+				g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+			}
 
 			for (int i = 0; i < 32; i++)
 			{
@@ -2127,6 +2225,17 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			temp.Save("SP.png");
+		}
+
+		public void UpdateBGColorVisibility(bool x)
+		{
+			label7.Visible = x;
+			areaBGColorPictureBox.Visible = x;
+		}
+
+		private void mosaicCheckBox_Click(object sender, EventArgs e)
+		{
+			scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent].mosaic = mosaicCheckBox.Checked;
 		}
 	}
 }

@@ -866,7 +866,7 @@
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(5, 731);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(265, 32);
+            this.label10.Size = new System.Drawing.Size(264, 32);
             this.label10.TabIndex = 17;
             this.label10.Text = "Note : \r\n*to set gfx you must have room setted";
             // 

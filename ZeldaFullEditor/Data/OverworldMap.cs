@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
@@ -22,6 +23,7 @@ namespace ZeldaFullEditor
 		public bool firstLoad = false;
 		public short messageID = 0;
 		public bool largeMap = false;
+		public bool mosaic = false;
 		public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512); // Needs to be removed
 																//public IntPtr blockset16 = Marshal.AllocHGlobal(1048576); // Needs to be removed
 																//public Bitmap blocksetBitmap; // Needs to be removed
@@ -51,6 +53,18 @@ namespace ZeldaFullEditor
 				else
 				{
 					largeMap = (index == 129 || index == 130 || index == 137 || index == 138);
+				}
+			}
+
+			if (ROM.DATA[Constants.overworldCustomMosaicASM] == 0x00)
+			{
+				mosaic = (index == 0 || index == 64 || index == 128 || index == 129 || index == 136);
+			}
+			else
+			{
+				if (ROM.DATA[Constants.overworldCustomMosaicArray + index] != 0x00)
+				{
+					mosaic = true;
 				}
 			}
 
@@ -318,11 +332,6 @@ namespace ZeldaFullEditor
 			//Console.WriteLine("Map Tileset16 Generated in : " + sw.ElapsedMilliseconds);
 		}
 
-		public void ReloadPalettes()
-		{
-			LoadPalette();
-		}
-
 		private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
 		{
 			int mx = x;
@@ -445,9 +454,19 @@ namespace ZeldaFullEditor
 			{
 				// Default LW Palette
 				pal0 = 0;
-				bgr = Palettes.overworld_GrassPalettes[0];
+				
+				if(OverworldEditor.UseAreaSpecificBgColor)
+				{
+					bgr = Palettes.overworld_BackgroundPalette[parent];
+				}
+				else
+				{
+					bgr = Palettes.overworld_GrassPalettes[0];
+				}
 
 				// Hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
+				// Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later
+				/*
 				if ((parent >= 0x03 && parent <= 0x07))
 				{
 					pal0 = 2;
@@ -456,14 +475,29 @@ namespace ZeldaFullEditor
 				{
 					pal0 = 2;
 				}
+				*/
+
+				if (parent == 0x03 || parent == 0x05 || parent == 0x07)
+				{
+					pal0 = 2;
+				}
 			}
 			else if (parent >= 0x40 && parent < 0x80)
 			{
 				// Default DW Palette
 				pal0 = 1;
-				bgr = Palettes.overworld_GrassPalettes[1];
+				if (OverworldEditor.UseAreaSpecificBgColor)
+				{
+					bgr = Palettes.overworld_BackgroundPalette[parent];
+				}
+				else
+				{
+					bgr = Palettes.overworld_GrassPalettes[1];
+				}
 
 				// Hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
+				// Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later
+				/*
 				if (parent >= 0x43 && parent <= 0x47)
 				{
 					pal0 = 3;
@@ -472,12 +506,26 @@ namespace ZeldaFullEditor
 				{
 					pal0 = 3;
 				}
+				*/
+
+				if (parent == 0x43 || parent == 0x45 || parent == 0x47)
+				{
+					pal0 = 2;
+				}
 			}
 			else if (parent >= 128 && parent < Constants.NumberOfOWMaps)
 			{
 				// Default SP Palette
 				pal0 = 0;
-				bgr = Palettes.overworld_GrassPalettes[2];
+
+				if (OverworldEditor.UseAreaSpecificBgColor)
+				{
+					bgr = Palettes.overworld_BackgroundPalette[parent];
+				}
+				else
+				{
+					bgr = Palettes.overworld_GrassPalettes[2];
+				}
 			}
 
 			if (parent == 0x88)
@@ -745,11 +793,27 @@ namespace ZeldaFullEditor
 			}
 
 			// Hardcoded overworld GFX Values, for death mountain
+			// Commented out in favor of just checking for area's 3, 5, and 7 and their DW equivilants for the sake of consistency, but may need to be changed later. -Jared_Brian_
+			/*
 			if ((parent >= 0x03 && parent <= 0x07) || (parent >= 0x0B && parent <= 0x0E))
 			{
 				staticgfx[7] = 89;
 			}
 			else if ((parent >= 0x43 && parent <= 0x47) || (parent >= 0x4B && parent <= 0x4E))
+			{
+				staticgfx[7] = 89;
+			}
+			else
+			{
+				staticgfx[7] = 91;
+			}
+			*/
+
+			if (parent == 0x03 || parent == 0x05 || parent == 0x07)
+			{
+				staticgfx[7] = 89;
+			}
+			else if (parent == 0x43 || parent == 0x45 || parent == 0x47)
 			{
 				staticgfx[7] = 89;
 			}

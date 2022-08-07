@@ -883,7 +883,6 @@ namespace ZeldaFullEditor
 
 			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
 			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
-
 		}
 	}
 
@@ -909,7 +908,6 @@ namespace ZeldaFullEditor
 
 			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
 			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
-
 		}
 	}
 
@@ -2426,7 +2424,6 @@ namespace ZeldaFullEditor
 			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
 			addTiles(8, pos);
 			sort = Sorting.Vertical;
-
 		}
 
 		public override void Draw()
@@ -3954,6 +3951,7 @@ namespace ZeldaFullEditor
 				{
 					draw_tile(tiles[0], (xx) * 8, (yy) * 8);
 				}
+
 				draw_tile(tiles[19], (xx) * 8, (size + 3) * 8);
 				draw_tile(tiles[10], (xx) * 8, (0) * 8);
 			}
@@ -4179,7 +4177,6 @@ namespace ZeldaFullEditor
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
 
-
 			diagonalFix = true;
 		}
 
@@ -4212,7 +4209,6 @@ namespace ZeldaFullEditor
 			name = Constants.Type1RoomObjectNames[0xAD];
 			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
 			addTiles(1, pos);
-
 		}
 
 		public override void Draw()
@@ -4284,7 +4280,6 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_B1 : Room_Object
 	{
-
 		public object_B1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
 		{
 			name = Constants.Type1RoomObjectNames[0xB1];
@@ -5403,6 +5398,7 @@ namespace ZeldaFullEditor
 			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
 			addTiles(1, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
+			showRectangle = true;
 		}
 
 		public override void Draw()
@@ -5476,6 +5472,7 @@ namespace ZeldaFullEditor
 			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
+			showRectangle = true;
 		}
 
 		public override void Draw()
