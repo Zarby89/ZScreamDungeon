@@ -1229,8 +1229,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < 64; i++)
 			{
-				ROM.Write(Constants.overworldMusicDW + i, scene.ow.allmaps[i].musics[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
-
+				ROM.Write(Constants.overworldMusicDW + i, scene.ow.allmaps[i + 64].musics[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
 			}
 
 			ROM.EndBlockLogWriting();
