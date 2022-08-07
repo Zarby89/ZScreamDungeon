@@ -533,6 +533,29 @@ namespace ZeldaFullEditor.Gui
 							reverseY = true;
 						}
 
+						int pX = reverseX ? tileX : globalmouseTileDownX;
+						int pY = reverseY ? tileY : globalmouseTileDownY;
+
+						if (pX < 0)
+						{
+							pX = 0;
+						}
+						if (pY < 0)
+						{
+							pY = 0;
+						}
+
+						int rows = scratchPadTiles.GetLength(0);
+						int columns = scratchPadTiles.GetLength(1);
+						if (sizeX + pX >= rows)
+						{
+							sizeX = rows - pX;
+						}
+						if (sizeY + pY >= columns)
+						{
+							sizeY = columns - pY;
+						}
+
 						scene.selectedTileSizeX = sizeX;
 						scene.selectedTile = new ushort[sizeX * sizeY];
 
@@ -540,9 +563,6 @@ namespace ZeldaFullEditor.Gui
 						{
 							for (int x = 0; x < sizeX; x++)
 							{
-								int pX = reverseX ? tileX : globalmouseTileDownX;
-								int pY = reverseY ? tileY : globalmouseTileDownY;
-
 								scene.selectedTile[x + (y * sizeX)] = scratchPadTiles[pX + x, pY + y];
 							}
 						}
