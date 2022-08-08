@@ -1067,18 +1067,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void undoButton_Click(object sender, EventArgs e)
-		{
-			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
-			{
-				//activeScene.Undo();
-			}
-			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
-			{
-				overworldEditor.scene.Undo();
-			}
-		}
-
+		// 
 		public void changeHistoryButton_Click(object sender, EventArgs e)
 		{
 			ChangeHistoryForm changeHistoryForm = new ChangeHistoryForm(this);
@@ -1092,9 +1081,29 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		public void undoButton_Click(object sender, EventArgs e)
+		{
+			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
+			{
+				//activeScene.Undo();
+			}
+			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
+			{
+				overworldEditor.scene.Undo();
+			}
+		}
+
+
 		public void redoButton_Click(object sender, EventArgs e)
 		{
-
+			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
+			{
+				// activeScene.Redo();
+			}
+			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
+			{
+				overworldEditor.scene.Redo();
+			}
 		}
 
 		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
