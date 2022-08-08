@@ -368,6 +368,12 @@ namespace ZeldaFullEditor.Gui
 			scene.mainForm.redoButton_Click(sender, e);
 		}
 
+		private void changeHistoryButton_Click(object sender, EventArgs e)
+		{
+			scene.mainForm.changeHistoryButton_Click(sender, e);
+		}
+
+
 		private void refreshToolStrip_Click(object sender, EventArgs e)
 		{
 			new Thread(() =>

@@ -285,6 +285,12 @@
     <Compile Include="Gui\ExtraForms\EntranceForm.Designer.cs">
       <DependentUpon>EntranceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\ChangeHistoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ChangeHistoryForm.Designer.cs">
+      <DependentUpon>ChangeHistoryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\GlobalOptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -604,6 +610,9 @@
     <EmbeddedResource Include="Gui\ExtraForms\ExitEditorForm.resx">
       <DependentUpon>ExitEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ChangeHistoryForm.resx">
+      <DependentUpon>ChangeHistoryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\GlobalOptionForm.resx">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -772,6 +781,7 @@
     <None Include="Resources\darkbg.png" />
     <None Include="Resources\floorSelector.bmp" />
     <None Include="Resources\floorselector.png" />
+    <Content Include="Resources\changeHistoryIcon.png" />
     <Content Include="spritesmove.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

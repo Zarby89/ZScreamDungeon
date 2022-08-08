@@ -687,7 +687,7 @@ namespace ZeldaFullEditor
 			activeScene.Refresh();
 
 			undoButton.Enabled = true;
-			redoButton.Enabled = true;
+			changeHistoryButton.Enabled = true;
 
 			if (Settings.Default.recentFiles.Contains(projectFilename))
 			{
@@ -1079,16 +1079,22 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void redoButton_Click(object sender, EventArgs e)
+		public void changeHistoryButton_Click(object sender, EventArgs e)
 		{
+			ChangeHistoryForm changeHistoryForm = new ChangeHistoryForm(this);
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				//activeScene.Redo();
+				changeHistoryForm.ShowDialog();
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
 			{
 				overworldEditor.scene.Redo();
 			}
+		}
+
+		public void redoButton_Click(object sender, EventArgs e)
+		{
+
 		}
 
 		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2465,18 +2471,18 @@ namespace ZeldaFullEditor
 				else
 				{
 					// TODO is this wrong?
-					redoButton.Enabled = false;
+					changeHistoryButton.Enabled = false;
 					redoToolStripMenuItem.Enabled = false;
 				}
 
 				if (DungeonsData.redoRoom[activeScene.room.index].Count > 0)
 				{
-					redoButton.Enabled = true;
+					changeHistoryButton.Enabled = true;
 					redoToolStripMenuItem.Enabled = true;
 				}
 				else
 				{
-					redoButton.Enabled = false;
+					changeHistoryButton.Enabled = false;
 					redoToolStripMenuItem.Enabled = false;
 				}
 

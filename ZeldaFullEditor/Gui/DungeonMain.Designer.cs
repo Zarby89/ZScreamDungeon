@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
             this.runtestButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.undoButton = new System.Windows.Forms.ToolStripButton();
-            this.redoButton = new System.Windows.Forms.ToolStripButton();
+            this.changeHistoryButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.allbgsButton = new System.Windows.Forms.ToolStripButton();
             this.bg1modeButton = new System.Windows.Forms.ToolStripButton();
@@ -374,6 +374,7 @@ namespace ZeldaFullEditor
             this.x32ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useAreaSpecificBGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -411,7 +412,7 @@ namespace ZeldaFullEditor
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-            this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -463,7 +464,8 @@ namespace ZeldaFullEditor
             this.runtestButton,
             this.toolStripSeparator1,
             this.undoButton,
-            this.redoButton,
+            this.toolStripButton2,
+            this.changeHistoryButton,
             this.toolStripSeparator2,
             this.allbgsButton,
             this.bg1modeButton,
@@ -548,16 +550,15 @@ namespace ZeldaFullEditor
             this.undoButton.Text = "Undo";
             this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
             // 
-            // redoButton
+            // changeHistoryButton
             // 
-            this.redoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.redoButton.Enabled = false;
-            this.redoButton.Image = ((System.Drawing.Image)(resources.GetObject("redoButton.Image")));
-            this.redoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.redoButton.Name = "redoButton";
-            this.redoButton.Size = new System.Drawing.Size(23, 22);
-            this.redoButton.Text = "Redo";
-            this.redoButton.Click += new System.EventHandler(this.redoButton_Click);
+            this.changeHistoryButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.changeHistoryButton.Image = ((System.Drawing.Image)(resources.GetObject("changeHistoryButton.Image")));
+            this.changeHistoryButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.changeHistoryButton.Name = "changeHistoryButton";
+            this.changeHistoryButton.Size = new System.Drawing.Size(23, 22);
+            this.changeHistoryButton.Text = "Change History";
+            this.changeHistoryButton.Click += new System.EventHandler(this.changeHistoryButton_Click);
             // 
             // toolStripSeparator2
             // 
@@ -1833,13 +1834,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode7.Name = "EntranceNode";
-            treeNode7.Text = "Entrances";
-            treeNode8.Name = "StartingEntranceNode";
-            treeNode8.Text = "Spawn points";
+            treeNode5.Name = "EntranceNode";
+            treeNode5.Text = "Entrances";
+            treeNode6.Name = "StartingEntranceNode";
+            treeNode6.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8});
+            treeNode5,
+            treeNode6});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -4082,6 +4083,14 @@ namespace ZeldaFullEditor
     "s needs to be enabled.";
             this.useAreaSpecificBGColorToolStripMenuItem.CheckedChanged += new System.EventHandler(this.useAreaSpecificBGColorToolStripMenuItem_CheckedChanged);
             // 
+            // showScratchPadGridToolStripMenuItem
+            // 
+            this.showScratchPadGridToolStripMenuItem.CheckOnClick = true;
+            this.showScratchPadGridToolStripMenuItem.Name = "showScratchPadGridToolStripMenuItem";
+            this.showScratchPadGridToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showScratchPadGridToolStripMenuItem.Text = "Show Scratch Pad Grid";
+            this.showScratchPadGridToolStripMenuItem.Click += new System.EventHandler(this.showScratchPadGridToolStripMenuItem_Click);
+            // 
             // naviguateToolStripMenuItem
             // 
             this.naviguateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -4434,13 +4443,15 @@ namespace ZeldaFullEditor
             this.customPanel3.Size = new System.Drawing.Size(603, 523);
             this.customPanel3.TabIndex = 19;
             // 
-            // showScratchPadGridToolStripMenuItem
+            // toolStripButton2
             // 
-            this.showScratchPadGridToolStripMenuItem.CheckOnClick = true;
-            this.showScratchPadGridToolStripMenuItem.Name = "showScratchPadGridToolStripMenuItem";
-            this.showScratchPadGridToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.showScratchPadGridToolStripMenuItem.Text = "Show Scratch Pad Grid";
-            this.showScratchPadGridToolStripMenuItem.Click += new System.EventHandler(this.showScratchPadGridToolStripMenuItem_Click);
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Enabled = false;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "Redo";
             // 
             // DungeonMain
             // 
@@ -4721,7 +4732,7 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.CheckBox maphoverCheckbox;
         private System.Windows.Forms.Label mapInfosLabel;
         public System.Windows.Forms.ToolStripButton undoButton;
-        public System.Windows.Forms.ToolStripButton redoButton;
+        public System.Windows.Forms.ToolStripButton changeHistoryButton;
         public System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
         private System.Windows.Forms.TabPage dungeonPage;
@@ -4903,6 +4914,7 @@ namespace ZeldaFullEditor
 		private System.Windows.Forms.ToolStripMenuItem showTiles32CountToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem useAreaSpecificBGColorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showScratchPadGridToolStripMenuItem;
+		public System.Windows.Forms.ToolStripButton toolStripButton2;
 	}
 }
 
