@@ -12,12 +12,11 @@ namespace ZeldaFullEditor
 	/// </summary>
 	public static class UIText
 	{
-
 		//===========================================================================================
 		// META
 		//===========================================================================================
 		public const string APPNAME = "ZScream";
-		public const string VERSION = "3.0.4";
+		public const string VERSION = "3.0.5";
 
 		public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
 		public const string DISCORD = "https://discord.gg/8eJdz2YdW2";

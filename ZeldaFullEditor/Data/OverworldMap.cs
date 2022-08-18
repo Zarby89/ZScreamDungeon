@@ -510,7 +510,7 @@ namespace ZeldaFullEditor
 
 				if (parent == 0x43 || parent == 0x45 || parent == 0x47)
 				{
-					pal0 = 2;
+					pal0 = 3;
 				}
 			}
 			else if (parent >= 128 && parent < Constants.NumberOfOWMaps)

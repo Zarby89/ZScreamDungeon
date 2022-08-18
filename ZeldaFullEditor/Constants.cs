@@ -273,11 +273,13 @@ namespace ZeldaFullEditor
 		public static int OverworldScreenSizeForLoading = 0x4C635;
 		public static int OverworldScreenTileMapChangeByScreen = 0x12634;
 
+		public static int OverowrldMapDataOverflow = 0x130000;
+
 		public static int transition_target_north = 0x13ee2;
 		public static int transition_target_west = 0x13f62;
 
-		public static int overworldCustomMosaicASM = 0x1301D0;
-		public static int overworldCustomMosaicArray = 0x1301F0;
+		public static int overworldCustomMosaicASM = 0x1401E0;
+		public static int overworldCustomMosaicArray = 0x140200;
 
 		//===========================================================================================
 		// Overworld Exits/Entrances Variables
@@ -499,9 +501,9 @@ namespace ZeldaFullEditor
 		public static int triforcePalette = 0x64425;
 		public static int crystalPalette = 0xF4CD3;
 
-		public static int customAreaSpecificBGPalette = 0x130000; // 2 bytes for each overworld area (320)
-		public static int customAreaSpecificBGASM = 0x130150;
-		public static int customAreaSpecificBGEnabled = 0x130140; // 1 byte, not 0 if enabled
+		public static int customAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (320)
+		public static int customAreaSpecificBGASM = 0x140150;
+		public static int customAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
 
 		//===========================================================================================
 		// Dungeon Map Related Variables

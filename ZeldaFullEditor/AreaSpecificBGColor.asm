@@ -20,7 +20,7 @@ org $0ED5E7 ;Main Palette loading routine.
 
 ; ==============================================================================
 
-org $268150 ;reserved ZS space
+org $288150 ;reserved ZS space
 
 IntColorLoad1:
 {
@@ -30,11 +30,12 @@ IntColorLoad1:
 
     SEP #$20 ; Set A in 8bit mode
 
-    LDA $8140 : BNE .custom ; pc 130140 is where ZS saves whether to use the asm or not
+    LDA $8140 : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
 
     REP #$20 ; Set A in 16bit mode
 
     LDA $00
+    STA $7EC300
     STA $7EC500 ;replaced code
 
     PLB
@@ -49,9 +50,10 @@ IntColorLoad1:
     
     REP #$20 ; Set A in 16bit mode
 
-    LDA $8000, X ; pc 130000 is where ZS saves the array of palettes
+    LDA $8000, X ; pc 140000 is where ZS saves the array of palettes
     TAX
 
+    STA $7EC300
     STA $7EC500 ;replaced code
 
     PLB
@@ -67,7 +69,7 @@ IntColorLoad2:
 
     SEP #$30 ; Set A in 8bit mode
 
-    LDA $8140 : BEQ .custom ; pc 130140 is where ZS saves whether to use the asm or not
+    LDA $8140 : BEQ .custom ; pc 140140 is where ZS saves whether to use the asm or not
 
     REP #$30 ; Set A in 16bit mode
 
@@ -83,8 +85,10 @@ IntColorLoad2:
 
     REP #$30 ; Set A in 16bit mode
 
-    LDA $8000, X ; pc 130000 is where ZS saves the array of palettes
+    LDA $8000, X ; pc 140000 is where ZS saves the array of palettes
     TAX
+
+    STA $7EC300 : STA $7EC500 ;set transparent colors
 
     PLB
 
@@ -99,7 +103,7 @@ CheckForChangePalette:
 
     JSL $1BEEA8 ;Palette_OverworldBgAux3 replaced from where inserted
 
-    LDA $8140 : BEQ .return ; pc 130140 is where ZS saves whether to use the asm or not
+    LDA $8140 : BEQ .return ; pc 140140 is where ZS saves whether to use the asm or not
 
     PHX
 
@@ -107,8 +111,8 @@ CheckForChangePalette:
     
     REP #$20 ; Set A in 16bit mode
 
-    LDA $8000, X ; pc 130000 is where ZS saves the array of palettes
-    STA $7EC300 : STA $7EC500 ;set transparent colors
+    LDA $8000, X ; pc 140000 is where ZS saves the array of palettes
+    STA $7EC300 ;set transparent color ; only set the buffer so it fades in right during mosaic transition
 
     SEP #$20 ; Set A in 8bit mode
 

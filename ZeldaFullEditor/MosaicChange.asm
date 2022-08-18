@@ -5,7 +5,7 @@ org $02AADB ; Mosaic Hook
 
 ; ==============================================================================
 
-org $2681D0 ;reserved ZS space
+org $2881E0 ;reserved ZS space
 
 AreaCheck:
 {
