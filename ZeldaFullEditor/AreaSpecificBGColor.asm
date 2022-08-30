@@ -11,7 +11,7 @@
 org $0BFEB6             ;loads the transparent color under some load conditions
     JML IntColorLoad1
 
-org $0ED644             ;loads the transparent color under some load conditions
+org $0ED647             ;loads the transparent color under some load conditions
     JML IntColorLoad2
     NOP
 
@@ -39,7 +39,6 @@ IntColorLoad1:
     STA $7EC500 ;replaced code
 
     PLB
-
     JML $0BFEBA
 
     .custom
@@ -57,7 +56,6 @@ IntColorLoad1:
     STA $7EC500 ;replaced code
 
     PLB
-
     JML $0BFEBA
 }
 
@@ -67,14 +65,18 @@ IntColorLoad2:
 {
     PHB : PHK : PLB
 
-    SEP #$30 ; Set A in 8bit mode
+    SEP #$20 ; Set only A in 8bit mode
 
-    LDA $8140 : BEQ .custom ; pc 140140 is where ZS saves whether to use the asm or not
+    LDA $8140 : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
 
-    REP #$30 ; Set A in 16bit mode
+    REP #$30 ; Set A, X, and Y in 16bit mode
 
+    LDA $8A : AND.w #$0040 : BEQ .notDarkWorld
+        PLB
+        JML $0ED64E
+
+    .notDarkWorld
     PLB
-
     JML $0ED651
 
     .custom
@@ -91,7 +93,6 @@ IntColorLoad2:
     STA $7EC300 : STA $7EC500 ;set transparent colors
 
     PLB
-
     JML $0ED651
 }
 

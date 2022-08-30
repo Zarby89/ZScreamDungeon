@@ -494,8 +494,11 @@ namespace ZeldaFullEditor
 		public static int dungeonMapPalettes = 0xDD70A; // 21 colors
 		public static int dungeonMainPalettes = 0xDD734; // (15*6) colors each - 20 entries
 		public static int dungeonMapBgPalettes = 0xDE544; // 16*6
-		public static int hardcodedGrassLW = 0x5FEA9; // Mirrored Value at 0x75645 : 0x75625
-		public static int hardcodedGrassDW = 0x05FEB3; // 0x7564F;
+		public static int hardcodedGrassLW1 = 0x05FEA9;
+		public static int hardcodedGrassLW2 = 0x075645;
+		public static int hardcodedGrassLW3 = 0x075625;
+		public static int hardcodedGrassDW1 = 0x05FEB3;
+		public static int hardcodedGrassDW2 = 0x07564F;
 		public static int hardcodedGrassSpecial = 0x75640;
 		public static int overworldMiniMapPalettes = 0x55B27;
 		public static int triforcePalette = 0x64425;
@@ -614,8 +617,8 @@ namespace ZeldaFullEditor
 
 			// us = 0x05D97 / jp = 0x05DD7
 			overworldgfxGroups = 0x05DD7;
-			hardcodedGrassLW = 0x67FE6;
-			hardcodedGrassDW = 0x67FF0; // map>40
+			hardcodedGrassLW1 = 0x67FE6;
+			hardcodedGrassDW1 = 0x67FF0; // map>40
 			hardcodedGrassSpecial = 0x67FE1; // map 183,182,180
 
 			OWExitRoomId = 0x15D8A - 0x29C;
