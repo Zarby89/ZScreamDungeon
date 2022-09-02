@@ -156,7 +156,7 @@ namespace ZeldaFullEditor.Gui
 			else
 			{
 				tileTypeBox.Enabled = true;
-				tileTypeBox.SelectedIndex = tempTiletype[tile8selected];
+				tileTypeBox.SelectedIndex = (int) tempTiletype[tile8selected];
 			}
 		}
 
@@ -211,10 +211,12 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="e"></param>
 		private void pictureboxTile8_MouseDown(object sender, MouseEventArgs e)
 		{
+			fromForm = true;
 			int tid = (e.X / 16) + ((e.Y / 16) * 16);
 			tileUpDown.Text = tid.ToString("X2");
-			tileTypeBox.SelectedIndex = tempTiletype[tid];
+			tileTypeBox.SelectedIndex = (int) tempTiletype[tid];
 			pictureboxTile8.Refresh();
+			fromForm = false;
 
 			updateTiles();
 		}
@@ -297,7 +299,7 @@ namespace ZeldaFullEditor.Gui
 			mirrorXCheckbox.Checked = t.H;
 			mirrorYCheckbox.Checked = t.V;
 			inFrontCheckbox.Checked = t.O;
-			tileTypeBox.SelectedIndex = tempTiletype[t.id];
+			tileTypeBox.SelectedIndex = (int) tempTiletype[t.id];
 			fromForm = false;
 
 			updateTiles();
