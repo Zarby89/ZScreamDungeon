@@ -11,7 +11,7 @@
 org $0BFEB6             ;loads the transparent color under some load conditions
     JML IntColorLoad1
 
-org $0ED644             ;loads the transparent color under some load conditions
+org $0ED647             ;loads the transparent color under some load conditions
     JML IntColorLoad2
     NOP
 
@@ -20,7 +20,7 @@ org $0ED5E7 ;Main Palette loading routine.
 
 ; ==============================================================================
 
-org $268150 ;reserved ZS space
+org $288150 ;reserved ZS space
 
 IntColorLoad1:
 {
@@ -30,15 +30,15 @@ IntColorLoad1:
 
     SEP #$20 ; Set A in 8bit mode
 
-    LDA $8140 : BNE .custom ; pc 130140 is where ZS saves whether to use the asm or not
+    LDA $8140 : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
 
     REP #$20 ; Set A in 16bit mode
 
     LDA $00
+    STA $7EC300
     STA $7EC500 ;replaced code
 
     PLB
-
     JML $0BFEBA
 
     .custom
@@ -49,13 +49,13 @@ IntColorLoad1:
     
     REP #$20 ; Set A in 16bit mode
 
-    LDA $8000, X ; pc 130000 is where ZS saves the array of palettes
+    LDA $8000, X ; pc 140000 is where ZS saves the array of palettes
     TAX
 
+    STA $7EC300
     STA $7EC500 ;replaced code
 
     PLB
-
     JML $0BFEBA
 }
 
@@ -65,14 +65,18 @@ IntColorLoad2:
 {
     PHB : PHK : PLB
 
-    SEP #$30 ; Set A in 8bit mode
+    SEP #$20 ; Set only A in 8bit mode
 
-    LDA $8140 : BEQ .custom ; pc 130140 is where ZS saves whether to use the asm or not
+    LDA $8140 : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
 
-    REP #$30 ; Set A in 16bit mode
+    REP #$30 ; Set A, X, and Y in 16bit mode
 
+    LDA $8A : AND.w #$0040 : BEQ .notDarkWorld
+        PLB
+        JML $0ED64E
+
+    .notDarkWorld
     PLB
-
     JML $0ED651
 
     .custom
@@ -83,11 +87,12 @@ IntColorLoad2:
 
     REP #$30 ; Set A in 16bit mode
 
-    LDA $8000, X ; pc 130000 is where ZS saves the array of palettes
+    LDA $8000, X ; pc 140000 is where ZS saves the array of palettes
     TAX
 
-    PLB
+    STA $7EC300 : STA $7EC500 ;set transparent colors
 
+    PLB
     JML $0ED651
 }
 
@@ -99,7 +104,7 @@ CheckForChangePalette:
 
     JSL $1BEEA8 ;Palette_OverworldBgAux3 replaced from where inserted
 
-    LDA $8140 : BEQ .return ; pc 130140 is where ZS saves whether to use the asm or not
+    LDA $8140 : BEQ .return ; pc 140140 is where ZS saves whether to use the asm or not
 
     PHX
 
@@ -107,8 +112,8 @@ CheckForChangePalette:
     
     REP #$20 ; Set A in 16bit mode
 
-    LDA $8000, X ; pc 130000 is where ZS saves the array of palettes
-    STA $7EC300 : STA $7EC500 ;set transparent colors
+    LDA $8000, X ; pc 140000 is where ZS saves the array of palettes
+    STA $7EC300 ;set transparent color ; only set the buffer so it fades in right during mosaic transition
 
     SEP #$20 ; Set A in 8bit mode
 

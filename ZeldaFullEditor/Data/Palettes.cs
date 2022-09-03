@@ -122,8 +122,8 @@ namespace ZeldaFullEditor
 				dungeonsMain_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
 			}
 
-			overworld_GrassPalettes[0] = ReadPaletteSingle(romData, Constants.hardcodedGrassLW);
-			overworld_GrassPalettes[1] = ReadPaletteSingle(romData, Constants.hardcodedGrassDW);
+			overworld_GrassPalettes[0] = ReadPaletteSingle(romData, Constants.hardcodedGrassLW1);
+			overworld_GrassPalettes[1] = ReadPaletteSingle(romData, Constants.hardcodedGrassDW1);
 			overworld_GrassPalettes[2] = ReadPaletteSingle(romData, Constants.hardcodedGrassSpecial);
 
 			object3D_Palettes[0] = ReadPalette(romData, Constants.triforcePalette, 8);
@@ -240,8 +240,11 @@ namespace ZeldaFullEditor
 
 		public static bool SavePalettesToROM(byte[] romData)
 		{
-			WriteSinglePalette(romData, Constants.hardcodedGrassLW, overworld_GrassPalettes[0]);
-			WriteSinglePalette(romData, Constants.hardcodedGrassDW, overworld_GrassPalettes[1]);
+			WriteSinglePalette(romData, Constants.hardcodedGrassLW1, overworld_GrassPalettes[0]);
+			WriteSinglePalette(romData, Constants.hardcodedGrassLW2, overworld_GrassPalettes[0]);
+			WriteSinglePalette(romData, Constants.hardcodedGrassLW3, overworld_GrassPalettes[0]);
+			WriteSinglePalette(romData, Constants.hardcodedGrassDW1, overworld_GrassPalettes[1]);
+			WriteSinglePalette(romData, Constants.hardcodedGrassDW2, overworld_GrassPalettes[1]);
 			WriteSinglePalette(romData, Constants.hardcodedGrassSpecial, overworld_GrassPalettes[2]);
 
 			// 35 colors each, 7x5 (0,2 on grid)
@@ -297,9 +300,11 @@ namespace ZeldaFullEditor
 				WritePalette(romData, Constants.dungeonMainPalettes + (i * 180), dungeonsMain_Palettes[i]);
 			}
 
-			WritePalette(romData, Constants.hardcodedGrassLW, new Color[1] { overworld_GrassPalettes[0] });
-			WritePalette(romData, Constants.hardcodedGrassDW, new Color[1] { overworld_GrassPalettes[1] });
+			/* Removed because its dupicate code? Jared_Brain_
+			WritePalette(romData, Constants.hardcodedGrassLW1, new Color[1] { overworld_GrassPalettes[0] });
+			WritePalette(romData, Constants.hardcodedGrassDW1, new Color[1] { overworld_GrassPalettes[1] });
 			WritePalette(romData, Constants.hardcodedGrassSpecial, new Color[1] { overworld_GrassPalettes[2] });
+			*/
 
 			WritePalette(romData, Constants.triforcePalette, object3D_Palettes[0]);
 			WritePalette(romData, Constants.crystalPalette, object3D_Palettes[1]);
@@ -319,7 +324,7 @@ namespace ZeldaFullEditor
 		public static string SavePalettesToAsm(byte[] romData)
 		{
 			asmString = "";
-			WritePaletteAsm(overworld_GrassPalettes, 1, "Grass Color", Constants.hardcodedGrassLW);
+			WritePaletteAsm(overworld_GrassPalettes, 1, "Grass Color", Constants.hardcodedGrassLW1);
 			// 35 colors each, 7x5 (0,2 on grid)
 			for (int i = 0; i < 6; i++)
 			{
@@ -372,8 +377,8 @@ namespace ZeldaFullEditor
 				WritePaletteAsm(dungeonsMain_Palettes[i], 15, "Dungeon Palettes " + i.ToString("X2"), Constants.dungeonMainPalettes + (i * 180));
 			}
 
-			WritePaletteAsm(new Color[1] { overworld_GrassPalettes[0] }, 1, "Hardcoded LW Overworld Grass Palettes", Constants.hardcodedGrassLW);
-			WritePaletteAsm(new Color[1] { overworld_GrassPalettes[1] }, 1, "Hardcoded DW Overworld Grass Palettes", Constants.hardcodedGrassDW);
+			WritePaletteAsm(new Color[1] { overworld_GrassPalettes[0] }, 1, "Hardcoded LW Overworld Grass Palettes", Constants.hardcodedGrassLW1);
+			WritePaletteAsm(new Color[1] { overworld_GrassPalettes[1] }, 1, "Hardcoded DW Overworld Grass Palettes", Constants.hardcodedGrassDW1);
 			WritePaletteAsm(new Color[1] { overworld_GrassPalettes[2] }, 1, "Hardcoded SP Overworld Grass Palettes", Constants.hardcodedGrassSpecial);
 
 			WritePaletteAsm(object3D_Palettes[0], 8, "Triforce Palette", Constants.triforcePalette);

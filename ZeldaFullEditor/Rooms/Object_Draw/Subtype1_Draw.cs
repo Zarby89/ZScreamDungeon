@@ -4423,8 +4423,12 @@ namespace ZeldaFullEditor
 		public override void Draw()
 		{
 			base.Draw();
+			if (this.size == 0)
+			{
+				this.size = 26;
+			}
 
-			for (int s = 0; s < size + 1; s++)
+			for (int s = 0; s < size; s++)
 			{
 				int tid = 0;
 				for (int xx = 0; xx < 2; xx++)
@@ -4453,6 +4457,10 @@ namespace ZeldaFullEditor
 		public override void Draw()
 		{
 			base.Draw();
+			if (this.size == 0)
+			{
+				this.size = 26;
+			}
 
 			for (int s = 0; s < size; s++)
 			{

@@ -245,11 +245,11 @@ namespace ZeldaFullEditor
 
 			if (enabled)
 			{
-				ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF);
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF, true, "Enabled area specific BG color");
 			}
 			else
 			{
-				ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00);
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00, true, "Disabled area specific BG color");
 			}
 			
 			AsarCLR.Asar.init();
@@ -1229,8 +1229,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < 64; i++)
 			{
-				ROM.Write(Constants.overworldMusicDW + i, scene.ow.allmaps[i].musics[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
-
+				ROM.Write(Constants.overworldMusicDW + i, scene.ow.allmaps[i + 64].musics[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
 			}
 
 			ROM.EndBlockLogWriting();
@@ -1304,7 +1303,7 @@ namespace ZeldaFullEditor
 				}
 				if ((pos + a.Length) >= 0x6411F && (pos + a.Length) <= 0x70000)
 				{
-					pos = 0x130000; // 0x0F8780;
+					pos = Constants.OverowrldMapDataOverflow; // 0x0F8780;
 				}
 
 				for (int j = 0; j < i; j++)
@@ -1362,7 +1361,7 @@ namespace ZeldaFullEditor
 				}
 				if ((pos + b.Length) >= 0x6411F && (pos + b.Length) <= 0x70000)
 				{
-					pos = 0x130000;
+					pos = Constants.OverowrldMapDataOverflow;
 				}
 
 				// Map2

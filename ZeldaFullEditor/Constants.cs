@@ -273,11 +273,13 @@ namespace ZeldaFullEditor
 		public static int OverworldScreenSizeForLoading = 0x4C635;
 		public static int OverworldScreenTileMapChangeByScreen = 0x12634;
 
+		public static int OverowrldMapDataOverflow = 0x130000;
+
 		public static int transition_target_north = 0x13ee2;
 		public static int transition_target_west = 0x13f62;
 
-		public static int overworldCustomMosaicASM = 0x1301D0;
-		public static int overworldCustomMosaicArray = 0x1301F0;
+		public static int overworldCustomMosaicASM = 0x1401E0;
+		public static int overworldCustomMosaicArray = 0x140200;
 
 		//===========================================================================================
 		// Overworld Exits/Entrances Variables
@@ -492,16 +494,19 @@ namespace ZeldaFullEditor
 		public static int dungeonMapPalettes = 0xDD70A; // 21 colors
 		public static int dungeonMainPalettes = 0xDD734; // (15*6) colors each - 20 entries
 		public static int dungeonMapBgPalettes = 0xDE544; // 16*6
-		public static int hardcodedGrassLW = 0x5FEA9; // Mirrored Value at 0x75645 : 0x75625
-		public static int hardcodedGrassDW = 0x05FEB3; // 0x7564F;
+		public static int hardcodedGrassLW1 = 0x05FEA9;
+		public static int hardcodedGrassLW2 = 0x075645;
+		public static int hardcodedGrassLW3 = 0x075625;
+		public static int hardcodedGrassDW1 = 0x05FEB3;
+		public static int hardcodedGrassDW2 = 0x07564F;
 		public static int hardcodedGrassSpecial = 0x75640;
 		public static int overworldMiniMapPalettes = 0x55B27;
 		public static int triforcePalette = 0x64425;
 		public static int crystalPalette = 0xF4CD3;
 
-		public static int customAreaSpecificBGPalette = 0x130000; // 2 bytes for each overworld area (320)
-		public static int customAreaSpecificBGASM = 0x130150;
-		public static int customAreaSpecificBGEnabled = 0x130140; // 1 byte, not 0 if enabled
+		public static int customAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (320)
+		public static int customAreaSpecificBGASM = 0x140150;
+		public static int customAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
 
 		//===========================================================================================
 		// Dungeon Map Related Variables
@@ -612,8 +617,8 @@ namespace ZeldaFullEditor
 
 			// us = 0x05D97 / jp = 0x05DD7
 			overworldgfxGroups = 0x05DD7;
-			hardcodedGrassLW = 0x67FE6;
-			hardcodedGrassDW = 0x67FF0; // map>40
+			hardcodedGrassLW1 = 0x67FE6;
+			hardcodedGrassDW1 = 0x67FF0; // map>40
 			hardcodedGrassSpecial = 0x67FE1; // map 183,182,180
 
 			OWExitRoomId = 0x15D8A - 0x29C;

@@ -1132,6 +1132,11 @@ namespace ZeldaFullEditor
 				ROM.DATA[Constants.overlayPointers + (index * 2)];
 				addr = Utils.SnesToPc(addr);
 
+				if (index == 112)
+                {
+					index = index;
+                }
+
 				if (ROM.DATA[0x77676] == 0x6B)
 				{
 					addr = (ROM.DATA[(0x077677 + 2) + (index * 3)] << 16) +
