@@ -1168,6 +1168,16 @@ namespace ZeldaFullEditor
 					{
 						break;
 					}
+					/*
+					else if (b == 0xC2) // Add me back in to open goddess of wisdom at least in the dungeon editor.
+					{
+						break;
+					}
+					else if (b == 0x0E) // Add me back in to open milk utopia at least in the dungeon editor.
+					{
+						break;
+					}
+					*/
 					else if (b == 0xA9) // LDA #$xxxx (Increase addr+3)
 					{
 						a = (ROM.DATA[addr + 2] << 8) +

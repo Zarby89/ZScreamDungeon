@@ -1281,8 +1281,19 @@ namespace ZeldaFullEditor
 					}
 				}
 
+				if (singlemap1.Length > 512)
+				{
+					Console.WriteLine("Test.");
+				}
+
 				byte[] a = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap1, 0, 256);
 				byte[] b = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap2, 0, 256);
+
+				if (a == null || b == null)
+                {
+					Console.WriteLine("Error compressing map gfx.");
+					return true;
+				}
 
 				mapDatap1[i] = new byte[a.Length];
 				mapDatap2[i] = new byte[b.Length];

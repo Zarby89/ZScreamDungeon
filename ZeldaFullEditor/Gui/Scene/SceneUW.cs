@@ -766,7 +766,7 @@ namespace ZeldaFullEditor
 				}
 				// TODO copy
 
-				if (o.options == ObjectOption.Door)
+				if (mainForm.showDoorsIDs && o.options == ObjectOption.Door)
 				{
 					if (mainForm.showDoorsIDs)
 					{
@@ -790,7 +790,7 @@ namespace ZeldaFullEditor
 					g.DrawImage(GFX.moveableBlock, o.nx * 8, o.ny * 8);
 				}
 
-				if (doorsObject.Contains(o.id))
+				if (mainForm.showStairIDs && doorsObject.Contains(o.id))
 				{
 					drawText(g, o.nx * 8, o.ny * 8, "to : " + room.staircase_rooms[stairCount].ToString());
 					stairCount++;

@@ -171,6 +171,7 @@ namespace ZeldaFullEditor.Gui
 
 				mapParent.palette = (byte) OWProperty_BGPalette.HexValue;
 				mapParent.gfx = (byte) OWProperty_BGGFX.HexValue;
+				mapParent.messageID = (short) OWProperty_MessageID.HexValue;
 
 				if (mapParent.index >= 64)
 				{

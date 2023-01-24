@@ -75,6 +75,7 @@ namespace ZeldaFullEditor
 		public bool showItems = true;
 		public bool showDoorsIDs = true;
 		public bool showChestIDs = true;
+		public bool showStairIDs = true;
 
 		public bool showSpriteText = false;
 		public bool showChestText = false;
@@ -180,10 +181,10 @@ namespace ZeldaFullEditor
 			Controls.Add(screenEditor);
 
 			// If we are in a debug version, show the Experimental Features drop down menu.
-#if DEBUG
-			ExperimentalToolStripMenuItem1.Visible = true;
-			jPDebugToolStripMenuItem.Visible = true;
-#endif
+			#if DEBUG
+				ExperimentalToolStripMenuItem1.Visible = true;
+				jPDebugToolStripMenuItem.Visible = true;
+			#endif
 		}
 
 		private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
@@ -468,7 +469,11 @@ namespace ZeldaFullEditor
 			ROM.Write(0x5D4E, 0x00, true, "Fix sprite sheet 123 (should not be read compressed)"); // Fix for the sprite sheet 123
 																								   //ROM.DATA[0x5D4E] = 0x00; 
 
-			gfxEditor.SaveAllGfx();
+			if (gfxEditor.SaveAllGfx())
+			{
+				ROM.DATA = (byte[]) romBackup.Clone(); // Restore previous rom data to prevent corrupting anything
+				return;
+			}
 
 			//sw.Stop();
 			//Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
@@ -491,7 +496,6 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO: move more of the failure stuff here
-
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -618,11 +622,13 @@ namespace ZeldaFullEditor
 				GFX.previewObjectsPtr[i] = Marshal.AllocHGlobal(64 * 64);
 				GFX.previewObjectsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewObjectsPtr[i]);
 			}
+
 			for (int i = 0; i < 256; i++)
 			{
 				GFX.previewSpritesPtr[i] = Marshal.AllocHGlobal(64 * 64);
 				GFX.previewSpritesBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewSpritesPtr[i]);
 			}
+
 			for (int i = 0; i < 76; i++)
 			{
 				GFX.previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
@@ -777,8 +783,11 @@ namespace ZeldaFullEditor
 					}
 				}
 
-				TreeNode tn = new TreeNode(tname);
-				tn.Tag = i;
+				var tn = new TreeNode(tname)
+				{
+					Tag = i
+				};
+
 				entrancetreeView.Nodes[1].Nodes.Add(tn);
 			}
 
@@ -795,8 +804,10 @@ namespace ZeldaFullEditor
 					}
 				}
 
-				TreeNode tn = new TreeNode(tname);
-				tn.Tag = i;
+				TreeNode tn = new TreeNode(tname)
+				{
+					Tag = i
+				};
 
 				entrancetreeView.Nodes[0].Nodes.Add(tn);
 			}
@@ -1182,6 +1193,7 @@ namespace ZeldaFullEditor
 						FileMode.OpenOrCreate,
 						FileAccess.Write));
 					bw.Write(name);
+
 					foreach (SaveObject o in data)
 					{
 						o.saveToFile(bw);
@@ -1221,6 +1233,7 @@ namespace ZeldaFullEditor
 						{
 							most_x = o.x;
 						}
+
 						if (o.y < most_y)
 						{
 							most_y = o.y;
@@ -1564,14 +1577,12 @@ namespace ZeldaFullEditor
 			EntranceProperties_Blockset.HexValue = en.Blockset;
 			EntranceProperties_Music.HexValue = en.Music;
 
-
 			EntranceProperties_PlayerX.HexValue = en.XPosition;
 			EntranceProperties_PlayerY.HexValue = en.YPosition;
 			EntranceProperties_CameraX.HexValue = en.CameraX;
 			EntranceProperties_CameraY.HexValue = en.CameraY;
 			EntranceProperties_CameraTriggerX.HexValue = en.CameraTriggerX;
 			EntranceProperties_CameraTriggerY.HexValue = en.CameraTriggerY;
-
 
 			EntranceProperties_FloorSel.SelectedIndex = Constants.FloorNumber.FindFloorIndex(en.Floor);
 
@@ -1914,6 +1925,7 @@ namespace ZeldaFullEditor
 		{
 			splitContainer3.Panel1.Controls.Clear();
 			splitContainer3.Panel2.Controls.Clear();
+
 			if (rightSideToolboxToolStripMenuItem.Checked)
 			{
 				//toolboxPanel.Dock = DockStyle.Right;
@@ -1947,7 +1959,6 @@ namespace ZeldaFullEditor
 
 		private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
 		{
-			
 			if (e.Y >= 256 && e.Y <= 264)
 			{
 				return;
@@ -2020,6 +2031,7 @@ namespace ZeldaFullEditor
             fs.Close();
             Process p = Process.Start("temp.sfc");
             */
+
 			saveToolStripMenuItem_Click(saveToolStripMenuItem, new EventArgs());
 			Process p = Process.Start(projectFilename);
 		}
@@ -2692,10 +2704,11 @@ namespace ZeldaFullEditor
 
 		private void litCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
-			if (activeScene.updating_info && activeScene.room.selectedObject[0] is Room_Object robj)
-			{
-				robj.lit = litCheckbox.Checked;
-			}
+			//if (activeScene.updating_info && activeScene.room.selectedObject[0] is Room_Object robj)
+			//{
+			Room_Object robj = (Room_Object) (activeScene.room.selectedObject[0]);
+			robj.lit = litCheckbox.Checked;
+			//}
 		}
 
 		// TODO move to constants
@@ -2804,6 +2817,7 @@ namespace ZeldaFullEditor
 			showItems = hideItemsToolStripMenuItem.Checked;
 			showDoorsIDs = showDoorIDsToolStripMenuItem.Checked;
 			showChestIDs = showChestsIDsToolStripMenuItem.Checked;
+			showStairIDs = showStairIndexToolStripMenuItem.Checked;
 			showSpriteText = textSpriteToolStripMenuItem.Checked;
 			showChestText = textChestItemToolStripMenuItem.Checked;
 			showItemsText = textPotItemToolStripMenuItem.Checked;
@@ -5155,6 +5169,11 @@ namespace ZeldaFullEditor
 		{
 			OverworldEditor.scratchPadGrid = showScratchPadGridToolStripMenuItem.Checked;
 			overworldEditor.Refresh();
+		}
+
+		private void showStairIndexToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			activeScene.Refresh();
 		}
 	}
 }

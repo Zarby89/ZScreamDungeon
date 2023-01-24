@@ -11,6 +11,9 @@
 org $0BFEB6             ;loads the transparent color under some load conditions
     JML IntColorLoad1
 
+org $0ED644 ;original InitColorLoad2 fix: replaces an old hook so that it will not be broken anymore. can eventually be removed
+    db $A2
+
 org $0ED647             ;loads the transparent color under some load conditions
     JML IntColorLoad2
     NOP
