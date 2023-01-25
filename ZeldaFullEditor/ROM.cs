@@ -16,14 +16,13 @@ namespace ZeldaFullEditor
 		public static byte[] TEMPDATA;
 		public static StringBuilder romLog = new StringBuilder();
 		public static bool logBlock = false;
-		static int biggerAddress = 0;
-		static string blockName = "";
+		private static int biggerAddress = 0;
+		private static string blockName = "";
 		public static bool AdvancedLogs = true;
 		public static List<LogInfos> advancedLogData = new List<LogInfos>();
 
 		public static void StartBlockLogWriting(string name, int addr)
 		{
-
 			//romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") +" [Block of Data](" + name + ")\r\n");
 			advancedLogData.Add(new LogInfos(addr, name + "\r\n" + addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " [Block of Data](" + name + ")\r\n"));
 			biggerAddress = addr;
@@ -36,7 +35,6 @@ namespace ZeldaFullEditor
 			//romLog.Append(biggerAddress.ToString("X6") + "/" + Utils.PcToSnes(biggerAddress).ToString("X6") + " [END Block of Data](" + blockName + ")\r\n");
 			logBlock = false;
 		}
-
 
 		public static void Write(int addr, byte value, WriteType info)
 		{
@@ -69,10 +67,11 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public static void Write(int addr, byte[] value, WriteType info) {
+		public static void Write(int addr, byte[] value, WriteType info)
+		{
 			Write(addr, value, true, info.Text);
-
 		}
+
 		public static void Write(int addr, byte[] value, bool log = true, string info = "")
 		{
 			StringBuilder sb = new StringBuilder();
@@ -88,7 +87,6 @@ namespace ZeldaFullEditor
 			{
 				if (log)
 				{
-
 					sb.Append(info + " " + addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : ");
 				}
 
@@ -142,6 +140,7 @@ namespace ZeldaFullEditor
 		{
 			WriteShort(addr, value, true, w.Text);
 		}
+
 		public static void WriteShort(int addr, int value, bool log = true, string info = "")
 		{
 			DATA[addr] = (byte) (value & 0xFF);

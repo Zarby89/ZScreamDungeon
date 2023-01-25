@@ -21,7 +21,7 @@ using ZeldaFullEditor.Gui.MainTabs;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Globalization;
 
-// Main 
+// Main
 namespace ZeldaFullEditor
 {
 	public partial class DungeonMain : Form
@@ -29,6 +29,7 @@ namespace ZeldaFullEditor
 		// Registers a hot key with Windows.
 		[DllImport("user32.dll")]
 		private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
 		// Unregisters the hot key with Windows.
 		[DllImport("user32.dll")]
 		private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
@@ -43,34 +44,35 @@ namespace ZeldaFullEditor
 
 		public TextEditor textEditor = new TextEditor();
 		public OverworldEditor overworldEditor = new OverworldEditor();
-		Object_Designer objDesigner = new Object_Designer();
+		private Object_Designer objDesigner = new Object_Designer();
 		public GfxImportExport gfxEditor;
-		DungeonViewer dungeonViewer = new DungeonViewer();
+		private DungeonViewer dungeonViewer = new DungeonViewer();
 		public string projectFilename = "";
 		public bool projectLoaded = false;
 		public bool anychange = false;
 		public SceneUW activeScene;
 		public List<Room> opened_rooms = new List<Room>();
-		bool saved_changed = false;
+		private bool saved_changed = false;
 		public TreeNode lastNode = null;
-		RoomLayout layoutForm;
-		List<short> selectedMapPng = new List<short>();
+		private RoomLayout layoutForm;
+		private List<short> selectedMapPng = new List<short>();
 		public ChestPicker chestPicker = new ChestPicker();
 		public bool settingEntrance = false;
 		public int selectedLayer = -1;
 		public Entrance selectedEntrance = null;
-		PaletteEditor paletteForm;
-		Bitmap xTabButton;
+		private PaletteEditor paletteForm;
+		private Bitmap xTabButton;
 		public Room previewRoom = null;
 		public ScreenEditor screenEditor = new ScreenEditor();
 		public string loadFromExported = "";
 
 		public List<Room_Object> listoftilesobjects = new List<Room_Object>();
-		List<Sprite> listofspritesobjects = new List<Sprite>();
-		List<Chest> listofchests = new List<Chest>();
+		private List<Sprite> listofspritesobjects = new List<Sprite>();
+		private List<Chest> listofchests = new List<Chest>();
 
 		// Groups of options for the Scene
 		public bool showSprite = true;
+
 		public bool showChest = true;
 		public bool showItems = true;
 		public bool showDoorsIDs = true;
@@ -84,24 +86,24 @@ namespace ZeldaFullEditor
 		public bool visibleEntranceGFX = false;
 		public bool x2zoom = false;
 
-		VramViewer vramViewer = new VramViewer();
+		private VramViewer vramViewer = new VramViewer();
 		public CGRamViewer cgramViewer = new CGRamViewer();
 		public GfxGroupsForm gfxGroupsForm;
 
-		int tpHotTracked = -1;
-		int tpHotTrackedToClose = -1;
-		int tpHotTrackedToCloseLast = -2;
-		int lasttpHotTracked = -2;
+		private int tpHotTracked = -1;
+		private int tpHotTrackedToClose = -1;
+		private int tpHotTrackedToCloseLast = -2;
+		private int lasttpHotTracked = -2;
 
 		public int lastRoomID = -1;
 
-		OverworldEditor oweditor2;
+		private OverworldEditor oweditor2;
 
-		ushort[,] lwmdata = new ushort[512, 512];
-		ushort[,] dwmdata = new ushort[512, 512];
+		private ushort[,] lwmdata = new ushort[512, 512];
+		private ushort[,] dwmdata = new ushort[512, 512];
 
-		byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
-		byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
+		private byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
+		private byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
 
 		public bool propertiesChangedFromForm = false;
 
@@ -115,7 +117,7 @@ namespace ZeldaFullEditor
 			true, false
 		};
 
-		// Constuctor 
+		// Constuctor
 		public DungeonMain()
 		{
 			InitializeComponent();
@@ -181,10 +183,10 @@ namespace ZeldaFullEditor
 			Controls.Add(screenEditor);
 
 			// If we are in a debug version, show the Experimental Features drop down menu.
-			#if DEBUG
+#if DEBUG
 				ExperimentalToolStripMenuItem1.Visible = true;
 				jPDebugToolStripMenuItem.Visible = true;
-			#endif
+#endif
 		}
 
 		private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
@@ -262,7 +264,7 @@ namespace ZeldaFullEditor
 			//sw.Start();
 
 			// TODO:
-			// from save settings not found ?: 
+			// from save settings not found ?:
 			// 15: Group tiles
 			// 17: dungeon auto doors
 			// 18: adv chests
@@ -467,7 +469,7 @@ namespace ZeldaFullEditor
 			}
 
 			ROM.Write(0x5D4E, 0x00, true, "Fix sprite sheet 123 (should not be read compressed)"); // Fix for the sprite sheet 123
-																								   //ROM.DATA[0x5D4E] = 0x00; 
+																								   //ROM.DATA[0x5D4E] = 0x00;
 
 			if (gfxEditor.SaveAllGfx())
 			{
@@ -1516,7 +1518,7 @@ namespace ZeldaFullEditor
 			if (saved_changed)
 			{
 				anychange = false;
-				
+
 				switch (UIText.WarnAboutSaving())
 				{
 					case DialogResult.Yes:
@@ -1537,6 +1539,7 @@ namespace ZeldaFullEditor
 			activeScene.DrawRoom();
 			activeScene.Refresh();
 		}
+
 		private void exportProjectAsROMToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			saveToolStripMenuItem_Click(sender, e);
@@ -1875,7 +1878,7 @@ namespace ZeldaFullEditor
 
 				//mapPropertyGrid.SelectedObject = r;
 
-				opened_rooms.Add(r); // Add the double clicked room into rooms list     
+				opened_rooms.Add(r); // Add the double clicked room into rooms list
 				activeScene.room = r;
 
 				//string tn = r.index.ToString("D3");
@@ -2024,7 +2027,7 @@ namespace ZeldaFullEditor
             brom.Close();
 
             saveToolStripMenuItem_Click(sender, e);
-            
+
             FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
 
             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
@@ -2150,6 +2153,7 @@ namespace ZeldaFullEditor
 		}
 
 		public int gridSize = 8;
+
 		private void x8ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			x8ToolStripMenuItem.Checked = false;
@@ -2230,7 +2234,6 @@ namespace ZeldaFullEditor
 				activeScene.room.tag2 = (TagKey) roomProperty_tag2.SelectedIndex;
 				activeScene.room.effect = (EffectKey) roomProperty_effect.SelectedIndex;
 				activeScene.room.collision = (CollisionKey) roomProperty_collision.SelectedIndex;
-
 
 				activeScene.room.blockset = (byte) RoomProperty_Blockset.HexValue;
 				activeScene.room.floor1 = (byte) RoomProperty_Floor1.HexValue;
@@ -2411,7 +2414,6 @@ namespace ZeldaFullEditor
 		{
 			if ((tabControl2.TabPages[i].Tag as Room).has_changed)
 			{
-
 				switch (UIText.WarnAboutSaving(UIText.RoomWarning))
 				{
 					case DialogResult.Yes:
@@ -2523,7 +2525,7 @@ namespace ZeldaFullEditor
 		public void initObjectsList()
 		{
 			int index = 0;
-			for (int i = 0; i < 0xF8; i++) // Type 1 objects 
+			for (int i = 0; i < 0xF8; i++) // Type 1 objects
 			{
 				Room_Object o = activeScene.room.addObject((short) i, 0, 0, 0, 0);
 				o.preview = true;
@@ -2538,7 +2540,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			for (int i = 0x100; i < 0x140; i++) // Type 2 objects 
+			for (int i = 0x100; i < 0x140; i++) // Type 2 objects
 			{
 				Room_Object o = activeScene.room.addObject((short) i, 0, 0, 0, 0);
 				o.preview = true;
@@ -2553,7 +2555,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			for (int i = 0xF80; i < 0xFFF; i++) // Type 3 objects 
+			for (int i = 0xF80; i < 0xFFF; i++) // Type 3 objects
 			{
 				Room_Object o = activeScene.room.addObject((short) i, 0, 0, 0, 0);
 				o.preview = true;
@@ -3110,12 +3112,11 @@ namespace ZeldaFullEditor
 
 				paletteForm.BringToFront();
 				wp.BringToFront();
-
 			}
 		}
 
 		// Export Palette to YY-CHR Palette Format
-		/*            
+		/*
 
         */
 
@@ -3311,14 +3312,12 @@ namespace ZeldaFullEditor
 			else
 			{
 				SetPalettesBlack();
-
 			}
 
 			previewRoom.reloadLayout();
 			foreach (Room_Object o in previewRoom.tilesLayoutObjects)
 			{
 				o.Draw();
-
 			}
 			// Draw object on bitmap
 
@@ -4144,7 +4143,7 @@ namespace ZeldaFullEditor
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(mapArrayData1, 0, (int)fileStreamMap.Length);
+					fileStreamMap.Read(mapArrayData1, 0, (int) fileStreamMap.Length);
 					fileStreamMap.Close();
 
 					for (int i = 0; i < 64; i++)
@@ -4222,7 +4221,6 @@ namespace ZeldaFullEditor
 					overworldEditor.overworld.tiles16.Clear();
 					for (int i = 0; i < Constants.NumberOfMap16; i++)
 					{
-
 						// Tile 0
 						ulong t0 = (ulong) (
 							(mapArrayData[p + 1] << 8) |
@@ -4283,7 +4281,6 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < tile8ids.Count; i++)
 			{
-
 				overworldEditor.overworld.tiles16[tile8ids[i]].tile0.HS ^= 1;
 				overworldEditor.overworld.tiles16[tile8ids[i]].tile1.HS ^= 1;
 				overworldEditor.overworld.tiles16[tile8ids[i]].tile2.HS ^= 1;
@@ -4395,7 +4392,7 @@ namespace ZeldaFullEditor
 			{
 				if (s.saveOverworldMaps(overworldEditor.scene))
 				{
-					Console.WriteLine("too many maps out of bound error");
+					Console.WriteLine("Too many maps out of bound error");
 				}
 
 				FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
@@ -4524,7 +4521,6 @@ namespace ZeldaFullEditor
 
 				//if (rm.checkBox7.Checked)
 				//{
-
 				if (save.saveRoomsHeaders2()) // No protection always the same size so we don't care :)
 				{
 					//MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
@@ -5099,7 +5095,6 @@ namespace ZeldaFullEditor
 
 		private void clearDWTilesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
 			if (MessageBox.Show("Are you sure you want to clear all tiles of the Dark World?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
 				int sx = 0;
