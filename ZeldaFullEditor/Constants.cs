@@ -50,7 +50,7 @@ namespace ZeldaFullEditor
 		public const int IDKZarby = 0x54727;
 
 		public static byte[] FontSpacings = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
-		
+
 		//===========================================================================================
 		// Geometry - shapes and points we don't need to constantly reinstantiate
 		//===========================================================================================
@@ -132,7 +132,6 @@ namespace ZeldaFullEditor
 		public static readonly Pen BlackPen2 = new Pen(Brushes.Black, 2);
 		public static readonly Pen AzurePen2 = new Pen(Color.Azure, 2);
 		public static readonly Pen RedPen4 = new Pen(Color.Red, 2);
-
 
 		public static readonly Color Black200 = Color.FromArgb(200, 0, 0, 0);
 		public static readonly Pen Black200Pen = new Pen(Black200);
@@ -271,12 +270,17 @@ namespace ZeldaFullEditor
 		public static int overworldScreenSize = 0x1788D;
 
 		public static int OverworldScreenSizeForLoading = 0x4C635;
-		public static int OverworldScreenTileMapChangeByScreen = 0x12634;
+		public static int OverworldScreenTileMapChangeByScreen1 = 0x12634;
+		public static int OverworldScreenTileMapChangeByScreen2 = 0x126B4;
+		public static int OverworldScreenTileMapChangeByScreen3 = 0x12734;
+		public static int OverworldScreenTileMapChangeByScreen4 = 0x127B4;
+
+		public static int OverworldScreenTileMapChangeMask = 0x1262C;
 
 		public static int OverowrldMapDataOverflow = 0x130000;
 
-		public static int transition_target_north = 0x13ee2;
-		public static int transition_target_west = 0x13f62;
+		public static int transition_target_north = 0x13EE2;
+		public static int transition_target_west = 0x13F62;
 
 		public static int overworldCustomMosaicASM = 0x1401E0;
 		public static int overworldCustomMosaicArray = 0x140200;
@@ -322,12 +326,12 @@ namespace ZeldaFullEditor
 		//===========================================================================================
 		// Dungeon Related Variables
 		//===========================================================================================
-		// That could be turned into a pointer : 
+		// That could be turned into a pointer :
 		public static int dungeons_palettes_groups = 0x75460; // JP 0x67DD0
 		public static int dungeons_main_bg_palette_pointers = 0xDEC4B; // JP Same
-		public static int dungeons_palettes = 0xDD734; // JP Same (where all dungeons palettes are) 
+		public static int dungeons_palettes = 0xDD734; // JP Same (where all dungeons palettes are)
 
-		// That could be turned into a pointer : 
+		// That could be turned into a pointer :
 		public static int room_items_pointers = 0xDB69;// JP 0xDB67
 
 		public static int rooms_sprite_pointer = 0x4C298; // JP Same //2byte bank 09D62E
@@ -344,7 +348,7 @@ namespace ZeldaFullEditor
 		//public static int chests_data_pointer2 = 0xEC0A; // Disabled for now could be used for expansion
 		//public static int chests_data_pointer3 = 0xEC10; // Disabled for now could be used for expansion
 
-		public static int blocks_length = 0x8896; // Word value 
+		public static int blocks_length = 0x8896; // Word value
 		public static int blocks_pointer1 = 0x15AFA;
 		public static int blocks_pointer2 = 0x15B01;
 		public static int blocks_pointer3 = 0x15B08;
@@ -400,7 +404,7 @@ namespace ZeldaFullEditor
 		public static int entrance_dungeon = 0x1548B; // 0x151EF 1byte (dungeon id)
 		public static int entrance_door = 0x15510; // 0x15274 1byte
 		public static int entrance_ladderbg = 0x15595; //0x152F9 // 1byte, ---b ---a b = bg2, a = need to check -_-
-		public static int entrance_scrolling = 0x1561A; // 0x1537E // 1byte --h- --v- 
+		public static int entrance_scrolling = 0x1561A; // 0x1537E // 1byte --h- --v-
 		public static int entrance_scrollquadrant = 0x1569F; // 0x15403 1byte
 		public static int entrance_exit = 0x15724; // 0x15488 // 2byte word
 		public static int entrance_music = 0x1582E; // 0x15592
@@ -421,7 +425,7 @@ namespace ZeldaFullEditor
 		public static int startingentrance_door = 0x15C2B; // 0x15274 1byte
 
 		public static int startingentrance_ladderbg = 0x15C1D; // 0x152F9 // 1byte, ---b ---a b = bg2, a = need to check -_-
-		public static int startingentrance_scrolling = 0x15C24; // 0x1537E // 1byte --h- --v- 
+		public static int startingentrance_scrolling = 0x15C24; // 0x1537E // 1byte --h- --v-
 		public static int startingentrance_scrollquadrant = 0x15C2B; // 0x15403 1byte
 		public static int startingentrance_exit = 0x15C32; // 0x15488 // 2byte word
 		public static int startingentrance_music = 0x15C4E; // 0x15592
@@ -588,7 +592,7 @@ namespace ZeldaFullEditor
 			entrance_dungeon = 0x151EF; // 1byte (dungeon id)
 			entrance_door = 0x15274; // 1byte
 			entrance_ladderbg = 0x152F9; //1 byte, ---b ---a b = bg2, a = need to check -_-
-			entrance_scrolling = 0x1537E; //1byte --h- --v- 
+			entrance_scrolling = 0x1537E; //1byte --h- --v-
 			entrance_scrollquadrant = 0x15403; // 1byte
 			entrance_exit = 0x15488; // 2byte word
 			entrance_music = 0x15592;
@@ -609,7 +613,7 @@ namespace ZeldaFullEditor
 			startingentrance_door -= 0x29C; // 0x15274 1byte
 
 			startingentrance_ladderbg -= 0x29C; // 0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
-			startingentrance_scrolling -= 0x29C; // 0x1537E //1byte --h- --v- 
+			startingentrance_scrolling -= 0x29C; // 0x1537E //1byte --h- --v-
 			startingentrance_scrollquadrant -= 0x29C; // 0x15403 1byte
 			startingentrance_exit -= 0x29C; // 0x15488 // 2byte word
 			startingentrance_music -= 0x29C; // 0x15592
@@ -696,7 +700,6 @@ namespace ZeldaFullEditor
 				return -1;
 			}
 		}
-
 
 		public static FloorNumber[] floors = new FloorNumber[] {
 			new FloorNumber("B8", 0xF8),

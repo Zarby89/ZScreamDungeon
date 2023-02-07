@@ -28,20 +28,20 @@ namespace ZeldaFullEditor.Gui
 		public ushort[,] scratchPadTiles = new ushort[16, 225];
 		public byte gridDisplay = 0;
 
-		bool mouse_down = false;
+		private bool mouse_down = false;
 
-		bool selecting = false;
-		int globalmouseTileDownX = 0;
-		int globalmouseTileDownY = 0;
-		int mouseX_Real = 0;
-		int mouseY_Real = 0;
-		int lastTileHoverX = 0;
-		int lastTileHoverY = 0;
+		private bool selecting = false;
+		private int globalmouseTileDownX = 0;
+		private int globalmouseTileDownY = 0;
+		private int mouseX_Real = 0;
+		private int mouseY_Real = 0;
+		private int lastTileHoverX = 0;
+		private int lastTileHoverY = 0;
 
-		byte palSelected = 0;
-		int tile8selected = 0;
+		private byte palSelected = 0;
+		private int tile8selected = 0;
 
-		readonly ColorDialog cd = new ColorDialog();
+		private readonly ColorDialog cd = new ColorDialog();
 
 		public static bool UseAreaSpecificBgColor = false;
 		public static bool scratchPadGrid = false;
@@ -332,7 +332,6 @@ namespace ZeldaFullEditor.Gui
 			scene.ow.worldOffset = o;
 			scene.Refresh();
 		}
-
 
 		private void runtestButton_Click(object sender, EventArgs e)
 		{
@@ -824,7 +823,6 @@ namespace ZeldaFullEditor.Gui
 			byte* srcPtr = (byte*) GFX.currentOWgfx16Ptr.ToPointer();
 			Tile16 t = overworld.tiles16[scene.selectedTile[0]];
 
-
 			for (var y = 0; y < 8; y++)
 			{
 				for (var x = 0; x < 4; x++)
@@ -1136,39 +1134,26 @@ namespace ZeldaFullEditor.Gui
 					}
 					else
 					{
-						scene.ow.allmaps[m].largeMap = true;
-						scene.ow.allmaps[m + 1].largeMap = true;
-						scene.ow.allmaps[m + 8].largeMap = true;
-						scene.ow.allmaps[m + 9].largeMap = true;
+						scene.ow.allmaps[m].SetAsLargeMap((byte) m, 0);
+						scene.ow.allmaps[m + 1].SetAsLargeMap((byte) m, 1);
+						scene.ow.allmaps[m + 8].SetAsLargeMap((byte) m, 2);
+						scene.ow.allmaps[m + 9].SetAsLargeMap((byte) m, 3);
 
-						scene.ow.allmaps[m].parent = (byte) m;
-						scene.ow.allmaps[m + 1].parent = (byte) m;
-						scene.ow.allmaps[m + 8].parent = (byte) m;
-						scene.ow.allmaps[m + 9].parent = (byte) m;
-
+						// If we are in the light world, set the dark world opposite too.
 						if (m < 64)
 						{
-							scene.ow.allmaps[m + 64].largeMap = true;
-							scene.ow.allmaps[m + 64 + 1].largeMap = true;
-							scene.ow.allmaps[m + 64 + 8].largeMap = true;
-							scene.ow.allmaps[m + 64 + 9].largeMap = true;
-
-							scene.ow.allmaps[m + 64].parent = (byte) (m + 64);
-							scene.ow.allmaps[m + 64 + 1].parent = (byte) (m + 64);
-							scene.ow.allmaps[m + 64 + 8].parent = (byte) (m + 64);
-							scene.ow.allmaps[m + 64 + 9].parent = (byte) (m + 64);
+							scene.ow.allmaps[m + 64].SetAsLargeMap((byte) (m + 64), 0);
+							scene.ow.allmaps[m + 64 + 1].SetAsLargeMap((byte) (m + 64), 1 + 64);
+							scene.ow.allmaps[m + 64 + 8].SetAsLargeMap((byte) (m + 64), 2 + 64);
+							scene.ow.allmaps[m + 64 + 9].SetAsLargeMap((byte) (m + 64), 3 + 64);
 						}
+						// If we are in the dark world, set the light world opposite too.
 						else if (m >= 64 && m < 128)
 						{
-							scene.ow.allmaps[m - 64].largeMap = true;
-							scene.ow.allmaps[m - 64 + 1].largeMap = true;
-							scene.ow.allmaps[m - 64 + 8].largeMap = true;
-							scene.ow.allmaps[m - 64 + 9].largeMap = true;
-
-							scene.ow.allmaps[m - 64].parent = (byte) (m - 64);
-							scene.ow.allmaps[m - 64 + 1].parent = (byte) (m - 64);
-							scene.ow.allmaps[m - 64 + 8].parent = (byte) (m - 64);
-							scene.ow.allmaps[m - 64 + 9].parent = (byte) (m - 64);
+							scene.ow.allmaps[m - 64].SetAsLargeMap((byte) (m - 64), 0);
+							scene.ow.allmaps[m - 64 + 1].SetAsLargeMap((byte) (m - 64), 1 + 64);
+							scene.ow.allmaps[m - 64 + 8].SetAsLargeMap((byte) (m - 64), 2 + 64);
+							scene.ow.allmaps[m - 64 + 9].SetAsLargeMap((byte) (m - 64), 3 + 64);
 						}
 
 						scene.ow.getLargeMaps();
@@ -1327,39 +1312,26 @@ namespace ZeldaFullEditor.Gui
 				}
 				else // Small maps
 				{
-					scene.ow.allmaps[m].largeMap = false;
-					scene.ow.allmaps[m + 1].largeMap = false;
-					scene.ow.allmaps[m + 8].largeMap = false;
-					scene.ow.allmaps[m + 9].largeMap = false;
+					scene.ow.allmaps[m].SetAsSmallMap();
+					scene.ow.allmaps[m + 1].SetAsSmallMap();
+					scene.ow.allmaps[m + 8].SetAsSmallMap();
+					scene.ow.allmaps[m + 9].SetAsSmallMap();
 
-					scene.ow.allmaps[m].parent = (byte) m;
-					scene.ow.allmaps[m + 1].parent = (byte) (m + 1);
-					scene.ow.allmaps[m + 8].parent = (byte) (m + 8);
-					scene.ow.allmaps[m + 9].parent = (byte) (m + 9);
-
+					// If we are in the light world, set the dark world opposite too.
 					if (m < 64)
 					{
-						scene.ow.allmaps[m + 64].largeMap = false;
-						scene.ow.allmaps[m + 64 + 1].largeMap = false;
-						scene.ow.allmaps[m + 64 + 8].largeMap = false;
-						scene.ow.allmaps[m + 64 + 9].largeMap = false;
-
-						scene.ow.allmaps[m + 64].parent = (byte) (m + 64);
-						scene.ow.allmaps[m + 64 + 1].parent = (byte) (m + 64 + 1);
-						scene.ow.allmaps[m + 64 + 8].parent = (byte) (m + 64 + 8);
-						scene.ow.allmaps[m + 64 + 9].parent = (byte) (m + 64 + 9);
+						scene.ow.allmaps[m + 64].SetAsSmallMap();
+						scene.ow.allmaps[m + 64 + 1].SetAsSmallMap();
+						scene.ow.allmaps[m + 64 + 8].SetAsSmallMap();
+						scene.ow.allmaps[m + 64 + 9].SetAsSmallMap();
 					}
+					// If we are in the dark world, set the light world opposite too.
 					else if (m >= 64 && m < 128)
 					{
-						scene.ow.allmaps[m - 64].largeMap = false;
-						scene.ow.allmaps[m - 64 + 1].largeMap = false;
-						scene.ow.allmaps[m - 64 + 8].largeMap = false;
-						scene.ow.allmaps[m - 64 + 9].largeMap = false;
-
-						scene.ow.allmaps[m - 64].parent = (byte) (m - 64);
-						scene.ow.allmaps[m - 64 + 1].parent = (byte) (m - 64 + 1);
-						scene.ow.allmaps[m - 64 + 8].parent = (byte) (m - 64 + 8);
-						scene.ow.allmaps[m - 64 + 9].parent = (byte) (m - 64 + 9);
+						scene.ow.allmaps[m - 64].SetAsSmallMap();
+						scene.ow.allmaps[m - 64 + 1].SetAsSmallMap();
+						scene.ow.allmaps[m - 64 + 8].SetAsSmallMap();
+						scene.ow.allmaps[m - 64 + 9].SetAsSmallMap();
 					}
 
 					scene.ow.getLargeMaps();

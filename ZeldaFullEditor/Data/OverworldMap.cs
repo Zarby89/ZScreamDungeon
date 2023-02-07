@@ -7,13 +7,17 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
 	public class OverworldMap // This class should only be used to keep values in, not for loading anything !!
 	{
-		public byte parent = 0;
+		public byte parent { get; private set; } = 0;
+		public bool largeMap { get; private set; } = false;
+		public byte largeIndex { get; private set; } = 0;
+
 		public byte index = 0;
 		public byte gfx = 0;
 		public byte[] sprgfx = new byte[3];
@@ -22,7 +26,6 @@ namespace ZeldaFullEditor
 		public byte[] musics = new byte[4];
 		public bool firstLoad = false;
 		public short messageID = 0;
-		public bool largeMap = false;
 		public bool mosaic = false;
 		public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512); // Needs to be removed
 																//public IntPtr blockset16 = Marshal.AllocHGlobal(1048576); // Needs to be removed
@@ -30,7 +33,7 @@ namespace ZeldaFullEditor
 		public Bitmap gfxBitmap; // Needs to be removed
 
 		public byte[] staticgfx = new byte[16]; // Need to be used to display map and not pre render it!
-		Overworld ow;
+		private Overworld ow;
 		public ushort[,] tilesUsed;
 
 		public bool needRefresh = false;
@@ -40,6 +43,7 @@ namespace ZeldaFullEditor
 			this.index = index;
 			this.ow = ow;
 			this.parent = index;
+			this.largeIndex = 0;
 			gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
 
 			messageID = (short) ROM.ReadShort(Constants.overworldMessages + (parent * 2));
@@ -172,8 +176,6 @@ namespace ZeldaFullEditor
 		{
 			if (largeMap)
 			{
-				this.parent = ow.mapParent[index];
-
 				if (parent != index)
 				{
 					//sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
@@ -287,7 +289,6 @@ namespace ZeldaFullEditor
 					}
 				}
 			}
-
 		}
 
 		private unsafe void BuildTiles16Gfx()
@@ -454,8 +455,8 @@ namespace ZeldaFullEditor
 			{
 				// Default LW Palette
 				pal0 = 0;
-				
-				if(OverworldEditor.UseAreaSpecificBgColor)
+
+				if (OverworldEditor.UseAreaSpecificBgColor)
 				{
 					bgr = Palettes.overworld_BackgroundPalette[parent];
 				}
@@ -560,7 +561,6 @@ namespace ZeldaFullEditor
 			if (pal4 == 255)
 			{
 				pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (previousSprPalId * 2)]; // spr3
-
 			}
 			if (pal4 == 255)
 			{
@@ -586,10 +586,10 @@ namespace ZeldaFullEditor
 			}
 			spr2 = Palettes.spritesAux3_Palettes[pal5];
 
-			SetColorsPalette(parent, main, animated, aux1, aux2, hud, bgr, spr, spr2);
+			SetColorsPalette(main, animated, aux1, aux2, hud, bgr, spr, spr2);
 		}
 
-		private void SetColorsPalette(int index, Color[] main, Color[] animated, Color[] aux1, Color[] aux2, Color[] hud, Color bgrcolor, Color[] spr, Color[] spr2)
+		private void SetColorsPalette(Color[] main, Color[] animated, Color[] aux1, Color[] aux2, Color[] hud, Color bgrcolor, Color[] spr, Color[] spr2)
 		{
 			// Palettes infos, color 0 of a palette is always transparent (the arrays contains 7 colors width wide)
 			// There is 16 color per line so 16*Y
@@ -613,7 +613,7 @@ namespace ZeldaFullEditor
 				currentPalette[(16 * 7) + (x)] = animated[(x - 1)];
 			}
 
-			// Right side of the palette - Aux1, Aux2 
+			// Right side of the palette - Aux1, Aux2
 
 			// Aux1 Palette, Location 8,2 : 21 colors [7x3]
 			k = 0;
@@ -725,7 +725,6 @@ namespace ZeldaFullEditor
                 {
                     if (index == 3)
                     {
-                        
                     }
                     else if (index == 4)
                     {
@@ -860,6 +859,37 @@ namespace ZeldaFullEditor
 
 			//sw.Stop();
 			//Console.WriteLine("maps gfx loop : " + sw.ElapsedMilliseconds.ToString());
+		}
+
+		/// <summary>
+		///		Sets the given map to be a large map.
+		/// </summary>
+		/// <param name="_parentIndex"> The index of the parent. </param>
+		/// <param name="_largeIndex"> The large map index. 0 for top left, 1 for top right, 2 for bottom left, and 3 for bottom right. </param>
+		public void SetAsLargeMap(byte _parentIndex, byte _largeIndex)
+		{
+			this.parent = _parentIndex;
+			this.largeMap = true;
+			this.largeIndex = _largeIndex;
+		}
+
+		/// <summary>
+		///		Sets the given map to be a small map.
+		/// </summary>
+		/// <param name="_parentIndex"> The parent index to set the map to, You should generally not use this. </param>
+		public void SetAsSmallMap(byte? _parentIndex = null)
+		{
+			if (_parentIndex == null)
+			{
+				this.parent = this.index;
+			}
+			else
+			{
+				this.parent = (byte) _parentIndex;
+			}
+
+			this.largeMap = false;
+			this.largeIndex = 0;
 		}
 	}
 }

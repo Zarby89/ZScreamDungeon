@@ -16,12 +16,11 @@ namespace ZeldaFullEditor
 		// META
 		//===========================================================================================
 		public const string APPNAME = "ZScream";
-		public const string VERSION = "3.0.6";
+		public const string VERSION = "3.0.7";
 
 		public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
 		public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
 		public const string ASAR = "https://github.com/RPGHacker/asar";
-
 
 		//===========================================================================================
 		// File explorer
@@ -53,7 +52,6 @@ namespace ZeldaFullEditor
 		//===========================================================================================
 		public const string Range0toFF = "The selected value must be between 0x00 and 0xFF, inclusive.";
 
-
 		//===========================================================================================
 		// Formatting
 		//===========================================================================================
@@ -73,6 +71,7 @@ namespace ZeldaFullEditor
 		{
 			return string.Format("Selected sprite: {0:X2} {1}", s.id, n);
 		}
+
 		public static string FormatSelectedPotItem(PotItem p, string n)
 		{
 			return string.Format("Selected prize: {0:X2} {1}", p.id, n);
@@ -104,6 +103,7 @@ namespace ZeldaFullEditor
 		public const string DefaultWarning = "You have unsaved changes that will be lost.";
 		public const string RoomWarning = "You have unsaved room changes that will be lost by closing this tab.";
 		public const string CloseROMWarning = "Closing this ROM will result in all unsaved changes being lost.";
+
 		public static DialogResult WarnAboutSaving(string message = DefaultWarning)
 		{
 			return MessageBox.Show
@@ -114,8 +114,6 @@ namespace ZeldaFullEditor
 					MessageBoxIcon.Warning
 				);
 		}
-
-
 
 		public static void CryAboutSaving(string message = "OHNO")
 		{
