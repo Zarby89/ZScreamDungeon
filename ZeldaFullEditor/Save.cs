@@ -209,7 +209,7 @@ namespace ZeldaFullEditor
 					//data_pointer += 3;
 				}
 
-				// Add 0xFFFF to the end of this rooms list to tell the asm to stop here
+				// Add 0xFFFF to the end of this rooms list to tell the ASM to stop here
 				if (room.collision_rectangles.Count() > 0)
 				{
 					ROM.WriteLong(data_pointer, 0x00FFFF);
@@ -219,14 +219,12 @@ namespace ZeldaFullEditor
 
 			string projectFilename = mainForm.projectFilename;
 
-			byte[] data = new byte[ROM.DATA.Length];
-			ROM.DATA.CopyTo(data, 0);
 			AsarCLR.Asar.init();
 
 			// TODO handle differently in projects
 			if (File.Exists("CustomCollision.asm"))
 			{
-				Console.WriteLine("Applying Custom Collision asm");
+				Console.WriteLine("Applying Custom Collision ASM");
 				AsarCLR.Asar.patch("CustomCollision.asm", ref ROM.DATA);
 			}
 
@@ -1894,6 +1892,21 @@ namespace ZeldaFullEditor
 				{
 					ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].tilemapPos - 0x80, WriteType.Gravestone);
 				}
+			}
+
+			AsarCLR.Asar.init();
+
+			// TODO handle differently in projects
+			if (File.Exists("newgraves.asm"))
+			{
+				Console.WriteLine("Applying Custom Grave ASM");
+				AsarCLR.Asar.patch("newgraves.asm", ref ROM.DATA);
+			}
+
+			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+			{
+				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
 			}
 
 			return false;
