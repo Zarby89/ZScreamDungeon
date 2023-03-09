@@ -184,8 +184,8 @@ namespace ZeldaFullEditor
 
 			// If we are in a debug version, show the Experimental Features drop down menu.
 #if DEBUG
-				ExperimentalToolStripMenuItem1.Visible = true;
-				jPDebugToolStripMenuItem.Visible = true;
+			ExperimentalToolStripMenuItem1.Visible = true;
+			jPDebugToolStripMenuItem.Visible = true;
 #endif
 		}
 
@@ -3736,6 +3736,7 @@ namespace ZeldaFullEditor
 
 			if (editorsTabControl.SelectedTab.Name == "ScreenEditor")
 			{
+				screenEditor.ReLoadPalettes();
 				GFX.UpdatePalette(screenEditor.darkWorld);
 				screenEditor.BringToFront();
 				screenEditor.Buildtileset();

@@ -19,15 +19,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
 {
 	public partial class ScreenEditor : UserControl
 	{
-		Point3D[] triforceVertices = new Point3D[6];
-		Point3D[] crystalVertices = new Point3D[6];
-		Point3D selectedVertex = null;
-		OAMTile[] oamData = new OAMTile[10];
-		OAMTile selectedOamTile = null;
-		OAMTile lastSelectedOamTile = null;
-		byte[] mapdata = new byte[64 * 64];
-		byte[] dwmapdata = new byte[64 * 64];
-		int swordX = 0;
+		private Point3D[] triforceVertices = new Point3D[6];
+		private Point3D[] crystalVertices = new Point3D[6];
+		private Point3D selectedVertex = null;
+		private OAMTile[] oamData = new OAMTile[10];
+		private OAMTile selectedOamTile = null;
+		private OAMTile lastSelectedOamTile = null;
+		private byte[] mapdata = new byte[64 * 64];
+		private byte[] dwmapdata = new byte[64 * 64];
+		private int swordX = 0;
 
 		public IntPtr dungmaptiles8Ptr = Marshal.AllocHGlobal(0x8000);
 		public Bitmap dungmaptiles8Bitmap;
@@ -49,64 +49,64 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		public IntPtr oamBGPtr = Marshal.AllocHGlobal(0x80000);
 		public Bitmap oamBGBitmap;
 
-		byte palSelected = 0;
-		ushort selectedTile = 0;
+		private byte palSelected = 0;
+		private ushort selectedTile = 0;
 
-		bool mDown = false;
-		byte lastX = 0;
-		byte lastY = 0;
-		int xIn = 0;
-		bool swordSelected = false;
+		private bool mDown = false;
+		private byte lastX = 0;
+		private byte lastY = 0;
+		private int xIn = 0;
+		private bool swordSelected = false;
 
 		// Commented out because its unused
 		//bool v = false;
 
 		public bool darkWorld = false;
 
-		List<MapIcon>[] allMapIcons = new List<MapIcon>[10];
+		private List<MapIcon>[] allMapIcons = new List<MapIcon>[10];
 
-		int[] addresses = new int[] { 0x53de4, 0x53e2c, 0x53e08, 0x53e50, 0x53e74, 0x53e98, 0x53ebc };
-		int[] addressesgfx = new int[] { 0x53ee0, 0x53f04, 0x53ef2, 0x53f16, 0x53f28, 0x53f3a, 0x53f4c };
+		private int[] addresses = new int[] { 0x53de4, 0x53e2c, 0x53e08, 0x53e50, 0x53e74, 0x53e98, 0x53ebc };
+		private int[] addressesgfx = new int[] { 0x53ee0, 0x53f04, 0x53ef2, 0x53f16, 0x53f28, 0x53f3a, 0x53f4c };
 
-		byte selectedMapTile = 0;
+		private byte selectedMapTile = 0;
 
-		byte[][] currentFloorRooms = new byte[1][];
-		byte[][] currentFloorGfx = new byte[1][];
-		int totalFloors = 0;
-		byte currentFloor = 0;
-		byte nbrBasement = 0;
-		byte nbrFloor = 0;
-		ushort bossRoom = 0x000F;
+		private byte[][] currentFloorRooms = new byte[1][];
+		private byte[][] currentFloorGfx = new byte[1][];
+		private int totalFloors = 0;
+		private byte currentFloor = 0;
+		private byte nbrBasement = 0;
+		private byte nbrFloor = 0;
+		private ushort bossRoom = 0x000F;
 
-		DungeonMap[] dungmaps = new DungeonMap[14];
+		private DungeonMap[] dungmaps = new DungeonMap[14];
 
-		Bitmap floorSelector;
+		private Bitmap floorSelector;
 
-		int dungmapSelectedTile = 0;
-		int dungmapSelected = 0;
-		bool currentDungeonChanged = false;
-		bool editedFromEditor = false;
+		private int dungmapSelectedTile = 0;
+		private int dungmapSelected = 0;
+		private bool currentDungeonChanged = false;
+		private bool editedFromEditor = false;
 
-		byte[] copiedDataRooms = new byte[25];
-		byte[] copiedDataGfx = new byte[25];
+		private byte[] copiedDataRooms = new byte[25];
+		private byte[] copiedDataGfx = new byte[25];
 
-		MapIcon selectedMapIcon = null;
-		bool mouseDown = false;
-		int mxClick = 0;
-		int myClick = 0;
-		int mxDist = 0;
-		int myDist = 0;
+		private MapIcon selectedMapIcon = null;
+		private bool mouseDown = false;
+		private int mxClick = 0;
+		private int myClick = 0;
+		private int mxDist = 0;
+		private int myDist = 0;
 
-		bool mdown = false;
+		private bool mdown = false;
 
-		Color[] currentPalette = new Color[256];
+		private Color[] currentPalette = new Color[256];
 
-		int titleScreenTilesGFX = 0; //35
-		int titleScreenExtraTilesGFX = 0; //81
-		int titleScreenSpritesGFX = 0; //125
-		int titleScreenExtraSpritesGFX = 0; //8
+		private int titleScreenTilesGFX = 0; //35
+		private int titleScreenExtraTilesGFX = 0; //81
+		private int titleScreenSpritesGFX = 0; //125
+		private int titleScreenExtraSpritesGFX = 0; //8
 
-		bool stupidEventTrigger = true;
+		private bool stupidEventTrigger = true;
 
 		public ScreenEditor()
 		{
@@ -251,11 +251,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				}
 			}
 
-			// Palettes : 
+			// Palettes :
 			// Main5, Aux
 
 			// Load Title Screen Data
-			// Format : 
+			// Format :
 			// 4 Bytes Header followed by "short tiles values"
 			// byte 0 and 1 = Dest Address? Big Endian
 			// byte 2 and 3 = Tile Count in Big Endian if 8XXX this is the last index
@@ -315,6 +315,21 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			updateGFXGroup();
 		}
 
+		/// <summary>
+		///		Used to reload the palettes when switching to the screen editor and between its tabs.
+		/// </summary>
+		public void ReLoadPalettes()
+		{
+			SetColorsPalette
+			(
+				Palettes.overworld_MainPalettes[5], Palettes.overworld_AnimatedPalettes[0],
+				Palettes.overworld_AuxPalettes[3], Palettes.overworld_AuxPalettes[3],
+				Palettes.HudPalettes[0],
+				Color.FromArgb(0, 0, 0, 0),
+				Palettes.spritesAux1_Palettes[1],
+				Palettes.spritesAux1_Palettes[1]
+			);
+		}
 
 		public void LoadOverworldMap()
 		{
@@ -391,7 +406,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 				if (fixsource)
 				{
-
 					pos += 2;
 				}
 				else
@@ -430,7 +444,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			/*
             for (int i = 0; i < 4; i++)
             {
-                
             }
             */
 
@@ -503,7 +516,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			/*
             for (int i = 0; i < 4; i++)
             {
-                
             }
             */
 
@@ -627,7 +639,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) + p * 16);
 			gfx16Pointer[index + r] = (byte) (((pixel >> 4) & 0x0F) + p * 16);
 		}
-
 
 		private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, bool v, bool h, byte* gfx16Pointer, byte* gfx8Pointer)
 		{
@@ -980,7 +991,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			selectedOamTile = null;
 		}
 
-
 		private void SetColorsPalette(Color[] main, Color[] animated, Color[] aux1, Color[] aux2, Color[] hud, Color bgrcolor, Color[] spr, Color[] spr2)
 		{
 			// Palettes infos, color 0 of a palette is always transparent (the arrays contains 7 colors width wide)
@@ -1004,7 +1014,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				currentPalette[(16 * 7) + (x)] = animated[(x - 1)];
 			}
 
-			// Right side of the palette - Aux1, Aux2 
+			// Right side of the palette - Aux1, Aux2
 
 			// Aux1 Palette, Location 8,2 : 21 colors [7x3]
 			k = 0;
@@ -1136,7 +1146,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				int x = i % 16;
 				int y = i / 16;
 				e.Graphics.FillRectangle(new SolidBrush(currentPalette[i]), new Rectangle(x * 16, y * 16, 16, 16));
-
 			}
 
 			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(0, 16 * palSelected, 256, 16));
@@ -1268,7 +1277,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			//for (int i = 0; i < 8; i++)
 			//{
-
 			for (int i = 0; i < allMapIcons[overworldCombobox.SelectedIndex].Count; i++)
 			{
 				int xpos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].x * 2);
@@ -1618,7 +1626,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			Color gridcolor = GFX.getColor(ROM.ReadRealShort(0xDE572));
 			Pen ppp = new Pen(gridcolor, 2);
 
-
 			e.Graphics.DrawRectangle(new Pen(r2, 2), Constants.Rect_1_1_182_182);
 			e.Graphics.DrawRectangle(new Pen(r1, 2), Constants.Rect_3_3_178_178);
 
@@ -1812,7 +1819,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			/*
             for (int i = 0; i < 4; i++)
             {
-                
             }
             */
 
@@ -1947,8 +1953,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			e.Graphics.DrawImage(dungmaptiles8Bitmap, Constants.Rect_0_0_256_256, Constants.Rect_0_0_128_128, GraphicsUnit.Pixel);
 		}
 
+		/// <summary>
+		///		Event trigger when selecting one of the "Titlescreen, Overworld Map, Dungeon Map, or Triforce/Crystal Editor" tabs.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			this.ReLoadPalettes();
+
 			if (tabControl1.SelectedIndex == 0)
 			{
 				Buildtileset();
@@ -2341,7 +2354,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void button8_Click(object sender, EventArgs e)
 		{
-
 			for (int i = 0; i < 25; i++)
 			{
 				copiedDataRooms[i] = dungmaps[dungmapListbox.SelectedIndex].FloorRooms[currentFloor][i];
@@ -2619,7 +2631,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				if (triforceRadio.Checked)
 				{
 					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
-					if (selectedVertex  == triforceVertices[i])
+					if (selectedVertex == triforceVertices[i])
 					{
 						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
 					}
