@@ -113,6 +113,9 @@
             this.triforcebox2 = new System.Windows.Forms.PictureBox();
             this.triforceLabel1 = new System.Windows.Forms.Label();
             this.triforcebox1 = new System.Windows.Forms.PictureBox();
+            this.grid2CheckBox = new System.Windows.Forms.CheckBox();
+            this.grid1CheckBox = new System.Windows.Forms.CheckBox();
+            this.grid3CheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.extraSpritesNumBox)).BeginInit();
@@ -156,6 +159,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.grid3CheckBox);
+            this.tabPage1.Controls.Add(this.grid1CheckBox);
+            this.tabPage1.Controls.Add(this.grid2CheckBox);
             this.tabPage1.Controls.Add(this.extraSpritesLable);
             this.tabPage1.Controls.Add(this.extraSpritesNumBox);
             this.tabPage1.Controls.Add(this.extraTilesLabel);
@@ -311,7 +317,7 @@
             this.lockCheckbox.AutoSize = true;
             this.lockCheckbox.Checked = true;
             this.lockCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.lockCheckbox.Location = new System.Drawing.Point(279, 516);
+            this.lockCheckbox.Location = new System.Drawing.Point(271, 514);
             this.lockCheckbox.Name = "lockCheckbox";
             this.lockCheckbox.Size = new System.Drawing.Size(87, 17);
             this.lockCheckbox.TabIndex = 20;
@@ -321,7 +327,7 @@
             // movesprRadio
             // 
             this.movesprRadio.AutoSize = true;
-            this.movesprRadio.Location = new System.Drawing.Point(383, 493);
+            this.movesprRadio.Location = new System.Drawing.Point(375, 490);
             this.movesprRadio.Name = "movesprRadio";
             this.movesprRadio.Size = new System.Drawing.Size(105, 17);
             this.movesprRadio.TabIndex = 19;
@@ -331,7 +337,7 @@
             // editsprRadio
             // 
             this.editsprRadio.AutoSize = true;
-            this.editsprRadio.Location = new System.Drawing.Point(279, 493);
+            this.editsprRadio.Location = new System.Drawing.Point(271, 490);
             this.editsprRadio.Name = "editsprRadio";
             this.editsprRadio.Size = new System.Drawing.Size(98, 17);
             this.editsprRadio.TabIndex = 18;
@@ -343,7 +349,7 @@
             this.oambgCheckbox.AutoSize = true;
             this.oambgCheckbox.Checked = true;
             this.oambgCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.oambgCheckbox.Location = new System.Drawing.Point(279, 470);
+            this.oambgCheckbox.Location = new System.Drawing.Point(271, 470);
             this.oambgCheckbox.Name = "oambgCheckbox";
             this.oambgCheckbox.Size = new System.Drawing.Size(88, 17);
             this.oambgCheckbox.TabIndex = 17;
@@ -355,7 +361,7 @@
             // 
             this.bg3Radio.AutoSize = true;
             this.bg3Radio.Enabled = false;
-            this.bg3Radio.Location = new System.Drawing.Point(196, 493);
+            this.bg3Radio.Location = new System.Drawing.Point(188, 491);
             this.bg3Radio.Name = "bg3Radio";
             this.bg3Radio.Size = new System.Drawing.Size(67, 17);
             this.bg3Radio.TabIndex = 14;
@@ -365,7 +371,7 @@
             // bg2Radio
             // 
             this.bg2Radio.AutoSize = true;
-            this.bg2Radio.Location = new System.Drawing.Point(101, 493);
+            this.bg2Radio.Location = new System.Drawing.Point(101, 490);
             this.bg2Radio.Name = "bg2Radio";
             this.bg2Radio.Size = new System.Drawing.Size(67, 17);
             this.bg2Radio.TabIndex = 13;
@@ -376,7 +382,7 @@
             // 
             this.bg1Radio.AutoSize = true;
             this.bg1Radio.Checked = true;
-            this.bg1Radio.Location = new System.Drawing.Point(6, 493);
+            this.bg1Radio.Location = new System.Drawing.Point(9, 491);
             this.bg1Radio.Name = "bg1Radio";
             this.bg1Radio.Size = new System.Drawing.Size(67, 17);
             this.bg1Radio.TabIndex = 12;
@@ -390,7 +396,7 @@
             this.bg3Checkbox.Checked = true;
             this.bg3Checkbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.bg3Checkbox.Enabled = false;
-            this.bg3Checkbox.Location = new System.Drawing.Point(196, 470);
+            this.bg3Checkbox.Location = new System.Drawing.Point(188, 470);
             this.bg3Checkbox.Name = "bg3Checkbox";
             this.bg3Checkbox.Size = new System.Drawing.Size(77, 17);
             this.bg3Checkbox.TabIndex = 11;
@@ -415,7 +421,7 @@
             this.bg1checkbox.AutoSize = true;
             this.bg1checkbox.Checked = true;
             this.bg1checkbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.bg1checkbox.Location = new System.Drawing.Point(6, 470);
+            this.bg1checkbox.Location = new System.Drawing.Point(9, 470);
             this.bg1checkbox.Name = "bg1checkbox";
             this.bg1checkbox.Size = new System.Drawing.Size(77, 17);
             this.bg1checkbox.TabIndex = 9;
@@ -1139,6 +1145,43 @@
             this.triforcebox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseMove);
             this.triforcebox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseUp);
             // 
+            // grid2CheckBox
+            // 
+            this.grid2CheckBox.AutoSize = true;
+            this.grid2CheckBox.Enabled = false;
+            this.grid2CheckBox.Location = new System.Drawing.Point(101, 514);
+            this.grid2CheckBox.Name = "grid2CheckBox";
+            this.grid2CheckBox.Size = new System.Drawing.Size(69, 17);
+            this.grid2CheckBox.TabIndex = 31;
+            this.grid2CheckBox.Text = "BG2 Grid";
+            this.grid2CheckBox.UseVisualStyleBackColor = true;
+            this.grid2CheckBox.Visible = false;
+            this.grid2CheckBox.CheckedChanged += new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+            // 
+            // grid1CheckBox
+            // 
+            this.grid1CheckBox.AutoSize = true;
+            this.grid1CheckBox.Location = new System.Drawing.Point(9, 514);
+            this.grid1CheckBox.Name = "grid1CheckBox";
+            this.grid1CheckBox.Size = new System.Drawing.Size(69, 17);
+            this.grid1CheckBox.TabIndex = 32;
+            this.grid1CheckBox.Text = "BG1 Grid";
+            this.grid1CheckBox.UseVisualStyleBackColor = true;
+            this.grid1CheckBox.CheckedChanged += new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+            // 
+            // grid3CheckBox
+            // 
+            this.grid3CheckBox.AutoSize = true;
+            this.grid3CheckBox.Enabled = false;
+            this.grid3CheckBox.Location = new System.Drawing.Point(188, 513);
+            this.grid3CheckBox.Name = "grid3CheckBox";
+            this.grid3CheckBox.Size = new System.Drawing.Size(69, 17);
+            this.grid3CheckBox.TabIndex = 33;
+            this.grid3CheckBox.Text = "BG3 Grid";
+            this.grid3CheckBox.UseVisualStyleBackColor = true;
+            this.grid3CheckBox.Visible = false;
+            this.grid3CheckBox.CheckedChanged += new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+            // 
             // ScreenEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1267,5 +1310,8 @@
 		private System.Windows.Forms.NumericUpDown extraSpritesNumBox;
 		private System.Windows.Forms.Label extraTilesLabel;
 		private System.Windows.Forms.NumericUpDown extraTilesNumBox;
+		private System.Windows.Forms.CheckBox grid2CheckBox;
+		private System.Windows.Forms.CheckBox grid3CheckBox;
+		private System.Windows.Forms.CheckBox grid1CheckBox;
 	}
 }

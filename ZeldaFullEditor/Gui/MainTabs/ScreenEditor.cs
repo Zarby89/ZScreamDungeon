@@ -107,6 +107,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		private int titleScreenExtraSpritesGFX = 0; //8
 
 		private bool stupidEventTrigger = true;
+		private bool showBG1Grid = false;
+		private bool showBG2Grid = false;
+		private bool showBG3Grid = false;
 
 		public ScreenEditor()
 		{
@@ -795,6 +798,66 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				if (lastSelectedOamTile != null)
 				{
 					e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle((lastSelectedOamTile.x * 2), (lastSelectedOamTile.y * 2), 32, 32));
+				}
+			}
+
+			if (this.showBG1Grid)
+			{
+				int gridsizeX = 512;
+				int gridsizeY = 448;
+
+				for (int gx = 0; gx < (gridsizeX / 16); gx++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point((gx * 16) - 1, 0),
+						new Point((gx * 16) - 1, gridsizeY));
+				}
+
+				for (int gy = 0; gy < ((gridsizeY / 16) + 1); gy++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(0, (gy * 16) - 1),
+						new Point(gridsizeX, (gy * 16) - 1));
+				}
+			}
+
+			if (this.showBG2Grid)
+			{
+				int gridsizeX = 512;
+				int gridsizeY = 448;
+
+				for (int gx = 0; gx < (gridsizeX / 16); gx++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(gx * 16, 0),
+						new Point(gx * 16, gridsizeY));
+				}
+
+				for (int gy = 0; gy < ((gridsizeY / 16) + 1); gy++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(0, (gy * 16) - 2),
+						new Point(gridsizeX, (gy * 16) - 2));
+				}
+			}
+
+			if (this.showBG3Grid)
+			{
+				int gridsizeX = 512;
+				int gridsizeY = 448;
+
+				for (int gx = 0; gx < (gridsizeX / 16); gx++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdGreenPen,
+						new Point(gx * 16, 0),
+						new Point(gx * 16, gridsizeY));
+				}
+
+				for (int gy = 0; gy < ((gridsizeY / 16) + 1); gy++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(0, (gy * 16) - 1),
+						new Point(gridsizeX, (gy * 16) - 1));
 				}
 			}
 		}
@@ -2864,6 +2927,78 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			triforcebox1.Refresh();
 			triforcebox2.Refresh();
 			triforcebox3.Refresh();
+		}
+
+		/// <summary>
+		///		Event triggered when "Grid BG1" check box is changed.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void grid1CheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.showBG1Grid = !this.showBG1Grid;
+
+			this.grid2CheckBox.CheckedChanged -= new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged -= new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.showBG2Grid = false;
+			this.showBG3Grid = false;
+
+			this.grid2CheckBox.Checked = false;
+			this.grid3CheckBox.Checked = false;
+
+			this.grid2CheckBox.CheckedChanged += new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged += new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.screenBox.Refresh();
+		}
+
+		/// <summary>
+		///		Event triggered when "Grid BG2" check box is changed.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void grid2CheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.showBG2Grid = !this.showBG2Grid;
+
+			this.grid1CheckBox.CheckedChanged -= new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged -= new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.showBG1Grid = false;
+			this.showBG3Grid = false;
+
+			this.grid1CheckBox.Checked = false;
+			this.grid3CheckBox.Checked = false;
+
+			this.grid1CheckBox.CheckedChanged += new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged += new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.screenBox.Refresh();
+		}
+
+		/// <summary>
+		///		Event triggered when "Grid BG3" check box is changed.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void grid3CheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.showBG3Grid = !this.showBG3Grid;
+
+			this.grid1CheckBox.CheckedChanged -= new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid2CheckBox.CheckedChanged -= new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+
+			this.showBG1Grid = false;
+			this.showBG2Grid = false;
+
+			this.grid1CheckBox.Checked = false;
+			this.grid2CheckBox.Checked = false;
+
+			this.grid1CheckBox.CheckedChanged += new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid2CheckBox.CheckedChanged += new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+
+			this.screenBox.Refresh();
 		}
 	}
 }
