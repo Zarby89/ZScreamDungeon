@@ -526,10 +526,19 @@ namespace ZeldaFullEditor
 		public static int dungeonMap_tile16Exp = 0x109010;
 		public static int dungeonMap_bossrooms = 0x56807; // 14 words values 0x000F = no boss
 
-		public static int triforceVertices = 0x04FFD2; // Group of 3, X, Y ,Z
-		public static int TriforceFaces = 0x04FFE4; // Group of 5
+		public static int crystalVerticesCount = 0x4FF8C;
+		public static int crystalFaceCount = 0x4FF8D;
 
-		public static int crystalVertices = 0x04FF98;
+		public static int crystalVerticesPointer = 0x4FF8E;
+		public static int crystalFacesPointer = 0x4FF90;
+		public static int crystalMaxSize = 0x3A;
+
+		public static int triforceVerticesCount = 0x4FF92;
+		public static int triforceFaceCount = 0x4FF93;
+
+		public static int triforceVerticesPointer = 0x4FF94;
+		public static int triforceFacesPointer = 0x4FF96;
+		public static int triforceMaxSize = 0x2E;
 
 		//===========================================================================================
 		// Title screen GFX group set

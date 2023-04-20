@@ -14,13 +14,16 @@ using ZeldaFullEditor.Properties;
 using System.Globalization;
 using System.Diagnostics;
 using ZeldaFullEditor.Data;
+using static ZeldaFullEditor.Point3D;
 
 namespace ZeldaFullEditor.Gui.MainTabs
 {
 	public partial class ScreenEditor : UserControl
 	{
-		private Point3D[] triforceVertices = new Point3D[6];
-		private Point3D[] crystalVertices = new Point3D[6];
+		private Point3D[] triforceVertices;
+		private Point3D[] crystalVertices;
+		private Face3D[] triforceface3Ds;
+		private Face3D[] crystalface3Ds;
 		private Point3D selectedVertex = null;
 		private OAMTile[] oamData = new OAMTile[10];
 		private OAMTile selectedOamTile = null;
@@ -119,21 +122,65 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		public void Init()
 		{
+			triforceVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
+			crystalVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
+
+			triforceface3Ds = new Face3D[ROM.DATA[Constants.triforceFaceCount]];
+			crystalface3Ds = new Face3D[ROM.DATA[Constants.crystalFaceCount]];
+
+			int triforceVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceVerticesPointer) + 0x090000);
+			int crystalVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalVerticesPointer) + 0x090000);
+
+			int triforceFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceFacesPointer) + 0x090000);
+			int crystalFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalFacesPointer) + 0x090000);
 			// Triforce
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < ROM.DATA[Constants.triforceVerticesCount]; i++)
 			{
 				triforceVertices[i] = new Point3D(
-					(sbyte) ROM.DATA[Constants.triforceVertices + 0 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.triforceVertices + 1 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.triforceVertices + 2 + (i * 3)]
+					(sbyte) ROM.DATA[triforceVerticesPos + 0 + (i * 3)],
+					(sbyte) ROM.DATA[triforceVerticesPos + 1 + (i * 3)],
+					(sbyte) ROM.DATA[triforceVerticesPos + 2 + (i * 3)]
 				);
 
+			}
+
+			for (int i = 0; i < ROM.DATA[Constants.crystalVerticesCount]; i++)
+			{
 				crystalVertices[i] = new Point3D(
-					(sbyte) ROM.DATA[Constants.crystalVertices + 0 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.crystalVertices + 1 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.crystalVertices + 2 + (i * 3)]
+					(sbyte) ROM.DATA[crystalVerticesPos + 0 + (i * 3)],
+					(sbyte) ROM.DATA[crystalVerticesPos + 1 + (i * 3)],
+					(sbyte) ROM.DATA[crystalVerticesPos + 2 + (i * 3)]
 				);
 			}
+
+
+			for (int i = 0; i < ROM.DATA[Constants.triforceFaceCount];i++)
+			{
+				byte tsize = ROM.DATA[triforceFacePos++];
+				sbyte[] data = new sbyte[tsize];
+				for (int j = 0; j < tsize; j++)
+				{
+					data[j] = (sbyte) ROM.DATA[triforceFacePos + j];
+				}
+				triforceFacePos += tsize + 1;
+
+
+				triforceface3Ds[i] = new Face3D(data);
+			}
+
+			for (int i = 0; i < ROM.DATA[Constants.crystalFaceCount]; i++)
+			{
+				byte csize = ROM.DATA[crystalFacePos++];
+				sbyte[] datac = new sbyte[csize];
+				for (int j = 0; j < csize; j++)
+				{
+					datac[j] = (sbyte) ROM.DATA[crystalFacePos + j];
+				}
+				crystalFacePos += csize + 1;
+
+				crystalface3Ds[i] = new Face3D(datac);
+			}
+
 
 			tiles8Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, tiles8Ptr);
 			dungmaptiles8Bitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, dungmaptiles8Ptr);
@@ -2900,26 +2947,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		public void saveTriforce()
 		{
-			for (int i = 0; i < 6; i++)
-			{
-				ROM.Write(Constants.triforceVertices + 0 + (i * 3), (byte) triforceVertices[i].x, WriteType.Polyhedral);
-				ROM.Write(Constants.triforceVertices + 1 + (i * 3), (byte) triforceVertices[i].y, WriteType.Polyhedral);
-				ROM.Write(Constants.triforceVertices + 2 + (i * 3), (byte) triforceVertices[i].z, WriteType.Polyhedral);
 
-				ROM.Write(Constants.crystalVertices + 0 + (i * 3), (byte) crystalVertices[i].x, WriteType.Polyhedral);
-				ROM.Write(Constants.crystalVertices + 1 + (i * 3), (byte) crystalVertices[i].y, WriteType.Polyhedral);
-				ROM.Write(Constants.crystalVertices + 2 + (i * 3), (byte) crystalVertices[i].z, WriteType.Polyhedral);
-
-				/*
-                ROM.DATA[Constants.triforceVertices + 0 + (i * 3)] = (byte)triforceVertices[i].x;
-                ROM.DATA[Constants.triforceVertices + 1 + (i * 3)] = (byte)triforceVertices[i].y;
-                ROM.DATA[Constants.triforceVertices + 2 + (i * 3)] = (byte)triforceVertices[i].z;
-
-                ROM.DATA[Constants.crystalVertices + 0 + (i * 3)] = (byte)crystalVertices[i].x;
-                ROM.DATA[Constants.crystalVertices + 1 + (i * 3)] = (byte)crystalVertices[i].y;
-                ROM.DATA[Constants.crystalVertices + 2 + (i * 3)] = (byte)crystalVertices[i].z;
-                */
-			}
 		}
 
 		private void crystalRadio_CheckedChanged(object sender, EventArgs e)
@@ -3000,5 +3028,159 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			this.screenBox.Refresh();
 		}
-	}
+
+        private void exportObjButton_Click(object sender, EventArgs e)
+        {
+			StringBuilder sb = new StringBuilder();
+			if (triforceRadio.Checked)
+			{
+				
+				sb.Append("g Triforce\r\n");
+				for (int i = 0; i < triforceVertices.Length; i++)
+				{
+					sb.Append("v " + triforceVertices[i].x + " " + triforceVertices[i].y + " " + triforceVertices[i].z + "\r\n");
+				}
+				for (int i = 0; i < triforceface3Ds.Length; i++)
+				{
+					sb.Append("f ");
+					for (int j = 0; j < triforceface3Ds[i].vertex.Length; j++)
+					{
+						sb.Append(triforceface3Ds[i].vertex[j] + " ");
+					}
+					sb.Append("\r\n");
+				}
+			}
+			else
+			{
+				sb.Append("g Crystal\r\n");
+				for (int i = 0; i < crystalVertices.Length; i++)
+				{
+					sb.Append("v " + crystalVertices[i].x + " " + crystalVertices[i].y + " " + crystalVertices[i].z + "\r\n");
+				}
+				for (int i = 0; i < crystalface3Ds.Length; i++)
+				{
+					sb.Append("f ");
+					for (int j = 0; j < crystalface3Ds[i].vertex.Length; j++)
+					{
+						sb.Append((crystalface3Ds[i].vertex[j]+1) + " ");
+					}
+					sb.Append("\r\n");
+				}
+			}
+
+			using (SaveFileDialog sf = new SaveFileDialog())
+			{
+				sf.Filter = "wavefront .obj 3d model (*.obj)|*.obj";
+				sf.DefaultExt = "obj";
+				if (sf.ShowDialog() == DialogResult.OK) 
+				{
+					File.WriteAllText(sf.FileName, sb.ToString());
+				}
+				
+			}
+		}
+
+        private void importObjButton_Click(object sender, EventArgs e)
+        {
+			byte vCount = 0;
+			byte fCount = 0;
+			List<byte> databytesV = new List<byte>();
+			List<byte> databytesF = new List<byte>();
+			using (OpenFileDialog of = new OpenFileDialog())
+			{
+				if (of.ShowDialog() == DialogResult.OK)
+				{
+					string[] lines = File.ReadAllLines(of.FileName);
+
+					for (int i = 0; i < lines.Length; i++)
+					{
+						if (lines[i][0] == '#')
+						{
+							continue;
+						}
+						else if (lines[i][0] == 'v')
+						{
+							string[] vertex = lines[i].Split(' ');
+
+
+							byte vx = (byte) double.Parse(vertex[1], CultureInfo.InvariantCulture);
+							byte vy = (byte) double.Parse(vertex[2], CultureInfo.InvariantCulture);
+							byte vz = (byte) double.Parse(vertex[3], CultureInfo.InvariantCulture);
+
+							databytesV.Add(vx);
+							databytesV.Add(vy);
+							databytesV.Add(vz);
+							vCount++;
+
+						}
+						else if (lines[i][0] == 'f')
+						{
+							string[] vertex = lines[i].Split(' ');
+							databytesF.Add((byte) (vertex.Length - 1));
+							for (int j = 0; j < vertex.Length - 1; j++)
+							{
+								databytesF.Add((byte) (byte.Parse(vertex[j + 1]) - 1));
+							}
+							databytesF.Add((byte) 00);
+							fCount++;
+
+						}
+					}
+
+					int triforceVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceVerticesPointer) + 0x090000);
+					int crystalVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalVerticesPointer) + 0x090000);
+
+					int triforceFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceFacesPointer) + 0x090000);
+					int crystalFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalFacesPointer) + 0x090000);
+
+					if (triforceRadio.Checked)
+					{
+						if ((databytesV.Count + databytesF.Count) > Constants.triforceMaxSize) 
+						{
+							MessageBox.Show("That model is too big to replace the Triforce !");
+							return;
+						}
+						else
+						{
+							ROM.DATA[Constants.triforceVerticesCount] = vCount;
+							ROM.DATA[Constants.triforceFaceCount] = fCount;
+							//do not touch the first pointer yet for the vertices
+							ROM.Write(triforceVerticesPos, databytesV.ToArray(), WriteType.Unknown);
+
+							int pos = triforceVerticesPos + databytesV.Count;
+							ROM.WriteShort(Constants.triforceFacesPointer, pos); //write the new pointers for faces
+
+							ROM.Write(triforceVerticesPos + databytesV.Count, databytesF.ToArray(), WriteType.Unknown);
+
+
+						}
+					}
+					else
+					{
+						if ((databytesV.Count + databytesF.Count) > Constants.crystalMaxSize)
+						{
+							MessageBox.Show("That model is too big to replace the Crystal !");
+							return;
+						}
+						else
+						{
+							ROM.DATA[Constants.crystalVerticesCount] = vCount;
+							ROM.DATA[Constants.crystalFaceCount] = fCount;
+							//do not touch the first pointer yet for the vertices
+							ROM.Write(crystalVerticesPos, databytesV.ToArray(), WriteType.Unknown);
+
+							int pos = crystalVerticesPos + databytesV.Count;
+							ROM.WriteShort(Constants.crystalFacesPointer, pos); //write the new pointers for faces
+
+							ROM.Write(crystalVerticesPos + databytesV.Count, databytesF.ToArray(), WriteType.Unknown);
+						}
+					}
+
+
+
+				}
+			}
+
+		}
+    }
 }

@@ -30,6 +30,9 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.grid3CheckBox = new System.Windows.Forms.CheckBox();
+            this.grid1CheckBox = new System.Windows.Forms.CheckBox();
+            this.grid2CheckBox = new System.Windows.Forms.CheckBox();
             this.extraSpritesLable = new System.Windows.Forms.Label();
             this.extraSpritesNumBox = new System.Windows.Forms.NumericUpDown();
             this.extraTilesLabel = new System.Windows.Forms.Label();
@@ -113,9 +116,8 @@
             this.triforcebox2 = new System.Windows.Forms.PictureBox();
             this.triforceLabel1 = new System.Windows.Forms.Label();
             this.triforcebox1 = new System.Windows.Forms.PictureBox();
-            this.grid2CheckBox = new System.Windows.Forms.CheckBox();
-            this.grid1CheckBox = new System.Windows.Forms.CheckBox();
-            this.grid3CheckBox = new System.Windows.Forms.CheckBox();
+            this.exportObjButton = new System.Windows.Forms.Button();
+            this.importObjButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.extraSpritesNumBox)).BeginInit();
@@ -198,6 +200,43 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Titlescreen";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // grid3CheckBox
+            // 
+            this.grid3CheckBox.AutoSize = true;
+            this.grid3CheckBox.Enabled = false;
+            this.grid3CheckBox.Location = new System.Drawing.Point(188, 513);
+            this.grid3CheckBox.Name = "grid3CheckBox";
+            this.grid3CheckBox.Size = new System.Drawing.Size(69, 17);
+            this.grid3CheckBox.TabIndex = 33;
+            this.grid3CheckBox.Text = "BG3 Grid";
+            this.grid3CheckBox.UseVisualStyleBackColor = true;
+            this.grid3CheckBox.Visible = false;
+            this.grid3CheckBox.CheckedChanged += new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+            // 
+            // grid1CheckBox
+            // 
+            this.grid1CheckBox.AutoSize = true;
+            this.grid1CheckBox.Location = new System.Drawing.Point(9, 514);
+            this.grid1CheckBox.Name = "grid1CheckBox";
+            this.grid1CheckBox.Size = new System.Drawing.Size(69, 17);
+            this.grid1CheckBox.TabIndex = 32;
+            this.grid1CheckBox.Text = "BG1 Grid";
+            this.grid1CheckBox.UseVisualStyleBackColor = true;
+            this.grid1CheckBox.CheckedChanged += new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+            // 
+            // grid2CheckBox
+            // 
+            this.grid2CheckBox.AutoSize = true;
+            this.grid2CheckBox.Enabled = false;
+            this.grid2CheckBox.Location = new System.Drawing.Point(101, 514);
+            this.grid2CheckBox.Name = "grid2CheckBox";
+            this.grid2CheckBox.Size = new System.Drawing.Size(69, 17);
+            this.grid2CheckBox.TabIndex = 31;
+            this.grid2CheckBox.Text = "BG2 Grid";
+            this.grid2CheckBox.UseVisualStyleBackColor = true;
+            this.grid2CheckBox.Visible = false;
+            this.grid2CheckBox.CheckedChanged += new System.EventHandler(this.grid2CheckBox_CheckedChanged);
             // 
             // extraSpritesLable
             // 
@@ -1040,6 +1079,8 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.importObjButton);
+            this.tabPage4.Controls.Add(this.exportObjButton);
             this.tabPage4.Controls.Add(this.crystalRadio);
             this.tabPage4.Controls.Add(this.triforceRadio);
             this.tabPage4.Controls.Add(this.label13);
@@ -1100,6 +1141,7 @@
             // triforcebox3
             // 
             this.triforcebox3.BackColor = System.Drawing.Color.DimGray;
+            this.triforcebox3.Enabled = false;
             this.triforcebox3.Location = new System.Drawing.Point(549, 67);
             this.triforcebox3.Name = "triforcebox3";
             this.triforcebox3.Size = new System.Drawing.Size(256, 256);
@@ -1113,6 +1155,7 @@
             // triforcebox2
             // 
             this.triforcebox2.BackColor = System.Drawing.Color.DimGray;
+            this.triforcebox2.Enabled = false;
             this.triforcebox2.Location = new System.Drawing.Point(287, 67);
             this.triforcebox2.Name = "triforcebox2";
             this.triforcebox2.Size = new System.Drawing.Size(256, 256);
@@ -1135,6 +1178,7 @@
             // triforcebox1
             // 
             this.triforcebox1.BackColor = System.Drawing.Color.DimGray;
+            this.triforcebox1.Enabled = false;
             this.triforcebox1.Location = new System.Drawing.Point(25, 67);
             this.triforcebox1.Name = "triforcebox1";
             this.triforcebox1.Size = new System.Drawing.Size(256, 256);
@@ -1145,42 +1189,25 @@
             this.triforcebox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseMove);
             this.triforcebox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseUp);
             // 
-            // grid2CheckBox
+            // exportObjButton
             // 
-            this.grid2CheckBox.AutoSize = true;
-            this.grid2CheckBox.Enabled = false;
-            this.grid2CheckBox.Location = new System.Drawing.Point(101, 514);
-            this.grid2CheckBox.Name = "grid2CheckBox";
-            this.grid2CheckBox.Size = new System.Drawing.Size(69, 17);
-            this.grid2CheckBox.TabIndex = 31;
-            this.grid2CheckBox.Text = "BG2 Grid";
-            this.grid2CheckBox.UseVisualStyleBackColor = true;
-            this.grid2CheckBox.Visible = false;
-            this.grid2CheckBox.CheckedChanged += new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+            this.exportObjButton.Location = new System.Drawing.Point(28, 329);
+            this.exportObjButton.Name = "exportObjButton";
+            this.exportObjButton.Size = new System.Drawing.Size(104, 23);
+            this.exportObjButton.TabIndex = 8;
+            this.exportObjButton.Text = "Export as .obj";
+            this.exportObjButton.UseVisualStyleBackColor = true;
+            this.exportObjButton.Click += new System.EventHandler(this.exportObjButton_Click);
             // 
-            // grid1CheckBox
+            // importObjButton
             // 
-            this.grid1CheckBox.AutoSize = true;
-            this.grid1CheckBox.Location = new System.Drawing.Point(9, 514);
-            this.grid1CheckBox.Name = "grid1CheckBox";
-            this.grid1CheckBox.Size = new System.Drawing.Size(69, 17);
-            this.grid1CheckBox.TabIndex = 32;
-            this.grid1CheckBox.Text = "BG1 Grid";
-            this.grid1CheckBox.UseVisualStyleBackColor = true;
-            this.grid1CheckBox.CheckedChanged += new System.EventHandler(this.grid1CheckBox_CheckedChanged);
-            // 
-            // grid3CheckBox
-            // 
-            this.grid3CheckBox.AutoSize = true;
-            this.grid3CheckBox.Enabled = false;
-            this.grid3CheckBox.Location = new System.Drawing.Point(188, 513);
-            this.grid3CheckBox.Name = "grid3CheckBox";
-            this.grid3CheckBox.Size = new System.Drawing.Size(69, 17);
-            this.grid3CheckBox.TabIndex = 33;
-            this.grid3CheckBox.Text = "BG3 Grid";
-            this.grid3CheckBox.UseVisualStyleBackColor = true;
-            this.grid3CheckBox.Visible = false;
-            this.grid3CheckBox.CheckedChanged += new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+            this.importObjButton.Location = new System.Drawing.Point(28, 358);
+            this.importObjButton.Name = "importObjButton";
+            this.importObjButton.Size = new System.Drawing.Size(104, 23);
+            this.importObjButton.TabIndex = 9;
+            this.importObjButton.Text = "Import .obj";
+            this.importObjButton.UseVisualStyleBackColor = true;
+            this.importObjButton.Click += new System.EventHandler(this.importObjButton_Click);
             // 
             // ScreenEditor
             // 
@@ -1313,5 +1340,7 @@
 		private System.Windows.Forms.CheckBox grid2CheckBox;
 		private System.Windows.Forms.CheckBox grid3CheckBox;
 		private System.Windows.Forms.CheckBox grid1CheckBox;
-	}
+        private System.Windows.Forms.Button exportObjButton;
+        private System.Windows.Forms.Button importObjButton;
+    }
 }
