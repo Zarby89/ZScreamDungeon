@@ -223,6 +223,7 @@
   <ItemGroup>
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
+    <Compile Include="ColoringInfo.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DoorData.cs" />
     <Compile Include="Data\DungeonMap.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\OAMTile.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
+    <Compile Include="Data\SongAddress.cs" />
     <Compile Include="Gui\DataExtractor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -336,6 +338,12 @@
     <Compile Include="Gui\ExtraForms\SearchTilesForm.Designer.cs">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\ZSSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZSSettings.Designer.cs">
+      <DependentUpon>ZSSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ImportFromRom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -371,6 +379,12 @@
     </Compile>
     <Compile Include="Gui\MainTabs\GfxImportExport.Designer.cs">
       <DependentUpon>GfxImportExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\MainTabs\MusicEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\MusicEditor.Designer.cs">
+      <DependentUpon>MusicEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\MainTabs\ObjectDesigner.cs">
       <SubType>UserControl</SubType>
@@ -639,6 +653,9 @@
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ZSSettings.resx">
+      <DependentUpon>ZSSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ImportFromRom.resx">
       <DependentUpon>ImportFromRom.cs</DependentUpon>
     </EmbeddedResource>
@@ -662,6 +679,9 @@
     <EmbeddedResource Include="Gui\ExtraForms\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\MusicEditor.resx">
+      <DependentUpon>MusicEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\ObjectDesigner.resx">
       <DependentUpon>ObjectDesigner.cs</DependentUpon>

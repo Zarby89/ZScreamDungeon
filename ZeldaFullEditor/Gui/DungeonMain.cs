@@ -64,6 +64,7 @@ namespace ZeldaFullEditor
 		private Bitmap xTabButton;
 		public Room previewRoom = null;
 		public ScreenEditor screenEditor = new ScreenEditor();
+		public MusicEditor musicEditor = new MusicEditor();
 		public string loadFromExported = "";
 
 		public List<Room_Object> listoftilesobjects = new List<Room_Object>();
@@ -167,6 +168,7 @@ namespace ZeldaFullEditor
 			gfxEditor.Visible = false;
 			dungeonViewer.Visible = false;
 			screenEditor.Visible = false;
+			musicEditor.Visible = false;
 
 			objDesigner.Dock = DockStyle.Fill;
 			overworldEditor.Dock = DockStyle.Fill;
@@ -174,6 +176,7 @@ namespace ZeldaFullEditor
 			gfxEditor.Dock = DockStyle.Fill;
 			dungeonViewer.Dock = DockStyle.Fill;
 			screenEditor.Dock = DockStyle.Fill;
+			musicEditor.Dock = DockStyle.Fill;
 
 			Controls.Add(overworldEditor);
 			Controls.Add(textEditor);
@@ -181,6 +184,7 @@ namespace ZeldaFullEditor
 			Controls.Add(gfxEditor);
 			Controls.Add(dungeonViewer);
 			Controls.Add(screenEditor);
+			Controls.Add(musicEditor);
 
 			// If we are in a debug version, show the Experimental Features drop down menu.
 #if DEBUG
@@ -2036,7 +2040,14 @@ namespace ZeldaFullEditor
             */
 
 			saveToolStripMenuItem_Click(saveToolStripMenuItem, new EventArgs());
-			Process p = Process.Start(projectFilename);
+			if (Settings.Default.emulatorPath == "")
+			{
+				Process p = Process.Start(projectFilename);
+			}
+			else
+			{
+				Process.Start(Settings.Default.emulatorPath, "temp.sfc");
+			}
 		}
 
 		private void unselectedBGTransparentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2134,7 +2145,18 @@ namespace ZeldaFullEditor
 			FileStream fs = new FileStream(UIText.TestROM, FileMode.CreateNew, FileAccess.Write);
 			fs.Write(data, 0, data.Length);
 			fs.Close();
-			Process p = Process.Start(UIText.TestROM);
+
+			if (Settings.Default.emulatorPath == "")
+			{
+				Process p = Process.Start(UIText.TestROM);
+			}
+			else
+			{
+				Process.Start(Settings.Default.emulatorPath, UIText.TestROM);
+			}
+
+
+			//Process p = Process.Start(;
 		}
 
 		// TODO going away with projects (or being changed drastically)
@@ -3746,6 +3768,16 @@ namespace ZeldaFullEditor
 			else
 			{
 				screenEditor.Visible = false;
+			}
+
+			if (editorsTabControl.SelectedTab.Name == "MusicEditor")
+			{
+				musicEditor.BringToFront();
+				musicEditor.Visible = true;
+			}
+			else
+			{
+				musicEditor.Visible = false;
 			}
 		}
 
