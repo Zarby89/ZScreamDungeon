@@ -1582,8 +1582,8 @@ namespace ZeldaFullEditor
 
 			EntranceProperties_PlayerX.HexValue = en.XPosition;
 			EntranceProperties_PlayerY.HexValue = en.YPosition;
-			EntranceProperties_CameraX.HexValue = en.CameraX;
-			EntranceProperties_CameraY.HexValue = en.CameraY;
+			EntranceProperties_CameraY.HexValue = en.CameraX;
+			EntranceProperties_CameraX.HexValue = en.CameraY;
 			EntranceProperties_CameraTriggerX.HexValue = en.CameraTriggerX;
 			EntranceProperties_CameraTriggerY.HexValue = en.CameraTriggerY;
 
@@ -2314,8 +2314,8 @@ namespace ZeldaFullEditor
 
 				selectedEntrance.XPosition = (short) EntranceProperties_PlayerX.HexValue;
 				selectedEntrance.YPosition = (short) EntranceProperties_PlayerY.HexValue;
-				selectedEntrance.CameraX = (short) EntranceProperties_CameraX.HexValue;
-				selectedEntrance.CameraY = (short) EntranceProperties_CameraY.HexValue;
+				selectedEntrance.CameraX = (short) EntranceProperties_CameraY.HexValue;
+				selectedEntrance.CameraY = (short) EntranceProperties_CameraX.HexValue;
 				selectedEntrance.CameraTriggerX = (short) EntranceProperties_CameraTriggerX.HexValue;
 				selectedEntrance.CameraTriggerY = (short) EntranceProperties_CameraTriggerY.HexValue;
 
