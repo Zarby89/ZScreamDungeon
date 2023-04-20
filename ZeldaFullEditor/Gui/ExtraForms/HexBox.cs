@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -173,12 +174,12 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 		protected override void OnTextChanged(EventArgs e)
 		{
-			errorValue = !int.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, null, out int tb);
+			//errorValue = !int.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, null, out int tb);
 
-			hexValue = tb;
+			//hexValue = tb;
 
-			EnforceRange();
-			UpdateText();
+			//EnforceRange();
+			//UpdateText();
 
 			if (!disableTextChanged)
 			{
@@ -231,5 +232,36 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			enforcepad = false;
 			base.OnLostFocus(e);
 		}
-	}
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // Hexbox
+            // 
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Hexbox_KeyUp);
+            this.ResumeLayout(false);
+
+        }
+
+        private void Hexbox_KeyUp(object sender, KeyEventArgs e)
+        {
+			string regex = "[^a-fA-F0-9]";
+			Text = Regex.Replace(Text, regex, "0");
+
+
+			if (int.TryParse(Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
+			{
+				hexValue = r;
+			}
+			else
+			{
+				hexValue = minValue;
+			}
+			EnforceRange();
+			UpdateText();
+
+			base.OnKeyUp(e);
+		}
+    }
 }

@@ -1266,16 +1266,9 @@ namespace ZeldaFullEditor
 			if (textListbox.SelectedItem != null)
 			{
 				CurrentMessage.SetMessage(Regex.Replace(textBox1.Text, @"[\r\n]", ""));
-
-				textListbox.BeginUpdate();
-				textListbox.DataSource = null;
-				textListbox.DataSource = DisplayedMessages;
-				textListbox.EndUpdate();
-
-				//savedBytes[(int)selectedTextTag] = parseTextToBytes(textBox1.Text);
-
 				DrawMessagePreview();
 				pictureBox1.Refresh();
+
 			}
 		}
 
@@ -1502,5 +1495,13 @@ namespace ZeldaFullEditor
 
 			pictureBox1.Refresh();
 		}
-	}
+
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+			textListbox.BeginUpdate();
+			textListbox.DataSource = null;
+			textListbox.DataSource = DisplayedMessages;
+			textListbox.EndUpdate();
+		}
+    }
 }
