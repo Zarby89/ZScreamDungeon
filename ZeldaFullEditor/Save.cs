@@ -785,6 +785,13 @@ namespace ZeldaFullEditor
 					if (item.roomMapId == i)
 					{
 						roomItems[i].Add(item);
+						if (item.id == 0x86)
+						{
+							ROM.WriteShort(0x16DC5 + (i * 2), (item.gameX + (item.gameY * 64)) * 2);
+						}
+
+
+
 					}
 				}
 			}
