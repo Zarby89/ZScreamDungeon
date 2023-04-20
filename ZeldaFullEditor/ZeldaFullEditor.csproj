@@ -760,7 +760,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AreaSpecificBGColor.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="asar.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomCollision.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="debug.asm">
@@ -768,6 +774,12 @@
     </Content>
     <Content Include="DefaultNames.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MosaicChange.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="newgraves.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
     <None Include="Resources\xbutton.png" />
@@ -777,7 +789,7 @@
     <None Include="Resources\floorSelector.bmp" />
     <None Include="Resources\floorselector.png" />
     <Content Include="spritesmove.asm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Mblock.png" />
     <None Include="Resources\spriteFont.png" />
