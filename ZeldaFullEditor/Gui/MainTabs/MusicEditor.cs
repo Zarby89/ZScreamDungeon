@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -33,7 +34,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			addresses.Add(new SongAddress(1, 0xEE11, "Warp", 0xD3D0A, 197));
 			addresses.Add(new SongAddress(1, 0xEF6D, "Dark world", 0xD3E66, 741));
 			addresses.Add(new SongAddress(1, 0xF813, "Master sword", 0xD470C, 91));
-			addresses.Add(new SongAddress(1, 0x2880, "File select", 0x28BC, 244));
+			addresses.Add(new SongAddress(1, 0x2880, "File select", 0xD1CE7, 244));
 			addresses.Add(new SongAddress(1, 0xF8F6, "Soldier", 0xD47EF, 255));
 			addresses.Add(new SongAddress(1, 0x2B00, "Mountain", 0xD4CAB, 364));
 			addresses.Add(new SongAddress(1, 0x2FA6, "Shop", 0xD5151, 15));
