@@ -13,7 +13,7 @@ namespace ZeldaFullEditor
 		public int x, y;
 		public bool bg2 = false;
 		public ushort roomMapId;
-
+		public int uniqueID = 0;
 		public RoomPotSaveEditor(byte id, ushort roomMapId, int x, int y, bool bg2)
 		{
 			this.id = id;
@@ -27,6 +27,7 @@ namespace ZeldaFullEditor
 
 			gameX = (byte) ((Math.Abs(x - (mapX * 512)) / 16));
 			gameY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
+			uniqueID = ROM.uniqueItemID++;
 		}
 
 		public void updateMapStuff(short mapId)

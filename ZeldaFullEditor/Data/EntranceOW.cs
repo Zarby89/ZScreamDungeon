@@ -16,6 +16,7 @@ namespace ZeldaFullEditor
 		public short mapId;
 		public bool isHole = false;
 		public bool deleted = false;
+		public int uniqueID = 0;
 
 		// mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
 		public EntranceOWEditor(int x, int y, byte entranceId, short mapId, ushort mapPos, bool hole)
@@ -33,6 +34,9 @@ namespace ZeldaFullEditor
 			AreaY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
 
 			isHole = hole;
+
+			uniqueID = ROM.uniqueEntranceID;
+			ROM.uniqueEntranceID += 1;
 		}
 
 		public EntranceOWEditor Copy()

@@ -20,6 +20,12 @@ using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.MainTabs;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Globalization;
+using System.Net.Sockets;
+using System.Net;
+using Lidgren.Network;
+using CSScriptLibrary;
+using System.Windows.Markup;
+
 
 // Main
 namespace ZeldaFullEditor
@@ -534,32 +540,40 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void LoadProject(string filename)
+		public void LoadProject(string filename, bool fromdata = false)
 		{
 			ROMStructure.loadDefaultProject();
 			// TODO : Add Headered ROM
-
-			FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
-			int size = (int) fs.Length;
-			if (fs.Length < 0x200000)
+			if (!fromdata) 
 			{
-				size = 0x200000;
-			}
+				FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
+				int size = (int) fs.Length;
+				if (fs.Length < 0x200000)
+				{
+					size = 0x200000;
+				}
 
-			ROM.DATA = new byte[size];
-			if ((fs.Length & 0x200) == 0x200)
-			{
-				size = (int) (fs.Length - 0x200);
-				byte[] tempRomData = new byte[fs.Length];
-				fs.Read(tempRomData, 0, (int) fs.Length);
-				Array.Copy(tempRomData, 0x200, ROM.DATA, 0, size);
+				ROM.DATA = new byte[size];
+				if ((fs.Length & 0x200) == 0x200)
+				{
+					size = (int) (fs.Length - 0x200);
+					byte[] tempRomData = new byte[fs.Length];
+					fs.Read(tempRomData, 0, (int) fs.Length);
+					Array.Copy(tempRomData, 0x200, ROM.DATA, 0, size);
+				}
+				else
+				{
+					fs.Read(ROM.DATA, 0, (int) fs.Length);
+				}
+
+				fs.Close();
 			}
 			else
 			{
-				fs.Read(ROM.DATA, 0, (int) fs.Length);
+				ROM.DATA = new byte[0x200000];
+				Array.Copy(romData, 0, ROM.DATA, 0, romData.Length);
 			}
 
-			fs.Close();
 
 			LoadPalettes();
 
@@ -5203,5 +5217,591 @@ namespace ZeldaFullEditor
 		{
 			activeScene.Refresh();
 		}
+
+		NetServer server;
+		
+		bool host = false;
+		List<NetPeer> allClients = new List<NetPeer>();
+		NetPeer connectedTo;
+		private void hostToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			NetPeerConfiguration config = new NetPeerConfiguration("ZSCOOP");
+			config.Port = Convert.ToInt32("14242");
+			config.MaximumConnections = 5;
+			config.EnableMessageType(NetIncomingMessageType.Data);
+			config.EnableMessageType(NetIncomingMessageType.WarningMessage);
+			config.EnableMessageType(NetIncomingMessageType.VerboseDebugMessage);
+			config.EnableMessageType(NetIncomingMessageType.ErrorMessage);
+			config.EnableMessageType(NetIncomingMessageType.Error);
+			config.EnableMessageType(NetIncomingMessageType.DebugMessage);
+			config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+			
+
+			server = new NetServer(config);
+			server.Start();
+			host = true;
+			
+
+
+
+			if (server.Status == NetPeerStatus.Running)
+			{
+				Console.WriteLine("Server is running on port " + config.Port);
+			}
+			else
+			{
+				Console.WriteLine("Server not started...");
+			}
+			networkBgWorker.RunWorkerAsync();
+
+		}
+
+
+
+
+		private void joinToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var config = new NetPeerConfiguration("ZSCOOP");
+			
+			config.AutoFlushSendQueue = false;
+			config.EnableMessageType(NetIncomingMessageType.Data);
+			config.EnableMessageType(NetIncomingMessageType.WarningMessage);
+			config.EnableMessageType(NetIncomingMessageType.VerboseDebugMessage);
+			config.EnableMessageType(NetIncomingMessageType.ErrorMessage);
+			config.EnableMessageType(NetIncomingMessageType.Error);
+			config.EnableMessageType(NetIncomingMessageType.DebugMessage);
+			config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+
+
+
+			NetZS.client = new NetClient(config);
+			NetZS.client.Start();
+
+			NetZS.client.Connect(new IPEndPoint(NetUtility.Resolve("127.0.0.1"), Convert.ToInt32("14242")));
+			host = false;
+			networkBgWorker.RunWorkerAsync();
+		}
+
+
+
+
+		private void testToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+
+
+
+		}
+		int romPos = 0;
+		byte uniqueUserID = 0;
+		volatile byte[] romData = new byte[0x200000];
+		private void networkBgWorker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			while (true)
+			{
+				if (host)
+				{
+					NetIncomingMessage im;
+					while ((im = server.ReadMessage()) != null)
+					{
+						switch (im.MessageType)
+						{
+							case NetIncomingMessageType.Data:
+
+								Console.WriteLine("Received data from client " + im.Data.ToString());
+								if (im.Data[0] == 04) // tile draw
+								{
+									ReceivedTileDraw(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 05) // tile draw move
+								{
+									ReceivedTileDrawMove(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 0x80) // wait signal
+								{
+									Console.WriteLine("Client is fully connected and have rom loaded tell the others!");
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 0x03) //checksum request for LW
+								{
+									ServerChecksum(im);
+								}
+								else if (im.Data[0] == 0x06) //entrance data
+								{
+									ReceivedEntranceData(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 0x07) //sprite data
+								{
+									ReceivedSpriteData(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 0x08) //exit data
+								{
+									ReceivedExitData(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 0x09) //Item data
+								{
+									ReceivedItemData(im);
+									SendBackToOthers(im);
+								}
+								break;
+
+
+							case NetIncomingMessageType.VerboseDebugMessage:
+							case NetIncomingMessageType.DebugMessage:
+							case NetIncomingMessageType.WarningMessage:
+							case NetIncomingMessageType.ErrorMessage:
+								Console.WriteLine(im.ReadString());
+								break;
+							case NetIncomingMessageType.StatusChanged:
+								switch ((NetConnectionStatus) im.ReadByte())
+								{
+									case NetConnectionStatus.Connected:
+										PlayerConnected(im);
+										break;
+									case NetConnectionStatus.Disconnected:
+										Console.WriteLine("{0} Disconnected", im.SenderEndPoint);
+										allClients.Remove(im.SenderConnection.Peer);
+										break;
+									case NetConnectionStatus.RespondedAwaitingApproval:
+										im.SenderConnection.Approve();
+										
+										break;
+								}
+								break;
+							
+
+						}
+					
+
+						server.Recycle(im);
+					}
+					Thread.Sleep(1);
+				}
+				else
+				{
+					
+					NetIncomingMessage im;
+					while ((im = NetZS.client.ReadMessage()) != null)
+					{
+						Console.WriteLine("client start listening for messages");
+						switch (im.MessageType)
+						{
+							case NetIncomingMessageType.Data:
+								//Console.WriteLine("Received data from server " + im.Data.Length.ToString());
+								Console.WriteLine("CMD BYTE ==  " + im.Data[0].ToString());
+
+								if (im.Data[0] == 0) // ROM DATA start also user unique id
+								{
+									uniqueUserID = im.Data[1];
+									NetZS.userID = uniqueUserID;
+									break;
+								}
+								if (im.Data[0] == 0x80) // ROM DATA start
+								{
+									ReceivedWaitSignal(im);
+									break;
+								}
+								if (im.Data[0] == 1) // ROM DATA
+								{
+									ReceivedROMData(im);
+									break;
+								}
+								 if (im.Data[0] == 2) // ROM DATA END
+								{
+									ReceivedROMENDData(im);
+									break;
+								}
+								if (im.Data[0] == 04) // tile draw
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedTileDraw(im);
+									break;
+								}
+								if (im.Data[0] == 05) // tile draw move
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedTileDrawMove(im);
+									break;
+								}
+								if (im.Data[0] == 0x06) //entrance data
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedEntranceData(im);
+								}
+								if (im.Data[0] == 0x07) //sprite data
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedSpriteData(im);
+								}
+								if (im.Data[0] == 0x08) //exit data
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedExitData(im);
+								}
+								if (im.Data[0] == 0x09) //item data
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedItemData(im);
+								}
+								break;
+
+
+							case NetIncomingMessageType.VerboseDebugMessage:
+							case NetIncomingMessageType.DebugMessage:
+							case NetIncomingMessageType.WarningMessage:
+							case NetIncomingMessageType.ErrorMessage:
+								Console.WriteLine(im.ReadString());
+								break;
+						}
+
+						NetZS.client.Recycle(im);
+					}
+					Thread.Sleep(1);
+				}
+			}
+		}
+
+		private void ReceivedSpriteData(NetIncomingMessage im)
+		{
+
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 07
+			buffer.ReadByte(); // user id
+			int sId = buffer.ReadInt(); // sprite unique id
+			byte sprstate = buffer.ReadByte();
+			byte sprid = buffer.ReadByte();
+			Sprite[] sprites = overworldEditor.scene.ow.allsprites[sprstate].Where(x => x.uniqueID == sId).ToArray();
+			Sprite spr = null;
+			if (sprites.Length == 0)
+			{
+				spr = new Sprite(0, sprid, 0,0,0,0);
+				spr.uniqueID = sId;
+				overworldEditor.scene.ow.allsprites[sprstate].Add(spr);
+			}
+			else
+			{
+				spr = sprites[0];
+			}
+			spr.id = sprid;
+			spr.mapid = buffer.ReadByte();
+			spr.map_x = buffer.ReadInt();
+			spr.map_y = buffer.ReadInt();
+			spr.x = buffer.ReadByte();
+			spr.y = buffer.ReadByte();
+			spr.deleted = (buffer.ReadByte() == 1 ? true : false); // deleted?
+
+			overworldEditor.scene.Invalidate();
+			Console.WriteLine("Sprite " + sId + " changed!");
+
+		}
+
+		private void ReceivedEntranceData(NetIncomingMessage im)
+		{
+
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 06
+			buffer.ReadByte(); // user id
+			int uId = buffer.ReadInt(); // unique id
+			byte eId = buffer.ReadByte(); // entrance id
+			EntranceOWEditor entrance = overworldEditor.scene.ow.allentrances.Where(x=> x.uniqueID == uId).ToArray()[0];
+			entrance.entranceId = eId;
+			entrance.mapPos = buffer.ReadUShort();
+			entrance.x = buffer.ReadInt();
+			entrance.y = buffer.ReadInt();
+			entrance.AreaX = buffer.ReadByte();
+			entrance.AreaY = buffer.ReadByte();
+			entrance.mapId = buffer.ReadShort();
+			entrance.isHole = (buffer.ReadByte() == 1 ? true : false);
+			entrance.deleted = (buffer.ReadByte() == 1 ? true : false);
+			overworldEditor.scene.Invalidate();
+			Console.WriteLine("Entrance " + eId + " changed!");
+		}
+
+		private void ReceivedExitData(NetIncomingMessage im)
+		{
+
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 08
+			buffer.ReadByte(); // user id
+			int uId = buffer.ReadInt(); // unique id
+			ExitOW exit = overworldEditor.scene.ow.allexits.Where(x => x.uniqueID == uId).ToArray()[0];
+
+			exit.unk1 = buffer.ReadByte();
+			exit.unk2 = buffer.ReadByte();
+			exit.doorXEditor = buffer.ReadByte();
+			exit.doorYEditor = buffer.ReadByte();
+			exit.AreaX = buffer.ReadByte();
+			exit.AreaY = buffer.ReadByte();
+			exit.vramLocation = buffer.ReadShort();
+			exit.roomId = buffer.ReadShort();
+			exit.xScroll = buffer.ReadShort();
+			exit.yScroll = buffer.ReadShort();
+			exit.cameraX = buffer.ReadShort();
+			exit.cameraY = buffer.ReadShort();
+			exit.doorType1 = buffer.ReadShort();
+			exit.doorType2 = buffer.ReadShort();
+			exit.playerX = buffer.ReadUShort();
+			exit.playerY = buffer.ReadUShort();
+			exit.isAutomatic = (buffer.ReadByte() == 1 ? true : false);
+			exit.deleted = (buffer.ReadByte() == 1 ? true : false);
+			overworldEditor.scene.Invalidate();
+			Console.WriteLine("Exit " + uId + " changed!");
+		}
+
+		private void ServerChecksum(NetIncomingMessage im)
+		{
+			int checksum = 0;
+			for (int x = 0; x < 256; x++)
+			{
+				for (int y = 0; y < 256; y++)
+				{
+					checksum += overworldEditor.scene.ow.allmapsTilesLW[x, y];
+				}
+			}
+			int clientChecksum = im.Data[2] | im.Data[3] << 8 | im.Data[4] << 16 | im.Data[5] << 24;
+
+			if (clientChecksum != checksum)
+			{
+				// uh oh that client doesn't have proper LW !
+
+
+
+			}
+
+		}
+
+		private void SendBackToOthers(NetIncomingMessage im)
+		{
+			NetOutgoingMessage msg = server.CreateMessage();
+			byte[] data = new byte[im.Data.Length];
+			Array.Copy(im.Data, data, data.Length);
+			msg.Write(data);
+
+
+			server.SendToAll(msg, NetDeliveryMethod.ReliableOrdered);
+			server.FlushSendQueue();
+		}
+
+		private void ReceivedROMENDData(NetIncomingMessage im)
+		{
+			this.Invoke((MethodInvoker) delegate
+			{
+
+				loadTimer.Enabled = true;
+				loadTimer.Start();
+			});
+			Console.WriteLine("Loading Project! ROM");
+		}
+
+		private void ReceivedROMData(NetIncomingMessage im)
+		{
+			for (int i = 0; i < im.Data.Length - 1; i++)
+			{
+				romData[i + romPos] = im.Data[i + 1];
+			}
+			romPos += 0x1000;
+		}
+
+		private void ReceivedWaitSignal(NetIncomingMessage im)
+		{
+			if (im.Data[1] == 0x00)
+			{
+				Console.WriteLine("Wait signal received");
+				//this.Enabled = false;
+			}
+			else if (im.Data[1] == 0x01)
+			{
+				Console.WriteLine("WaitEND signal received");
+				//this.Enabled = true;
+			}
+		}
+
+		private void ReceivedTileDrawMove(NetIncomingMessage im)
+		{
+			int tileX = im.Data[2] | im.Data[3] << 8 | im.Data[4] << 16 | im.Data[5] << 24;
+			int tileY = im.Data[6] | im.Data[7] << 8 | im.Data[8] << 16 | im.Data[9] << 24;
+			int tilesizex = im.Data[10] | im.Data[11] << 8 | im.Data[12] << 16 | im.Data[13] << 24;
+			int tilecount = im.Data[14] | im.Data[15] << 8 | im.Data[16] << 16 | im.Data[17] << 24;
+			ushort[] selectedTiles = new ushort[tilecount];
+			for (int i = 0; i < tilecount; i++)
+			{
+				selectedTiles[i] = (ushort) (im.Data[(i * 2) + 24] | (im.Data[(i * 2) + 25] << 8));
+			}
+
+			int y = 0;
+			int x = 0;
+
+			for (int i = 0; i < selectedTiles.Length; i++)
+			{
+				int superX = ((tileX + x) / 32);
+				int superY = ((tileY + y) / 32);
+				int mapId = (superY * 8) + superX + overworldEditor.scene.ow.worldOffset;
+
+				if (tileX + x < 256 && tileY + y < 256)
+				{
+					overworldEditor.scene.ow.allmaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
+					overworldEditor.scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], overworldEditor.scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+				}
+
+				x++;
+				if (x >= tilesizex)
+				{
+					y++;
+					x = 0;
+				}
+			}
+			overworldEditor.scene.Invalidate();
+		}
+
+		private void ReceivedTileDraw(NetIncomingMessage im)
+		{
+			
+			int tileX = im.Data[2] | im.Data[3] << 8 | im.Data[4] << 16 | im.Data[5] << 24;
+			int tileY = im.Data[6] | im.Data[7] << 8 | im.Data[8] << 16 | im.Data[9] << 24;
+			int tilesizex = im.Data[10] | im.Data[11] << 8 | im.Data[12] << 16 | im.Data[13] << 24;
+			int tilecount = im.Data[14] | im.Data[15] << 8 | im.Data[16] << 16 | im.Data[17] << 24;
+			ushort[] selectedTiles = new ushort[tilecount];
+			for (int i = 0; i < tilecount; i++)
+			{
+				selectedTiles[i] = (ushort) (im.Data[(i * 2) + 24] | (im.Data[(i * 2) + 25] << 8));
+			}
+
+			int y = 0;
+			int x = 0;
+
+			for (int i = 0; i < selectedTiles.Length; i++)
+			{
+				int superX = ((tileX + x) / 32);
+				int superY = ((tileY + y) / 32);
+				int mapId = (superY * 8) + superX + overworldEditor.scene.ow.worldOffset;
+				overworldEditor.scene.ow.allmaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
+				overworldEditor.scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], overworldEditor.scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+				x++;
+				if (x >= tilesizex)
+				{
+					y++;
+					x = 0;
+				}
+			}
+			overworldEditor.scene.Invalidate();
+		}
+
+		private void networkBgWorker2_DoWork(object sender, DoWorkEventArgs e)
+		{
+
+		}
+
+		private void loadTimer_Tick(object sender, EventArgs e)
+		{
+			Console.WriteLine("Attempt at loading project!");
+			LoadProject("", true);
+			Console.WriteLine("AFTER project!");
+			//this.Enabled = true;
+
+			crc32timer.Enabled = true; ;
+			crc32timer.Start();
+
+			byte[] data = new byte[02] { 0x80, 0x01 }; // send signal we are no longer waiting !
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(data);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+			Console.WriteLine("Sent No waiting signal anymore");
+
+			loadTimer.Stop();
+			loadTimer.Enabled = false;
+		}
+
+		private void PlayerConnected(NetIncomingMessage im)
+		{
+			Console.WriteLine("{0} Connected", im.SenderEndPoint);
+			// Send wait signal to all users
+			NetOutgoingMessage msg = server.CreateMessage();
+			byte[] data = new byte[02] { 0x80, 0x00 };
+			msg.Write(data); // wait signal
+			server.SendToAll(msg, NetDeliveryMethod.ReliableOrdered);
+			server.FlushSendQueue();
+
+
+			// Send rom send initialization to connecting user
+			msg = server.CreateMessage();
+			data = new byte[0x02] { 0x00, uniqueUserID }; // init the rom transfer
+			uniqueUserID++; // increase the ID of the users
+			data[0] = 00;
+			msg.Write(data);
+			server.SendMessage(msg, im.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+			server.FlushSendQueue();
+
+
+
+			for (int i = 0; i < 0x200; i++) // send the rom in 0x200 packets
+			{
+
+				msg = server.CreateMessage();
+				data = new byte[0x1001];
+				for (int j = 0; j < 0x1000; j++)
+				{
+					data[j + 1] = ROM.DATA[(i * 0x1000) + j];
+				}
+				data[0] = 01;
+				msg.Write(data);
+				server.SendMessage(msg, im.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+				server.FlushSendQueue();
+				
+			}
+
+
+			msg = server.CreateMessage(); // send signal we finished transfering rom data
+			data = new byte[0x01];
+			data[0] = 02;
+			msg.Write(data);
+			server.SendMessage(msg, im.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+			server.FlushSendQueue();
+
+
+		}
+
+		private void crc32timer_Tick(object sender, EventArgs e)
+		{
+			int checksum = 0;
+			for(int x = 0; x < 256; x++ )
+			{
+				for (int y = 0; y < 256; y++)
+				{
+					checksum += overworldEditor.scene.ow.allmapsTilesLW[x, y];
+				}
+			}
+			byte[] data = new byte[6] { 3, NetZS.userID, (byte) checksum, (byte) (checksum >> 8), (byte) (checksum >> 16), (byte) (checksum >> 24) };
+
+		
+			// write CRC
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(data);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+		}
+
 	}
 }

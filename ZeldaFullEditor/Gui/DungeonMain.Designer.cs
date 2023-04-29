@@ -406,6 +406,10 @@ namespace ZeldaFullEditor
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.discordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.multiplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.mapPicturebox = new System.Windows.Forms.PictureBox();
             this.maphoverCheckbox = new System.Windows.Forms.CheckBox();
@@ -414,6 +418,10 @@ namespace ZeldaFullEditor
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.networkBgWorker = new System.ComponentModel.BackgroundWorker();
+            this.networkBgWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.loadTimer = new System.Windows.Forms.Timer(this.components);
+            this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -3053,7 +3061,8 @@ namespace ZeldaFullEditor
             this.jPDebugToolStripMenuItem,
             this.ExperimentalToolStripMenuItem1,
             this.helpToolStripMenuItem,
-            this.discordToolStripMenuItem});
+            this.discordToolStripMenuItem,
+            this.multiplayerToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1177, 24);
@@ -4355,6 +4364,37 @@ namespace ZeldaFullEditor
             this.discordToolStripMenuItem.Text = "Discord";
             this.discordToolStripMenuItem.Click += new System.EventHandler(this.discordToolStripMenuItem_Click);
             // 
+            // multiplayerToolStripMenuItem
+            // 
+            this.multiplayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hostToolStripMenuItem,
+            this.joinToolStripMenuItem,
+            this.testToolStripMenuItem1});
+            this.multiplayerToolStripMenuItem.Name = "multiplayerToolStripMenuItem";
+            this.multiplayerToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.multiplayerToolStripMenuItem.Text = "Multiplayer";
+            // 
+            // hostToolStripMenuItem
+            // 
+            this.hostToolStripMenuItem.Name = "hostToolStripMenuItem";
+            this.hostToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
+            this.hostToolStripMenuItem.Text = "Host";
+            this.hostToolStripMenuItem.Click += new System.EventHandler(this.hostToolStripMenuItem_Click);
+            // 
+            // joinToolStripMenuItem
+            // 
+            this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
+            this.joinToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
+            this.joinToolStripMenuItem.Text = "Join";
+            this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
+            // 
+            // testToolStripMenuItem1
+            // 
+            this.testToolStripMenuItem1.Name = "testToolStripMenuItem1";
+            this.testToolStripMenuItem1.Size = new System.Drawing.Size(99, 22);
+            this.testToolStripMenuItem1.Text = "Test";
+            this.testToolStripMenuItem1.Click += new System.EventHandler(this.testToolStripMenuItem1_Click);
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.Control;
@@ -4466,6 +4506,25 @@ namespace ZeldaFullEditor
             this.customPanel3.Size = new System.Drawing.Size(603, 523);
             this.customPanel3.TabIndex = 19;
             // 
+            // networkBgWorker
+            // 
+            this.networkBgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.networkBgWorker_DoWork);
+            // 
+            // networkBgWorker2
+            // 
+            this.networkBgWorker2.WorkerSupportsCancellation = true;
+            this.networkBgWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.networkBgWorker2_DoWork);
+            // 
+            // loadTimer
+            // 
+            this.loadTimer.Interval = 1000;
+            this.loadTimer.Tick += new System.EventHandler(this.loadTimer_Tick);
+            // 
+            // crc32timer
+            // 
+            this.crc32timer.Interval = 60000;
+            this.crc32timer.Tick += new System.EventHandler(this.crc32timer_Tick);
+            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4480,6 +4539,7 @@ namespace ZeldaFullEditor
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.editorsTabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
             this.Text = "ZScream Magic - 3.0.8";
@@ -4929,6 +4989,14 @@ namespace ZeldaFullEditor
 		private System.Windows.Forms.ToolStripMenuItem showScratchPadGridToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showStairIndexToolStripMenuItem;
 		private System.Windows.Forms.TabPage MusicEditor;
+		private System.Windows.Forms.ToolStripMenuItem multiplayerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem hostToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem1;
+		private System.ComponentModel.BackgroundWorker networkBgWorker;
+		private System.ComponentModel.BackgroundWorker networkBgWorker2;
+		private System.Windows.Forms.Timer loadTimer;
+		private System.Windows.Forms.Timer crc32timer;
 	}
 }
 

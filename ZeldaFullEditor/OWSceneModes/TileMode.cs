@@ -8,7 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
 using ZeldaFullEditor.OWSceneModes.ClipboardData;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -179,6 +181,38 @@ namespace ZeldaFullEditor.OWSceneModes
 					{
 						if (scene.selectedTile.Length >= 1)
 						{
+							byte[] data = new byte[(scene.selectedTile.Length * 2)+24];
+							data[0] = 04;
+							data[1] = NetZS.userID;
+							data[2] = (byte) scene.globalmouseTileDownX;
+							data[3] = (byte) (scene.globalmouseTileDownX>>8);
+							data[4] = (byte) (scene.globalmouseTileDownX>>16);
+							data[5] = (byte) (scene.globalmouseTileDownX>>24);
+							data[6] = (byte) scene.globalmouseTileDownY;
+							data[7] = (byte) (scene.globalmouseTileDownY >> 8);
+							data[8] = (byte) (scene.globalmouseTileDownY >> 16);
+							data[9] = (byte) (scene.globalmouseTileDownY >> 24);
+							data[10] = (byte) scene.selectedTileSizeX;
+							data[11] = (byte) (scene.selectedTileSizeX >> 8);
+							data[12] = (byte) (scene.selectedTileSizeX >> 16);
+							data[13] = (byte) (scene.selectedTileSizeX >> 24);
+
+							data[14] = (byte) scene.selectedTile.Length;
+							data[15] = (byte) (scene.selectedTile.Length >> 8);
+							data[16] = (byte) (scene.selectedTile.Length >> 16);
+							data[17] = (byte) (scene.selectedTile.Length >> 24);
+							for (int i =0;i<scene.selectedTile.Length;i++)
+							{
+								data[(i * 2)+24] = (byte)scene.selectedTile[i];
+								data[(i * 2)+25] = (byte) (scene.selectedTile[i]>>8);
+							}
+							// write tiles
+							NetOutgoingMessage msg = NetZS.client.CreateMessage();
+							msg.Write(data);
+							NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+							NetZS.client.FlushSendQueue();
+
+
 							int y = 0;
 							int x = 0;
 							ushort[] undotiles = new ushort[scene.selectedTile.Length];
@@ -406,6 +440,40 @@ namespace ZeldaFullEditor.OWSceneModes
 									int y = 0;
 									int x = 0;
 
+
+									byte[] data = new byte[(scene.selectedTile.Length * 2) + 24];
+									data[0] = 05;
+									data[1] = NetZS.userID;
+									data[2] = (byte) tileX;
+									data[3] = (byte) (tileX >> 8);
+									data[4] = (byte) (tileX >> 16);
+									data[5] = (byte) (tileX >> 24);
+									data[6] = (byte) tileY;
+									data[7] = (byte) (tileY >> 8);
+									data[8] = (byte) (tileY >> 16);
+									data[9] = (byte) (tileY >> 24);
+									data[10] = (byte) scene.selectedTileSizeX;
+									data[11] = (byte) (scene.selectedTileSizeX >> 8);
+									data[12] = (byte) (scene.selectedTileSizeX >> 16);
+									data[13] = (byte) (scene.selectedTileSizeX >> 24);
+
+									data[14] = (byte) scene.selectedTile.Length;
+									data[15] = (byte) (scene.selectedTile.Length >> 8);
+									data[16] = (byte) (scene.selectedTile.Length >> 16);
+									data[17] = (byte) (scene.selectedTile.Length >> 24);
+									for (int i = 0; i < scene.selectedTile.Length; i++)
+									{
+										data[(i * 2) + 24] = (byte) scene.selectedTile[i];
+										data[(i * 2) + 25] = (byte) (scene.selectedTile[i] >> 8);
+									}
+									// write tiles
+									NetOutgoingMessage msg = NetZS.client.CreateMessage();
+									msg.Write(data);
+									NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+									NetZS.client.FlushSendQueue();
+
+
+
 									for (int i = 0; i < scene.selectedTile.Length; i++)
 									{
 										superX = ((tileX + x) / 32);
@@ -454,6 +522,11 @@ namespace ZeldaFullEditor.OWSceneModes
 						int y = 0;
 						int x = 0;
 						int mapId = 0 + scene.ow.worldOffset;
+
+
+
+
+
 
 						for (int i = 0; i < scene.selectedTile.Length; i++)
 						{

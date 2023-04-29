@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -49,7 +51,9 @@ namespace ZeldaFullEditor.OWSceneModes
 				selectedExit = ae;
 				lastselectedExit = selectedExit;
 				scene.mouse_down = true;
+				SendExitData(lastselectedExit);
 			}
+			
 		}
 
 		public ExitOW AddExit(bool clipboard = false)
@@ -86,6 +90,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							scene.ow.allexits[i].doorType2 = data.doorType2;
 							scene.ow.allexits[i].doorXEditor = data.doorXEditor;
 							scene.ow.allexits[i].doorYEditor = data.doorYEditor;
+							SendExitData(scene.ow.allexits[i]);
 						}
 					}
 
@@ -170,6 +175,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			lastselectedExit.mapId = 0;
 			lastselectedExit.roomId = 0;
 			lastselectedExit.deleted = true;
+			SendExitData(lastselectedExit);
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
@@ -218,6 +224,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					lastselectedExit = selectedExit;
 					selectedExit = null;
 					scene.mouse_down = false;
+					SendExitData(lastselectedExit);
 				}
 			}
 			else if (e.Button == MouseButtons.Right)
@@ -516,5 +523,37 @@ namespace ZeldaFullEditor.OWSceneModes
 			g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			g.Dispose();
 		}
+
+		public void SendExitData(ExitOW exit)
+		{
+			NetZSBuffer buffer = new NetZSBuffer(48);
+			buffer.Write((byte) 08); // entrance data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) exit.uniqueID);
+			buffer.Write((byte) exit.unk1);
+			buffer.Write((byte) exit.unk2);
+			buffer.Write((byte) exit.doorXEditor);
+			buffer.Write((byte) exit.doorYEditor);
+			buffer.Write((byte) exit.AreaX);
+			buffer.Write((byte) exit.AreaY);
+			buffer.Write((short) exit.vramLocation);
+			buffer.Write((short) exit.roomId);
+			buffer.Write((short) exit.xScroll);
+			buffer.Write((short) exit.yScroll);
+			buffer.Write((short) exit.cameraX);
+			buffer.Write((short) exit.cameraY);
+			buffer.Write((short) exit.doorType1);
+			buffer.Write((short) exit.doorType2);
+			buffer.Write((ushort) exit.playerX);
+			buffer.Write((ushort) exit.playerY);
+			buffer.Write((byte) (exit.isAutomatic ? 1 : 0));
+			buffer.Write((byte) (exit.deleted ? 1 : 0));
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
+		}
+
 	}
 }

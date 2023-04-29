@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -253,5 +255,37 @@ namespace ZeldaFullEditor.OWSceneModes
 				g.CompositingMode = CompositingMode.SourceCopy;
 			}
 		}
+
+		void SendItemData(RoomPotSaveEditor item)
+		{
+			NetZSBuffer buffer = new NetZSBuffer(24);
+			buffer.Write((byte) 09); // pot item data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) item.uniqueID);
+			buffer.Write((byte) item.gameX);
+			buffer.Write((byte) item.gameY);
+			buffer.Write((byte) item.id );
+			buffer.Write((int) item.x);
+			buffer.Write((int) item.y);
+			buffer.Write((ushort) item.roomMapId);
+			buffer.Write((byte) (item.bg2?1:0));
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+			/*
+		public byte gameX, 
+			gameY, 
+			id;
+		public int x, 
+			y;
+		public bool bg2 = false;
+		public ushort roomMapId;
+			 */
+
+
+
+		}
+
 	}
 }

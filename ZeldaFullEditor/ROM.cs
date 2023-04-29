@@ -11,7 +11,7 @@ namespace ZeldaFullEditor
 	// have a "set up consecutive writes" thing, where ROM class will handle all address increments
 	public static class ROM
 	{
-		public static byte[] DATA;
+		public static volatile byte[] DATA;
 		public static byte[] DATA2;
 		public static byte[] TEMPDATA;
 		public static StringBuilder romLog = new StringBuilder();
@@ -20,7 +20,10 @@ namespace ZeldaFullEditor
 		private static string blockName = "";
 		public static bool AdvancedLogs = true;
 		public static List<LogInfos> advancedLogData = new List<LogInfos>();
-
+		public static int uniqueSpriteID = 0;
+		public static int uniqueItemID = 0;
+		public static int uniqueEntranceID = 0;
+		public static int uniqueExitID = 0;
 		public static void StartBlockLogWriting(string name, int addr)
 		{
 			//romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") +" [Block of Data](" + name + ")\r\n");

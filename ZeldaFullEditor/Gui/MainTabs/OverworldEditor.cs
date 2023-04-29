@@ -2230,5 +2230,10 @@ namespace ZeldaFullEditor.Gui
 		{
 			scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent].mosaic = mosaicCheckBox.Checked;
 		}
+
+		private void openfileButton_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

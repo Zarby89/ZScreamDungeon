@@ -579,6 +579,9 @@ namespace ZeldaFullEditor
 		{
 			base.OnPaint(e);
 
+
+
+
 			Graphics g = e.Graphics;
 
 			ColorMatrix cm = new ColorMatrix();

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -41,6 +43,8 @@ namespace ZeldaFullEditor.OWSceneModes
 					if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16)
 					{
 						selectedSprite = spr;
+
+
 					}
 
 					//Console.WriteLine("X:" + spr.map_x + ", Y:" + spr.map_y);
@@ -62,10 +66,10 @@ namespace ZeldaFullEditor.OWSceneModes
 			Clipboard.Clear();
 			int sd = lastselectedSprite.id;
 			Clipboard.SetData("owsprite", sd);
-			Delete();
-
+			SendSpriteData(lastselectedSprite);
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
+
 
 		public void Paste()
 		{
@@ -95,7 +99,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				scene.selectedFormSprite = null;
 				scene.mouse_down = true;
 				isLeftPress = true;
-
+				SendSpriteData(selectedSprite);
 				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 			}
 		}
@@ -134,6 +138,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				{
 					selectedSprite.updateMapStuff(mid);
 					lastselectedSprite = selectedSprite;
+					SendSpriteData(selectedSprite);
 					selectedSprite = null;
 
 					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -168,6 +173,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		private void deleteSprite_Click(object sender, EventArgs e)
 		{
 			Delete();
+
 		}
 
 		private void spriteProperties_Click(object sender, EventArgs e)
@@ -244,11 +250,10 @@ namespace ZeldaFullEditor.OWSceneModes
 		{
 			if (lastselectedSprite != null)
 			{
-				for (int i = scene.ow.worldOffset; i < 64 + scene.ow.worldOffset; i++)
-				{
-					int gs = scene.ow.gameState;
-					scene.ow.allsprites[gs].Remove(lastselectedSprite);
-				}
+				int gs = scene.ow.gameState;
+				lastselectedSprite.deleted = true;
+				SendSpriteData(lastselectedSprite);
+				scene.ow.allsprites[gs].Remove(lastselectedSprite);
 
 				lastselectedSprite = null;
 				if (scene.lowEndMode)
@@ -276,6 +281,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void Draw(Graphics g)
 		{
+			
+			scene.ow.allsprites[0].RemoveAll(x => x.deleted);
+			scene.ow.allsprites[1].RemoveAll(x => x.deleted);
+			scene.ow.allsprites[2].RemoveAll(x => x.deleted);
+
 			if (scene.lowEndMode)
 			{
 				Brush bgrBrush = Constants.VibrantMagenta200Brush;
@@ -412,5 +422,28 @@ namespace ZeldaFullEditor.OWSceneModes
             g.CompositingMode = CompositingMode.SourceCopy;
         }
         */
+
+
+		private void SendSpriteData(Sprite spr)
+		{
+			NetZSBuffer buffer = new NetZSBuffer(24);
+			buffer.Write((byte) 07); // sprite data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) spr.uniqueID);
+			buffer.Write((byte) scene.ow.gameState);
+			buffer.Write((byte) spr.id);
+			buffer.Write((byte) spr.mapid);
+			buffer.Write((int) spr.map_x);
+			buffer.Write((int) spr.map_y);
+			buffer.Write((byte) spr.x);
+			buffer.Write((byte) spr.y);
+			buffer.Write((byte) (spr.deleted ? 1:0));
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+		}
+
+
 	}
 }
