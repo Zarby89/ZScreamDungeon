@@ -340,6 +340,12 @@
     <Compile Include="Gui\ExtraForms\HexBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Gui\ExtraForms\NetHost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\NetHost.Designer.cs">
+      <DependentUpon>NetHost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\NetworkForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -664,6 +670,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\HexBox.resx">
       <DependentUpon>HexBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\NetHost.resx">
+      <DependentUpon>NetHost.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\NetworkForm.resx">
       <DependentUpon>NetworkForm.cs</DependentUpon>
