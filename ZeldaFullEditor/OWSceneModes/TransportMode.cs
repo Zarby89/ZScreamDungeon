@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -85,6 +87,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				if (selectedTransport != null)
 				{
 					lastselectedTransport = selectedTransport;
+					SendTransportData(selectedTransport);
 					selectedTransport = null;
 					scene.mouse_down = false;
 				}
@@ -128,6 +131,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			{
 				short.TryParse(wf.textBox1.Text, out short v);
 				lastselectedTransport.whirlpoolPos = v;
+				SendTransportData(lastselectedTransport);
 			}
 		}
 
@@ -224,5 +228,36 @@ namespace ZeldaFullEditor.OWSceneModes
 				}
 			}
 		}
+
+		void SendTransportData(TransportOW transport)
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer(32);
+			buffer.Write((byte) 10); // transport data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) transport.uniqueID);
+
+			buffer.Write((byte) transport.unk1);
+			buffer.Write((byte) transport.unk2);
+			buffer.Write((byte) transport.AreaX);
+			buffer.Write((byte) transport.AreaY);
+
+			buffer.Write((short) transport.vramLocation);
+			buffer.Write((short) transport.xScroll);
+			buffer.Write((short) transport.yScroll);
+			buffer.Write((short) transport.playerX);
+			buffer.Write((short) transport.playerY);
+			buffer.Write((short) transport.cameraX);
+			buffer.Write((short) transport.cameraY);
+			buffer.Write((short) transport.mapId);
+			buffer.Write((short) transport.whirlpoolPos);
+
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+		}
+
+
 	}
 }

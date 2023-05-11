@@ -14,7 +14,9 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>C:\Users\adamo\Desktop\ZScream 2.8.2\</PublishUrl>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>C:\Users\adamo\Desktop\ZScream 3.0.8\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -24,14 +26,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -92,7 +91,7 @@
     <ManifestKeyFile>ZeldaFullEditor_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -105,12 +104,6 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AsyncIO, Version=0.1.69.0, Culture=neutral, PublicKeyToken=44a94435bd6f33f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\AsyncIO.0.1.69\lib\net40\AsyncIO.dll</HintPath>
-    </Reference>
-    <Reference Include="CSScriptLibrary, Version=3.30.3.0, Culture=neutral, PublicKeyToken=70fcc3d18c749033, processorArchitecture=MSIL">
-      <HintPath>..\packages\CS-Script.bin.3.30.3\lib\net46\CSScriptLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
     </Reference>
@@ -127,12 +120,6 @@
       <HintPath>..\packages\Microsoft.CodeAnalysis.Scripting.Common.2.0.0\lib\netstandard1.3\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Mono.CSharp, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\CS-Script.bin.3.30.3\lib\net46\Mono.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="NaCl, Version=0.1.13.0, Culture=neutral, PublicKeyToken=827c20e50a9775fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\NaCl.Net.0.1.13\lib\net45\NaCl.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -353,6 +340,12 @@
     <Compile Include="Gui\ExtraForms\HexBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Gui\ExtraForms\NetworkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\NetworkForm.Designer.cs">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\OWMusicForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -514,7 +507,7 @@
     <Compile Include="Gui\RoomMover.Designer.cs">
       <DependentUpon>RoomMover.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\NetZS.cs" />
+    <Compile Include="NetZS.cs" />
     <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
@@ -582,11 +575,6 @@
     <Compile Include="Gui\Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Scripting.evaluator.cs" />
-    <Compile Include="Scripting.Extensions.cs" />
-    <Compile Include="Scripting.native.cs" />
-    <Compile Include="SocketClient.cs" />
-    <Compile Include="SocketServer.cs" />
     <Compile Include="SpriteOWEditor.cs" />
     <Compile Include="SpritesView.cs">
       <SubType>UserControl</SubType>
@@ -676,6 +664,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\HexBox.resx">
       <DependentUpon>HexBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\NetworkForm.resx">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\OWMusicForm.resx">
       <DependentUpon>OWMusicForm.cs</DependentUpon>
@@ -848,7 +839,7 @@
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 et x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

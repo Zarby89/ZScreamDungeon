@@ -401,6 +401,7 @@ namespace ZeldaFullEditor
             this.saveMapsOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveVRAMAsPngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveRoomsToOtherROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportImageMapMultipleROMsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -422,6 +423,7 @@ namespace ZeldaFullEditor
             this.networkBgWorker2 = new System.ComponentModel.BackgroundWorker();
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
+            this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1117,7 +1119,7 @@ namespace ZeldaFullEditor
             this.splitContainer3.Panel2.AutoScroll = true;
             this.splitContainer3.Panel2.Controls.Add(this.entrancetreeView);
             this.splitContainer3.Size = new System.Drawing.Size(292, 664);
-            this.splitContainer3.SplitterDistance = 359;
+            this.splitContainer3.SplitterDistance = 561;
             this.splitContainer3.TabIndex = 9;
             // 
             // panel2
@@ -1166,7 +1168,7 @@ namespace ZeldaFullEditor
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.MinimumSize = new System.Drawing.Size(292, 359);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(292, 359);
+            this.panel2.Size = new System.Drawing.Size(292, 561);
             this.panel2.TabIndex = 61;
             // 
             // EntranceProperties_FloorSel
@@ -1850,7 +1852,7 @@ namespace ZeldaFullEditor
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 99);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -4290,7 +4292,8 @@ namespace ZeldaFullEditor
             this.flipMapHorizontallyToolStripMenuItem,
             this.saveMapsOnlyToolStripMenuItem,
             this.saveVRAMAsPngToolStripMenuItem,
-            this.moveRoomsToOtherROMToolStripMenuItem});
+            this.moveRoomsToOtherROMToolStripMenuItem,
+            this.exportImageMapMultipleROMsToolStripMenuItem});
             this.ExperimentalToolStripMenuItem1.Enabled = false;
             this.ExperimentalToolStripMenuItem1.Name = "ExperimentalToolStripMenuItem1";
             this.ExperimentalToolStripMenuItem1.Size = new System.Drawing.Size(135, 20);
@@ -4300,30 +4303,37 @@ namespace ZeldaFullEditor
             // flipMapHorizontallyToolStripMenuItem
             // 
             this.flipMapHorizontallyToolStripMenuItem.Name = "flipMapHorizontallyToolStripMenuItem";
-            this.flipMapHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.flipMapHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
             this.flipMapHorizontallyToolStripMenuItem.Text = "Flip Map Horizontally";
             this.flipMapHorizontallyToolStripMenuItem.Click += new System.EventHandler(this.flipMapHorizontallyToolStripMenuItem_Click);
             // 
             // saveMapsOnlyToolStripMenuItem
             // 
             this.saveMapsOnlyToolStripMenuItem.Name = "saveMapsOnlyToolStripMenuItem";
-            this.saveMapsOnlyToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.saveMapsOnlyToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
             this.saveMapsOnlyToolStripMenuItem.Text = "Save Maps Only";
             this.saveMapsOnlyToolStripMenuItem.Click += new System.EventHandler(this.saveMapsOnlyToolStripMenuItem_Click);
             // 
             // saveVRAMAsPngToolStripMenuItem
             // 
             this.saveVRAMAsPngToolStripMenuItem.Name = "saveVRAMAsPngToolStripMenuItem";
-            this.saveVRAMAsPngToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.saveVRAMAsPngToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
             this.saveVRAMAsPngToolStripMenuItem.Text = "Save VRAM as PNG";
             this.saveVRAMAsPngToolStripMenuItem.Click += new System.EventHandler(this.saveVRAMAsPngToolStripMenuItem_Click);
             // 
             // moveRoomsToOtherROMToolStripMenuItem
             // 
             this.moveRoomsToOtherROMToolStripMenuItem.Name = "moveRoomsToOtherROMToolStripMenuItem";
-            this.moveRoomsToOtherROMToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.moveRoomsToOtherROMToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
             this.moveRoomsToOtherROMToolStripMenuItem.Text = "Move Rooms to Another ROM…";
             this.moveRoomsToOtherROMToolStripMenuItem.Click += new System.EventHandler(this.moveRoomsToOtherROMToolStripMenuItem_Click);
+            // 
+            // exportImageMapMultipleROMsToolStripMenuItem
+            // 
+            this.exportImageMapMultipleROMsToolStripMenuItem.Name = "exportImageMapMultipleROMsToolStripMenuItem";
+            this.exportImageMapMultipleROMsToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.exportImageMapMultipleROMsToolStripMenuItem.Text = "Export Image Map multiple ROMs";
+            this.exportImageMapMultipleROMsToolStripMenuItem.Click += new System.EventHandler(this.exportImageMapMultipleROMsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -4522,8 +4532,14 @@ namespace ZeldaFullEditor
             // 
             // crc32timer
             // 
-            this.crc32timer.Interval = 60000;
+            this.crc32timer.Enabled = true;
+            this.crc32timer.Interval = 10000;
             this.crc32timer.Tick += new System.EventHandler(this.crc32timer_Tick);
+            // 
+            // exportPNGTimer
+            // 
+            this.exportPNGTimer.Interval = 2000;
+            this.exportPNGTimer.Tick += new System.EventHandler(this.exportPNGTimer_Tick);
             // 
             // DungeonMain
             // 
@@ -4997,6 +5013,8 @@ namespace ZeldaFullEditor
 		private System.ComponentModel.BackgroundWorker networkBgWorker2;
 		private System.Windows.Forms.Timer loadTimer;
 		private System.Windows.Forms.Timer crc32timer;
-	}
+        private System.Windows.Forms.ToolStripMenuItem exportImageMapMultipleROMsToolStripMenuItem;
+        private System.Windows.Forms.Timer exportPNGTimer;
+    }
 }
 

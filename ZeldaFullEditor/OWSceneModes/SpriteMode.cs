@@ -426,6 +426,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		private void SendSpriteData(Sprite spr)
 		{
+			if (!NetZS.connected) { return; }
 			NetZSBuffer buffer = new NetZSBuffer(24);
 			buffer.Write((byte) 07); // sprite data
 			buffer.Write((byte) NetZS.userID); //user ID

@@ -12,6 +12,7 @@ namespace ZeldaFullEditor.Properties
 
 		internal static NetClient client;
 		internal static byte userID;
+		internal static bool connected = false;
 	}
 
 	internal class NetZSBuffer
@@ -58,6 +59,8 @@ namespace ZeldaFullEditor.Properties
 			bufferPos += 4;
 			return i;
 		}
+
+
 		public void Write(byte data)
 		{
 			buffer[bufferPos++] = data;
@@ -81,6 +84,18 @@ namespace ZeldaFullEditor.Properties
 			buffer[bufferPos++] = (byte) (data >> 8);
 			buffer[bufferPos++] = (byte) (data >> 16);
 			buffer[bufferPos++] = (byte) (data >> 24);
+		}
+
+		public void Write(ulong data)
+		{
+			buffer[bufferPos++] = (byte) data;
+			buffer[bufferPos++] = (byte) (data >> 8);
+			buffer[bufferPos++] = (byte) (data >> 16);
+			buffer[bufferPos++] = (byte) (data >> 24);
+			buffer[bufferPos++] = (byte) (data >> 32);
+			buffer[bufferPos++] = (byte) (data >> 40);
+			buffer[bufferPos++] = (byte) (data >> 48);
+			buffer[bufferPos++] = (byte) (data >> 56);
 		}
 	}
 

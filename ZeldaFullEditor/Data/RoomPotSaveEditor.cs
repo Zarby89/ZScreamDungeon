@@ -14,6 +14,7 @@ namespace ZeldaFullEditor
 		public bool bg2 = false;
 		public ushort roomMapId;
 		public int uniqueID = 0;
+		public bool deleted = false;
 		public RoomPotSaveEditor(byte id, ushort roomMapId, int x, int y, bool bg2)
 		{
 			this.id = id;

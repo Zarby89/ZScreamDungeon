@@ -109,6 +109,20 @@ namespace ZeldaFullEditor
 			return (v);
 		}
 
+		public static ushort Clamp(ushort v, int min, int max)
+		{
+			if (v >= max)
+			{
+				v = (ushort) max;
+			}
+			if (v <= min)
+			{
+				v = (ushort) min;
+			}
+
+			return (v);
+		}
+
 		public static byte Clamp(byte v, int min, int max)
 		{
 			if (v >= max)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lidgren.Network;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -413,10 +415,54 @@ namespace ZeldaFullEditor.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			List<ushort> zsnetTiles16ID = new List<ushort>();
+			List<Tile16> zsnetTiles16 = new List<Tile16>();
 			for (int i = 0; i < Constants.NumberOfMap16; i++)
 			{
+				
+				
+
+				if (NetZS.connected)
+				{
+
+					if (scene.ow.tiles16[i].getLongValue() != allTiles[i].getLongValue())
+					{
+
+						zsnetTiles16.Add(allTiles[i]);
+						zsnetTiles16ID.Add((ushort) i);
+
+					}
+				}
+				//check all tiles that changed
+
+
+
 				scene.ow.tiles16[i] = allTiles[i];
 			}
+
+			if (NetZS.connected)
+			{
+				NetZSBuffer buffer = new NetZSBuffer((short)((zsnetTiles16ID.Count * 10) + 8));
+				buffer.Write((byte) 18); // tile data cmd
+				buffer.Write(NetZS.userID); // user id
+				buffer.Write((short)zsnetTiles16ID.Count);  // numbers of tiles changed
+				for(int i = 0;i< zsnetTiles16ID.Count;i++)
+				{
+					buffer.Write(zsnetTiles16ID[i]);
+					buffer.Write((ushort)zsnetTiles16[i].tile0.toShort());
+					buffer.Write((ushort)zsnetTiles16[i].tile1.toShort());
+					buffer.Write((ushort) zsnetTiles16[i].tile2.toShort());
+					buffer.Write((ushort) zsnetTiles16[i].tile3.toShort());
+
+				}
+
+				NetOutgoingMessage msg = NetZS.client.CreateMessage();
+				msg.Write(buffer.buffer);
+				NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+				NetZS.client.FlushSendQueue();
+
+			}
+
 
 			for (int i = 0; i < 0x200; i++)
 			{

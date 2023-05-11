@@ -23,8 +23,8 @@ using System.Globalization;
 using System.Net.Sockets;
 using System.Net;
 using Lidgren.Network;
-using CSScriptLibrary;
-using System.Windows.Markup;
+using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Gui.ExtraForms;
 
 
 // Main
@@ -233,7 +233,7 @@ namespace ZeldaFullEditor
 				roomProperty_tag2.Items.Add(s.ToString());
 			}
 		}
-
+		bool saveAs = false;
 		//Stopwatch sw = new Stopwatch();
 		// TODO : Move that to the save class
 		public void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -243,20 +243,46 @@ namespace ZeldaFullEditor
 
 			//sw.Reset();
 			//sw.Start();
-			foreach (Room r in opened_rooms)
+			if (!saveAs)
 			{
-				if (r.has_changed)
+				if (NetZS.connected)
 				{
-					foreach (TabPage tp in tabControl2.TabPages)
+					if (host == false)
 					{
-						tp.Text = tp.Text.Trim('*');
-					}
 
-					DungeonsData.all_rooms[r.index] = (Room) r.Clone();
-					r.has_changed = false;
-					DungeonsData.all_rooms[r.index].has_changed = false;
+						//request a save to the server !;
+						NetZSBuffer buffer = new NetZSBuffer(4);
+						buffer.Write((byte) 64); // save request
+						buffer.Write((byte) NetZS.userID); //user ID
+
+						NetOutgoingMessage msg = NetZS.client.CreateMessage();
+						msg.Write(buffer.buffer);
+						NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+						NetZS.client.FlushSendQueue();
+						return;
+					}
 				}
 			}
+			saveAs = false;
+
+			if (!NetZS.connected)
+			{
+				foreach (Room r in opened_rooms)
+				{
+					if (r.has_changed)
+					{
+						foreach (TabPage tp in tabControl2.TabPages)
+						{
+							tp.Text = tp.Text.Trim('*');
+						}
+
+						DungeonsData.all_rooms[r.index] = (Room) r.Clone();
+						r.has_changed = false;
+						DungeonsData.all_rooms[r.index].has_changed = false;
+					}
+				}
+			}
+
 
 			anychange = false;
 			//tabControl2.Refresh();
@@ -1100,6 +1126,7 @@ namespace ZeldaFullEditor
 
 		public void undoButton_Click(object sender, EventArgs e)
 		{
+
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
 				//activeScene.Undo();
@@ -1329,7 +1356,7 @@ namespace ZeldaFullEditor
 						}
 					}
 				}
-
+				activeScene.SendObjectsData();
 				activeScene.DrawRoom();
 				activeScene.Refresh();
 				activeScene.mouse_down = false;
@@ -1376,7 +1403,7 @@ namespace ZeldaFullEditor
 						}
 					}
 				}
-
+				activeScene.SendObjectsData();
 				activeScene.DrawRoom();
 				activeScene.Refresh();
 				activeScene.mouse_down = false;
@@ -1477,7 +1504,7 @@ namespace ZeldaFullEditor
 
 					activeScene.updating_info = false;
 				}
-
+				activeScene.SendObjectsData();
 				activeScene.DrawRoom();
 				activeScene.Refresh();
 			}
@@ -1496,6 +1523,7 @@ namespace ZeldaFullEditor
 						o.layer = 2;
 					}
 
+					activeScene.SendObjectsData();
 					activeScene.updating_info = false;
 				}
 
@@ -1864,37 +1892,18 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				Room r = (Room) DungeonsData.all_rooms[roomId].Clone();
 
-				/*
-                if (DungeonsData.undoRoom[r.index].Count == 0)
-                {
-                    DungeonsData.undoRoom[r.index].Add((Room)r.Clone());
-                    DungeonsData.redoRoom[r.index].Clear();
-                    undoButton.Enabled = false;
-                    undoToolStripMenuItem.Enabled = false;
-                }
-                else
-                {
-                    undoButton.Enabled = true;
-                    undoToolStripMenuItem.Enabled = true;
-                }
-                */
 
-				/*
-                if (DungeonsData.redoRoom[r.index].Count > 0)
-                {
-                    redoButton.Enabled = true;
-                    redoToolStripMenuItem.Enabled = true;
-                }
-                else
-                {
-                    redoButton.Enabled = false;
-                    redoToolStripMenuItem.Enabled = false;
-                }
-                */
+				Room r;
+				if (NetZS.connected)
+				{
+					r = DungeonsData.all_rooms[roomId];
+				}
+				else
+				{
+					r = (Room) DungeonsData.all_rooms[roomId].Clone();
+				}
 
-				//mapPropertyGrid.SelectedObject = r;
 
 				opened_rooms.Add(r); // Add the double clicked room into rooms list
 				activeScene.room = r;
@@ -2185,6 +2194,7 @@ namespace ZeldaFullEditor
 				projectFilename = sf.FileName;
 				ROMStructure.ProjectName = sf.FileName;
 				saveToolStripMenuItem_Click(sender, e);
+				saveAs = true;
 			}
 		}
 
@@ -2348,12 +2358,12 @@ namespace ZeldaFullEditor
 				selectedEntrance.cameraBoundaryQE = (byte) EntranceProperty_BoundaryQE.HexValue;
 				selectedEntrance.cameraBoundaryFE = (byte) EntranceProperty_BoundaryFE.HexValue;
 
-				selectedEntrance.XPosition = (short) EntranceProperties_PlayerX.HexValue;
-				selectedEntrance.YPosition = (short) EntranceProperties_PlayerY.HexValue;
-				selectedEntrance.CameraX = (short) EntranceProperties_CameraY.HexValue;
-				selectedEntrance.CameraY = (short) EntranceProperties_CameraX.HexValue;
-				selectedEntrance.CameraTriggerX = (short) EntranceProperties_CameraTriggerX.HexValue;
-				selectedEntrance.CameraTriggerY = (short) EntranceProperties_CameraTriggerY.HexValue;
+				selectedEntrance.XPosition = (ushort) EntranceProperties_PlayerX.HexValue;
+				selectedEntrance.YPosition = (ushort) EntranceProperties_PlayerY.HexValue;
+				selectedEntrance.CameraX = (ushort) EntranceProperties_CameraY.HexValue;
+				selectedEntrance.CameraY = (ushort) EntranceProperties_CameraX.HexValue;
+				selectedEntrance.CameraTriggerX = (ushort) EntranceProperties_CameraTriggerX.HexValue;
+				selectedEntrance.CameraTriggerY = (ushort) EntranceProperties_CameraTriggerY.HexValue;
 
 				//Console.WriteLine("Pos X: " + EntranceProperties_PlayerX.HexValue.ToString() + " Pos Y: " + EntranceProperties_PlayerY.HexValue.ToString());
 				//Console.WriteLine("Camera X: " + EntranceProperties_CameraX.HexValue.ToString() + " Camera Y: " + EntranceProperties_CameraY.HexValue.ToString());
@@ -2448,6 +2458,20 @@ namespace ZeldaFullEditor
 		// TODO copy
 		private void CloseTab(int i)
 		{
+			if (NetZS.connected)
+			{
+				closeRoom((tabControl2.TabPages[i].Tag as Room).index);
+				this.tabControl2.TabPages.RemoveAt(i);
+				if (tabControl2.TabPages.Count == 0)
+				{
+					tabControl2.Visible = false;
+					activeScene.Clear();
+					activeScene.room = null;
+					activeScene.Refresh();
+				}
+				return;
+			}
+
 			if ((tabControl2.TabPages[i].Tag as Room).has_changed)
 			{
 				switch (UIText.WarnAboutSaving(UIText.RoomWarning))
@@ -5219,7 +5243,7 @@ namespace ZeldaFullEditor
 		}
 
 		NetServer server;
-		
+		bool connected = false;
 		bool host = false;
 		List<NetPeer> allClients = new List<NetPeer>();
 		NetPeer connectedTo;
@@ -5235,12 +5259,11 @@ namespace ZeldaFullEditor
 			config.EnableMessageType(NetIncomingMessageType.Error);
 			config.EnableMessageType(NetIncomingMessageType.DebugMessage);
 			config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
-			
 
 			server = new NetServer(config);
 			server.Start();
 			host = true;
-			
+			NetZS.connected = true;
 
 
 
@@ -5253,11 +5276,25 @@ namespace ZeldaFullEditor
 				Console.WriteLine("Server not started...");
 			}
 			networkBgWorker.RunWorkerAsync();
+			addNetworkPanel();
 
+			networkstatusLabel.Text = "Network Status : "  + server.Status.ToString();
 		}
+		Label networkstatusLabel = new Label();
+		Panel networkPanel;
 
+		private void addNetworkPanel()
+		{
+			networkstatusLabel.Dock = DockStyle.Fill;
 
+			networkPanel = new Panel();
+			networkPanel.Height = 24;
 
+			networkPanel.Dock = DockStyle.Top;
+			networkPanel.Controls.Add(networkstatusLabel);
+			this.Controls.Add(networkPanel);
+			menuStrip1.SendToBack();
+		}
 
 		private void joinToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -5273,13 +5310,24 @@ namespace ZeldaFullEditor
 			config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
 
 
+			NetworkForm nf = new NetworkForm();
+			if (nf.ShowDialog() == DialogResult.OK)
+			{
+				NetZS.client = new NetClient(config);
+				NetZS.client.Start();
 
-			NetZS.client = new NetClient(config);
-			NetZS.client.Start();
+				NetZS.client.Connect(new IPEndPoint(NetUtility.Resolve(nf.ip), Convert.ToInt32("14242")));
+				host = false;
+				networkBgWorker.RunWorkerAsync();
+				NetZS.connected = true;
+				networkstatusLabel.Text = "Network Status : " + NetZS.client.ConnectionStatus.ToString();
+				addNetworkPanel();
+			}
 
-			NetZS.client.Connect(new IPEndPoint(NetUtility.Resolve("127.0.0.1"), Convert.ToInt32("14242")));
-			host = false;
-			networkBgWorker.RunWorkerAsync();
+
+
+
+
 		}
 
 
@@ -5323,32 +5371,82 @@ namespace ZeldaFullEditor
 									Console.WriteLine("Client is fully connected and have rom loaded tell the others!");
 									SendBackToOthers(im);
 								}
-								else if (im.Data[0] == 0x03) //checksum request for LW
+								else if (im.Data[0] == 64) // Save signal
+								{
+									Console.WriteLine("Client requested a save!");
+									saveToolStripMenuItem_Click(null, null);
+
+								}
+								else if (im.Data[0] == 03) //checksum request for LW
 								{
 									ServerChecksum(im);
 								}
-								else if (im.Data[0] == 0x06) //entrance data
+								else if (im.Data[0] == 06) //entrance data
 								{
 									ReceivedEntranceData(im);
 									SendBackToOthers(im);
 								}
-								else if (im.Data[0] == 0x07) //sprite data
+								else if (im.Data[0] == 07) //sprite data
 								{
 									ReceivedSpriteData(im);
 									SendBackToOthers(im);
 								}
-								else if (im.Data[0] == 0x08) //exit data
+								else if (im.Data[0] == 08) //exit data
 								{
 									ReceivedExitData(im);
 									SendBackToOthers(im);
 								}
-								else if (im.Data[0] == 0x09) //Item data
+								else if (im.Data[0] == 09) //Item data
 								{
 									ReceivedItemData(im);
 									SendBackToOthers(im);
 								}
+								else if (im.Data[0] == 10) // transport data
+								{
+									ReceivedTransportData(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 11) // transport data
+								{
+									ReceivedGraveData(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 12) // large map changed
+								{
+									ReceivedLargeMapChanged(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 13) // map properties changed
+								{
+									ReceivedMapProperties(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 16) // map properties changed
+								{
+									ReceivedTileDrawOverlay(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 17) // map properties changed
+								{
+									ReceivedTileDrawMoveOverlay(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 18) // tile116 changed
+								{
+									ReceivedTile16Changes(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 19) // room objects moved
+								{
+									ReceivedRoomObjectsMoved(im);
+									SendBackToOthers(im);
+								}
+								else if (im.Data[0] == 20) // room objects resized
+								{
+									ReceivedRoomObjectsResized(im);
+									SendBackToOthers(im);
+								}
 								break;
-
 
 							case NetIncomingMessageType.VerboseDebugMessage:
 							case NetIncomingMessageType.DebugMessage:
@@ -5396,11 +5494,12 @@ namespace ZeldaFullEditor
 
 								if (im.Data[0] == 0) // ROM DATA start also user unique id
 								{
+									networkstatusLabel.Text = "Network Status : Receiving ROM";
 									uniqueUserID = im.Data[1];
 									NetZS.userID = uniqueUserID;
 									break;
 								}
-								if (im.Data[0] == 0x80) // ROM DATA start
+								if (im.Data[0] == 0x80) 
 								{
 									ReceivedWaitSignal(im);
 									break;
@@ -5412,6 +5511,7 @@ namespace ZeldaFullEditor
 								}
 								 if (im.Data[0] == 2) // ROM DATA END
 								{
+									networkstatusLabel.Text = "Network Status : Received ROM";
 									ReceivedROMENDData(im);
 									break;
 								}
@@ -5433,7 +5533,7 @@ namespace ZeldaFullEditor
 									ReceivedTileDrawMove(im);
 									break;
 								}
-								if (im.Data[0] == 0x06) //entrance data
+								if (im.Data[0] == 06) //entrance data
 								{
 									if (im.Data[1] == NetZS.userID)
 									{
@@ -5441,7 +5541,7 @@ namespace ZeldaFullEditor
 									}
 									ReceivedEntranceData(im);
 								}
-								if (im.Data[0] == 0x07) //sprite data
+								if (im.Data[0] == 07) //sprite data
 								{
 									if (im.Data[1] == NetZS.userID)
 									{
@@ -5449,7 +5549,7 @@ namespace ZeldaFullEditor
 									}
 									ReceivedSpriteData(im);
 								}
-								if (im.Data[0] == 0x08) //exit data
+								if (im.Data[0] == 08) //exit data
 								{
 									if (im.Data[1] == NetZS.userID)
 									{
@@ -5457,13 +5557,77 @@ namespace ZeldaFullEditor
 									}
 									ReceivedExitData(im);
 								}
-								if (im.Data[0] == 0x09) //item data
+								if (im.Data[0] == 09) //item data
 								{
 									if (im.Data[1] == NetZS.userID)
 									{
 										break;
 									}
 									ReceivedItemData(im);
+								}
+								if (im.Data[0] == 10) //item data
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedTransportData(im);
+								}
+								if (im.Data[0] == 11) //item data
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedGraveData(im);
+								}
+								if (im.Data[0] == 12) //large map changed
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedLargeMapChanged(im);
+								}
+								if (im.Data[0] == 13) //large map changed
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedMapProperties(im);
+								}
+								if (im.Data[0] == 16) //large map changed
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedTileDrawOverlay(im);
+								}
+								if (im.Data[0] == 17) //large map changed
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedTileDrawMoveOverlay(im);
+								}
+								if (im.Data[0] == 18) //large map changed
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedTile16Changes(im);
+								}
+								if (im.Data[0] == 19) //dungeon objects moved
+								{
+									if (im.Data[1] == NetZS.userID)
+									{
+										break;
+									}
+									ReceivedRoomObjectsMoved(im);
 								}
 								break;
 
@@ -5481,6 +5645,217 @@ namespace ZeldaFullEditor
 					Thread.Sleep(1);
 				}
 			}
+		}
+
+        private void ReceivedRoomObjectsResized(NetIncomingMessage im)
+        {
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 20
+			buffer.ReadByte(); // user id
+			int roomindex = buffer.ReadInt();
+			int uID = buffer.ReadInt(); // tiles changed count
+			Room_Object[] ro = DungeonsData.all_rooms[roomindex].tilesObjects.Where(x => x.uniqueID == uID).ToArray();
+			if (ro.Length == 0)
+			{
+				Console.WriteLine("Oops object ID " + uID + " Is not found!");
+				return;
+			}
+			Room_Object o = ro[0];
+			o.size = buffer.ReadByte();
+			if (activeScene.room == DungeonsData.all_rooms[roomindex])
+			{
+				activeScene.DrawRoom();
+				activeScene.Refresh();
+			}
+		}
+
+        private void ReceivedRoomObjectsMoved(NetIncomingMessage im)
+        {
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 19
+			buffer.ReadByte(); // user id
+			int roomindex = buffer.ReadInt();
+			int count = buffer.ReadInt(); // tiles changed count
+
+			/*buffer.Write((o as Room_Object).uniqueID); // 4bytes
+
+			buffer.Write((o as Room_Object).id);
+			buffer.Write((o as Room_Object).x);
+			buffer.Write((o as Room_Object).y);
+			buffer.Write((o as Room_Object).ox);
+			buffer.Write((o as Room_Object).oy);
+			buffer.Write((o as Room_Object).layer);
+			buffer.Write((o as Room_Object).size);*/
+
+
+			for (int i = 0; i < count; i++)
+			{
+				int uID = buffer.ReadInt(); // tiles changed count
+				Room_Object[] ro = DungeonsData.all_rooms[roomindex].tilesObjects.Where(x => x.uniqueID == uID).ToArray();
+				Room_Object o = null;
+				if (ro.Length == 0)
+				{
+					Console.WriteLine("Oops object ID " + uID + " Is not found! Creating it !");
+					short id = buffer.ReadShort();
+					byte x = buffer.ReadByte();
+					byte y = buffer.ReadByte();
+					byte ox = buffer.ReadByte();
+					byte oy = buffer.ReadByte();
+					byte layer = buffer.ReadByte();
+					byte size = buffer.ReadByte();
+					bool deleted = (bool) (buffer.ReadByte() == 1 ? true : false);
+					short zindex = buffer.ReadShort();
+					
+					if (!deleted)
+					{
+						o = DungeonsData.all_rooms[roomindex].addObject(id, x, y, size, layer);
+						o.uniqueID = uID;
+						DungeonsData.all_rooms[roomindex].tilesObjects.Insert(zindex, o);
+					}
+					
+				}
+				else
+				{
+					o = ro[0];
+					o.id = buffer.ReadShort();
+					o.x = buffer.ReadByte();
+					o.y = buffer.ReadByte();
+					o.nx = o.x;
+					o.ny = o.y;
+					o.ox = buffer.ReadByte();
+					o.oy = buffer.ReadByte();
+					o.layer = buffer.ReadByte();
+					o.size = buffer.ReadByte();
+					bool deleted = (bool) (buffer.ReadByte() == 1 ? true : false);
+					short zindex = buffer.ReadShort();
+					
+
+					DungeonsData.all_rooms[roomindex].tilesObjects.Remove(o);
+					if (!deleted)
+					{
+						DungeonsData.all_rooms[roomindex].tilesObjects.Insert(zindex, o);
+					}
+				}
+				if (o != null)
+				{
+					Console.WriteLine("Moved ObjectID to position " + o.x + " , " + o.y);
+				}
+			}
+			if (activeScene.room == DungeonsData.all_rooms[roomindex])
+			{
+				activeScene.DrawRoom();
+				activeScene.Refresh();
+			}
+
+		}
+
+        private void ReceivedTile16Changes(NetIncomingMessage im)
+        {
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 18
+			buffer.ReadByte(); // user id
+			short count = buffer.ReadShort(); // tiles changed count
+			for(int i = 0;i<count;i++)
+			{
+				ushort tileChanged = buffer.ReadUShort();
+				overworldEditor.scene.ow.tiles16[tileChanged].tile0 = GFX.gettilesinfo(buffer.ReadUShort());
+				overworldEditor.scene.ow.tiles16[tileChanged].tile1 = GFX.gettilesinfo(buffer.ReadUShort());
+				overworldEditor.scene.ow.tiles16[tileChanged].tile2 = GFX.gettilesinfo(buffer.ReadUShort());
+				overworldEditor.scene.ow.tiles16[tileChanged].tile3 = GFX.gettilesinfo(buffer.ReadUShort());
+				overworldEditor.scene.ow.tiles16[tileChanged].tilesinfos = new TileInfo[] 
+				{ 
+					overworldEditor.scene.ow.tiles16[tileChanged].tile0,
+					overworldEditor.scene.ow.tiles16[tileChanged].tile1,
+					overworldEditor.scene.ow.tiles16[tileChanged].tile2,
+					overworldEditor.scene.ow.tiles16[tileChanged].tile3 
+				};
+
+			}
+		}
+
+        private void ReceivedGraveData(NetIncomingMessage im)
+		{
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 11
+			buffer.ReadByte(); // user id
+			int uId = buffer.ReadInt(); // item unique id
+
+			Gravestone[] graves = overworldEditor.scene.ow.graves.Where(x => x.uniqueID == uId).ToArray();
+			Gravestone gravestone = graves[0];
+
+			gravestone.yTilePos = buffer.ReadUShort();
+			gravestone.xTilePos = buffer.ReadUShort();
+			gravestone.tilemapPos = buffer.ReadUShort();
+			gravestone.gfx = buffer.ReadUShort();
+
+
+			overworldEditor.scene.Invalidate();
+			Console.WriteLine("Transport " + uId + " changed!");
+		}
+
+		private void ReceivedTransportData(NetIncomingMessage im)
+		{
+
+
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 10
+			buffer.ReadByte(); // user id
+			int uId = buffer.ReadInt(); // item unique id
+			TransportOW[] transports = overworldEditor.scene.ow.allWhirlpools.Where(x => x.uniqueID == uId).ToArray();
+			TransportOW transport = transports[0];
+			transport.unk1 = buffer.ReadByte();
+			transport.unk2 = buffer.ReadByte();
+			transport.AreaX = buffer.ReadByte();
+			transport.AreaY = buffer.ReadByte();
+
+			transport.vramLocation = buffer.ReadShort();
+			transport.xScroll = buffer.ReadShort();
+			transport.yScroll = buffer.ReadShort();
+			transport.playerX = buffer.ReadShort();
+			transport.playerY = buffer.ReadShort();
+			transport.cameraX = buffer.ReadShort();
+			transport.cameraY = buffer.ReadShort();
+			transport.mapId = buffer.ReadShort();
+			transport.whirlpoolPos = buffer.ReadShort();
+
+
+			overworldEditor.scene.Invalidate();
+			Console.WriteLine("Transport " + uId + " changed!");
+
+
+		}
+
+		private void ReceivedItemData(NetIncomingMessage im)
+		{
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 09
+			buffer.ReadByte(); // user id
+
+			int uId = buffer.ReadInt(); // item unique id
+			RoomPotSaveEditor[] items = overworldEditor.scene.ow.allitems.Where(x => x.uniqueID == uId).ToArray();
+			RoomPotSaveEditor item = null;
+			if (items.Length == 0)
+			{
+				item = new RoomPotSaveEditor(0,0,0,0,false);
+				item.uniqueID = uId;
+				overworldEditor.scene.ow.allitems.Add(item);
+			}
+			else
+			{
+				item = items[0];
+			}
+
+
+			item.gameX = buffer.ReadByte();
+			item.gameY = buffer.ReadByte();
+			item.id = buffer.ReadByte();
+			item.x = buffer.ReadInt();
+			item.y = buffer.ReadInt();
+			item.roomMapId = buffer.ReadUShort();
+			item.bg2 = (buffer.ReadByte() == 1 ? true : false);
+			item.deleted = (buffer.ReadByte() == 1 ? true : false);
+			overworldEditor.scene.Invalidate();
+			Console.WriteLine("Item " + uId + " changed!");
 		}
 
 		private void ReceivedSpriteData(NetIncomingMessage im)
@@ -5525,7 +5900,18 @@ namespace ZeldaFullEditor
 			buffer.ReadByte(); // user id
 			int uId = buffer.ReadInt(); // unique id
 			byte eId = buffer.ReadByte(); // entrance id
-			EntranceOWEditor entrance = overworldEditor.scene.ow.allentrances.Where(x=> x.uniqueID == uId).ToArray()[0];
+			EntranceOWEditor entrance = null;
+			EntranceOWEditor[] entrances = overworldEditor.scene.ow.allentrances.Where(x => x.uniqueID == uId).ToArray();
+			if (entrances.Length == 0)
+			{
+				EntranceOWEditor[] entrancesHoles = overworldEditor.scene.ow.allholes.Where(x => x.uniqueID == uId).ToArray();
+				entrance = entrancesHoles[0];
+			}
+			else
+			{
+				entrance = entrances[0];
+			}
+
 			entrance.entranceId = eId;
 			entrance.mapPos = buffer.ReadUShort();
 			entrance.x = buffer.ReadInt();
@@ -5637,18 +6023,94 @@ namespace ZeldaFullEditor
 				//this.Enabled = true;
 			}
 		}
+		private void ReceivedLargeMapChanged(NetIncomingMessage im)
+		{
+
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 12
+			buffer.ReadByte(); // user id
+			int map = buffer.ReadInt(); // unique id
+			bool largeCheck = (buffer.ReadByte() == 1 ? true : false);
+			overworldEditor.UpdateLargeMap(map, largeCheck);
+		}
+
+
+
+		private void ReceivedMapProperties(NetIncomingMessage im)
+		{
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 13
+			buffer.ReadByte(); // user id
+			byte map = buffer.ReadByte(); // map id
+
+			OverworldMap[] owmaps = overworldEditor.scene.ow.allmaps.Where(x => x.index == map).ToArray();
+			OverworldMap owmap = null;
+			if (owmaps.Length > 0)
+			{
+				owmap = owmaps[0];
+
+				owmap.palette = buffer.ReadByte();
+				owmap.gfx = buffer.ReadByte();
+				owmap.messageID = buffer.ReadShort();
+				byte state = buffer.ReadByte();
+				owmap.sprgfx[state] = buffer.ReadByte();
+				owmap.sprpalette[state] = buffer.ReadByte();
+				overworldEditor.UpdateGUIProperties(owmap, state);
+
+
+				if (owmap.largeMap)
+				{
+					overworldEditor.scene.ow.allmaps[owmap.index + 1].gfx = owmap.gfx;
+					overworldEditor.scene.ow.allmaps[owmap.index + 1].sprgfx = owmap.sprgfx;
+					overworldEditor.scene.ow.allmaps[owmap.index + 1].palette = owmap.palette;
+					overworldEditor.scene.ow.allmaps[owmap.index + 1].sprpalette = owmap.sprpalette;
+
+					overworldEditor.scene.ow.allmaps[owmap.index + 8].gfx = owmap.gfx;
+					overworldEditor.scene.ow.allmaps[owmap.index + 8].sprgfx = owmap.sprgfx;
+					overworldEditor.scene.ow.allmaps[owmap.index + 8].palette = owmap.palette;
+					overworldEditor.scene.ow.allmaps[owmap.index + 8].sprpalette = owmap.sprpalette;
+
+					overworldEditor.scene.ow.allmaps[owmap.index + 9].gfx = owmap.gfx;
+					overworldEditor.scene.ow.allmaps[owmap.index + 9].sprgfx = owmap.sprgfx;
+					overworldEditor.scene.ow.allmaps[owmap.index + 9].palette = owmap.palette;
+					overworldEditor.scene.ow.allmaps[owmap.index + 9].sprpalette = owmap.sprpalette;
+
+					owmap.BuildMap();
+					overworldEditor.scene.ow.allmaps[owmap.index + 1].BuildMap();
+					overworldEditor.scene.ow.allmaps[owmap.index + 8].BuildMap();
+					overworldEditor.scene.ow.allmaps[owmap.index + 9].BuildMap();
+				}
+
+
+				overworldEditor.scene.Invalidate();
+
+			}
+
+
+
+
+		}
+
 
 		private void ReceivedTileDrawMove(NetIncomingMessage im)
 		{
-			int tileX = im.Data[2] | im.Data[3] << 8 | im.Data[4] << 16 | im.Data[5] << 24;
-			int tileY = im.Data[6] | im.Data[7] << 8 | im.Data[8] << 16 | im.Data[9] << 24;
-			int tilesizex = im.Data[10] | im.Data[11] << 8 | im.Data[12] << 16 | im.Data[13] << 24;
-			int tilecount = im.Data[14] | im.Data[15] << 8 | im.Data[16] << 16 | im.Data[17] << 24;
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 16
+			buffer.ReadByte(); // user id
+
+			int tileX = buffer.ReadInt();
+			int tileY = buffer.ReadInt();
+			int tilesizex = buffer.ReadInt();
+			byte worldoffset = buffer.ReadByte(); // user id
+			int tilecount = buffer.ReadInt();
+
+
 			ushort[] selectedTiles = new ushort[tilecount];
 			for (int i = 0; i < tilecount; i++)
 			{
-				selectedTiles[i] = (ushort) (im.Data[(i * 2) + 24] | (im.Data[(i * 2) + 25] << 8));
+				selectedTiles[i] = (ushort) buffer.ReadUShort();
 			}
+
 
 			int y = 0;
 			int x = 0;
@@ -5657,7 +6119,7 @@ namespace ZeldaFullEditor
 			{
 				int superX = ((tileX + x) / 32);
 				int superY = ((tileY + y) / 32);
-				int mapId = (superY * 8) + superX + overworldEditor.scene.ow.worldOffset;
+				int mapId = (superY * 8) + superX + worldoffset;
 
 				if (tileX + x < 256 && tileY + y < 256)
 				{
@@ -5675,18 +6137,28 @@ namespace ZeldaFullEditor
 			overworldEditor.scene.Invalidate();
 		}
 
+
+
 		private void ReceivedTileDraw(NetIncomingMessage im)
 		{
-			
-			int tileX = im.Data[2] | im.Data[3] << 8 | im.Data[4] << 16 | im.Data[5] << 24;
-			int tileY = im.Data[6] | im.Data[7] << 8 | im.Data[8] << 16 | im.Data[9] << 24;
-			int tilesizex = im.Data[10] | im.Data[11] << 8 | im.Data[12] << 16 | im.Data[13] << 24;
-			int tilecount = im.Data[14] | im.Data[15] << 8 | im.Data[16] << 16 | im.Data[17] << 24;
+
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 16
+			buffer.ReadByte(); // user id
+
+			int tileX = buffer.ReadInt();
+			int tileY = buffer.ReadInt();
+			int tilesizex = buffer.ReadInt();
+			byte worldoffset = buffer.ReadByte(); // user id
+			int tilecount = buffer.ReadInt();
+
+
 			ushort[] selectedTiles = new ushort[tilecount];
 			for (int i = 0; i < tilecount; i++)
 			{
-				selectedTiles[i] = (ushort) (im.Data[(i * 2) + 24] | (im.Data[(i * 2) + 25] << 8));
+				selectedTiles[i] = (ushort) buffer.ReadUShort();
 			}
+
 
 			int y = 0;
 			int x = 0;
@@ -5695,7 +6167,7 @@ namespace ZeldaFullEditor
 			{
 				int superX = ((tileX + x) / 32);
 				int superY = ((tileY + y) / 32);
-				int mapId = (superY * 8) + superX + overworldEditor.scene.ow.worldOffset;
+				int mapId = (superY * 8) + superX + worldoffset;
 				overworldEditor.scene.ow.allmaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
 				overworldEditor.scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], overworldEditor.scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
 				x++;
@@ -5720,8 +6192,10 @@ namespace ZeldaFullEditor
 			Console.WriteLine("AFTER project!");
 			//this.Enabled = true;
 
-			crc32timer.Enabled = true; ;
+			crc32timer.Enabled = true;
 			crc32timer.Start();
+
+			networkstatusLabel.Text = "Network Status : Connected";
 
 			byte[] data = new byte[02] { 0x80, 0x01 }; // send signal we are no longer waiting !
 			NetOutgoingMessage msg = NetZS.client.CreateMessage();
@@ -5785,7 +6259,7 @@ namespace ZeldaFullEditor
 
 		private void crc32timer_Tick(object sender, EventArgs e)
 		{
-			int checksum = 0;
+			/*int checksum = 0;
 			for(int x = 0; x < 256; x++ )
 			{
 				for (int y = 0; y < 256; y++)
@@ -5800,8 +6274,282 @@ namespace ZeldaFullEditor
 			NetOutgoingMessage msg = NetZS.client.CreateMessage();
 			msg.Write(data);
 			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-			NetZS.client.FlushSendQueue();
+			NetZS.client.FlushSendQueue();*/
+
+			if (!NetZS.connected)
+			{
+				return;
+			}
+			if (host)
+			{
+				networkstatusLabel.Text =  "Network Status : " + server.Status.ToString();
+			}
+			else
+			{
+				networkstatusLabel.Text = "Network Status : " + NetZS.client.ConnectionStatus.ToString();
+			}
+			
+
+
 		}
 
-	}
+
+
+		private void ReceivedTileDrawMoveOverlay(NetIncomingMessage im) //17
+		{
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 16
+			buffer.ReadByte(); // user id
+
+			int tileX = buffer.ReadInt();
+			int tileY = buffer.ReadInt();
+			int tilesizex = buffer.ReadInt();
+			bool deleting = buffer.ReadByte() == 1 ? true : false; // user id
+			byte worldoffset = buffer.ReadByte(); // user id
+			int tilecount = buffer.ReadInt();
+
+
+			ushort[] selectedTiles = new ushort[tilecount];
+			for (int i = 0; i < tilecount; i++)
+			{
+				selectedTiles[i] = (ushort) buffer.ReadUShort();
+			}
+
+
+			int y = 0;
+			int x = 0;
+
+			int superX = ((tileX + x) / 32);
+			int superY = ((tileY + y) / 32);
+			int mapId = (superY * 8) + superX + worldoffset;
+
+			int mid = overworldEditor.scene.ow.allmaps[mapId].parent;
+			int superMX = (mid % 8) * 32;
+			int superMY = (mid / 8) * 32;
+
+			for (int i = 0; i < selectedTiles.Length; i++)
+			{
+				superX = ((tileX + x) / 32);
+				superY = ((tileY + y) / 32);
+				mapId = (superY * 8) + superX + worldoffset;
+				if (tileX + x < 255 && tileY + y < 255)
+				{
+					/*
+					undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
+					scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+					scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
+					*/
+
+					TilePos tp = new TilePos((byte) ((tileX + x) - (superMX)), (byte) ((tileY + y) - (superMY)), selectedTiles[i]);
+					TilePos tf = overworldEditor.scene.compareTilePosT(tp, overworldEditor.scene.ow.alloverlays[mid].tilesData.ToArray());
+					if (deleting)
+					{
+						overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
+						x++;
+						if (x >= tilesizex)
+						{
+							y++;
+							x = 0;
+						}
+
+						continue;
+					}
+
+					if (tf == null)
+					{
+						overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+					}
+					else
+					{
+						overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
+						overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+					}
+				}
+
+				x++;
+				if (x >= tilesizex)
+				{
+					y++;
+					x = 0;
+				}
+			}
+
+
+			overworldEditor.scene.Invalidate();
+		}
+
+
+
+		private void ReceivedTileDrawOverlay(NetIncomingMessage im)//16
+		{
+			NetZSBuffer buffer = new NetZSBuffer(im.Data);
+			buffer.ReadByte(); // cmd id 16
+			buffer.ReadByte(); // user id
+
+			int tileX = buffer.ReadInt();
+			int tileY = buffer.ReadInt();
+			int tilesizex = buffer.ReadInt();
+			bool deleting = buffer.ReadByte() == 1 ? true : false; // user id
+			byte worldoffset = buffer.ReadByte(); // user id
+			int tilecount = buffer.ReadInt();
+			
+
+			ushort[] selectedTiles = new ushort[tilecount];
+			for (int i = 0; i < tilecount; i++)
+			{
+				selectedTiles[i] = (ushort) buffer.ReadUShort();
+			}
+
+			int y = 0;
+			int x = 0;
+
+
+			int superX = ((tileX + x) / 32);
+			int superY = ((tileY + y) / 32);
+			int mapId = (superY * 8) + superX + worldoffset;
+
+			int mid = overworldEditor.scene.ow.allmaps[mapId].parent;
+			int superMX = (mid % 8) * 32;
+			int superMY = (mid / 8) * 32;
+
+			for (int i = 0; i < selectedTiles.Length; i++)
+			{
+				superX = ((tileX + x) / 32);
+				superY = ((tileY + y) / 32);
+				mapId = (superY * 8) + superX + worldoffset;
+
+				/*
+				undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
+				scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+				scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
+				*/
+
+				TilePos tp = new TilePos((byte) ((tileX + x) - (superMX)), (byte) ((tileY + y) - (superMY)), selectedTiles[i]);
+				TilePos tf = overworldEditor.scene.compareTilePosT(tp, overworldEditor.scene.ow.alloverlays[mid].tilesData.ToArray());
+
+
+				if (deleting)
+				{
+					overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
+					x++;
+					if (x >= tilesizex)
+					{
+						y++;
+						x = 0;
+					}
+
+					continue;
+				}
+
+				if (tf == null)
+				{
+					overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+				}
+				else
+				{
+					overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
+					overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+				}
+
+				x++;
+				if (x >= tilesizex)
+				{
+					y++;
+					x = 0;
+				}
+			}
+			overworldEditor.scene.Invalidate();
+		}
+
+        private void exportImageMapMultipleROMsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+			/*	while(true)
+			{
+				string romDigit = romID.ToString("D2");
+				Console.WriteLine("Starting ROM " + romDigit);
+				if (romID >= 58)
+				{
+					exportPNGTimer.Stop();
+					exportPNGTimer.Enabled = false;
+					break;
+				}
+				FileStream fs = new FileStream(Path.GetDirectoryName(projectFilename) + "\\rom" + romDigit + ".sfc", FileMode.Open);
+				fs.Read(ROM.DATA, 0, ROM.DATA.Length);
+				fs.Close();
+
+				overworldEditor.overworld = new Overworld();
+				overworldEditor.InitOpen(this);
+
+
+				overworldEditor.scene.Refresh();
+
+				Thread.Sleep(500);
+
+
+				Bitmap temp = new Bitmap(4096, 4096);
+				Graphics g = Graphics.FromImage(temp);
+
+				if (OverworldEditor.UseAreaSpecificBgColor)
+				{
+					for (int i = 0; i < 64; i++)
+					{
+						int x = (i % 8) * 512;
+						int y = (i / 8) * 512;
+
+						int k = overworldEditor.overworld.allmaps[i].parent;
+						g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k]), new Rectangle(x, y, 512, 512));
+					}
+				}
+				else
+				{
+					g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
+				}
+
+				for (int i = 0; i < 64; i++)
+				{
+					int x = (i % 8) * 512;
+					int y = (i / 8) * 512;
+
+					g.DrawImage(overworldEditor.overworld.allmaps[i].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+				}
+
+				temp.Save("MULTILW" + romDigit + ".png");
+				romID++;
+				Console.WriteLine("Starting exporting");
+
+				for (int i = 0; i < 159; i++)
+				{
+					overworldEditor.scene.ow.allmaps[i].tilesUsed = null;
+					overworldEditor.scene.ow.allmaps[i] = null;
+
+
+				}
+
+
+				overworldEditor.scene.ow.allBirds.Clear();
+				overworldEditor.scene.ow.allBirds = null;
+				overworldEditor.scene.ow.allentrances = null;
+				overworldEditor.scene.ow.allexits = null;
+				overworldEditor.scene.ow.allholes = null;
+				overworldEditor.scene.ow.allmaps = null;
+				overworldEditor.scene.ow.allmapsTilesDW = null;
+				overworldEditor.scene.ow.allmapsTilesLW = null;
+				overworldEditor.scene.ow.allmapsTilesSP = null;
+				overworldEditor.scene.ow.alloverlays = null;
+				overworldEditor.scene.ow.allWhirlpools = null;
+				overworldEditor.scene.ow.allTilesTypes = null;
+				overworldEditor.scene.ow.map16tiles = null;
+				overworldEditor.scene.ow.tiles32 = null;
+				overworldEditor.scene.ow = null;
+				overworldEditor.scene = null;
+			}*/
+		}
+
+	int romID = 00;
+		private void exportPNGTimer_Tick(object sender, EventArgs e)
+        {
+			
+
+		}
+    }
 }

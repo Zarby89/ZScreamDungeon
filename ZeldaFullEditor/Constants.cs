@@ -391,6 +391,8 @@ namespace ZeldaFullEditor
 		//===========================================================================================
 		public static int entrance_room = 0x14813; // 0x14577 // Word value for each room
 		public static int entrance_scrolledge = 0x1491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+		//TODO: Swap CameraX and CameraY position because X is stored first!!
+
 		public static int entrance_cameray = 0x14D45; // 0x14AA9 // 2bytes each room
 		public static int entrance_camerax = 0x14E4F; // 0x14BB3 // 2bytes
 		public static int entrance_yposition = 0x14F59; //0x14CBD 2bytes

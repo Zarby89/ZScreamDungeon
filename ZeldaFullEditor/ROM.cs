@@ -24,6 +24,9 @@ namespace ZeldaFullEditor
 		public static int uniqueItemID = 0;
 		public static int uniqueEntranceID = 0;
 		public static int uniqueExitID = 0;
+		public static int uniqueTransportID = 0;
+		public static int uniqueRoomObjectID = 0;
+		public static int uniqueGraveID = 0;
 		public static void StartBlockLogWriting(string name, int addr)
 		{
 			//romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") +" [Block of Data](" + name + ")\r\n");

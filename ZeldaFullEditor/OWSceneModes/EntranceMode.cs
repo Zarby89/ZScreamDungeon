@@ -683,6 +683,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void SendEntranceData(EntranceOWEditor entrance)
 		{
+			if (!NetZS.connected) { return; }
 			NetZSBuffer buffer = new NetZSBuffer(24);
 			buffer.Write((byte) 06); // entrance data
 			buffer.Write((byte) NetZS.userID); //user ID

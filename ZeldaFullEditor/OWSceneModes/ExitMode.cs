@@ -290,6 +290,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				scene.ow.allexits[index] = exitPropForm.editingExit;
 				lastselectedExit = scene.ow.allexits[index];
 				scene.selectedMode = ObjectMode.Exits;
+				
 				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 			}
 			else if (dr == DialogResult.Yes)
@@ -325,6 +326,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				scene.selectedMode = ObjectMode.Exits;
 			}
 
+			SendExitData(lastselectedExit);
 			selectedExit = null;
 			scene.mouse_down = false;
 		}
@@ -526,6 +528,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void SendExitData(ExitOW exit)
 		{
+			if (!NetZS.connected) { return; }
 			NetZSBuffer buffer = new NetZSBuffer(48);
 			buffer.Write((byte) 08); // entrance data
 			buffer.Write((byte) NetZS.userID); //user ID

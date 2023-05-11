@@ -418,7 +418,7 @@
             this.roomUpDown.HexValue = 0;
             this.roomUpDown.Location = new System.Drawing.Point(15, 25);
             this.roomUpDown.MaxLength = 3;
-            this.roomUpDown.MaxValue = 295;
+            this.roomUpDown.MaxValue = 4095;
             this.roomUpDown.MinValue = 0;
             this.roomUpDown.Name = "roomUpDown";
             this.roomUpDown.Size = new System.Drawing.Size(92, 20);

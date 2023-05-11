@@ -181,36 +181,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					{
 						if (scene.selectedTile.Length >= 1)
 						{
-							byte[] data = new byte[(scene.selectedTile.Length * 2)+24];
-							data[0] = 04;
-							data[1] = NetZS.userID;
-							data[2] = (byte) scene.globalmouseTileDownX;
-							data[3] = (byte) (scene.globalmouseTileDownX>>8);
-							data[4] = (byte) (scene.globalmouseTileDownX>>16);
-							data[5] = (byte) (scene.globalmouseTileDownX>>24);
-							data[6] = (byte) scene.globalmouseTileDownY;
-							data[7] = (byte) (scene.globalmouseTileDownY >> 8);
-							data[8] = (byte) (scene.globalmouseTileDownY >> 16);
-							data[9] = (byte) (scene.globalmouseTileDownY >> 24);
-							data[10] = (byte) scene.selectedTileSizeX;
-							data[11] = (byte) (scene.selectedTileSizeX >> 8);
-							data[12] = (byte) (scene.selectedTileSizeX >> 16);
-							data[13] = (byte) (scene.selectedTileSizeX >> 24);
-
-							data[14] = (byte) scene.selectedTile.Length;
-							data[15] = (byte) (scene.selectedTile.Length >> 8);
-							data[16] = (byte) (scene.selectedTile.Length >> 16);
-							data[17] = (byte) (scene.selectedTile.Length >> 24);
-							for (int i =0;i<scene.selectedTile.Length;i++)
-							{
-								data[(i * 2)+24] = (byte)scene.selectedTile[i];
-								data[(i * 2)+25] = (byte) (scene.selectedTile[i]>>8);
-							}
-							// write tiles
-							NetOutgoingMessage msg = NetZS.client.CreateMessage();
-							msg.Write(data);
-							NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-							NetZS.client.FlushSendQueue();
+							SendTileData();
 
 
 							int y = 0;
@@ -255,6 +226,8 @@ namespace ZeldaFullEditor.OWSceneModes
 				}
 			}
 		}
+
+
 
 		public void OnMouseUp(MouseEventArgs e)
 		{
@@ -441,37 +414,7 @@ namespace ZeldaFullEditor.OWSceneModes
 									int x = 0;
 
 
-									byte[] data = new byte[(scene.selectedTile.Length * 2) + 24];
-									data[0] = 05;
-									data[1] = NetZS.userID;
-									data[2] = (byte) tileX;
-									data[3] = (byte) (tileX >> 8);
-									data[4] = (byte) (tileX >> 16);
-									data[5] = (byte) (tileX >> 24);
-									data[6] = (byte) tileY;
-									data[7] = (byte) (tileY >> 8);
-									data[8] = (byte) (tileY >> 16);
-									data[9] = (byte) (tileY >> 24);
-									data[10] = (byte) scene.selectedTileSizeX;
-									data[11] = (byte) (scene.selectedTileSizeX >> 8);
-									data[12] = (byte) (scene.selectedTileSizeX >> 16);
-									data[13] = (byte) (scene.selectedTileSizeX >> 24);
-
-									data[14] = (byte) scene.selectedTile.Length;
-									data[15] = (byte) (scene.selectedTile.Length >> 8);
-									data[16] = (byte) (scene.selectedTile.Length >> 16);
-									data[17] = (byte) (scene.selectedTile.Length >> 24);
-									for (int i = 0; i < scene.selectedTile.Length; i++)
-									{
-										data[(i * 2) + 24] = (byte) scene.selectedTile[i];
-										data[(i * 2) + 25] = (byte) (scene.selectedTile[i] >> 8);
-									}
-									// write tiles
-									NetOutgoingMessage msg = NetZS.client.CreateMessage();
-									msg.Write(data);
-									NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-									NetZS.client.FlushSendQueue();
-
+									SendTileDataMove(tileX, tileY);
 
 
 									for (int i = 0; i < scene.selectedTile.Length; i++)
@@ -591,6 +534,58 @@ namespace ZeldaFullEditor.OWSceneModes
                     */
 				}
 			}
+		}
+
+
+
+		private void SendTileData()
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer((short) (24 + (scene.selectedTile.Length * 2)));
+			buffer.Write((byte) 04); // tile data cmd
+			buffer.Write((byte) NetZS.userID); // user id
+			buffer.Write((int) scene.globalmouseTileDownX);
+			buffer.Write((int) scene.globalmouseTileDownY);
+			buffer.Write((int) scene.selectedTileSizeX);
+			buffer.Write((byte) scene.ow.worldOffset);
+			buffer.Write((int) scene.selectedTile.Length);
+			for (int i = 0; i < scene.selectedTile.Length; i++)
+			{
+				buffer.Write((ushort) scene.selectedTile[i]);
+			}
+			// write tiles
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
+		}
+
+
+		private void SendTileDataMove(int tileX, int tileY)
+		{
+			if (!NetZS.connected) { return; }
+
+
+
+			NetZSBuffer buffer = new NetZSBuffer((short) (24 + (scene.selectedTile.Length * 2)));
+			buffer.Write((byte) 05); // tile data cmd
+			buffer.Write((byte) NetZS.userID); // user id
+			buffer.Write((int) tileX);
+			buffer.Write((int) tileY);
+			buffer.Write((int) scene.selectedTileSizeX);
+			buffer.Write((byte) scene.ow.worldOffset); // tile data cmd
+			buffer.Write((int) scene.selectedTile.Length);
+			for (int i = 0; i < scene.selectedTile.Length; i++)
+			{
+				buffer.Write((ushort) scene.selectedTile[i]);
+			}
+			// write tiles
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
 		}
 	}
 }

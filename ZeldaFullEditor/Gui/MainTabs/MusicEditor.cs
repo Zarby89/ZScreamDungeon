@@ -8,7 +8,6 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Mono.CSharp;
 using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor.Gui.MainTabs

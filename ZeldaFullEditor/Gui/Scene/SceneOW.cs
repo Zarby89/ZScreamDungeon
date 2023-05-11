@@ -389,15 +389,14 @@ namespace ZeldaFullEditor
 
 			}
 
+
 			itemMode.lastselectedItem.id = id;
+			itemMode.SendItemData(itemMode.lastselectedItem);
 			InvalidateHighEnd();
 		}
 
 		private void onMouseMove(object sender, MouseEventArgs e)
 		{
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-
 			switch (selectedMode)
 			{
 				case ObjectMode.Tile:
@@ -431,20 +430,24 @@ namespace ZeldaFullEditor
 
 			InvalidateHighEnd();
 
-			sw.Stop();
-			Console.WriteLine("Entire OW draw ms: " + sw.ElapsedMilliseconds);
 		}
 
 		public void Undo()
 		{
-			tilemode.Undo();
-			InvalidateHighEnd();
+			if (!NetZS.connected)
+			{
+				tilemode.Undo();
+				InvalidateHighEnd();
+			}
 		}
 
 		public void Redo()
 		{
-			tilemode.Redo();
-			InvalidateHighEnd();
+			if (!NetZS.connected)
+			{
+				tilemode.Redo();
+				InvalidateHighEnd();
+			}
 		}
 
 		public override void paste()
