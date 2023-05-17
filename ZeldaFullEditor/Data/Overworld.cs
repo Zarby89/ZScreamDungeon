@@ -472,7 +472,7 @@ namespace ZeldaFullEditor
 			for (int i = 0; i < 0x4F; i++)
 			{
 				short[] e = new short[13];
-				e[0] = (short) ((ROM.DATA[Constants.OWExitRoomId + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitRoomId + (i * 2)]));
+				ushort exitRoomID = (ushort) ((ROM.DATA[Constants.OWExitRoomId + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitRoomId + (i * 2)]));
 				e[1] = (ROM.DATA[Constants.OWExitMapId + i]);
 				e[2] = (short) ((ROM.DATA[Constants.OWExitVram + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitVram + (i * 2)]));
 				e[3] = (short) ((ROM.DATA[Constants.OWExitYScroll + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYScroll + (i * 2)]));
@@ -485,7 +485,7 @@ namespace ZeldaFullEditor
 				e[10] = (ROM.DATA[Constants.OWExitUnk2 + i]);
 				e[11] = (short) ((ROM.DATA[Constants.OWExitDoorType1 + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitDoorType1 + (i * 2)]));
 				e[12] = (short) ((ROM.DATA[Constants.OWExitDoorType2 + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitDoorType2 + (i * 2)]));
-				ExitOW eo = (new ExitOW(e[0], (byte) e[1], e[2], e[3], e[4], py, px, e[7], e[8], (byte) e[9], (byte) e[10], e[11], e[12]));
+				ExitOW eo = (new ExitOW(exitRoomID, (byte) e[1], e[2], e[3], e[4], py, px, e[7], e[8], (byte) e[9], (byte) e[10], e[11], e[12]));
 
 				if (px == 0xFFFF && py == 0xFFFF)
 				{

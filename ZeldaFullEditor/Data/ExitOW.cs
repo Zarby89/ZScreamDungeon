@@ -22,7 +22,6 @@ namespace ZeldaFullEditor
 
 		public short
 			vramLocation,
-			roomId,
 			xScroll,
 			yScroll,
 			cameraX,
@@ -31,13 +30,14 @@ namespace ZeldaFullEditor
 			doorType2;
 
 		public ushort
+			roomId,
 			playerX,
 			playerY;
 
 		public bool isAutomatic = true;
 		public bool deleted = false;
 		public int uniqueID = 0;
-		public ExitOW(short roomId, byte mapId, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte unk1, byte unk2, short doorType1, short doorType2)
+		public ExitOW(ushort roomId, byte mapId, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte unk1, byte unk2, short doorType1, short doorType2)
 		{
 			this.roomId = roomId;
 			this.mapId = mapId;
@@ -172,7 +172,5 @@ namespace ZeldaFullEditor
 
 			Console.WriteLine("Exit:      " + roomId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
 		}
-
-
 	}
 }

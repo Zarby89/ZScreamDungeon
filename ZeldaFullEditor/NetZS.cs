@@ -636,7 +636,7 @@ namespace ZeldaFullEditor.Properties
 			exit.AreaX = buffer.ReadByte();
 			exit.AreaY = buffer.ReadByte();
 			exit.vramLocation = buffer.ReadShort();
-			exit.roomId = buffer.ReadShort();
+			exit.roomId = buffer.ReadUShort();
 			exit.xScroll = buffer.ReadShort();
 			exit.yScroll = buffer.ReadShort();
 			exit.cameraX = buffer.ReadShort();
