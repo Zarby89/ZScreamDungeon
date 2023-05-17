@@ -25,7 +25,7 @@ using System.Net;
 using Lidgren.Network;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui.ExtraForms;
-
+using System.Runtime.InteropServices.ComTypes;
 
 // Main
 namespace ZeldaFullEditor
@@ -2199,6 +2199,8 @@ namespace ZeldaFullEditor
 				ROMStructure.ProjectName = sf.FileName;
 				saveToolStripMenuItem_Click(sender, e);
 				saveAs = true;
+
+				this.Text = string.Format("{0} - {1}", UIText.APPNAME, sf.FileName);
 			}
 		}
 
@@ -5249,7 +5251,6 @@ namespace ZeldaFullEditor
 		NetZS netZS;
 		private void hostToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
 			NetHost nf = new NetHost();
 
 			if (nf.ShowDialog() == DialogResult.OK)
@@ -5286,6 +5287,7 @@ namespace ZeldaFullEditor
 				networkstatusLabel.Text = "Network Status : " + netZS.server.Status.ToString();
 			}
 		}
+
 		internal Label networkstatusLabel = new Label();
 		internal Panel networkPanel;
 
@@ -5315,7 +5317,6 @@ namespace ZeldaFullEditor
 			config.EnableMessageType(NetIncomingMessageType.DebugMessage);
 			config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
 
-
 			NetworkForm nf = new NetworkForm();
 			
 			if (nf.ShowDialog() == DialogResult.OK)
@@ -5330,21 +5331,10 @@ namespace ZeldaFullEditor
 				networkstatusLabel.Text = "Network Status : " + NetZS.client.ConnectionStatus.ToString();
 				addNetworkPanel();
 			}
-
-
-
-
-
 		}
-
-
-
 
 		private void testToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
-
-
-
 		}
 
 		private void networkBgWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -5357,7 +5347,6 @@ namespace ZeldaFullEditor
 
 		private void networkBgWorker2_DoWork(object sender, DoWorkEventArgs e)
 		{
-
 		}
 
 		private void loadTimer_Tick(object sender, EventArgs e)
@@ -5366,6 +5355,7 @@ namespace ZeldaFullEditor
 			{
 				return;
 			}
+
 			Console.WriteLine("Attempt at loading project!");
 			LoadProject("", true);
 			Console.WriteLine("AFTER project!");
@@ -5387,8 +5377,6 @@ namespace ZeldaFullEditor
 			loadTimer.Enabled = false;
 		}
 
-
-
 		private void crc32timer_Tick(object sender, EventArgs e)
 		{
 			/*int checksum = 0;
@@ -5401,7 +5389,6 @@ namespace ZeldaFullEditor
 			}
 			byte[] data = new byte[6] { 3, NetZS.userID, (byte) checksum, (byte) (checksum >> 8), (byte) (checksum >> 16), (byte) (checksum >> 24) };
 
-		
 			// write CRC
 			NetOutgoingMessage msg = NetZS.client.CreateMessage();
 			msg.Write(data);
@@ -5421,13 +5408,7 @@ namespace ZeldaFullEditor
 			{
 				networkstatusLabel.Text = "Network Status : " + NetZS.client.ConnectionStatus.ToString();
 			}
-			
-
-
 		}
-
-
-
 
         private void exportImageMapMultipleROMsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5441,6 +5422,7 @@ namespace ZeldaFullEditor
 					exportPNGTimer.Enabled = false;
 					break;
 				}
+
 				FileStream fs = new FileStream(Path.GetDirectoryName(projectFilename) + "\\rom" + romDigit + ".sfc", FileMode.Open);
 				fs.Read(ROM.DATA, 0, ROM.DATA.Length);
 				fs.Close();
@@ -5448,11 +5430,9 @@ namespace ZeldaFullEditor
 				overworldEditor.overworld = new Overworld();
 				overworldEditor.InitOpen(this);
 
-
 				overworldEditor.scene.Refresh();
 
 				Thread.Sleep(500);
-
 
 				Bitmap temp = new Bitmap(4096, 4096);
 				Graphics g = Graphics.FromImage(temp);
@@ -5489,10 +5469,7 @@ namespace ZeldaFullEditor
 				{
 					overworldEditor.scene.ow.allmaps[i].tilesUsed = null;
 					overworldEditor.scene.ow.allmaps[i] = null;
-
-
 				}
-
 
 				overworldEditor.scene.ow.allBirds.Clear();
 				overworldEditor.scene.ow.allBirds = null;
@@ -5513,11 +5490,10 @@ namespace ZeldaFullEditor
 			}*/
 		}
 
-	int romID = 00;
+		int romID = 00;
+
 		private void exportPNGTimer_Tick(object sender, EventArgs e)
         {
-			
-
 		}
 
 		private void saveToNewROMToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5547,11 +5523,10 @@ namespace ZeldaFullEditor
 					}
 
 					fs.Close();
+
+					this.Text = string.Format("{0} - {1}", UIText.APPNAME, ofd.FileName);
 				}
-
 			}
-
-
 		}
 	}
 }
