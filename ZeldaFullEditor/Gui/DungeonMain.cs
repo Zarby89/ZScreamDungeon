@@ -616,6 +616,10 @@ namespace ZeldaFullEditor
 
 			initProject();
 
+			openToolStripMenuItem.Enabled = false;
+			openfileButton.Enabled = false;
+			recentROMToolStripMenuItem.Enabled = false;
+
 			this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
 		}
 
