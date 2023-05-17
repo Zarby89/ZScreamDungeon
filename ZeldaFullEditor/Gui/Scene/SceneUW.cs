@@ -2783,7 +2783,10 @@ namespace ZeldaFullEditor
 
 		public void SendObjectsData()
 		{
-
+			if (!NetZS.connected)
+			{
+				return;
+			}
 			NetZSBuffer buffer = new NetZSBuffer((short) ((room.selectedObject.Count * 15) + 12));
 			buffer.Write((byte) 19); // tile data cmd
 			buffer.Write(NetZS.userID); // user id

@@ -116,22 +116,37 @@ namespace ZeldaFullEditor
 			{
 				if (e.Delta < 0)
 				{
-					xPos += 48;
+					xPos += 128;
 				}
 				else
 				{
-					xPos -= 48;
+					xPos -= 128;
 				}
 			}
 			else
 			{
-				if (e.Delta < 0)
+
+				if (ModifierKeys == Keys.Control)
 				{
-					yPos += 48;
+					if (e.Delta < 0)
+					{
+						yPos += 48;
+					}
+					else
+					{
+						yPos -= 48;
+					}
 				}
 				else
 				{
-					yPos -= 48;
+					if (e.Delta < 0)
+					{
+						yPos += 96;
+					}
+					else
+					{
+						yPos -= 96;
+					}
 				}
 			}
 

@@ -76,6 +76,7 @@ namespace ZeldaFullEditor.Gui
 			gravestoneButton.Tag = ObjectMode.Gravestone;
 			stateCombobox.SelectedIndex = 1;
 			scratchPicturebox.Image = scratchPadBitmap;
+
 			//setTilesGfx();
 			bool fromFile = false;
 			byte[] file = new byte[(225 * 16) * 2];
@@ -103,6 +104,7 @@ namespace ZeldaFullEditor.Gui
 			updateTiles();
 			pictureBox1.Refresh();
 		}
+
 
 		public void saveScratchPad()
 		{
@@ -2302,9 +2304,7 @@ namespace ZeldaFullEditor.Gui
 			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
 			NetZS.client.FlushSendQueue();
 
-
-
-
 		}
+
 	}
 }

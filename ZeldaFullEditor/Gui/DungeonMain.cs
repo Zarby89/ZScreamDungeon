@@ -74,7 +74,7 @@ namespace ZeldaFullEditor
 		public string loadFromExported = "";
 
 		public List<Room_Object> listoftilesobjects = new List<Room_Object>();
-		private List<Sprite> listofspritesobjects = new List<Sprite>();
+		public List<Sprite> listofspritesobjects = new List<Sprite>();
 		private List<Chest> listofchests = new List<Chest>();
 
 		// Groups of options for the Scene
@@ -5515,5 +5515,39 @@ namespace ZeldaFullEditor
 			
 
 		}
-    }
+
+		private void saveToNewROMToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			byte[] ROMBACKUP = new byte[0x200000];
+			Array.Copy(ROM.DATA, ROMBACKUP, 0x200000);
+
+			using (OpenFileDialog ofd = new OpenFileDialog()) 
+			{
+				ofd.Filter = UIText.USROMType;
+				ofd.DefaultExt = UIText.ROMExtension;
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
+					int size = 0x200000;
+					ROM.DATA = new byte[size];
+					if ((fs.Length & 0x200) == 0x200)
+					{
+						size = (int) (fs.Length - 0x200);
+						byte[] tempRomData = new byte[fs.Length];
+						fs.Read(tempRomData, 0, (int) fs.Length);
+						Array.Copy(tempRomData, 0x200, ROM.DATA, 0, size);
+					}
+					else
+					{
+						fs.Read(ROM.DATA, 0, (int) fs.Length);
+					}
+
+					fs.Close();
+				}
+
+			}
+
+
+		}
+	}
 }
