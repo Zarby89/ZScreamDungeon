@@ -806,6 +806,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="ScratchPad.dat" />
     <None Include="ZScreamUML.cd" />
   </ItemGroup>
   <ItemGroup>

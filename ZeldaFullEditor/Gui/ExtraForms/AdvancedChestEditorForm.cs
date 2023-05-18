@@ -20,7 +20,8 @@ namespace ZeldaFullEditor.Gui
 			InitializeComponent();
 		}
 
-		private void AdvancedChestEditorForm_Load(object sender, EventArgs e)
+
+		private void AdvancedChestEditorForm_Load_1(object sender, EventArgs e)
 		{
 			for (int i = 0; i < 76; i++)
 			{
@@ -43,12 +44,7 @@ namespace ZeldaFullEditor.Gui
 			listBox1.SelectedIndex = 0;
 		}
 
-		private void alternateTextbox_TextChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+		private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
 		{
 			if (prevSelected != -1)
 			{
@@ -79,8 +75,24 @@ namespace ZeldaFullEditor.Gui
 			prevSelected = listBox1.SelectedIndex;
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void button1_Click_1(object sender, EventArgs e)
 		{
+
+			if (prevSelected != -1)
+			{
+
+				chestsdata[prevSelected].backupitems = (byte) alternateHexbox.HexValue;
+				chestsdata[prevSelected].xoffset = (byte) xHexbox.HexValue;
+				chestsdata[prevSelected].yoffset = (byte) yHexbox.HexValue;
+				chestsdata[prevSelected].sramaddress = (ushort) addressHexbox.HexValue;
+				chestsdata[prevSelected].sramvalue = (byte) valueHexbox.HexValue;
+				chestsdata[prevSelected].itemswide = (byte) widthHexbox.HexValue;
+				chestsdata[prevSelected].msgid = (short) messageHexbox.HexValue;
+				chestsdata[prevSelected].itemsproperties = (byte) paletteHexbox.HexValue;
+				chestsdata[prevSelected].itemsgfx = (byte) gfxHexbox.HexValue;
+			}
+
+
 			for (int i = 0; i < 76; i++)
 			{
 				ROM.Write(Constants.chests_backupitems + i, chestsdata[i].backupitems, WriteType.ChestData);
@@ -97,7 +109,7 @@ namespace ZeldaFullEditor.Gui
 			this.Close();
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void button2_Click_1(object sender, EventArgs e)
 		{
 			this.Close();
 		}

@@ -67,6 +67,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(158, 432);
             this.listBox1.TabIndex = 0;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged_1);
             // 
             // label1
             // 
@@ -350,6 +351,7 @@
             this.button1.TabIndex = 7;
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // button2
             // 
@@ -361,6 +363,7 @@
             this.button2.TabIndex = 8;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // AdvancedChestEditorForm
             // 
@@ -373,6 +376,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "AdvancedChestEditorForm";
             this.Text = "Advanced Chest Editor";
+            this.Load += new System.EventHandler(this.AdvancedChestEditorForm_Load_1);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
