@@ -882,6 +882,7 @@ namespace ZeldaFullEditor
 			runtestButton.Enabled = true;
 			potmodeButton.Enabled = true; // Can't change to sprite since sprites are using 16x16
 			saveToolStripMenuItem.Enabled = true;
+			saveToNewROMToolStripMenuItem.Enabled = true;
 			saveasToolStripMenuItem.Enabled = true;
 			warpmodeButton.Enabled = true;
 			saveLayoutButton.Enabled = true;
