@@ -33,7 +33,7 @@ namespace ZeldaFullEditor
 
 		public ulong getLongValue()
 		{
-			return (ulong) (tile3.toShort()) << 48 | ((ulong) (tile2.toShort()) << 32) | ((ulong) (tile1.toShort()) << 16) | (tile0.toShort()); ;
+			return (ulong) (tile3.toShort()) << 48 | ((ulong) (tile2.toShort()) << 32) | ((ulong) (tile1.toShort()) << 16) | (tile0.toShort());
 		}
 	}
 }

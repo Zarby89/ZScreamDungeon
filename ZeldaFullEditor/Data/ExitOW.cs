@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lidgren.Network;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {
@@ -20,7 +22,6 @@ namespace ZeldaFullEditor
 
 		public short
 			vramLocation,
-			roomId,
 			xScroll,
 			yScroll,
 			cameraX,
@@ -29,13 +30,14 @@ namespace ZeldaFullEditor
 			doorType2;
 
 		public ushort
+			roomId,
 			playerX,
 			playerY;
 
 		public bool isAutomatic = true;
 		public bool deleted = false;
-
-		public ExitOW(short roomId, byte mapId, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte unk1, byte unk2, short doorType1, short doorType2)
+		public int uniqueID = 0;
+		public ExitOW(ushort roomId, byte mapId, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte unk1, byte unk2, short doorType1, short doorType2)
 		{
 			this.roomId = roomId;
 			this.mapId = mapId;
@@ -70,6 +72,10 @@ namespace ZeldaFullEditor
 
 			AreaX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
 			AreaY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
+
+
+			uniqueID = ROM.uniqueExitID;
+			ROM.uniqueExitID += 1;
 		}
 
 		public ExitOW Copy()

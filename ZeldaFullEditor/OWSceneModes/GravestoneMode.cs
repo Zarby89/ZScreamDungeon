@@ -6,7 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
 using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Properties;
+
 namespace ZeldaFullEditor.OWSceneModes
 {
 	public class GravestoneMode
@@ -84,6 +87,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					selectedGrave.tilemapPos = (ushort) ((((yy) << 6) | (xx & 0x3F)) << 1);
 
 					lastselectedGrave = selectedGrave;
+					SendGraveData(lastselectedGrave);
 					selectedGrave = null;
 					scene.mouse_down = false;
 				}
@@ -127,6 +131,27 @@ namespace ZeldaFullEditor.OWSceneModes
 					scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
 				}
 			}
+		}
+		private void SendGraveData(Gravestone gravestone)
+		{
+
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer(24);
+			buffer.Write((byte) 11); // grave data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) gravestone.uniqueID);
+			buffer.Write((ushort) gravestone.yTilePos);
+			buffer.Write((ushort) gravestone.xTilePos);
+			buffer.Write((ushort) gravestone.tilemapPos);
+			buffer.Write((ushort) gravestone.gfx);
+
+
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
+
 		}
 	}
 }

@@ -27,6 +27,7 @@ namespace ZeldaFullEditor
 
 		public bool isAutomatic = true;
 
+		public int uniqueID = 0;
 		public TransportOW(byte mapId, short vramLocation, short yScroll, short xScroll, short playerY, short playerX, short cameraY, short cameraX, byte unk1, byte unk2, short whirlpoolPos)
 		{
 			this.mapId = mapId;
@@ -46,6 +47,8 @@ namespace ZeldaFullEditor
 
 			AreaX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
 			AreaY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
+
+			uniqueID = ROM.uniqueTransportID++;
 		}
 
 		public void updateMapStuff(byte mapId, Overworld ow)

@@ -5,35 +5,10 @@ org $02AADB ; Mosaic Hook
 
 ; ==============================================================================
 
-org $2881E0 ;reserved ZS space
-
-AreaCheck:
+org $288200 ;reserved ZS space
+Pool:
 {
-    PHB : PHK : PLB
-
-    TAX
-    LDA .pool, X
-
-    BEQ .noMosaic1
-        PLB
-        JML $02AAE5
-
-    .noMosaic1
-
-    LDX $8A
-    LDA .pool, X
-
-    BEQ .noMosaic2
-        PLB
-        JML $02AAE5
-
-    .noMosaic2
-
-    PLB
-    JML $02AAF4
-
-    NOP ;here to move the location of the .pool by one byte
-    .pool
+    .mosaicTable
     ;LW
     ;db $01, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
@@ -57,6 +32,35 @@ AreaCheck:
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
+}
+
+; ==============================================================================
+
+org $2882A0
+AreaCheck:
+{
+    PHB : PHK : PLB
+
+    TAX
+    LDA Pool_mosaicTable, X
+
+    BEQ .noMosaic1
+        PLB
+        JML $02AAE5
+
+    .noMosaic1
+
+    LDX $8A
+    LDA Pool_mosaicTable, X
+
+    BEQ .noMosaic2
+        PLB
+        JML $02AAE5
+
+    .noMosaic2
+
+    PLB
+    JML $02AAF4
 }
 
 ; ==============================================================================

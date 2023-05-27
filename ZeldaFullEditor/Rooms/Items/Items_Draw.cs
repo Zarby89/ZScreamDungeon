@@ -14,7 +14,7 @@ namespace ZeldaFullEditor
 		public bool selected = false;
 		public byte layer = 0;
 		public bool bg2 = false;
-
+		public int uniqueID = 0;
 		public PotItem(byte id, byte x, byte y, bool bg2)
 		{
 			this.id = id;
@@ -23,6 +23,7 @@ namespace ZeldaFullEditor
 			this.nx = x;
 			this.ny = y;
 			this.bg2 = bg2;
+			this.uniqueID = ROM.uniqueItemID++;
 		}
 
 		// Pots items

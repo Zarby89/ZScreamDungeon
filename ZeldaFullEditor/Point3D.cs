@@ -16,5 +16,15 @@ namespace ZeldaFullEditor
 			this.y = y;
 			this.z = z;
 		}
+
+		public class Face3D
+		{
+			public sbyte[] vertex;
+
+			public Face3D(sbyte[] vertex)
+			{
+				this.vertex = vertex;
+			}
+		}
 	}
 }

@@ -130,16 +130,19 @@ namespace ZCompressLibrary
 						{
 							offset = (ushort) (c_data[c_data_pos + 1] | (c_data[c_data_pos + 2] << 8));
 						}
+
 						if (mode == Common.D_NINTENDO_C_MODE1)
 						{
 							offset = (ushort) (c_data[c_data_pos + 2] | (c_data[c_data_pos + 1] << 8));
 						}
+
 						if (offset > u_data_pos)
 						{
 							//std_nintendo_decompression_error = my_asprintf("Offset for command copy existing is larger than the current position (Offset : 0x%04X | Pos : 0x%06X\n", offset, u_data_pos);
 							//goto error;
 							throw new Exception(String.Format("Offset for command copy existing is larger than the current position (Offset : {0} | Pos : {1}\n", offset.ToString("X4"), u_data_pos.ToString("X6")));
 						}
+
 						if (u_data_pos + length + 1 > allocated_memory) // Adjust allocated memory
 						{
 							//s_debug("Memory get reallocated by %d was %d\n", INITIAL_ALLOC_SIZE, allocated_memory);

@@ -10,12 +10,28 @@ namespace ZCompressLibrary
 
 		public static byte[] ALTTPCompressGraphics(byte[] u_data, int start, int length)
 		{
-			return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE2);
+			try
+			{
+				return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE2);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Error compressing gfx: " + e.ToString());
+				return null;
+			}
 		}
 
 		public static byte[] ALTTPCompressOverworld(byte[] u_data, int start, int length)
 		{
-			return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE1);
+			try
+			{
+				return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE1);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Error compressing overworld map gfx: " + e.ToString());
+				return null;
+			}
 		}
 
 		internal static byte[] std_nintendo_compress(byte[] u_data, int start, int length, byte mode)
@@ -48,6 +64,7 @@ namespace ZCompressLibrary
 					//s_debug("Testing byte repeat\n");
 					int pos = u_data_pos;
 					byte byte_to_repeat = u_data[pos];
+
 					while (pos <= last_pos && u_data[pos] == byte_to_repeat)
 					{
 						data_size_taken[Common.D_CMD_BYTE_REPEAT]++;
@@ -78,6 +95,7 @@ namespace ZCompressLibrary
 							{
 								break;
 							}
+
 							pos += 2;
 						}
 
@@ -164,7 +182,7 @@ namespace ZCompressLibrary
 					int cmd_size_taken = data_size_taken[cmd_i];
 					if (cmd_size_taken > max_win && cmd_size_taken > cmd_size[cmd_i]
 						&& !(cmd_i == Common.D_CMD_COPY_EXISTING && cmd_size_taken == 3)
-						// FIXME: Should probably be a
+						// TODO: Should probably be a
 						// table that say what is even with copy
 						// but all other cmd are 2
 						)
@@ -305,17 +323,20 @@ namespace ZCompressLibrary
 						{
 							new_piece = new compression_piece(piece.command, length_left, piece.argument, piece.argument_length);
 						}
+
 						if (piece.command == Common.D_CMD_BYTE_INC)
 						{
 							new_piece = new compression_piece(piece.command, length_left, piece.argument, piece.argument_length);
 							new_piece.argument[0] = (byte) (piece.argument[0] + Common.D_MAX_LENGTH);
 						}
+
 						if (piece.command == Common.D_CMD_COPY)
 						{
 							piece.argument_length = Common.D_MAX_LENGTH;
 							new_piece = new compression_piece(piece.command, length_left, null, length_left);
 							fake_mem.memcpy(new_piece.argument, 0, piece.argument, Common.D_MAX_LENGTH, length_left); //memcpy(new_piece.argument, piece.argument + Common.D_MAX_LENGTH, length_left);
 						}
+
 						if (piece.command == Common.D_CMD_COPY_EXISTING)
 						{
 							piece.argument_length = Common.D_MAX_LENGTH;
@@ -326,6 +347,7 @@ namespace ZCompressLibrary
 								new_piece.argument[0] = (byte) ((offset + Common.D_MAX_LENGTH) & 0xFF);
 								new_piece.argument[1] = (byte) ((offset + Common.D_MAX_LENGTH) >> 8);
 							}
+
 							if (mode == Common.D_NINTENDO_C_MODE1)
 							{
 								new_piece.argument[1] = (byte) ((offset + Common.D_MAX_LENGTH) & 0xFF);
@@ -350,6 +372,7 @@ namespace ZCompressLibrary
 						tmp[0] = piece.argument[0];
 						tmp[1] = piece.argument[1];
 					}
+
 					if (mode == Common.D_NINTENDO_C_MODE1)
 					{
 						tmp[0] = piece.argument[1];

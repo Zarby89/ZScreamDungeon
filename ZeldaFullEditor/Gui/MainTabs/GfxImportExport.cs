@@ -102,7 +102,11 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
-		public void SaveAllGfx()
+		/// <summary>
+		/// Saves all gfx.
+		/// </summary>
+		/// <returns> True if saving failed.  </returns>
+		public bool SaveAllGfx()
 		{
 			for (int i = 0; i < Constants.NumberOfSheets; i++)
 			{
@@ -148,10 +152,22 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			Console.WriteLine("Reached");
-			recompressAllGfx();
+
+			if (recompressAllGfx())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
-		public void recompressAllGfx()
+		/// <summary>
+		/// Recompresses all GFX.
+		/// </summary>
+		/// <returns> True if compressing failed. </returns>
+		public bool recompressAllGfx()
 		{
 			int gfxPointer1 = Utils.SnesToPc((ROM.DATA[Constants.gfx_1_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_1_pointer]));
 			int gfxPointer2 = Utils.SnesToPc((ROM.DATA[Constants.gfx_2_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_2_pointer]));
@@ -179,6 +195,11 @@ namespace ZeldaFullEditor.Gui
 						if (!bpp2)
 						{
 							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.Uncompressed3BPPSize);
+							if (cbytes == null)
+							{
+								return true;
+							}
+
 							int s = cbytes.Length;
 							cbytes.CopyTo(ROM.DATA, pos);
 							pos += s;
@@ -186,6 +207,11 @@ namespace ZeldaFullEditor.Gui
 						else
 						{
 							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.UncompressedSheetSize);
+							if (cbytes == null)
+							{
+								return true;
+							}
+
 							int s = cbytes.Length;
 							cbytes.CopyTo(ROM.DATA, pos);
 							pos += s;
@@ -197,7 +223,13 @@ namespace ZeldaFullEditor.Gui
 						{
 							byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
 							int addr = BitConverter.ToInt32(b, 0);
+
 							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.Uncompressed3BPPSize);
+							if (cbytes == null)
+							{
+								return true;
+							}
+
 							int s = cbytes.Length;
 							cbytes.CopyTo(ROM.DATA, Utils.SnesToPc(addr));
 							//pos += s;
@@ -206,7 +238,13 @@ namespace ZeldaFullEditor.Gui
 						{
 							byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
 							int addr = BitConverter.ToInt32(b, 0);
+
 							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.UncompressedSheetSize);
+							if (cbytes == null)
+							{
+								return true;
+							}
+
 							int s = cbytes.Length;
 							cbytes.CopyTo(ROM.DATA, Utils.SnesToPc(addr));
 							//pos += s;
@@ -241,6 +279,8 @@ namespace ZeldaFullEditor.Gui
 			infoLabel.Text =
 			"Compressed Size = " + (pos - 0x8b800).ToString("X6") + "\r\n" +
 			"Available Space = " + (Constants.maxGfx - pos).ToString("X6");
+
+			return false;
 		}
 
 		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
@@ -281,7 +321,6 @@ namespace ZeldaFullEditor.Gui
 
 					cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[i + selectedPal * 16];
 				}
-
 			}
 
 			GFX.allgfxBitmap.Palette = cp;
@@ -301,7 +340,6 @@ namespace ZeldaFullEditor.Gui
 				{
 					sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
 				}
-
 			}
 
 			byte[] pdata = new byte[64];
@@ -326,7 +364,6 @@ namespace ZeldaFullEditor.Gui
 				{
 					sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
 				}
-
 			}
 
 			byte[] pdata = new byte[64];
@@ -360,7 +397,6 @@ namespace ZeldaFullEditor.Gui
 
 				unsafe
 				{
-
 					byte* gdata = (byte*) GFX.allgfx16Ptr.ToPointer();
 					byte* data = (byte*) bd.Scan0.ToPointer();
 					// One line is 512 - palette (32 bytes per palettes)

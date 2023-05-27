@@ -81,6 +81,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
+            this.mosaicCheckBox = new System.Windows.Forms.CheckBox();
             this.OWProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_SPRPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_SPRGFX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -101,7 +102,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.mosaicCheckBox = new System.Windows.Forms.CheckBox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -169,6 +169,7 @@
             this.openfileButton.Name = "openfileButton";
             this.openfileButton.Size = new System.Drawing.Size(23, 22);
             this.openfileButton.Text = "Open ROM…";
+            this.openfileButton.Click += new System.EventHandler(this.openfileButton_Click);
             // 
             // saveButton
             // 
@@ -711,6 +712,17 @@
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
             // 
+            // mosaicCheckBox
+            // 
+            this.mosaicCheckBox.AutoSize = true;
+            this.mosaicCheckBox.Location = new System.Drawing.Point(381, 40);
+            this.mosaicCheckBox.Name = "mosaicCheckBox";
+            this.mosaicCheckBox.Size = new System.Drawing.Size(60, 17);
+            this.mosaicCheckBox.TabIndex = 23;
+            this.mosaicCheckBox.Text = "Mosaic";
+            this.mosaicCheckBox.UseVisualStyleBackColor = true;
+            this.mosaicCheckBox.Click += new System.EventHandler(this.mosaicCheckBox_Click);
+            // 
             // OWProperty_MessageID
             // 
             this.OWProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -943,17 +955,6 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-            // 
-            // mosaicCheckBox
-            // 
-            this.mosaicCheckBox.AutoSize = true;
-            this.mosaicCheckBox.Location = new System.Drawing.Point(381, 40);
-            this.mosaicCheckBox.Name = "mosaicCheckBox";
-            this.mosaicCheckBox.Size = new System.Drawing.Size(60, 17);
-            this.mosaicCheckBox.TabIndex = 23;
-            this.mosaicCheckBox.Text = "Mosaic";
-            this.mosaicCheckBox.UseVisualStyleBackColor = true;
-            this.mosaicCheckBox.Click += new System.EventHandler(this.mosaicCheckBox_Click);
             // 
             // OverworldEditor
             // 

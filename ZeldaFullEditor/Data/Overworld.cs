@@ -57,8 +57,6 @@ namespace ZeldaFullEditor
 
 		public byte gameState = 1;
 
-		public byte[] mapParent = new byte[Constants.NumberOfOWMaps];
-
 		public bool isLoaded = false;
 
 		public ushort[] tileLeftEntrance = new ushort[0x2B];
@@ -68,8 +66,8 @@ namespace ZeldaFullEditor
 
 		public int tiles32count = 0;
 
-		List<Tile16> t16Unique = new List<Tile16>();
-		List<ushort> t16 = new List<ushort>();
+		private List<Tile16> t16Unique = new List<Tile16>();
+		private List<ushort> t16 = new List<ushort>();
 
 		public Overworld()
 		{
@@ -150,16 +148,16 @@ namespace ZeldaFullEditor
 		{
 			for (int i = 128; i < 145; i++)
 			{
-				mapParent[i] = 0;
+				allmaps[i].SetAsSmallMap(0);
 			}
 
-			mapParent[128] = 128;
-			mapParent[129] = 129;
-			mapParent[130] = 129;
-			mapParent[137] = 129;
-			mapParent[138] = 129;
-			mapParent[136] = 136;
-			allmaps[136].largeMap = false;
+			allmaps[128].SetAsSmallMap();
+			allmaps[129].SetAsLargeMap(129, 0);
+			allmaps[130].SetAsLargeMap(129, 1);
+			allmaps[137].SetAsLargeMap(129, 2);
+			allmaps[138].SetAsLargeMap(129, 3);
+
+			allmaps[136].SetAsSmallMap();
 
 			bool[] mapChecked = new bool[64];
 			for (int i = 0; i < 64; i++)
@@ -177,27 +175,27 @@ namespace ZeldaFullEditor
 					if (allmaps[i].largeMap)
 					{
 						mapChecked[i] = true;
-						mapParent[i] = (byte) i;
-						mapParent[i + 64] = (byte) (i + 64);
+						allmaps[i].SetAsLargeMap((byte) i, 0);
+						allmaps[i + 64].SetAsLargeMap((byte) (i + 64), 0);
 
 						mapChecked[i + 1] = true;
-						mapParent[i + 1] = (byte) i;
-						mapParent[i + 65] = (byte) (i + 64);
+						allmaps[i + 1].SetAsLargeMap((byte) i, 1);
+						allmaps[i + 65].SetAsLargeMap((byte) (i + 64), 1);
 
 						mapChecked[i + 8] = true;
-						mapParent[i + 8] = (byte) i;
-						mapParent[i + 72] = (byte) (i + 64);
+						allmaps[i + 8].SetAsLargeMap((byte) i, 2);
+						allmaps[i + 72].SetAsLargeMap((byte) (i + 64), 2);
 
 						mapChecked[i + 9] = true;
-						mapParent[i + 9] = (byte) i;
-						mapParent[i + 73] = (byte) (i + 64);
+						allmaps[i + 9].SetAsLargeMap((byte) i, 3);
+						allmaps[i + 73].SetAsLargeMap((byte) (i + 64), 3);
 						xx++;
 					}
 					else
 					{
-						mapParent[i] = (byte) i;
-						mapParent[i + 64] = (byte) (i + 64);
 						mapChecked[i] = true;
+						allmaps[i].SetAsSmallMap();
+						allmaps[i + 64].SetAsSmallMap();
 					}
 				}
 
@@ -409,7 +407,6 @@ namespace ZeldaFullEditor
 				{
 					sy++;
 					sx = 0;
-
 				}
 
 				c++;
@@ -440,10 +437,10 @@ namespace ZeldaFullEditor
 						t32Unique[j].tile1 == map16tiles[i].tile1 &&
 						t32Unique[j].tile2 == map16tiles[i].tile2 &&
 						t32Unique[j].tile3 == map16tiles[i].tile3)
-						{
-							foundIndex = (short) j;
-							break;
-						}
+					{
+						foundIndex = (short) j;
+						break;
+					}
 				}
 
 				if (foundIndex == nullVal)
@@ -469,12 +466,13 @@ namespace ZeldaFullEditor
                 entranceOWsEditor[i] = new EntranceOWEditor((x * 16) + (((s % 64) - (((s % 64) / 8) * 8)) * 512), (y * 16) + (((s % 64) / 8) * 512), m, s, entranceOWs[i].mapPos);
             }
          */
+
 		public void loadExits()
 		{
 			for (int i = 0; i < 0x4F; i++)
 			{
 				short[] e = new short[13];
-				e[0] = (short) ((ROM.DATA[Constants.OWExitRoomId + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitRoomId + (i * 2)]));
+				ushort exitRoomID = (ushort) ((ROM.DATA[Constants.OWExitRoomId + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitRoomId + (i * 2)]));
 				e[1] = (ROM.DATA[Constants.OWExitMapId + i]);
 				e[2] = (short) ((ROM.DATA[Constants.OWExitVram + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitVram + (i * 2)]));
 				e[3] = (short) ((ROM.DATA[Constants.OWExitYScroll + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYScroll + (i * 2)]));
@@ -487,7 +485,7 @@ namespace ZeldaFullEditor
 				e[10] = (ROM.DATA[Constants.OWExitUnk2 + i]);
 				e[11] = (short) ((ROM.DATA[Constants.OWExitDoorType1 + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitDoorType1 + (i * 2)]));
 				e[12] = (short) ((ROM.DATA[Constants.OWExitDoorType2 + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitDoorType2 + (i * 2)]));
-				ExitOW eo = (new ExitOW(e[0], (byte) e[1], e[2], e[3], e[4], py, px, e[7], e[8], (byte) e[9], (byte) e[10], e[11], e[12]));
+				ExitOW eo = (new ExitOW(exitRoomID, (byte) e[1], e[2], e[3], e[4], py, px, e[7], e[8], (byte) e[9], (byte) e[10], e[11], e[12]));
 
 				if (px == 0xFFFF && py == 0xFFFF)
 				{
@@ -497,7 +495,6 @@ namespace ZeldaFullEditor
 				allexits[i] = eo;
 			}
 		}
-
 
 		public void loadTransports()
 		{
@@ -525,7 +522,6 @@ namespace ZeldaFullEditor
 				allWhirlpools.Add(eo);
 			}
 		}
-
 
 		public void loadEntrances()
 		{
@@ -734,8 +730,6 @@ namespace ZeldaFullEditor
 				return true;
 			}
 
-			
-
 			Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + t32Unique.Count + " Out of: " + Constants.LimitOfMap32);
 			int v = t32Unique.Count;
 			for (int i = v; i < Constants.LimitOfMap32; i++)
@@ -801,7 +795,6 @@ namespace ZeldaFullEditor
 				{
 					sy++;
 					sx = 0;
-
 				}
 
 				c++;
@@ -871,7 +864,6 @@ namespace ZeldaFullEditor
 				{
 					sy++;
 					sx = 0;
-
 				}
 
 				c++;
@@ -885,7 +877,6 @@ namespace ZeldaFullEditor
 				bw.Close();
 			}
 		}
-
 
 		// UNUSED CODE
 		public void AllMapTilesFromMap(int mapid, ushort[,] tiles, bool large = false)
@@ -989,7 +980,7 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.map32TilesBR + (i + 3)] = (byte)(t32Unique[index + 3].tile3 & 0xFF);
 
                 ROM.DATA[Constants.map32TilesBR + (i + 4)] = (byte)(((t32Unique[index].tile3 >> 4) & 0xF0) | ((t32Unique[index + 1].tile3 >> 8) & 0x0F));
-                ROM.DATA[Constants.map32TilesBR + (i + 5)] = (byte)(((t32Unique[index + 2].tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].tile3 >> 8) & 0x0F)); 
+                ROM.DATA[Constants.map32TilesBR + (i + 5)] = (byte)(((t32Unique[index + 2].tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].tile3 >> 8) & 0x0F));
                 */
 
 				index += 4;
@@ -997,7 +988,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		/* 
+		/*
 		public void savemapstorom()
 		{
 			int pos = 0x120000;
@@ -1052,7 +1043,6 @@ namespace ZeldaFullEditor
 
 				ROM.DATA[pos] = 0xFF;
 				pos += 1;
-
 			}
 
 			//Console.WriteLine();
@@ -1075,7 +1065,7 @@ namespace ZeldaFullEditor
 
 				if (allmaps[i].largeMap)
 				{
-					if (mapParent[i] != (byte) i)
+					if (allmaps[i].parent != (byte) i)
 					{
 						continue;
 					}
@@ -1133,9 +1123,9 @@ namespace ZeldaFullEditor
 				addr = Utils.SnesToPc(addr);
 
 				if (index == 112)
-                {
+				{
 					index = index;
-                }
+				}
 
 				if (ROM.DATA[0x77676] == 0x6B)
 				{
@@ -1150,7 +1140,7 @@ namespace ZeldaFullEditor
 				int x = 0;
 				int sta = 0;
 
-				// 16-bit mode : 
+				// 16-bit mode :
 				// A9 (LDA #$)
 				// A2 (LDX #$)
 				// 8D (STA $xxxx)
@@ -1168,6 +1158,16 @@ namespace ZeldaFullEditor
 					{
 						break;
 					}
+					/*
+					else if (b == 0xC2) // Add me back in to open goddess of wisdom at least in the dungeon editor.
+					{
+						break;
+					}
+					else if (b == 0x0E) // Add me back in to open milk utopia at least in the dungeon editor.
+					{
+						break;
+					}
+					*/
 					else if (b == 0xA9) // LDA #$xxxx (Increase addr+3)
 					{
 						a = (ROM.DATA[addr + 2] << 8) +
@@ -1213,7 +1213,6 @@ namespace ZeldaFullEditor
 						sta = (ROM.DATA[addr + 2] << 8) +
 						ROM.DATA[addr + 1];
 
-
 						int stax = (sta & 0x1FFF) + x;
 						int yp = ((stax / 2) / 0x40);
 						int xp = (stax / 2) - (yp * 0x40);
@@ -1258,7 +1257,7 @@ namespace ZeldaFullEditor
 			//Console.WriteLine(((Constants.overworldSpritesBegining & 0xFFFF) + (09 << 16)).ToString("X6"));
 			for (int i = 0; i < 64; i++)
 			{
-				if (mapParent[i] == i)
+				if (allmaps[i].parent == i)
 				{
 					// Beginning Sprites
 					int ptrPos = Constants.overworldSpritesBegining + (i * 2);
@@ -1285,7 +1284,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < 144; i++)
 			{
-				if (mapParent[i] == i)
+				if (allmaps[i].parent == i)
 				{
 					// Zelda Saved Sprites
 					int ptrPos = Constants.overworldSpritesZelda + (i * 2);
@@ -1320,7 +1319,7 @@ namespace ZeldaFullEditor
 				}
 
 				// Agahnim Dead Sprites
-				if (mapParent[i] == i)
+				if (allmaps[i].parent == i)
 				{
 					int ptrPos = Constants.overworldSpritesAgahnim + (i * 2);
 					int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));

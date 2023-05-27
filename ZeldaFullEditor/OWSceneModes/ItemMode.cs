@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -82,7 +84,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				lastselectedItem = selectedItem;
 				isLeftPress = true;
 				scene.mouse_down = true;
-
+				SendItemData(lastselectedItem);
 				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 			}
 		}
@@ -100,6 +102,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					}
 					selectedItem.updateMapStuff(mid);
 					lastselectedItem = selectedItem;
+					SendItemData(lastselectedItem);
 					selectedItem = null;
 				}
 				else
@@ -140,7 +143,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			lastselectedItem = selectedItem;
 			isLeftPress = true;
 			scene.mouse_down = true;
-
+			SendItemData(lastselectedItem);
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
@@ -175,9 +178,11 @@ namespace ZeldaFullEditor.OWSceneModes
 		{
 			if (lastselectedItem != null)
 			{
+				lastselectedItem.deleted = true;
+				SendItemData(lastselectedItem);
 				scene.ow.allitems.Remove(lastselectedItem);
 				lastselectedItem = null;
-
+				
 				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 				//scene.mainForm.itemOWGroupbox.Visible = false;
 			}
@@ -185,6 +190,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void Draw(Graphics g)
 		{
+			scene.ow.allitems.RemoveAll(x => x.deleted);
 			if (scene.lowEndMode)
 			{
 				Brush bgrBrush;
@@ -253,5 +259,39 @@ namespace ZeldaFullEditor.OWSceneModes
 				g.CompositingMode = CompositingMode.SourceCopy;
 			}
 		}
+
+		public void SendItemData(RoomPotSaveEditor item)
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer(24);
+			buffer.Write((byte) 09); // pot item data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) item.uniqueID);
+			buffer.Write((byte) item.gameX);
+			buffer.Write((byte) item.gameY);
+			buffer.Write((byte) item.id );
+			buffer.Write((int) item.x);
+			buffer.Write((int) item.y);
+			buffer.Write((ushort) item.roomMapId);
+			buffer.Write((byte) (item.bg2 ? 1 : 0));
+			buffer.Write((byte) (item.deleted ? 1 : 0));
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+			/*
+		public byte gameX, 
+			gameY, 
+			id;
+		public int x, 
+			y;
+		public bool bg2 = false;
+		public ushort roomMapId;
+			 */
+
+
+
+		}
+
 	}
 }

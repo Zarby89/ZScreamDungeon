@@ -138,7 +138,7 @@ namespace ZeldaFullEditor
 		{
 			if (!settingValues)
 			{
-				editingExit.roomId = (short) roomUpDown.HexValue;
+				editingExit.roomId = (ushort) roomUpDown.HexValue;
 				editingExit.mapId = (byte) mapUpDown.Value;
 				editingExit.playerX = (ushort) (xPosUpDown.Value + pixelMapx);
 				editingExit.playerY = (ushort) (yPosUpDown.Value + pixelMapy);

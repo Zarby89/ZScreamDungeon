@@ -26,7 +26,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void EntranceForm_Load(object sender, EventArgs e)
 		{
-			textBox1.Text = entranceId.ToString("X2");
+			textBox1.HexValue = entranceId;
 			textBox2.Text = mapId.ToString();
 			textBox3.Text = mapPos.ToString();
 			textBox4.Text = x.ToString();
@@ -37,14 +37,8 @@ namespace ZeldaFullEditor.Gui
 		private void button1_Click(object sender, EventArgs e)
 		{
 			int v = 0;
-			v = textBox1.HexValue; // Entrance ID
-			if (v > 132 || v < 0)
-			{
-				MessageBox.Show("Entrance ID is out of range; max value is 132");
-				return;
-			}
 
-			entranceId = (byte) v;
+			entranceId = (byte)textBox1.HexValue;
 
 			int.TryParse(textBox2.Text, out v); // Map Id
 

@@ -135,7 +135,7 @@
 84 Red eyegore / red mimic
 85 Yellow stalfos
 86 Kodongo
-87 Kondongo fire
+87 Kodongo fire
 88 Mothula
 89 Mothula beam
 8A Spike block

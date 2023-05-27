@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
 using ZeldaFullEditor.OWSceneModes.ClipboardData;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -56,6 +58,10 @@ namespace ZeldaFullEditor.OWSceneModes
 						int y = 0;
 						int x = 0;
 						ushort[] undotiles = new ushort[scene.selectedTile.Length];
+
+						SendTileData((byte) (Control.ModifierKeys == Keys.Control ? 1 : 0));
+
+
 						for (int i = 0; i < scene.selectedTile.Length; i++)
 						{
 							superX = ((tileX + x) / 32);
@@ -247,6 +253,9 @@ namespace ZeldaFullEditor.OWSceneModes
 							int superMX = (mid % 8) * 32;
 							int superMY = (mid / 8) * 32;
 
+
+							SendTileDataMove(tileX, tileY, (byte)(Control.ModifierKeys == Keys.Control ? 1 : 0));
+
 							if (scene.selectedTile.Length >= 1)
 							{
 								ushort[] undotiles = new ushort[scene.selectedTile.Length];
@@ -360,5 +369,54 @@ namespace ZeldaFullEditor.OWSceneModes
 				}
 			}
 		}
+
+
+		private void SendTileData(byte deleting)
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer((short) (24 + (scene.selectedTile.Length * 2)));
+			buffer.Write((byte) 16); // tile data cmd
+			buffer.Write((byte) NetZS.userID); // user id
+			buffer.Write((int) scene.globalmouseTileDownX);
+			buffer.Write((int) scene.globalmouseTileDownY);
+			buffer.Write((int) scene.selectedTileSizeX);
+			buffer.Write((byte) deleting); // tile data cmd
+			buffer.Write((byte) scene.ow.worldOffset);
+			buffer.Write((int) scene.selectedTile.Length);
+			for (int i = 0; i < scene.selectedTile.Length; i++)
+			{
+				buffer.Write((ushort) scene.selectedTile[i]);
+			}
+			// write tiles
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+		}
+
+		private void SendTileDataMove(int tileX, int tileY, byte deleting)
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer((short)(24 + (scene.selectedTile.Length * 2)));
+			buffer.Write((byte) 17); // tile data cmd
+			buffer.Write((byte) NetZS.userID); // user id
+			buffer.Write((int) tileX);
+			buffer.Write((int) tileY);
+			buffer.Write((int) scene.selectedTileSizeX);
+			buffer.Write((byte)deleting); // tile data cmd
+			buffer.Write((byte) scene.ow.worldOffset);
+			buffer.Write((int) scene.selectedTile.Length);
+			for (int i = 0; i < scene.selectedTile.Length; i++)
+			{
+				buffer.Write((ushort) scene.selectedTile[i]);
+			}
+			// write tiles
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
+		}
+
 	}
 }

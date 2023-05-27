@@ -14,6 +14,8 @@ using System.Drawing.Drawing2D;
 using ZeldaFullEditor.Gui.ExtraForms;
 using System.Globalization;
 using ZeldaFullEditor.Data;
+using Lidgren.Network;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -28,20 +30,20 @@ namespace ZeldaFullEditor.Gui
 		public ushort[,] scratchPadTiles = new ushort[16, 225];
 		public byte gridDisplay = 0;
 
-		bool mouse_down = false;
+		private bool mouse_down = false;
 
-		bool selecting = false;
-		int globalmouseTileDownX = 0;
-		int globalmouseTileDownY = 0;
-		int mouseX_Real = 0;
-		int mouseY_Real = 0;
-		int lastTileHoverX = 0;
-		int lastTileHoverY = 0;
+		private bool selecting = false;
+		private int globalmouseTileDownX = 0;
+		private int globalmouseTileDownY = 0;
+		private int mouseX_Real = 0;
+		private int mouseY_Real = 0;
+		private int lastTileHoverX = 0;
+		private int lastTileHoverY = 0;
 
-		byte palSelected = 0;
-		int tile8selected = 0;
+		private byte palSelected = 0;
+		private int tile8selected = 0;
 
-		readonly ColorDialog cd = new ColorDialog();
+		private readonly ColorDialog cd = new ColorDialog();
 
 		public static bool UseAreaSpecificBgColor = false;
 		public static bool scratchPadGrid = false;
@@ -74,6 +76,7 @@ namespace ZeldaFullEditor.Gui
 			gravestoneButton.Tag = ObjectMode.Gravestone;
 			stateCombobox.SelectedIndex = 1;
 			scratchPicturebox.Image = scratchPadBitmap;
+
 			//setTilesGfx();
 			bool fromFile = false;
 			byte[] file = new byte[(225 * 16) * 2];
@@ -102,6 +105,7 @@ namespace ZeldaFullEditor.Gui
 			pictureBox1.Refresh();
 		}
 
+
 		public void saveScratchPad()
 		{
 			byte[] file = new byte[(225 * 16) * 2];
@@ -125,6 +129,7 @@ namespace ZeldaFullEditor.Gui
 
 		public void UpdateGUIProperties(OverworldMap m, int gamestate = 0)
 		{
+			propertiesChangedFromForm = true;
 			OWProperty_BGGFX.HexValue = m.gfx;
 			OWProperty_BGPalette.HexValue = m.palette;
 			OWProperty_SPRGFX.HexValue = m.sprgfx[gamestate];
@@ -132,6 +137,7 @@ namespace ZeldaFullEditor.Gui
 
 			largemapCheckbox.Checked = m.largeMap;
 			mosaicCheckBox.Checked = m.mosaic;
+			propertiesChangedFromForm = false;
 		}
 
 		private void ModeButton_Click(object sender, EventArgs e)
@@ -163,57 +169,64 @@ namespace ZeldaFullEditor.Gui
 			if (!propertiesChangedFromForm)
 			{
 				OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
-
-				if (scene.ow.allmaps[scene.selectedMap].parent == 255)
-				{
-					mapParent = scene.ow.allmaps[scene.selectedMap];
-				}
-
-				mapParent.palette = (byte) OWProperty_BGPalette.HexValue;
-				mapParent.gfx = (byte) OWProperty_BGGFX.HexValue;
-
-				if (mapParent.index >= 64)
-				{
-					mapParent.sprgfx[0] = (byte) OWProperty_SPRGFX.HexValue;
-					mapParent.sprpalette[0] = (byte) OWProperty_SPRPalette.HexValue;
-				}
-				else
-				{
-					scene.ow.allmaps[mapParent.index].sprgfx[scene.ow.gameState] = (byte) OWProperty_SPRGFX.HexValue;
-					mapParent.sprpalette[scene.ow.gameState] = (byte) OWProperty_SPRPalette.HexValue;
-				}
-
-				if (mapParent.largeMap)
-				{
-					scene.ow.allmaps[mapParent.index + 1].gfx = mapParent.gfx;
-					scene.ow.allmaps[mapParent.index + 1].sprgfx = mapParent.sprgfx;
-					scene.ow.allmaps[mapParent.index + 1].palette = mapParent.palette;
-					scene.ow.allmaps[mapParent.index + 1].sprpalette = mapParent.sprpalette;
-
-					scene.ow.allmaps[mapParent.index + 8].gfx = mapParent.gfx;
-					scene.ow.allmaps[mapParent.index + 8].sprgfx = mapParent.sprgfx;
-					scene.ow.allmaps[mapParent.index + 8].palette = mapParent.palette;
-					scene.ow.allmaps[mapParent.index + 8].sprpalette = mapParent.sprpalette;
-
-					scene.ow.allmaps[mapParent.index + 9].gfx = mapParent.gfx;
-					scene.ow.allmaps[mapParent.index + 9].sprgfx = mapParent.sprgfx;
-					scene.ow.allmaps[mapParent.index + 9].palette = mapParent.palette;
-					scene.ow.allmaps[mapParent.index + 9].sprpalette = mapParent.sprpalette;
-
-					mapParent.BuildMap();
-					scene.ow.allmaps[mapParent.index + 1].BuildMap();
-					scene.ow.allmaps[mapParent.index + 8].BuildMap();
-					scene.ow.allmaps[mapParent.index + 9].BuildMap();
-				}
-				else
-				{
-					mapParent.BuildMap();
-				}
-
-				//scene.updateMapGfx();
-				scene.Invalidate();
-				//scene.Refresh();
+				UpdateMapProperties(mapParent);
+				SendMapProperties(mapParent);
 			}
+		}
+
+		public void UpdateMapProperties(OverworldMap mapParent)
+		{
+			if (scene.ow.allmaps[scene.selectedMap].parent == 255)
+			{
+				mapParent = scene.ow.allmaps[scene.selectedMap];
+			}
+
+			mapParent.palette = (byte) OWProperty_BGPalette.HexValue;
+			mapParent.gfx = (byte) OWProperty_BGGFX.HexValue;
+			mapParent.messageID = (short) OWProperty_MessageID.HexValue;
+
+			if (mapParent.index >= 64)
+			{
+				mapParent.sprgfx[0] = (byte) OWProperty_SPRGFX.HexValue;
+				mapParent.sprpalette[0] = (byte) OWProperty_SPRPalette.HexValue;
+			}
+			else
+			{
+				scene.ow.allmaps[mapParent.index].sprgfx[scene.ow.gameState] = (byte) OWProperty_SPRGFX.HexValue;
+				mapParent.sprpalette[scene.ow.gameState] = (byte) OWProperty_SPRPalette.HexValue;
+			}
+
+			if (mapParent.largeMap)
+			{
+				scene.ow.allmaps[mapParent.index + 1].gfx = mapParent.gfx;
+				scene.ow.allmaps[mapParent.index + 1].sprgfx = mapParent.sprgfx;
+				scene.ow.allmaps[mapParent.index + 1].palette = mapParent.palette;
+				scene.ow.allmaps[mapParent.index + 1].sprpalette = mapParent.sprpalette;
+
+				scene.ow.allmaps[mapParent.index + 8].gfx = mapParent.gfx;
+				scene.ow.allmaps[mapParent.index + 8].sprgfx = mapParent.sprgfx;
+				scene.ow.allmaps[mapParent.index + 8].palette = mapParent.palette;
+				scene.ow.allmaps[mapParent.index + 8].sprpalette = mapParent.sprpalette;
+
+				scene.ow.allmaps[mapParent.index + 9].gfx = mapParent.gfx;
+				scene.ow.allmaps[mapParent.index + 9].sprgfx = mapParent.sprgfx;
+				scene.ow.allmaps[mapParent.index + 9].palette = mapParent.palette;
+				scene.ow.allmaps[mapParent.index + 9].sprpalette = mapParent.sprpalette;
+
+				mapParent.BuildMap();
+				scene.ow.allmaps[mapParent.index + 1].BuildMap();
+				scene.ow.allmaps[mapParent.index + 8].BuildMap();
+				scene.ow.allmaps[mapParent.index + 9].BuildMap();
+			}
+			else
+			{
+				mapParent.BuildMap();
+			}
+
+			//scene.updateMapGfx();
+			scene.Invalidate();
+			//scene.Refresh();
+
 		}
 
 		private void tilePictureBox_Paint(object sender, PaintEventArgs e)
@@ -331,7 +344,6 @@ namespace ZeldaFullEditor.Gui
 			scene.ow.worldOffset = o;
 			scene.Refresh();
 		}
-
 
 		private void runtestButton_Click(object sender, EventArgs e)
 		{
@@ -823,7 +835,6 @@ namespace ZeldaFullEditor.Gui
 			byte* srcPtr = (byte*) GFX.currentOWgfx16Ptr.ToPointer();
 			Tile16 t = overworld.tiles16[scene.selectedTile[0]];
 
-
 			for (var y = 0; y < 8; y++)
 			{
 				for (var x = 0; x < 4; x++)
@@ -1089,276 +1100,78 @@ namespace ZeldaFullEditor.Gui
 			if (!propertiesChangedFromForm)
 			{
 				int m = scene.ow.allmaps[scene.selectedMap].parent;
+				SendLargeMapChanged(m, largemapCheckbox.Checked);
+				UpdateLargeMap(m, largemapCheckbox.Checked);
+			}
+		}
 
-				if (largemapCheckbox.Checked) // Large map
+		public void UpdateLargeMap(int m, bool largemapChecked)
+		{
+			if (largemapChecked) // Large map
+			{
+				// If we are trying to overlap large areas, fail.
+				if (scene.ow.allmaps[m + 1].largeMap || scene.ow.allmaps[m + 8].largeMap || scene.ow.allmaps[m + 9].largeMap)
 				{
-					// If we are trying to overlap large areas, fail.
-					if (scene.ow.allmaps[m + 1].largeMap || scene.ow.allmaps[m + 8].largeMap || scene.ow.allmaps[m + 9].largeMap)
+					int i = 0;
+					string temp = "";
+
+					if (scene.ow.allmaps[m + 1].largeMap)
 					{
-						int i = 0;
-						string temp = "";
+						temp += (m + 1).ToString("X2") + ", ";
+						i++;
+					}
+					if (scene.ow.allmaps[m + 8].largeMap)
+					{
+						temp += (m + 8).ToString("X2") + ", ";
+						i++;
+					}
+					if (scene.ow.allmaps[m + 9].largeMap)
+					{
+						temp += (m + 9).ToString("X2") + ", ";
+						i++;
+					}
 
-						if (scene.ow.allmaps[m + 1].largeMap)
-						{
-							temp += (m + 1).ToString("X2") + ", ";
-							i++;
-						}
-						if (scene.ow.allmaps[m + 8].largeMap)
-						{
-							temp += (m + 8).ToString("X2") + ", ";
-							i++;
-						}
-						if (scene.ow.allmaps[m + 9].largeMap)
-						{
-							temp += (m + 9).ToString("X2") + ", ";
-							i++;
-						}
-
-						temp = temp.Remove(temp.Length - 2);
-						if (i == 1)
-						{
-							MessageBox.Show("Cannot make overlapping large area. Area: " + temp + " is already part of a large area.", "Bad Error", MessageBoxButtons.OK);
-						}
-						else if (i == 2)
-						{
-							temp = temp.Remove(2, 1);
-							temp = temp.Insert(temp.Length - 2, "and ");
-							MessageBox.Show("Cannot make overlapping large area. Areas: " + temp + " are already part of a large area.", "Bad Error", MessageBoxButtons.OK);
-						}
-						else
-						{
-							temp = temp.Insert(temp.Length - 2, "and ");
-							MessageBox.Show("Cannot make overlapping large area. Areas: " + temp + " are already part of a large area.", "Bad Error", MessageBoxButtons.OK);
-						}
-
-						largemapCheckbox.Checked = false;
+					temp = temp.Remove(temp.Length - 2);
+					if (i == 1)
+					{
+						MessageBox.Show("Cannot make overlapping large area. Area: " + temp + " is already part of a large area.", "Bad Error", MessageBoxButtons.OK);
+					}
+					else if (i == 2)
+					{
+						temp = temp.Remove(2, 1);
+						temp = temp.Insert(temp.Length - 2, "and ");
+						MessageBox.Show("Cannot make overlapping large area. Areas: " + temp + " are already part of a large area.", "Bad Error", MessageBoxButtons.OK);
 					}
 					else
 					{
-						scene.ow.allmaps[m].largeMap = true;
-						scene.ow.allmaps[m + 1].largeMap = true;
-						scene.ow.allmaps[m + 8].largeMap = true;
-						scene.ow.allmaps[m + 9].largeMap = true;
-
-						scene.ow.allmaps[m].parent = (byte) m;
-						scene.ow.allmaps[m + 1].parent = (byte) m;
-						scene.ow.allmaps[m + 8].parent = (byte) m;
-						scene.ow.allmaps[m + 9].parent = (byte) m;
-
-						if (m < 64)
-						{
-							scene.ow.allmaps[m + 64].largeMap = true;
-							scene.ow.allmaps[m + 64 + 1].largeMap = true;
-							scene.ow.allmaps[m + 64 + 8].largeMap = true;
-							scene.ow.allmaps[m + 64 + 9].largeMap = true;
-
-							scene.ow.allmaps[m + 64].parent = (byte) (m + 64);
-							scene.ow.allmaps[m + 64 + 1].parent = (byte) (m + 64);
-							scene.ow.allmaps[m + 64 + 8].parent = (byte) (m + 64);
-							scene.ow.allmaps[m + 64 + 9].parent = (byte) (m + 64);
-						}
-						else if (m >= 64 && m < 128)
-						{
-							scene.ow.allmaps[m - 64].largeMap = true;
-							scene.ow.allmaps[m - 64 + 1].largeMap = true;
-							scene.ow.allmaps[m - 64 + 8].largeMap = true;
-							scene.ow.allmaps[m - 64 + 9].largeMap = true;
-
-							scene.ow.allmaps[m - 64].parent = (byte) (m - 64);
-							scene.ow.allmaps[m - 64 + 1].parent = (byte) (m - 64);
-							scene.ow.allmaps[m - 64 + 8].parent = (byte) (m - 64);
-							scene.ow.allmaps[m - 64 + 9].parent = (byte) (m - 64);
-						}
-
-						scene.ow.getLargeMaps();
-
-						Console.WriteLine("Updating object locations.");
-
-						if (m < 64)
-						{
-							int[] mtable = new int[8] { 0, 1, 8, 9, 64, 64 + 1, 64 + 8, 64 + 9 };
-
-							for (int i = 0; i < 8; i++)
-							{
-								m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
-
-								foreach (EntranceOWEditor o in scene.ow.allentrances)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (EntranceOWEditor o in scene.ow.allholes)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (TransportOW o in scene.ow.allBirds)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
-									}
-								}
-								foreach (TransportOW o in scene.ow.allWhirlpools)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
-									}
-								}
-								foreach (ExitOW o in scene.ow.allexits)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
-									}
-								}
-								foreach (RoomPotSaveEditor o in scene.ow.allitems)
-								{
-									if (o.roomMapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in scene.ow.allsprites[0])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in scene.ow.allsprites[1])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in scene.ow.allsprites[2])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-							}
-						}
-						else if (m >= 64 && m < 128)
-						{
-							int[] mtable = new int[8] { 0, 1, 8, 9, -64, -64 + 1, -64 + 8, -64 + 9 };
-
-							for (int i = 0; i < 8; i++)
-							{
-								m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
-
-								foreach (EntranceOWEditor o in scene.ow.allentrances)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (EntranceOWEditor o in scene.ow.allholes)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (TransportOW o in scene.ow.allBirds)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
-									}
-								}
-								foreach (TransportOW o in scene.ow.allWhirlpools)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
-									}
-								}
-								foreach (ExitOW o in scene.ow.allexits)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
-									}
-								}
-								foreach (RoomPotSaveEditor o in scene.ow.allitems)
-								{
-									if (o.roomMapId == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in scene.ow.allsprites[0])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in scene.ow.allsprites[1])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in scene.ow.allsprites[2])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(scene.ow.allmaps[m].parent);
-									}
-								}
-							}
-						}
-
-						Console.WriteLine("Done updating object locations ");
+						temp = temp.Insert(temp.Length - 2, "and ");
+						MessageBox.Show("Cannot make overlapping large area. Areas: " + temp + " are already part of a large area.", "Bad Error", MessageBoxButtons.OK);
 					}
+
+					largemapCheckbox.Checked = false;
 				}
-				else // Small maps
+				else
 				{
-					scene.ow.allmaps[m].largeMap = false;
-					scene.ow.allmaps[m + 1].largeMap = false;
-					scene.ow.allmaps[m + 8].largeMap = false;
-					scene.ow.allmaps[m + 9].largeMap = false;
+					scene.ow.allmaps[m].SetAsLargeMap((byte) m, 0);
+					scene.ow.allmaps[m + 1].SetAsLargeMap((byte) m, 1);
+					scene.ow.allmaps[m + 8].SetAsLargeMap((byte) m, 2);
+					scene.ow.allmaps[m + 9].SetAsLargeMap((byte) m, 3);
 
-					scene.ow.allmaps[m].parent = (byte) m;
-					scene.ow.allmaps[m + 1].parent = (byte) (m + 1);
-					scene.ow.allmaps[m + 8].parent = (byte) (m + 8);
-					scene.ow.allmaps[m + 9].parent = (byte) (m + 9);
-
+					// If we are in the light world, set the dark world opposite too.
 					if (m < 64)
 					{
-						scene.ow.allmaps[m + 64].largeMap = false;
-						scene.ow.allmaps[m + 64 + 1].largeMap = false;
-						scene.ow.allmaps[m + 64 + 8].largeMap = false;
-						scene.ow.allmaps[m + 64 + 9].largeMap = false;
-
-						scene.ow.allmaps[m + 64].parent = (byte) (m + 64);
-						scene.ow.allmaps[m + 64 + 1].parent = (byte) (m + 64 + 1);
-						scene.ow.allmaps[m + 64 + 8].parent = (byte) (m + 64 + 8);
-						scene.ow.allmaps[m + 64 + 9].parent = (byte) (m + 64 + 9);
+						scene.ow.allmaps[m + 64].SetAsLargeMap((byte) (m + 64), 0);
+						scene.ow.allmaps[m + 64 + 1].SetAsLargeMap((byte) (m + 64), 1 + 64);
+						scene.ow.allmaps[m + 64 + 8].SetAsLargeMap((byte) (m + 64), 2 + 64);
+						scene.ow.allmaps[m + 64 + 9].SetAsLargeMap((byte) (m + 64), 3 + 64);
 					}
+					// If we are in the dark world, set the light world opposite too.
 					else if (m >= 64 && m < 128)
 					{
-						scene.ow.allmaps[m - 64].largeMap = false;
-						scene.ow.allmaps[m - 64 + 1].largeMap = false;
-						scene.ow.allmaps[m - 64 + 8].largeMap = false;
-						scene.ow.allmaps[m - 64 + 9].largeMap = false;
-
-						scene.ow.allmaps[m - 64].parent = (byte) (m - 64);
-						scene.ow.allmaps[m - 64 + 1].parent = (byte) (m - 64 + 1);
-						scene.ow.allmaps[m - 64 + 8].parent = (byte) (m - 64 + 8);
-						scene.ow.allmaps[m - 64 + 9].parent = (byte) (m - 64 + 9);
+						scene.ow.allmaps[m - 64].SetAsLargeMap((byte) (m - 64), 0);
+						scene.ow.allmaps[m - 64 + 1].SetAsLargeMap((byte) (m - 64), 1 + 64);
+						scene.ow.allmaps[m - 64 + 8].SetAsLargeMap((byte) (m - 64), 2 + 64);
+						scene.ow.allmaps[m - 64 + 9].SetAsLargeMap((byte) (m - 64), 3 + 64);
 					}
 
 					scene.ow.getLargeMaps();
@@ -1367,578 +1180,146 @@ namespace ZeldaFullEditor.Gui
 
 					if (m < 64)
 					{
-						int[] mtable = new int[2] { 0, 64 };
+						int[] mtable = new int[8] { 0, 1, 8, 9, 64, 64 + 1, 64 + 8, 64 + 9 };
 
-						for (int i = 0; i < 2; i++)
+						for (int i = 0; i < 8; i++)
 						{
 							m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
 
-							int j = 0;
-							// We are unchecking the large map box so all sprites on map00 are returning to other maps
 							foreach (EntranceOWEditor o in scene.ow.allentrances)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
-							Console.WriteLine("Total entrances moved: " + j);
-							j = 0;
 							foreach (EntranceOWEditor o in scene.ow.allholes)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
-							Console.WriteLine("Total holes moved: " + j);
-							j = 0;
 							foreach (TransportOW o in scene.ow.allBirds)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
 								}
 							}
-							Console.WriteLine("Total brids moved: " + j);
-							j = 0;
 							foreach (TransportOW o in scene.ow.allWhirlpools)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
 								}
 							}
-							Console.WriteLine("Total whirlpools moved: " + j);
-							j = 0;
 							foreach (ExitOW o in scene.ow.allexits)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
 								}
 							}
-							Console.WriteLine("Total exits moved: " + j);
-							j = 0;
 							foreach (RoomPotSaveEditor o in scene.ow.allitems)
 							{
 								if (o.roomMapId == m)
 								{
-									if (o.gameX < 32)
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
-							Console.WriteLine("Total items moved: " + j);
-							j = 0;
 							foreach (Sprite o in scene.ow.allsprites[0])
 							{
 								if (o.mapid == m)
 								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
-							Console.WriteLine("Total sprites (0,1) moved: " + j);
-							j = 0;
 							foreach (Sprite o in scene.ow.allsprites[1])
 							{
 								if (o.mapid == m)
 								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-											j++;
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
-							Console.WriteLine("Total sprites (2) moved: " + j);
-							j = 0;
 							foreach (Sprite o in scene.ow.allsprites[2])
 							{
 								if (o.mapid == m)
 								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-										}
-									}
-									j++;
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
-							Console.WriteLine("Total sprites (3) moved: " + j);
-							j = 0;
 						}
 					}
 					else if (m >= 64 && m < 128)
 					{
-						int[] mtable = new int[2] { 0, -64 };
+						int[] mtable = new int[8] { 0, 1, 8, 9, -64, -64 + 1, -64 + 8, -64 + 9 };
 
-						for (int i = 0; i < 2; i++)
+						for (int i = 0; i < 8; i++)
 						{
 							m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
 
-							// We are unchecking the large map box so all sprites on map00 are returning to other maps.
 							foreach (EntranceOWEditor o in scene.ow.allentrances)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
 							foreach (EntranceOWEditor o in scene.ow.allholes)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
 							foreach (TransportOW o in scene.ow.allBirds)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
 								}
 							}
 							foreach (TransportOW o in scene.ow.allWhirlpools)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
 								}
 							}
 							foreach (ExitOW o in scene.ow.allexits)
 							{
 								if (o.mapId == m)
 								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
 								}
 							}
 							foreach (RoomPotSaveEditor o in scene.ow.allitems)
 							{
 								if (o.roomMapId == m)
 								{
-									if (o.gameX < 32)
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
 							foreach (Sprite o in scene.ow.allsprites[0])
 							{
 								if (o.mapid == m)
 								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
 							foreach (Sprite o in scene.ow.allsprites[1])
 							{
 								if (o.mapid == m)
 								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
 							foreach (Sprite o in scene.ow.allsprites[2])
 							{
 								if (o.mapid == m)
 								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(scene.ow.allmaps[m + 9].index);
-										}
-									}
+									o.updateMapStuff(scene.ow.allmaps[m].parent);
 								}
 							}
 						}
@@ -1947,7 +1328,618 @@ namespace ZeldaFullEditor.Gui
 					Console.WriteLine("Done updating object locations ");
 				}
 			}
+			else // Small maps
+			{
+				scene.ow.allmaps[m].SetAsSmallMap();
+				scene.ow.allmaps[m + 1].SetAsSmallMap();
+				scene.ow.allmaps[m + 8].SetAsSmallMap();
+				scene.ow.allmaps[m + 9].SetAsSmallMap();
+
+				// If we are in the light world, set the dark world opposite too.
+				if (m < 64)
+				{
+					scene.ow.allmaps[m + 64].SetAsSmallMap();
+					scene.ow.allmaps[m + 64 + 1].SetAsSmallMap();
+					scene.ow.allmaps[m + 64 + 8].SetAsSmallMap();
+					scene.ow.allmaps[m + 64 + 9].SetAsSmallMap();
+				}
+				// If we are in the dark world, set the light world opposite too.
+				else if (m >= 64 && m < 128)
+				{
+					scene.ow.allmaps[m - 64].SetAsSmallMap();
+					scene.ow.allmaps[m - 64 + 1].SetAsSmallMap();
+					scene.ow.allmaps[m - 64 + 8].SetAsSmallMap();
+					scene.ow.allmaps[m - 64 + 9].SetAsSmallMap();
+				}
+
+				scene.ow.getLargeMaps();
+
+				Console.WriteLine("Updating object locations.");
+
+				if (m < 64)
+				{
+					int[] mtable = new int[2] { 0, 64 };
+
+					for (int i = 0; i < 2; i++)
+					{
+						m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+
+						int j = 0;
+						// We are unchecking the large map box so all sprites on map00 are returning to other maps
+						foreach (EntranceOWEditor o in scene.ow.allentrances)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total entrances moved: " + j);
+						j = 0;
+						foreach (EntranceOWEditor o in scene.ow.allholes)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total holes moved: " + j);
+						j = 0;
+						foreach (TransportOW o in scene.ow.allBirds)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total brids moved: " + j);
+						j = 0;
+						foreach (TransportOW o in scene.ow.allWhirlpools)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total whirlpools moved: " + j);
+						j = 0;
+						foreach (ExitOW o in scene.ow.allexits)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total exits moved: " + j);
+						j = 0;
+						foreach (RoomPotSaveEditor o in scene.ow.allitems)
+						{
+							if (o.roomMapId == m)
+							{
+								if (o.gameX < 32)
+								{
+									if (o.gameY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.gameY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total items moved: " + j);
+						j = 0;
+						foreach (Sprite o in scene.ow.allsprites[0])
+						{
+							if (o.mapid == m)
+							{
+								if (o.x < 32)
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total sprites (0,1) moved: " + j);
+						j = 0;
+						foreach (Sprite o in scene.ow.allsprites[1])
+						{
+							if (o.mapid == m)
+							{
+								if (o.x < 32)
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+										j++;
+									}
+								}
+								else
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+										j++;
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+										j++;
+									}
+								}
+							}
+						}
+						Console.WriteLine("Total sprites (2) moved: " + j);
+						j = 0;
+						foreach (Sprite o in scene.ow.allsprites[2])
+						{
+							if (o.mapid == m)
+							{
+								if (o.x < 32)
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+									}
+								}
+								else
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+									}
+								}
+								j++;
+							}
+						}
+						Console.WriteLine("Total sprites (3) moved: " + j);
+						j = 0;
+					}
+				}
+				else if (m >= 64 && m < 128)
+				{
+					int[] mtable = new int[2] { 0, -64 };
+
+					for (int i = 0; i < 2; i++)
+					{
+						m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+
+						// We are unchecking the large map box so all sprites on map00 are returning to other maps.
+						foreach (EntranceOWEditor o in scene.ow.allentrances)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+									}
+								}
+							}
+						}
+						foreach (EntranceOWEditor o in scene.ow.allholes)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+									}
+								}
+							}
+						}
+						foreach (TransportOW o in scene.ow.allBirds)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+									}
+								}
+							}
+						}
+						foreach (TransportOW o in scene.ow.allWhirlpools)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+									}
+								}
+							}
+						}
+						foreach (ExitOW o in scene.ow.allexits)
+						{
+							if (o.mapId == m)
+							{
+								if (o.AreaX < 32)
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+									}
+								}
+								else
+								{
+									if (o.AreaY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+									}
+								}
+							}
+						}
+						foreach (RoomPotSaveEditor o in scene.ow.allitems)
+						{
+							if (o.roomMapId == m)
+							{
+								if (o.gameX < 32)
+								{
+									if (o.gameY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+									}
+								}
+								else
+								{
+									if (o.gameY < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+									}
+								}
+							}
+						}
+						foreach (Sprite o in scene.ow.allsprites[0])
+						{
+							if (o.mapid == m)
+							{
+								if (o.x < 32)
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+									}
+								}
+								else
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+									}
+								}
+							}
+						}
+						foreach (Sprite o in scene.ow.allsprites[1])
+						{
+							if (o.mapid == m)
+							{
+								if (o.x < 32)
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+									}
+								}
+								else
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+									}
+								}
+							}
+						}
+						foreach (Sprite o in scene.ow.allsprites[2])
+						{
+							if (o.mapid == m)
+							{
+								if (o.x < 32)
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+									}
+								}
+								else
+								{
+									if (o.y < 32)
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+									}
+									else
+									{
+										o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+									}
+								}
+							}
+						}
+					}
+				}
+
+				Console.WriteLine("Done updating object locations ");
+			}
 		}
+
+
 
 		/// <summary>
 		/// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)
@@ -2157,6 +2149,11 @@ namespace ZeldaFullEditor.Gui
 			SelectedObjectY.Text = y.ToString("X2");
 		}
 
+		private void exportmultipleROMPNG()
+		{
+
+		}
+
 		private void exportPNGToolStripButton_Click(object sender, EventArgs e)
 		{
 			Bitmap temp = new Bitmap(4096, 4096);
@@ -2257,5 +2254,57 @@ namespace ZeldaFullEditor.Gui
 		{
 			scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent].mosaic = mosaicCheckBox.Checked;
 		}
+
+		private void openfileButton_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		public void SendLargeMapChanged(int m, bool c)
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer(8);
+			buffer.Write((byte) 12); // sprite data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) m);
+			buffer.Write((byte) (c ? 1 : 0)); //is checked
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+		}
+
+
+		public void SendMapProperties(OverworldMap map)
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer(16);
+			buffer.Write((byte) 13); // map properties
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((byte) map.index);
+			buffer.Write((byte) map.palette);
+			buffer.Write((byte) map.gfx);
+			buffer.Write((short) map.messageID);
+
+			if (map.index >= 64)
+			{
+				buffer.Write((byte) 0);
+				buffer.Write((byte) map.sprgfx[0]);
+				buffer.Write((byte) map.sprpalette[0]);
+			}
+			else
+			{
+				buffer.Write((byte) scene.ow.gameState);
+				buffer.Write((byte) map.sprgfx[scene.ow.gameState]);
+				buffer.Write((byte) map.sprpalette[scene.ow.gameState]);
+			}
+
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
+		}
+
 	}
 }

@@ -16,6 +16,8 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 using System.Globalization;
+using Lidgren.Network;
+using System.Windows.Media.Media3D;
 
 namespace ZeldaFullEditor
 {
@@ -72,10 +74,26 @@ namespace ZeldaFullEditor
 							{
 								objs.size = 15;
 							}
-
 							updateSelectionObject(objs);
 						}
 					}
+
+					if (NetZS.connected)
+					{
+						NetZSBuffer buffer = new NetZSBuffer(12);
+						buffer.Write((byte) 20); // tile data cmd
+						buffer.Write(NetZS.userID); // user id
+						buffer.Write(room.index); //room index 4
+						buffer.Write((room.selectedObject[0] as Room_Object).uniqueID); // 4
+						buffer.Write((room.selectedObject[0] as Room_Object).size); //byte
+
+						NetOutgoingMessage msg = NetZS.client.CreateMessage();
+						msg.Write(buffer.buffer);
+						NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+						NetZS.client.FlushSendQueue();
+					}
+
+
 				}
 			}
 
@@ -91,6 +109,11 @@ namespace ZeldaFullEditor
 		private void ResizeObject(Room_Object lastElement, int x, int y)
 		{
 			lastElement.UpdateSize();
+
+			if (NetZS.connected)
+			{
+				return; // prevent updating with mouse
+			}
 			//if (8 != 0)
 			//{
 
@@ -374,133 +397,65 @@ namespace ZeldaFullEditor
 			{
 				if (mainForm.selectedEntrance != null)
 				{
-					int ey = (room.index / 16);
-					int ex = room.index - (ey * 16);
-
+					int ey = 512 * (room.index >> 4);
+					int ex = 512 * (room.index & 0xF);
+					Entrance sel = mainForm.selectedEntrance;
 					if (mainForm.gridEntranceCheckbox.Checked)
 					{
-						MX = (MX / 8) * 8;
-						MY = (MY / 8) * 8;
+						MX &= ~0x7;
+						MY &= ~0x7;
 					}
 
-					mainForm.selectedEntrance.XPosition = (short) (MX + (ex * 512));
-					mainForm.selectedEntrance.YPosition = (short) (MY + (ey * 512));
-					mainForm.selectedEntrance.CameraTriggerX = (short) (MX);
-					mainForm.selectedEntrance.CameraTriggerY = (short) (MY);
-					mainForm.selectedEntrance.Room = (short) room.index;
+					sel.XPosition = (ushort) (MX + ex);
+					sel.YPosition = (ushort) (MY + ey);
 
-					if (mainForm.selectedEntrance.CameraTriggerX > 383)
+
+					sel.CameraTriggerX = Utils.Clamp((ushort) MX, 128, 383);
+					sel.CameraTriggerY = Utils.Clamp((ushort) MY, 112, 392);
+
+					sel.Scrollquadrant = 0x00;
+
+					if (MX >= 256)
+						sel.Scrollquadrant |= 0x10;
+
+					if (MY >= 256)
+						sel.Scrollquadrant |= 0x02;
+
+					if ((ushort)(sel.YPosition % 512) <= 150)
 					{
-						mainForm.selectedEntrance.CameraTriggerX = 383;
+						sel.CameraX = (ushort) ey;
 					}
-					if (mainForm.selectedEntrance.CameraTriggerY > 392)
+					else if ((ushort) (sel.YPosition % 512) >= 350)		
 					{
-						mainForm.selectedEntrance.CameraTriggerY = 392;
-					}
-					if (mainForm.selectedEntrance.CameraTriggerX < 128)
-					{
-						mainForm.selectedEntrance.CameraTriggerX = 128;
-					}
-					if (mainForm.selectedEntrance.CameraTriggerY < 112)
-					{
-						mainForm.selectedEntrance.CameraTriggerY = 112;
-					}
-
-					mainForm.selectedEntrance.CameraY = (short) (mainForm.selectedEntrance.CameraY + (ex * 512));
-					mainForm.selectedEntrance.CameraX = (short) (mainForm.selectedEntrance.CameraX + (ey * 512));
-
-					mainForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
-					mainForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
-					mainForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
-					mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
-
-					mainForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
-					mainForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
-					mainForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
-					mainForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
-
-					if (MX < 256 && MY < 256) // Top left quadrant
-					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x00;
-
-						mainForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
-						mainForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
-
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
-					}
-
-					if (MX > 256 && MY < 256) // Top right quadrant
-					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x10;
-						mainForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
-						mainForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
-
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 2);
-					}
-
-					if (MX < 256 && MY > 256) // Bottom left quadrant
-					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x02;
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
-					}
-
-					if (MX > 256 && MY > 256) // Bottom right quadrant
-					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x12;
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 2);
-						mainForm.selectedEntrance.CameraY = (short) ((ex * 512) + 256);
-						mainForm.selectedEntrance.CameraX = (short) ((ey * 512) + 256);
-					}
-
-					mainForm.selectedEntrance.CameraY = mainForm.selectedEntrance.XPosition;
-					mainForm.selectedEntrance.CameraX = mainForm.selectedEntrance.YPosition;
-
-					int scrollXRange = mainForm.selectedEntrance.CameraX % 512;
-					if (scrollXRange >= 350)
-					{
-						mainForm.selectedEntrance.CameraX = (short) ((ey * 512) + 256 + 16);
-					}
-					else if (scrollXRange <= 150)
-					{
-						mainForm.selectedEntrance.CameraX = (short) ((ey * 512));
+						sel.CameraX = (ushort) (ey+256+16);
 					}
 					else
 					{
-						mainForm.selectedEntrance.CameraX = (short) (mainForm.selectedEntrance.YPosition - 112);
+						sel.CameraX = (ushort)(sel.YPosition - 112);
 					}
 
-					int scrollYRange = mainForm.selectedEntrance.CameraY % 512;
-					if (scrollYRange >= 350)
+					if ((ushort) (sel.XPosition % 512) <= 150)
 					{
-						mainForm.selectedEntrance.CameraY = (short) ((ex * 512) + 256);
+						sel.CameraY = (ushort) ex;
 					}
-					else if (scrollYRange <= 150)
+					else if ((ushort) (sel.XPosition % 512) >= 350)
 					{
-						mainForm.selectedEntrance.CameraY = (short) ((ex * 512));
+						sel.CameraY = (ushort) (ex+256);
 					}
 					else
 					{
-						mainForm.selectedEntrance.CameraY = (short) (mainForm.selectedEntrance.XPosition - 128);
+						sel.CameraY = (ushort) (sel.XPosition - 128);
 					}
 
-					//mainForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
-					//mainForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
+
+					mainForm.selectedEntrance.cameraBoundaryQN = (byte) (mainForm.selectedEntrance.CameraX >> 8);
+					mainForm.selectedEntrance.cameraBoundaryFN = (byte) (mainForm.selectedEntrance.CameraX >> 8 & 0xFE);
+					mainForm.selectedEntrance.cameraBoundaryQS = (byte) (mainForm.selectedEntrance.CameraX >> 8);
+					mainForm.selectedEntrance.cameraBoundaryFS = (byte) (mainForm.selectedEntrance.CameraX >> 8 | 0x01);
+					mainForm.selectedEntrance.cameraBoundaryQW = (byte) (mainForm.selectedEntrance.CameraY >> 8);
+					mainForm.selectedEntrance.cameraBoundaryFW = (byte) (mainForm.selectedEntrance.CameraY >> 8 & 0xFE);
+					mainForm.selectedEntrance.cameraBoundaryQE = (byte) (mainForm.selectedEntrance.CameraY >> 8);
+					mainForm.selectedEntrance.cameraBoundaryFE = (byte) (mainForm.selectedEntrance.CameraY >> 8 | 0x01);
 
 					DrawRoom();
 					Refresh();
@@ -548,7 +503,7 @@ namespace ZeldaFullEditor
 
 					}
 
-					
+
 				}
 				else // If it is a door
 				{
@@ -766,7 +721,7 @@ namespace ZeldaFullEditor
 				}
 				// TODO copy
 
-				if (o.options == ObjectOption.Door)
+				if (mainForm.showDoorsIDs && o.options == ObjectOption.Door)
 				{
 					if (mainForm.showDoorsIDs)
 					{
@@ -790,7 +745,7 @@ namespace ZeldaFullEditor
 					g.DrawImage(GFX.moveableBlock, o.nx * 8, o.ny * 8);
 				}
 
-				if (doorsObject.Contains(o.id))
+				if (mainForm.showStairIDs && doorsObject.Contains(o.id))
 				{
 					drawText(g, o.nx * 8, o.ny * 8, "to : " + room.staircase_rooms[stairCount].ToString());
 					stairCount++;
@@ -1218,7 +1173,7 @@ namespace ZeldaFullEditor
 							if (isMouseCollidingWith(o, e))
 							{
 								string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.holewarp.ToString("X2"));
-								if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out byte  b))
+								if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out byte b))
 								{
 									room.holewarp = b;
 									updateRoomInfos(mainForm);
@@ -1874,6 +1829,8 @@ namespace ZeldaFullEditor
 				}
 				else if ((byte) selectedMode >= 0 && (byte) selectedMode <= 3)
 				{
+
+
 					foreach (Object o in room.selectedObject)
 					{
 						(o as Room_Object).x = (o as Room_Object).nx;
@@ -1881,6 +1838,14 @@ namespace ZeldaFullEditor
 						(o as Room_Object).ox = (o as Room_Object).x;
 						(o as Room_Object).oy = (o as Room_Object).y;
 					}
+
+					if (NetZS.connected)
+					{
+						SendObjectsData();
+					}
+
+
+
 				}
 				else if (selectedMode == ObjectMode.Torchmode)
 				{
@@ -2371,6 +2336,7 @@ namespace ZeldaFullEditor
 			{
 				if (o is Room_Object r)
 				{
+					r.deleted = true;
 					room.tilesObjects.Remove(r);
 				}
 				else if (o is Sprite s)
@@ -2381,8 +2347,9 @@ namespace ZeldaFullEditor
 				{
 					room.pot_items.Remove(p);
 				}
+				
 			}
-
+			SendObjectsData();
 			room.selectedObject.Clear();
 			DrawRoom();
 			Refresh();
@@ -2430,7 +2397,6 @@ namespace ZeldaFullEditor
 						}
 
 						room.selectedObject.Clear();
-
 						foreach (SaveObject o in data)
 						{
 							if (o.type == typeof(Sprite))
@@ -2474,6 +2440,9 @@ namespace ZeldaFullEditor
 										ro.options = o.options;
 										room.tilesObjects.Add(ro);
 										room.selectedObject.Add(ro);
+
+
+
 									}
 								}
 							}
@@ -2612,9 +2581,10 @@ namespace ZeldaFullEditor
 				if (o is Room_Object objR)
 				{
 					odata.Add(new SaveObject(objR));
+					objR.deleted = true;
 				}
 			}
-
+			SendObjectsData();
 			Clipboard.SetData("ObjectZ", odata);
 
 			foreach (var o in room.selectedObject)
@@ -2810,5 +2780,53 @@ namespace ZeldaFullEditor
 		{
 			mainForm.UpdateUIForRoom(room, true);
 		}
+
+		public void SendObjectsData()
+		{
+			if (!NetZS.connected)
+			{
+				return;
+			}
+			NetZSBuffer buffer = new NetZSBuffer((short) ((room.selectedObject.Count * 15) + 12));
+			buffer.Write((byte) 19); // tile data cmd
+			buffer.Write(NetZS.userID); // user id
+			buffer.Write(room.index); //room index 4
+			buffer.Write(room.selectedObject.Count); //4
+			//DungeonsData.all_rooms[0].tilesObjects = DungeonsData.all_rooms[0].tilesObjects.OrderBy(x => x.posinarray);
+
+			foreach (Object o in room.selectedObject)
+			{
+				buffer.Write((o as Room_Object).uniqueID); // 4bytes
+
+				buffer.Write((o as Room_Object).id);
+				buffer.Write((o as Room_Object).x);
+				buffer.Write((o as Room_Object).y);
+				buffer.Write((o as Room_Object).ox);
+				buffer.Write((o as Room_Object).oy);
+				buffer.Write((o as Room_Object).layer);
+				buffer.Write((o as Room_Object).size);
+				buffer.Write((byte)((o as Room_Object).deleted ? 1 : 0));
+				short zIndex = 0;
+
+				foreach(Object ro in room.tilesObjects)
+				{
+					if (ro == o)
+					{
+						break;
+					}
+					zIndex++;
+				}
+				buffer.Write(zIndex);
+
+
+			}
+
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
+		}
+
 	}
 }

@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lidgren.Network;
 using ZeldaFullEditor.Gui;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -16,6 +18,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		SceneOW scene;
 		public EntranceOWEditor selectedEntrance = null;
 		public EntranceOWEditor lastselectedEntrance = null;
+		
 		bool isLeftPress = false;
 
 		public EntranceMode(SceneOW scene)
@@ -88,6 +91,8 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						scene.ow.allholes[i].updateMapStuff(mid);
 
+						
+
 						found = i;
 						selectedEntrance = scene.ow.allholes[i];
 						scene.mouse_down = true;
@@ -121,7 +126,7 @@ namespace ZeldaFullEditor.OWSceneModes
 						selectedEntrance = scene.ow.allentrances[i];
 						scene.mouse_down = true;
 						isLeftPress = true;
-
+						SendEntranceData(selectedEntrance);
 						//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 						break;
 					}
@@ -356,7 +361,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			lastselectedEntrance.mapPos = 0xFFFF;
 			lastselectedEntrance.entranceId = 0;
 			lastselectedEntrance.deleted = true;
-
+			SendEntranceData(lastselectedEntrance);
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
@@ -400,6 +405,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					}
 
 					selectedEntrance.updateMapStuff(mid);
+					SendEntranceData(selectedEntrance);
 					selectedEntrance = null;
 					scene.mouse_down = false;
 				}
@@ -547,6 +553,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				lastselectedEntrance.mapId = ef.mapId;
 				lastselectedEntrance.x = ef.x;
 				lastselectedEntrance.y = ef.y;
+				SendEntranceData(lastselectedEntrance);
 			}
 		}
 
@@ -672,5 +679,31 @@ namespace ZeldaFullEditor.OWSceneModes
 				g.CompositingMode = CompositingMode.SourceCopy;
 			}
 		}
+
+
+		public void SendEntranceData(EntranceOWEditor entrance)
+		{
+			if (!NetZS.connected) { return; }
+			NetZSBuffer buffer = new NetZSBuffer(24);
+			buffer.Write((byte) 06); // entrance data
+			buffer.Write((byte) NetZS.userID); //user ID
+			buffer.Write((int) entrance.uniqueID);
+			buffer.Write((byte) entrance.entranceId);
+			buffer.Write((ushort) entrance.mapPos);
+			buffer.Write((int) entrance.x);
+			buffer.Write((int) entrance.y);
+			buffer.Write((byte) entrance.AreaX);;
+			buffer.Write((byte) entrance.AreaY);
+			buffer.Write((short) entrance.mapId);
+			buffer.Write((byte) (entrance.isHole ? 1 : 0));
+			buffer.Write((byte) (entrance.deleted ? 1 : 0));
+			NetOutgoingMessage msg = NetZS.client.CreateMessage();
+			msg.Write(buffer.buffer);
+			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+			NetZS.client.FlushSendQueue();
+
+		}
+
+
 	}
 }

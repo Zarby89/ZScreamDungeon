@@ -49,6 +49,9 @@ namespace ZeldaFullEditor
 		byte previousSize = 0;
 		public bool showRectangle = false;
 		public List<Point> collisionPoint = new List<Point>();
+		public int uniqueID = 0;
+		public byte z = 0;
+		public bool deleted = false;
 
 		public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
 		{
@@ -63,6 +66,8 @@ namespace ZeldaFullEditor
 			this.oy = y;
 			width = 16;
 			height = 16;
+			uniqueID = ROM.uniqueRoomObjectID++;
+			
 		}
 
 		public void getObjectSize()

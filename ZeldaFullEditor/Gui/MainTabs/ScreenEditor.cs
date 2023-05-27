@@ -14,20 +14,23 @@ using ZeldaFullEditor.Properties;
 using System.Globalization;
 using System.Diagnostics;
 using ZeldaFullEditor.Data;
+using static ZeldaFullEditor.Point3D;
 
 namespace ZeldaFullEditor.Gui.MainTabs
 {
 	public partial class ScreenEditor : UserControl
 	{
-		Point3D[] triforceVertices = new Point3D[6];
-		Point3D[] crystalVertices = new Point3D[6];
-		Point3D selectedVertex = null;
-		OAMTile[] oamData = new OAMTile[10];
-		OAMTile selectedOamTile = null;
-		OAMTile lastSelectedOamTile = null;
-		byte[] mapdata = new byte[64 * 64];
-		byte[] dwmapdata = new byte[64 * 64];
-		int swordX = 0;
+		private Point3D[] triforceVertices;
+		private Point3D[] crystalVertices;
+		private Face3D[] triforceface3Ds;
+		private Face3D[] crystalface3Ds;
+		private Point3D selectedVertex = null;
+		private OAMTile[] oamData = new OAMTile[10];
+		private OAMTile selectedOamTile = null;
+		private OAMTile lastSelectedOamTile = null;
+		private byte[] mapdata = new byte[64 * 64];
+		private byte[] dwmapdata = new byte[64 * 64];
+		private int swordX = 0;
 
 		public IntPtr dungmaptiles8Ptr = Marshal.AllocHGlobal(0x8000);
 		public Bitmap dungmaptiles8Bitmap;
@@ -49,64 +52,67 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		public IntPtr oamBGPtr = Marshal.AllocHGlobal(0x80000);
 		public Bitmap oamBGBitmap;
 
-		byte palSelected = 0;
-		ushort selectedTile = 0;
+		private byte palSelected = 0;
+		private ushort selectedTile = 0;
 
-		bool mDown = false;
-		byte lastX = 0;
-		byte lastY = 0;
-		int xIn = 0;
-		bool swordSelected = false;
+		private bool mDown = false;
+		private byte lastX = 0;
+		private byte lastY = 0;
+		private int xIn = 0;
+		private bool swordSelected = false;
 
 		// Commented out because its unused
 		//bool v = false;
 
 		public bool darkWorld = false;
 
-		List<MapIcon>[] allMapIcons = new List<MapIcon>[10];
+		private List<MapIcon>[] allMapIcons = new List<MapIcon>[10];
 
-		int[] addresses = new int[] { 0x53de4, 0x53e2c, 0x53e08, 0x53e50, 0x53e74, 0x53e98, 0x53ebc };
-		int[] addressesgfx = new int[] { 0x53ee0, 0x53f04, 0x53ef2, 0x53f16, 0x53f28, 0x53f3a, 0x53f4c };
+		private int[] addresses = new int[] { 0x53de4, 0x53e2c, 0x53e08, 0x53e50, 0x53e74, 0x53e98, 0x53ebc };
+		private int[] addressesgfx = new int[] { 0x53ee0, 0x53f04, 0x53ef2, 0x53f16, 0x53f28, 0x53f3a, 0x53f4c };
 
-		byte selectedMapTile = 0;
+		private byte selectedMapTile = 0;
 
-		byte[][] currentFloorRooms = new byte[1][];
-		byte[][] currentFloorGfx = new byte[1][];
-		int totalFloors = 0;
-		byte currentFloor = 0;
-		byte nbrBasement = 0;
-		byte nbrFloor = 0;
-		ushort bossRoom = 0x000F;
+		private byte[][] currentFloorRooms = new byte[1][];
+		private byte[][] currentFloorGfx = new byte[1][];
+		private int totalFloors = 0;
+		private byte currentFloor = 0;
+		private byte nbrBasement = 0;
+		private byte nbrFloor = 0;
+		private ushort bossRoom = 0x000F;
 
-		DungeonMap[] dungmaps = new DungeonMap[14];
+		private DungeonMap[] dungmaps = new DungeonMap[14];
 
-		Bitmap floorSelector;
+		private Bitmap floorSelector;
 
-		int dungmapSelectedTile = 0;
-		int dungmapSelected = 0;
-		bool currentDungeonChanged = false;
-		bool editedFromEditor = false;
+		private int dungmapSelectedTile = 0;
+		private int dungmapSelected = 0;
+		private bool currentDungeonChanged = false;
+		private bool editedFromEditor = false;
 
-		byte[] copiedDataRooms = new byte[25];
-		byte[] copiedDataGfx = new byte[25];
+		private byte[] copiedDataRooms = new byte[25];
+		private byte[] copiedDataGfx = new byte[25];
 
-		MapIcon selectedMapIcon = null;
-		bool mouseDown = false;
-		int mxClick = 0;
-		int myClick = 0;
-		int mxDist = 0;
-		int myDist = 0;
+		private MapIcon selectedMapIcon = null;
+		private bool mouseDown = false;
+		private int mxClick = 0;
+		private int myClick = 0;
+		private int mxDist = 0;
+		private int myDist = 0;
 
-		bool mdown = false;
+		private bool mdown = false;
 
-		Color[] currentPalette = new Color[256];
+		private Color[] currentPalette = new Color[256];
 
-		int titleScreenTilesGFX = 0; //35
-		int titleScreenExtraTilesGFX = 0; //81
-		int titleScreenSpritesGFX = 0; //125
-		int titleScreenExtraSpritesGFX = 0; //8
+		private int titleScreenTilesGFX = 0; //35
+		private int titleScreenExtraTilesGFX = 0; //81
+		private int titleScreenSpritesGFX = 0; //125
+		private int titleScreenExtraSpritesGFX = 0; //8
 
-		bool stupidEventTrigger = true;
+		private bool stupidEventTrigger = true;
+		private bool showBG1Grid = false;
+		private bool showBG2Grid = false;
+		private bool showBG3Grid = false;
 
 		public ScreenEditor()
 		{
@@ -116,21 +122,65 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		public void Init()
 		{
+			triforceVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
+			crystalVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
+
+			triforceface3Ds = new Face3D[ROM.DATA[Constants.triforceFaceCount]];
+			crystalface3Ds = new Face3D[ROM.DATA[Constants.crystalFaceCount]];
+
+			int triforceVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceVerticesPointer) + 0x090000);
+			int crystalVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalVerticesPointer) + 0x090000);
+
+			int triforceFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceFacesPointer) + 0x090000);
+			int crystalFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalFacesPointer) + 0x090000);
 			// Triforce
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < ROM.DATA[Constants.triforceVerticesCount]; i++)
 			{
 				triforceVertices[i] = new Point3D(
-					(sbyte) ROM.DATA[Constants.triforceVertices + 0 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.triforceVertices + 1 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.triforceVertices + 2 + (i * 3)]
+					(sbyte) ROM.DATA[triforceVerticesPos + 0 + (i * 3)],
+					(sbyte) ROM.DATA[triforceVerticesPos + 1 + (i * 3)],
+					(sbyte) ROM.DATA[triforceVerticesPos + 2 + (i * 3)]
 				);
 
+			}
+
+			for (int i = 0; i < ROM.DATA[Constants.crystalVerticesCount]; i++)
+			{
 				crystalVertices[i] = new Point3D(
-					(sbyte) ROM.DATA[Constants.crystalVertices + 0 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.crystalVertices + 1 + (i * 3)],
-					(sbyte) ROM.DATA[Constants.crystalVertices + 2 + (i * 3)]
+					(sbyte) ROM.DATA[crystalVerticesPos + 0 + (i * 3)],
+					(sbyte) ROM.DATA[crystalVerticesPos + 1 + (i * 3)],
+					(sbyte) ROM.DATA[crystalVerticesPos + 2 + (i * 3)]
 				);
 			}
+
+
+			for (int i = 0; i < ROM.DATA[Constants.triforceFaceCount];i++)
+			{
+				byte tsize = ROM.DATA[triforceFacePos++];
+				sbyte[] data = new sbyte[tsize];
+				for (int j = 0; j < tsize; j++)
+				{
+					data[j] = (sbyte) ROM.DATA[triforceFacePos + j];
+				}
+				triforceFacePos += tsize + 1;
+
+
+				triforceface3Ds[i] = new Face3D(data);
+			}
+
+			for (int i = 0; i < ROM.DATA[Constants.crystalFaceCount]; i++)
+			{
+				byte csize = ROM.DATA[crystalFacePos++];
+				sbyte[] datac = new sbyte[csize];
+				for (int j = 0; j < csize; j++)
+				{
+					datac[j] = (sbyte) ROM.DATA[crystalFacePos + j];
+				}
+				crystalFacePos += csize + 1;
+
+				crystalface3Ds[i] = new Face3D(datac);
+			}
+
 
 			tiles8Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, tiles8Ptr);
 			dungmaptiles8Bitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, dungmaptiles8Ptr);
@@ -251,11 +301,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				}
 			}
 
-			// Palettes : 
+			// Palettes :
 			// Main5, Aux
 
 			// Load Title Screen Data
-			// Format : 
+			// Format :
 			// 4 Bytes Header followed by "short tiles values"
 			// byte 0 and 1 = Dest Address? Big Endian
 			// byte 2 and 3 = Tile Count in Big Endian if 8XXX this is the last index
@@ -315,6 +365,21 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			updateGFXGroup();
 		}
 
+		/// <summary>
+		///		Used to reload the palettes when switching to the screen editor and between its tabs.
+		/// </summary>
+		public void ReLoadPalettes()
+		{
+			SetColorsPalette
+			(
+				Palettes.overworld_MainPalettes[5], Palettes.overworld_AnimatedPalettes[0],
+				Palettes.overworld_AuxPalettes[3], Palettes.overworld_AuxPalettes[3],
+				Palettes.HudPalettes[0],
+				Color.FromArgb(0, 0, 0, 0),
+				Palettes.spritesAux1_Palettes[1],
+				Palettes.spritesAux1_Palettes[1]
+			);
+		}
 
 		public void LoadOverworldMap()
 		{
@@ -391,7 +456,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 				if (fixsource)
 				{
-
 					pos += 2;
 				}
 				else
@@ -430,7 +494,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			/*
             for (int i = 0; i < 4; i++)
             {
-                
             }
             */
 
@@ -503,7 +566,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			/*
             for (int i = 0; i < 4; i++)
             {
-                
             }
             */
 
@@ -627,7 +689,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) + p * 16);
 			gfx16Pointer[index + r] = (byte) (((pixel >> 4) & 0x0F) + p * 16);
 		}
-
 
 		private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, bool v, bool h, byte* gfx16Pointer, byte* gfx8Pointer)
 		{
@@ -784,6 +845,66 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				if (lastSelectedOamTile != null)
 				{
 					e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle((lastSelectedOamTile.x * 2), (lastSelectedOamTile.y * 2), 32, 32));
+				}
+			}
+
+			if (this.showBG1Grid)
+			{
+				int gridsizeX = 512;
+				int gridsizeY = 448;
+
+				for (int gx = 0; gx < (gridsizeX / 16); gx++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point((gx * 16) - 1, 0),
+						new Point((gx * 16) - 1, gridsizeY));
+				}
+
+				for (int gy = 0; gy < ((gridsizeY / 16) + 1); gy++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(0, (gy * 16) - 1),
+						new Point(gridsizeX, (gy * 16) - 1));
+				}
+			}
+
+			if (this.showBG2Grid)
+			{
+				int gridsizeX = 512;
+				int gridsizeY = 448;
+
+				for (int gx = 0; gx < (gridsizeX / 16); gx++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(gx * 16, 0),
+						new Point(gx * 16, gridsizeY));
+				}
+
+				for (int gy = 0; gy < ((gridsizeY / 16) + 1); gy++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(0, (gy * 16) - 2),
+						new Point(gridsizeX, (gy * 16) - 2));
+				}
+			}
+
+			if (this.showBG3Grid)
+			{
+				int gridsizeX = 512;
+				int gridsizeY = 448;
+
+				for (int gx = 0; gx < (gridsizeX / 16); gx++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdGreenPen,
+						new Point(gx * 16, 0),
+						new Point(gx * 16, gridsizeY));
+				}
+
+				for (int gy = 0; gy < ((gridsizeY / 16) + 1); gy++)
+				{
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1,
+						new Point(0, (gy * 16) - 1),
+						new Point(gridsizeX, (gy * 16) - 1));
 				}
 			}
 		}
@@ -980,7 +1101,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			selectedOamTile = null;
 		}
 
-
 		private void SetColorsPalette(Color[] main, Color[] animated, Color[] aux1, Color[] aux2, Color[] hud, Color bgrcolor, Color[] spr, Color[] spr2)
 		{
 			// Palettes infos, color 0 of a palette is always transparent (the arrays contains 7 colors width wide)
@@ -1004,7 +1124,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				currentPalette[(16 * 7) + (x)] = animated[(x - 1)];
 			}
 
-			// Right side of the palette - Aux1, Aux2 
+			// Right side of the palette - Aux1, Aux2
 
 			// Aux1 Palette, Location 8,2 : 21 colors [7x3]
 			k = 0;
@@ -1136,7 +1256,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				int x = i % 16;
 				int y = i / 16;
 				e.Graphics.FillRectangle(new SolidBrush(currentPalette[i]), new Rectangle(x * 16, y * 16, 16, 16));
-
 			}
 
 			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(0, 16 * palSelected, 256, 16));
@@ -1268,7 +1387,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			//for (int i = 0; i < 8; i++)
 			//{
-
 			for (int i = 0; i < allMapIcons[overworldCombobox.SelectedIndex].Count; i++)
 			{
 				int xpos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].x * 2);
@@ -1618,7 +1736,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			Color gridcolor = GFX.getColor(ROM.ReadRealShort(0xDE572));
 			Pen ppp = new Pen(gridcolor, 2);
 
-
 			e.Graphics.DrawRectangle(new Pen(r2, 2), Constants.Rect_1_1_182_182);
 			e.Graphics.DrawRectangle(new Pen(r1, 2), Constants.Rect_3_3_178_178);
 
@@ -1812,7 +1929,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			/*
             for (int i = 0; i < 4; i++)
             {
-                
             }
             */
 
@@ -1947,8 +2063,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			e.Graphics.DrawImage(dungmaptiles8Bitmap, Constants.Rect_0_0_256_256, Constants.Rect_0_0_128_128, GraphicsUnit.Pixel);
 		}
 
+		/// <summary>
+		///		Event trigger when selecting one of the "Titlescreen, Overworld Map, Dungeon Map, or Triforce/Crystal Editor" tabs.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			this.ReLoadPalettes();
+
 			if (tabControl1.SelectedIndex == 0)
 			{
 				Buildtileset();
@@ -2341,7 +2464,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void button8_Click(object sender, EventArgs e)
 		{
-
 			for (int i = 0; i < 25; i++)
 			{
 				copiedDataRooms[i] = dungmaps[dungmapListbox.SelectedIndex].FloorRooms[currentFloor][i];
@@ -2619,7 +2741,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				if (triforceRadio.Checked)
 				{
 					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
-					if (selectedVertex  == triforceVertices[i])
+					if (selectedVertex == triforceVertices[i])
 					{
 						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
 					}
@@ -2825,26 +2947,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		public void saveTriforce()
 		{
-			for (int i = 0; i < 6; i++)
-			{
-				ROM.Write(Constants.triforceVertices + 0 + (i * 3), (byte) triforceVertices[i].x, WriteType.Polyhedral);
-				ROM.Write(Constants.triforceVertices + 1 + (i * 3), (byte) triforceVertices[i].y, WriteType.Polyhedral);
-				ROM.Write(Constants.triforceVertices + 2 + (i * 3), (byte) triforceVertices[i].z, WriteType.Polyhedral);
 
-				ROM.Write(Constants.crystalVertices + 0 + (i * 3), (byte) crystalVertices[i].x, WriteType.Polyhedral);
-				ROM.Write(Constants.crystalVertices + 1 + (i * 3), (byte) crystalVertices[i].y, WriteType.Polyhedral);
-				ROM.Write(Constants.crystalVertices + 2 + (i * 3), (byte) crystalVertices[i].z, WriteType.Polyhedral);
-
-				/*
-                ROM.DATA[Constants.triforceVertices + 0 + (i * 3)] = (byte)triforceVertices[i].x;
-                ROM.DATA[Constants.triforceVertices + 1 + (i * 3)] = (byte)triforceVertices[i].y;
-                ROM.DATA[Constants.triforceVertices + 2 + (i * 3)] = (byte)triforceVertices[i].z;
-
-                ROM.DATA[Constants.crystalVertices + 0 + (i * 3)] = (byte)crystalVertices[i].x;
-                ROM.DATA[Constants.crystalVertices + 1 + (i * 3)] = (byte)crystalVertices[i].y;
-                ROM.DATA[Constants.crystalVertices + 2 + (i * 3)] = (byte)crystalVertices[i].z;
-                */
-			}
 		}
 
 		private void crystalRadio_CheckedChanged(object sender, EventArgs e)
@@ -2853,5 +2956,231 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			triforcebox2.Refresh();
 			triforcebox3.Refresh();
 		}
-	}
+
+		/// <summary>
+		///		Event triggered when "Grid BG1" check box is changed.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void grid1CheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.showBG1Grid = !this.showBG1Grid;
+
+			this.grid2CheckBox.CheckedChanged -= new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged -= new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.showBG2Grid = false;
+			this.showBG3Grid = false;
+
+			this.grid2CheckBox.Checked = false;
+			this.grid3CheckBox.Checked = false;
+
+			this.grid2CheckBox.CheckedChanged += new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged += new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.screenBox.Refresh();
+		}
+
+		/// <summary>
+		///		Event triggered when "Grid BG2" check box is changed.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void grid2CheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.showBG2Grid = !this.showBG2Grid;
+
+			this.grid1CheckBox.CheckedChanged -= new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged -= new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.showBG1Grid = false;
+			this.showBG3Grid = false;
+
+			this.grid1CheckBox.Checked = false;
+			this.grid3CheckBox.Checked = false;
+
+			this.grid1CheckBox.CheckedChanged += new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid3CheckBox.CheckedChanged += new System.EventHandler(this.grid3CheckBox_CheckedChanged);
+
+			this.screenBox.Refresh();
+		}
+
+		/// <summary>
+		///		Event triggered when "Grid BG3" check box is changed.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void grid3CheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.showBG3Grid = !this.showBG3Grid;
+
+			this.grid1CheckBox.CheckedChanged -= new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid2CheckBox.CheckedChanged -= new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+
+			this.showBG1Grid = false;
+			this.showBG2Grid = false;
+
+			this.grid1CheckBox.Checked = false;
+			this.grid2CheckBox.Checked = false;
+
+			this.grid1CheckBox.CheckedChanged += new System.EventHandler(this.grid1CheckBox_CheckedChanged);
+			this.grid2CheckBox.CheckedChanged += new System.EventHandler(this.grid2CheckBox_CheckedChanged);
+
+			this.screenBox.Refresh();
+		}
+
+        private void exportObjButton_Click(object sender, EventArgs e)
+        {
+			StringBuilder sb = new StringBuilder();
+			if (triforceRadio.Checked)
+			{
+				
+				sb.Append("g Triforce\r\n");
+				for (int i = 0; i < triforceVertices.Length; i++)
+				{
+					sb.Append("v " + triforceVertices[i].x + " " + triforceVertices[i].y + " " + triforceVertices[i].z + "\r\n");
+				}
+				for (int i = 0; i < triforceface3Ds.Length; i++)
+				{
+					sb.Append("f ");
+					for (int j = 0; j < triforceface3Ds[i].vertex.Length; j++)
+					{
+						sb.Append(triforceface3Ds[i].vertex[j] + " ");
+					}
+					sb.Append("\r\n");
+				}
+			}
+			else
+			{
+				sb.Append("g Crystal\r\n");
+				for (int i = 0; i < crystalVertices.Length; i++)
+				{
+					sb.Append("v " + crystalVertices[i].x + " " + crystalVertices[i].y + " " + crystalVertices[i].z + "\r\n");
+				}
+				for (int i = 0; i < crystalface3Ds.Length; i++)
+				{
+					sb.Append("f ");
+					for (int j = 0; j < crystalface3Ds[i].vertex.Length; j++)
+					{
+						sb.Append((crystalface3Ds[i].vertex[j]+1) + " ");
+					}
+					sb.Append("\r\n");
+				}
+			}
+
+			using (SaveFileDialog sf = new SaveFileDialog())
+			{
+				sf.Filter = "wavefront .obj 3d model (*.obj)|*.obj";
+				sf.DefaultExt = "obj";
+				if (sf.ShowDialog() == DialogResult.OK) 
+				{
+					File.WriteAllText(sf.FileName, sb.ToString());
+				}
+				
+			}
+		}
+
+        private void importObjButton_Click(object sender, EventArgs e)
+        {
+			byte vCount = 0;
+			byte fCount = 0;
+			List<byte> databytesV = new List<byte>();
+			List<byte> databytesF = new List<byte>();
+			using (OpenFileDialog of = new OpenFileDialog())
+			{
+				if (of.ShowDialog() == DialogResult.OK)
+				{
+					string[] lines = File.ReadAllLines(of.FileName);
+
+					for (int i = 0; i < lines.Length; i++)
+					{
+						if (lines[i][0] == '#')
+						{
+							continue;
+						}
+						else if (lines[i][0] == 'v')
+						{
+							string[] vertex = lines[i].Split(' ');
+
+
+							byte vx = (byte) double.Parse(vertex[1], CultureInfo.InvariantCulture);
+							byte vy = (byte) double.Parse(vertex[2], CultureInfo.InvariantCulture);
+							byte vz = (byte) double.Parse(vertex[3], CultureInfo.InvariantCulture);
+
+							databytesV.Add(vx);
+							databytesV.Add(vy);
+							databytesV.Add(vz);
+							vCount++;
+
+						}
+						else if (lines[i][0] == 'f')
+						{
+							string[] vertex = lines[i].Split(' ');
+							databytesF.Add((byte) (vertex.Length - 1));
+							for (int j = 0; j < vertex.Length - 1; j++)
+							{
+								databytesF.Add((byte) (byte.Parse(vertex[j + 1]) - 1));
+							}
+							databytesF.Add((byte) 00);
+							fCount++;
+
+						}
+					}
+
+					int triforceVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceVerticesPointer) + 0x090000);
+					int crystalVerticesPos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalVerticesPointer) + 0x090000);
+
+					int triforceFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceFacesPointer) + 0x090000);
+					int crystalFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalFacesPointer) + 0x090000);
+
+					if (triforceRadio.Checked)
+					{
+						if ((databytesV.Count + databytesF.Count) > Constants.triforceMaxSize) 
+						{
+							MessageBox.Show("That model is too big to replace the Triforce !");
+							return;
+						}
+						else
+						{
+							ROM.DATA[Constants.triforceVerticesCount] = vCount;
+							ROM.DATA[Constants.triforceFaceCount] = fCount;
+							//do not touch the first pointer yet for the vertices
+							ROM.Write(triforceVerticesPos, databytesV.ToArray(), WriteType.Unknown);
+
+							int pos = triforceVerticesPos + databytesV.Count;
+							ROM.WriteShort(Constants.triforceFacesPointer, pos); //write the new pointers for faces
+
+							ROM.Write(triforceVerticesPos + databytesV.Count, databytesF.ToArray(), WriteType.Unknown);
+
+
+						}
+					}
+					else
+					{
+						if ((databytesV.Count + databytesF.Count) > Constants.crystalMaxSize)
+						{
+							MessageBox.Show("That model is too big to replace the Crystal !");
+							return;
+						}
+						else
+						{
+							ROM.DATA[Constants.crystalVerticesCount] = vCount;
+							ROM.DATA[Constants.crystalFaceCount] = fCount;
+							//do not touch the first pointer yet for the vertices
+							ROM.Write(crystalVerticesPos, databytesV.ToArray(), WriteType.Unknown);
+
+							int pos = crystalVerticesPos + databytesV.Count;
+							ROM.WriteShort(Constants.crystalFacesPointer, pos); //write the new pointers for faces
+
+							ROM.Write(crystalVerticesPos + databytesV.Count, databytesF.ToArray(), WriteType.Unknown);
+						}
+					}
+
+
+
+				}
+			}
+
+		}
+    }
 }

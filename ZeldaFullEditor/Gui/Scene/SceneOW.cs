@@ -116,22 +116,37 @@ namespace ZeldaFullEditor
 			{
 				if (e.Delta < 0)
 				{
-					xPos += 48;
+					xPos += 128;
 				}
 				else
 				{
-					xPos -= 48;
+					xPos -= 128;
 				}
 			}
 			else
 			{
-				if (e.Delta < 0)
+
+				if (ModifierKeys == Keys.Control)
 				{
-					yPos += 48;
+					if (e.Delta < 0)
+					{
+						yPos += 48;
+					}
+					else
+					{
+						yPos -= 48;
+					}
 				}
 				else
 				{
-					yPos -= 48;
+					if (e.Delta < 0)
+					{
+						yPos += 96;
+					}
+					else
+					{
+						yPos -= 96;
+					}
 				}
 			}
 
@@ -389,15 +404,14 @@ namespace ZeldaFullEditor
 
 			}
 
+
 			itemMode.lastselectedItem.id = id;
+			itemMode.SendItemData(itemMode.lastselectedItem);
 			InvalidateHighEnd();
 		}
 
 		private void onMouseMove(object sender, MouseEventArgs e)
 		{
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-
 			switch (selectedMode)
 			{
 				case ObjectMode.Tile:
@@ -431,20 +445,24 @@ namespace ZeldaFullEditor
 
 			InvalidateHighEnd();
 
-			sw.Stop();
-			Console.WriteLine("Entire OW draw ms: " + sw.ElapsedMilliseconds);
 		}
 
 		public void Undo()
 		{
-			tilemode.Undo();
-			InvalidateHighEnd();
+			if (!NetZS.connected)
+			{
+				tilemode.Undo();
+				InvalidateHighEnd();
+			}
 		}
 
 		public void Redo()
 		{
-			tilemode.Redo();
-			InvalidateHighEnd();
+			if (!NetZS.connected)
+			{
+				tilemode.Redo();
+				InvalidateHighEnd();
+			}
 		}
 
 		public override void paste()
@@ -578,6 +596,9 @@ namespace ZeldaFullEditor
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
+
+
+
 
 			Graphics g = e.Graphics;
 

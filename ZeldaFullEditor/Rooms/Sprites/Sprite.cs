@@ -28,10 +28,12 @@ namespace ZeldaFullEditor
 		public byte mapid = 0;
 		public int map_x = 0;
 		public int map_y = 0;
+		public int uniqueID = 0;
 		Room room;
 		public short roomid = 0;
 		public Rectangle boundingbox;
 		bool picker = false;
+		public bool deleted = false;
 		public bool selected = false;
 
 		int lowerX = 32;
@@ -52,7 +54,8 @@ namespace ZeldaFullEditor
 			this.nx = x;
 			this.ny = y;
 			this.name = Sprites_Names.name[id];
-
+			this.uniqueID = ROM.uniqueSpriteID;
+			ROM.uniqueSpriteID += 1;
 			if ((subtype & 0x07) == 0x07)
 			{
 				if (id > 0 && id <= 0x19)
@@ -76,6 +79,8 @@ namespace ZeldaFullEditor
 			this.name = Sprites_Names.name[id];
 			this.map_x = map_x;
 			this.map_y = map_y;
+			this.uniqueID = ROM.uniqueSpriteID;
+			ROM.uniqueSpriteID += 1;
 		}
 
 		public void updateBBox()

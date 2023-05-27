@@ -591,6 +591,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_86E721AE704F426AA53E1DA0538AC826"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_87146128DF3193520DEF634865CDB3A1"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
@@ -1990,7 +1996,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.7.2   "
+                "FrameworkVersion" = "8:v4.7.2    "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -4131,6 +4137,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86E721AE704F426AA53E1DA0538AC826"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\newgraves.asm"
+            "TargetName" = "8:newgraves.asm"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_87146128DF3193520DEF634865CDB3A1"
@@ -6906,7 +6932,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6953B59F46064264A7EA5953F2DAF355"
             {
-            "SourcePath" = "8:..\\ZeldaFullEditor\\obj\\Debug\\ZScream.exe"
+            "SourcePath" = "8:..\\ZeldaFullEditor\\obj\\Release\\ZScream.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
