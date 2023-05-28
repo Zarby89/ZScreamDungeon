@@ -1623,6 +1623,40 @@ namespace ZeldaFullEditor
 				}
 			}
 
+			this.setEntranceProperties(en, en.CameraTriggerX, en.CameraTriggerY);
+		}
+
+		/// <summary>
+		///		Called when moving the mouse in the "set entrance position" mode.
+		/// </summary>
+		/// <param name="mouseX"> The adjusted X mouse position. </param>
+		/// <param name="mouseY"> The adjusted Y mouse position. </param>
+		public void entrancetreeView_AfterSelect(int mouseX, int mouseY)
+		{
+			if (!projectLoaded)
+			{
+				return;
+			}
+
+			propertiesChangedFromForm = true;
+			Entrance en = selectedEntrance;
+
+			int cameraTriggerX = Utils.Clamp((ushort) mouseX, 128, 383);
+			int cameraTriggerY = Utils.Clamp((ushort) mouseY, 112, 392);
+
+			cameraTriggerX += 7;
+
+			cameraTriggerX &= ~0x7;
+			cameraTriggerY &= ~0x7;
+
+			cameraTriggerX -= 1;
+			cameraTriggerY -= 1;
+
+			this.setEntranceProperties(en, cameraTriggerX, cameraTriggerY);
+		}
+
+		public void setEntranceProperties(Entrance en, int cameraTriggerX, int cameraTriggerY)
+		{
 			//propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
 			entranceProperty_bg.Checked = false;
 
@@ -1635,8 +1669,9 @@ namespace ZeldaFullEditor
 			EntranceProperties_PlayerY.HexValue = en.YPosition;
 			EntranceProperties_CameraY.HexValue = en.CameraX;
 			EntranceProperties_CameraX.HexValue = en.CameraY;
-			EntranceProperties_CameraTriggerX.HexValue = en.CameraTriggerX;
-			EntranceProperties_CameraTriggerY.HexValue = en.CameraTriggerY;
+
+			EntranceProperties_CameraTriggerX.HexValue = cameraTriggerX;
+			EntranceProperties_CameraTriggerY.HexValue = cameraTriggerY;
 
 			EntranceProperties_FloorSel.SelectedIndex = Constants.FloorNumber.FindFloorIndex(en.Floor);
 
@@ -1735,6 +1770,8 @@ namespace ZeldaFullEditor
 			}
 
 			propertiesChangedFromForm = false;
+
+			this.updateEntranceInfos();
 		}
 
 		public void sortObject()

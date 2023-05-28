@@ -399,26 +399,29 @@ namespace ZeldaFullEditor
 				{
 					int ey = 512 * (room.index >> 4);
 					int ex = 512 * (room.index & 0xF);
+					int adjustedMouseX = MX;
+					int adjustedMouseY = MY;
+
 					Entrance sel = mainForm.selectedEntrance;
 					if (mainForm.gridEntranceCheckbox.Checked)
 					{
-						MX &= ~0x7;
-						MY &= ~0x7;
+						adjustedMouseX &= ~0x7;
+						adjustedMouseY &= ~0x7;
 					}
 
-					sel.XPosition = (ushort) (MX + ex);
-					sel.YPosition = (ushort) (MY + ey);
+					sel.XPosition = (ushort) (adjustedMouseX + ex);
+					sel.YPosition = (ushort) (adjustedMouseY + ey);
 
 
-					sel.CameraTriggerX = Utils.Clamp((ushort) MX, 128, 383);
-					sel.CameraTriggerY = Utils.Clamp((ushort) MY, 112, 392);
+					sel.CameraTriggerX = Utils.Clamp((ushort)(adjustedMouseX += 7), 128, 383);
+					sel.CameraTriggerY = Utils.Clamp((ushort)adjustedMouseY, 112, 392);
 
 					sel.Scrollquadrant = 0x00;
 
 					if (MX >= 256)
 						sel.Scrollquadrant |= 0x10;
 
-					if (MY >= 256)
+					if (adjustedMouseY >= 256)
 						sel.Scrollquadrant |= 0x02;
 
 					if ((ushort)(sel.YPosition % 512) <= 150)
@@ -854,7 +857,7 @@ namespace ZeldaFullEditor
 
 			if (selectedMode == ObjectMode.EntrancePlacing)
 			{
-				mainForm.entrancetreeView_AfterSelect(null, null);
+				mainForm.entrancetreeView_AfterSelect(MX, MY);
 				selectedMode = ObjectMode.Bgallmode;
 				return;
 			}
