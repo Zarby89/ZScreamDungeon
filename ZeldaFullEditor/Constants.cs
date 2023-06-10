@@ -382,7 +382,9 @@ namespace ZeldaFullEditor
 		// TEXT EDITOR RELATED CONSTANTS
 		public static int gfx_font = 0x70000; // 2bpp format
 		public static int text_data = 0xE0000;
+		public static int text_data_end = 0xE7FFF;
 		public static int text_data2 = 0x75F40;
+		public static int text_data2_end = 0x773FF;
 		public static int pointers_dictionaries = 0x74703;
 		public static int characters_width = 0x74ADF;
 
