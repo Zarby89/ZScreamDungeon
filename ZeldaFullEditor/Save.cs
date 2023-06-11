@@ -227,6 +227,10 @@ namespace ZeldaFullEditor
 				Console.WriteLine("Applying Custom Collision ASM");
 				Asar.patch("CustomCollision.asm", ref ROM.DATA);
 			}
+			else
+			{
+				UIText.CryAboutSaving("Missing ASM file 'CustomCollision.asm'.\nSaving will continue but the ASM will not be applied.");
+			}
 
 			foreach (Asarerror error in Asar.geterrors())
 			{
@@ -239,7 +243,18 @@ namespace ZeldaFullEditor
 
 		public bool saveAreaSpecificBG(bool enabled)
 		{
-			Console.WriteLine("Saving Area Specific BG colors ASM");
+			Asar.init();
+
+			// TODO: handle differently in projects.
+			if (File.Exists("AreaSpecificBGColor.asm"))
+			{
+				Console.WriteLine("Saving Area Specific BG colors ASM");
+				Asar.patch("AreaSpecificBGColor.asm", ref ROM.DATA);
+			}
+			else
+			{
+				UIText.CryAboutSaving("Missing ASM file 'AreaSpecificBGColor.asm'.\nSaving will continue but the ASM will not be applied.");
+			}
 
 			if (enabled)
 			{
@@ -248,14 +263,6 @@ namespace ZeldaFullEditor
 			else
 			{
 				ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00, true, "Disabled area specific BG color");
-			}
-
-			Asar.init();
-
-			// TODO: handle differently in projects.
-			if (File.Exists("AreaSpecificBGColor.asm"))
-			{
-				Asar.patch("AreaSpecificBGColor.asm", ref ROM.DATA);
 			}
 
 			foreach (Asarerror error in Asar.geterrors())
@@ -289,6 +296,10 @@ namespace ZeldaFullEditor
 			if (File.Exists("MosaicChange.asm"))
 			{
 				Asar.patch("MosaicChange.asm", ref ROM.DATA);
+			}
+			else
+			{
+				UIText.CryAboutSaving("Missing ASM file 'MosaicChange.asm'.\nSaving will continue but the ASM will not be applied.");
 			}
 
 			foreach (Asarerror error in Asar.geterrors())
@@ -1885,6 +1896,10 @@ namespace ZeldaFullEditor
 			{
 				Console.WriteLine("Applying Custom Grave ASM");
 				Asar.patch("newgraves.asm", ref ROM.DATA);
+			}
+			else
+			{
+				UIText.CryAboutSaving("Missing ASM file 'newgraves.asm'.\nSaving will continue but the ASM will not be applied.");
 			}
 
 			foreach (Asarerror error in Asar.geterrors())

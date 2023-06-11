@@ -124,5 +124,15 @@ namespace ZeldaFullEditor
 				MessageBoxButtons.OK
 			);
 		}
+
+		public static void WarnAboutMissingFile(string message)
+		{
+			MessageBox.Show
+			(
+				"Missing File: " + message + " Please make sure that:\n1. You have extracted all the files from the .zip\n2. You are running the ZScream.exe within the same folder as the other files that it came with.",
+				"Bad Error",
+				MessageBoxButtons.OK
+			);
+		}
 	}
 }
