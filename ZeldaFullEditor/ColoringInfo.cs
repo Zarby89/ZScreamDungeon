@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	internal class ColoringInfo
-	{
+    internal class ColoringInfo
+    {
 
 
 
-	}
+    }
 }
