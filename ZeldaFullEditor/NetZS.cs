@@ -349,7 +349,7 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
             int roomindex = buffer.ReadInt();
             int uID = buffer.ReadInt(); // tiles changed count
-            Room_Object[] ro = DungeonsData.all_rooms[roomindex].tilesObjects.Where(x => x.uniqueID == uID).ToArray();
+            Room_Object[] ro = DungeonsData.AllRooms[roomindex].tilesObjects.Where(x => x.uniqueID == uID).ToArray();
             if (ro.Length == 0)
             {
                 Console.WriteLine("Oops object ID " + uID + " Is not found!");
@@ -357,7 +357,7 @@ namespace ZeldaFullEditor.Properties
             }
             Room_Object o = ro[0];
             o.Size = buffer.ReadByte();
-            if (form.activeScene.room == DungeonsData.all_rooms[roomindex])
+            if (form.activeScene.room == DungeonsData.AllRooms[roomindex])
             {
                 form.activeScene.DrawRoom();
                 form.activeScene.Refresh();
@@ -386,7 +386,7 @@ namespace ZeldaFullEditor.Properties
             for (int i = 0; i < count; i++)
             {
                 int uID = buffer.ReadInt(); // tiles changed count
-                Room_Object[] ro = DungeonsData.all_rooms[roomindex].tilesObjects.Where(x => x.uniqueID == uID).ToArray();
+                Room_Object[] ro = DungeonsData.AllRooms[roomindex].tilesObjects.Where(x => x.uniqueID == uID).ToArray();
                 Room_Object o = null;
                 if (ro.Length == 0)
                 {
@@ -403,9 +403,9 @@ namespace ZeldaFullEditor.Properties
 
                     if (!deleted)
                     {
-                        o = DungeonsData.all_rooms[roomindex].addObject(id, x, y, size, layer);
+                        o = DungeonsData.AllRooms[roomindex].addObject(id, x, y, size, layer);
                         o.uniqueID = uID;
-                        DungeonsData.all_rooms[roomindex].tilesObjects.Insert(zindex, o);
+                        DungeonsData.AllRooms[roomindex].tilesObjects.Insert(zindex, o);
                     }
 
                 }
@@ -425,10 +425,10 @@ namespace ZeldaFullEditor.Properties
                     short zindex = buffer.ReadShort();
 
 
-                    DungeonsData.all_rooms[roomindex].tilesObjects.Remove(o);
+                    DungeonsData.AllRooms[roomindex].tilesObjects.Remove(o);
                     if (!deleted)
                     {
-                        DungeonsData.all_rooms[roomindex].tilesObjects.Insert(zindex, o);
+                        DungeonsData.AllRooms[roomindex].tilesObjects.Insert(zindex, o);
                     }
                 }
                 if (o != null)
@@ -436,7 +436,7 @@ namespace ZeldaFullEditor.Properties
                     Console.WriteLine("Moved ObjectID to position " + o.X + " , " + o.Y);
                 }
             }
-            if (form.activeScene.room == DungeonsData.all_rooms[roomindex])
+            if (form.activeScene.room == DungeonsData.AllRooms[roomindex])
             {
                 form.activeScene.DrawRoom();
                 form.activeScene.Refresh();
@@ -595,11 +595,11 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
             int uId = buffer.ReadInt(); // unique id
             byte eId = buffer.ReadByte(); // entrance id
-            EntranceOWEditor entrance = null;
-            EntranceOWEditor[] entrances = form.overworldEditor.scene.ow.allentrances.Where(x => x.uniqueID == uId).ToArray();
+            EntranceOW entrance = null;
+            EntranceOW[] entrances = form.overworldEditor.scene.ow.allentrances.Where(x => x.UniqueID == uId).ToArray();
             if (entrances.Length == 0)
             {
-                EntranceOWEditor[] entrancesHoles = form.overworldEditor.scene.ow.allholes.Where(x => x.uniqueID == uId).ToArray();
+                EntranceOW[] entrancesHoles = form.overworldEditor.scene.ow.allholes.Where(x => x.UniqueID == uId).ToArray();
                 entrance = entrancesHoles[0];
             }
             else
@@ -607,15 +607,15 @@ namespace ZeldaFullEditor.Properties
                 entrance = entrances[0];
             }
 
-            entrance.entranceId = eId;
-            entrance.mapPos = buffer.ReadUShort();
-            entrance.x = buffer.ReadInt();
-            entrance.y = buffer.ReadInt();
+            entrance.EntranceID = eId;
+            entrance.MapPos = buffer.ReadUShort();
+            entrance.X = buffer.ReadInt();
+            entrance.Y = buffer.ReadInt();
             entrance.AreaX = buffer.ReadByte();
             entrance.AreaY = buffer.ReadByte();
-            entrance.mapId = buffer.ReadShort();
-            entrance.isHole = (buffer.ReadByte() == 1 ? true : false);
-            entrance.deleted = (buffer.ReadByte() == 1 ? true : false);
+            entrance.MapID = buffer.ReadShort();
+            entrance.IsHole = (buffer.ReadByte() == 1 ? true : false);
+            entrance.Deleted = (buffer.ReadByte() == 1 ? true : false);
             form.overworldEditor.scene.Invalidate();
             Console.WriteLine("Entrance " + eId + " changed!");
         }

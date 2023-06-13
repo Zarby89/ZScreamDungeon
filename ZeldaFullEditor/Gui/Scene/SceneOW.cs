@@ -288,9 +288,9 @@ namespace ZeldaFullEditor
                 if (entranceMode.lastselectedEntrance != null)
                 {
                     owForm.SetSelectedObjectLabels(
-                        entranceMode.lastselectedEntrance.entranceId,
-                        entranceMode.lastselectedEntrance.x,
-                        entranceMode.lastselectedEntrance.y);
+                        entranceMode.lastselectedEntrance.EntranceID,
+                        entranceMode.lastselectedEntrance.X,
+                        entranceMode.lastselectedEntrance.Y);
                 }
             }
             else if (selectedMode == ObjectMode.Itemmode)
@@ -849,7 +849,7 @@ namespace ZeldaFullEditor
                 {
                     if (entranceMode.selectedEntrance != null)
                     {
-                        g.DrawImage(owForm.tmpPreviewBitmap, entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16);
+                        g.DrawImage(owForm.tmpPreviewBitmap, entranceMode.selectedEntrance.X + 16, entranceMode.selectedEntrance.Y + 16);
                     }
                     if (exitmode.selectedExit != null)
                     {

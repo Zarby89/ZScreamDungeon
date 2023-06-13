@@ -42,8 +42,8 @@ namespace ZeldaFullEditor
         public ushort[,] allmapsTilesDW = new ushort[512, 512]; //64 maps * (32*32 tiles)
         public ushort[,] allmapsTilesSP = new ushort[512, 512]; //32 maps * (32*32 tiles)
         public OverworldMap[] allmaps = new OverworldMap[Constants.NumberOfOWMaps];
-        public EntranceOWEditor[] allentrances = new EntranceOWEditor[129];
-        public EntranceOWEditor[] allholes = new EntranceOWEditor[0x13];
+        public EntranceOW[] allentrances = new EntranceOW[129];
+        public EntranceOW[] allholes = new EntranceOW[0x13];
         public List<RoomPotSaveEditor> allitems = new List<RoomPotSaveEditor>();
         public OverlayData[] alloverlays = new OverlayData[128];
 
@@ -533,11 +533,11 @@ namespace ZeldaFullEditor
                 int p = mapPos >> 1;
                 int x = (p % 64);
                 int y = (p >> 6);
-                EntranceOWEditor eo = new EntranceOWEditor((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, mapPos, false);
+                EntranceOW eo = new EntranceOW((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, mapPos, false);
 
-                if (eo.mapPos == 0xFFFF)
+                if (eo.MapPos == 0xFFFF)
                 {
-                    eo.deleted = true;
+                    eo.Deleted = true;
                 }
 
                 allentrances[i] = eo;
@@ -551,7 +551,7 @@ namespace ZeldaFullEditor
                 int p = (mapPos + 0x400) >> 1;
                 int x = (p % 64);
                 int y = (p >> 6);
-                EntranceOWEditor eo = new EntranceOWEditor((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, (ushort)(mapPos + 0x400), true);
+                EntranceOW eo = new EntranceOW((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, (ushort)(mapPos + 0x400), true);
                 allholes[i] = eo;
             }
         }

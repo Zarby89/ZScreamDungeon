@@ -148,7 +148,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (scene.mainForm.lastRoomID != roomId)
                 {
-                    scene.mainForm.previewRoom = DungeonsData.all_rooms[roomId];
+                    scene.mainForm.previewRoom = DungeonsData.AllRooms[roomId];
                     scene.mainForm.previewRoom.reloadGfx();
                     GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.palette);
                     scene.mainForm.DrawRoom();

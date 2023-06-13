@@ -1,18 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     A static class used to hold all the dungeon rooms and other related data.
+    /// </summary>
     public static class DungeonsData
     {
-        public static Room[] all_rooms = new Room[Constants.NumberOfRooms];
-        public static Room[] all_rooms_moved = new Room[Constants.NumberOfRooms];
-        public static Entrance[] entrances = new Entrance[0x85];
-        public static Entrance[] starting_entrances = new Entrance[0x07];
-        public static List<Room>[] undoRoom = new List<Room>[Constants.NumberOfRooms];
-        public static List<Room>[] redoRoom = new List<Room>[Constants.NumberOfRooms];
+        /// <summary>
+        ///     All of the dungeon rooms.
+        /// </summary>
+        public static Room[] AllRooms = new Room[Constants.NumberOfRooms];
+
+        /// <summary>
+        ///     A temporary list of all rooms used when moving rooms from one ROM to another.
+        /// </summary>
+        public static Room[] AllRoomsMoved = new Room[Constants.NumberOfRooms];
+
+        /// <summary>
+        ///     All of the entrances.
+        /// </summary>
+        public static Entrance[] Entrances = new Entrance[0x85];
+
+        /// <summary>
+        ///     All of the starting entrances (entrances that the player can spawn at).
+        /// </summary>
+        public static Entrance[] StartingEntrances = new Entrance[0x07];
+
+        /// <summary>
+        ///     A duplicate storage of all rooms to revert to when using the undo feature.
+        /// </summary>
+        public static List<Room>[] UndoRoom = new List<Room>[Constants.NumberOfRooms];
+
+        /// <summary>
+        ///     A duplicate storage of all rooms to revert to when using the redo feature.
+        /// </summary>
+        public static List<Room>[] RedoRoom = new List<Room>[Constants.NumberOfRooms];
     }
 }

@@ -416,13 +416,13 @@ namespace ZeldaFullEditor
                     sel.CameraTriggerX = Utils.Clamp((ushort)(adjustedMouseX += 7), 128, 383);
                     sel.CameraTriggerY = Utils.Clamp((ushort)adjustedMouseY, 112, 392);
 
-                    sel.Scrollquadrant = 0x00;
+                    sel.ScrollQuadrant = 0x00;
 
                     if (MX >= 256)
-                        sel.Scrollquadrant |= 0x10;
+                        sel.ScrollQuadrant |= 0x10;
 
                     if (adjustedMouseY >= 256)
-                        sel.Scrollquadrant |= 0x02;
+                        sel.ScrollQuadrant |= 0x02;
 
                     if ((ushort)(sel.YPosition % 512) <= 150)
                     {
@@ -451,14 +451,14 @@ namespace ZeldaFullEditor
                     }
 
 
-                    mainForm.selectedEntrance.cameraBoundaryQN = (byte)(mainForm.selectedEntrance.CameraX >> 8);
-                    mainForm.selectedEntrance.cameraBoundaryFN = (byte)(mainForm.selectedEntrance.CameraX >> 8 & 0xFE);
-                    mainForm.selectedEntrance.cameraBoundaryQS = (byte)(mainForm.selectedEntrance.CameraX >> 8);
-                    mainForm.selectedEntrance.cameraBoundaryFS = (byte)(mainForm.selectedEntrance.CameraX >> 8 | 0x01);
-                    mainForm.selectedEntrance.cameraBoundaryQW = (byte)(mainForm.selectedEntrance.CameraY >> 8);
-                    mainForm.selectedEntrance.cameraBoundaryFW = (byte)(mainForm.selectedEntrance.CameraY >> 8 & 0xFE);
-                    mainForm.selectedEntrance.cameraBoundaryQE = (byte)(mainForm.selectedEntrance.CameraY >> 8);
-                    mainForm.selectedEntrance.cameraBoundaryFE = (byte)(mainForm.selectedEntrance.CameraY >> 8 | 0x01);
+                    mainForm.selectedEntrance.CameraBoundaryQN = (byte)(mainForm.selectedEntrance.CameraX >> 8);
+                    mainForm.selectedEntrance.CameraBoundaryFN = (byte)(mainForm.selectedEntrance.CameraX >> 8 & 0xFE);
+                    mainForm.selectedEntrance.CameraBoundaryQS = (byte)(mainForm.selectedEntrance.CameraX >> 8);
+                    mainForm.selectedEntrance.CameraBoundaryFS = (byte)(mainForm.selectedEntrance.CameraX >> 8 | 0x01);
+                    mainForm.selectedEntrance.CameraBoundaryQW = (byte)(mainForm.selectedEntrance.CameraY >> 8);
+                    mainForm.selectedEntrance.CameraBoundaryFW = (byte)(mainForm.selectedEntrance.CameraY >> 8 & 0xFE);
+                    mainForm.selectedEntrance.CameraBoundaryQE = (byte)(mainForm.selectedEntrance.CameraY >> 8);
+                    mainForm.selectedEntrance.CameraBoundaryFE = (byte)(mainForm.selectedEntrance.CameraY >> 8 | 0x01);
 
                     DrawRoom();
                     Refresh();

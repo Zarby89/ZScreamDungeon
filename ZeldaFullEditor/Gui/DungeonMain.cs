@@ -273,9 +273,9 @@ namespace ZeldaFullEditor
                             tp.Text = tp.Text.Trim('*');
                         }
 
-                        DungeonsData.all_rooms[r.index] = (Room)r.Clone();
+                        DungeonsData.AllRooms[r.index] = (Room)r.Clone();
                         r.has_changed = false;
-                        DungeonsData.all_rooms[r.index].has_changed = false;
+                        DungeonsData.AllRooms[r.index].has_changed = false;
                     }
                 }
             }
@@ -289,7 +289,7 @@ namespace ZeldaFullEditor
             //sw.Reset();
             //sw.Start();
             byte[] romBackup = (byte[])ROM.DATA.Clone();
-            Save save = new Save(DungeonsData.all_rooms, this);
+            Save save = new Save(DungeonsData.AllRooms, this);
             //sw.Stop();
             //Console.WriteLine("Saved all rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
@@ -355,7 +355,7 @@ namespace ZeldaFullEditor
                     //UIText.CryAboutSaving("there are too many chest items);
                     //break;
                 }
-                if (saveSettingsArr[8] && save.saveEntrances(DungeonsData.entrances, DungeonsData.starting_entrances))
+                if (saveSettingsArr[8] && save.saveEntrances(DungeonsData.Entrances, DungeonsData.StartingEntrances))
                 {
                     UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
                     break;
@@ -634,9 +634,9 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
-                DungeonsData.all_rooms[i] = (new Room(i, loadFromExported)); // Create all rooms
-                DungeonsData.undoRoom[i] = new List<Room>();
-                DungeonsData.redoRoom[i] = new List<Room>();
+                DungeonsData.AllRooms[i] = (new Room(i, loadFromExported)); // Create all rooms
+                DungeonsData.UndoRoom[i] = new List<Room>();
+                DungeonsData.RedoRoom[i] = new List<Room>();
             }
 
             editorsTabControl.Enabled = true;
@@ -777,7 +777,7 @@ namespace ZeldaFullEditor
             {
                 for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
-                    activeScene.room = DungeonsData.all_rooms[i];
+                    activeScene.room = DungeonsData.AllRooms[i];
                     activeScene.room.reloadGfx();
                     GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                     GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
@@ -819,11 +819,11 @@ namespace ZeldaFullEditor
             // Entrances
             for (int i = 0; i < 0x07; i++)
             {
-                DungeonsData.starting_entrances[i] = new Entrance((byte)i, true);
+                DungeonsData.StartingEntrances[i] = new Entrance((byte)i, true);
                 string tname = "[" + i.ToString("X2") + "] -> ";
                 foreach (DataRoom d in ROMStructure.dungeonsRoomList)
                 {
-                    if (d.ID == DungeonsData.starting_entrances[i].Room)
+                    if (d.ID == DungeonsData.StartingEntrances[i].Room)
                     {
                         tname += "[" + d.ID.ToString("X2") + "]" + d.Name;
                         break;
@@ -840,11 +840,11 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0x85; i++)
             {
-                DungeonsData.entrances[i] = new Entrance((byte)i, false);
+                DungeonsData.Entrances[i] = new Entrance((byte)i, false);
                 string tname = "[" + i.ToString("X2") + "] -> ";
                 foreach (DataRoom d in ROMStructure.dungeonsRoomList)
                 {
-                    if (d.ID == DungeonsData.entrances[i].Room)
+                    if (d.ID == DungeonsData.Entrances[i].Room)
                     {
                         tname += "[" + d.ID.ToString("X2") + "]" + d.Name;
                         break;
@@ -860,7 +860,7 @@ namespace ZeldaFullEditor
             }
 
             entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
-            selectedEntrance = DungeonsData.entrances[0];
+            selectedEntrance = DungeonsData.Entrances[0];
         }
 
         public void enableProjectButtons()
@@ -1309,7 +1309,7 @@ namespace ZeldaFullEditor
                 activeScene.need_refresh = true;
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.Entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -1558,7 +1558,7 @@ namespace ZeldaFullEditor
 
             if (anychange)
             {
-                DungeonsData.all_rooms[activeScene.room.index] = activeScene.room;
+                DungeonsData.AllRooms[activeScene.room.index] = activeScene.room;
 
                 this.saved_changed = true;
             }
@@ -1613,10 +1613,10 @@ namespace ZeldaFullEditor
             Entrance en = selectedEntrance;
             if (e?.Node.Tag != null)
             {
-                en = DungeonsData.entrances[(int)e.Node.Tag];
+                en = DungeonsData.Entrances[(int)e.Node.Tag];
                 if (e.Node.Parent?.Name == "StartingEntranceNode")
                 {
-                    en = DungeonsData.starting_entrances[(int)e.Node.Tag];
+                    en = DungeonsData.StartingEntrances[(int)e.Node.Tag];
                 }
             }
 
@@ -1658,7 +1658,7 @@ namespace ZeldaFullEditor
             entranceProperty_bg.Checked = false;
 
             EntranceProperties_RoomID.HexValue = en.Room;
-            EntranceProperties_DungeonID.HexValue = en.Dungeon;
+            EntranceProperties_DungeonID.HexValue = en.DungeonID;
             EntranceProperties_Blockset.HexValue = en.Blockset;
             EntranceProperties_Music.HexValue = en.Music;
 
@@ -1698,7 +1698,7 @@ namespace ZeldaFullEditor
             }
             */
 
-            if ((en.Ladderbg & 0x10) == 0x10)
+            if ((en.LadderBG & 0x10) == 0x10)
             {
                 entranceProperty_bg.Checked = true;
             }
@@ -1726,14 +1726,14 @@ namespace ZeldaFullEditor
             entranceProperty_quadtl.Checked = false;
             entranceProperty_quadtr.Checked = false;
 
-            EntranceProperty_BoundaryQN.HexValue = en.cameraBoundaryQN;
-            EntranceProperty_BoundaryFN.HexValue = en.cameraBoundaryFN;
-            EntranceProperty_BoundaryQS.HexValue = en.cameraBoundaryQS;
-            EntranceProperty_BoundaryFS.HexValue = en.cameraBoundaryFS;
-            EntranceProperty_BoundaryQW.HexValue = en.cameraBoundaryQW;
-            EntranceProperty_BoundaryFW.HexValue = en.cameraBoundaryFW;
-            EntranceProperty_BoundaryQE.HexValue = en.cameraBoundaryQE;
-            EntranceProperty_BoundaryFE.HexValue = en.cameraBoundaryFE;
+            EntranceProperty_BoundaryQN.HexValue = en.CameraBoundaryQN;
+            EntranceProperty_BoundaryFN.HexValue = en.CameraBoundaryFN;
+            EntranceProperty_BoundaryQS.HexValue = en.CameraBoundaryQS;
+            EntranceProperty_BoundaryFS.HexValue = en.CameraBoundaryFS;
+            EntranceProperty_BoundaryQW.HexValue = en.CameraBoundaryQW;
+            EntranceProperty_BoundaryFW.HexValue = en.CameraBoundaryFW;
+            EntranceProperty_BoundaryQE.HexValue = en.CameraBoundaryQE;
+            EntranceProperty_BoundaryFE.HexValue = en.CameraBoundaryFE;
 
             int p = (en.Exit & 0x7FFF) >> 1;
             doorxTextbox.Text = (p % 64).ToString("X2");
@@ -1749,19 +1749,19 @@ namespace ZeldaFullEditor
                 entranceProperty_vscroll.Checked = true;
             }
 
-            if (en.Scrollquadrant == 0x12) // Bottom right
+            if (en.ScrollQuadrant == 0x12) // Bottom right
             {
                 entranceProperty_quadbr.Checked = true;
             }
-            else if (en.Scrollquadrant == 0x02) // Bottom left
+            else if (en.ScrollQuadrant == 0x02) // Bottom left
             {
                 entranceProperty_quadbl.Checked = true;
             }
-            else if (en.Scrollquadrant == 0x00) // Top left
+            else if (en.ScrollQuadrant == 0x00) // Top left
             {
                 entranceProperty_quadtl.Checked = true;
             }
-            else if (en.Scrollquadrant == 0x10) // Top right
+            else if (en.ScrollQuadrant == 0x10) // Top right
             {
                 entranceProperty_quadtr.Checked = true;
             }
@@ -1932,17 +1932,15 @@ namespace ZeldaFullEditor
             else
             {
 
-
                 Room r;
                 if (NetZS.connected)
                 {
-                    r = DungeonsData.all_rooms[roomId];
+                    r = DungeonsData.AllRooms[roomId];
                 }
                 else
                 {
-                    r = (Room)DungeonsData.all_rooms[roomId].Clone();
+                    r = (Room)DungeonsData.AllRooms[roomId].Clone();
                 }
-
 
                 opened_rooms.Add(r); // Add the double clicked room into rooms list
                 activeScene.room = r;
@@ -1961,7 +1959,7 @@ namespace ZeldaFullEditor
 
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.Entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -2017,11 +2015,11 @@ namespace ZeldaFullEditor
             {
                 if (e.Node.Parent == entrancetreeView.Nodes[0])
                 {
-                    addRoomTab(DungeonsData.entrances[(int)e.Node.Tag].Room);
+                    addRoomTab(DungeonsData.Entrances[(int)e.Node.Tag].Room);
                 }
                 else
                 {
-                    addRoomTab(DungeonsData.starting_entrances[(int)e.Node.Tag].Room);
+                    addRoomTab(DungeonsData.StartingEntrances[(int)e.Node.Tag].Room);
                 }
             }
         }
@@ -2189,20 +2187,20 @@ namespace ZeldaFullEditor
 
             data[Constants.startingentrance_blockset] = (byte)(selectedEntrance.Blockset & 0xFF);
             data[Constants.startingentrance_music] = (byte)(selectedEntrance.Music & 0xFF);
-            data[Constants.startingentrance_dungeon] = (byte)(selectedEntrance.Dungeon & 0xFF);
+            data[Constants.startingentrance_dungeon] = (byte)(selectedEntrance.DungeonID & 0xFF);
             //data[Constants.startingentrance_door] = (byte)(selectedEntrance.Door & 0xFF);
             data[Constants.startingentrance_floor] = (byte)(selectedEntrance.Floor & 0xFF);
-            data[Constants.startingentrance_ladderbg] = (byte)(selectedEntrance.Ladderbg & 0xFF);
+            data[Constants.startingentrance_ladderbg] = (byte)(selectedEntrance.LadderBG & 0xFF);
             data[Constants.startingentrance_scrolling] = (byte)(selectedEntrance.Scrolling & 0xFF);
-            data[Constants.startingentrance_scrollquadrant] = (byte)(selectedEntrance.Scrollquadrant & 0xFF);
-            data[(Constants.startingentrance_scrolledge + 0)] = selectedEntrance.cameraBoundaryQN; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            data[(Constants.startingentrance_scrolledge + 1)] = selectedEntrance.cameraBoundaryFN;
-            data[(Constants.startingentrance_scrolledge + 2)] = selectedEntrance.cameraBoundaryQS;
-            data[(Constants.startingentrance_scrolledge + 3)] = selectedEntrance.cameraBoundaryFS;
-            data[(Constants.startingentrance_scrolledge + 4)] = selectedEntrance.cameraBoundaryQW;
-            data[(Constants.startingentrance_scrolledge + 5)] = selectedEntrance.cameraBoundaryFW;
-            data[(Constants.startingentrance_scrolledge + 6)] = selectedEntrance.cameraBoundaryQE;
-            data[(Constants.startingentrance_scrolledge + 7)] = selectedEntrance.cameraBoundaryFE;
+            data[Constants.startingentrance_scrollquadrant] = (byte)(selectedEntrance.ScrollQuadrant & 0xFF);
+            data[(Constants.startingentrance_scrolledge + 0)] = selectedEntrance.CameraBoundaryQN; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+            data[(Constants.startingentrance_scrolledge + 1)] = selectedEntrance.CameraBoundaryFN;
+            data[(Constants.startingentrance_scrolledge + 2)] = selectedEntrance.CameraBoundaryQS;
+            data[(Constants.startingentrance_scrolledge + 3)] = selectedEntrance.CameraBoundaryFS;
+            data[(Constants.startingentrance_scrolledge + 4)] = selectedEntrance.CameraBoundaryQW;
+            data[(Constants.startingentrance_scrolledge + 5)] = selectedEntrance.CameraBoundaryFW;
+            data[(Constants.startingentrance_scrolledge + 6)] = selectedEntrance.CameraBoundaryQE;
+            data[(Constants.startingentrance_scrolledge + 7)] = selectedEntrance.CameraBoundaryFE;
 
             FileStream fs = new FileStream(UIText.TestROM, FileMode.CreateNew, FileAccess.Write);
             fs.Write(data, 0, data.Length);
@@ -2349,7 +2347,7 @@ namespace ZeldaFullEditor
 
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.Entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -2383,21 +2381,21 @@ namespace ZeldaFullEditor
                     selectedEntrance.Floor = (EntranceProperties_FloorSel.SelectedItem as Constants.FloorNumber).ByteValue;
                 }
 
-                selectedEntrance.Dungeon = (byte)EntranceProperties_DungeonID.HexValue;
+                selectedEntrance.DungeonID = (byte)EntranceProperties_DungeonID.HexValue;
                 selectedEntrance.Music = (byte)EntranceProperties_Music.HexValue;
 
                 selectedEntrance.Exit = (byte)EntranceProperties_Exit.HexValue;
 
-                selectedEntrance.Ladderbg = (byte)((entranceProperty_bg.Checked) ? 0x10 : 0x00);
+                selectedEntrance.LadderBG = (byte)((entranceProperty_bg.Checked) ? 0x10 : 0x00);
 
-                selectedEntrance.cameraBoundaryQN = (byte)EntranceProperty_BoundaryQN.HexValue;
-                selectedEntrance.cameraBoundaryFN = (byte)EntranceProperty_BoundaryFN.HexValue;
-                selectedEntrance.cameraBoundaryQS = (byte)EntranceProperty_BoundaryQS.HexValue;
-                selectedEntrance.cameraBoundaryFS = (byte)EntranceProperty_BoundaryFS.HexValue;
-                selectedEntrance.cameraBoundaryQW = (byte)EntranceProperty_BoundaryQW.HexValue;
-                selectedEntrance.cameraBoundaryFW = (byte)EntranceProperty_BoundaryFW.HexValue;
-                selectedEntrance.cameraBoundaryQE = (byte)EntranceProperty_BoundaryQE.HexValue;
-                selectedEntrance.cameraBoundaryFE = (byte)EntranceProperty_BoundaryFE.HexValue;
+                selectedEntrance.CameraBoundaryQN = (byte)EntranceProperty_BoundaryQN.HexValue;
+                selectedEntrance.CameraBoundaryFN = (byte)EntranceProperty_BoundaryFN.HexValue;
+                selectedEntrance.CameraBoundaryQS = (byte)EntranceProperty_BoundaryQS.HexValue;
+                selectedEntrance.CameraBoundaryFS = (byte)EntranceProperty_BoundaryFS.HexValue;
+                selectedEntrance.CameraBoundaryQW = (byte)EntranceProperty_BoundaryQW.HexValue;
+                selectedEntrance.CameraBoundaryFW = (byte)EntranceProperty_BoundaryFW.HexValue;
+                selectedEntrance.CameraBoundaryQE = (byte)EntranceProperty_BoundaryQE.HexValue;
+                selectedEntrance.CameraBoundaryFE = (byte)EntranceProperty_BoundaryFE.HexValue;
 
                 selectedEntrance.XPosition = (ushort)EntranceProperties_PlayerX.HexValue;
                 selectedEntrance.YPosition = (ushort)EntranceProperties_PlayerY.HexValue;
@@ -2438,19 +2436,19 @@ namespace ZeldaFullEditor
 
                 if (entranceProperty_quadbr.Checked) // Bottom right
                 {
-                    selectedEntrance.Scrollquadrant = 0x12;
+                    selectedEntrance.ScrollQuadrant = 0x12;
                 }
                 else if (entranceProperty_quadbl.Checked) // Bottom left
                 {
-                    selectedEntrance.Scrollquadrant = 0x02;
+                    selectedEntrance.ScrollQuadrant = 0x02;
                 }
                 else if (entranceProperty_quadtl.Checked) // Top left
                 {
-                    selectedEntrance.Scrollquadrant = 0x00;
+                    selectedEntrance.ScrollQuadrant = 0x00;
                 }
                 else if (entranceProperty_quadtr.Checked) // Top right
                 {
-                    selectedEntrance.Scrollquadrant = 0x10;
+                    selectedEntrance.ScrollQuadrant = 0x10;
                 }
 
                 //if (entranceProperty_quadbl)
@@ -2463,7 +2461,7 @@ namespace ZeldaFullEditor
 
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.Entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -2518,7 +2516,7 @@ namespace ZeldaFullEditor
                 switch (UIText.WarnAboutSaving(UIText.RoomWarning))
                 {
                     case DialogResult.Yes:
-                        DungeonsData.all_rooms[(tabControl2.TabPages[i].Tag as Room).index] = (Room)(tabControl2.TabPages[i].Tag as Room).Clone();
+                        DungeonsData.AllRooms[(tabControl2.TabPages[i].Tag as Room).index] = (Room)(tabControl2.TabPages[i].Tag as Room).Clone();
                         closeRoom((tabControl2.TabPages[i].Tag as Room).index);
                         this.tabControl2.TabPages.RemoveAt(i);
 
@@ -2572,7 +2570,7 @@ namespace ZeldaFullEditor
                 activeScene.room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room);
                 activeScene.updateRoomInfos(this);
 
-                if (DungeonsData.undoRoom[activeScene.room.index].Count > 0)
+                if (DungeonsData.UndoRoom[activeScene.room.index].Count > 0)
                 {
                     undoButton.Enabled = true;
                     undoToolStripMenuItem.Enabled = true;
@@ -2584,7 +2582,7 @@ namespace ZeldaFullEditor
                     redoToolStripMenuItem.Enabled = false;
                 }
 
-                if (DungeonsData.redoRoom[activeScene.room.index].Count > 0)
+                if (DungeonsData.RedoRoom[activeScene.room.index].Count > 0)
                 {
                     redoButton.Enabled = true;
                     redoToolStripMenuItem.Enabled = true;
@@ -2597,7 +2595,7 @@ namespace ZeldaFullEditor
 
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.Entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -2748,7 +2746,7 @@ namespace ZeldaFullEditor
                 {
                     foreach (short s in selectedMapPng)
                     {
-                        if (s < DungeonsData.all_rooms.Length && DungeonsData.all_rooms[s] != null)
+                        if (s < DungeonsData.AllRooms.Length && DungeonsData.AllRooms[s] != null)
                         {
                             int cy = (s / 16);
                             int cx = s - (cy * 16);
@@ -2757,7 +2755,7 @@ namespace ZeldaFullEditor
                             if (cx > higherX) { higherX = cx; }
                             if (cy > higherY) { higherY = cy; }
 
-                            activeScene.room = DungeonsData.all_rooms[s];
+                            activeScene.room = DungeonsData.AllRooms[s];
                             activeScene.room.reloadGfx();
                             GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                             GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
@@ -2863,9 +2861,9 @@ namespace ZeldaFullEditor
             {
                 yoff = (i >= 256) ? 8 : 0;
 
-                if (DungeonsData.all_rooms[i].tilesObjects.Count > 0)
+                if (DungeonsData.AllRooms[i].tilesObjects.Count > 0)
                 {
-                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
+                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.AllRooms[i].palette)[4, 2]), new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
 
                     foreach (short s in selectedMapPng)
                     {
@@ -3033,7 +3031,7 @@ namespace ZeldaFullEditor
         {
             if (MessageBox.Show("Are you sure you want to clear every room's data?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                foreach (Room r in DungeonsData.all_rooms)
+                foreach (Room r in DungeonsData.AllRooms)
                 {
                     r.tilesObjects.Clear();
                     r.pot_items.Clear();
@@ -3365,7 +3363,7 @@ namespace ZeldaFullEditor
                     return;
                 }
 
-                previewRoom = DungeonsData.all_rooms[roomId];
+                previewRoom = DungeonsData.AllRooms[roomId];
                 previewRoom.reloadGfx();
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.palette);
                 DrawRoom();
@@ -3582,7 +3580,7 @@ namespace ZeldaFullEditor
 
                 if (lastRoomID != roomId)
                 {
-                    previewRoom = DungeonsData.all_rooms[roomId];
+                    previewRoom = DungeonsData.AllRooms[roomId];
                     previewRoom.reloadGfx();
                     GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.palette);
                     DrawRoom();
@@ -3911,7 +3909,7 @@ namespace ZeldaFullEditor
                 for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
                     // TODO system specific path separators
-                    byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
+                    byte[] roomBytes = DungeonsData.AllRooms[i].getTilesBytes();
                     using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("X3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
                     {
                         fs.Write(roomBytes, 0, roomBytes.Length);
@@ -4177,7 +4175,7 @@ namespace ZeldaFullEditor
             int pos = 1;
             sprites_buffer[0] = 0x00;
 
-            foreach (Sprite spr in DungeonsData.all_rooms[activeScene.room.index].sprites) //3bytes
+            foreach (Sprite spr in DungeonsData.AllRooms[activeScene.room.index].sprites) //3bytes
             {
                 sprites_buffer[pos++] = (byte)((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
                 sprites_buffer[pos++] = (byte)(((spr.subtype & 0x07) << 5) + spr.x);
@@ -4448,7 +4446,7 @@ namespace ZeldaFullEditor
                 }
 
                 // TODO should this be rtc?
-                DungeonsData.all_rooms[activeScene.room.index] = r;
+                DungeonsData.AllRooms[activeScene.room.index] = r;
                 activeScene.DrawRoom();
                 activeScene.Refresh();
             }
@@ -4471,10 +4469,10 @@ namespace ZeldaFullEditor
                         {
                             using (FileStream fs = new FileStream(path + "// room" + i.ToString("D3") + ".bin", FileMode.Open, FileAccess.Read))
                             {
-                                DungeonsData.all_rooms[i].tilesObjects.Clear(); //Empty the room first
+                                DungeonsData.AllRooms[i].tilesObjects.Clear(); //Empty the room first
                                 byte[] data = new byte[fs.Length];
                                 fs.Read(data, 0, data.Length);
-                                DungeonsData.all_rooms[i].loadTilesObjectsFromArray(data, true);
+                                DungeonsData.AllRooms[i].loadTilesObjectsFromArray(data, true);
                                 fs.Close();
                             }
                         }
@@ -4496,7 +4494,7 @@ namespace ZeldaFullEditor
         /// <param name="e"></param>
         private void saveMapsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Save s = new Save(DungeonsData.all_rooms, this);
+            Save s = new Save(DungeonsData.AllRooms, this);
             if (overworldEditor.scene.SaveTiles())
             {
                 Console.WriteLine("Tile save failed.");
@@ -4620,7 +4618,7 @@ namespace ZeldaFullEditor
 
                 for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
-                    DungeonsData.all_rooms_moved[i] = new Room(i);
+                    DungeonsData.AllRoomsMoved[i] = new Room(i);
                 }
 
                 ROM.TEMPDATA = new byte[0x200000];
@@ -4630,7 +4628,7 @@ namespace ZeldaFullEditor
                     ROM.DATA[i] = ROM.TEMPDATA[i]; // Restore to original rom
                 }
 
-                Save save = new Save(DungeonsData.all_rooms, this);
+                Save save = new Save(DungeonsData.AllRooms, this);
 
                 //if (rm.checkBox7.Checked)
                 //{
