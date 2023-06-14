@@ -453,16 +453,16 @@ namespace ZeldaFullEditor.Properties
             for (int i = 0; i < count; i++)
             {
                 ushort tileChanged = buffer.ReadUShort();
-                form.overworldEditor.scene.ow.tiles16[tileChanged].tile0 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].tile1 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].tile2 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].tile3 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].tilesinfos = new TileInfo[]
+                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile0 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile1 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile2 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile3 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.tiles16[tileChanged].TileInfoArray = new TileInfo[]
                 {
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].tile0,
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].tile1,
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].tile2,
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].tile3
+                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile0,
+                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile1,
+                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile2,
+                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile3
                 };
 
             }
@@ -475,13 +475,13 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
             int uId = buffer.ReadInt(); // item unique id
 
-            Gravestone[] graves = form.overworldEditor.scene.ow.graves.Where(x => x.uniqueID == uId).ToArray();
+            Gravestone[] graves = form.overworldEditor.scene.ow.graves.Where(x => x.UniqueID == uId).ToArray();
             Gravestone gravestone = graves[0];
 
-            gravestone.yTilePos = buffer.ReadUShort();
-            gravestone.xTilePos = buffer.ReadUShort();
-            gravestone.tilemapPos = buffer.ReadUShort();
-            gravestone.gfx = buffer.ReadUShort();
+            gravestone.YTilePos = buffer.ReadUShort();
+            gravestone.XTilePos = buffer.ReadUShort();
+            gravestone.TilemapPos = buffer.ReadUShort();
+            gravestone.GFX = buffer.ReadUShort();
 
 
             form.overworldEditor.scene.Invalidate();
@@ -627,26 +627,26 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // cmd id 08
             buffer.ReadByte(); // user id
             int uId = buffer.ReadInt(); // unique id
-            ExitOW exit = form.overworldEditor.scene.ow.allexits.Where(x => x.uniqueID == uId).ToArray()[0];
+            ExitOW exit = form.overworldEditor.scene.ow.allexits.Where(x => x.UniqueID == uId).ToArray()[0];
 
-            exit.unk1 = buffer.ReadByte();
-            exit.unk2 = buffer.ReadByte();
-            exit.doorXEditor = buffer.ReadByte();
-            exit.doorYEditor = buffer.ReadByte();
+            exit.ScrollModY = buffer.ReadByte();
+            exit.ScrollModX = buffer.ReadByte();
+            exit.DoorXEditor = buffer.ReadByte();
+            exit.DoorYEditor = buffer.ReadByte();
             exit.AreaX = buffer.ReadByte();
             exit.AreaY = buffer.ReadByte();
-            exit.vramLocation = buffer.ReadShort();
-            exit.roomId = buffer.ReadUShort();
-            exit.xScroll = buffer.ReadShort();
-            exit.yScroll = buffer.ReadShort();
-            exit.cameraX = buffer.ReadShort();
-            exit.cameraY = buffer.ReadShort();
-            exit.doorType1 = buffer.ReadShort();
-            exit.doorType2 = buffer.ReadShort();
-            exit.playerX = buffer.ReadUShort();
-            exit.playerY = buffer.ReadUShort();
-            exit.isAutomatic = (buffer.ReadByte() == 1 ? true : false);
-            exit.deleted = (buffer.ReadByte() == 1 ? true : false);
+            exit.VRAMLocation = buffer.ReadShort();
+            exit.RoomID = buffer.ReadUShort();
+            exit.XScroll = buffer.ReadShort();
+            exit.YScroll = buffer.ReadShort();
+            exit.CameraX = buffer.ReadShort();
+            exit.CameraY = buffer.ReadShort();
+            exit.DoorType1 = buffer.ReadShort();
+            exit.DoorType2 = buffer.ReadShort();
+            exit.PlayerX = buffer.ReadUShort();
+            exit.PlayerY = buffer.ReadUShort();
+            exit.IsAutomatic = (buffer.ReadByte() == 1 ? true : false);
+            exit.Deleted = (buffer.ReadByte() == 1 ? true : false);
             form.overworldEditor.scene.Invalidate();
             Console.WriteLine("Exit " + uId + " changed!");
         }
@@ -921,10 +921,10 @@ namespace ZeldaFullEditor.Properties
 					*/
 
                     TilePos tp = new TilePos((byte)((tileX + x) - (superMX)), (byte)((tileY + y) - (superMY)), selectedTiles[i]);
-                    TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.alloverlays[mid].tilesData.ToArray());
+                    TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.ToArray());
                     if (deleting)
                     {
-                        form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
+                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
                         x++;
                         if (x >= tilesizex)
                         {
@@ -937,12 +937,12 @@ namespace ZeldaFullEditor.Properties
 
                     if (tf == null)
                     {
-                        form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
                     }
                     else
                     {
-                        form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
-                        form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
                     }
                 }
 
@@ -1053,12 +1053,12 @@ namespace ZeldaFullEditor.Properties
 				*/
 
                 TilePos tp = new TilePos((byte)((tileX + x) - (superMX)), (byte)((tileY + y) - (superMY)), selectedTiles[i]);
-                TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.alloverlays[mid].tilesData.ToArray());
+                TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.ToArray());
 
 
                 if (deleting)
                 {
-                    form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
+                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
                     x++;
                     if (x >= tilesizex)
                     {
@@ -1071,12 +1071,12 @@ namespace ZeldaFullEditor.Properties
 
                 if (tf == null)
                 {
-                    form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
                 }
                 else
                 {
-                    form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Remove(tf);
-                    form.overworldEditor.scene.ow.alloverlays[mid].tilesData.Add(tp);
+                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
                 }
 
                 x++;

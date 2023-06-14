@@ -255,19 +255,19 @@ namespace ZeldaFullEditor.Gui
                     mirrorYCheckbox.Checked);
                 if (t8x == 0 && t8y == 0)
                 {
-                    allTiles[t16] = new Tile16(t, allTiles[t16].tile1, allTiles[t16].tile2, allTiles[t16].tile3);
+                    allTiles[t16] = new Tile16(t, allTiles[t16].Tile1, allTiles[t16].Tile2, allTiles[t16].Tile3);
                 }
                 else if (t8x == 1 && t8y == 0)
                 {
-                    allTiles[t16] = new Tile16(allTiles[t16].tile0, t, allTiles[t16].tile2, allTiles[t16].tile3);
+                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, t, allTiles[t16].Tile2, allTiles[t16].Tile3);
                 }
                 else if (t8x == 0 && t8y == 1)
                 {
-                    allTiles[t16] = new Tile16(allTiles[t16].tile0, allTiles[t16].tile1, t, allTiles[t16].tile3);
+                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, t, allTiles[t16].Tile3);
                 }
                 else if (t8x == 1 && t8y == 1)
                 {
-                    allTiles[t16] = new Tile16(allTiles[t16].tile0, allTiles[t16].tile1, allTiles[t16].tile2, t);
+                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, allTiles[t16].Tile2, t);
                 }
 
                 BuildTiles16Gfx();
@@ -277,19 +277,19 @@ namespace ZeldaFullEditor.Gui
             {
                 if (t8x == 0 && t8y == 0)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile0);
+                    updateTileInfoFrom16(allTiles[t16].Tile0);
                 }
                 else if (t8x == 1 && t8y == 0)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile1);
+                    updateTileInfoFrom16(allTiles[t16].Tile1);
                 }
                 else if (t8x == 0 && t8y == 1)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile2);
+                    updateTileInfoFrom16(allTiles[t16].Tile2);
                 }
                 else if (t8x == 1 && t8y == 1)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile3);
+                    updateTileInfoFrom16(allTiles[t16].Tile3);
                 }
             }
 
@@ -326,7 +326,7 @@ namespace ZeldaFullEditor.Gui
 
                 for (var tile = 0; tile < 4; tile++)
                 {
-                    TileInfo info = tiles.tilesinfos[tile];
+                    TileInfo info = tiles.TileInfoArray[tile];
                     int offset = offsets[tile];
 
                     for (var y = 0; y < 8; y++)
@@ -425,7 +425,7 @@ namespace ZeldaFullEditor.Gui
                 if (NetZS.connected)
                 {
 
-                    if (scene.ow.tiles16[i].getLongValue() != allTiles[i].getLongValue())
+                    if (scene.ow.tiles16[i].GetLongData() != allTiles[i].GetLongData())
                     {
 
                         zsnetTiles16.Add(allTiles[i]);
@@ -449,10 +449,10 @@ namespace ZeldaFullEditor.Gui
                 for (int i = 0; i < zsnetTiles16ID.Count; i++)
                 {
                     buffer.Write(zsnetTiles16ID[i]);
-                    buffer.Write((ushort)zsnetTiles16[i].tile0.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].tile1.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].tile2.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].tile3.toShort());
+                    buffer.Write((ushort)zsnetTiles16[i].Tile0.toShort());
+                    buffer.Write((ushort)zsnetTiles16[i].Tile1.toShort());
+                    buffer.Write((ushort)zsnetTiles16[i].Tile2.toShort());
+                    buffer.Write((ushort)zsnetTiles16[i].Tile3.toShort());
 
                 }
 

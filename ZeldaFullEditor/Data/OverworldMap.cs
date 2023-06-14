@@ -278,7 +278,7 @@ namespace ZeldaFullEditor
 
             for (var tile = 0; tile < 4; tile++)
             {
-                TileInfo info = tiles.tilesinfos[tile];
+                TileInfo info = tiles.TileInfoArray[tile];
                 int offset = offsets[tile];
 
                 for (var y = 0; y < 8; y++)
@@ -309,7 +309,7 @@ namespace ZeldaFullEditor
 
                 for (var tile = 0; tile < 4; tile++)
                 {
-                    TileInfo info = ow.tiles16[i].tilesinfos[tile];
+                    TileInfo info = ow.tiles16[i].TileInfoArray[tile];
                     int offset = offsets[tile];
 
                     for (var y = 0; y < 8; y++)

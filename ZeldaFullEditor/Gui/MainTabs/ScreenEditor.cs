@@ -785,14 +785,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     for (var xl = 0; xl < 8; xl++)
                     {
-                        int ty = (t.tile / 16) * 512;
-                        int tx = (t.tile % 16) * 4;
+                        int ty = (t.Tile / 16) * 512;
+                        int tx = (t.Tile % 16) * 4;
                         var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
 
-                        int index = (t.x + (xl * 2)) + (t.y * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
+                        int index = (t.X + (xl * 2)) + (t.Y * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
 
-                        ptr[index + 1] = (byte)((pixel & 0x0F) + (t.pal + 8) * 16);
-                        ptr[index] = (byte)(((pixel >> 4) & 0x0F) + (t.pal + 8) * 16);
+                        ptr[index + 1] = (byte)((pixel & 0x0F) + (t.Palette + 8) * 16);
+                        ptr[index] = (byte)(((pixel >> 4) & 0x0F) + (t.Palette + 8) * 16);
                     }
                 }
             }
@@ -844,7 +844,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 if (lastSelectedOamTile != null)
                 {
-                    e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle((lastSelectedOamTile.x * 2), (lastSelectedOamTile.y * 2), 32, 32));
+                    e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle((lastSelectedOamTile.X * 2), (lastSelectedOamTile.Y * 2), 32, 32));
                 }
             }
 
@@ -923,7 +923,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             if (editsprRadio.Checked && lastSelectedOamTile != null)
             {
-                lastSelectedOamTile.tile = selectedTile;
+                lastSelectedOamTile.Tile = selectedTile;
                 screenBox.Refresh();
             }
         }
@@ -989,8 +989,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 int yP = (e.Y / 2);
                 for (int i = 0; i < 10; i++)
                 {
-                    if (xP >= oamData[i].x && xP <= (oamData[i].x + 16) &&
-                        yP >= oamData[i].y && yP <= (oamData[i].y + 16))
+                    if (xP >= oamData[i].X && xP <= (oamData[i].X + 16) &&
+                        yP >= oamData[i].Y && yP <= (oamData[i].Y + 16))
                     {
                         selectedOamTile = oamData[i];
                         break;
@@ -1034,7 +1034,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     for (int i = 0; i < 10; i++)
                     {
-                        oamData[i].x = (byte)(ROM.DATA[0x67E26 + i] + (e.X / 2) - swordX);
+                        oamData[i].X = (byte)(ROM.DATA[0x67E26 + i] + (e.X / 2) - swordX);
 
                         screenBox.Refresh();
                     }
@@ -1053,8 +1053,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
                     for (int i = 0; i < 10; i++)
                     {
-                        if (xP >= oamData[i].x && xP <= (oamData[i].x + 16) &&
-                            yP >= oamData[i].y && yP <= (oamData[i].y + 16))
+                        if (xP >= oamData[i].X && xP <= (oamData[i].X + 16) &&
+                            yP >= oamData[i].Y && yP <= (oamData[i].Y + 16))
                         {
                             selectedOamTile = oamData[i];
                             break;
@@ -1065,13 +1065,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     {
                         if (lockCheckbox.Checked)
                         {
-                            selectedOamTile.x = (byte)((xP / 8) * 8);
-                            selectedOamTile.y = (byte)((yP / 8) * 8);
+                            selectedOamTile.X = (byte)((xP / 8) * 8);
+                            selectedOamTile.Y = (byte)((yP / 8) * 8);
                         }
                         else
                         {
-                            selectedOamTile.x = (byte)xP;
-                            selectedOamTile.y = (byte)yP;
+                            selectedOamTile.X = (byte)xP;
+                            selectedOamTile.Y = (byte)yP;
                         }
                     }
 
@@ -1088,10 +1088,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
             if (selectedOamTile != null)
             {
                 lastSelectedOamTile = selectedOamTile;
-                selectedTile = lastSelectedOamTile.tile;
-                palSelected = (byte)(lastSelectedOamTile.pal + 8);
-                mirrorXCheckbox.Checked = lastSelectedOamTile.mx == 1;
-                mirrorYCheckbox.Checked = lastSelectedOamTile.my == 1;
+                selectedTile = lastSelectedOamTile.Tile;
+                palSelected = (byte)(lastSelectedOamTile.Palette + 8);
+                mirrorXCheckbox.Checked = lastSelectedOamTile.MirrorX == 1;
+                mirrorYCheckbox.Checked = lastSelectedOamTile.MirrorY == 1;
                 updateTiles();
                 paletteBox.Refresh();
                 tilesBox.Refresh();
@@ -1271,7 +1271,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    oamData[i].pal = (byte)(palSelected - 8);
+                    oamData[i].Palette = (byte)(palSelected - 8);
                 }
             }
 
@@ -1389,8 +1389,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             //{
             for (int i = 0; i < allMapIcons[overworldCombobox.SelectedIndex].Count; i++)
             {
-                int xpos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].x * 2);
-                int ypos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].y * 2);
+                int xpos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].X * 2);
+                int ypos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].Y * 2);
 
                 if (allMapIcons[overworldCombobox.SelectedIndex][i] == selectedMapIcon)
                 {
@@ -1428,8 +1428,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             for (int i = 0; i < 10; i++)
             {
-                ROM.Write(0x67E26 + i, oamData[i].x);
-                ROM.Write(0x67E30 + (i * 2), (byte)(oamData[i].y - 22), WriteType.TitleScreenSprites);
+                ROM.Write(0x67E26 + i, oamData[i].X);
+                ROM.Write(0x67E30 + (i * 2), (byte)(oamData[i].Y - 22), WriteType.TitleScreenSprites);
 
                 /*
                 ROM.DATA[0x67E26 + i] = oamData[i].x;
@@ -1439,12 +1439,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 if (uppersprCheckbox.Checked)
                 {
                     //ROM.DATA[0x67E1C + i] = (byte)(oamData[i].tile - 512);
-                    ROM.Write(0x67E1C + i, (byte)(oamData[i].tile - 512), WriteType.TitleScreenSprites);
+                    ROM.Write(0x67E1C + i, (byte)(oamData[i].Tile - 512), WriteType.TitleScreenSprites);
                 }
                 else
                 {
                     //ROM.DATA[0x67E1C + i] = (byte)(oamData[i].tile - 768);
-                    ROM.Write(0x67E1C + i, (byte)(oamData[i].tile - 768), WriteType.TitleScreenSprites);
+                    ROM.Write(0x67E1C + i, (byte)(oamData[i].Tile - 768), WriteType.TitleScreenSprites);
                 }
             }
 
@@ -1496,13 +1496,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             if (uppersprCheckbox.Checked)
             {
-                ROM.Write(0x67E92, (byte)(0x20 + ((oamData[0].pal << 1))), WriteType.TitleScreenSprites);
+                ROM.Write(0x67E92, (byte)(0x20 + ((oamData[0].Palette << 1))), WriteType.TitleScreenSprites);
                 //ROM.DATA[0x67E92] = (byte)(0x20 + ((oamData[0].pal << 1)));
             }
             else
             {
                 //ROM.DATA[0x67E92] = (byte)(0x21 + ((oamData[0].pal << 1)));
-                ROM.Write(0x67E92, (byte)(0x21 + ((oamData[0].pal << 1))), WriteType.TitleScreenSprites);
+                ROM.Write(0x67E92, (byte)(0x21 + ((oamData[0].Palette << 1))), WriteType.TitleScreenSprites);
             }
 
             ROM.Write(titleScreenPosition, allData.ToArray(), WriteType.TitleScreenData);
@@ -1699,14 +1699,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
                     if (e < 9)
                     {
-                        ROM.WriteShort(addresses[i] + (e * 2), (allMapIcons[e][i].x << 4), WriteType.OverworldMapIcon);
-                        ROM.WriteShort((addresses[i] + 18) + (e * 2), (allMapIcons[e][i].y << 4), WriteType.OverworldMapIcon);
-                        ROM.WriteShort((addressesgfx[i] + e * 2), allMapIcons[e][i].gfx, WriteType.OverworldMapIcon);
+                        ROM.WriteShort(addresses[i] + (e * 2), (allMapIcons[e][i].X << 4), WriteType.OverworldMapIcon);
+                        ROM.WriteShort((addresses[i] + 18) + (e * 2), (allMapIcons[e][i].Y << 4), WriteType.OverworldMapIcon);
+                        ROM.WriteShort((addressesgfx[i] + e * 2), allMapIcons[e][i].GFX, WriteType.OverworldMapIcon);
                     }
                     else
                     {
-                        short px = (short)(allMapIcons[e][i].x << 4);
-                        short py = (short)(allMapIcons[e][i].y << 4);
+                        short px = (short)(allMapIcons[e][i].X << 4);
+                        short py = (short)(allMapIcons[e][i].Y << 4);
                         //ROM.DATA[0x53763 + i] = (byte)(px & 0xFF);
                         //ROM.DATA[0x5376b + i] = (byte)((px>>8) & 0xFF);
                         ROM.Write(0x53763 + i, (byte)(px & 0xFF), WriteType.OverworldMapData);
@@ -2510,11 +2510,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
             for (int i = 0; i < allMapIcons[overworldCombobox.SelectedIndex].Count; i++)
             {
                 MapIcon mi = allMapIcons[overworldCombobox.SelectedIndex][i];
-                if (mxClick >= mi.x && (mxClick <= mi.x + 24) && (myClick >= mi.y && myClick <= mi.y + 24))
+                if (mxClick >= mi.X && (mxClick <= mi.X + 24) && (myClick >= mi.Y && myClick <= mi.Y + 24))
                 {
                     selectedMapIcon = mi;
-                    mxDist = mxClick - mi.x;
-                    myDist = myClick - mi.y;
+                    mxDist = mxClick - mi.X;
+                    myDist = myClick - mi.Y;
                     id = i;
                     break;
                 }
@@ -2532,10 +2532,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
             else
             {
                 mapiconGroupbox.Text = "Selected Icon Properties - Icon " + id;
-                xiconposLabel.Text = "X Position : " + selectedMapIcon.x.ToString();
-                yiconposLabel.Text = "Y Position : " + selectedMapIcon.y.ToString();
+                xiconposLabel.Text = "X Position : " + selectedMapIcon.X.ToString();
+                yiconposLabel.Text = "Y Position : " + selectedMapIcon.Y.ToString();
                 editedFromEditor = true;
-                gfxiconTextbox.Text = selectedMapIcon.gfx.ToString("X4");
+                gfxiconTextbox.Text = selectedMapIcon.GFX.ToString("X4");
                 editedFromEditor = false;
             }
 
@@ -2628,8 +2628,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         myClick = 256;
                     }
 
-                    selectedMapIcon.x = (short)(mxClick - mxDist);
-                    selectedMapIcon.y = (short)(myClick - myDist);
+                    selectedMapIcon.X = (short)(mxClick - mxDist);
+                    selectedMapIcon.Y = (short)(myClick - myDist);
                     mapPicturebox.Refresh();
                 }
             }
@@ -2641,11 +2641,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 if (int.TryParse(gfxiconTextbox.Text, System.Globalization.NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int i))
                 {
-                    selectedMapIcon.gfx = (ushort)i;
+                    selectedMapIcon.GFX = (ushort)i;
                 }
                 else
                 {
-                    selectedMapIcon.gfx = 0;
+                    selectedMapIcon.GFX = 0;
                 }
             }
         }

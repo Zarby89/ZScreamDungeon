@@ -733,17 +733,17 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 78; i++)
             {
-                ROM.Write(Constants.OWExitMapId + (i), (byte)((scene.ow.allexits[i].mapId) & 0xFF), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXScroll + (i * 2), ((scene.ow.allexits[i].xScroll)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYScroll + (i * 2), ((scene.ow.allexits[i].yScroll)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXCamera + (i * 2), ((scene.ow.allexits[i].cameraX)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYCamera + (i * 2), ((scene.ow.allexits[i].cameraY)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitVram + (i * 2), ((scene.ow.allexits[i].vramLocation)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitRoomId + (i * 2), ((scene.ow.allexits[i].roomId)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXPlayer + (i * 2), ((scene.ow.allexits[i].playerX)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYPlayer + (i * 2), ((scene.ow.allexits[i].playerY)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitDoorType1 + (i * 2), ((scene.ow.allexits[i].doorType1)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitDoorType2 + (i * 2), ((scene.ow.allexits[i].doorType2)), WriteType.ExitProperties);
+                ROM.Write(Constants.OWExitMapId + (i), (byte)((scene.ow.allexits[i].MapID) & 0xFF), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXScroll + (i * 2), ((scene.ow.allexits[i].XScroll)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYScroll + (i * 2), ((scene.ow.allexits[i].YScroll)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXCamera + (i * 2), ((scene.ow.allexits[i].CameraX)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYCamera + (i * 2), ((scene.ow.allexits[i].CameraY)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitVram + (i * 2), ((scene.ow.allexits[i].VRAMLocation)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitRoomId + (i * 2), ((scene.ow.allexits[i].RoomID)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXPlayer + (i * 2), ((scene.ow.allexits[i].PlayerX)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYPlayer + (i * 2), ((scene.ow.allexits[i].PlayerY)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitDoorType1 + (i * 2), ((scene.ow.allexits[i].DoorType1)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitDoorType2 + (i * 2), ((scene.ow.allexits[i].DoorType2)), WriteType.ExitProperties);
             }
 
             ROM.EndBlockLogWriting();
@@ -1138,9 +1138,9 @@ namespace ZeldaFullEditor
                 ROM.WriteLong(ptrPos, snesaddr, true, "Overlay actual Pointers");
                 ptrPos += 3;
 
-                for (int t = 0; t < scene.ow.alloverlays[i].tilesData.Count; t++)
+                for (int t = 0; t < scene.ow.alloverlays[i].TileDataList.Count; t++)
                 {
-                    ushort addr = (ushort)((scene.ow.alloverlays[i].tilesData[t].x * 2) + (scene.ow.alloverlays[i].tilesData[t].y * 128) + 0x2000);
+                    ushort addr = (ushort)((scene.ow.alloverlays[i].TileDataList[t].x * 2) + (scene.ow.alloverlays[i].TileDataList[t].y * 128) + 0x2000);
                     // LDA TileID : STA $addr
                     // A9 (LDA #$)
                     // A2 (LDX #$)
@@ -1148,7 +1148,7 @@ namespace ZeldaFullEditor
 
                     // LDA :
                     ROM.Write(pos, 0xA9, true, "Overlay Data, LDA");
-                    ROM.WriteShort(pos + 1, (scene.ow.alloverlays[i].tilesData[t].tileId), true, "Overlay Data, TileID");
+                    ROM.WriteShort(pos + 1, (scene.ow.alloverlays[i].TileDataList[t].tileId), true, "Overlay Data, TileID");
                     pos += 3;
 
                     // STA :
@@ -1875,17 +1875,17 @@ namespace ZeldaFullEditor
         {
             for (int i = 0; i < 0x0F; i++)
             {
-                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].xTilePos, WriteType.Gravestone);
-                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].yTilePos, WriteType.Gravestone);
-                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].tilemapPos, WriteType.Gravestone);
+                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].XTilePos, WriteType.Gravestone);
+                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].YTilePos, WriteType.Gravestone);
+                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].TilemapPos, WriteType.Gravestone);
 
                 if (i == 0x0E)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].tilemapPos - 0x80, WriteType.Gravestone);
+                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].TilemapPos - 0x80, WriteType.Gravestone);
                 }
                 if (i == 0x0D)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].tilemapPos - 0x80, WriteType.Gravestone);
+                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].TilemapPos - 0x80, WriteType.Gravestone);
                 }
             }
 

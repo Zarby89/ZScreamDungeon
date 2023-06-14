@@ -61,7 +61,7 @@ namespace ZeldaFullEditor.OWSceneModes
             int found = -1;
             for (int i = 0; i < scene.ow.allexits.Length; i++)
             {
-                if (scene.ow.allexits[i].deleted)
+                if (scene.ow.allexits[i].Deleted)
                 {
                     byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
                     if (mid == 255)
@@ -69,32 +69,32 @@ namespace ZeldaFullEditor.OWSceneModes
                         mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                     }
 
-                    scene.ow.allexits[i].deleted = false;
-                    scene.ow.allexits[i].mapId = mid;
-                    scene.ow.allexits[i].playerX = (ushort)((mxRightclick / 16) * 16);
-                    scene.ow.allexits[i].playerY = (ushort)((myRightclick / 16) * 16);
+                    scene.ow.allexits[i].Deleted = false;
+                    scene.ow.allexits[i].MapID = mid;
+                    scene.ow.allexits[i].PlayerX = (ushort)((mxRightclick / 16) * 16);
+                    scene.ow.allexits[i].PlayerY = (ushort)((myRightclick / 16) * 16);
 
                     if (clipboard)
                     {
                         ExitOW data = (ExitOW)Clipboard.GetData("owexit");
                         if (data != null)
                         {
-                            scene.ow.allexits[i].cameraX = data.cameraX;
-                            scene.ow.allexits[i].cameraY = data.cameraY;
-                            scene.ow.allexits[i].xScroll = data.xScroll;
-                            scene.ow.allexits[i].yScroll = data.yScroll;
-                            scene.ow.allexits[i].unk1 = data.unk1;
-                            scene.ow.allexits[i].unk2 = data.unk2;
-                            scene.ow.allexits[i].roomId = data.roomId;
-                            scene.ow.allexits[i].doorType1 = data.doorType1;
-                            scene.ow.allexits[i].doorType2 = data.doorType2;
-                            scene.ow.allexits[i].doorXEditor = data.doorXEditor;
-                            scene.ow.allexits[i].doorYEditor = data.doorYEditor;
+                            scene.ow.allexits[i].CameraX = data.CameraX;
+                            scene.ow.allexits[i].CameraY = data.CameraY;
+                            scene.ow.allexits[i].XScroll = data.XScroll;
+                            scene.ow.allexits[i].YScroll = data.YScroll;
+                            scene.ow.allexits[i].ScrollModY = data.ScrollModY;
+                            scene.ow.allexits[i].ScrollModX = data.ScrollModX;
+                            scene.ow.allexits[i].RoomID = data.RoomID;
+                            scene.ow.allexits[i].DoorType1 = data.DoorType1;
+                            scene.ow.allexits[i].DoorType2 = data.DoorType2;
+                            scene.ow.allexits[i].DoorXEditor = data.DoorXEditor;
+                            scene.ow.allexits[i].DoorYEditor = data.DoorYEditor;
                             SendExitData(scene.ow.allexits[i]);
                         }
                     }
 
-                    scene.ow.allexits[i].updateMapStuff(mid, scene.ow);
+                    scene.ow.allexits[i].UpdateMapStuff(mid, scene.ow);
 
                     found = i;
 
@@ -119,9 +119,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 78; i++)
                 {
                     ExitOW en = scene.ow.allexits[i];
-                    if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+                    if (en.MapID >= scene.ow.worldOffset && en.MapID < 64 + scene.ow.worldOffset)
                     {
-                        if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
+                        if (e.X >= en.PlayerX && e.X < en.PlayerX + 16 && e.Y >= en.PlayerY && e.Y < en.PlayerY + 16)
                         {
                             if (!scene.mouse_down)
                             {
@@ -139,7 +139,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 //scene.owForm.thumbnailBox.Visible = true;
                 //scene.owForm.thumbnailBox.Size = new Size(256, 256);
-                int roomId = selectedExit.roomId;
+                int roomId = selectedExit.RoomID;
                 if (roomId >= Constants.NumberOfRooms)
                 {
                     //scene.owForm.thumbnailBox.Visible = false;
@@ -170,11 +170,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Delete() // Set exit data to 0
         {
-            lastselectedExit.playerX = 0xFFFF;
-            lastselectedExit.playerY = 0xFFFF;
-            lastselectedExit.mapId = 0;
-            lastselectedExit.roomId = 0;
-            lastselectedExit.deleted = true;
+            lastselectedExit.PlayerX = 0xFFFF;
+            lastselectedExit.PlayerY = 0xFFFF;
+            lastselectedExit.MapID = 0;
+            lastselectedExit.RoomID = 0;
+            lastselectedExit.Deleted = true;
             SendExitData(lastselectedExit);
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
@@ -193,13 +193,13 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (selectedExit != null)
                 {
-                    selectedExit.playerX = (ushort)e.X;
-                    selectedExit.playerY = (ushort)e.Y;
+                    selectedExit.PlayerX = (ushort)e.X;
+                    selectedExit.PlayerY = (ushort)e.Y;
 
                     if (scene.snapToGrid)
                     {
-                        selectedExit.playerX = (ushort)((e.X / 8) * 8);
-                        selectedExit.playerY = (ushort)((e.Y / 8) * 8);
+                        selectedExit.PlayerX = (ushort)((e.X / 8) * 8);
+                        selectedExit.PlayerY = (ushort)((e.Y / 8) * 8);
                     }
 
                     byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
@@ -208,7 +208,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                     }
 
-                    selectedExit.updateMapStuff(mid, scene.ow);
+                    selectedExit.UpdateMapStuff(mid, scene.ow);
 
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 }
@@ -235,9 +235,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 78; i++)
                 {
                     ExitOW en = scene.ow.allexits[i];
-                    if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+                    if (en.MapID >= scene.ow.worldOffset && en.MapID < 64 + scene.ow.worldOffset)
                     {
-                        if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
+                        if (e.X >= en.PlayerX && e.X < en.PlayerX + 16 && e.Y >= en.PlayerY && e.Y < en.PlayerY + 16)
                         {
                             menu.Items.Add("Exit Properties");
                             lastselectedExit = en;
@@ -296,7 +296,7 @@ namespace ZeldaFullEditor.OWSceneModes
             else if (dr == DialogResult.Yes)
             {
                 scene.selectedMode = ObjectMode.OWDoor;
-                if (lastselectedExit.doorType1 != 0) // Wooden door
+                if (lastselectedExit.DoorType1 != 0) // Wooden door
                 {
                     scene.selectedTile = new ushort[2];
                     scene.selectedTileSizeX = 2;
@@ -304,7 +304,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.selectedTile[1] = 1866;
 
                 }
-                else if ((lastselectedExit.doorType2 & 0x8000) != 0) // Castle door
+                else if ((lastselectedExit.DoorType2 & 0x8000) != 0) // Castle door
                 {
                     scene.selectedTile = new ushort[4];
                     scene.selectedTileSizeX = 2;
@@ -313,7 +313,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.selectedTile[2] = 3512;
                     scene.selectedTile[3] = 3513;
                 }
-                else if ((lastselectedExit.doorType2 & 0x7FFF) != 0) // Sanctuary door
+                else if ((lastselectedExit.DoorType2 & 0x7FFF) != 0) // Sanctuary door
                 {
                     scene.selectedTile = new ushort[2];
                     scene.selectedTileSizeX = 2;
@@ -339,12 +339,12 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     g.CompositingMode = CompositingMode.SourceOver;
                     ExitOW ex = scene.ow.allexits[i];
-                    if (ex.mapId != scene.ow.allmaps[scene.selectedMap].parent)
+                    if (ex.MapID != scene.ow.allmaps[scene.selectedMap].parent)
                     {
                         continue;
                     }
 
-                    if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
+                    if (ex.MapID < 64 + scene.ow.worldOffset && ex.MapID >= scene.ow.worldOffset)
                     {
                         Brush bgrBrush = Constants.LightGray200Brush;
                         Brush fontBrush = Brushes.Black;
@@ -355,23 +355,23 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 g.CompositingMode = CompositingMode.SourceOver;
                                 bgrBrush = Constants.MediumGray200Brush;
-                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
 
                                 //int sy = ex.mapId / 8;
                                 //int sx = ex.mapId - (sy * 8);
 
-                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
-                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
-                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.XScroll, ex.YScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
+                                g.DrawLine(Pens.Blue, ex.CameraX, ex.CameraY - 8, ex.CameraX, ex.CameraY + 8);
                                 g.CompositingMode = CompositingMode.SourceCopy;
                                 continue;
                             }
 
-                            g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                            g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                            scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                            g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                            g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                            scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
                         }
                         else
                         {
@@ -384,24 +384,24 @@ namespace ZeldaFullEditor.OWSceneModes
 
                                 g.CompositingMode = CompositingMode.SourceOver;
                                 bgrBrush = Constants.MediumGray200Brush;
-                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
 
                                 g.CompositingMode = CompositingMode.SourceCopy;
                                 //int sy = ex.mapId / 8;
                                 //int sx = ex.mapId - (sy * 8);
 
-                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
-                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
-                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.XScroll, ex.YScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
+                                g.DrawLine(Pens.Blue, ex.CameraX, ex.CameraY - 8, ex.CameraX, ex.CameraY + 8);
                             }
                             else
                             {
-                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
 
-                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
                             }
                         }
                     }
@@ -416,7 +416,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     g.CompositingMode = CompositingMode.SourceOver;
                     ExitOW ex = scene.ow.allexits[i];
 
-                    if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
+                    if (ex.MapID < 64 + scene.ow.worldOffset && ex.MapID >= scene.ow.worldOffset)
                     {
                         Brush bgrBrush = Constants.LightGray200Brush;
                         Brush fontBrush = Brushes.Black;
@@ -427,23 +427,23 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 g.CompositingMode = CompositingMode.SourceOver;
                                 bgrBrush = Constants.MediumGray200Brush;
-                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
 
                                 //int sy = ex.mapId / 8;
                                 //int sx = ex.mapId - (sy * 8);
 
-                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
-                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
-                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.XScroll, ex.YScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
+                                g.DrawLine(Pens.Blue, ex.CameraX, ex.CameraY - 8, ex.CameraX, ex.CameraY + 8);
                                 g.CompositingMode = CompositingMode.SourceCopy;
                                 continue;
                             }
 
-                            g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                            g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                            scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                            g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                            g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                            scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
                         }
                         else
                         {
@@ -456,24 +456,24 @@ namespace ZeldaFullEditor.OWSceneModes
 
                                 g.CompositingMode = CompositingMode.SourceOver;
                                 bgrBrush = Constants.MediumGray200Brush;
-                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
                                 g.CompositingMode = CompositingMode.SourceCopy;
 
                                 //int sy = ex.mapId / 8;
                                 //int sx = ex.mapId - (sy * 8);
 
-                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
-                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
-                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.XScroll, ex.YScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
+                                g.DrawLine(Pens.Blue, ex.CameraX, ex.CameraY - 8, ex.CameraX, ex.CameraY + 8);
                             }
                             else
                             {
-                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
+                                g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.PlayerX, ex.PlayerY, 16, 16));
 
-                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                scene.drawText(g, ex.PlayerX + 4, ex.PlayerY + 4, i.ToString("X2"));
                             }
                         }
                     }
@@ -532,25 +532,25 @@ namespace ZeldaFullEditor.OWSceneModes
             NetZSBuffer buffer = new NetZSBuffer(48);
             buffer.Write((byte)08); // entrance data
             buffer.Write((byte)NetZS.userID); //user ID
-            buffer.Write((int)exit.uniqueID);
-            buffer.Write((byte)exit.unk1);
-            buffer.Write((byte)exit.unk2);
-            buffer.Write((byte)exit.doorXEditor);
-            buffer.Write((byte)exit.doorYEditor);
+            buffer.Write((int)exit.UniqueID);
+            buffer.Write((byte)exit.ScrollModY);
+            buffer.Write((byte)exit.ScrollModX);
+            buffer.Write((byte)exit.DoorXEditor);
+            buffer.Write((byte)exit.DoorYEditor);
             buffer.Write((byte)exit.AreaX);
             buffer.Write((byte)exit.AreaY);
-            buffer.Write((short)exit.vramLocation);
-            buffer.Write((short)exit.roomId);
-            buffer.Write((short)exit.xScroll);
-            buffer.Write((short)exit.yScroll);
-            buffer.Write((short)exit.cameraX);
-            buffer.Write((short)exit.cameraY);
-            buffer.Write((short)exit.doorType1);
-            buffer.Write((short)exit.doorType2);
-            buffer.Write((ushort)exit.playerX);
-            buffer.Write((ushort)exit.playerY);
-            buffer.Write((byte)(exit.isAutomatic ? 1 : 0));
-            buffer.Write((byte)(exit.deleted ? 1 : 0));
+            buffer.Write((short)exit.VRAMLocation);
+            buffer.Write((short)exit.RoomID);
+            buffer.Write((short)exit.XScroll);
+            buffer.Write((short)exit.YScroll);
+            buffer.Write((short)exit.CameraX);
+            buffer.Write((short)exit.CameraY);
+            buffer.Write((short)exit.DoorType1);
+            buffer.Write((short)exit.DoorType2);
+            buffer.Write((ushort)exit.PlayerX);
+            buffer.Write((ushort)exit.PlayerY);
+            buffer.Write((byte)(exit.IsAutomatic ? 1 : 0));
+            buffer.Write((byte)(exit.Deleted ? 1 : 0));
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);

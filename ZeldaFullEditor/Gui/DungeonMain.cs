@@ -4302,7 +4302,7 @@ namespace ZeldaFullEditor
 
                     for (int i = 0; i < 3752; i++) // 3600
                     {
-                        ulong v = overworldEditor.overworld.tiles16[i].getLongValue();
+                        ulong v = overworldEditor.overworld.tiles16[i].GetLongData();
 
                         for (int j = 0; j < 8; j++)
                         {
@@ -4392,18 +4392,18 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < tile8ids.Count; i++)
             {
-                overworldEditor.overworld.tiles16[tile8ids[i]].tile0.HS ^= 1;
-                overworldEditor.overworld.tiles16[tile8ids[i]].tile1.HS ^= 1;
-                overworldEditor.overworld.tiles16[tile8ids[i]].tile2.HS ^= 1;
-                overworldEditor.overworld.tiles16[tile8ids[i]].tile3.HS ^= 1;
+                overworldEditor.overworld.tiles16[tile8ids[i]].Tile0.HS ^= 1;
+                overworldEditor.overworld.tiles16[tile8ids[i]].Tile1.HS ^= 1;
+                overworldEditor.overworld.tiles16[tile8ids[i]].Tile2.HS ^= 1;
+                overworldEditor.overworld.tiles16[tile8ids[i]].Tile3.HS ^= 1;
 
-                ushort t0 = overworldEditor.overworld.tiles16[i].tile0.id;
-                ushort t2 = overworldEditor.overworld.tiles16[i].tile2.id;
+                ushort t0 = overworldEditor.overworld.tiles16[i].Tile0.id;
+                ushort t2 = overworldEditor.overworld.tiles16[i].Tile2.id;
 
-                overworldEditor.overworld.tiles16[i].tile0.id = overworldEditor.overworld.tiles16[i].tile1.id;
-                overworldEditor.overworld.tiles16[i].tile1.id = t0;
-                overworldEditor.overworld.tiles16[i].tile2.id = overworldEditor.overworld.tiles16[i].tile3.id;
-                overworldEditor.overworld.tiles16[i].tile3.id = t2;
+                overworldEditor.overworld.tiles16[i].Tile0.id = overworldEditor.overworld.tiles16[i].Tile1.id;
+                overworldEditor.overworld.tiles16[i].Tile1.id = t0;
+                overworldEditor.overworld.tiles16[i].Tile2.id = overworldEditor.overworld.tiles16[i].Tile3.id;
+                overworldEditor.overworld.tiles16[i].Tile3.id = t2;
 
                 for (int x = 0, mx = 31; x < 32; x++, mx--)
                 {

@@ -271,9 +271,9 @@ namespace ZeldaFullEditor
                 if (exitmode.lastselectedExit != null)
                 {
                     owForm.SetSelectedObjectLabels(
-                        exitmode.lastselectedExit.mapId,
-                        exitmode.lastselectedExit.playerX,
-                        exitmode.lastselectedExit.playerY);
+                        exitmode.lastselectedExit.MapID,
+                        exitmode.lastselectedExit.PlayerX,
+                        exitmode.lastselectedExit.PlayerY);
                 }
             }
             else if (selectedMode == ObjectMode.OWDoor)
@@ -853,7 +853,7 @@ namespace ZeldaFullEditor
                     }
                     if (exitmode.selectedExit != null)
                     {
-                        g.DrawImage(owForm.tmpPreviewBitmap, exitmode.selectedExit.playerX + 16, exitmode.selectedExit.playerY + 16);
+                        g.DrawImage(owForm.tmpPreviewBitmap, exitmode.selectedExit.PlayerX + 16, exitmode.selectedExit.PlayerY + 16);
                     }
                 }
 
@@ -866,16 +866,16 @@ namespace ZeldaFullEditor
                     drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString("X2"));
                     drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
 
-                    for (int i = 0; i < ow.alloverlays[mid].tilesData.Count; i++)
+                    for (int i = 0; i < ow.alloverlays[mid].TileDataList.Count; i++)
                     {
-                        int xo = ow.alloverlays[mid].tilesData[i].x * 16;
-                        int yo = ow.alloverlays[mid].tilesData[i].y * 16;
-                        int to = ow.alloverlays[mid].tilesData[i].tileId;
+                        int xo = ow.alloverlays[mid].TileDataList[i].x * 16;
+                        int yo = ow.alloverlays[mid].TileDataList[i].y * 16;
+                        int to = ow.alloverlays[mid].TileDataList[i].tileId;
                         int toy = (to / 8) * 16;
                         int tox = (to % 8) * 16;
                         g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
                         //g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-                        byte detect = compareTilePos(ow.alloverlays[mid].tilesData[i], ow.alloverlays[mid].tilesData.ToArray());
+                        byte detect = compareTilePos(ow.alloverlays[mid].TileDataList[i], ow.alloverlays[mid].TileDataList.ToArray());
 
                         if (detect == 0)
                         {

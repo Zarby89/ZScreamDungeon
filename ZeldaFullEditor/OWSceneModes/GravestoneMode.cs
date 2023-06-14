@@ -30,7 +30,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 0x0F; i++)
                 {
                     Gravestone en = scene.ow.graves[i];
-                    if (e.X >= en.xTilePos && e.X < en.xTilePos + 32 && e.Y >= en.yTilePos && e.Y < en.yTilePos + 32)
+                    if (e.X >= en.XTilePos && e.X < en.XTilePos + 32 && e.Y >= en.YTilePos && e.Y < en.YTilePos + 32)
                     {
                         if (!scene.mouse_down)
                         {
@@ -57,12 +57,12 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (selectedGrave != null)
                 {
-                    selectedGrave.xTilePos = (ushort)e.X;
-                    selectedGrave.yTilePos = (ushort)e.Y;
+                    selectedGrave.XTilePos = (ushort)e.X;
+                    selectedGrave.YTilePos = (ushort)e.Y;
                     if (scene.snapToGrid)
                     {
-                        selectedGrave.xTilePos = (ushort)((e.X / 8) * 8);
-                        selectedGrave.yTilePos = (ushort)((e.Y / 8) * 8);
+                        selectedGrave.XTilePos = (ushort)((e.X / 8) * 8);
+                        selectedGrave.YTilePos = (ushort)((e.Y / 8) * 8);
                     }
                 }
             }
@@ -81,10 +81,10 @@ namespace ZeldaFullEditor.OWSceneModes
                     int mx = (scene.mapHover - ((scene.mapHover / 8) * 8));
                     int my = ((scene.mapHover / 8));
 
-                    byte xx = (byte)((selectedGrave.xTilePos - (mx * 512)) / 16);
-                    byte yy = (byte)((selectedGrave.yTilePos - (my * 512)) / 16);
+                    byte xx = (byte)((selectedGrave.XTilePos - (mx * 512)) / 16);
+                    byte yy = (byte)((selectedGrave.YTilePos - (my * 512)) / 16);
 
-                    selectedGrave.tilemapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
+                    selectedGrave.TilemapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
 
                     lastselectedGrave = selectedGrave;
                     SendGraveData(lastselectedGrave);
@@ -117,18 +117,18 @@ namespace ZeldaFullEditor.OWSceneModes
                     }
                 }
 
-                g.DrawRectangle(bgrBrush, new Rectangle(e.xTilePos, e.yTilePos, 32, 32));
-                scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, i.ToString("X2"));
+                g.DrawRectangle(bgrBrush, new Rectangle(e.XTilePos, e.YTilePos, 32, 32));
+                scene.drawText(g, e.XTilePos + 8, e.YTilePos + 8, i.ToString("X2"));
 
                 //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 40, e.tilemapPos.ToString("X4"));
                 if (i == 0x0D) // Stairs
                 {
-                    scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL STAIRS");
+                    scene.drawText(g, e.XTilePos + 8, e.YTilePos + 16, "SPECIAL STAIRS");
                 }
 
                 if (i == 0x0E) // Hole
                 {
-                    scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
+                    scene.drawText(g, e.XTilePos + 8, e.YTilePos + 16, "SPECIAL HOLE");
                 }
             }
         }
@@ -139,11 +139,11 @@ namespace ZeldaFullEditor.OWSceneModes
             NetZSBuffer buffer = new NetZSBuffer(24);
             buffer.Write((byte)11); // grave data
             buffer.Write((byte)NetZS.userID); //user ID
-            buffer.Write((int)gravestone.uniqueID);
-            buffer.Write((ushort)gravestone.yTilePos);
-            buffer.Write((ushort)gravestone.xTilePos);
-            buffer.Write((ushort)gravestone.tilemapPos);
-            buffer.Write((ushort)gravestone.gfx);
+            buffer.Write((int)gravestone.UniqueID);
+            buffer.Write((ushort)gravestone.YTilePos);
+            buffer.Write((ushort)gravestone.XTilePos);
+            buffer.Write((ushort)gravestone.TilemapPos);
+            buffer.Write((ushort)gravestone.GFX);
 
 
             NetOutgoingMessage msg = NetZS.client.CreateMessage();

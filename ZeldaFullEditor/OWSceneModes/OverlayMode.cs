@@ -75,18 +75,18 @@ namespace ZeldaFullEditor.OWSceneModes
                             */
 
                             TilePos tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
-                            TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].tilesData.ToArray());
+                            TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
 
                             if (scene.ow.allmaps[scene.selectedMap].largeMap)
                             {
                                 tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
-                                tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].tilesData.ToArray());
+                                tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
 
                             }
 
                             if (Control.ModifierKeys == Keys.Control)
                             {
-                                scene.ow.alloverlays[mid].tilesData.Remove(tf);
+                                scene.ow.alloverlays[mid].TileDataList.Remove(tf);
                                 x++;
                                 if (x >= scene.selectedTileSizeX)
                                 {
@@ -99,12 +99,12 @@ namespace ZeldaFullEditor.OWSceneModes
 
                             if (tf == null)
                             {
-                                scene.ow.alloverlays[mid].tilesData.Add(tp);
+                                scene.ow.alloverlays[mid].TileDataList.Add(tp);
                             }
                             else
                             {
-                                scene.ow.alloverlays[mid].tilesData.Remove(tf);
-                                scene.ow.alloverlays[mid].tilesData.Add(tp);
+                                scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                                scene.ow.alloverlays[mid].TileDataList.Add(tp);
                             }
 
                             x++;
@@ -142,7 +142,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     if (tileX == scene.globalmouseTileDownX && tileY == scene.globalmouseTileDownY)
                     {
                         TilePos tp = new TilePos((byte)(tileX - (superMX)), (byte)(tileY - (superMY)), 0);
-                        TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].tilesData.ToArray());
+                        TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
 
                         if (tf == null)
                         {
@@ -276,10 +276,10 @@ namespace ZeldaFullEditor.OWSceneModes
                                         */
 
                                         TilePos tp = new TilePos((byte)(tileX - (superMX) + x), (byte)(tileY - (superMY) + y), scene.selectedTile[i]);
-                                        TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].tilesData.ToArray());
+                                        TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
                                         if (Control.ModifierKeys == Keys.Control)
                                         {
-                                            scene.ow.alloverlays[mid].tilesData.Remove(tf);
+                                            scene.ow.alloverlays[mid].TileDataList.Remove(tf);
                                             x++;
                                             if (x >= scene.selectedTileSizeX)
                                             {
@@ -292,12 +292,12 @@ namespace ZeldaFullEditor.OWSceneModes
 
                                         if (tf == null)
                                         {
-                                            scene.ow.alloverlays[mid].tilesData.Add(tp);
+                                            scene.ow.alloverlays[mid].TileDataList.Add(tp);
                                         }
                                         else
                                         {
-                                            scene.ow.alloverlays[mid].tilesData.Remove(tf);
-                                            scene.ow.alloverlays[mid].tilesData.Add(tp);
+                                            scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                                            scene.ow.alloverlays[mid].TileDataList.Add(tp);
                                         }
                                     }
 

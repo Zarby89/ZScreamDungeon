@@ -22,13 +22,13 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (e.Button == MouseButtons.Left)
             {
-                int mapy = (scene.exitmode.lastselectedExit.mapId / 8);
-                int mapx = scene.exitmode.lastselectedExit.mapId - (mapy * 8);
+                int mapy = (scene.exitmode.lastselectedExit.MapID / 8);
+                int mapx = scene.exitmode.lastselectedExit.MapID - (mapy * 8);
                 int mouse_tile_x_down = ((e.X / 16)) - (mapx * 32);
                 int mouse_tile_y_down = ((e.Y / 16)) - (mapy * 32);
 
-                scene.exitmode.lastselectedExit.doorXEditor = (byte)mouse_tile_x_down;
-                scene.exitmode.lastselectedExit.doorYEditor = (byte)mouse_tile_y_down;
+                scene.exitmode.lastselectedExit.DoorXEditor = (byte)mouse_tile_x_down;
+                scene.exitmode.lastselectedExit.DoorYEditor = (byte)mouse_tile_y_down;
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 scene.exitmode.exitProperty_Click(null, null);
             }

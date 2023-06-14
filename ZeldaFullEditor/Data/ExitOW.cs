@@ -1,135 +1,229 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lidgren.Network;
-using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     A class containing all the info for each Oveworld Exit.
+    /// </summary>
     [Serializable]
     public class ExitOW
     {
-        public byte
-            mapId,
-            unk1,
-            unk2,
-            doorXEditor,
-            doorYEditor,
-            AreaX,
-            AreaY;
+        /// <summary>
+        ///     Gets or sets the map ID for the exit.
+        /// </summary>
+        public byte MapID { get; set; }
 
-        public short
-            vramLocation,
-            xScroll,
-            yScroll,
-            cameraX,
-            cameraY,
-            doorType1,
-            doorType2;
+        /// <summary>
+        ///     Gets or sets the Y scroll mod for the exit.
+        /// </summary>
+        public byte ScrollModY { get; set; }
 
-        public ushort
-            roomId,
-            playerX,
-            playerY;
+        /// <summary>
+        ///     Gets or sets the X scroll mod for the exit.
+        /// </summary>
+        public byte ScrollModX { get; set; }
 
-        public bool isAutomatic = true;
-        public bool deleted = false;
-        public int uniqueID = 0;
-        public ExitOW(ushort roomId, byte mapId, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte unk1, byte unk2, short doorType1, short doorType2)
+        /// <summary>
+        ///     Gets or sets the editor X door position for the exit.
+        /// </summary>
+        public byte DoorXEditor { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the editor Y door position for the exit.
+        /// </summary>
+        public byte DoorYEditor { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the X area for the exit.
+        /// </summary>
+        public byte AreaX { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Y area for the exit.
+        /// </summary>
+        public byte AreaY { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the VRAM location for the exit.
+        /// </summary>
+        public short VRAMLocation { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the X scroll for the exit.
+        /// </summary>
+        public short XScroll { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Y scroll for the exit.
+        /// </summary>
+        public short YScroll { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the camera X position for the exit.
+        /// </summary>
+        public short CameraX { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the camera Y position for the exit.
+        /// </summary>
+        public short CameraY { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the 1st door type for the exit.
+        /// </summary>
+        public short DoorType1 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the 2nd door type for the exit.
+        /// </summary>
+        public short DoorType2 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the room ID for the exit.
+        /// </summary>
+        public ushort RoomID { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the player X position for the exit.
+        /// </summary>
+        public ushort PlayerX { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the player Y position for the exit.
+        /// </summary>
+        public ushort PlayerY { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the exit values are automatically calculated or not.
+        /// </summary>
+        public bool IsAutomatic { get; set; } = true;
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the exit is deleted or not.
+        /// </summary>
+        public bool Deleted { get; set; } = false;
+
+        /// <summary>
+        ///     Gets or sets the unique ID for the exit.
+        /// </summary>
+        public int UniqueID { get; set; } = 0;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExitOW"/> class.
+        /// </summary>
+        /// <param name="roomID"> The room ID. </param>
+        /// <param name="mapID"> The map ID. </param>
+        /// <param name="vramLocation"> The VRAM location. </param>
+        /// <param name="yScroll"> The Y scroll. </param>
+        /// <param name="xScroll"> The X scroll. </param>
+        /// <param name="playerY"> The player Y position. </param>
+        /// <param name="playerX"> The player X position. </param>
+        /// <param name="cameraY"> The camera Y position. </param>
+        /// <param name="cameraX"> The camera X position. </param>
+        /// <param name="scrollModY"> The Y scroll mod. </param>
+        /// <param name="scrollModX"> The X scroll mod. </param>
+        /// <param name="doorType1"> The 1st door type. </param>
+        /// <param name="doorType2"> The 2nd door type. </param>
+        public ExitOW(ushort roomID, byte mapID, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte scrollModY, byte scrollModX, short doorType1, short doorType2)
         {
-            this.roomId = roomId;
-            this.mapId = mapId;
-            this.vramLocation = vramLocation;
-            this.xScroll = xScroll;
-            this.yScroll = yScroll;
-            this.playerX = playerX;
-            this.playerY = playerY;
-            this.cameraX = cameraX;
-            this.cameraY = cameraY;
-            this.unk1 = unk1;
-            this.unk2 = unk2;
-            this.doorType1 = doorType1;
-            this.doorType2 = doorType2;
+            this.RoomID = roomID;
+            this.MapID = mapID;
+            this.VRAMLocation = vramLocation;
+            this.XScroll = xScroll;
+            this.YScroll = yScroll;
+            this.PlayerX = playerX;
+            this.PlayerY = playerY;
+            this.CameraX = cameraX;
+            this.CameraY = cameraY;
+            this.ScrollModY = scrollModY;
+            this.ScrollModX = scrollModX;
+            this.DoorType1 = doorType1;
+            this.DoorType2 = doorType2;
 
             if (doorType1 != 0)
             {
                 int p = (doorType1 & 0x7FFF) >> 1;
-                doorXEditor = (byte)(p % 64);
-                doorYEditor = (byte)(p >> 6);
+                this.DoorXEditor = (byte)(p % 64);
+                this.DoorYEditor = (byte)(p >> 6);
             }
 
             if (doorType2 != 0)
             {
                 int p = (doorType2 & 0x7FFF) >> 1;
-                doorXEditor = (byte)(p % 64);
-                doorYEditor = (byte)(p >> 6);
+                this.DoorXEditor = (byte)(p % 64);
+                this.DoorYEditor = (byte)(p >> 6);
             }
 
-            int mapX = (mapId - ((mapId / 8) * 8));
-            int mapY = (mapId / 8);
+            int mapX = mapID - ((mapID / 8) * 8);
+            int mapY = mapID / 8;
 
-            AreaX = (byte)((Math.Abs(playerX - (mapX * 512)) / 16));
-            AreaY = (byte)((Math.Abs(playerY - (mapY * 512)) / 16));
+            this.AreaX = (byte)(Math.Abs(playerX - (mapX * 512)) / 16);
+            this.AreaY = (byte)(Math.Abs(playerY - (mapY * 512)) / 16);
 
-
-            uniqueID = ROM.uniqueExitID;
+            this.UniqueID = ROM.uniqueExitID;
             ROM.uniqueExitID += 1;
         }
 
+        /// <summary>
+        ///     This function makes a copy of this exit and returns it as a new one.
+        /// </summary>
+        /// <returns> A new copy of this exit. </returns>
         public ExitOW Copy()
         {
             return new ExitOW(
-            roomId,
-            mapId,
-            vramLocation,
-            xScroll,
-            yScroll,
-            playerX,
-            playerY,
-            cameraX,
-            cameraY,
-            unk1,
-            unk2,
-            doorType1,
-            doorType2);
+            this.RoomID,
+            this.MapID,
+            this.VRAMLocation,
+            this.XScroll,
+            this.YScroll,
+            this.PlayerX,
+            this.PlayerY,
+            this.CameraX,
+            this.CameraY,
+            this.ScrollModY,
+            this.ScrollModX,
+            this.DoorType1,
+            this.DoorType2);
         }
 
-        public void updateMapStuff(byte mapId, Overworld ow)
+        /// <summary>
+        ///     Updates certain exit properties based on the given area map ID.
+        /// </summary>
+        /// <param name="mapID"> The ID of the area map. </param>
+        /// <param name="overworld"> The current Overworld. </param>
+        public void UpdateMapStuff(byte mapID, Overworld overworld)
         {
-            this.mapId = mapId;
+            this.MapID = mapID;
 
             int large = 256;
-            int mapid = mapId;
+            int mapid = mapID;
 
-            if (mapId < 128)
+            if (mapID < 128)
             {
-                large = ow.allmaps[mapId].largeMap ? 768 : 256;
-                if (ow.allmaps[mapId].parent != mapId)
+                large = overworld.allmaps[mapID].largeMap ? 768 : 256;
+                if (overworld.allmaps[mapID].parent != mapID)
                 {
-                    mapid = ow.allmaps[mapId].parent;
+                    mapid = overworld.allmaps[mapID].parent;
                 }
             }
 
-            int mapX = (mapId - ((mapId / 8) * 8));
-            int mapY = (mapId / 8);
+            int mapX = mapID - ((mapID / 8) * 8);
+            int mapY = mapID / 8;
 
-            AreaX = (byte)((Math.Abs(playerX - (mapX * 512)) / 16));
-            AreaY = (byte)((Math.Abs(playerY - (mapY * 512)) / 16));
+            this.AreaX = (byte)(Math.Abs(this.PlayerX - (mapX * 512)) / 16);
+            this.AreaY = (byte)(Math.Abs(this.PlayerY - (mapY * 512)) / 16);
 
-            // If map is large, large = 768, otherwise 256
+            // If map is large, large = 768, otherwise 256.
 
-            // mapx, mapy = "super map" position on the grid *512
-
-            if (mapId >= 64)
+            // mapx, mapy = "super map" position on the grid *512.
+            if (mapID >= 64)
             {
-                mapId -= 64;
+                mapID -= 64;
             }
 
-            int mapx = (mapId & 7) << 9;
-            int mapy = ((mapId & 56) << 6);
-            if (isAutomatic)
+            int mapx = (mapID & 7) << 9;
+            int mapy = (mapID & 56) << 6;
+            if (this.IsAutomatic)
             {
                 /*
 				Zarby:
@@ -140,37 +234,65 @@ namespace ZeldaFullEditor
 				PY: 0AE8
 				PX: 08B8
 
-				if you subtract these you get -134 and -78 
+				if you subtract these you get -134 and -78.
 
 				Jared_Brain_: further testing by zarby revealed that these values are different for every entrance.
-				completly centered is -120 and -80
+				completly centered is -120 and -80.
 				*/
 
-                xScroll = (short)(playerX - 120); //134
-                yScroll = (short)(playerY - 80); //78
+                this.XScroll = (short)(this.PlayerX - 120); // 134.
+                this.YScroll = (short)(this.PlayerY - 80); // 78.
 
-                if (xScroll < mapx) { xScroll = (short)((mapx)); }
-                if (yScroll < mapy) { yScroll = (short)((mapy)); }
+                if (this.XScroll < mapx)
+                {
+                    this.XScroll = (short)mapx;
+                }
 
-                if (xScroll > mapx + large) { xScroll = (short)((mapx) + large); }
-                if (yScroll > (mapy + large) + 32) { yScroll = (short)(((mapy) + large) + 32); }
+                if (this.YScroll < mapy)
+                {
+                    this.YScroll = (short)mapy;
+                }
 
-                cameraX = (short)(playerX + 0x07);
-                cameraY = (short)(playerY + 0x1F);
+                if (this.XScroll > mapx + large)
+                {
+                    this.XScroll = (short)(mapx + large);
+                }
 
-                if (cameraX < mapx + 127) { cameraX = (short)(mapx + 127); }
-                if (cameraY < mapy + 111) { cameraY = (short)(mapy + 111); }
+                if (this.YScroll > mapy + large + 32)
+                {
+                    this.YScroll = (short)(mapy + large + 32);
+                }
 
-                if (cameraX > mapx + 127 + large) { cameraX = (short)(mapx + 127 + large); }
-                if (cameraY > mapy + 143 + large) { cameraY = (short)(mapy + 143 + large); }
+                this.CameraX = (short)(this.PlayerX + 0x07);
+                this.CameraY = (short)(this.PlayerY + 0x1F);
+
+                if (this.CameraX < mapx + 127)
+                {
+                    this.CameraX = (short)(mapx + 127);
+                }
+
+                if (this.CameraY < mapy + 111)
+                {
+                    this.CameraY = (short)(mapy + 111);
+                }
+
+                if (this.CameraX > mapx + 127 + large)
+                {
+                    this.CameraX = (short)(mapx + 127 + large);
+                }
+
+                if (this.CameraY > mapy + 143 + large)
+                {
+                    this.CameraY = (short)(mapy + 143 + large);
+                }
             }
 
-            short vramXScroll = (short)(xScroll - mapx);
-            short vramYScroll = (short)(yScroll - mapy);
+            short vramXScroll = (short)(this.XScroll - mapx);
+            short vramYScroll = (short)(this.YScroll - mapy);
 
-            vramLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
+            this.VRAMLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
 
-            Console.WriteLine("Exit:      " + roomId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+            Console.WriteLine("Exit:      " + this.RoomID + " MapId: " + mapid.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
         }
     }
 }

@@ -839,7 +839,7 @@ namespace ZeldaFullEditor.Gui
             {
                 for (var x = 0; x < 4; x++)
                 {
-                    CopyTile(x, y, 0, 0, t.tile0.id, p, destPtr, srcPtr, 16);
+                    CopyTile(x, y, 0, 0, t.Tile0.id, p, destPtr, srcPtr, 16);
                 }
             }
 
@@ -847,7 +847,7 @@ namespace ZeldaFullEditor.Gui
             {
                 for (var x = 0; x < 4; x++)
                 {
-                    CopyTile(x, y, 8, 0, t.tile1.id, p, destPtr, srcPtr, 16);
+                    CopyTile(x, y, 8, 0, t.Tile1.id, p, destPtr, srcPtr, 16);
                 }
             }
 
@@ -855,7 +855,7 @@ namespace ZeldaFullEditor.Gui
             {
                 for (var x = 0; x < 4; x++)
                 {
-                    CopyTile(x, y, 0, 8, t.tile2.id, p, destPtr, srcPtr, 16);
+                    CopyTile(x, y, 0, 8, t.Tile2.id, p, destPtr, srcPtr, 16);
                 }
             }
 
@@ -863,7 +863,7 @@ namespace ZeldaFullEditor.Gui
             {
                 for (var x = 0; x < 4; x++)
                 {
-                    CopyTile(x, y, 8, 8, t.tile3.id, p, destPtr, srcPtr, 16);
+                    CopyTile(x, y, 8, 8, t.Tile3.id, p, destPtr, srcPtr, 16);
                 }
             }
 
@@ -1003,12 +1003,12 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
 
-                foreach (TilePos t in overworld.alloverlays[i].tilesData)
+                foreach (TilePos t in overworld.alloverlays[i].TileDataList)
                 {
                     alltilesIndexed[t.tileId]++;
                 }
 
-                foreach (TilePos t in overworld.alloverlays[i + 64].tilesData)
+                foreach (TilePos t in overworld.alloverlays[i + 64].TileDataList)
                 {
                     alltilesIndexed[t.tileId]++;
                 }
@@ -1216,9 +1216,9 @@ namespace ZeldaFullEditor.Gui
                             }
                             foreach (ExitOW o in scene.ow.allexits)
                             {
-                                if (o.mapId == m)
+                                if (o.MapID == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
                                 }
                             }
                             foreach (RoomPotSaveEditor o in scene.ow.allitems)
@@ -1289,9 +1289,9 @@ namespace ZeldaFullEditor.Gui
                             }
                             foreach (ExitOW o in scene.ow.allexits)
                             {
-                                if (o.mapId == m)
+                                if (o.MapID == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
                                 }
                             }
                             foreach (RoomPotSaveEditor o in scene.ow.allitems)
@@ -1504,18 +1504,18 @@ namespace ZeldaFullEditor.Gui
                         j = 0;
                         foreach (ExitOW o in scene.ow.allexits)
                         {
-                            if (o.mapId == m)
+                            if (o.MapID == m)
                             {
                                 if (o.AreaX < 32)
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1523,12 +1523,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1794,28 +1794,28 @@ namespace ZeldaFullEditor.Gui
                         }
                         foreach (ExitOW o in scene.ow.allexits)
                         {
-                            if (o.mapId == m)
+                            if (o.MapID == m)
                             {
                                 if (o.AreaX < 32)
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
                                     }
                                 }
                                 else
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
                                     }
                                 }
                             }
@@ -2003,11 +2003,11 @@ namespace ZeldaFullEditor.Gui
         {
             foreach (var exit in overworld.allexits)
             {
-                exit.playerX = 0xFFFF;
-                exit.playerY = 0xFFFF;
-                exit.mapId = 0;
-                exit.roomId = 0;
-                exit.deleted = true;
+                exit.PlayerX = 0xFFFF;
+                exit.PlayerY = 0xFFFF;
+                exit.MapID = 0;
+                exit.RoomID = 0;
+                exit.Deleted = true;
             }
         }
 
@@ -2018,7 +2018,7 @@ namespace ZeldaFullEditor.Gui
         {
             foreach (var overlay in overworld.alloverlays)
             {
-                overlay.tilesData.Clear();
+                overlay.TileDataList.Clear();
             }
         }
 
@@ -2084,13 +2084,13 @@ namespace ZeldaFullEditor.Gui
         {
             foreach (var exit in overworld.allexits)
             {
-                if (exit.mapId == scene.selectedMapParent)
+                if (exit.MapID == scene.selectedMapParent)
                 {
-                    exit.playerX = 0xFFFF;
-                    exit.playerY = 0xFFFF;
-                    exit.mapId = 0;
-                    exit.roomId = 0;
-                    exit.deleted = true;
+                    exit.PlayerX = 0xFFFF;
+                    exit.PlayerY = 0xFFFF;
+                    exit.MapID = 0;
+                    exit.RoomID = 0;
+                    exit.Deleted = true;
                 }
             }
         }
@@ -2100,7 +2100,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearAreaOverlays()
         {
-            overworld.alloverlays[scene.selectedMapParent].tilesData.Clear();
+            overworld.alloverlays[scene.selectedMapParent].TileDataList.Clear();
             scene.Refresh();
         }
 

@@ -1,22 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace ZeldaFullEditor.Data
 {
+    /// <summary>
+    ///     A class containing all the info for messages (Text dialog).
+    /// </summary>
     public class MessageData
     {
         private const char CHEESE = '\uBEBE'; // Inserted into commands to protect them from dictionary replacements.
 
+        /// <summary>
+        ///     Gets the raw string for the message.
+        /// </summary>
         public string RawString { get; internal set; }
+
+        /// <summary>
+        ///     Gets the parsed string for the message.
+        /// </summary>
         public string ContentsParsed { get; internal set; }
+
+        /// <summary>
+        ///     Gets the ID of the message.
+        /// </summary>
         public int ID { get; internal set; }
+
+        /// <summary>
+        ///     Gets the raw data for the message.
+        /// </summary>
         public byte[] Data { get; internal set; }
+
+        /// <summary>
+        ///     Gets the parsed data for the message.
+        /// </summary>
         public byte[] DataParsed { get; internal set; }
+
+        /// <summary>
+        ///     Gets the address for the message.
+        /// </summary>
         public int Address { get; internal set; }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageData"/> class.
+        /// </summary>
+        /// <param name="id"> The ID. </param>
+        /// <param name="address"> The address. </param>
+        /// <param name="rawString"> The raw string. </param>
+        /// <param name="rawData"> The raw data (bytes). </param>
+        /// <param name="parsedString"> The parsed string. </param>
+        /// <param name="parsedData"> The parsed data (bytes). </param>
         public MessageData(int id, int address, string rawString, byte[] rawData, string parsedString, byte[] parsedData)
         {
             this.ID = id;
@@ -27,6 +58,10 @@ namespace ZeldaFullEditor.Data
             this.ContentsParsed = parsedString;
         }
 
+        /// <summary>
+        ///     Sets all the message data based on the given message string.
+        /// </summary>
+        /// <param name="messageString"> The string to set the message to. </param>
         public void SetMessage(string messageString)
         {
             this.ContentsParsed = messageString;
@@ -34,20 +69,22 @@ namespace ZeldaFullEditor.Data
             this.RecalculateData();
         }
 
-        private void RecalculateData()
-        {
-            this.Data = TextEditor.ParseMessageToData(this.RawString);
-            this.DataParsed = TextEditor.ParseMessageToData(this.ContentsParsed);
-        }
-
+        /// <summary>
+        ///     Returns the parsed message as a string.
+        /// </summary>
+        /// <returns> A string. </returns>
         public override string ToString()
         {
             return string.Format("{0:X3} - {1}", this.ID, this.ContentsParsed);
         }
 
+        /// <summary>
+        ///     Returns a string with all of the available data in the message.
+        /// </summary>
+        /// <returns> A string. </returns>
         public string GetReadableDumpedContents()
         {
-            StringBuilder stringBuilder = new StringBuilder(this.Data.Length * 2 + 1);
+            StringBuilder stringBuilder = new StringBuilder((this.Data.Length * 2) + 1);
             foreach (byte b in this.Data)
             {
                 stringBuilder.Append(b.ToString("X2"));
@@ -59,9 +96,19 @@ namespace ZeldaFullEditor.Data
             return string.Format("[[[[\r\nMessage {0:X3}]]]]\r\n[Contents]\r\n{1}\r\n\r\n[Data]\r\n{2}\r\n\r\n\r\n\r\n", this.ID, TextEditor.AddNewLinesToCommands(this.ContentsParsed), stringBuilder.ToString());
         }
 
+        /// <summary>
+        ///     Returns the parsed message as a string with some extra formating.
+        /// </summary>
+        /// <returns> A string. </returns>
         public string GetDumpedContents()
         {
             return string.Format("{0:X3} : {1}\r\n\r\n", this.ID, this.ContentsParsed);
+        }
+
+        private void RecalculateData()
+        {
+            this.Data = TextEditor.ParseMessageToData(this.RawString);
+            this.DataParsed = TextEditor.ParseMessageToData(this.ContentsParsed);
         }
 
         private string OptimizeMessageForDictionary(string messageString)
@@ -88,7 +135,7 @@ namespace ZeldaFullEditor.Data
                 }
             }
 
-            return TextEditor.ReplaceAllDictionaryWords(protons.ToString()).Replace(CHEESE.ToString(), "");
+            return TextEditor.ReplaceAllDictionaryWords(protons.ToString()).Replace(CHEESE.ToString(), string.Empty);
         }
     }
 }
