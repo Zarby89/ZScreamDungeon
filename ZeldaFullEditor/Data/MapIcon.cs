@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.Data
 {
     /// <summary>
-    ///     A class containing all the info for each map icon.
+    ///     A data class containing all the info for map icons.
     /// </summary>
     public class MapIcon
     {

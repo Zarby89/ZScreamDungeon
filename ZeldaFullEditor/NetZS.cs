@@ -453,16 +453,16 @@ namespace ZeldaFullEditor.Properties
             for (int i = 0; i < count; i++)
             {
                 ushort tileChanged = buffer.ReadUShort();
-                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile0 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile1 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile2 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].Tile3 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.tiles16[tileChanged].TileInfoArray = new TileInfo[]
+                form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile0 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile1 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile2 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile3 = GFX.gettilesinfo(buffer.ReadUShort());
+                form.overworldEditor.scene.ow.Tile16List[tileChanged].TileInfoArray = new TileInfo[]
                 {
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile0,
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile1,
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile2,
-                    form.overworldEditor.scene.ow.tiles16[tileChanged].Tile3
+                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile0,
+                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile1,
+                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile2,
+                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile3
                 };
 
             }
@@ -475,7 +475,7 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
             int uId = buffer.ReadInt(); // item unique id
 
-            Gravestone[] graves = form.overworldEditor.scene.ow.graves.Where(x => x.UniqueID == uId).ToArray();
+            Gravestone[] graves = form.overworldEditor.scene.ow.AllGraves.Where(x => x.UniqueID == uId).ToArray();
             Gravestone gravestone = graves[0];
 
             gravestone.YTilePos = buffer.ReadUShort();
@@ -496,7 +496,7 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // cmd id 10
             buffer.ReadByte(); // user id
             int uId = buffer.ReadInt(); // item unique id
-            TransportOW[] transports = form.overworldEditor.scene.ow.allWhirlpools.Where(x => x.uniqueID == uId).ToArray();
+            TransportOW[] transports = form.overworldEditor.scene.ow.AllWhirlpools.Where(x => x.uniqueID == uId).ToArray();
             TransportOW transport = transports[0];
             transport.unk1 = buffer.ReadByte();
             transport.unk2 = buffer.ReadByte();
@@ -527,13 +527,13 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
 
             int uId = buffer.ReadInt(); // item unique id
-            RoomPotSaveEditor[] items = form.overworldEditor.scene.ow.allitems.Where(x => x.uniqueID == uId).ToArray();
+            RoomPotSaveEditor[] items = form.overworldEditor.scene.ow.AllItems.Where(x => x.uniqueID == uId).ToArray();
             RoomPotSaveEditor item = null;
             if (items.Length == 0)
             {
                 item = new RoomPotSaveEditor(0, 0, 0, 0, false);
                 item.uniqueID = uId;
-                form.overworldEditor.scene.ow.allitems.Add(item);
+                form.overworldEditor.scene.ow.AllItems.Add(item);
             }
             else
             {
@@ -562,13 +562,13 @@ namespace ZeldaFullEditor.Properties
             int sId = buffer.ReadInt(); // sprite unique id
             byte sprstate = buffer.ReadByte();
             byte sprid = buffer.ReadByte();
-            Sprite[] sprites = form.overworldEditor.scene.ow.allsprites[sprstate].Where(x => x.uniqueID == sId).ToArray();
+            Sprite[] sprites = form.overworldEditor.scene.ow.AllSprites[sprstate].Where(x => x.uniqueID == sId).ToArray();
             Sprite spr = null;
             if (sprites.Length == 0)
             {
                 spr = new Sprite(0, sprid, 0, 0, 0, 0);
                 spr.uniqueID = sId;
-                form.overworldEditor.scene.ow.allsprites[sprstate].Add(spr);
+                form.overworldEditor.scene.ow.AllSprites[sprstate].Add(spr);
             }
             else
             {
@@ -596,10 +596,10 @@ namespace ZeldaFullEditor.Properties
             int uId = buffer.ReadInt(); // unique id
             byte eId = buffer.ReadByte(); // entrance id
             EntranceOW entrance = null;
-            EntranceOW[] entrances = form.overworldEditor.scene.ow.allentrances.Where(x => x.UniqueID == uId).ToArray();
+            EntranceOW[] entrances = form.overworldEditor.scene.ow.AllEntrances.Where(x => x.UniqueID == uId).ToArray();
             if (entrances.Length == 0)
             {
-                EntranceOW[] entrancesHoles = form.overworldEditor.scene.ow.allholes.Where(x => x.UniqueID == uId).ToArray();
+                EntranceOW[] entrancesHoles = form.overworldEditor.scene.ow.AllHoles.Where(x => x.UniqueID == uId).ToArray();
                 entrance = entrancesHoles[0];
             }
             else
@@ -627,7 +627,7 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // cmd id 08
             buffer.ReadByte(); // user id
             int uId = buffer.ReadInt(); // unique id
-            ExitOW exit = form.overworldEditor.scene.ow.allexits.Where(x => x.UniqueID == uId).ToArray()[0];
+            ExitOW exit = form.overworldEditor.scene.ow.AllExits.Where(x => x.UniqueID == uId).ToArray()[0];
 
             exit.ScrollModY = buffer.ReadByte();
             exit.ScrollModX = buffer.ReadByte();
@@ -658,7 +658,7 @@ namespace ZeldaFullEditor.Properties
             {
                 for (int y = 0; y < 256; y++)
                 {
-                    checksum += form.overworldEditor.scene.ow.allmapsTilesLW[x, y];
+                    checksum += form.overworldEditor.scene.ow.AllMapTile32_LW[x, y];
                 }
             }
             int clientChecksum = im.Data[2] | im.Data[3] << 8 | im.Data[4] << 16 | im.Data[5] << 24;
@@ -738,7 +738,7 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
             byte map = buffer.ReadByte(); // map id
 
-            OverworldMap[] owmaps = form.overworldEditor.scene.ow.allmaps.Where(x => x.index == map).ToArray();
+            OverworldMap[] owmaps = form.overworldEditor.scene.ow.AllMaps.Where(x => x.index == map).ToArray();
             OverworldMap owmap = null;
             if (owmaps.Length > 0)
             {
@@ -755,25 +755,25 @@ namespace ZeldaFullEditor.Properties
 
                 if (owmap.largeMap)
                 {
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 1].gfx = owmap.gfx;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 1].sprgfx = owmap.sprgfx;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 1].palette = owmap.palette;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 1].sprpalette = owmap.sprpalette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].gfx = owmap.gfx;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].sprgfx = owmap.sprgfx;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].palette = owmap.palette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].sprpalette = owmap.sprpalette;
 
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 8].gfx = owmap.gfx;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 8].sprgfx = owmap.sprgfx;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 8].palette = owmap.palette;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 8].sprpalette = owmap.sprpalette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].gfx = owmap.gfx;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].sprgfx = owmap.sprgfx;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].palette = owmap.palette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].sprpalette = owmap.sprpalette;
 
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 9].gfx = owmap.gfx;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 9].sprgfx = owmap.sprgfx;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 9].palette = owmap.palette;
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 9].sprpalette = owmap.sprpalette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].gfx = owmap.gfx;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].sprgfx = owmap.sprgfx;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].palette = owmap.palette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].sprpalette = owmap.sprpalette;
 
                     owmap.BuildMap();
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 1].BuildMap();
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 8].BuildMap();
-                    form.overworldEditor.scene.ow.allmaps[owmap.index + 9].BuildMap();
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].BuildMap();
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].BuildMap();
+                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].BuildMap();
                 }
 
 
@@ -818,8 +818,8 @@ namespace ZeldaFullEditor.Properties
 
                 if (tileX + x < 256 && tileY + y < 256)
                 {
-                    form.overworldEditor.scene.ow.allmaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
-                    form.overworldEditor.scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+                    form.overworldEditor.scene.ow.AllMaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
+                    form.overworldEditor.scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.AllMaps[mapId].gfxPtr, GFX.mapblockset16);
                 }
                 x++;
                 if (x >= tilesizex)
@@ -862,8 +862,8 @@ namespace ZeldaFullEditor.Properties
                 int superX = ((tileX + x) / 32);
                 int superY = ((tileY + y) / 32);
                 int mapId = (superY * 8) + superX + worldoffset;
-                form.overworldEditor.scene.ow.allmaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
-                form.overworldEditor.scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+                form.overworldEditor.scene.ow.AllMaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
+                form.overworldEditor.scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.AllMaps[mapId].gfxPtr, GFX.mapblockset16);
                 x++;
                 if (x >= tilesizex)
                 {
@@ -903,7 +903,7 @@ namespace ZeldaFullEditor.Properties
             int superY = ((tileY + y) / 32);
             int mapId = (superY * 8) + superX + worldoffset;
 
-            int mid = form.overworldEditor.scene.ow.allmaps[mapId].parent;
+            int mid = form.overworldEditor.scene.ow.AllMaps[mapId].parent;
             int superMX = (mid % 8) * 32;
             int superMY = (mid / 8) * 32;
 
@@ -921,10 +921,10 @@ namespace ZeldaFullEditor.Properties
 					*/
 
                     TilePos tp = new TilePos((byte)((tileX + x) - (superMX)), (byte)((tileY + y) - (superMY)), selectedTiles[i]);
-                    TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.ToArray());
+                    TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.ToArray());
                     if (deleting)
                     {
-                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                        form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
                         x++;
                         if (x >= tilesizex)
                         {
@@ -937,12 +937,12 @@ namespace ZeldaFullEditor.Properties
 
                     if (tf == null)
                     {
-                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                        form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                     }
                     else
                     {
-                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
-                        form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                        form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
+                        form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                     }
                 }
 
@@ -1036,7 +1036,7 @@ namespace ZeldaFullEditor.Properties
             int superY = ((tileY + y) / 32);
             int mapId = (superY * 8) + superX + worldoffset;
 
-            int mid = form.overworldEditor.scene.ow.allmaps[mapId].parent;
+            int mid = form.overworldEditor.scene.ow.AllMaps[mapId].parent;
             int superMX = (mid % 8) * 32;
             int superMY = (mid / 8) * 32;
 
@@ -1053,12 +1053,12 @@ namespace ZeldaFullEditor.Properties
 				*/
 
                 TilePos tp = new TilePos((byte)((tileX + x) - (superMX)), (byte)((tileY + y) - (superMY)), selectedTiles[i]);
-                TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.ToArray());
+                TilePos tf = form.overworldEditor.scene.compareTilePosT(tp, form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.ToArray());
 
 
                 if (deleting)
                 {
-                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                    form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
                     x++;
                     if (x >= tilesizex)
                     {
@@ -1071,12 +1071,12 @@ namespace ZeldaFullEditor.Properties
 
                 if (tf == null)
                 {
-                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                    form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                 }
                 else
                 {
-                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Remove(tf);
-                    form.overworldEditor.scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                    form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
+                    form.overworldEditor.scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                 }
 
                 x++;

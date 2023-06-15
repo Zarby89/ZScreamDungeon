@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor
 {
     /// <summary>
-    ///     A class to contail individual Tile32 data.
+    ///     A class to contain individual Tile32 data.
     /// </summary>
     public class Tile32
     {

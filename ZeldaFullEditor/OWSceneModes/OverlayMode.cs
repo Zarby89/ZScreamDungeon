@@ -32,16 +32,16 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.globalmouseTileDownX = tileX;
                 scene.globalmouseTileDownY = tileY;
 
-                scene.selectedMap = mapId + scene.ow.worldOffset;
-                scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
+                scene.selectedMap = mapId + scene.ow.WorldOffset;
+                scene.selectedMapParent = scene.ow.AllMaps[scene.selectedMap].parent;
 
-                int mid = scene.ow.allmaps[scene.selectedMap].parent;
+                int mid = scene.ow.AllMaps[scene.selectedMap].parent;
                 int superMX = (mid % 8) * 32;
                 int superMY = (mid / 8) * 32;
 
                 scene.tileBitmapPtr = GFX.mapblockset16;
                 scene.tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, scene.tileBitmapPtr);
-                scene.tileBitmap.Palette = scene.ow.allmaps[scene.ow.allmaps[mapId].parent].gfxBitmap.Palette;
+                scene.tileBitmap.Palette = scene.ow.AllMaps[scene.ow.AllMaps[mapId].parent].gfxBitmap.Palette;
 
                 if (scene.needRedraw)
                 {
@@ -66,7 +66,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             superX = ((tileX + x) / 32);
                             superY = ((tileY + y) / 32);
-                            mapId = (superY * 8) + superX + scene.ow.worldOffset;
+                            mapId = (superY * 8) + superX + scene.ow.WorldOffset;
 
                             /*
                             undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
@@ -75,18 +75,18 @@ namespace ZeldaFullEditor.OWSceneModes
                             */
 
                             TilePos tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
-                            TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
+                            TilePos tf = scene.compareTilePosT(tp, scene.ow.AllOverlays[mid].TileDataList.ToArray());
 
-                            if (scene.ow.allmaps[scene.selectedMap].largeMap)
+                            if (scene.ow.AllMaps[scene.selectedMap].largeMap)
                             {
                                 tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
-                                tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
+                                tf = scene.compareTilePosT(tp, scene.ow.AllOverlays[mid].TileDataList.ToArray());
 
                             }
 
                             if (Control.ModifierKeys == Keys.Control)
                             {
-                                scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                                scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
                                 x++;
                                 if (x >= scene.selectedTileSizeX)
                                 {
@@ -99,12 +99,12 @@ namespace ZeldaFullEditor.OWSceneModes
 
                             if (tf == null)
                             {
-                                scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                                scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                             }
                             else
                             {
-                                scene.ow.alloverlays[mid].TileDataList.Remove(tf);
-                                scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                                scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
+                                scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                             }
 
                             x++;
@@ -132,8 +132,8 @@ namespace ZeldaFullEditor.OWSceneModes
                 int tileY = (e.Y / 16);
                 int superX = (tileX / 32);
                 int superY = (tileY / 32);
-                int mapId = (superY * 8) + superX + scene.ow.worldOffset;
-                int mid = scene.ow.allmaps[scene.selectedMap].parent;
+                int mapId = (superY * 8) + superX + scene.ow.WorldOffset;
+                int mid = scene.ow.AllMaps[scene.selectedMap].parent;
                 int superMX = (mid % 8) * 32;
                 int superMY = (mid / 8) * 32;
 
@@ -142,13 +142,13 @@ namespace ZeldaFullEditor.OWSceneModes
                     if (tileX == scene.globalmouseTileDownX && tileY == scene.globalmouseTileDownY)
                     {
                         TilePos tp = new TilePos((byte)(tileX - (superMX)), (byte)(tileY - (superMY)), 0);
-                        TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
+                        TilePos tf = scene.compareTilePosT(tp, scene.ow.AllOverlays[mid].TileDataList.ToArray());
 
                         if (tf == null)
                         {
                             if (tileX == scene.globalmouseTileDownX && tileY == scene.globalmouseTileDownY)
                             {
-                                scene.selectedTile = new ushort[1] { scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] };
+                                scene.selectedTile = new ushort[1] { scene.ow.AllMaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] };
                                 scene.selectedTileSizeX = 1;
                             }
                         }
@@ -190,7 +190,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 if (reverseX) { pX = tileX; }
                                 if (reverseY) { pY = tileY; }
 
-                                scene.selectedTile[x + (y * sizeX)] = scene.ow.allmaps[mapId].tilesUsed[(pX) + x, (pY) + y];
+                                scene.selectedTile[x + (y * sizeX)] = scene.ow.AllMaps[mapId].tilesUsed[(pX) + x, (pY) + y];
                             }
                         }
                     }
@@ -249,7 +249,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             int mapId = (superY * 8) + superX;
                             scene.globalmouseTileDownX = tileX;
                             scene.globalmouseTileDownY = tileY;
-                            int mid = scene.ow.allmaps[scene.selectedMap].parent;
+                            int mid = scene.ow.AllMaps[scene.selectedMap].parent;
                             int superMX = (mid % 8) * 32;
                             int superMY = (mid / 8) * 32;
 
@@ -266,7 +266,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 {
                                     superX = ((tileX + x) / 32);
                                     superY = ((tileY + y) / 32);
-                                    mapId = (superY * 8) + superX + scene.ow.worldOffset;
+                                    mapId = (superY * 8) + superX + scene.ow.WorldOffset;
                                     if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
                                     {
                                         /*
@@ -276,10 +276,10 @@ namespace ZeldaFullEditor.OWSceneModes
                                         */
 
                                         TilePos tp = new TilePos((byte)(tileX - (superMX) + x), (byte)(tileY - (superMY) + y), scene.selectedTile[i]);
-                                        TilePos tf = scene.compareTilePosT(tp, scene.ow.alloverlays[mid].TileDataList.ToArray());
+                                        TilePos tf = scene.compareTilePosT(tp, scene.ow.AllOverlays[mid].TileDataList.ToArray());
                                         if (Control.ModifierKeys == Keys.Control)
                                         {
-                                            scene.ow.alloverlays[mid].TileDataList.Remove(tf);
+                                            scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
                                             x++;
                                             if (x >= scene.selectedTileSizeX)
                                             {
@@ -292,12 +292,12 @@ namespace ZeldaFullEditor.OWSceneModes
 
                                         if (tf == null)
                                         {
-                                            scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                                            scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                                         }
                                         else
                                         {
-                                            scene.ow.alloverlays[mid].TileDataList.Remove(tf);
-                                            scene.ow.alloverlays[mid].TileDataList.Add(tp);
+                                            scene.ow.AllOverlays[mid].TileDataList.Remove(tf);
+                                            scene.ow.AllOverlays[mid].TileDataList.Add(tp);
                                         }
                                     }
 
@@ -322,7 +322,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         int sY = (mouseTileY / 32);
                         int y = 0;
                         int x = 0;
-                        int mapId = 0 + scene.ow.worldOffset;
+                        int mapId = 0 + scene.ow.WorldOffset;
 
                         for (int i = 0; i < scene.selectedTile.Length; i++)
                         {
@@ -330,16 +330,16 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 sX = ((mouseTileX + x) / 32);
                                 sY = ((mouseTileY + y) / 32);
-                                mapId = (sY * 8) + sX + scene.ow.worldOffset;
+                                mapId = (sY * 8) + sX + scene.ow.WorldOffset;
 
-                                if (mapId > 63 + scene.ow.worldOffset)
+                                if (mapId > 63 + scene.ow.WorldOffset)
                                 {
                                     break;
                                 }
 
                                 if (mapId <= 159)
                                 {
-                                    scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
+                                    scene.ow.AllMaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
                                 }
                             }
 
@@ -351,14 +351,14 @@ namespace ZeldaFullEditor.OWSceneModes
                             }
                         }
 
-                        if (mapId > 63 + scene.ow.worldOffset)
+                        if (mapId > 63 + scene.ow.WorldOffset)
                         {
                             return;
                         }
 
                         if (mapId <= 159)
                         {
-                            scene.tilesgfxBitmap.Palette = scene.ow.allmaps[mapId].gfxBitmap.Palette;
+                            scene.tilesgfxBitmap.Palette = scene.ow.AllMaps[mapId].gfxBitmap.Palette;
                         }
 
                         //scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
@@ -381,7 +381,7 @@ namespace ZeldaFullEditor.OWSceneModes
             buffer.Write((int)scene.globalmouseTileDownY);
             buffer.Write((int)scene.selectedTileSizeX);
             buffer.Write((byte)deleting); // tile data cmd
-            buffer.Write((byte)scene.ow.worldOffset);
+            buffer.Write((byte)scene.ow.WorldOffset);
             buffer.Write((int)scene.selectedTile.Length);
             for (int i = 0; i < scene.selectedTile.Length; i++)
             {
@@ -404,7 +404,7 @@ namespace ZeldaFullEditor.OWSceneModes
             buffer.Write((int)tileY);
             buffer.Write((int)scene.selectedTileSizeX);
             buffer.Write((byte)deleting); // tile data cmd
-            buffer.Write((byte)scene.ow.worldOffset);
+            buffer.Write((byte)scene.ow.WorldOffset);
             buffer.Write((int)scene.selectedTile.Length);
             for (int i = 0; i < scene.selectedTile.Length; i++)
             {

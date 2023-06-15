@@ -3,7 +3,7 @@
 namespace ZeldaFullEditor
 {
     /// <summary>
-    ///     A class containing all of the overlay data.
+    ///     A data class containing all of the info for overlay data.
     /// </summary>
     public class OverlayData
     {

@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.Data
 {
     /// <summary>
-    ///     General class for defining names and properties of objects.
+    ///     A general data class for defining names and properties of objects.
     /// </summary>
     public class EntityName
     {

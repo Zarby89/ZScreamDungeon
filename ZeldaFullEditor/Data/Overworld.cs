@@ -9,150 +9,162 @@ using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     A data class containing all the data and properties for the 3 overworlds.
+    /// </summary>
     public class Overworld
     {
-        public List<Tile16> tiles16;
-        public List<Tile32> tiles32;
+        public List<Tile16> Tile16List = new List<Tile16>();
+        public List<Tile32> Tile32List = new List<Tile32>();
 
-        private int[] map32address;
+        private readonly int[] map32Address = { Constants.map32TilesTL, Constants.map32TilesTR, Constants.map32TilesBL, Constants.map32TilesBR };
 
-        public Tile32[] map16tiles;
-        public List<Size> posSize;
+        public Tile32[] Map16Tiles = new Tile32[Constants.NumberOfMap32];
+        public List<Size> PositionSize = new List<Size>();
 
-        public TileInfo[,] tempTiles8_LW = new TileInfo[512, 512]; //all maps tiles8
-        public TileInfo[,] tempTiles8_DW = new TileInfo[512, 512]; //all maps tiles8
-        public TileInfo[,] tempTiles8_SP = new TileInfo[512, 512]; //all maps tiles8
+        public TileInfo[,] TempTile8Array_LW = new TileInfo[512, 512]; // all maps tiles8.
+        public TileInfo[,] TempTile8Array_DW = new TileInfo[512, 512]; // all maps tiles8.
+        public TileInfo[,] TempTile8Array_SP = new TileInfo[512, 512]; // all maps tiles8.
 
-        public List<Tile32> t32Unique = new List<Tile32>();
-        public List<ushort> t32;
+        public List<Tile32> UniqueTile32List = new List<Tile32>();
+        public List<ushort> t32 = new List<ushort>();
 
-        public ExitOW[] allexits = new ExitOW[0x4F];
+        public ExitOW[] AllExits = new ExitOW[0x4F];
 
-        public byte[] allTilesTypes = new byte[0x200];
+        public byte[] AllTileTypes = new byte[0x200];
 
-        public bool showSprites = true;
+        public bool ShowSprites = true;
 
-        // That must stay global - that's a problem
-        public ushort[,] allmapsTilesLW = new ushort[512, 512]; //64 maps * (32*32 tiles)
-        public ushort[,] allmapsTilesDW = new ushort[512, 512]; //64 maps * (32*32 tiles)
-        public ushort[,] allmapsTilesSP = new ushort[512, 512]; //32 maps * (32*32 tiles)
-        public OverworldMap[] allmaps = new OverworldMap[Constants.NumberOfOWMaps];
-        public EntranceOW[] allentrances = new EntranceOW[129];
-        public EntranceOW[] allholes = new EntranceOW[0x13];
-        public List<RoomPotSaveEditor> allitems = new List<RoomPotSaveEditor>();
-        public OverlayData[] alloverlays = new OverlayData[128];
+        // That must stay global - that's a problem.
+        public ushort[,] AllMapTile32_LW = new ushort[512, 512]; // 64 maps * (32*32 tiles).
+        public ushort[,] AllMapTile32_DW = new ushort[512, 512]; // 64 maps * (32*32 tiles).
+        public ushort[,] AllMapTile32_SP = new ushort[512, 512]; // 32 maps * (32*32 tiles).
+        public OverworldMap[] AllMaps = new OverworldMap[Constants.NumberOfOWMaps];
+        public EntranceOW[] AllEntrances = new EntranceOW[129];
+        public EntranceOW[] AllHoles = new EntranceOW[0x13];
+        public List<RoomPotSaveEditor> AllItems = new List<RoomPotSaveEditor>();
+        public OverlayData[] AllOverlays = new OverlayData[128];
 
-        public List<Sprite>[] allsprites = new List<Sprite>[3];
+        public List<Sprite>[] AllSprites = new List<Sprite>[3] { new List<Sprite>(), new List<Sprite>(), new List<Sprite>() };
 
-        public int worldOffset = 0;
+        public int WorldOffset = 0;
 
-        // TODO : Fix Whirlpool on large maps
-        public List<TransportOW> allWhirlpools = new List<TransportOW>();
-        public List<TransportOW> allBirds = new List<TransportOW>();
+        // TODO : Fix Whirlpool on large maps.
+        public List<TransportOW> AllWhirlpools = new List<TransportOW>();
+        public List<TransportOW> AllBirds = new List<TransportOW>();
 
-        public byte gameState = 1;
+        public byte GameState = 1;
 
-        public bool isLoaded = false;
+        public bool IsLoaded = false;
 
-        public ushort[] tileLeftEntrance = new ushort[0x2B];
-        public ushort[] tileRightEntrance = new ushort[0x2B];
+        public ushort[] LeftTileEntrance = new ushort[0x2B];
+        public ushort[] RightTileEntrance = new ushort[0x2B];
 
-        public Gravestone[] graves = new Gravestone[0x0F];
+        public Gravestone[] AllGraves = new Gravestone[0x0F];
 
-        public int tiles32count = 0;
+        public int Tile32Count = 0;
 
-        private List<Tile16> t16Unique = new List<Tile16>();
+        private List<Tile16> uniqueTile16List = new List<Tile16>();
         private List<ushort> t16 = new List<ushort>();
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Overworld"/> class.
+        /// </summary>
         public Overworld()
         {
-            tiles16 = new List<Tile16>();
-            tiles32 = new List<Tile32>();
-
-            map16tiles = new Tile32[Constants.NumberOfMap32];
-            posSize = new List<Size>();
-
-            t32 = new List<ushort>();
-
             for (int i = 0; i < 0x2B; i++)
             {
-                tileLeftEntrance[i] = ROM.ReadShort(Constants.overworldEntranceAllowedTilesLeft + (i * 2));
-                tileRightEntrance[i] = ROM.ReadShort(Constants.overworldEntranceAllowedTilesRight + (i * 2));
+                this.LeftTileEntrance[i] = ROM.ReadShort(Constants.overworldEntranceAllowedTilesLeft + (i * 2));
+                this.RightTileEntrance[i] = ROM.ReadShort(Constants.overworldEntranceAllowedTilesRight + (i * 2));
 
                 //Console.WriteLine(tileLeftEntrance[i].ToString("D4") + " , " + tileRightEntrance[i].ToString("D4"));
             }
 
-            allsprites[0] = new List<Sprite>();
-            allsprites[1] = new List<Sprite>();
-            allsprites[2] = new List<Sprite>();
+            this.Tile32List = this.AssembleMap32Tiles();
+            this.Tile16List = this.AssembleMap16Tiles();
+            (ushort[,] tilesLW, ushort[,] tilesDW, ushort[,] tilesSP) = this.DecompressAllMapTiles();
+            this.AllMapTile32_LW = tilesLW;
+            this.AllMapTile32_LW = tilesDW;
+            this.AllMapTile32_LW = tilesSP;
 
-            AssembleMap32Tiles();
-            AssembleMap16Tiles();
-            DecompressAllMapTiles();
-            loadOverlays();
-            loadTilesTypes();
-            loadGravesStone();
+            this.AllOverlays = this.LoadOverlays();
+            this.AllTileTypes = this.LoadTileTypes();
+            this.AllGraves = this.LoadGraves();
 
-            // Map Initialization :
-            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
-            {
-                allmaps[i] = new OverworldMap((byte)i, this);
-            }
-            getLargeMaps();
+            this.AllMaps = this.AssignLargeMaps();
 
-            loadExits();
-            loadEntrances();
-            loadItems();
-            loadTransports();
-            loadSprites();
-            GFX.loadOverworldMap();
+            this.AllExits = this.LoadExits();
+            this.AllEntrances = this.LoadEntrances();
+            this.AllHoles = this.LoadHoles();
+            this.AllItems = this.LoadItems();
+            this.AllWhirlpools = this.LoadWhirlpools();
+            this.AllSprites = this.LoadSprites();
+            GFX.LoadOverworldMap();
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 for (int i = 0; i < Constants.NumberOfOWMaps; i++)
                 {
-                    allmaps[i].BuildMap();
+                    this.AllMaps[i].BuildMap();
                 }
             }).Start();
 
-            isLoaded = true;
+            this.IsLoaded = true;
         }
 
-        public void loadTilesTypes()
+        /// <summary>
+        ///     This function loads all tile types from the ROM and returns them as an array.
+        /// </summary>
+        /// <returns> An array of bytes. </returns>
+        public byte[] LoadTileTypes()
         {
-            for (int i = 0; i < 0x200; i++)
+            var tileTypes = new List<byte>();
+            for (int i = 0; i < this.AllTileTypes.Length; i++)
             {
-                allTilesTypes[i] = ROM.DATA[Constants.overworldTilesType + i];
+                tileTypes.Add(ROM.DATA[Constants.overworldTilesType + i]);
             }
+
+            return tileTypes.ToArray();
         }
 
-        public void loadGravesStone()
+        public Gravestone[] LoadGraves()
         {
-            for (int i = 0; i < 0x0F; i++)
+            var graves = new List<Gravestone>();
+            for (int i = 0; i < this.AllGraves.Length; i++)
             {
                 ushort x = ROM.ReadShort(Constants.GravesXTilePos + (i * 2));
                 ushort y = ROM.ReadShort(Constants.GravesYTilePos + (i * 2));
                 ushort gfx = ROM.ReadShort(Constants.GravesGFX + (i * 2));
                 ushort tilemap = ROM.ReadShort(Constants.GravesTilemapPos + (i * 2));
-                graves[i] = new Gravestone(x, y, tilemap, gfx);
+                graves.Add(new Gravestone(x, y, tilemap, gfx));
             }
+
+            return graves.ToArray();
         }
 
-        public void getLargeMaps()
+        public OverworldMap[] AssignLargeMaps()
         {
-            for (int i = 128; i < 145; i++)
+            var allMaps = new OverworldMap[this.AllMaps.Length];
+
+            // Map Initialization:
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
-                allmaps[i].SetAsSmallMap(0);
+                allMaps[i] = new OverworldMap((byte)i, this);
             }
 
-            allmaps[128].SetAsSmallMap();
-            allmaps[129].SetAsLargeMap(129, 0);
-            allmaps[130].SetAsLargeMap(129, 1);
-            allmaps[137].SetAsLargeMap(129, 2);
-            allmaps[138].SetAsLargeMap(129, 3);
+            for (int i = 128; i < 145; i++)
+            {
+                allMaps[i].SetAsSmallMap(0);
+            }
 
-            allmaps[136].SetAsSmallMap();
+            allMaps[128].SetAsSmallMap();
+            allMaps[129].SetAsLargeMap(129, 0);
+            allMaps[130].SetAsLargeMap(129, 1);
+            allMaps[137].SetAsLargeMap(129, 2);
+            allMaps[138].SetAsLargeMap(129, 3);
+
+            allMaps[136].SetAsSmallMap();
 
             bool[] mapChecked = new bool[64];
             for (int i = 0; i < 64; i++)
@@ -167,30 +179,30 @@ namespace ZeldaFullEditor
                 int i = xx + (yy * 8);
                 if (!mapChecked[i])
                 {
-                    if (allmaps[i].largeMap)
+                    if (allMaps[i].largeMap)
                     {
                         mapChecked[i] = true;
-                        allmaps[i].SetAsLargeMap((byte)i, 0);
-                        allmaps[i + 64].SetAsLargeMap((byte)(i + 64), 0);
+                        allMaps[i].SetAsLargeMap((byte)i, 0);
+                        allMaps[i + 64].SetAsLargeMap((byte)(i + 64), 0);
 
                         mapChecked[i + 1] = true;
-                        allmaps[i + 1].SetAsLargeMap((byte)i, 1);
-                        allmaps[i + 65].SetAsLargeMap((byte)(i + 64), 1);
+                        allMaps[i + 1].SetAsLargeMap((byte)i, 1);
+                        allMaps[i + 65].SetAsLargeMap((byte)(i + 64), 1);
 
                         mapChecked[i + 8] = true;
-                        allmaps[i + 8].SetAsLargeMap((byte)i, 2);
-                        allmaps[i + 72].SetAsLargeMap((byte)(i + 64), 2);
+                        allMaps[i + 8].SetAsLargeMap((byte)i, 2);
+                        allMaps[i + 72].SetAsLargeMap((byte)(i + 64), 2);
 
                         mapChecked[i + 9] = true;
-                        allmaps[i + 9].SetAsLargeMap((byte)i, 3);
-                        allmaps[i + 73].SetAsLargeMap((byte)(i + 64), 3);
+                        allMaps[i + 9].SetAsLargeMap((byte)i, 3);
+                        allMaps[i + 73].SetAsLargeMap((byte)(i + 64), 3);
                         xx++;
                     }
                     else
                     {
                         mapChecked[i] = true;
-                        allmaps[i].SetAsSmallMap();
-                        allmaps[i + 64].SetAsSmallMap();
+                        allMaps[i].SetAsSmallMap();
+                        allMaps[i + 64].SetAsSmallMap();
                     }
                 }
 
@@ -206,24 +218,29 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+
+            return allMaps;
         }
 
-        public void AssembleMap16Tiles()
+        public List<Tile16> AssembleMap16Tiles()
         {
+            var tile16List = new List<Tile16>();
             int tpos = Constants.map16Tiles;
             for (int i = 0; i < Constants.NumberOfMap16; i += 1)
             {
-                TileInfo t0 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
+                TileInfo t0 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
                 tpos += 2;
-                TileInfo t1 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
+                TileInfo t1 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
                 tpos += 2;
-                TileInfo t2 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
+                TileInfo t2 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
                 tpos += 2;
-                TileInfo t3 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
+                TileInfo t3 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
                 tpos += 2;
 
-                tiles16.Add(new Tile16(t0, t1, t2, t3));
+                tile16List.Add(new Tile16(t0, t1, t2, t3));
             }
+
+            return tile16List;
         }
 
         public void SaveMap16Tiles()
@@ -231,35 +248,28 @@ namespace ZeldaFullEditor
             int tpos = Constants.map16Tiles;
             for (int i = 0; i < Constants.NumberOfMap16; i += 1) // 3760
             {
-                ROM.WriteShort(tpos, tiles16[i].Tile0.toShort(), WriteType.Tile16);
+                ROM.WriteShort(tpos, this.Tile16List[i].Tile0.toShort(), WriteType.Tile16);
                 //ROM.DATA[tpos] = (byte)(tiles16[i].tile0.toShort() & 0xFF);
                 //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile0.toShort() >> 8) & 0xFF);
                 tpos += 2;
-                ROM.WriteShort(tpos, tiles16[i].Tile1.toShort(), WriteType.Tile16);
+                ROM.WriteShort(tpos, this.Tile16List[i].Tile1.toShort(), WriteType.Tile16);
                 //ROM.DATA[tpos] = (byte)(tiles16[i].tile1.toShort() & 0xFF);
                 //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile1.toShort() >> 8) & 0xFF);
                 tpos += 2;
-                ROM.WriteShort(tpos, tiles16[i].Tile2.toShort(), WriteType.Tile16);
+                ROM.WriteShort(tpos, this.Tile16List[i].Tile2.toShort(), WriteType.Tile16);
                 //ROM.DATA[tpos] = (byte)(tiles16[i].tile2.toShort() & 0xFF);
                 //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile2.toShort() >> 8) & 0xFF);
                 tpos += 2;
-                ROM.WriteShort(tpos, tiles16[i].Tile3.toShort(), WriteType.Tile16);
+                ROM.WriteShort(tpos, this.Tile16List[i].Tile3.toShort(), WriteType.Tile16);
                 //ROM.DATA[tpos] = (byte)(tiles16[i].tile3.toShort() & 0xFF);
                 //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile3.toShort() >> 8) & 0xFF);
                 tpos += 2;
             }
         }
 
-        public void AssembleMap32Tiles()
+        public List<Tile32> AssembleMap32Tiles()
         {
-            map32address = new int[]
-            {
-                    Constants.map32TilesTL,
-                    Constants.map32TilesTR,
-                    Constants.map32TilesBL,
-                    Constants.map32TilesBR
-            };
-
+            var tile32List = new List<Tile32>();
             for (int i = 0; i < 0x33F0; i += 6)
             {
                 ushort[,] b = new ushort[4, 4];
@@ -267,51 +277,46 @@ namespace ZeldaFullEditor
 
                 for (int k = 0; k < 4; k++)
                 {
-                    tl = generate(i, k, (int)Dimension.map32TilesTL);
-                    tr = generate(i, k, (int)Dimension.map32TilesTR);
-                    bl = generate(i, k, (int)Dimension.map32TilesBL);
-                    br = generate(i, k, (int)Dimension.map32TilesBR);
-                    tiles32.Add(new Tile32(tl, tr, bl, br));
+                    tl = this.ReadTile32(i, k, 0);
+                    tr = this.ReadTile32(i, k, 1);
+                    bl = this.ReadTile32(i, k, 2);
+                    br = this.ReadTile32(i, k, 3);
+                    tile32List.Add(new Tile32(tl, tr, bl, br));
                 }
             }
+
+            return tile32List;
         }
 
-        private enum Dimension
+        private ushort ReadTile32(int i, int k, int dimension)
         {
-            map32TilesTL = 0,
-            map32TilesTR = 1,
-            map32TilesBL = 2,
-            map32TilesBR = 3
+            return (ushort)(ROM.DATA[this.map32Address[dimension] + k + i]
+                + (((ROM.DATA[this.map32Address[dimension] + i + (k <= 1 ? 4 : 5)] >> (k % 2 == 0 ? 4 : 0)) & 0x0F) * 256));
         }
 
-        private ushort generate(int i, int k, int dimension)
+        public (ushort[,], ushort[,], ushort[,]) DecompressAllMapTiles()
         {
-            return (ushort)(ROM.DATA[map32address[dimension] + k + (i)]
-                + (((ROM.DATA[map32address[dimension] + (i) + (k <= 1 ? 4 : 5)] >> (k % 2 == 0 ? 4 : 0)) & 0x0F) * 256));
-        }
+            ushort[,] allMapTile32_LW = new ushort[512, 512]; // 64 maps * (32*32 tiles).
+            ushort[,] allMapTile32_DW = new ushort[512, 512]; // 64 maps * (32*32 tiles).
+            ushort[,] allMapTile32_SP = new ushort[512, 512]; // 32 maps * (32*32 tiles).
 
-        public void DecompressAllMapTiles()
-        {
             int lowest = 0x0FFFFF;
             int highest = 0x0F8000;
-            //int npos = 0;
             int sx = 0;
             int sy = 0;
             int c = 0;
-            //int furthestPtr = 0;
-
             for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 int p1 =
-                (ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + 3 * i] << 16) +
-                (ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + 3 * i] << 8) +
-                (ROM.DATA[(Constants.compressedAllMap32PointersHigh + 3 * i)]);
+                (ROM.DATA[Constants.compressedAllMap32PointersHigh + 2 + (3 * i)] << 16) +
+                (ROM.DATA[Constants.compressedAllMap32PointersHigh + 1 + (3 * i)] << 8) +
+                ROM.DATA[Constants.compressedAllMap32PointersHigh + (3 * i)];
                 p1 = Utils.SnesToPc(p1);
 
                 int p2 =
-                (ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + 3 * i] << 16) +
-                (ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + 3 * i] << 8) +
-                (ROM.DATA[(Constants.compressedAllMap32PointersLow + 3 * i)]);
+                (ROM.DATA[Constants.compressedAllMap32PointersLow + 2 + (3 * i)] << 16) +
+                (ROM.DATA[Constants.compressedAllMap32PointersLow + 1 + (3 * i)] << 8) +
+                ROM.DATA[Constants.compressedAllMap32PointersLow + (3 * i)];
                 p2 = Utils.SnesToPc(p2);
 
                 int ttpos = 0;
@@ -322,6 +327,7 @@ namespace ZeldaFullEditor
                 {
                     highest = p1;
                 }
+
                 if (p2 >= highest)
                 {
                     highest = p2;
@@ -334,6 +340,7 @@ namespace ZeldaFullEditor
                         lowest = p1;
                     }
                 }
+
                 if (p2 <= lowest)
                 {
                     if (p2 > 0x0F8000)
@@ -366,30 +373,30 @@ namespace ZeldaFullEditor
                         ushort tidD = (ushort)((bytes2[ttpos] << 8) + bytes[ttpos]);
 
                         int tpos = tidD;
-                        if (tpos < tiles32.Count)
+                        if (tpos < this.Tile32List.Count)
                         {
                             //map16tiles[npos] = new Tile32(tiles32[tpos].tile0, tiles32[tpos].tile1, tiles32[tpos].tile2, tiles32[tpos].tile3);
 
                             if (i < 64)
                             {
-                                allmapsTilesLW[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = tiles32[tpos].Tile0;
-                                allmapsTilesLW[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = tiles32[tpos].Tile1;
-                                allmapsTilesLW[(x * 2) + (sx * 32), (y * 2) + 1 + (sy * 32)] = tiles32[tpos].Tile2;
-                                allmapsTilesLW[(x * 2) + 1 + (sx * 32), (y * 2) + 1 + (sy * 32)] = tiles32[tpos].Tile3;
+                                allMapTile32_LW[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = this.Tile32List[tpos].Tile0;
+                                allMapTile32_LW[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = this.Tile32List[tpos].Tile1;
+                                allMapTile32_LW[(x * 2) + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.Tile32List[tpos].Tile2;
+                                allMapTile32_LW[(x * 2) + 1 + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.Tile32List[tpos].Tile3;
                             }
                             else if (i < 128 && i >= 64)
                             {
-                                allmapsTilesDW[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = tiles32[tpos].Tile0;
-                                allmapsTilesDW[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = tiles32[tpos].Tile1;
-                                allmapsTilesDW[(x * 2) + (sx * 32), (y * 2) + 1 + (sy * 32)] = tiles32[tpos].Tile2;
-                                allmapsTilesDW[(x * 2) + 1 + (sx * 32), (y * 2) + 1 + (sy * 32)] = tiles32[tpos].Tile3;
+                                allMapTile32_DW[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = this.Tile32List[tpos].Tile0;
+                                allMapTile32_DW[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = this.Tile32List[tpos].Tile1;
+                                allMapTile32_DW[(x * 2) + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.Tile32List[tpos].Tile2;
+                                allMapTile32_DW[(x * 2) + 1 + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.Tile32List[tpos].Tile3;
                             }
                             else
                             {
-                                allmapsTilesSP[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = tiles32[tpos].Tile0;
-                                allmapsTilesSP[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = tiles32[tpos].Tile1;
-                                allmapsTilesSP[(x * 2) + (sx * 32), (y * 2) + 1 + (sy * 32)] = tiles32[tpos].Tile2;
-                                allmapsTilesSP[(x * 2) + 1 + (sx * 32), (y * 2) + 1 + (sy * 32)] = tiles32[tpos].Tile3;
+                                allMapTile32_SP[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = this.Tile32List[tpos].Tile0;
+                                allMapTile32_SP[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = this.Tile32List[tpos].Tile1;
+                                allMapTile32_SP[(x * 2) + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.Tile32List[tpos].Tile2;
+                                allMapTile32_SP[(x * 2) + 1 + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.Tile32List[tpos].Tile3;
                             }
                         }
 
@@ -415,23 +422,25 @@ namespace ZeldaFullEditor
 
             Console.WriteLine("Map pointers (lowest) : " + lowest.ToString("X6"));
             Console.WriteLine("Map pointers (highest) : " + highest.ToString("X6"));
+
+            return (allMapTile32_LW, allMapTile32_DW, allMapTile32_SP);
         }
 
-        public void createMap32TilesFrom16()
+        public void CreateMap32TilesFrom16()
         {
-            t32.Clear();
-            tiles32count = 0;
+            this.t32.Clear();
+            this.Tile32Count = 0;
 
             const int nullVal = -1;
             for (int i = 0; i < Constants.NumberOfMap32; i++)
             {
                 short foundIndex = nullVal;
-                for (int j = 0; j < tiles32count; j++)
+                for (int j = 0; j < this.Tile32Count; j++)
                 {
-                    if (t32Unique[j].Tile0 == map16tiles[i].Tile0 &&
-                        t32Unique[j].Tile1 == map16tiles[i].Tile1 &&
-                        t32Unique[j].Tile2 == map16tiles[i].Tile2 &&
-                        t32Unique[j].Tile3 == map16tiles[i].Tile3)
+                    if (this.UniqueTile32List[j].Tile0 == this.Map16Tiles[i].Tile0 &&
+                        this.UniqueTile32List[j].Tile1 == this.Map16Tiles[i].Tile1 &&
+                        this.UniqueTile32List[j].Tile2 == this.Map16Tiles[i].Tile2 &&
+                        this.UniqueTile32List[j].Tile3 == this.Map16Tiles[i].Tile3)
                     {
                         foundIndex = (short)j;
                         break;
@@ -440,14 +449,17 @@ namespace ZeldaFullEditor
 
                 if (foundIndex == nullVal)
                 {
-                    t32Unique[tiles32count] = new Tile32(map16tiles[i].Tile0, map16tiles[i].Tile1, map16tiles[i].Tile2, map16tiles[i].Tile3);
-                    t32.Add((ushort)tiles32count);
-                    tiles32count++;
+                    this.UniqueTile32List[this.Tile32Count] = new Tile32(this.Map16Tiles[i].Tile0, this.Map16Tiles[i].Tile1, this.Map16Tiles[i].Tile2, this.Map16Tiles[i].Tile3);
+                    this.t32.Add((ushort)this.Tile32Count);
+                    this.Tile32Count++;
                 }
-                else t32.Add((ushort)foundIndex);
+                else
+                {
+                    this.t32.Add((ushort)foundIndex);
+                }
             }
 
-            Console.WriteLine("Nbr of tiles32 = " + tiles32count);
+            Console.WriteLine("Nbr of tiles32 = " + this.Tile32Count);
         }
 
         /*
@@ -462,72 +474,77 @@ namespace ZeldaFullEditor
             }
          */
 
-        public void loadExits()
+        public ExitOW[] LoadExits()
         {
-            for (int i = 0; i < 0x4F; i++)
+            var exits = new List<ExitOW>();
+            for (int i = 0; i < this.AllExits.Count(); i++)
             {
-                short[] e = new short[13];
-                ushort exitRoomID = (ushort)((ROM.DATA[Constants.OWExitRoomId + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitRoomId + (i * 2)]));
-                e[1] = (ROM.DATA[Constants.OWExitMapId + i]);
-                e[2] = (short)((ROM.DATA[Constants.OWExitVram + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitVram + (i * 2)]));
-                e[3] = (short)((ROM.DATA[Constants.OWExitYScroll + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYScroll + (i * 2)]));
-                e[4] = (short)((ROM.DATA[Constants.OWExitXScroll + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitXScroll + (i * 2)]));
-                ushort py = (ushort)((ROM.DATA[Constants.OWExitYPlayer + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYPlayer + (i * 2)]));
-                ushort px = (ushort)((ROM.DATA[Constants.OWExitXPlayer + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitXPlayer + (i * 2)]));
-                e[7] = (short)((ROM.DATA[Constants.OWExitYCamera + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYCamera + (i * 2)]));
-                e[8] = (short)((ROM.DATA[Constants.OWExitXCamera + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitXCamera + (i * 2)]));
-                e[9] = (ROM.DATA[Constants.OWExitUnk1 + i]);
-                e[10] = (ROM.DATA[Constants.OWExitUnk2 + i]);
-                e[11] = (short)((ROM.DATA[Constants.OWExitDoorType1 + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitDoorType1 + (i * 2)]));
-                e[12] = (short)((ROM.DATA[Constants.OWExitDoorType2 + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitDoorType2 + (i * 2)]));
-                ExitOW eo = (new ExitOW(exitRoomID, (byte)e[1], e[2], e[3], e[4], py, px, e[7], e[8], (byte)e[9], (byte)e[10], e[11], e[12]));
+                ushort exitRoomID = (ushort)((ROM.DATA[Constants.OWExitRoomId + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitRoomId + (i * 2)]);
+                byte exitMapID = ROM.DATA[Constants.OWExitMapId + i];
+                byte exitVRAM = (byte)((ROM.DATA[Constants.OWExitVram + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVram + (i * 2)]);
+                short exitYScroll = (short)((ROM.DATA[Constants.OWExitYScroll + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScroll + (i * 2)]);
+                short exitXScroll = (short)((ROM.DATA[Constants.OWExitXScroll + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScroll + (i * 2)]);
+                ushort py = (ushort)((ROM.DATA[Constants.OWExitYPlayer + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYPlayer + (i * 2)]);
+                ushort px = (ushort)((ROM.DATA[Constants.OWExitXPlayer + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXPlayer + (i * 2)]);
+                short exitYCamera = (short)((ROM.DATA[Constants.OWExitYCamera + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCamera + (i * 2)]);
+                short exitXCamera = (short)((ROM.DATA[Constants.OWExitXCamera + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCamera + (i * 2)]);
+                byte exitScrollModY = ROM.DATA[Constants.OWExitUnk1 + i];
+                byte exitScrollModX = ROM.DATA[Constants.OWExitUnk2 + i];
+                short exitDoorType1 = (short)((ROM.DATA[Constants.OWExitDoorType1 + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitDoorType1 + (i * 2)]);
+                short exitDoorType2 = (short)((ROM.DATA[Constants.OWExitDoorType2 + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitDoorType2 + (i * 2)]);
+                ExitOW exit = new ExitOW(exitRoomID, exitMapID, exitVRAM, exitYScroll, exitXScroll, py, px, exitYCamera, exitXCamera, exitScrollModY, exitScrollModX, exitDoorType1, exitDoorType2);
 
                 if (px == 0xFFFF && py == 0xFFFF)
                 {
-                    eo.Deleted = true;
+                    exit.Deleted = true;
                 }
 
-                allexits[i] = eo;
+                exits.Add(exit);
             }
+
+            return exits.ToArray();
         }
 
-        public void loadTransports()
+        public List<TransportOW> LoadWhirlpools()
         {
-            for (int i = 0; i < 0x11; i++)
+            var allWhirlpools = new List<TransportOW>();
+            for (int i = 0; i < Constants.OWWhirlpoolCount; i++)
             {
-                short[] e = new short[13];
-                e[0] = (byte)(((ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2)])));
-                e[1] = (short)((ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2)]));
-                e[2] = (short)((ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2)]));
-                e[3] = (short)((ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2)]));
-                e[4] = (short)((ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2)]));
-                e[5] = (short)((ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2)]));
-                e[6] = (short)((ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2)]));
-                e[7] = (short)((ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2)]));
-                e[8] = (ROM.DATA[Constants.OWExitUnk1Whirlpool + i]);
-                e[9] = (ROM.DATA[Constants.OWExitUnk2Whirlpool + i]);
-                e[10] = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2)]));
+                byte whirlpoolMapID = (byte)((ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2)]);
+                short whirlpoolVRAM = (short)((ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2)]);
+                short whirlpoolYScroll = (short)((ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2)]);
+                short whirlpoolXScroll = (short)((ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2)]);
+                short whirlpoolYPlayer = (short)((ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2)]);
+                short whirlpoolXPlayer = (short)((ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2)]);
+                short whirlpoolYCamera = (short)((ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2)]);
+                short whirlpoolXCamera = (short)((ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2)]);
+                byte whirlpoolScrollModY = ROM.DATA[Constants.OWExitScrollModYWhirlpool + i];
+                byte whirlpoolScrollModX = ROM.DATA[Constants.OWExitScrollModXWhirlpool + i];
+                short whirlpoolPosition = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2)]);
 
                 if (i > 8)
                 {
-                    e[10] = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2) + 1] << 8) + (ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2)]));
+                    whirlpoolPosition = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2)]);
                 }
 
-                TransportOW eo = (new TransportOW((byte)e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], (byte)e[8], (byte)e[9], e[10]));
-                allWhirlpools.Add(eo);
+                var transport = new TransportOW(whirlpoolMapID, whirlpoolVRAM, whirlpoolYScroll, whirlpoolXScroll, whirlpoolYPlayer, whirlpoolXPlayer, whirlpoolYCamera, whirlpoolXCamera, whirlpoolScrollModY, whirlpoolScrollModX, whirlpoolPosition);
+                allWhirlpools.Add(transport);
             }
+
+            return allWhirlpools;
         }
 
-        public void loadEntrances()
+        public EntranceOW[] LoadEntrances()
         {
+            var allEntrances = new EntranceOW[this.AllEntrances.Length];
             for (int i = 0; i < 129; i++)
             {
-                short mapId = (short)((ROM.DATA[Constants.OWEntranceMap + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWEntranceMap + (i * 2)]));
-                ushort mapPos = (ushort)((ROM.DATA[Constants.OWEntrancePos + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWEntrancePos + (i * 2)]));
-                byte entranceId = (ROM.DATA[Constants.OWEntranceEntranceId + i]);
+                short mapId = (short)((ROM.DATA[Constants.OWEntranceMap + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWEntranceMap + (i * 2)]);
+                ushort mapPos = (ushort)((ROM.DATA[Constants.OWEntrancePos + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWEntrancePos + (i * 2)]);
+                byte entranceId = ROM.DATA[Constants.OWEntranceEntranceId + i];
                 int p = mapPos >> 1;
-                int x = (p % 64);
-                int y = (p >> 6);
+                int x = p % 64;
+                int y = p >> 6;
                 EntranceOW eo = new EntranceOW((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, mapPos, false);
 
                 if (eo.MapPos == 0xFFFF)
@@ -535,25 +552,33 @@ namespace ZeldaFullEditor
                     eo.Deleted = true;
                 }
 
-                allentrances[i] = eo;
+                allEntrances[i] = eo;
             }
 
+            return allEntrances;
+        }
+
+        public EntranceOW[] LoadHoles()
+        {
+            var allHoles = new EntranceOW[this.AllHoles.Length];
             for (int i = 0; i < 0x13; i++)
             {
-                short mapId = (short)((ROM.DATA[Constants.OWHoleArea + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWHoleArea + (i * 2)]));
-                short mapPos = (short)((ROM.DATA[Constants.OWHolePos + (i * 2) + 1] << 8) + (ROM.DATA[Constants.OWHolePos + (i * 2)]));
-                byte entranceId = (ROM.DATA[Constants.OWHoleEntrance + i]);
+                short mapId = (short)((ROM.DATA[Constants.OWHoleArea + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWHoleArea + (i * 2)]);
+                short mapPos = (short)((ROM.DATA[Constants.OWHolePos + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWHolePos + (i * 2)]);
+                byte entranceId = ROM.DATA[Constants.OWHoleEntrance + i];
                 int p = (mapPos + 0x400) >> 1;
-                int x = (p % 64);
-                int y = (p >> 6);
+                int x = p % 64;
+                int y = p >> 6;
                 EntranceOW eo = new EntranceOW((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, (ushort)(mapPos + 0x400), true);
-                allholes[i] = eo;
+                AllHoles[i] = eo;
             }
+
+            return allHoles;
         }
 
         public void showTile32Count()
         {
-            t32Unique.Clear();
+            UniqueTile32List.Clear();
             t32.Clear();
             // Create tile32 from tiles16
             List<ulong> alltiles16 = new List<ulong>();
@@ -563,18 +588,18 @@ namespace ZeldaFullEditor
             int c = 0;
             for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
-                ushort[,] tilesused = allmapsTilesLW;
+                ushort[,] tilesused = AllMapTile32_LW;
                 if (i < 64)
                 {
-                    tilesused = allmapsTilesLW;
+                    tilesused = AllMapTile32_LW;
                 }
                 else if (i < 128 && i >= 64)
                 {
-                    tilesused = allmapsTilesDW;
+                    tilesused = AllMapTile32_DW;
                 }
                 else
                 {
-                    tilesused = allmapsTilesSP;
+                    tilesused = AllMapTile32_SP;
                 }
 
                 for (int y = 0; y < 32; y += 2)
@@ -620,29 +645,29 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < tiles.Count; i++) // for each uniques tile32
             {
-                t32Unique.Add(new Tile32(tiles[i])); // create new tileunique
+                UniqueTile32List.Add(new Tile32(tiles[i])); // create new tileunique
             }
 
-            while (t32Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
+            while (UniqueTile32List.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
             {
-                t32Unique.Add(new Tile32(0));
+                UniqueTile32List.Add(new Tile32(0));
             }
 
             MessageBox.Show("Number of unique Tiles32: " + tiles.Count + " Out of: " + Constants.LimitOfMap32);
 
             alltiles16.Clear();
 
-            Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + t32Unique.Count + " Out of: " + Constants.LimitOfMap32);
-            int v = t32Unique.Count;
+            Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + UniqueTile32List.Count + " Out of: " + Constants.LimitOfMap32);
+            int v = UniqueTile32List.Count;
             for (int i = v; i < Constants.LimitOfMap32; i++)
             {
-                t32Unique.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
+                UniqueTile32List.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
             }
         }
 
         public bool createMap32Tilesmap()
         {
-            t32Unique.Clear();
+            UniqueTile32List.Clear();
             t32.Clear();
             // Create tile32 from tiles16
             List<ulong> alltiles16 = new List<ulong>();
@@ -652,18 +677,18 @@ namespace ZeldaFullEditor
             int c = 0;
             for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
-                ushort[,] tilesused = allmapsTilesLW;
+                ushort[,] tilesused = AllMapTile32_LW;
                 if (i < 64)
                 {
-                    tilesused = allmapsTilesLW;
+                    tilesused = AllMapTile32_LW;
                 }
                 else if (i < 128 && i >= 64)
                 {
-                    tilesused = allmapsTilesDW;
+                    tilesused = AllMapTile32_DW;
                 }
                 else
                 {
-                    tilesused = allmapsTilesSP;
+                    tilesused = AllMapTile32_SP;
                 }
 
                 for (int y = 0; y < 32; y += 2)
@@ -709,27 +734,27 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < tiles.Count; i++) // for each uniques tile32
             {
-                t32Unique.Add(new Tile32(tiles[i])); // create new tileunique
+                UniqueTile32List.Add(new Tile32(tiles[i])); // create new tileunique
             }
 
-            while (t32Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
+            while (UniqueTile32List.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
             {
-                t32Unique.Add(new Tile32(0));
+                UniqueTile32List.Add(new Tile32(0));
             }
 
             alltiles16.Clear();
 
-            if (t32Unique.Count > Constants.LimitOfMap32)
+            if (UniqueTile32List.Count > Constants.LimitOfMap32)
             {
                 MessageBox.Show("Number of unique Tiles32: " + tiles.Count + " Out of: " + Constants.LimitOfMap32 + "\r\nUnique Tile32 count exceed the limit\r\nThe ROM Has not been saved\r\nYou can fill maps with grass tiles to free some space\r\nOr use the option Clear DW Tiles in the Overworld Menu");
                 return true;
             }
 
-            Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + t32Unique.Count + " Out of: " + Constants.LimitOfMap32);
-            int v = t32Unique.Count;
+            Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + UniqueTile32List.Count + " Out of: " + Constants.LimitOfMap32);
+            int v = UniqueTile32List.Count;
             for (int i = v; i < Constants.LimitOfMap32; i++)
             {
-                t32Unique.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
+                UniqueTile32List.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
             }
 
             return false;
@@ -761,18 +786,18 @@ namespace ZeldaFullEditor
             for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 BinaryReader bw = new BinaryReader(new FileStream(path + "\\map" + i.ToString(), FileMode.Open, FileAccess.Read));
-                ushort[,] tilesused = allmapsTilesLW;
+                ushort[,] tilesused = AllMapTile32_LW;
                 if (i < 64)
                 {
-                    tilesused = allmapsTilesLW;
+                    tilesused = AllMapTile32_LW;
                 }
                 else if (i < 128 && i >= 64)
                 {
-                    tilesused = allmapsTilesDW;
+                    tilesused = AllMapTile32_DW;
                 }
                 else
                 {
-                    tilesused = allmapsTilesSP;
+                    tilesused = AllMapTile32_SP;
                 }
 
                 for (int y = 0; y < 32; y++)
@@ -801,7 +826,7 @@ namespace ZeldaFullEditor
                 }
 
                 bw.Close();
-                allmaps[i].BuildMap();
+                AllMaps[i].BuildMap();
             }
         }
 
@@ -830,18 +855,18 @@ namespace ZeldaFullEditor
             {
                 // TODO file name in UIText
                 BinaryWriter bw = new BinaryWriter(new FileStream(path + "\\map" + i.ToString(), FileMode.Create, FileAccess.Write));
-                ushort[,] tilesused = allmapsTilesLW;
+                ushort[,] tilesused = AllMapTile32_LW;
                 if (i < 64)
                 {
-                    tilesused = allmapsTilesLW;
+                    tilesused = AllMapTile32_LW;
                 }
                 else if (i < 128 && i >= 64)
                 {
-                    tilesused = allmapsTilesDW;
+                    tilesused = AllMapTile32_DW;
                 }
                 else
                 {
-                    tilesused = allmapsTilesSP;
+                    tilesused = AllMapTile32_SP;
                 }
 
                 for (int y = 0; y < 32; y++)
@@ -882,7 +907,7 @@ namespace ZeldaFullEditor
             {
                 for (int x = 0; x < 16; x++)
                 {
-                    map16tiles[tpos] = new Tile32(tiles[(x * 2), (y * 2)], tiles[(x * 2) + 1, (y * 2)], tiles[(x * 2), (y * 2) + 1], tiles[(x * 2) + 1, (y * 2) + 1]);
+                    Map16Tiles[tpos] = new Tile32(tiles[(x * 2), (y * 2)], tiles[(x * 2) + 1, (y * 2)], tiles[(x * 2), (y * 2) + 1], tiles[(x * 2) + 1, (y * 2) + 1]);
                     //s += "[" + map16tiles[tpos].tile0.ToString("D4") + "," + map16tiles[tpos].tile1.ToString("D4") + "," + map16tiles[tpos].tile2.ToString("D4") + "," + map16tiles[tpos].tile3.ToString("D4") + "] ";
                     tpos++;
                 }
@@ -896,7 +921,7 @@ namespace ZeldaFullEditor
         public void Save32Tiles()
         {
             int index = 0;
-            int c = t32Unique.Count;
+            int c = UniqueTile32List.Count;
             for (int i = 0; i < c; i += 6)
             {
                 if (index >= 0x4540) // 3C87??
@@ -906,40 +931,40 @@ namespace ZeldaFullEditor
                 }
 
                 // Top Left
-                ROM.Write(Constants.map32TilesTL + (i), (byte)(t32Unique[index].Tile0 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTL + (i + 1), (byte)(t32Unique[index + 1].Tile0 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTL + (i + 2), (byte)(t32Unique[index + 2].Tile0 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTL + (i + 3), (byte)(t32Unique[index + 3].Tile0 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTL + (i), (byte)(UniqueTile32List[index].Tile0 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTL + (i + 1), (byte)(UniqueTile32List[index + 1].Tile0 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTL + (i + 2), (byte)(UniqueTile32List[index + 2].Tile0 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTL + (i + 3), (byte)(UniqueTile32List[index + 3].Tile0 & 0xFF), WriteType.Tile32);
 
-                ROM.Write(Constants.map32TilesTL + (i + 4), (byte)(((t32Unique[index].Tile0 >> 4) & 0xF0) + ((t32Unique[index + 1].Tile0 >> 8) & 0x0F)), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTL + (i + 5), (byte)(((t32Unique[index + 2].Tile0 >> 4) & 0xF0) + ((t32Unique[index + 3].Tile0 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTL + (i + 4), (byte)(((UniqueTile32List[index].Tile0 >> 4) & 0xF0) + ((UniqueTile32List[index + 1].Tile0 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTL + (i + 5), (byte)(((UniqueTile32List[index + 2].Tile0 >> 4) & 0xF0) + ((UniqueTile32List[index + 3].Tile0 >> 8) & 0x0F)), WriteType.Tile32);
 
                 // Top Right
-                ROM.Write(Constants.map32TilesTR + (i), (byte)(t32Unique[index].Tile1 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTR + (i + 1), (byte)(t32Unique[index + 1].Tile1 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTR + (i + 2), (byte)(t32Unique[index + 2].Tile1 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTR + (i + 3), (byte)(t32Unique[index + 3].Tile1 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTR + (i), (byte)(UniqueTile32List[index].Tile1 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTR + (i + 1), (byte)(UniqueTile32List[index + 1].Tile1 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTR + (i + 2), (byte)(UniqueTile32List[index + 2].Tile1 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTR + (i + 3), (byte)(UniqueTile32List[index + 3].Tile1 & 0xFF), WriteType.Tile32);
 
-                ROM.Write(Constants.map32TilesTR + (i + 4), (byte)(((t32Unique[index].Tile1 >> 4) & 0xF0) | ((t32Unique[index + 1].Tile1 >> 8) & 0x0F)), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesTR + (i + 5), (byte)(((t32Unique[index + 2].Tile1 >> 4) & 0xF0) | ((t32Unique[index + 3].Tile1 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTR + (i + 4), (byte)(((UniqueTile32List[index].Tile1 >> 4) & 0xF0) | ((UniqueTile32List[index + 1].Tile1 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesTR + (i + 5), (byte)(((UniqueTile32List[index + 2].Tile1 >> 4) & 0xF0) | ((UniqueTile32List[index + 3].Tile1 >> 8) & 0x0F)), WriteType.Tile32);
 
                 // Bottom Left
-                ROM.Write(Constants.map32TilesBL + (i), (byte)(t32Unique[index].Tile2 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBL + (i + 1), (byte)(t32Unique[index + 1].Tile2 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBL + (i + 2), (byte)(t32Unique[index + 2].Tile2 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBL + (i + 3), (byte)(t32Unique[index + 3].Tile2 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBL + (i), (byte)(UniqueTile32List[index].Tile2 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBL + (i + 1), (byte)(UniqueTile32List[index + 1].Tile2 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBL + (i + 2), (byte)(UniqueTile32List[index + 2].Tile2 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBL + (i + 3), (byte)(UniqueTile32List[index + 3].Tile2 & 0xFF), WriteType.Tile32);
 
-                ROM.Write(Constants.map32TilesBL + (i + 4), (byte)(((t32Unique[index].Tile2 >> 4) & 0xF0) | ((t32Unique[index + 1].Tile2 >> 8) & 0x0F)), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBL + (i + 5), (byte)(((t32Unique[index + 2].Tile2 >> 4) & 0xF0) | ((t32Unique[index + 3].Tile2 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBL + (i + 4), (byte)(((UniqueTile32List[index].Tile2 >> 4) & 0xF0) | ((UniqueTile32List[index + 1].Tile2 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBL + (i + 5), (byte)(((UniqueTile32List[index + 2].Tile2 >> 4) & 0xF0) | ((UniqueTile32List[index + 3].Tile2 >> 8) & 0x0F)), WriteType.Tile32);
 
                 // Bottom Right
-                ROM.Write(Constants.map32TilesBR + (i), (byte)(t32Unique[index].Tile3 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBR + (i + 1), (byte)(t32Unique[index + 1].Tile3 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBR + (i + 2), (byte)(t32Unique[index + 2].Tile3 & 0xFF), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBR + (i + 3), (byte)(t32Unique[index + 3].Tile3 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBR + (i), (byte)(UniqueTile32List[index].Tile3 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBR + (i + 1), (byte)(UniqueTile32List[index + 1].Tile3 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBR + (i + 2), (byte)(UniqueTile32List[index + 2].Tile3 & 0xFF), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBR + (i + 3), (byte)(UniqueTile32List[index + 3].Tile3 & 0xFF), WriteType.Tile32);
 
-                ROM.Write(Constants.map32TilesBR + (i + 4), (byte)(((t32Unique[index].Tile3 >> 4) & 0xF0) | ((t32Unique[index + 1].Tile3 >> 8) & 0x0F)), WriteType.Tile32);
-                ROM.Write(Constants.map32TilesBR + (i + 5), (byte)(((t32Unique[index + 2].Tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].Tile3 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBR + (i + 4), (byte)(((UniqueTile32List[index].Tile3 >> 4) & 0xF0) | ((UniqueTile32List[index + 1].Tile3 >> 8) & 0x0F)), WriteType.Tile32);
+                ROM.Write(Constants.map32TilesBR + (i + 5), (byte)(((UniqueTile32List[index + 2].Tile3 >> 4) & 0xF0) | ((UniqueTile32List[index + 3].Tile3 >> 8) & 0x0F)), WriteType.Tile32);
 
                 /*
                 ROM.DATA[Constants.map32TilesTL + (i)] = (byte)(t32Unique[index].tile0 & 0xFF);
@@ -1045,22 +1070,23 @@ namespace ZeldaFullEditor
 		}
 		*/
 
-        public void loadItems()
+        public List<RoomPotSaveEditor> LoadItems()
         {
-            int ptr = ROM.ReadLong(Constants.overworldItemsAddress);
-            int ptrpc = Utils.SnesToPc(ptr); // 1BC2F9 -> 0DC2F9
+            var allItems = new List<RoomPotSaveEditor>();
+
+            int pointer = ROM.ReadLong(Constants.overworldItemsAddress);
+            int oointerPC = Utils.SnesToPc(pointer); // 1BC2F9 -> 0DC2F9
             for (int i = 0; i < 128; i++)
             {
-                int addr = ((ptr & 0xFF0000) + // 1B
-                            (ROM.DATA[ptrpc + (i * 2) + 1] << 8) + // F9
-                            (ROM.DATA[ptrpc + (i * 2)]) // 3C
-                            );
+                int addr = (pointer & 0xFF0000) + // 1B
+                            (ROM.DATA[oointerPC + (i * 2) + 1] << 8) + // F9
+                            ROM.DATA[oointerPC + (i * 2)]; // 3C
 
                 addr = Utils.SnesToPc(addr);
 
-                if (allmaps[i].largeMap)
+                if (this.AllMaps[i].largeMap)
                 {
-                    if (allmaps[i].parent != (byte)i)
+                    if (this.AllMaps[i].parent != (byte)i)
                     {
                         continue;
                     }
@@ -1082,77 +1108,157 @@ namespace ZeldaFullEditor
                     int x = p % 64;
                     int y = p >> 6;
 
-                    int fakeid = i;
-                    if (fakeid >= 64)
+                    int fakeID = i;
+                    if (fakeID >= 64)
                     {
-                        fakeid -= 64;
+                        fakeID -= 64;
                     }
 
-                    int sy = (fakeid / 8);
-                    int sx = fakeid - (sy * 8);
+                    int sy = fakeID / 8;
+                    int sx = fakeID - (sy * 8);
 
-                    allitems.Add(new RoomPotSaveEditor(b3, (ushort)i, (x * 16) + (sx * 512), (y * 16) + (sy * 512), false));
-                    allitems[allitems.Count - 1].gameX = (byte)x;
-                    allitems[allitems.Count - 1].gameY = (byte)y;
+                    allItems.Add(new RoomPotSaveEditor(b3, (ushort)i, (x * 16) + (sx * 512), (y * 16) + (sy * 512), false));
+                    allItems[allItems.Count - 1].gameX = (byte)x;
+                    allItems[allItems.Count - 1].gameY = (byte)y;
                     addr += 3;
                 }
             }
+
+            return allItems;
         }
 
-        public void loadOverlays()
+        public OverlayData[] LoadOverlays()
         {
             /*
-            0x7765B: ;Original byte = 0x0A
-            22 9C 87 00 EA ;JSL long jump table
+                0x7765B: ;Original byte = 0x0A
+                22 9C 87 00 EA ;JSL long jump table
             */
 
-            for (int index = 0; index < 128; index++)
+            var allOverlays = new OverlayData[this.AllOverlays.Length];
+
+            for (int index = 0; index < this.AllOverlays.Length; index++)
             {
-                alloverlays[index] = new OverlayData();
+                allOverlays[index] = new OverlayData();
+
                 // OverlayPointers
                 Console.WriteLine("MapIndex Overlay : " + index.ToString());
 
-                int addr = (Constants.overlayPointersBank << 16) +
+                int address = (Constants.overlayPointersBank << 16) +
                 (ROM.DATA[Constants.overlayPointers + (index * 2) + 1] << 8) +
                 ROM.DATA[Constants.overlayPointers + (index * 2)];
-                addr = Utils.SnesToPc(addr);
+                address = Utils.SnesToPc(address);
 
-                if (index == 112)
+                if (ROM.DATA[Constants.overlayData1] == 0x6B)
                 {
-                    index = index;
+                    address = Utils.SnesToPc((ROM.DATA[Constants.overlayData2 + 2 + (index * 3)] << 16) + (ROM.DATA[Constants.overlayData2 + 1 + (index * 3)] << 8) + ROM.DATA[Constants.overlayData2 + (index * 3)]);
+
+                    // Load New Address.
                 }
 
-                if (ROM.DATA[0x77676] == 0x6B)
-                {
-                    addr = (ROM.DATA[(0x077677 + 2) + (index * 3)] << 16) +
-                    (ROM.DATA[(0x077677 + 1) + (index * 3)] << 8) +
-                    ROM.DATA[(0x077677 + 0) + (index * 3)];
-                    addr = Utils.SnesToPc(addr);
-                    // Load New Address
-                }
+                /*
+                    16-bit mode:
+                    A9 (LDA #$)
+                    A2 (LDX #$)
+                    8D (STA $xxxx)
+                    9D (STA $xxxx ,x)
+                    8F (STA $xxxxxx)
+                    1A (INC A)
+                    4C (JMP)
+                    60 (END)
+                */
 
                 int a = 0;
                 int x = 0;
-                int sta = 0;
-
-                // 16-bit mode :
-                // A9 (LDA #$)
-                // A2 (LDX #$)
-                // 8D (STA $xxxx)
-                // 9D (STA $xxxx ,x)
-                // 8F (STA $xxxxxx)
-                // 1A (INC A)
-                // 4C (JMP)
-                // 60 (END)
-
-                byte b = 0;
-                while (b != 0x60)
+                byte value = 0;
+                while (value != 0x60)
                 {
-                    b = ROM.DATA[addr];
-                    if (b == 0xFF)
+                    value = ROM.DATA[address];
+                    if (value == 0xFF)
                     {
                         break;
                     }
+                    else if (value == 0xA9) // LDA #$xxxx (Increase addr+3)
+                    {
+                        a = (ROM.DATA[address + 2] << 8) +
+                        ROM.DATA[address + 1];
+
+                        address += 3;
+                        continue;
+                    }
+                    else if (value == 0xA2) // LDX #$xxxx (Increase addr+3)
+                    {
+                        x = (ROM.DATA[address + 2] << 8) +
+                        ROM.DATA[address + 1];
+
+                        address += 3;
+                        continue;
+                    }
+                    else if (value == 0x8D) // STA $xxxx (Increase addr+3)
+                    {
+                        int sta = (ROM.DATA[address + 2] << 8) +
+                        ROM.DATA[address + 1];
+
+                        sta &= 0x1FFF;
+                        int yp = (sta / 2) / 0x40;
+                        int xp = (sta / 2) - (yp * 0x40);
+                        allOverlays[index].TileDataList.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
+
+                        address += 3;
+                        continue;
+                    }
+                    else if (value == 0x9D) // STA $xxxx, x (Increase addr+3)
+                    {
+                        int sta = (ROM.DATA[address + 2] << 8) +
+                        ROM.DATA[address + 1];
+
+                        // Draw tile at sta,X position
+                        int stax = (sta & 0x1FFF) + x;
+                        int yp = (stax / 2) / 0x40;
+                        int xp = (stax / 2) - (yp * 0x40);
+                        allOverlays[index].TileDataList.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
+
+                        address += 3;
+                        continue;
+                    }
+                    else if (value == 0x8F) // STA $xxxxxx (Increase addr+4)
+                    {
+                        int sta = (ROM.DATA[address + 2] << 8) +
+                        ROM.DATA[address + 1];
+
+                        int stax = (sta & 0x1FFF) + x;
+                        int yp = (stax / 2) / 0x40;
+                        int xp = (stax / 2) - (yp * 0x40);
+                        allOverlays[index].TileDataList.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
+
+                        address += 4;
+                        continue;
+                    }
+                    else if (value == 0x1A) // INC A (Increase addr+1)
+                    {
+                        a += 1;
+
+                        address += 1;
+                        continue;
+                    }
+                    else if (value == 0x4C) // JMP $xxxx (move addr to the new address)
+                    {
+                        address = (Constants.overlayPointersBank << 16) +
+                        (ROM.DATA[address + 2] << 8) +
+                        ROM.DATA[address + 1];
+                        address = Utils.SnesToPc(address);
+
+                        // THAT SHOULD NOT EXIST IN MOVED CODE SO NO NEED TO CHANGE IT.
+                        continue;
+                    }
+                    else if (value == 0x60) // RTS
+                    {
+                        break; // Just to be sure.
+                    }
+                    else if (value == 0x6B) // RTL
+                    {
+                        break; // Just to be sure.
+                    }
+
                     /*
 					else if (b == 0xC2) // Add me back in to open goddess of wisdom at least in the dungeon editor.
 					{
@@ -1163,96 +1269,24 @@ namespace ZeldaFullEditor
 						break;
 					}
 					*/
-                    else if (b == 0xA9) // LDA #$xxxx (Increase addr+3)
-                    {
-                        a = (ROM.DATA[addr + 2] << 8) +
-                        ROM.DATA[addr + 1];
-                        addr += 3;
-                        continue;
-                    }
-                    else if (b == 0xA2) // LDX #$xxxx (Increase addr+3)
-                    {
-                        x = (ROM.DATA[addr + 2] << 8) +
-                        ROM.DATA[addr + 1];
-                        addr += 3;
-                        continue;
-                    }
-                    else if (b == 0x8D) // STA $xxxx (Increase addr+3)
-                    {
-                        sta = (ROM.DATA[addr + 2] << 8) +
-                        ROM.DATA[addr + 1];
-
-                        sta = sta & 0x1FFF;
-                        int yp = ((sta / 2) / 0x40);
-                        int xp = (sta / 2) - (yp * 0x40);
-                        alloverlays[index].TileDataList.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
-                        addr += 3;
-                        continue;
-                    }
-                    else if (b == 0x9D) // STA $xxxx, x (Increase addr+3)
-                    {
-                        sta = (ROM.DATA[addr + 2] << 8) +
-                        ROM.DATA[addr + 1];
-                        // Draw tile at sta,X position
-
-                        int stax = (sta & 0x1FFF) + x;
-                        int yp = ((stax / 2) / 0x40);
-                        int xp = (stax / 2) - (yp * 0x40);
-                        alloverlays[index].TileDataList.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
-
-                        addr += 3;
-                        continue;
-                    }
-                    else if (b == 0x8F) // STA $xxxxxx (Increase addr+4)
-                    {
-                        sta = (ROM.DATA[addr + 2] << 8) +
-                        ROM.DATA[addr + 1];
-
-                        int stax = (sta & 0x1FFF) + x;
-                        int yp = ((stax / 2) / 0x40);
-                        int xp = (stax / 2) - (yp * 0x40);
-                        alloverlays[index].TileDataList.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
-
-                        addr += 4;
-                        continue;
-                    }
-                    else if (b == 0x1A) // INC A (Increase addr+1)
-                    {
-                        a += 1;
-                        addr += 1;
-                        continue;
-                    }
-                    else if (b == 0x4C) // JMP $xxxx (move addr to the new address)
-                    {
-                        addr = (Constants.overlayPointersBank << 16) +
-                        (ROM.DATA[addr + 2] << 8) +
-                        ROM.DATA[addr + 1];
-                        addr = Utils.SnesToPc(addr);
-                        // THAT SHOULD NOT EXIST IN MOVED CODE SO NO NEED TO CHANGE IT
-                        continue;
-                    }
-                    else if (b == 0x60) // RTS
-                    {
-                        break; // Just to be sure
-                    }
-                    else if (b == 0x6B) // RTL
-                    {
-                        break; // Just to be sure
-                    }
                 }
             }
+
+            return allOverlays;
         }
 
-        public void loadSprites()
+        public List<Sprite>[] LoadSprites()
         {
-            // LW[0] = RainState 0 to 63 there's no data for DW
-            // LW[1] = ZeldaState 0 to 128 ; Contains LW and DW <128 or 144 wtf
-            // LW[2] = AgahState 0 to ?? ;Contains data for LW and DW
+            // LW[0] = RainState 0 to 63 there's no data for DW.
+            // LW[1] = ZeldaState 0 to 128 ; Contains LW and DW <128 or 144 wtf.
+            // LW[2] = AgahState 0 to ?? ;Contains data for LW and DW.
 
             //Console.WriteLine(((Constants.overworldSpritesBegining & 0xFFFF) + (09 << 16)).ToString("X6"));
+
+            var allSprites = new List<Sprite>[3] { new List<Sprite>(), new List<Sprite>(), new List<Sprite>() };
             for (int i = 0; i < 64; i++)
             {
-                if (allmaps[i].parent == i)
+                if (this.AllMaps[i].parent == i)
                 {
                     // Beginning Sprites
                     int ptrPos = Constants.overworldSpritesBegining + (i * 2);
@@ -1262,15 +1296,18 @@ namespace ZeldaFullEditor
                         byte b1 = ROM.DATA[spriteAddress];
                         byte b2 = ROM.DATA[spriteAddress + 1];
                         byte b3 = ROM.DATA[spriteAddress + 2];
-                        if (b1 == 0xFF) { break; }
+                        if (b1 == 0xFF)
+                        {
+                            break;
+                        }
 
-                        int mapY = (i / 8);
-                        int mapX = (i % 8);
+                        int mapY = i / 8;
+                        int mapX = i % 8;
 
-                        int realX = ((b2 & 0x3F) * 16) + mapX * 512;
-                        int realY = ((b1 & 0x3F) * 16) + mapY * 512;
+                        int realX = ((b2 & 0x3F) * 16) + (mapX * 512);
+                        int realY = ((b1 & 0x3F) * 16) + (mapY * 512);
 
-                        allsprites[0].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+                        allSprites[0].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
 
                         spriteAddress += 3;
                     }
@@ -1279,9 +1316,9 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 144; i++)
             {
-                if (allmaps[i].parent == i)
+                if (this.AllMaps[i].parent == i)
                 {
-                    // Zelda Saved Sprites
+                    // Zelda Saved Sprites.
                     int ptrPos = Constants.overworldSpritesZelda + (i * 2);
                     int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
                     while (true)
@@ -1289,7 +1326,10 @@ namespace ZeldaFullEditor
                         byte b1 = ROM.DATA[spriteAddress];
                         byte b2 = ROM.DATA[spriteAddress + 1];
                         byte b3 = ROM.DATA[spriteAddress + 2];
-                        if (b1 == 0xFF) { break; }
+                        if (b1 == 0xFF)
+                        {
+                            break;
+                        }
 
                         int editorMapIndex = i;
                         if (editorMapIndex >= 128)
@@ -1301,20 +1341,20 @@ namespace ZeldaFullEditor
                             editorMapIndex = i - 64;
                         }
 
-                        int mapY = (editorMapIndex / 8);
-                        int mapX = (editorMapIndex % 8);
+                        int mapY = editorMapIndex / 8;
+                        int mapX = editorMapIndex % 8;
 
-                        int realX = ((b2 & 0x3F) * 16) + mapX * 512;
-                        int realY = ((b1 & 0x3F) * 16) + mapY * 512;
+                        int realX = ((b2 & 0x3F) * 16) + (mapX * 512);
+                        int realY = ((b1 & 0x3F) * 16) + (mapY * 512);
 
-                        allsprites[1].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+                        allSprites[1].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
 
                         spriteAddress += 3;
                     }
                 }
 
-                // Agahnim Dead Sprites
-                if (allmaps[i].parent == i)
+                // Agahnim Dead Sprites.
+                if (this.AllMaps[i].parent == i)
                 {
                     int ptrPos = Constants.overworldSpritesAgahnim + (i * 2);
                     int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
@@ -1323,7 +1363,10 @@ namespace ZeldaFullEditor
                         byte b1 = ROM.DATA[spriteAddress];
                         byte b2 = ROM.DATA[spriteAddress + 1];
                         byte b3 = ROM.DATA[spriteAddress + 2];
-                        if (b1 == 0xFF) { break; }
+                        if (b1 == 0xFF)
+                        {
+                            break;
+                        }
 
                         int editorMapIndex = i;
                         if (editorMapIndex >= 128)
@@ -1335,25 +1378,25 @@ namespace ZeldaFullEditor
                             editorMapIndex = i - 64;
                         }
 
-                        int mapY = (editorMapIndex / 8);
-                        int mapX = (editorMapIndex % 8);
+                        int mapY = editorMapIndex / 8;
+                        int mapX = editorMapIndex % 8;
 
-                        int realX = ((b2 & 0x3F) * 16) + mapX * 512;
-                        int realY = ((b1 & 0x3F) * 16) + mapY * 512;
+                        int realX = ((b2 & 0x3F) * 16) + (mapX * 512);
+                        int realY = ((b1 & 0x3F) * 16) + (mapY * 512);
 
-                        allsprites[2].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+                        allSprites[2].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
 
                         spriteAddress += 3;
                     }
                 }
             }
 
-            //Console.WriteLine("Finished loading sprites");
+            return allSprites;
         }
 
         public bool createMap16Tilesmap()
         {
-            t16Unique.Clear();
+            uniqueTile16List.Clear();
             t16.Clear();
 
             // Create tile32 from tiles16
@@ -1364,18 +1407,18 @@ namespace ZeldaFullEditor
             int c = 0;
             for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
-                TileInfo[,] tilesused = tempTiles8_LW;
+                TileInfo[,] tilesused = TempTile8Array_LW;
                 if (i < 64)
                 {
-                    tilesused = tempTiles8_LW;
+                    tilesused = TempTile8Array_LW;
                 }
                 else if (i < 128 && i >= 64)
                 {
-                    tilesused = tempTiles8_DW;
+                    tilesused = TempTile8Array_DW;
                 }
                 else
                 {
-                    tilesused = tempTiles8_SP;
+                    tilesused = TempTile8Array_SP;
                 }
 
                 for (int y = 0; y < 64; y += 2)
@@ -1425,15 +1468,15 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < tiles.Count; i++) // for each uniques tile32
             {
-                t16Unique.Add(new Tile16(tiles[i])); // create new tileunique
+                uniqueTile16List.Add(new Tile16(tiles[i])); // create new tileunique
             }
 
-            while (t16Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
+            while (uniqueTile16List.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
             {
-                t16Unique.Add(new Tile16(0));
+                uniqueTile16List.Add(new Tile16(0));
             }
 
-            if (t16Unique.Count > Constants.LimitOfMap32)
+            if (uniqueTile16List.Count > Constants.LimitOfMap32)
             {
                 if (MessageBox.Show("Unique Tiles16 count exceed the limit in the rom\nTiles data won't be saved would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -1443,16 +1486,16 @@ namespace ZeldaFullEditor
                 return true;
             }
 
-            tiles16.Clear();
-            for (int i = 0; i < t16Unique.Count; i++)
+            Tile16List.Clear();
+            for (int i = 0; i < uniqueTile16List.Count; i++)
             {
-                ulong t = t16Unique[i].GetLongData();
-                tiles16.Add(new Tile16(t));
+                ulong t = uniqueTile16List[i].GetLongData();
+                Tile16List.Add(new Tile16(t));
             }
 
             alltiles8.Clear();
 
-            Console.WriteLine("Nbr of uniquetiles16 = " + tiles.Count + " " + t16Unique.Count);
+            Console.WriteLine("Nbr of uniquetiles16 = " + tiles.Count + " " + uniqueTile16List.Count);
             return false;
         }
     }

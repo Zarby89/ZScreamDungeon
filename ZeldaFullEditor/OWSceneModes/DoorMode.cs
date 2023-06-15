@@ -85,7 +85,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                     break;
                                 }
 
-                                scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
+                                scene.ow.AllMaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
                             }
 
                             x++;
@@ -101,7 +101,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             return;
                         }
 
-                        scene.tilesgfxBitmap.Palette = scene.ow.allmaps[mapId].gfxBitmap.Palette;
+                        scene.tilesgfxBitmap.Palette = scene.ow.AllMaps[mapId].gfxBitmap.Palette;
 
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         //this.Refresh();

@@ -60,11 +60,11 @@ namespace ZeldaFullEditor
 
             if (mapId < 128)
             {
-                large = ow.allmaps[mapId].largeMap ? 768 : 256;
+                large = ow.AllMaps[mapId].largeMap ? 768 : 256;
 
-                if (ow.allmaps[mapId].parent != mapId)
+                if (ow.AllMaps[mapId].parent != mapId)
                 {
-                    mapid = ow.allmaps[mapId].parent;
+                    mapid = ow.AllMaps[mapId].parent;
                 }
             }
 

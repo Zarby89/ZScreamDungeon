@@ -213,16 +213,16 @@ namespace ZeldaFullEditor
 
             if (index < 64)
             {
-                tilesUsed = ow.allmapsTilesLW;
+                tilesUsed = ow.AllMapTile32_LW;
             }
             else if (index < 128 && index >= 64)
             {
-                tilesUsed = ow.allmapsTilesDW;
+                tilesUsed = ow.AllMapTile32_DW;
                 world = 1;
             }
             else
             {
-                tilesUsed = ow.allmapsTilesSP;
+                tilesUsed = ow.AllMapTile32_SP;
                 world = 2;
             }
 
@@ -274,7 +274,7 @@ namespace ZeldaFullEditor
             var gfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
             int[] offsets = { 0, 8, 4096, 4104 };
 
-            var tiles = ow.tiles16[tileID];
+            var tiles = ow.Tile16List[tileID];
 
             for (var tile = 0; tile < 4; tile++)
             {
@@ -301,7 +301,7 @@ namespace ZeldaFullEditor
             var yy = 0;
             var xx = 0;
 
-            for (var i = 0; i < ow.tiles16.Count; i++) // Number of tiles16 3748?
+            for (var i = 0; i < ow.Tile16List.Count; i++) // Number of tiles16 3748?
             {
                 // 8x8 tile draw
                 // gfx8 = 4bpp so everyting is /2
@@ -309,7 +309,7 @@ namespace ZeldaFullEditor
 
                 for (var tile = 0; tile < 4; tile++)
                 {
-                    TileInfo info = ow.tiles16[i].TileInfoArray[tile];
+                    TileInfo info = ow.Tile16List[i].TileInfoArray[tile];
                     int offset = offsets[tile];
 
                     for (var y = 0; y < 8; y++)
@@ -404,8 +404,8 @@ namespace ZeldaFullEditor
             byte pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (palette * 4) + 1]; // aux2
             byte pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (palette * 4) + 2]; // animated
 
-            byte pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (sprpalette[ow.gameState] * 2)]; // spr3
-            byte pal5 = ROM.DATA[Constants.overworldSpritePaletteGroup + (sprpalette[ow.gameState] * 2) + 1]; // spr4
+            byte pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (sprpalette[ow.GameState] * 2)]; // spr3
+            byte pal5 = ROM.DATA[Constants.overworldSpritePaletteGroup + (sprpalette[ow.GameState] * 2) + 1]; // spr4
 
             Color[] aux1, aux2, main, animated, hud, spr, spr2;
             Color bgr = Palettes.overworld_GrassPalettes[0];
@@ -764,7 +764,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 4; i++)
             {
-                staticgfx[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (sprgfx[ow.gameState] * 4) + i] + 115);
+                staticgfx[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (sprgfx[ow.GameState] * 4) + i] + 115);
             }
 
             // Main Blocksets

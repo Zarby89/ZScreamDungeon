@@ -61,11 +61,11 @@ namespace ZeldaFullEditor
         public static IntPtr scratchblockset16; // = Marshal.AllocHGlobal(1048576);
         public static Bitmap scratchblockset16Bitmap;
 
-        public static IntPtr overworldMapPointer; // = Marshal.AllocHGlobal(0x4000);
-        public static Bitmap overworldMapBitmap;
+        public static IntPtr OverworldMapPointer; // = Marshal.AllocHGlobal(0x4000);
+        public static Bitmap OverworldMapBitmap;
 
-        public static IntPtr owactualMapPointer; // = Marshal.AllocHGlobal(0x40000);
-        public static Bitmap owactualMapBitmap;
+        public static IntPtr OWActualMapPointer; // = Marshal.AllocHGlobal(0x40000);
+        public static Bitmap OWActualMapBitmap;
 
         public static bool[] isbpp3 = new bool[Constants.NumberOfSheets];
 
@@ -769,15 +769,15 @@ namespace ZeldaFullEditor
             return null;
         }
 
-        public static void loadOverworldMap()
+        public static void LoadOverworldMap()
         {
-            GFX.overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, GFX.overworldMapPointer);
-            GFX.owactualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, GFX.owactualMapPointer);
+            OverworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, OverworldMapPointer);
+            OWActualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, OWActualMapPointer);
 
             // Mode 7
             unsafe
             {
-                byte* ptr = (byte*)overworldMapPointer.ToPointer();
+                byte* pointer = (byte*)OverworldMapPointer.ToPointer();
 
                 int pos = 0;
                 for (int sy = 0; sy < 16; sy++)
@@ -788,7 +788,7 @@ namespace ZeldaFullEditor
                         {
                             for (int x = 0; x < 8; x++)
                             {
-                                ptr[x + (sx * 8) + (y * 128) + (sy * 1024)] = ROM.DATA[0x0C4000 + pos];
+                                pointer[x + (sx * 8) + (y * 128) + (sy * 1024)] = ROM.DATA[0x0C4000 + pos];
                                 pos++;
                             }
                         }
@@ -807,7 +807,7 @@ namespace ZeldaFullEditor
                 offset = 1;
             }
 
-            ColorPalette cp = overworldMapBitmap.Palette;
+            ColorPalette cp = OverworldMapBitmap.Palette;
             for (int i = 0; i < 128; i++)
             {
                 // 55B27 = US LW
@@ -824,11 +824,12 @@ namespace ZeldaFullEditor
                     cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j++];
                     k++;
                 }
+
                 k++;
             }
 
-            overworldMapBitmap.Palette = cp;
-            owactualMapBitmap.Palette = cp;
+            OverworldMapBitmap.Palette = cp;
+            OWActualMapBitmap.Palette = cp;
         }
 
         public static void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)

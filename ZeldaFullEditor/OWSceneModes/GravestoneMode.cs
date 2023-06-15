@@ -29,7 +29,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 for (int i = 0; i < 0x0F; i++)
                 {
-                    Gravestone en = scene.ow.graves[i];
+                    Gravestone en = scene.ow.AllGraves[i];
                     if (e.X >= en.XTilePos && e.X < en.XTilePos + 32 && e.Y >= en.YTilePos && e.Y < en.YTilePos + 32)
                     {
                         if (!scene.mouse_down)
@@ -100,9 +100,9 @@ namespace ZeldaFullEditor.OWSceneModes
             Pen bgrBrush = Constants.Magenta200Pen;
             g.CompositingMode = CompositingMode.SourceOver;
 
-            for (int i = 0; i < scene.ow.graves.Length; i++)
+            for (int i = 0; i < scene.ow.AllGraves.Length; i++)
             {
-                Gravestone e = scene.ow.graves[i];
+                Gravestone e = scene.ow.AllGraves[i];
 
                 if (selectedGrave != null)
                 {

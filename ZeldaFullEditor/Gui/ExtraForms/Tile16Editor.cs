@@ -67,7 +67,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+            GFX.editort16Bitmap.Palette = scene.ow.AllMaps[scene.selectedMap].gfxBitmap.Palette;
             pictureboxTile8.Refresh();
         }
 
@@ -382,10 +382,10 @@ namespace ZeldaFullEditor.Gui
 
             for (int i = 0; i < 0x200; i++)
             {
-                tempTiletype[i] = scene.ow.allTilesTypes[i];
+                tempTiletype[i] = scene.ow.AllTileTypes[i];
             }
 
-            scene.ow.tiles16.CopyTo(allTiles);
+            scene.ow.Tile16List.CopyTo(allTiles);
 
             unsafe
             {
@@ -396,7 +396,7 @@ namespace ZeldaFullEditor.Gui
                 {
                     for (int j = 0; j < 2048; j++)
                     {
-                        byte mapByte = allgfxData[j + (scene.ow.allmaps[scene.selectedMap].staticgfx[i] * 2048)];
+                        byte mapByte = allgfxData[j + (scene.ow.AllMaps[scene.selectedMap].staticgfx[i] * 2048)];
                         switch (i)
                         {
                             case 0:
@@ -425,7 +425,7 @@ namespace ZeldaFullEditor.Gui
                 if (NetZS.connected)
                 {
 
-                    if (scene.ow.tiles16[i].GetLongData() != allTiles[i].GetLongData())
+                    if (scene.ow.Tile16List[i].GetLongData() != allTiles[i].GetLongData())
                     {
 
                         zsnetTiles16.Add(allTiles[i]);
@@ -437,7 +437,7 @@ namespace ZeldaFullEditor.Gui
 
 
 
-                scene.ow.tiles16[i] = allTiles[i];
+                scene.ow.Tile16List[i] = allTiles[i];
             }
 
             if (NetZS.connected)
@@ -466,16 +466,16 @@ namespace ZeldaFullEditor.Gui
 
             for (int i = 0; i < 0x200; i++)
             {
-                scene.ow.allTilesTypes[i] = tempTiletype[i];
+                scene.ow.AllTileTypes[i] = tempTiletype[i];
             }
 
             for (int i = 0; i < 159; i++)
             {
-                scene.ow.allmaps[i].needRefresh = true;
+                scene.ow.AllMaps[i].needRefresh = true;
             }
 
-            scene.ow.allmaps[scene.selectedMap].BuildMap();
-            scene.ow.allmaps[scene.selectedMap].needRefresh = false;
+            scene.ow.AllMaps[scene.selectedMap].BuildMap();
+            scene.ow.AllMaps[scene.selectedMap].needRefresh = false;
 
             this.Close();
         }
@@ -591,7 +591,7 @@ namespace ZeldaFullEditor.Gui
         private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             scene.mainForm.editorsTabControl.SelectedIndex = 2;
-            scene.mainForm.gfxEditor.selectedSheet = scene.ow.allmaps[scene.selectedMap].staticgfx[(e.Y / 64)];
+            scene.mainForm.gfxEditor.selectedSheet = scene.ow.AllMaps[scene.selectedMap].staticgfx[(e.Y / 64)];
             scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
             this.Close();
         }

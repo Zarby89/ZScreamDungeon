@@ -237,6 +237,8 @@ namespace ZeldaFullEditor
         public static int mapGfx = 0x7C9C;
         public static int overlayPointers = 0x77664;
         public static int overlayPointersBank = 0x0E;
+        public static int overlayData1 = 0x77676;
+        public static int overlayData2 = 0x077677;
 
         public static int overworldTilesType = 0x71459;
         public static int overworldMessages = 0x3F51D;
@@ -319,9 +321,10 @@ namespace ZeldaFullEditor
         public static int OWExitXPlayerWhirlpool = 0x16B8F;// JP = ;016E2B
         public static int OWExitYCameraWhirlpool = 0x16BB1;// JP = ;016E4D
         public static int OWExitXCameraWhirlpool = 0x16BD3;// JP = ;016E6F
-        public static int OWExitUnk1Whirlpool = 0x16BF5;   // JP = ;016E91
-        public static int OWExitUnk2Whirlpool = 0x16C17;   // JP = ;016EB3
+        public static int OWExitScrollModYWhirlpool = 0x16BF5;   // JP = ;016E91
+        public static int OWExitScrollModXWhirlpool = 0x16C17;   // JP = ;016EB3
         public static int OWWhirlpoolPosition = 0x16CF8;   // JP = ;016F94
+        public static int OWWhirlpoolCount = 0x11;
 
         //===========================================================================================
         // Dungeon Related Variables

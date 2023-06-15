@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.Data
 {
     /// <summary>
-    ///     A class containing all the info for each grave.
+    ///     A data class containing all the info for overworld graves.
     /// </summary>
     public class Gravestone
     {

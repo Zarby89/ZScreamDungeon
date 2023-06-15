@@ -34,9 +34,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 isLeftPress = false;
             }
 
-            foreach (RoomPotSaveEditor item in scene.ow.allitems)
+            foreach (RoomPotSaveEditor item in scene.ow.AllItems)
             {
-                if (item.roomMapId >= 0 + (scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+                if (item.roomMapId >= 0 + (scene.ow.WorldOffset) && item.roomMapId < (64 + scene.ow.WorldOffset))
                 {
                     if (e.X >= item.x && e.X <= item.x + 16 && e.Y >= item.y && e.Y <= item.y + 16)
                     {
@@ -79,7 +79,7 @@ namespace ZeldaFullEditor.OWSceneModes
             RoomPotSaveEditor data = (RoomPotSaveEditor)Clipboard.GetData("owitem");
             if (data != null)
             {
-                scene.ow.allitems.Add(data);
+                scene.ow.AllItems.Add(data);
                 selectedItem = data;
                 lastselectedItem = selectedItem;
                 isLeftPress = true;
@@ -95,10 +95,10 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedItem != null)
                 {
-                    byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
                     if (mid == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.worldOffset);
+                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
                     selectedItem.updateMapStuff(mid);
                     lastselectedItem = selectedItem;
@@ -138,7 +138,7 @@ namespace ZeldaFullEditor.OWSceneModes
         private void addItem_Click(object sender, EventArgs e)
         {
             RoomPotSaveEditor pitem = new RoomPotSaveEditor(0, 0, 0, 0, false);
-            scene.ow.allitems.Add(pitem);
+            scene.ow.AllItems.Add(pitem);
             selectedItem = pitem;
             lastselectedItem = selectedItem;
             isLeftPress = true;
@@ -180,7 +180,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 lastselectedItem.deleted = true;
                 SendItemData(lastselectedItem);
-                scene.ow.allitems.Remove(lastselectedItem);
+                scene.ow.AllItems.Remove(lastselectedItem);
                 lastselectedItem = null;
 
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -190,19 +190,19 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-            scene.ow.allitems.RemoveAll(x => x.deleted);
+            scene.ow.AllItems.RemoveAll(x => x.deleted);
             if (scene.lowEndMode)
             {
                 Brush bgrBrush;
                 g.CompositingMode = CompositingMode.SourceOver;
-                foreach (RoomPotSaveEditor item in scene.ow.allitems)
+                foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
-                    if (item.roomMapId != scene.ow.allmaps[scene.selectedMap].parent)
+                    if (item.roomMapId != scene.ow.AllMaps[scene.selectedMap].parent)
                     {
                         continue;
                     }
 
-                    if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+                    if (item.roomMapId >= (0 + scene.ow.WorldOffset) && item.roomMapId < (64 + scene.ow.WorldOffset))
                     {
 
                         bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
@@ -232,9 +232,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 Brush bgrBrush;
                 g.CompositingMode = CompositingMode.SourceOver;
 
-                foreach (RoomPotSaveEditor item in scene.ow.allitems)
+                foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
-                    if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+                    if (item.roomMapId >= (0 + scene.ow.WorldOffset) && item.roomMapId < (64 + scene.ow.WorldOffset))
                     {
                         bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 

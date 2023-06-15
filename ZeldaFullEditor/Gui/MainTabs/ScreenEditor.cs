@@ -594,7 +594,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
 
-            ColorPalette cp = GFX.overworldMapBitmap.Palette;
+            ColorPalette cp = GFX.OverworldMapBitmap.Palette;
             for (int i = 128; i < 256; i++)
             {
                 cp.Entries[i] = currentPalette[i];
@@ -1282,13 +1282,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-            e.Graphics.DrawImage(GFX.overworldMapBitmap, Constants.Rect_0_0_256_256);
+            e.Graphics.DrawImage(GFX.OverworldMapBitmap, Constants.Rect_0_0_256_256);
             e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((selectedMapTile % 16) * 16, (selectedMapTile / 16) * 16, 16, 16));
         }
 
         public unsafe void DrawMapBG(IntPtr destPtr)
         {
-            var alltilesData = (byte*)GFX.overworldMapPointer.ToPointer();
+            var alltilesData = (byte*)GFX.OverworldMapPointer.ToPointer();
             byte* ptr = (byte*)destPtr.ToPointer();
 
             for (int yy = 0; yy < 64; yy++) // for each tile on the tile buffer
@@ -1371,7 +1371,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 
-            DrawMapBG(GFX.owactualMapPointer);
+            DrawMapBG(GFX.OWActualMapPointer);
             /*
             DrawMapBGDW(GFX.owactualMapPointer);
             byte yData1 = (byte)((ROM.DATA[0x053DF6+ (comboBox1.SelectedIndex*2)]&0xF0) >> 4);
@@ -1383,7 +1383,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             byte xData = (byte)(xData1 + xData2);
             */
 
-            e.Graphics.DrawImage(GFX.owactualMapBitmap, Constants.Rect_0_0_1024_1024, Constants.Rect_0_0_512_512, GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.OWActualMapBitmap, Constants.Rect_0_0_1024_1024, Constants.Rect_0_0_512_512, GraphicsUnit.Pixel);
 
             //for (int i = 0; i < 8; i++)
             //{
@@ -1413,7 +1413,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             for (int i = 0; i < 256; i++)
             {
-                e.Graphics.FillRectangle(new SolidBrush(GFX.overworldMapBitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+                e.Graphics.FillRectangle(new SolidBrush(GFX.OverworldMapBitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
             }
         }
 
@@ -1541,7 +1541,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 fs.Close();
                 //label4.Text = ;
 
-                GFX.overworldMapBitmap.Save(sfd.FileName + "_Tileset.png");
+                GFX.OverworldMapBitmap.Save(sfd.FileName + "_Tileset.png");
             }
         }
 
@@ -2657,7 +2657,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                GFX.overworldMapBitmap.Save(sfd.FileName, ImageFormat.Bmp);
+                GFX.OverworldMapBitmap.Save(sfd.FileName, ImageFormat.Bmp);
             }
         }
 
@@ -2670,7 +2670,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 Bitmap b = new Bitmap(ofd.FileName);
                 BitmapData bd = b.LockBits(Constants.Rect_0_0_128_128, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
-                GFX.overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, GFX.overworldMapPointer);
+                GFX.OverworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, GFX.OverworldMapPointer);
                 int pos = 0;
 
                 // Mode 7
@@ -2705,7 +2705,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
                 //Palettes.WritePalette(ROM.DATA, pos, b.Palette.Entries, 128);
 
-                GFX.loadOverworldMap();
+                GFX.LoadOverworldMap();
                 owMapTilesBox.Refresh();
                 mapPicturebox.Refresh();
             }

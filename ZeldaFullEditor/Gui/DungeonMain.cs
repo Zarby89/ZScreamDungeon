@@ -143,9 +143,9 @@ namespace ZeldaFullEditor
 
             GFX.scratchblockset16 = Marshal.AllocHGlobal(1048576);
 
-            GFX.overworldMapPointer = Marshal.AllocHGlobal(0x40000);
+            GFX.OverworldMapPointer = Marshal.AllocHGlobal(0x40000);
 
-            GFX.owactualMapPointer = Marshal.AllocHGlobal(0x40000);
+            GFX.OWActualMapPointer = Marshal.AllocHGlobal(0x40000);
 
             if (Settings.Default.favoriteObjects.Count < 0xFFF)
             {
@@ -3765,7 +3765,7 @@ namespace ZeldaFullEditor
             {
                 if (oweditor2 != null)
                 {
-                    if (oweditor2.overworld.isLoaded)
+                    if (oweditor2.overworld.IsLoaded)
                     {
                         oweditor2.BringToFront();
                         oweditor2.Visible = true;
@@ -3784,7 +3784,7 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    if (overworldEditor.overworld.isLoaded)
+                    if (overworldEditor.overworld.IsLoaded)
                     {
                         overworldEditor.BringToFront();
                         overworldEditor.Visible = true;
@@ -4036,26 +4036,26 @@ namespace ZeldaFullEditor
                 if (oweditor2.scene.selectedMap >= 64)
                 {
                     int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
-                    if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                    if (oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                         dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                     {
-                        s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                        s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                         s += "STA $" + addr.ToString("X4") + "\r\n";
                     }
                 }
                 else
                 {
                     int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
-                    if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                    if (oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                         lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                     {
-                        s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                        s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                         s += "STA $" + addr.ToString("X4") + "\r\n";
                     }
                 }
             }
 
-            if (oweditor2.scene.ow.allmaps[oweditor2.scene.selectedMap].largeMap)
+            if (oweditor2.scene.ow.AllMaps[oweditor2.scene.selectedMap].largeMap)
             {
                 Console.Write("Is large map");
                 selectedMap = oweditor2.scene.selectedMap + 1;
@@ -4067,20 +4067,20 @@ namespace ZeldaFullEditor
                     if (oweditor2.scene.selectedMap >= 64)
                     {
                         int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2) + 0x40;
-                        if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        if (oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
-                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                             s += "STA $" + addr.ToString("X4") + "\r\n";
                         }
                     }
                     else
                     {
                         int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
-                        if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        if (oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
-                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                             s += "STA $" + addr.ToString("X4") + "\r\n";
                         }
                     }
@@ -4095,20 +4095,20 @@ namespace ZeldaFullEditor
                     if (oweditor2.scene.selectedMap >= 64)
                     {
                         int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2) + 0x1000;
-                        if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        if (oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
-                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                             s += "STA $" + addr.ToString("X4") + "\r\n";
                         }
                     }
                     else
                     {
                         int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
-                        if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        if (oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
-                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                             s += "STA $" + addr.ToString("X4") + "\r\n";
                         }
                     }
@@ -4123,20 +4123,20 @@ namespace ZeldaFullEditor
                     if (oweditor2.scene.selectedMap >= 64)
                     {
                         int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2) + 0x1040;
-                        if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        if (oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
-                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_DW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                             s += "STA $" + addr.ToString("X4") + "\r\n";
                         }
                     }
                     else
                     {
                         int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
-                        if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        if (oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
-                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "LDA #$" + oweditor2.scene.ow.AllMapTile32_LW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
                             s += "STA $" + addr.ToString("X4") + "\r\n";
                         }
                     }
@@ -4163,8 +4163,8 @@ namespace ZeldaFullEditor
             {
                 for (int y = 0; y < 512; y++)
                 {
-                    lwmdata[x, y] = oweditor2.scene.ow.allmapsTilesLW[x, y];
-                    dwmdata[x, y] = oweditor2.scene.ow.allmapsTilesDW[x, y];
+                    lwmdata[x, y] = oweditor2.scene.ow.AllMapTile32_LW[x, y];
+                    dwmdata[x, y] = oweditor2.scene.ow.AllMapTile32_DW[x, y];
                 }
             }
         }
@@ -4214,15 +4214,15 @@ namespace ZeldaFullEditor
                         {
                             for (int x = 0; x < 32; x += 1)
                             {
-                                mapArrayData[p++] = (byte)(overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                mapArrayData[p++] = (byte)((overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-                                mapArrayData[p++] = (byte)(overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                mapArrayData[p++] = (byte)((overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+                                mapArrayData[p++] = (byte)(overworldEditor.overworld.AllMapTile32_LW[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                mapArrayData[p++] = (byte)((overworldEditor.overworld.AllMapTile32_LW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+                                mapArrayData[p++] = (byte)(overworldEditor.overworld.AllMapTile32_DW[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                mapArrayData[p++] = (byte)((overworldEditor.overworld.AllMapTile32_DW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
 
                                 if (i < 32)
                                 {
-                                    mapArrayData[p++] = (byte)(overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                    mapArrayData[p++] = (byte)((overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+                                    mapArrayData[p++] = (byte)(overworldEditor.overworld.AllMapTile32_SP[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                    mapArrayData[p++] = (byte)((overworldEditor.overworld.AllMapTile32_SP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
                                 }
                             }
                         }
@@ -4263,14 +4263,14 @@ namespace ZeldaFullEditor
                         {
                             for (int x = 0; x < 32; x += 1)
                             {
-                                overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+                                overworldEditor.overworld.AllMapTile32_LW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
                                 p += 2;
-                                overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+                                overworldEditor.overworld.AllMapTile32_DW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
                                 p += 2;
 
                                 if (i < 32)
                                 {
-                                    overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+                                    overworldEditor.overworld.AllMapTile32_SP[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
                                     p += 2;
                                 }
                             }
@@ -4302,7 +4302,7 @@ namespace ZeldaFullEditor
 
                     for (int i = 0; i < 3752; i++) // 3600
                     {
-                        ulong v = overworldEditor.overworld.tiles16[i].GetLongData();
+                        ulong v = overworldEditor.overworld.Tile16List[i].GetLongData();
 
                         for (int j = 0; j < 8; j++)
                         {
@@ -4329,7 +4329,7 @@ namespace ZeldaFullEditor
                     FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
                     fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
 
-                    overworldEditor.overworld.tiles16.Clear();
+                    overworldEditor.overworld.Tile16List.Clear();
                     for (int i = 0; i < Constants.NumberOfMap16; i++)
                     {
                         // Tile 0
@@ -4362,7 +4362,7 @@ namespace ZeldaFullEditor
                         ulong v1 = t3 << 16 | t2;
                         ulong v2 = t1 << 16 | t0;
                         ulong v = v1 << 32 | v2;
-                        overworldEditor.overworld.tiles16.Add(new Tile16(v));
+                        overworldEditor.overworld.Tile16List.Add(new Tile16(v));
 
                         p += 8;
                     }
@@ -4382,34 +4382,34 @@ namespace ZeldaFullEditor
             {
                 for (int y = 0; y < 32; y++)
                 {
-                    if (!tile8ids.Contains(overworldEditor.overworld.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
+                    if (!tile8ids.Contains(overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
                     {
-                        tile8ids.Add(overworldEditor.overworld.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
+                        tile8ids.Add(overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
                     }
-                    map16[x, y] = overworldEditor.overworld.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
+                    map16[x, y] = overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
                 }
             }
 
             for (int i = 0; i < tile8ids.Count; i++)
             {
-                overworldEditor.overworld.tiles16[tile8ids[i]].Tile0.HS ^= 1;
-                overworldEditor.overworld.tiles16[tile8ids[i]].Tile1.HS ^= 1;
-                overworldEditor.overworld.tiles16[tile8ids[i]].Tile2.HS ^= 1;
-                overworldEditor.overworld.tiles16[tile8ids[i]].Tile3.HS ^= 1;
+                overworldEditor.overworld.Tile16List[tile8ids[i]].Tile0.HS ^= 1;
+                overworldEditor.overworld.Tile16List[tile8ids[i]].Tile1.HS ^= 1;
+                overworldEditor.overworld.Tile16List[tile8ids[i]].Tile2.HS ^= 1;
+                overworldEditor.overworld.Tile16List[tile8ids[i]].Tile3.HS ^= 1;
 
-                ushort t0 = overworldEditor.overworld.tiles16[i].Tile0.id;
-                ushort t2 = overworldEditor.overworld.tiles16[i].Tile2.id;
+                ushort t0 = overworldEditor.overworld.Tile16List[i].Tile0.id;
+                ushort t2 = overworldEditor.overworld.Tile16List[i].Tile2.id;
 
-                overworldEditor.overworld.tiles16[i].Tile0.id = overworldEditor.overworld.tiles16[i].Tile1.id;
-                overworldEditor.overworld.tiles16[i].Tile1.id = t0;
-                overworldEditor.overworld.tiles16[i].Tile2.id = overworldEditor.overworld.tiles16[i].Tile3.id;
-                overworldEditor.overworld.tiles16[i].Tile3.id = t2;
+                overworldEditor.overworld.Tile16List[i].Tile0.id = overworldEditor.overworld.Tile16List[i].Tile1.id;
+                overworldEditor.overworld.Tile16List[i].Tile1.id = t0;
+                overworldEditor.overworld.Tile16List[i].Tile2.id = overworldEditor.overworld.Tile16List[i].Tile3.id;
+                overworldEditor.overworld.Tile16List[i].Tile3.id = t2;
 
                 for (int x = 0, mx = 31; x < 32; x++, mx--)
                 {
                     for (int y = 0; y < 32; y++)
                     {
-                        overworldEditor.overworld.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
+                        overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
                     }
                 }
             }
@@ -5217,7 +5217,7 @@ namespace ZeldaFullEditor
                     {
                         for (int x = 0; x < 32; x += 1)
                         {
-                            overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = 0x34;
+                            overworldEditor.overworld.AllMapTile32_DW[x + (sx * 32), y + (sy * 32)] = 0x34;
                         }
                     }
 
@@ -5244,7 +5244,7 @@ namespace ZeldaFullEditor
                     {
                         for (int x = 0; x < 32; x += 1)
                         {
-                            overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)];
+                            overworldEditor.overworld.AllMapTile32_DW[x + (sx * 32), y + (sy * 32)] = overworldEditor.overworld.AllMapTile32_LW[x + (sx * 32), y + (sy * 32)];
                         }
                     }
 

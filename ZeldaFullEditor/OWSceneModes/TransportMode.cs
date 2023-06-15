@@ -28,8 +28,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 for (int i = 0; i < 0x11; i++)
                 {
-                    TransportOW en = scene.ow.allWhirlpools[i];
-                    if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+                    TransportOW en = scene.ow.AllWhirlpools[i];
+                    if (en.mapId >= scene.ow.WorldOffset && en.mapId < 64 + scene.ow.WorldOffset)
                     {
                         if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
                         {
@@ -67,10 +67,10 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedTransport.playerY = (short)((e.Y / 8) * 8);
                     }
 
-                    byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
                     if (mid == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.worldOffset);
+                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
                     selectedTransport.updateMapStuff(mid, scene.ow);
@@ -96,8 +96,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 for (int i = 0; i < 0x11; i++)
                 {
-                    TransportOW en = scene.ow.allWhirlpools[i];
-                    if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+                    TransportOW en = scene.ow.AllWhirlpools[i];
+                    if (en.mapId >= scene.ow.WorldOffset && en.mapId < 64 + scene.ow.WorldOffset)
                     {
                         if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
                         {
@@ -142,15 +142,15 @@ namespace ZeldaFullEditor.OWSceneModes
                 Brush bgrBrush = Constants.DarkMint200Brush;
                 g.CompositingMode = CompositingMode.SourceOver;
 
-                for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
+                for (int i = 0; i < scene.ow.AllWhirlpools.Count; i++)
                 {
-                    TransportOW e = scene.ow.allWhirlpools[i];
-                    if (e.mapId != scene.ow.allmaps[scene.selectedMap].parent)
+                    TransportOW e = scene.ow.AllWhirlpools[i];
+                    if (e.mapId != scene.ow.AllMaps[scene.selectedMap].parent)
                     {
                         continue;
                     }
 
-                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+                    if (e.mapId < 64 + scene.ow.WorldOffset && e.mapId >= scene.ow.WorldOffset)
                     {
                         if (selectedTransport != null)
                         {
@@ -189,11 +189,11 @@ namespace ZeldaFullEditor.OWSceneModes
                 Brush bgrBrush = Constants.DarkMint200Brush;
                 g.CompositingMode = CompositingMode.SourceOver;
 
-                for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
+                for (int i = 0; i < scene.ow.AllWhirlpools.Count; i++)
                 {
-                    TransportOW e = scene.ow.allWhirlpools[i];
+                    TransportOW e = scene.ow.AllWhirlpools[i];
 
-                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+                    if (e.mapId < 64 + scene.ow.WorldOffset && e.mapId >= scene.ow.WorldOffset)
                     {
                         if (selectedTransport != null)
                         {

@@ -59,42 +59,42 @@ namespace ZeldaFullEditor.OWSceneModes
         public ExitOW AddExit(bool clipboard = false)
         {
             int found = -1;
-            for (int i = 0; i < scene.ow.allexits.Length; i++)
+            for (int i = 0; i < scene.ow.AllExits.Length; i++)
             {
-                if (scene.ow.allexits[i].Deleted)
+                if (scene.ow.AllExits[i].Deleted)
                 {
-                    byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
                     if (mid == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.worldOffset);
+                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
-                    scene.ow.allexits[i].Deleted = false;
-                    scene.ow.allexits[i].MapID = mid;
-                    scene.ow.allexits[i].PlayerX = (ushort)((mxRightclick / 16) * 16);
-                    scene.ow.allexits[i].PlayerY = (ushort)((myRightclick / 16) * 16);
+                    scene.ow.AllExits[i].Deleted = false;
+                    scene.ow.AllExits[i].MapID = mid;
+                    scene.ow.AllExits[i].PlayerX = (ushort)((mxRightclick / 16) * 16);
+                    scene.ow.AllExits[i].PlayerY = (ushort)((myRightclick / 16) * 16);
 
                     if (clipboard)
                     {
                         ExitOW data = (ExitOW)Clipboard.GetData("owexit");
                         if (data != null)
                         {
-                            scene.ow.allexits[i].CameraX = data.CameraX;
-                            scene.ow.allexits[i].CameraY = data.CameraY;
-                            scene.ow.allexits[i].XScroll = data.XScroll;
-                            scene.ow.allexits[i].YScroll = data.YScroll;
-                            scene.ow.allexits[i].ScrollModY = data.ScrollModY;
-                            scene.ow.allexits[i].ScrollModX = data.ScrollModX;
-                            scene.ow.allexits[i].RoomID = data.RoomID;
-                            scene.ow.allexits[i].DoorType1 = data.DoorType1;
-                            scene.ow.allexits[i].DoorType2 = data.DoorType2;
-                            scene.ow.allexits[i].DoorXEditor = data.DoorXEditor;
-                            scene.ow.allexits[i].DoorYEditor = data.DoorYEditor;
-                            SendExitData(scene.ow.allexits[i]);
+                            scene.ow.AllExits[i].CameraX = data.CameraX;
+                            scene.ow.AllExits[i].CameraY = data.CameraY;
+                            scene.ow.AllExits[i].XScroll = data.XScroll;
+                            scene.ow.AllExits[i].YScroll = data.YScroll;
+                            scene.ow.AllExits[i].ScrollModY = data.ScrollModY;
+                            scene.ow.AllExits[i].ScrollModX = data.ScrollModX;
+                            scene.ow.AllExits[i].RoomID = data.RoomID;
+                            scene.ow.AllExits[i].DoorType1 = data.DoorType1;
+                            scene.ow.AllExits[i].DoorType2 = data.DoorType2;
+                            scene.ow.AllExits[i].DoorXEditor = data.DoorXEditor;
+                            scene.ow.AllExits[i].DoorYEditor = data.DoorYEditor;
+                            SendExitData(scene.ow.AllExits[i]);
                         }
                     }
 
-                    scene.ow.allexits[i].UpdateMapStuff(mid, scene.ow);
+                    scene.ow.AllExits[i].UpdateMapStuff(mid, scene.ow);
 
                     found = i;
 
@@ -109,7 +109,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 return null;
             }
 
-            return scene.ow.allexits[found];
+            return scene.ow.AllExits[found];
         }
 
         public void onMouseDown(MouseEventArgs e)
@@ -118,8 +118,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 for (int i = 0; i < 78; i++)
                 {
-                    ExitOW en = scene.ow.allexits[i];
-                    if (en.MapID >= scene.ow.worldOffset && en.MapID < 64 + scene.ow.worldOffset)
+                    ExitOW en = scene.ow.AllExits[i];
+                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 64 + scene.ow.WorldOffset)
                     {
                         if (e.X >= en.PlayerX && e.X < en.PlayerX + 16 && e.Y >= en.PlayerY && e.Y < en.PlayerY + 16)
                         {
@@ -202,10 +202,10 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedExit.PlayerY = (ushort)((e.Y / 8) * 8);
                     }
 
-                    byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
                     if (mid == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.worldOffset);
+                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
                     selectedExit.UpdateMapStuff(mid, scene.ow);
@@ -234,8 +234,8 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 for (int i = 0; i < 78; i++)
                 {
-                    ExitOW en = scene.ow.allexits[i];
-                    if (en.MapID >= scene.ow.worldOffset && en.MapID < 64 + scene.ow.worldOffset)
+                    ExitOW en = scene.ow.AllExits[i];
+                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 64 + scene.ow.WorldOffset)
                     {
                         if (e.X >= en.PlayerX && e.X < en.PlayerX + 16 && e.Y >= en.PlayerY && e.Y < en.PlayerY + 16)
                         {
@@ -286,9 +286,9 @@ namespace ZeldaFullEditor.OWSceneModes
 
             if (dr == DialogResult.OK)
             {
-                int index = Array.IndexOf(scene.ow.allexits, lastselectedExit);
-                scene.ow.allexits[index] = exitPropForm.editingExit;
-                lastselectedExit = scene.ow.allexits[index];
+                int index = Array.IndexOf(scene.ow.AllExits, lastselectedExit);
+                scene.ow.AllExits[index] = exitPropForm.editingExit;
+                lastselectedExit = scene.ow.AllExits[index];
                 scene.selectedMode = ObjectMode.Exits;
 
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -338,13 +338,13 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 78; i++)
                 {
                     g.CompositingMode = CompositingMode.SourceOver;
-                    ExitOW ex = scene.ow.allexits[i];
-                    if (ex.MapID != scene.ow.allmaps[scene.selectedMap].parent)
+                    ExitOW ex = scene.ow.AllExits[i];
+                    if (ex.MapID != scene.ow.AllMaps[scene.selectedMap].parent)
                     {
                         continue;
                     }
 
-                    if (ex.MapID < 64 + scene.ow.worldOffset && ex.MapID >= scene.ow.worldOffset)
+                    if (ex.MapID < 64 + scene.ow.WorldOffset && ex.MapID >= scene.ow.WorldOffset)
                     {
                         Brush bgrBrush = Constants.LightGray200Brush;
                         Brush fontBrush = Brushes.Black;
@@ -414,9 +414,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 78; i++)
                 {
                     g.CompositingMode = CompositingMode.SourceOver;
-                    ExitOW ex = scene.ow.allexits[i];
+                    ExitOW ex = scene.ow.AllExits[i];
 
-                    if (ex.MapID < 64 + scene.ow.worldOffset && ex.MapID >= scene.ow.worldOffset)
+                    if (ex.MapID < 64 + scene.ow.WorldOffset && ex.MapID >= scene.ow.WorldOffset)
                     {
                         Brush bgrBrush = Constants.LightGray200Brush;
                         Brush fontBrush = Brushes.Black;

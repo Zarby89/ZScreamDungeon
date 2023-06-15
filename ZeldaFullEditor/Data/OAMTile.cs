@@ -1,6 +1,9 @@
 ﻿namespace ZeldaFullEditor
 {
-    class OAMTile
+    /// <summary>
+    ///     A data class containing all the info for OAM tiles.
+    /// </summary>
+    public class OAMTile
     {
         /// <summary>
         ///     Gets or sets the X position of the tile.

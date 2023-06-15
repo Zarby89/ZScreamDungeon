@@ -3,7 +3,7 @@
 namespace ZeldaFullEditor
 {
     /// <summary>
-    ///     A class containing all the info for each Oveworld Entrance.
+    ///     A data class containing all the info for oveworld entrances.
     /// </summary>
     [Serializable]
     public class EntranceOW

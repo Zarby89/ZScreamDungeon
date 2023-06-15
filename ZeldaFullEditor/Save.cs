@@ -278,9 +278,9 @@ namespace ZeldaFullEditor
         {
             Console.WriteLine("Saving Overworld Custom Mosaic ASM");
 
-            for (int i = 0; i < scene.ow.allmaps.Length; i++)
+            for (int i = 0; i < scene.ow.AllMaps.Length; i++)
             {
-                if (scene.ow.allmaps[i].mosaic)
+                if (scene.ow.AllMaps[i].mosaic)
                 {
                     ROM.Write(Constants.overworldCustomMosaicArray + i, 0x01);
                 }
@@ -733,17 +733,17 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 78; i++)
             {
-                ROM.Write(Constants.OWExitMapId + (i), (byte)((scene.ow.allexits[i].MapID) & 0xFF), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXScroll + (i * 2), ((scene.ow.allexits[i].XScroll)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYScroll + (i * 2), ((scene.ow.allexits[i].YScroll)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXCamera + (i * 2), ((scene.ow.allexits[i].CameraX)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYCamera + (i * 2), ((scene.ow.allexits[i].CameraY)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitVram + (i * 2), ((scene.ow.allexits[i].VRAMLocation)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitRoomId + (i * 2), ((scene.ow.allexits[i].RoomID)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXPlayer + (i * 2), ((scene.ow.allexits[i].PlayerX)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYPlayer + (i * 2), ((scene.ow.allexits[i].PlayerY)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitDoorType1 + (i * 2), ((scene.ow.allexits[i].DoorType1)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitDoorType2 + (i * 2), ((scene.ow.allexits[i].DoorType2)), WriteType.ExitProperties);
+                ROM.Write(Constants.OWExitMapId + (i), (byte)((scene.ow.AllExits[i].MapID) & 0xFF), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXScroll + (i * 2), ((scene.ow.AllExits[i].XScroll)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYScroll + (i * 2), ((scene.ow.AllExits[i].YScroll)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXCamera + (i * 2), ((scene.ow.AllExits[i].CameraX)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYCamera + (i * 2), ((scene.ow.AllExits[i].CameraY)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitVram + (i * 2), ((scene.ow.AllExits[i].VRAMLocation)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitRoomId + (i * 2), ((scene.ow.AllExits[i].RoomID)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXPlayer + (i * 2), ((scene.ow.AllExits[i].PlayerX)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYPlayer + (i * 2), ((scene.ow.AllExits[i].PlayerY)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitDoorType1 + (i * 2), ((scene.ow.AllExits[i].DoorType1)), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitDoorType2 + (i * 2), ((scene.ow.AllExits[i].DoorType2)), WriteType.ExitProperties);
             }
 
             ROM.EndBlockLogWriting();
@@ -754,18 +754,18 @@ namespace ZeldaFullEditor
         {
             ROM.StartBlockLogWriting("OW Entrances/Holes", Constants.OWEntranceMap);
 
-            for (int i = 0; i < scene.ow.allentrances.Length; i++)
+            for (int i = 0; i < scene.ow.AllEntrances.Length; i++)
             {
-                ROM.WriteShort(Constants.OWEntranceMap + (i * 2), ((scene.ow.allentrances[i].MapID)), WriteType.EntranceProperties);
-                ROM.WriteShort(Constants.OWEntrancePos + (i * 2), ((scene.ow.allentrances[i].MapPos)), WriteType.EntranceProperties);
-                ROM.Write(Constants.OWEntranceEntranceId + i, (byte)((scene.ow.allentrances[i].EntranceID) & 0xFF), WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.OWEntranceMap + (i * 2), ((scene.ow.AllEntrances[i].MapID)), WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.OWEntrancePos + (i * 2), ((scene.ow.AllEntrances[i].MapPos)), WriteType.EntranceProperties);
+                ROM.Write(Constants.OWEntranceEntranceId + i, (byte)((scene.ow.AllEntrances[i].EntranceID) & 0xFF), WriteType.EntranceProperties);
             }
 
-            for (int i = 0; i < scene.ow.allholes.Length; i++)
+            for (int i = 0; i < scene.ow.AllHoles.Length; i++)
             {
-                ROM.WriteShort(Constants.OWHoleArea + (i * 2), ((scene.ow.allholes[i].MapID)), WriteType.EntranceProperties);
-                ROM.WriteShort(Constants.OWHolePos + (i * 2), (((scene.ow.allholes[i].MapPos - 0x400))), WriteType.EntranceProperties);
-                ROM.Write(Constants.OWHoleEntrance + i, (byte)((scene.ow.allholes[i].EntranceID) & 0xFF), WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.OWHoleArea + (i * 2), ((scene.ow.AllHoles[i].MapID)), WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.OWHolePos + (i * 2), (((scene.ow.AllHoles[i].MapPos - 0x400))), WriteType.EntranceProperties);
+                ROM.Write(Constants.OWHoleEntrance + i, (byte)((scene.ow.AllHoles[i].EntranceID) & 0xFF), WriteType.EntranceProperties);
             }
 
             ROM.EndBlockLogWriting();
@@ -781,7 +781,7 @@ namespace ZeldaFullEditor
             for (int i = 0; i < 128; i++)
             {
                 roomItems[i] = new List<RoomPotSaveEditor>();
-                foreach (RoomPotSaveEditor item in scene.ow.allitems)
+                foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
                     if (item.roomMapId == i)
                     {
@@ -881,7 +881,7 @@ namespace ZeldaFullEditor
             {
                 if (i < 64) // LW[0]
                 {
-                    Sprite[] sprArray = scene.ow.allsprites[0].Where(sprite => sprite.mapid == i).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[0].Where(sprite => sprite.mapid == i).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
@@ -889,7 +889,7 @@ namespace ZeldaFullEditor
                 }
                 else if (i >= 64 && i < 208) // LW & DW[1]
                 {
-                    Sprite[] sprArray = scene.ow.allsprites[1].Where(sprite => sprite.mapid == (i - 64)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[1].Where(sprite => sprite.mapid == (i - 64)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
@@ -897,7 +897,7 @@ namespace ZeldaFullEditor
                 }
                 else if (i >= 208 && i < Constants.NumberOfOWSprites) // LW[2]
                 {
-                    Sprite[] sprArray = scene.ow.allsprites[2].Where(sprite => sprite.mapid == (i - 208)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[2].Where(sprite => sprite.mapid == (i - 208)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
@@ -1032,25 +1032,25 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0x11; i++)
             {
-                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].mapId), true, "MapId");
+                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].mapId), true, "MapId");
 
-                ROM.WriteShort(Constants.OWExitXScrollWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].xScroll), true, "XScroll");
+                ROM.WriteShort(Constants.OWExitXScrollWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].xScroll), true, "XScroll");
 
-                ROM.WriteShort(Constants.OWExitYScrollWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].yScroll), true, "YScroll");
+                ROM.WriteShort(Constants.OWExitYScrollWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].yScroll), true, "YScroll");
 
-                ROM.WriteShort(Constants.OWExitXCameraWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].cameraX), true, "XCamera");
+                ROM.WriteShort(Constants.OWExitXCameraWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].cameraX), true, "XCamera");
 
-                ROM.WriteShort(Constants.OWExitYCameraWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].cameraY), true, "YCamera");
+                ROM.WriteShort(Constants.OWExitYCameraWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].cameraY), true, "YCamera");
 
-                ROM.WriteShort(Constants.OWExitVramWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].vramLocation), true, "VRAM");
+                ROM.WriteShort(Constants.OWExitVramWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].vramLocation), true, "VRAM");
 
-                ROM.WriteShort(Constants.OWExitXPlayerWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].playerX), true, "XPlayer");
+                ROM.WriteShort(Constants.OWExitXPlayerWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].playerX), true, "XPlayer");
 
-                ROM.WriteShort(Constants.OWExitYPlayerWhirlpool + (i * 2), (scene.ow.allWhirlpools[i].playerY), true, "YPlayer");
+                ROM.WriteShort(Constants.OWExitYPlayerWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].playerY), true, "YPlayer");
 
                 if (i > 8)
                 {
-                    ROM.WriteShort(Constants.OWWhirlpoolPosition + ((i - 9) * 2), (scene.ow.allWhirlpools[i].whirlpoolPos), true, "Pos");
+                    ROM.WriteShort(Constants.OWWhirlpoolPosition + ((i - 9) * 2), (scene.ow.AllWhirlpools[i].whirlpoolPos), true, "Pos");
                 }
             }
 
@@ -1064,26 +1064,26 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 64; i++)
             {
-                ROM.Write(Constants.mapGfx + i, scene.ow.allmaps[i].gfx, WriteType.GFX);
-                ROM.Write(Constants.overworldSpriteset + i, scene.ow.allmaps[i].sprgfx[0], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 64 + i, scene.ow.allmaps[i].sprgfx[1], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.allmaps[i].sprgfx[2], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldMapPalette + i, scene.ow.allmaps[i].palette, WriteType.Palette);
-                ROM.Write(Constants.overworldSpritePalette + i, scene.ow.allmaps[i].sprpalette[0], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 64 + i, scene.ow.allmaps[i].sprpalette[1], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.allmaps[i].sprpalette[2], WriteType.SpritePalette);
+                ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].gfx, WriteType.GFX);
+                ROM.Write(Constants.overworldSpriteset + i, scene.ow.AllMaps[i].sprgfx[0], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldSpriteset + 64 + i, scene.ow.AllMaps[i].sprgfx[1], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].sprgfx[2], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].palette, WriteType.Palette);
+                ROM.Write(Constants.overworldSpritePalette + i, scene.ow.AllMaps[i].sprpalette[0], WriteType.SpritePalette);
+                ROM.Write(Constants.overworldSpritePalette + 64 + i, scene.ow.AllMaps[i].sprpalette[1], WriteType.SpritePalette);
+                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].sprpalette[2], WriteType.SpritePalette);
             }
 
             for (int i = 64; i < 128; i++)
             {
-                ROM.Write(Constants.mapGfx + i, scene.ow.allmaps[i].gfx, WriteType.GFX);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.allmaps[i].sprgfx[0], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.allmaps[i].sprgfx[1], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.allmaps[i].sprgfx[2], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldMapPalette + i, scene.ow.allmaps[i].palette, WriteType.Palette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.allmaps[i].sprpalette[0], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.allmaps[i].sprpalette[1], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.allmaps[i].sprpalette[2], WriteType.SpritePalette);
+                ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].gfx, WriteType.GFX);
+                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].sprgfx[0], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].sprgfx[1], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].sprgfx[2], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].palette, WriteType.Palette);
+                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].sprpalette[0], WriteType.SpritePalette);
+                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].sprpalette[1], WriteType.SpritePalette);
+                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].sprpalette[2], WriteType.SpritePalette);
             }
 
             ROM.EndBlockLogWriting();
@@ -1138,9 +1138,9 @@ namespace ZeldaFullEditor
                 ROM.WriteLong(ptrPos, snesaddr, true, "Overlay actual Pointers");
                 ptrPos += 3;
 
-                for (int t = 0; t < scene.ow.alloverlays[i].TileDataList.Count; t++)
+                for (int t = 0; t < scene.ow.AllOverlays[i].TileDataList.Count; t++)
                 {
-                    ushort addr = (ushort)((scene.ow.alloverlays[i].TileDataList[t].x * 2) + (scene.ow.alloverlays[i].TileDataList[t].y * 128) + 0x2000);
+                    ushort addr = (ushort)((scene.ow.AllOverlays[i].TileDataList[t].x * 2) + (scene.ow.AllOverlays[i].TileDataList[t].y * 128) + 0x2000);
                     // LDA TileID : STA $addr
                     // A9 (LDA #$)
                     // A2 (LDX #$)
@@ -1148,7 +1148,7 @@ namespace ZeldaFullEditor
 
                     // LDA :
                     ROM.Write(pos, 0xA9, true, "Overlay Data, LDA");
-                    ROM.WriteShort(pos + 1, (scene.ow.alloverlays[i].TileDataList[t].tileId), true, "Overlay Data, TileID");
+                    ROM.WriteShort(pos + 1, (scene.ow.AllOverlays[i].TileDataList[t].tileId), true, "Overlay Data, TileID");
                     pos += 3;
 
                     // STA :
@@ -1170,7 +1170,7 @@ namespace ZeldaFullEditor
             ROM.StartBlockLogWriting("Overworld Tiles Types", Constants.overworldTilesType);
             for (int i = 0; i < 0x200; i++)
             {
-                ROM.Write(Constants.overworldTilesType + i, scene.ow.allTilesTypes[i], true, "Tile ID" + i.ToString("D3") + " Type:" + scene.ow.allTilesTypes[i].ToString("D3"));
+                ROM.Write(Constants.overworldTilesType + i, scene.ow.AllTileTypes[i], true, "Tile ID" + i.ToString("D3") + " Type:" + scene.ow.AllTileTypes[i].ToString("D3"));
             }
 
             ROM.EndBlockLogWriting();
@@ -1207,7 +1207,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 128; i++)
             {
-                ROM.WriteShort(Constants.overworldMessages + (i * 2), scene.ow.allmaps[i].messageID, true, "OW Message ID for map " + i.ToString("D3"));
+                ROM.WriteShort(Constants.overworldMessages + (i * 2), scene.ow.AllMaps[i].messageID, true, "OW Message ID for map " + i.ToString("D3"));
             }
 
             ROM.EndBlockLogWriting();
@@ -1221,15 +1221,15 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 64; i++)
             {
-                ROM.Write(Constants.overworldMusicBegining + i, scene.ow.allmaps[i].musics[0], true, "OW Musics ID for map " + i.ToString("D3"));
-                ROM.Write(Constants.overworldMusicZelda + i, scene.ow.allmaps[i].musics[1], true, "OW Musics ID for map " + i.ToString("D3"));
-                ROM.Write(Constants.overworldMusicMasterSword + i, scene.ow.allmaps[i].musics[2], true, "OW Musics ID for map " + i.ToString("D3"));
-                ROM.Write(Constants.overworldMusicAgahim + i, scene.ow.allmaps[i].musics[3], true, "OW Musics ID for map " + i.ToString("D3"));
+                ROM.Write(Constants.overworldMusicBegining + i, scene.ow.AllMaps[i].musics[0], true, "OW Musics ID for map " + i.ToString("D3"));
+                ROM.Write(Constants.overworldMusicZelda + i, scene.ow.AllMaps[i].musics[1], true, "OW Musics ID for map " + i.ToString("D3"));
+                ROM.Write(Constants.overworldMusicMasterSword + i, scene.ow.AllMaps[i].musics[2], true, "OW Musics ID for map " + i.ToString("D3"));
+                ROM.Write(Constants.overworldMusicAgahim + i, scene.ow.AllMaps[i].musics[3], true, "OW Musics ID for map " + i.ToString("D3"));
             }
 
             for (int i = 0; i < 64; i++)
             {
-                ROM.Write(Constants.overworldMusicDW + i, scene.ow.allmaps[i + 64].musics[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
+                ROM.Write(Constants.overworldMusicDW + i, scene.ow.AllMaps[i + 64].musics[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
             }
 
             ROM.EndBlockLogWriting();
@@ -1444,12 +1444,12 @@ namespace ZeldaFullEditor
             {
                 int yPos = i / 8;
                 int xPos = i % 8;
-                int parentyPos = scene.ow.allmaps[i].parent / 8;
-                int parentxPos = scene.ow.allmaps[i].parent % 8;
+                int parentyPos = scene.ow.AllMaps[i].parent / 8;
+                int parentxPos = scene.ow.AllMaps[i].parent % 8;
 
                 // Always write the map parent since it should not matter.
-                ROM.Write(Constants.overworldMapParentId + i, scene.ow.allmaps[i].parent);
-                parentMapLine += scene.ow.allmaps[i].parent.ToString("X2").PadLeft(2, '0') + " ";
+                ROM.Write(Constants.overworldMapParentId + i, scene.ow.AllMaps[i].parent);
+                parentMapLine += scene.ow.AllMaps[i].parent.ToString("X2").PadLeft(2, '0') + " ";
 
                 if ((i + 1) % 8 == 0)
                 {
@@ -1463,7 +1463,7 @@ namespace ZeldaFullEditor
                     continue; // Ignore that map we already checked it.
                 }
 
-                if (scene.ow.allmaps[i].largeMap) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
+                if (scene.ow.AllMaps[i].largeMap) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
                 {
                     // Check 1.
                     ROM.Write(Constants.overworldMapSize + i, 0x20);
@@ -1554,10 +1554,10 @@ namespace ZeldaFullEditor
                         if ((i - 1) >= 0)
                         {
                             // If the area to the left is a large area.
-                            if (scene.ow.allmaps[i - 1].largeMap)
+                            if (scene.ow.AllMaps[i - 1].largeMap)
                             {
                                 // If the area to the left is the bottom right of a large area.
-                                if (scene.ow.allmaps[i - 1].largeIndex == 1)
+                                if (scene.ow.AllMaps[i - 1].largeIndex == 1)
                                 {
                                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, 0x0060);
                                 }
@@ -1576,10 +1576,10 @@ namespace ZeldaFullEditor
                     if ((i + 2) < 64)
                     {
                         // If the area to the right is a large area.
-                        if (scene.ow.allmaps[i + 2].largeMap)
+                        if (scene.ow.AllMaps[i + 2].largeMap)
                         {
                             // If the area to the right is the top left of a large area.
-                            if (scene.ow.allmaps[i + 2].largeIndex == 0)
+                            if (scene.ow.AllMaps[i + 2].largeIndex == 0)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, 0x0080); // Always 0x1080.
                             }
@@ -1597,10 +1597,10 @@ namespace ZeldaFullEditor
                     if (i - 8 >= 0)
                     {
                         // If the area just above us is a large area.
-                        if (scene.ow.allmaps[i - 8].largeMap)
+                        if (scene.ow.AllMaps[i - 8].largeMap)
                         {
                             // If the area just above us is the bottom left of a large area.
-                            if (scene.ow.allmaps[i - 8].largeIndex == 2)
+                            if (scene.ow.AllMaps[i - 8].largeIndex == 2)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, 0x1800);
                             }
@@ -1618,10 +1618,10 @@ namespace ZeldaFullEditor
                     if (i + 16 < 64)
                     {
                         // If the area just below us is a large area.
-                        if (scene.ow.allmaps[i + 16].largeMap)
+                        if (scene.ow.AllMaps[i + 16].largeMap)
                         {
                             // If the area just below us is the top left of a large area.
-                            if (scene.ow.allmaps[i + 16].largeIndex == 0)
+                            if (scene.ow.AllMaps[i + 16].largeIndex == 0)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, 0x2000);
                             }
@@ -1651,10 +1651,10 @@ namespace ZeldaFullEditor
                     if (i - 1 >= 0 && parentxPos != 0)
                     {
                         // If the area to the left is a large area.
-                        if (scene.ow.allmaps[i - 1].largeMap)
+                        if (scene.ow.AllMaps[i - 1].largeMap)
                         {
                             // If the area to the left is the bottom right area of a large map.
-                            if (scene.ow.allmaps[i - 1].largeIndex == 3)
+                            if (scene.ow.AllMaps[i - 1].largeIndex == 3)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2), 0xF060);
                             }
@@ -1667,10 +1667,10 @@ namespace ZeldaFullEditor
                     if (i + 1 < 64 && parentxPos != 7)
                     {
                         // If the area to the right is a large area.
-                        if (scene.ow.allmaps[i + 1].largeMap)
+                        if (scene.ow.AllMaps[i + 1].largeMap)
                         {
                             // If the area to the right is the bottom left area of a large map.
-                            if (scene.ow.allmaps[i + 1].largeIndex == 2)
+                            if (scene.ow.AllMaps[i + 1].largeIndex == 2)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2), 0xF040);
                             }
@@ -1683,10 +1683,10 @@ namespace ZeldaFullEditor
                     if (i - 8 >= 0)
                     {
                         // If the area just above us is a large area.
-                        if (scene.ow.allmaps[i - 8].largeMap)
+                        if (scene.ow.AllMaps[i - 8].largeMap)
                         {
                             // If we are under the bottom right of the large area.
-                            if (scene.ow.allmaps[i - 8].largeIndex == 3)
+                            if (scene.ow.AllMaps[i - 8].largeIndex == 3)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2), 0x17C0);
                             }
@@ -1699,10 +1699,10 @@ namespace ZeldaFullEditor
                     if (i + 8 < 64)
                     {
                         // If the area just below us is a large area.
-                        if (scene.ow.allmaps[i + 8].largeMap)
+                        if (scene.ow.AllMaps[i + 8].largeMap)
                         {
                             // If we are on top of the top right of the large area.
-                            if (scene.ow.allmaps[i + 8].largeIndex == 1)
+                            if (scene.ow.AllMaps[i + 8].largeIndex == 1)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2), 0x0FC0);
                             }
@@ -1875,17 +1875,17 @@ namespace ZeldaFullEditor
         {
             for (int i = 0; i < 0x0F; i++)
             {
-                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].XTilePos, WriteType.Gravestone);
-                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].YTilePos, WriteType.Gravestone);
-                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].TilemapPos, WriteType.Gravestone);
+                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.AllGraves[i].XTilePos, WriteType.Gravestone);
+                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.AllGraves[i].YTilePos, WriteType.Gravestone);
+                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.AllGraves[i].TilemapPos, WriteType.Gravestone);
 
                 if (i == 0x0E)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].TilemapPos - 0x80, WriteType.Gravestone);
+                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.AllGraves[i].TilemapPos - 0x80, WriteType.Gravestone);
                 }
                 if (i == 0x0D)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].TilemapPos - 0x80, WriteType.Gravestone);
+                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.AllGraves[i].TilemapPos - 0x80, WriteType.Gravestone);
                 }
             }
 

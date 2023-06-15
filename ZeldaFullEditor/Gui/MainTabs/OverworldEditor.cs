@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading;
-using System.Drawing.Drawing2D;
-using ZeldaFullEditor.Gui.ExtraForms;
-using System.Globalization;
-using ZeldaFullEditor.Data;
+using System.Windows.Forms;
 using Lidgren.Network;
+using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.Gui
@@ -100,7 +96,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+            GFX.editort16Bitmap.Palette = scene.ow.AllMaps[scene.selectedMap].gfxBitmap.Palette;
             updateTiles();
             pictureBox1.Refresh();
         }
@@ -156,7 +152,7 @@ namespace ZeldaFullEditor.Gui
 
         private void stateCombobox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            overworld.gameState = (byte)stateCombobox.SelectedIndex;
+            overworld.GameState = (byte)stateCombobox.SelectedIndex;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -168,7 +164,7 @@ namespace ZeldaFullEditor.Gui
         {
             if (!propertiesChangedFromForm)
             {
-                OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
+                OverworldMap mapParent = scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].parent];
                 UpdateMapProperties(mapParent);
                 SendMapProperties(mapParent);
             }
@@ -176,9 +172,9 @@ namespace ZeldaFullEditor.Gui
 
         public void UpdateMapProperties(OverworldMap mapParent)
         {
-            if (scene.ow.allmaps[scene.selectedMap].parent == 255)
+            if (scene.ow.AllMaps[scene.selectedMap].parent == 255)
             {
-                mapParent = scene.ow.allmaps[scene.selectedMap];
+                mapParent = scene.ow.AllMaps[scene.selectedMap];
             }
 
             mapParent.palette = (byte)OWProperty_BGPalette.HexValue;
@@ -192,31 +188,31 @@ namespace ZeldaFullEditor.Gui
             }
             else
             {
-                scene.ow.allmaps[mapParent.index].sprgfx[scene.ow.gameState] = (byte)OWProperty_SPRGFX.HexValue;
-                mapParent.sprpalette[scene.ow.gameState] = (byte)OWProperty_SPRPalette.HexValue;
+                scene.ow.AllMaps[mapParent.index].sprgfx[scene.ow.GameState] = (byte)OWProperty_SPRGFX.HexValue;
+                mapParent.sprpalette[scene.ow.GameState] = (byte)OWProperty_SPRPalette.HexValue;
             }
 
             if (mapParent.largeMap)
             {
-                scene.ow.allmaps[mapParent.index + 1].gfx = mapParent.gfx;
-                scene.ow.allmaps[mapParent.index + 1].sprgfx = mapParent.sprgfx;
-                scene.ow.allmaps[mapParent.index + 1].palette = mapParent.palette;
-                scene.ow.allmaps[mapParent.index + 1].sprpalette = mapParent.sprpalette;
+                scene.ow.AllMaps[mapParent.index + 1].gfx = mapParent.gfx;
+                scene.ow.AllMaps[mapParent.index + 1].sprgfx = mapParent.sprgfx;
+                scene.ow.AllMaps[mapParent.index + 1].palette = mapParent.palette;
+                scene.ow.AllMaps[mapParent.index + 1].sprpalette = mapParent.sprpalette;
 
-                scene.ow.allmaps[mapParent.index + 8].gfx = mapParent.gfx;
-                scene.ow.allmaps[mapParent.index + 8].sprgfx = mapParent.sprgfx;
-                scene.ow.allmaps[mapParent.index + 8].palette = mapParent.palette;
-                scene.ow.allmaps[mapParent.index + 8].sprpalette = mapParent.sprpalette;
+                scene.ow.AllMaps[mapParent.index + 8].gfx = mapParent.gfx;
+                scene.ow.AllMaps[mapParent.index + 8].sprgfx = mapParent.sprgfx;
+                scene.ow.AllMaps[mapParent.index + 8].palette = mapParent.palette;
+                scene.ow.AllMaps[mapParent.index + 8].sprpalette = mapParent.sprpalette;
 
-                scene.ow.allmaps[mapParent.index + 9].gfx = mapParent.gfx;
-                scene.ow.allmaps[mapParent.index + 9].sprgfx = mapParent.sprgfx;
-                scene.ow.allmaps[mapParent.index + 9].palette = mapParent.palette;
-                scene.ow.allmaps[mapParent.index + 9].sprpalette = mapParent.sprpalette;
+                scene.ow.AllMaps[mapParent.index + 9].gfx = mapParent.gfx;
+                scene.ow.AllMaps[mapParent.index + 9].sprgfx = mapParent.sprgfx;
+                scene.ow.AllMaps[mapParent.index + 9].palette = mapParent.palette;
+                scene.ow.AllMaps[mapParent.index + 9].sprpalette = mapParent.sprpalette;
 
                 mapParent.BuildMap();
-                scene.ow.allmaps[mapParent.index + 1].BuildMap();
-                scene.ow.allmaps[mapParent.index + 8].BuildMap();
-                scene.ow.allmaps[mapParent.index + 9].BuildMap();
+                scene.ow.AllMaps[mapParent.index + 1].BuildMap();
+                scene.ow.AllMaps[mapParent.index + 8].BuildMap();
+                scene.ow.AllMaps[mapParent.index + 9].BuildMap();
             }
             else
             {
@@ -340,8 +336,8 @@ namespace ZeldaFullEditor.Gui
         private void SelectMapOffset(int o)
         {
             scene.selectedMap = o;
-            scene.selectedMapParent = scene.ow.allmaps[o].parent;
-            scene.ow.worldOffset = o;
+            scene.selectedMapParent = scene.ow.AllMaps[o].parent;
+            scene.ow.WorldOffset = o;
             scene.Refresh();
         }
 
@@ -360,10 +356,10 @@ namespace ZeldaFullEditor.Gui
                     Thread.CurrentThread.IsBackground = true;
                     for (int i = 0; i < 159; i++)
                     {
-                        if (scene.ow.allmaps[i].needRefresh)
+                        if (scene.ow.AllMaps[i].needRefresh)
                         {
-                            scene.ow.allmaps[i].BuildMap();
-                            scene.ow.allmaps[i].needRefresh = false;
+                            scene.ow.AllMaps[i].BuildMap();
+                            scene.ow.AllMaps[i].needRefresh = false;
                         }
                     }
                 }).Start();
@@ -387,10 +383,10 @@ namespace ZeldaFullEditor.Gui
                 Thread.CurrentThread.IsBackground = true;
                 for (int i = 0; i < 159; i++)
                 {
-                    if (mainForm.overworldEditor.scene.ow.allmaps[i].needRefresh)
+                    if (mainForm.overworldEditor.scene.ow.AllMaps[i].needRefresh)
                     {
-                        mainForm.overworldEditor.scene.ow.allmaps[i].BuildMap();
-                        mainForm.overworldEditor.scene.ow.allmaps[i].needRefresh = false;
+                        mainForm.overworldEditor.scene.ow.AllMaps[i].BuildMap();
+                        mainForm.overworldEditor.scene.ow.AllMaps[i].needRefresh = false;
                     }
                 }
             }).Start();
@@ -400,17 +396,17 @@ namespace ZeldaFullEditor.Gui
         {
             OWMusicForm owmf = new OWMusicForm();
             owmf.mapIndex = (byte)scene.selectedMap;
-            owmf.musics[0] = scene.ow.allmaps[scene.selectedMap].musics[0];
-            owmf.musics[1] = scene.ow.allmaps[scene.selectedMap].musics[1];
-            owmf.musics[2] = scene.ow.allmaps[scene.selectedMap].musics[2];
-            owmf.musics[3] = scene.ow.allmaps[scene.selectedMap].musics[3];
+            owmf.musics[0] = scene.ow.AllMaps[scene.selectedMap].musics[0];
+            owmf.musics[1] = scene.ow.AllMaps[scene.selectedMap].musics[1];
+            owmf.musics[2] = scene.ow.AllMaps[scene.selectedMap].musics[2];
+            owmf.musics[3] = scene.ow.AllMaps[scene.selectedMap].musics[3];
 
             if (owmf.ShowDialog() == DialogResult.OK)
             {
-                scene.ow.allmaps[scene.selectedMap].musics[0] = owmf.musics[0];
-                scene.ow.allmaps[scene.selectedMap].musics[1] = owmf.musics[1];
-                scene.ow.allmaps[scene.selectedMap].musics[2] = owmf.musics[2];
-                scene.ow.allmaps[scene.selectedMap].musics[3] = owmf.musics[3];
+                scene.ow.AllMaps[scene.selectedMap].musics[0] = owmf.musics[0];
+                scene.ow.AllMaps[scene.selectedMap].musics[1] = owmf.musics[1];
+                scene.ow.AllMaps[scene.selectedMap].musics[2] = owmf.musics[2];
+                scene.ow.AllMaps[scene.selectedMap].musics[3] = owmf.musics[3];
             }
         }
 
@@ -833,7 +829,7 @@ namespace ZeldaFullEditor.Gui
             tile8selected = 0;
             byte* destPtr = (byte*)GFX.editingtile16.ToPointer();
             byte* srcPtr = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
-            Tile16 t = overworld.tiles16[scene.selectedTile[0]];
+            Tile16 t = overworld.Tile16List[scene.selectedTile[0]];
 
             for (var y = 0; y < 8; y++)
             {
@@ -868,7 +864,7 @@ namespace ZeldaFullEditor.Gui
             }
 
             //Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, GFX.currentOWgfx16Ptr);
-            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+            GFX.editort16Bitmap.Palette = scene.ow.AllMaps[scene.selectedMap].gfxBitmap.Palette;
         }
 
         public unsafe void updateTiles()
@@ -899,7 +895,7 @@ namespace ZeldaFullEditor.Gui
             }
 
             //Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, GFX.currentOWgfx16Ptr);
-            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+            GFX.editort16Bitmap.Palette = scene.ow.AllMaps[scene.selectedMap].gfxBitmap.Palette;
             pictureBox1.Refresh();
             palette8Box.Refresh();
         }
@@ -961,7 +957,7 @@ namespace ZeldaFullEditor.Gui
         {
             for (int i = 0; i < 128; i++)
             {
-                Color c = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette.Entries[i];
+                Color c = scene.ow.AllMaps[scene.selectedMap].gfxBitmap.Palette.Entries[i];
                 e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
             }
 
@@ -991,24 +987,24 @@ namespace ZeldaFullEditor.Gui
                 {
                     for (int x = 0; x < 32; x += 1)
                     {
-                        ushort LWTile = overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)];
+                        ushort LWTile = overworld.AllMapTile32_LW[x + (sx * 32), y + (sy * 32)];
                         alltilesIndexed[LWTile]++;
-                        ushort DWTile = overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)];
+                        ushort DWTile = overworld.AllMapTile32_DW[x + (sx * 32), y + (sy * 32)];
                         alltilesIndexed[DWTile]++;
 
                         if (i < 32)
                         {
-                            alltilesIndexed[overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)]]++;
+                            alltilesIndexed[overworld.AllMapTile32_SP[x + (sx * 32), y + (sy * 32)]]++;
                         }
                     }
                 }
 
-                foreach (TilePos t in overworld.alloverlays[i].TileDataList)
+                foreach (TilePos t in overworld.AllOverlays[i].TileDataList)
                 {
                     alltilesIndexed[t.tileId]++;
                 }
 
-                foreach (TilePos t in overworld.alloverlays[i + 64].TileDataList)
+                foreach (TilePos t in overworld.AllOverlays[i + 64].TileDataList)
                 {
                     alltilesIndexed[t.tileId]++;
                 }
@@ -1037,11 +1033,11 @@ namespace ZeldaFullEditor.Gui
         {
             if (!propertiesChangedFromForm)
             {
-                OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
+                OverworldMap mapParent = scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].parent];
 
-                if (scene.ow.allmaps[scene.selectedMap].parent == 255)
+                if (scene.ow.AllMaps[scene.selectedMap].parent == 255)
                 {
-                    mapParent = scene.ow.allmaps[scene.selectedMap];
+                    mapParent = scene.ow.AllMaps[scene.selectedMap];
                 }
 
                 mapParent.messageID = (short)OWProperty_MessageID.HexValue;
@@ -1060,7 +1056,7 @@ namespace ZeldaFullEditor.Gui
             {
                 for (int x = 0; x < 32; x++)
                 {
-                    overworld.allmaps[scene.selectedMap].tilesUsed[x, y] = 0052;
+                    overworld.AllMaps[scene.selectedMap].tilesUsed[x, y] = 0052;
 
                     //overworld.allmapsTilesLW[x, y] = 0052;
                 }
@@ -1071,7 +1067,7 @@ namespace ZeldaFullEditor.Gui
 
         private void tilePictureBox_MouseEnter(object sender, EventArgs e)
         {
-            scene.ow.allmaps[scene.selectedMap].BuildMap();
+            scene.ow.AllMaps[scene.selectedMap].BuildMap();
             tilePictureBox.Refresh();
         }
 
@@ -1099,7 +1095,7 @@ namespace ZeldaFullEditor.Gui
         {
             if (!propertiesChangedFromForm)
             {
-                int m = scene.ow.allmaps[scene.selectedMap].parent;
+                int m = scene.ow.AllMaps[scene.selectedMap].parent;
                 SendLargeMapChanged(m, largemapCheckbox.Checked);
                 UpdateLargeMap(m, largemapCheckbox.Checked);
             }
@@ -1110,22 +1106,22 @@ namespace ZeldaFullEditor.Gui
             if (largemapChecked) // Large map
             {
                 // If we are trying to overlap large areas, fail.
-                if (scene.ow.allmaps[m + 1].largeMap || scene.ow.allmaps[m + 8].largeMap || scene.ow.allmaps[m + 9].largeMap)
+                if (scene.ow.AllMaps[m + 1].largeMap || scene.ow.AllMaps[m + 8].largeMap || scene.ow.AllMaps[m + 9].largeMap)
                 {
                     int i = 0;
                     string temp = "";
 
-                    if (scene.ow.allmaps[m + 1].largeMap)
+                    if (scene.ow.AllMaps[m + 1].largeMap)
                     {
                         temp += (m + 1).ToString("X2") + ", ";
                         i++;
                     }
-                    if (scene.ow.allmaps[m + 8].largeMap)
+                    if (scene.ow.AllMaps[m + 8].largeMap)
                     {
                         temp += (m + 8).ToString("X2") + ", ";
                         i++;
                     }
-                    if (scene.ow.allmaps[m + 9].largeMap)
+                    if (scene.ow.AllMaps[m + 9].largeMap)
                     {
                         temp += (m + 9).ToString("X2") + ", ";
                         i++;
@@ -1152,29 +1148,29 @@ namespace ZeldaFullEditor.Gui
                 }
                 else
                 {
-                    scene.ow.allmaps[m].SetAsLargeMap((byte)m, 0);
-                    scene.ow.allmaps[m + 1].SetAsLargeMap((byte)m, 1);
-                    scene.ow.allmaps[m + 8].SetAsLargeMap((byte)m, 2);
-                    scene.ow.allmaps[m + 9].SetAsLargeMap((byte)m, 3);
+                    scene.ow.AllMaps[m].SetAsLargeMap((byte)m, 0);
+                    scene.ow.AllMaps[m + 1].SetAsLargeMap((byte)m, 1);
+                    scene.ow.AllMaps[m + 8].SetAsLargeMap((byte)m, 2);
+                    scene.ow.AllMaps[m + 9].SetAsLargeMap((byte)m, 3);
 
                     // If we are in the light world, set the dark world opposite too.
                     if (m < 64)
                     {
-                        scene.ow.allmaps[m + 64].SetAsLargeMap((byte)(m + 64), 0);
-                        scene.ow.allmaps[m + 64 + 1].SetAsLargeMap((byte)(m + 64), 1 + 64);
-                        scene.ow.allmaps[m + 64 + 8].SetAsLargeMap((byte)(m + 64), 2 + 64);
-                        scene.ow.allmaps[m + 64 + 9].SetAsLargeMap((byte)(m + 64), 3 + 64);
+                        scene.ow.AllMaps[m + 64].SetAsLargeMap((byte)(m + 64), 0);
+                        scene.ow.AllMaps[m + 64 + 1].SetAsLargeMap((byte)(m + 64), 1 + 64);
+                        scene.ow.AllMaps[m + 64 + 8].SetAsLargeMap((byte)(m + 64), 2 + 64);
+                        scene.ow.AllMaps[m + 64 + 9].SetAsLargeMap((byte)(m + 64), 3 + 64);
                     }
                     // If we are in the dark world, set the light world opposite too.
                     else if (m >= 64 && m < 128)
                     {
-                        scene.ow.allmaps[m - 64].SetAsLargeMap((byte)(m - 64), 0);
-                        scene.ow.allmaps[m - 64 + 1].SetAsLargeMap((byte)(m - 64), 1 + 64);
-                        scene.ow.allmaps[m - 64 + 8].SetAsLargeMap((byte)(m - 64), 2 + 64);
-                        scene.ow.allmaps[m - 64 + 9].SetAsLargeMap((byte)(m - 64), 3 + 64);
+                        scene.ow.AllMaps[m - 64].SetAsLargeMap((byte)(m - 64), 0);
+                        scene.ow.AllMaps[m - 64 + 1].SetAsLargeMap((byte)(m - 64), 1 + 64);
+                        scene.ow.AllMaps[m - 64 + 8].SetAsLargeMap((byte)(m - 64), 2 + 64);
+                        scene.ow.AllMaps[m - 64 + 9].SetAsLargeMap((byte)(m - 64), 3 + 64);
                     }
 
-                    scene.ow.getLargeMaps();
+                    this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps();
 
                     Console.WriteLine("Updating object locations.");
 
@@ -1184,69 +1180,77 @@ namespace ZeldaFullEditor.Gui
 
                         for (int i = 0; i < 8; i++)
                         {
-                            m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+                            m = scene.ow.AllMaps[scene.selectedMap].parent + mtable[i];
 
-                            foreach (EntranceOW o in scene.ow.allentrances)
+                            foreach (EntranceOW o in scene.ow.AllEntrances)
                             {
                                 if (o.MapID == m)
                                 {
-                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (EntranceOW o in scene.ow.allholes)
+
+                            foreach (EntranceOW o in scene.ow.AllHoles)
                             {
                                 if (o.MapID == m)
                                 {
-                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (TransportOW o in scene.ow.allBirds)
+
+                            foreach (TransportOW o in scene.ow.AllBirds)
                             {
                                 if (o.mapId == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent, scene.ow);
                                 }
                             }
-                            foreach (TransportOW o in scene.ow.allWhirlpools)
+
+                            foreach (TransportOW o in scene.ow.AllWhirlpools)
                             {
                                 if (o.mapId == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent, scene.ow);
                                 }
                             }
-                            foreach (ExitOW o in scene.ow.allexits)
+
+                            foreach (ExitOW o in scene.ow.AllExits)
                             {
                                 if (o.MapID == m)
                                 {
-                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].parent, scene.ow);
                                 }
                             }
-                            foreach (RoomPotSaveEditor o in scene.ow.allitems)
+
+                            foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                             {
                                 if (o.roomMapId == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (Sprite o in scene.ow.allsprites[0])
+
+                            foreach (Sprite o in scene.ow.AllSprites[0])
                             {
                                 if (o.mapid == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (Sprite o in scene.ow.allsprites[1])
+
+                            foreach (Sprite o in scene.ow.AllSprites[1])
                             {
                                 if (o.mapid == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (Sprite o in scene.ow.allsprites[2])
+
+                            foreach (Sprite o in scene.ow.AllSprites[2])
                             {
                                 if (o.mapid == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
                         }
@@ -1257,69 +1261,77 @@ namespace ZeldaFullEditor.Gui
 
                         for (int i = 0; i < 8; i++)
                         {
-                            m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+                            m = scene.ow.AllMaps[scene.selectedMap].parent + mtable[i];
 
-                            foreach (EntranceOW o in scene.ow.allentrances)
+                            foreach (EntranceOW o in scene.ow.AllEntrances)
                             {
                                 if (o.MapID == m)
                                 {
-                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (EntranceOW o in scene.ow.allholes)
+
+                            foreach (EntranceOW o in scene.ow.AllHoles)
                             {
                                 if (o.MapID == m)
                                 {
-                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (TransportOW o in scene.ow.allBirds)
+
+                            foreach (TransportOW o in scene.ow.AllBirds)
                             {
                                 if (o.mapId == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent, scene.ow);
                                 }
                             }
-                            foreach (TransportOW o in scene.ow.allWhirlpools)
+
+                            foreach (TransportOW o in scene.ow.AllWhirlpools)
                             {
                                 if (o.mapId == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent, scene.ow);
                                 }
                             }
-                            foreach (ExitOW o in scene.ow.allexits)
+
+                            foreach (ExitOW o in scene.ow.AllExits)
                             {
                                 if (o.MapID == m)
                                 {
-                                    o.UpdateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].parent, scene.ow);
                                 }
                             }
-                            foreach (RoomPotSaveEditor o in scene.ow.allitems)
+
+                            foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                             {
                                 if (o.roomMapId == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (Sprite o in scene.ow.allsprites[0])
+
+                            foreach (Sprite o in scene.ow.AllSprites[0])
                             {
                                 if (o.mapid == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (Sprite o in scene.ow.allsprites[1])
+
+                            foreach (Sprite o in scene.ow.AllSprites[1])
                             {
                                 if (o.mapid == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
-                            foreach (Sprite o in scene.ow.allsprites[2])
+
+                            foreach (Sprite o in scene.ow.AllSprites[2])
                             {
                                 if (o.mapid == m)
                                 {
-                                    o.updateMapStuff(scene.ow.allmaps[m].parent);
+                                    o.updateMapStuff(scene.ow.AllMaps[m].parent);
                                 }
                             }
                         }
@@ -1330,29 +1342,29 @@ namespace ZeldaFullEditor.Gui
             }
             else // Small maps
             {
-                scene.ow.allmaps[m].SetAsSmallMap();
-                scene.ow.allmaps[m + 1].SetAsSmallMap();
-                scene.ow.allmaps[m + 8].SetAsSmallMap();
-                scene.ow.allmaps[m + 9].SetAsSmallMap();
+                scene.ow.AllMaps[m].SetAsSmallMap();
+                scene.ow.AllMaps[m + 1].SetAsSmallMap();
+                scene.ow.AllMaps[m + 8].SetAsSmallMap();
+                scene.ow.AllMaps[m + 9].SetAsSmallMap();
 
                 // If we are in the light world, set the dark world opposite too.
                 if (m < 64)
                 {
-                    scene.ow.allmaps[m + 64].SetAsSmallMap();
-                    scene.ow.allmaps[m + 64 + 1].SetAsSmallMap();
-                    scene.ow.allmaps[m + 64 + 8].SetAsSmallMap();
-                    scene.ow.allmaps[m + 64 + 9].SetAsSmallMap();
+                    scene.ow.AllMaps[m + 64].SetAsSmallMap();
+                    scene.ow.AllMaps[m + 64 + 1].SetAsSmallMap();
+                    scene.ow.AllMaps[m + 64 + 8].SetAsSmallMap();
+                    scene.ow.AllMaps[m + 64 + 9].SetAsSmallMap();
                 }
                 // If we are in the dark world, set the light world opposite too.
                 else if (m >= 64 && m < 128)
                 {
-                    scene.ow.allmaps[m - 64].SetAsSmallMap();
-                    scene.ow.allmaps[m - 64 + 1].SetAsSmallMap();
-                    scene.ow.allmaps[m - 64 + 8].SetAsSmallMap();
-                    scene.ow.allmaps[m - 64 + 9].SetAsSmallMap();
+                    scene.ow.AllMaps[m - 64].SetAsSmallMap();
+                    scene.ow.AllMaps[m - 64 + 1].SetAsSmallMap();
+                    scene.ow.AllMaps[m - 64 + 8].SetAsSmallMap();
+                    scene.ow.AllMaps[m - 64 + 9].SetAsSmallMap();
                 }
 
-                scene.ow.getLargeMaps();
+                this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps();
 
                 Console.WriteLine("Updating object locations.");
 
@@ -1362,11 +1374,11 @@ namespace ZeldaFullEditor.Gui
 
                     for (int i = 0; i < 2; i++)
                     {
-                        m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+                        m = scene.ow.AllMaps[scene.selectedMap].parent + mtable[i];
 
                         int j = 0;
                         // We are unchecking the large map box so all sprites on map00 are returning to other maps
-                        foreach (EntranceOW o in scene.ow.allentrances)
+                        foreach (EntranceOW o in scene.ow.AllEntrances)
                         {
                             if (o.MapID == m)
                             {
@@ -1374,12 +1386,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].index);
                                         j++;
                                     }
                                 }
@@ -1387,12 +1399,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].index);
                                         j++;
                                     }
                                 }
@@ -1400,7 +1412,7 @@ namespace ZeldaFullEditor.Gui
                         }
                         Console.WriteLine("Total entrances moved: " + j);
                         j = 0;
-                        foreach (EntranceOW o in scene.ow.allholes)
+                        foreach (EntranceOW o in scene.ow.AllHoles)
                         {
                             if (o.MapID == m)
                             {
@@ -1408,12 +1420,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].index);
                                         j++;
                                     }
                                 }
@@ -1421,20 +1433,21 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].index);
                                         j++;
                                     }
                                 }
                             }
                         }
+
                         Console.WriteLine("Total holes moved: " + j);
                         j = 0;
-                        foreach (TransportOW o in scene.ow.allBirds)
+                        foreach (TransportOW o in scene.ow.AllBirds)
                         {
                             if (o.mapId == m)
                             {
@@ -1442,12 +1455,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1455,12 +1468,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1468,7 +1481,7 @@ namespace ZeldaFullEditor.Gui
                         }
                         Console.WriteLine("Total brids moved: " + j);
                         j = 0;
-                        foreach (TransportOW o in scene.ow.allWhirlpools)
+                        foreach (TransportOW o in scene.ow.AllWhirlpools)
                         {
                             if (o.mapId == m)
                             {
@@ -1476,12 +1489,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1489,12 +1502,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1502,7 +1515,7 @@ namespace ZeldaFullEditor.Gui
                         }
                         Console.WriteLine("Total whirlpools moved: " + j);
                         j = 0;
-                        foreach (ExitOW o in scene.ow.allexits)
+                        foreach (ExitOW o in scene.ow.AllExits)
                         {
                             if (o.MapID == m)
                             {
@@ -1510,12 +1523,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1523,12 +1536,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].index, scene.ow);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].index, scene.ow);
                                         j++;
                                     }
                                 }
@@ -1536,7 +1549,7 @@ namespace ZeldaFullEditor.Gui
                         }
                         Console.WriteLine("Total exits moved: " + j);
                         j = 0;
-                        foreach (RoomPotSaveEditor o in scene.ow.allitems)
+                        foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                         {
                             if (o.roomMapId == m)
                             {
@@ -1544,12 +1557,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.gameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                         j++;
                                     }
                                 }
@@ -1557,12 +1570,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.gameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                         j++;
                                     }
                                 }
@@ -1570,7 +1583,7 @@ namespace ZeldaFullEditor.Gui
                         }
                         Console.WriteLine("Total items moved: " + j);
                         j = 0;
-                        foreach (Sprite o in scene.ow.allsprites[0])
+                        foreach (Sprite o in scene.ow.AllSprites[0])
                         {
                             if (o.mapid == m)
                             {
@@ -1578,12 +1591,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                         j++;
                                     }
                                 }
@@ -1591,12 +1604,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                         j++;
                                     }
                                 }
@@ -1604,7 +1617,7 @@ namespace ZeldaFullEditor.Gui
                         }
                         Console.WriteLine("Total sprites (0,1) moved: " + j);
                         j = 0;
-                        foreach (Sprite o in scene.ow.allsprites[1])
+                        foreach (Sprite o in scene.ow.AllSprites[1])
                         {
                             if (o.mapid == m)
                             {
@@ -1612,12 +1625,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                         j++;
                                     }
                                 }
@@ -1625,12 +1638,12 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                         j++;
                                     }
                                 }
@@ -1638,7 +1651,7 @@ namespace ZeldaFullEditor.Gui
                         }
                         Console.WriteLine("Total sprites (2) moved: " + j);
                         j = 0;
-                        foreach (Sprite o in scene.ow.allsprites[2])
+                        foreach (Sprite o in scene.ow.AllSprites[2])
                         {
                             if (o.mapid == m)
                             {
@@ -1646,22 +1659,22 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                     }
                                 }
                                 else
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                     }
                                 }
                                 j++;
@@ -1677,10 +1690,10 @@ namespace ZeldaFullEditor.Gui
 
                     for (int i = 0; i < 2; i++)
                     {
-                        m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+                        m = scene.ow.AllMaps[scene.selectedMap].parent + mtable[i];
 
                         // We are unchecking the large map box so all sprites on map00 are returning to other maps.
-                        foreach (EntranceOW o in scene.ow.allentrances)
+                        foreach (EntranceOW o in scene.ow.AllEntrances)
                         {
                             if (o.MapID == m)
                             {
@@ -1688,27 +1701,27 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].index);
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].index);
                                     }
                                 }
                                 else
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].index);
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].index);
                                     }
                                 }
                             }
                         }
-                        foreach (EntranceOW o in scene.ow.allholes)
+                        foreach (EntranceOW o in scene.ow.AllHoles)
                         {
                             if (o.MapID == m)
                             {
@@ -1716,27 +1729,28 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].index);
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].index);
                                     }
                                 }
                                 else
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].index);
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].index);
                                     }
                                 }
                             }
                         }
-                        foreach (TransportOW o in scene.ow.allBirds)
+
+                        foreach (TransportOW o in scene.ow.AllBirds)
                         {
                             if (o.mapId == m)
                             {
@@ -1744,27 +1758,27 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index, scene.ow);
                                     }
                                 }
                                 else
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index, scene.ow);
                                     }
                                 }
                             }
                         }
-                        foreach (TransportOW o in scene.ow.allWhirlpools)
+                        foreach (TransportOW o in scene.ow.AllWhirlpools)
                         {
                             if (o.mapId == m)
                             {
@@ -1772,27 +1786,27 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index, scene.ow);
                                     }
                                 }
                                 else
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index, scene.ow);
                                     }
                                 }
                             }
                         }
-                        foreach (ExitOW o in scene.ow.allexits)
+                        foreach (ExitOW o in scene.ow.AllExits)
                         {
                             if (o.MapID == m)
                             {
@@ -1800,27 +1814,27 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 8].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].index, scene.ow);
                                     }
                                 }
                                 else
                                 {
                                     if (o.AreaY < 32)
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 1].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].index, scene.ow);
                                     }
                                     else
                                     {
-                                        o.UpdateMapStuff(scene.ow.allmaps[m + 9].index, scene.ow);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].index, scene.ow);
                                     }
                                 }
                             }
                         }
-                        foreach (RoomPotSaveEditor o in scene.ow.allitems)
+                        foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                         {
                             if (o.roomMapId == m)
                             {
@@ -1828,27 +1842,27 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.gameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                     }
                                 }
                                 else
                                 {
                                     if (o.gameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                     }
                                 }
                             }
                         }
-                        foreach (Sprite o in scene.ow.allsprites[0])
+                        foreach (Sprite o in scene.ow.AllSprites[0])
                         {
                             if (o.mapid == m)
                             {
@@ -1856,27 +1870,27 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                     }
                                 }
                                 else
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                     }
                                 }
                             }
                         }
-                        foreach (Sprite o in scene.ow.allsprites[1])
+                        foreach (Sprite o in scene.ow.AllSprites[1])
                         {
                             if (o.mapid == m)
                             {
@@ -1884,27 +1898,27 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                     }
                                 }
                                 else
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                     }
                                 }
                             }
                         }
-                        foreach (Sprite o in scene.ow.allsprites[2])
+                        foreach (Sprite o in scene.ow.AllSprites[2])
                         {
                             if (o.mapid == m)
                             {
@@ -1912,22 +1926,22 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 8].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].index);
                                     }
                                 }
                                 else
                                 {
                                     if (o.y < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 1].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.allmaps[m + 9].index);
+                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].index);
                                     }
                                 }
                             }
@@ -1947,7 +1961,7 @@ namespace ZeldaFullEditor.Gui
         /// <param name="phase"></param>
         public void clearOverworldSprites(int phase)
         {
-            overworld.allsprites[phase].Clear();
+            overworld.AllSprites[phase].Clear();
         }
 
         /// <summary>
@@ -1955,7 +1969,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearOverworldItems()
         {
-            overworld.allitems.Clear();
+            overworld.AllItems.Clear();
         }
 
         /// <summary>
@@ -1963,9 +1977,9 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearOverworldEntrances()
         {
-            for (int i = 0; i < overworld.allentrances.Length; i++)
+            for (int i = 0; i < overworld.AllEntrances.Length; i++)
             {
-                var entrance = overworld.allentrances[i];
+                var entrance = overworld.AllEntrances[i];
 
                 entrance.X = 0xFFFF;
                 entrance.Y = 0xFFFF;
@@ -1983,9 +1997,9 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearOverworldHoles()
         {
-            for (int i = 0; i < overworld.allholes.Length; i++)
+            for (int i = 0; i < overworld.AllHoles.Length; i++)
             {
-                var entrance = overworld.allholes[i];
+                var entrance = overworld.AllHoles[i];
 
                 entrance.X = 0xFFFF;
                 entrance.Y = 0xFFFF;
@@ -2001,7 +2015,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearOverworldExits()
         {
-            foreach (var exit in overworld.allexits)
+            foreach (var exit in overworld.AllExits)
             {
                 exit.PlayerX = 0xFFFF;
                 exit.PlayerY = 0xFFFF;
@@ -2016,7 +2030,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearOverworldOverlays()
         {
-            foreach (var overlay in overworld.alloverlays)
+            foreach (var overlay in overworld.AllOverlays)
             {
                 overlay.TileDataList.Clear();
             }
@@ -2028,7 +2042,7 @@ namespace ZeldaFullEditor.Gui
         /// <param name="phase"></param>
         public void clearAreaSprites(int phase)
         {
-            overworld.allsprites[phase].RemoveAll(o => o.mapid == scene.selectedMapParent);
+            overworld.AllSprites[phase].RemoveAll(o => o.mapid == scene.selectedMapParent);
         }
 
         /// <summary>
@@ -2036,7 +2050,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearAreaItems()
         {
-            overworld.allitems.RemoveAll(o => o.roomMapId == scene.selectedMapParent);
+            overworld.AllItems.RemoveAll(o => o.roomMapId == scene.selectedMapParent);
         }
 
         /// <summary>
@@ -2044,7 +2058,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearAreaEntrances()
         {
-            foreach (EntranceOW entrance in overworld.allentrances)
+            foreach (EntranceOW entrance in overworld.AllEntrances)
             {
                 if (entrance.MapID == scene.selectedMapParent)
                 {
@@ -2063,7 +2077,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearAreaHoles()
         {
-            foreach (var hole in overworld.allholes)
+            foreach (var hole in overworld.AllHoles)
             {
                 if (hole.MapID == scene.selectedMapParent)
                 {
@@ -2082,7 +2096,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearAreaExits()
         {
-            foreach (var exit in overworld.allexits)
+            foreach (var exit in overworld.AllExits)
             {
                 if (exit.MapID == scene.selectedMapParent)
                 {
@@ -2100,7 +2114,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearAreaOverlays()
         {
-            overworld.alloverlays[scene.selectedMapParent].TileDataList.Clear();
+            overworld.AllOverlays[scene.selectedMapParent].TileDataList.Clear();
             scene.Refresh();
         }
 
@@ -2111,7 +2125,7 @@ namespace ZeldaFullEditor.Gui
         /// <param name="e"></param>
         private void AreaBGColorPicturebox_MouseDoubleClick(object sender, EventArgs e)
         {
-            int selectedParent = scene.ow.allmaps[scene.selectedMap].parent;
+            int selectedParent = scene.ow.AllMaps[scene.selectedMap].parent;
 
             cd.Color = Palettes.overworld_BackgroundPalette[selectedParent];
             if (cd.ShowDialog() == DialogResult.OK)
@@ -2120,7 +2134,7 @@ namespace ZeldaFullEditor.Gui
                 areaBGColorPictureBox.Refresh();
             }
 
-            mainForm.overworldEditor.overworld.allmaps[selectedParent].LoadPalette();
+            mainForm.overworldEditor.overworld.AllMaps[selectedParent].LoadPalette();
         }
 
         /// <summary>
@@ -2130,7 +2144,7 @@ namespace ZeldaFullEditor.Gui
         /// <param name="e"></param>
         private void AreaBGColorPicturebox_Paint(object sender, PaintEventArgs e)
         {
-            int selectedParent = scene.ow.allmaps[scene.selectedMap].parent;
+            int selectedParent = scene.ow.AllMaps[scene.selectedMap].parent;
 
             if (selectedParent < Palettes.overworld_BackgroundPalette.Length)
             {
@@ -2166,7 +2180,7 @@ namespace ZeldaFullEditor.Gui
                     int x = (i % 8) * 512;
                     int y = (i / 8) * 512;
 
-                    int k = overworld.allmaps[i].parent;
+                    int k = overworld.AllMaps[i].parent;
                     g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k]), new Rectangle(x, y, 512, 512));
                 }
             }
@@ -2180,7 +2194,7 @@ namespace ZeldaFullEditor.Gui
                 int x = (i % 8) * 512;
                 int y = (i / 8) * 512;
 
-                g.DrawImage(overworld.allmaps[i].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+                g.DrawImage(overworld.AllMaps[i].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
             temp.Save("LW.png");
@@ -2195,7 +2209,7 @@ namespace ZeldaFullEditor.Gui
                     int x = (i % 8) * 512;
                     int y = (i / 8) * 512;
 
-                    int k = overworld.allmaps[i].parent;
+                    int k = overworld.AllMaps[i].parent;
                     g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 64]), new Rectangle(x, y, 512, 512));
                 }
             }
@@ -2209,7 +2223,7 @@ namespace ZeldaFullEditor.Gui
                 int x = (i % 8) * 512;
                 int y = (i / 8) * 512;
 
-                g.DrawImage(overworld.allmaps[i + 64].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+                g.DrawImage(overworld.AllMaps[i + 64].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
             temp.Save("DW.png");
@@ -2224,7 +2238,7 @@ namespace ZeldaFullEditor.Gui
                     int x = (i % 8) * 512;
                     int y = (i / 8) * 512;
 
-                    int k = overworld.allmaps[i].parent;
+                    int k = overworld.AllMaps[i].parent;
                     g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 128]), new Rectangle(x, y, 512, 512));
                 }
             }
@@ -2238,7 +2252,7 @@ namespace ZeldaFullEditor.Gui
                 int x = (i % 8) * 512;
                 int y = (i / 8) * 512;
 
-                g.DrawImage(overworld.allmaps[i + 128].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+                g.DrawImage(overworld.AllMaps[i + 128].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
             temp.Save("SP.png");
@@ -2252,7 +2266,7 @@ namespace ZeldaFullEditor.Gui
 
         private void mosaicCheckBox_Click(object sender, EventArgs e)
         {
-            scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent].mosaic = mosaicCheckBox.Checked;
+            scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].parent].mosaic = mosaicCheckBox.Checked;
         }
 
         private void openfileButton_Click(object sender, EventArgs e)
@@ -2294,9 +2308,9 @@ namespace ZeldaFullEditor.Gui
             }
             else
             {
-                buffer.Write((byte)scene.ow.gameState);
-                buffer.Write((byte)map.sprgfx[scene.ow.gameState]);
-                buffer.Write((byte)map.sprpalette[scene.ow.gameState]);
+                buffer.Write((byte)scene.ow.GameState);
+                buffer.Write((byte)map.sprgfx[scene.ow.GameState]);
+                buffer.Write((byte)map.sprpalette[scene.ow.GameState]);
             }
 
             NetOutgoingMessage msg = NetZS.client.CreateMessage();

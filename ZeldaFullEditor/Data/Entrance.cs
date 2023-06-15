@@ -3,7 +3,7 @@
 namespace ZeldaFullEditor
 {
     /// <summary>
-    ///     A class for containing all Entrance Data. Can be used for starting entrance as well.
+    ///     A data class containing all the info for dungeon entrance properties. Can be used for starting entrances as well.
     /// </summary>
     public class Entrance
     {

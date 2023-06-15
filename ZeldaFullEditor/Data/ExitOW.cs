@@ -3,7 +3,7 @@
 namespace ZeldaFullEditor
 {
     /// <summary>
-    ///     A class containing all the info for each Oveworld Exit.
+    ///     A data class containing all the info for oveworld exits.
     /// </summary>
     [Serializable]
     public class ExitOW
@@ -200,10 +200,10 @@ namespace ZeldaFullEditor
 
             if (mapID < 128)
             {
-                large = overworld.allmaps[mapID].largeMap ? 768 : 256;
-                if (overworld.allmaps[mapID].parent != mapID)
+                large = overworld.AllMaps[mapID].largeMap ? 768 : 256;
+                if (overworld.AllMaps[mapID].parent != mapID)
                 {
-                    mapid = overworld.allmaps[mapID].parent;
+                    mapid = overworld.AllMaps[mapID].parent;
                 }
             }
 

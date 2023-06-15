@@ -3,7 +3,7 @@
 namespace ZeldaFullEditor.Data
 {
     /// <summary>
-    ///     A class containing all the info for messages (Text dialog).
+    ///     A data class containing all the info for messages (Text dialog).
     /// </summary>
     public class MessageData
     {

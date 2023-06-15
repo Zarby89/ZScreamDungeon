@@ -428,7 +428,7 @@ namespace ZeldaFullEditor.Gui
 
                 for (int i = 0; i < 159; i++)
                 {
-                    mainForm.overworldEditor.overworld.allmaps[i].needRefresh = true;
+                    mainForm.overworldEditor.overworld.AllMaps[i].needRefresh = true;
                 }
             }
         }
