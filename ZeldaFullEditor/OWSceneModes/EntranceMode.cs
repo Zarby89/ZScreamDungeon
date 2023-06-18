@@ -622,7 +622,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 g.CompositingMode = CompositingMode.SourceCopy;
             }
-
             else
             {
                 Brush bgrBrush = Constants.Goldenrod200Brush;

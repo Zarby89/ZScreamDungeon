@@ -987,14 +987,14 @@ namespace ZeldaFullEditor.Gui
                 {
                     for (int x = 0; x < 32; x += 1)
                     {
-                        ushort LWTile = overworld.AllMapTile32_LW[x + (sx * 32), y + (sy * 32)];
+                        ushort LWTile = overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)];
                         alltilesIndexed[LWTile]++;
-                        ushort DWTile = overworld.AllMapTile32_DW[x + (sx * 32), y + (sy * 32)];
+                        ushort DWTile = overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)];
                         alltilesIndexed[DWTile]++;
 
                         if (i < 32)
                         {
-                            alltilesIndexed[overworld.AllMapTile32_SP[x + (sx * 32), y + (sy * 32)]]++;
+                            alltilesIndexed[overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)]]++;
                         }
                     }
                 }
@@ -1170,7 +1170,7 @@ namespace ZeldaFullEditor.Gui
                         scene.ow.AllMaps[m - 64 + 9].SetAsLargeMap((byte)(m - 64), 3 + 64);
                     }
 
-                    this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps();
+                    this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps(this.scene.ow.AllMaps);
 
                     Console.WriteLine("Updating object locations.");
 
@@ -1364,7 +1364,7 @@ namespace ZeldaFullEditor.Gui
                     scene.ow.AllMaps[m - 64 + 9].SetAsSmallMap();
                 }
 
-                this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps();
+                this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps(this.scene.ow.AllMaps);
 
                 Console.WriteLine("Updating object locations.");
 

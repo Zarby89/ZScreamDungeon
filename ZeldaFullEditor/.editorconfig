@@ -240,3 +240,6 @@ csharp_prefer_simple_default_expression = true:suggestion
 dotnet_diagnostic.SA1600.severity = warning
 csharp_space_around_binary_operators = before_and_after
 dotnet_diagnostic.SA1402.severity = silent
+csharp_style_prefer_local_over_anonymous_function = true:suggestion
+csharp_style_prefer_index_operator = true:suggestion
+dotnet_diagnostic.SA1124.severity = silent

@@ -574,16 +574,16 @@ namespace ZeldaFullEditor
         }
 
         /// <summary>
-        /// Creates a map32 tile map and saves the overworld tiles in the rom. 
+        ///     Creates a map32 tile map and saves the overworld tiles in the rom.
         /// </summary>
-        /// <returns>True if saving failed. For example if the unique tile32 limit was passed. </returns>
+        /// <returns> True if saving failed. For example if the unique tile32 limit was passed. </returns>
         public bool SaveTiles()
         {
-            if (!ow.createMap32Tilesmap())
+            if (!this.ow.CreateTile32Tilemap())
             {
-                ow.Save32Tiles();
+                this.ow.Save32Tiles();
                 //ow.savemapstorom();
-                ow.SaveMap16Tiles();
+                this.ow.SaveMap16Tiles();
 
                 return false;
             }
@@ -596,9 +596,6 @@ namespace ZeldaFullEditor
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-
-
-
 
             Graphics g = e.Graphics;
 

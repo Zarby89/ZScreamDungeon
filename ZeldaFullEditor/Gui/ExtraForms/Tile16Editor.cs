@@ -419,24 +419,16 @@ namespace ZeldaFullEditor.Gui
             List<Tile16> zsnetTiles16 = new List<Tile16>();
             for (int i = 0; i < Constants.NumberOfMap16; i++)
             {
-
-
-
                 if (NetZS.connected)
                 {
-
                     if (scene.ow.Tile16List[i].GetLongData() != allTiles[i].GetLongData())
                     {
-
                         zsnetTiles16.Add(allTiles[i]);
                         zsnetTiles16ID.Add((ushort)i);
-
                     }
                 }
-                //check all tiles that changed
 
-
-
+                // check all tiles that changed
                 scene.ow.Tile16List[i] = allTiles[i];
             }
 
@@ -453,16 +445,13 @@ namespace ZeldaFullEditor.Gui
                     buffer.Write((ushort)zsnetTiles16[i].Tile1.toShort());
                     buffer.Write((ushort)zsnetTiles16[i].Tile2.toShort());
                     buffer.Write((ushort)zsnetTiles16[i].Tile3.toShort());
-
                 }
 
                 NetOutgoingMessage msg = NetZS.client.CreateMessage();
                 msg.Write(buffer.buffer);
                 NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
                 NetZS.client.FlushSendQueue();
-
             }
-
 
             for (int i = 0; i < 0x200; i++)
             {

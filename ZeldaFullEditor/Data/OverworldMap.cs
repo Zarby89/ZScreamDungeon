@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
@@ -213,16 +207,16 @@ namespace ZeldaFullEditor
 
             if (index < 64)
             {
-                tilesUsed = ow.AllMapTile32_LW;
+                tilesUsed = ow.AllMapTile32LW;
             }
             else if (index < 128 && index >= 64)
             {
-                tilesUsed = ow.AllMapTile32_DW;
+                tilesUsed = ow.AllMapTile32DW;
                 world = 1;
             }
             else
             {
-                tilesUsed = ow.AllMapTile32_SP;
+                tilesUsed = ow.AllMapTile32SP;
                 world = 2;
             }
 

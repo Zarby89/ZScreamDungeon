@@ -457,14 +457,6 @@ namespace ZeldaFullEditor.Properties
                 form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile1 = GFX.gettilesinfo(buffer.ReadUShort());
                 form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile2 = GFX.gettilesinfo(buffer.ReadUShort());
                 form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile3 = GFX.gettilesinfo(buffer.ReadUShort());
-                form.overworldEditor.scene.ow.Tile16List[tileChanged].TileInfoArray = new TileInfo[]
-                {
-                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile0,
-                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile1,
-                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile2,
-                    form.overworldEditor.scene.ow.Tile16List[tileChanged].Tile3
-                };
-
             }
         }
 
@@ -658,7 +650,7 @@ namespace ZeldaFullEditor.Properties
             {
                 for (int y = 0; y < 256; y++)
                 {
-                    checksum += form.overworldEditor.scene.ow.AllMapTile32_LW[x, y];
+                    checksum += form.overworldEditor.scene.ow.AllMapTile32LW[x, y];
                 }
             }
             int clientChecksum = im.Data[2] | im.Data[3] << 8 | im.Data[4] << 16 | im.Data[5] << 24;

@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO.Compression;
 using AsarCLR;
 using ZCompressLibrary;
 
@@ -1275,8 +1271,8 @@ namespace ZeldaFullEditor
                 {
                     for (int x = 0; x < 16; x++)
                     {
-                        singleMap1[npos] = (byte)(scene.ow.t32[npos + (i * 256)] & 0xFF);
-                        singleMap2[npos] = (byte)((scene.ow.t32[npos + (i * 256)] >> 8) & 0xFF);
+                        singleMap1[npos] = (byte)(scene.ow.Tile32List[npos + (i * 256)] & 0xFF);
+                        singleMap2[npos] = (byte)((scene.ow.Tile32List[npos + (i * 256)] >> 8) & 0xFF);
                         npos++;
                     }
                 }
