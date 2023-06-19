@@ -200,10 +200,10 @@ namespace ZeldaFullEditor
 
             if (mapID < 128)
             {
-                large = overworld.AllMaps[mapID].largeMap ? 768 : 256;
-                if (overworld.AllMaps[mapID].parent != mapID)
+                large = overworld.AllMaps[mapID].LargeMap ? 768 : 256;
+                if (overworld.AllMaps[mapID].ParentID != mapID)
                 {
-                    mapid = overworld.AllMaps[mapID].parent;
+                    mapid = overworld.AllMaps[mapID].ParentID;
                 }
             }
 

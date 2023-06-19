@@ -27,7 +27,7 @@
         /// <param name="id"> The ID. </param>
         /// <param name="dungeonId"> The Dungeon ID. </param>
         /// <param name="name"> The Name. </param>
-		public DataRoom(short id, byte dungeonId, string name)
+        public DataRoom(short id, byte dungeonId, string name)
         {
             this.ID = id;
             this.DungeonID = dungeonId;

@@ -67,7 +67,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedTransport.playerY = (short)((e.Y / 8) * 8);
                     }
 
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -145,7 +145,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < scene.ow.AllWhirlpools.Count; i++)
                 {
                     TransportOW e = scene.ow.AllWhirlpools[i];
-                    if (e.mapId != scene.ow.AllMaps[scene.selectedMap].parent)
+                    if (e.mapId != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }

@@ -730,42 +730,42 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
             byte map = buffer.ReadByte(); // map id
 
-            OverworldMap[] owmaps = form.overworldEditor.scene.ow.AllMaps.Where(x => x.index == map).ToArray();
+            OverworldMap[] owmaps = form.overworldEditor.scene.ow.AllMaps.Where(x => x.Index == map).ToArray();
             OverworldMap owmap = null;
             if (owmaps.Length > 0)
             {
                 owmap = owmaps[0];
 
-                owmap.palette = buffer.ReadByte();
-                owmap.gfx = buffer.ReadByte();
-                owmap.messageID = buffer.ReadShort();
+                owmap.Palette = buffer.ReadByte();
+                owmap.GFX = buffer.ReadByte();
+                owmap.MessageID = buffer.ReadShort();
                 byte state = buffer.ReadByte();
-                owmap.sprgfx[state] = buffer.ReadByte();
-                owmap.sprpalette[state] = buffer.ReadByte();
+                owmap.SpriteGFX[state] = buffer.ReadByte();
+                owmap.SpritePalette[state] = buffer.ReadByte();
                 form.overworldEditor.UpdateGUIProperties(owmap, state);
 
 
-                if (owmap.largeMap)
+                if (owmap.LargeMap)
                 {
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].gfx = owmap.gfx;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].sprgfx = owmap.sprgfx;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].palette = owmap.palette;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].sprpalette = owmap.sprpalette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].GFX = owmap.GFX;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].SpriteGFX = owmap.SpriteGFX;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].Palette = owmap.Palette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].SpritePalette = owmap.SpritePalette;
 
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].gfx = owmap.gfx;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].sprgfx = owmap.sprgfx;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].palette = owmap.palette;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].sprpalette = owmap.sprpalette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].GFX = owmap.GFX;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].SpriteGFX = owmap.SpriteGFX;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].Palette = owmap.Palette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].SpritePalette = owmap.SpritePalette;
 
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].gfx = owmap.gfx;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].sprgfx = owmap.sprgfx;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].palette = owmap.palette;
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].sprpalette = owmap.sprpalette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].GFX = owmap.GFX;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].SpriteGFX = owmap.SpriteGFX;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].Palette = owmap.Palette;
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].SpritePalette = owmap.SpritePalette;
 
                     owmap.BuildMap();
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 1].BuildMap();
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 8].BuildMap();
-                    form.overworldEditor.scene.ow.AllMaps[owmap.index + 9].BuildMap();
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].BuildMap();
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].BuildMap();
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].BuildMap();
                 }
 
 
@@ -810,8 +810,8 @@ namespace ZeldaFullEditor.Properties
 
                 if (tileX + x < 256 && tileY + y < 256)
                 {
-                    form.overworldEditor.scene.ow.AllMaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
-                    form.overworldEditor.scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.AllMaps[mapId].gfxPtr, GFX.mapblockset16);
+                    form.overworldEditor.scene.ow.AllMaps[mapId].TilesUsed[tileX + x, tileY + y] = selectedTiles[i];
+                    form.overworldEditor.scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
                 }
                 x++;
                 if (x >= tilesizex)
@@ -854,8 +854,8 @@ namespace ZeldaFullEditor.Properties
                 int superX = ((tileX + x) / 32);
                 int superY = ((tileY + y) / 32);
                 int mapId = (superY * 8) + superX + worldoffset;
-                form.overworldEditor.scene.ow.AllMaps[mapId].tilesUsed[tileX + x, tileY + y] = selectedTiles[i];
-                form.overworldEditor.scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.AllMaps[mapId].gfxPtr, GFX.mapblockset16);
+                form.overworldEditor.scene.ow.AllMaps[mapId].TilesUsed[tileX + x, tileY + y] = selectedTiles[i];
+                form.overworldEditor.scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), selectedTiles[i], form.overworldEditor.scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
                 x++;
                 if (x >= tilesizex)
                 {
@@ -895,7 +895,7 @@ namespace ZeldaFullEditor.Properties
             int superY = ((tileY + y) / 32);
             int mapId = (superY * 8) + superX + worldoffset;
 
-            int mid = form.overworldEditor.scene.ow.AllMaps[mapId].parent;
+            int mid = form.overworldEditor.scene.ow.AllMaps[mapId].ParentID;
             int superMX = (mid % 8) * 32;
             int superMY = (mid / 8) * 32;
 
@@ -1028,7 +1028,7 @@ namespace ZeldaFullEditor.Properties
             int superY = ((tileY + y) / 32);
             int mapId = (superY * 8) + superX + worldoffset;
 
-            int mid = form.overworldEditor.scene.ow.AllMaps[mapId].parent;
+            int mid = form.overworldEditor.scene.ow.AllMaps[mapId].ParentID;
             int superMX = (mid % 8) * 32;
             int superMY = (mid / 8) * 32;
 

@@ -101,7 +101,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             return;
                         }
 
-                        scene.tilesgfxBitmap.Palette = scene.ow.AllMaps[mapId].gfxBitmap.Palette;
+                        scene.tilesgfxBitmap.Palette = scene.ow.AllMaps[mapId].GFXBitmap.Palette;
 
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         //this.Refresh();

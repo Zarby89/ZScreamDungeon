@@ -243,3 +243,4 @@ dotnet_diagnostic.SA1402.severity = silent
 csharp_style_prefer_local_over_anonymous_function = true:suggestion
 csharp_style_prefer_index_operator = true:suggestion
 dotnet_diagnostic.SA1124.severity = silent
+dotnet_diagnostic.SA1629.severity = silent

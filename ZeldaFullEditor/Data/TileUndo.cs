@@ -38,7 +38,7 @@ namespace ZeldaFullEditor
                     int mapId = (superY * 8) + superX + scene.ow.WorldOffset;
                     usedTiles[x + mouseXDown, y + mouseYDown] = savedTiles[i];
                     scene.ow.AllMaps[mapId].BuildMap();
-                    scene.ow.AllMaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512), savedTiles[i], scene.ow.AllMaps[mapId].gfxPtr, GFX.mapblockset16);
+                    scene.ow.AllMaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512), savedTiles[i], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
                     i++;
                 }
             }
@@ -57,7 +57,7 @@ namespace ZeldaFullEditor
                     int superY = ((mouseYDown + y) / 32);
                     int mapId = (superY * 8) + superX + scene.ow.WorldOffset; ;
                     usedTiles[x + mouseXDown, y + mouseYDown] = redosavedTiles[i];
-                    scene.ow.AllMaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512), redosavedTiles[i], scene.ow.AllMaps[mapId].gfxPtr, GFX.mapblockset16);
+                    scene.ow.AllMaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512), redosavedTiles[i], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
                     i++;
                 }
             }

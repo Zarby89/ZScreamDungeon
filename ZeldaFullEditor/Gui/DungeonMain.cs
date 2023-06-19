@@ -4055,7 +4055,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (oweditor2.scene.ow.AllMaps[oweditor2.scene.selectedMap].largeMap)
+            if (oweditor2.scene.ow.AllMaps[oweditor2.scene.selectedMap].LargeMap)
             {
                 Console.Write("Is large map");
                 selectedMap = oweditor2.scene.selectedMap + 1;
@@ -4382,11 +4382,11 @@ namespace ZeldaFullEditor
             {
                 for (int y = 0; y < 32; y++)
                 {
-                    if (!tile8ids.Contains(overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
+                    if (!tile8ids.Contains(overworldEditor.overworld.AllMaps[44].TilesUsed[x + (4 * 32), y + (5 * 32)]))
                     {
-                        tile8ids.Add(overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
+                        tile8ids.Add(overworldEditor.overworld.AllMaps[44].TilesUsed[x + (4 * 32), y + (5 * 32)]);
                     }
-                    map16[x, y] = overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
+                    map16[x, y] = overworldEditor.overworld.AllMaps[44].TilesUsed[x + (4 * 32), y + (5 * 32)];
                 }
             }
 
@@ -4409,7 +4409,7 @@ namespace ZeldaFullEditor
                 {
                     for (int y = 0; y < 32; y++)
                     {
-                        overworldEditor.overworld.AllMaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
+                        overworldEditor.overworld.AllMaps[44].TilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
                     }
                 }
             }

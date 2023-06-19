@@ -258,7 +258,7 @@ namespace ZeldaFullEditor
                 int i = xx + (yy * 8);
                 if (!mapChecked[i])
                 {
-                    if (allMaps[i].largeMap)
+                    if (allMaps[i].LargeMap)
                     {
                         mapChecked[i] = true;
                         allMaps[i].SetAsLargeMap((byte)i, 0);
@@ -853,9 +853,9 @@ namespace ZeldaFullEditor
 
                 addr = Utils.SnesToPc(addr);
 
-                if (this.AllMaps[i].largeMap)
+                if (this.AllMaps[i].LargeMap)
                 {
-                    if (this.AllMaps[i].parent != (byte)i)
+                    if (this.AllMaps[i].ParentID != (byte)i)
                     {
                         continue;
                     }
@@ -1065,7 +1065,7 @@ namespace ZeldaFullEditor
             var allSprites = new List<Sprite>[3] { new List<Sprite>(), new List<Sprite>(), new List<Sprite>() };
             for (int i = 0; i < 64; i++)
             {
-                if (this.AllMaps[i].parent == i)
+                if (this.AllMaps[i].ParentID == i)
                 {
                     // Beginning Sprites.
                     int ptrPos = Constants.overworldSpritesBegining + (i * 2);
@@ -1095,7 +1095,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 144; i++)
             {
-                if (this.AllMaps[i].parent == i)
+                if (this.AllMaps[i].ParentID == i)
                 {
                     // Zelda Saved Sprites.
                     int ptrPos = Constants.overworldSpritesZelda + (i * 2);
@@ -1133,7 +1133,7 @@ namespace ZeldaFullEditor
                 }
 
                 // Agahnim Dead Sprites.
-                if (this.AllMaps[i].parent == i)
+                if (this.AllMaps[i].ParentID == i)
                 {
                     int ptrPos = Constants.overworldSpritesAgahnim + (i * 2);
                     int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));

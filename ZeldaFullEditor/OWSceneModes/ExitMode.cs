@@ -63,7 +63,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (scene.ow.AllExits[i].Deleted)
                 {
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -202,7 +202,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedExit.PlayerY = (ushort)((e.Y / 8) * 8);
                     }
 
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -339,7 +339,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     g.CompositingMode = CompositingMode.SourceOver;
                     ExitOW ex = scene.ow.AllExits[i];
-                    if (ex.MapID != scene.ow.AllMaps[scene.selectedMap].parent)
+                    if (ex.MapID != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }

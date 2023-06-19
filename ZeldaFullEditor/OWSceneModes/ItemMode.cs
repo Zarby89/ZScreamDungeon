@@ -95,7 +95,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedItem != null)
                 {
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -197,7 +197,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 g.CompositingMode = CompositingMode.SourceOver;
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
-                    if (item.roomMapId != scene.ow.AllMaps[scene.selectedMap].parent)
+                    if (item.roomMapId != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }

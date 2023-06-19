@@ -78,7 +78,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (scene.ow.AllHoles[i].Deleted)
                     {
-                        byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                        byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                         if (mid == 255)
                         {
                             mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -109,7 +109,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (scene.ow.AllEntrances[i].Deleted)
                     {
-                        byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                        byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                         if (mid == 255)
                         {
                             mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -398,7 +398,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedEntrance != null)
                 {
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -510,7 +510,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (scene.ow.AllEntrances[i].Deleted)
                 {
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].parent;
+                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
@@ -567,7 +567,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < scene.ow.AllEntrances.Length; i++)
                 {
                     EntranceOW e = scene.ow.AllEntrances[i];
-                    if (e.MapID != scene.ow.AllMaps[scene.selectedMap].parent)
+                    if (e.MapID != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }
@@ -598,7 +598,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < scene.ow.AllHoles.Length; i++)
                 {
                     EntranceOW e = scene.ow.AllHoles[i];
-                    if (e.MapID != scene.ow.AllMaps[scene.selectedMap].parent)
+                    if (e.MapID != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }
