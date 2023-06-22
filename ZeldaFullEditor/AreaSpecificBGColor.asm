@@ -8,18 +8,22 @@
 ; Modified Functions
 ; ==============================================================================
 
-org $0BFEB6             ;loads the transparent color under some load conditions
-    ;JML IntColorLoad1
+; Loads the transparent color under some load conditions
+org $0BFEB6
+    JML IntColorLoad1
 
-org $0ED644             ;loads the transparent color under some load conditions
+; Loads the transparent color under some load conditions
+org $0ED627
     JML IntColorLoad2
     NOP
 
-org $0ED5E7 ;Main Palette loading routine. 
-    ;JSL CheckForChangePaletteLONG
+; Main Palette loading routine. 
+org $0ED5E7
+    JSL CheckForChangePaletteLONG
 
-org $02E94A ;After leaving special areas like Zora's and the Master Sword area.
-    ;JSL CheckForChangePalette2LONG
+; After leaving special areas like Zora's and the Master Sword area.
+org $02E94A
+    JSL CheckForChangePalette2LONG
 
 ; ==============================================================================
 
@@ -34,16 +38,15 @@ IntColorLoad1:
     SEP #$20 ; Set A in 8bit mode
 
     LDA $8140 : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
+        REP #$20 ; Set A in 16bit mode
 
-    REP #$20 ; Set A in 16bit mode
+        LDA $00
+        STA $7EC300
+        STA $7EC500 ;replaced code
 
-    LDA $00
-    STA $7EC300
-    STA $7EC500 ;replaced code
+        PLB
 
-    PLB
-
-    JML $0BFEBA
+        JML $0BFEBA
 
     .custom
 
@@ -69,30 +72,32 @@ IntColorLoad2:
 {
     PHB : PHK : PLB
 
-    SEP #$30 ; Set A in 8bit mode
+    SEP #$20 ; Set A in 8bit mode
 
     LDA $8140 : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
+        REP #$20 ; Set A in 16bit mode
 
-    REP #$30 ; Set A in 16bit mode
+        LDA $8A : CMP.w #$0080 : BCC .notSpecialArea
+            PLB
+            JML $0ED62E
 
-    LDX.w #$2A32
+        .notSpecialArea
 
-    PLB
-
-    JML $0ED651
+        PLB
+        JML $0ED644
 
     .custom
 
     LDA.b #$00 : XBA ; used to flush out the other byte in A
 
-    LDA $8A : ASL : TAX ; Get area code and times it by 2
+    REP #$20 ; Set A in 16bit mode
 
-    REP #$30 ; Set A in 16bit mode
+    LDA $8A : ASL : TAX ; Get area code and times it by 2
 
     LDA $8000, X ; pc 140000 is where ZS saves the array of palettes
     TAX
 
-    STA $7EC300 : STA $7EC500 ;set transparent colors
+    STA $7EC300 ;set transparent color
 
     PLB
 

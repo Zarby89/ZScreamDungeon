@@ -1630,26 +1630,31 @@ namespace ZeldaFullEditor
         /// <param name="mouseY"> The adjusted Y mouse position. </param>
         public void entrancetreeView_AfterSelect(int mouseX, int mouseY)
         {
-            if (!projectLoaded)
+            if (!this.projectLoaded)
             {
                 return;
             }
 
-            propertiesChangedFromForm = true;
-            Entrance en = selectedEntrance;
+            this.propertiesChangedFromForm = true;
+            Entrance entrance = this.selectedEntrance;
 
-            int cameraTriggerX = Utils.Clamp((ushort)mouseX, 128, 383);
-            int cameraTriggerY = Utils.Clamp((ushort)mouseY, 112, 392);
+            // 128 - 383 is the valid X range where the camera can be placed and 112 - 392 is the valid Y range where the camera can be placed.
+            // Any less or more than the valid would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+            int cameraTriggerX = Utils.Clamp((ushort)mouseX, Constants.CameraTriggerXLow, Constants.CameraTriggerXHigh);
+            int cameraTriggerY = Utils.Clamp((ushort)mouseY, Constants.CameraTriggerYLow, Constants.CameraTriggerYHigh);
 
+            // Add 7 so that it rounds correctly one block to the right.
             cameraTriggerX += 7;
 
+            // Limit the positions to multiples of 8.
             cameraTriggerX &= ~0x7;
             cameraTriggerY &= ~0x7;
 
+            // Subtract by one because in vanilla they always seem to end in 0x7 or 0xF.
             cameraTriggerX -= 1;
             cameraTriggerY -= 1;
 
-            this.setEntranceProperties(en, cameraTriggerX, cameraTriggerY);
+            this.setEntranceProperties(entrance, cameraTriggerX, cameraTriggerY);
         }
 
         public void setEntranceProperties(Entrance en, int cameraTriggerX, int cameraTriggerY)

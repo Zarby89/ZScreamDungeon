@@ -397,14 +397,38 @@ namespace ZeldaFullEditor
         //===========================================================================================
         public static int entrance_room = 0x14813; // 0x14577 // Word value for each room
         public static int entrance_scrolledge = 0x1491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                                                         //TODO: Swap CameraX and CameraY position because X is stored first!!
+                                                         // TODO: Swap CameraX and CameraY position because X is stored first!!
 
         public static int entrance_cameray = 0x14D45; // 0x14AA9 // 2bytes each room
         public static int entrance_camerax = 0x14E4F; // 0x14BB3 // 2bytes
-        public static int entrance_yposition = 0x14F59; //0x14CBD 2bytes
+        public static int entrance_yposition = 0x14F59; // 0x14CBD 2bytes
         public static int entrance_xposition = 0x15063;// 0x14DC7 2bytes
         public static int entrance_cameraytrigger = 0x1516D;// 0x14ED1 2bytes
         public static int entrance_cameraxtrigger = 0x15277;// 0x14FDB 2bytes
+
+        /// <summary>
+        /// 128 is the valid low X range where the camera can be placed.
+        /// Any less than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerXLow = 128;
+
+        /// <summary>
+        /// 383 is the valid high X range where the camera can be placed.
+        /// Any more than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerXHigh = 383;
+
+        /// <summary>
+        /// 112 is the valid low Y range where the camera can be placed.
+        /// Any less than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerYLow = 112;
+
+        /// <summary>
+        /// 392 is the valid high Y range where the camera can be placed.
+        /// Any more than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerYHigh = 392;
 
         public static int entrance_gfx_group = 0x5D97;
         public static int entrance_blockset = 0x15381; // 0x150E5 1byte
