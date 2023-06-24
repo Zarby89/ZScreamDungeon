@@ -17,6 +17,41 @@ org $0ED627
     JML IntColorLoad2
     NOP
 
+; Undos an old JML that was done here, this can eventually be removed once everyone has
+; applied this to their ROMs at least once.
+org $0ED62C
+test:
+{
+    BCC .notSpecialArea
+        ; Check for special areas
+        LDA $A0
+        
+        CMP.w #$0183 : BEQ .specialArea
+        CMP.w #$0182 : BEQ .specialArea
+        CMP.w #$0180 : BNE .finished
+    
+    .specialArea
+    
+    ; The special areas apparently have a slightly different shade of green
+    ; for their background
+     LDX.w #$19C6
+        
+    BRA .finished
+    
+    .notSpecialArea
+        LDX.w #$2669
+        
+        LDA $8A : AND.w #$0040 : BEQ .finished
+        
+        LDX.w #$2A32                            
+    
+    .finished
+    
+        TXA
+        
+        RTS
+}
+
 ; Main Palette loading routine. 
 org $0ED5E7
     JSL CheckForChangePaletteLONG

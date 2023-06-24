@@ -24,14 +24,14 @@ namespace ZeldaFullEditor
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         // All the files required for ZS to function.
-        // The files "debug.asm", "spritesmove.asm" appear in the release but don't actually seem to be used anywhere in the solution. 
-        public static string[] RequiredFiles = new string[] { "asar.dll", "DefaultNames.txt", "Lidgren.Network.dll", "ScratchPad.dat", "AreaSpecificBGColor.asm", "CustomCollision.asm", "MosaicChange.asm", "newgraves.asm", "tempPatch.asm", "ZScream.exe.config" };
+        // The files "debug.asm", "spritesmove.asm" appear in the release but don't actually seem to be used anywhere in the solution.
+        private static string[] requiredFiles = new string[] { "asar.dll", "DefaultNames.txt", "Lidgren.Network.dll", "ScratchPad.dat", "AreaSpecificBGColor.asm", "CustomCollision.asm", "MosaicChange.asm", "newgraves.asm", "tempPatch.asm", "ZScream.exe.config" };
 
         /// <summary>
         ///		The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(String[] args)
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -40,7 +40,7 @@ namespace ZeldaFullEditor
             if (args != null)
             {
                 // Loop through them all.
-                foreach (String arg in args)
+                foreach (string arg in args)
                 {
                     // Look for hide console arg.
                     if (arg.Equals("-hideConsole"))
@@ -63,7 +63,7 @@ namespace ZeldaFullEditor
             ShowWindow(handle, showConsole);
 
             // Make sure all the other needed files are here so the dummies who keep trying to move the .exe will learn.
-            foreach (string file in RequiredFiles)
+            foreach (string file in requiredFiles)
             {
                 if (!System.IO.File.Exists(file))
                 {
