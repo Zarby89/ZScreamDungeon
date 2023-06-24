@@ -727,17 +727,17 @@ namespace ZeldaFullEditor
             {
                 ushort exitRoomID = (ushort)((ROM.DATA[Constants.OWExitRoomId + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitRoomId + (i * 2)]);
                 byte exitMapID = ROM.DATA[Constants.OWExitMapId + i];
-                byte exitVRAM = (byte)((ROM.DATA[Constants.OWExitVram + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVram + (i * 2)]);
-                short exitYScroll = (short)((ROM.DATA[Constants.OWExitYScroll + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScroll + (i * 2)]);
-                short exitXScroll = (short)((ROM.DATA[Constants.OWExitXScroll + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScroll + (i * 2)]);
+                ushort exitVRAM = (ushort)((ROM.DATA[Constants.OWExitVram + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVram + (i * 2)]);
+                ushort exitYScroll = (ushort)((ROM.DATA[Constants.OWExitYScroll + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScroll + (i * 2)]);
+                ushort exitXScroll = (ushort)((ROM.DATA[Constants.OWExitXScroll + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScroll + (i * 2)]);
                 ushort py = (ushort)((ROM.DATA[Constants.OWExitYPlayer + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYPlayer + (i * 2)]);
                 ushort px = (ushort)((ROM.DATA[Constants.OWExitXPlayer + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXPlayer + (i * 2)]);
-                short exitYCamera = (short)((ROM.DATA[Constants.OWExitYCamera + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCamera + (i * 2)]);
-                short exitXCamera = (short)((ROM.DATA[Constants.OWExitXCamera + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCamera + (i * 2)]);
+                ushort exitYCamera = (ushort)((ROM.DATA[Constants.OWExitYCamera + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCamera + (i * 2)]);
+                ushort exitXCamera = (ushort)((ROM.DATA[Constants.OWExitXCamera + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCamera + (i * 2)]);
                 byte exitScrollModY = ROM.DATA[Constants.OWExitUnk1 + i];
                 byte exitScrollModX = ROM.DATA[Constants.OWExitUnk2 + i];
-                short exitDoorType1 = (short)((ROM.DATA[Constants.OWExitDoorType1 + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitDoorType1 + (i * 2)]);
-                short exitDoorType2 = (short)((ROM.DATA[Constants.OWExitDoorType2 + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitDoorType2 + (i * 2)]);
+                ushort exitDoorType1 = (ushort)((ROM.DATA[Constants.OWExitDoorType1 + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitDoorType1 + (i * 2)]);
+                ushort exitDoorType2 = (ushort)((ROM.DATA[Constants.OWExitDoorType2 + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitDoorType2 + (i * 2)]);
                 ExitOW exit = new ExitOW(exitRoomID, exitMapID, exitVRAM, exitYScroll, exitXScroll, py, px, exitYCamera, exitXCamera, exitScrollModY, exitScrollModX, exitDoorType1, exitDoorType2);
 
                 if (px == 0xFFFF && py == 0xFFFF)

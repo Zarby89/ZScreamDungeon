@@ -46,37 +46,37 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Gets or sets the VRAM location for the exit.
         /// </summary>
-        public short VRAMLocation { get; set; }
+        public ushort VRAMLocation { get; set; }
 
         /// <summary>
         ///     Gets or sets the X scroll for the exit.
         /// </summary>
-        public short XScroll { get; set; }
+        public ushort XScroll { get; set; }
 
         /// <summary>
         ///     Gets or sets the Y scroll for the exit.
         /// </summary>
-        public short YScroll { get; set; }
+        public ushort YScroll { get; set; }
 
         /// <summary>
         ///     Gets or sets the camera X position for the exit.
         /// </summary>
-        public short CameraX { get; set; }
+        public ushort CameraX { get; set; }
 
         /// <summary>
         ///     Gets or sets the camera Y position for the exit.
         /// </summary>
-        public short CameraY { get; set; }
+        public ushort CameraY { get; set; }
 
         /// <summary>
         ///     Gets or sets the 1st door type for the exit.
         /// </summary>
-        public short DoorType1 { get; set; }
+        public ushort DoorType1 { get; set; }
 
         /// <summary>
         ///     Gets or sets the 2nd door type for the exit.
         /// </summary>
-        public short DoorType2 { get; set; }
+        public ushort DoorType2 { get; set; }
 
         /// <summary>
         ///     Gets or sets the room ID for the exit.
@@ -124,7 +124,7 @@ namespace ZeldaFullEditor
         /// <param name="scrollModX"> The X scroll mod. </param>
         /// <param name="doorType1"> The 1st door type. </param>
         /// <param name="doorType2"> The 2nd door type. </param>
-        public ExitOW(ushort roomID, byte mapID, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte scrollModY, byte scrollModX, short doorType1, short doorType2)
+        public ExitOW(ushort roomID, byte mapID, ushort vramLocation, ushort yScroll, ushort xScroll, ushort playerY, ushort playerX, ushort cameraY, ushort cameraX, byte scrollModY, byte scrollModX, ushort doorType1, ushort doorType2)
         {
             this.RoomID = roomID;
             this.MapID = mapID;
@@ -240,57 +240,57 @@ namespace ZeldaFullEditor
 				completly centered is -120 and -80.
 				*/
 
-                this.XScroll = (short)(this.PlayerX - 120); // 134.
-                this.YScroll = (short)(this.PlayerY - 80); // 78.
+                this.XScroll = (ushort)(this.PlayerX - 120); // 134.
+                this.YScroll = (ushort)(this.PlayerY - 80); // 78.
 
                 if (this.XScroll < mapx)
                 {
-                    this.XScroll = (short)mapx;
+                    this.XScroll = (ushort)mapx;
                 }
 
                 if (this.YScroll < mapy)
                 {
-                    this.YScroll = (short)mapy;
+                    this.YScroll = (ushort)mapy;
                 }
 
                 if (this.XScroll > mapx + large)
                 {
-                    this.XScroll = (short)(mapx + large);
+                    this.XScroll = (ushort)(mapx + large);
                 }
 
                 if (this.YScroll > mapy + large + 32)
                 {
-                    this.YScroll = (short)(mapy + large + 32);
+                    this.YScroll = (ushort)(mapy + large + 32);
                 }
 
-                this.CameraX = (short)(this.PlayerX + 0x07);
-                this.CameraY = (short)(this.PlayerY + 0x1F);
+                this.CameraX = (ushort)(this.PlayerX + 0x07);
+                this.CameraY = (ushort)(this.PlayerY + 0x1F);
 
                 if (this.CameraX < mapx + 127)
                 {
-                    this.CameraX = (short)(mapx + 127);
+                    this.CameraX = (ushort)(mapx + 127);
                 }
 
                 if (this.CameraY < mapy + 111)
                 {
-                    this.CameraY = (short)(mapy + 111);
+                    this.CameraY = (ushort)(mapy + 111);
                 }
 
                 if (this.CameraX > mapx + 127 + large)
                 {
-                    this.CameraX = (short)(mapx + 127 + large);
+                    this.CameraX = (ushort)(mapx + 127 + large);
                 }
 
                 if (this.CameraY > mapy + 143 + large)
                 {
-                    this.CameraY = (short)(mapy + 143 + large);
+                    this.CameraY = (ushort)(mapy + 143 + large);
                 }
             }
 
             short vramXScroll = (short)(this.XScroll - mapx);
             short vramYScroll = (short)(this.YScroll - mapy);
 
-            this.VRAMLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
+            this.VRAMLocation = (ushort)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
 
             Console.WriteLine("Exit:      " + this.RoomID + " MapId: " + mapid.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
         }
