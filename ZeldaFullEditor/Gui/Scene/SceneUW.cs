@@ -811,7 +811,7 @@ namespace ZeldaFullEditor
 			{
 				if (Console.ReadKey().Key == ConsoleKey.UpArrow)
 				{
-					room.loadCollisionLayout(true);
+					room.LoadCollisionLayout(true);
 				}
 			});
 		}

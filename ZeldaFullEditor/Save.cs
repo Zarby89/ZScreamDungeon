@@ -175,10 +175,10 @@ namespace ZeldaFullEditor
 
 				//Clear the room's rectangle list and then re-populate it
 				room.ClearCollisionLayout();
-				room.loadCollisionLayout(false);
+				room.LoadCollisionLayout(false);
 
 				// If there is triangle in the room, write the room pointer, otherwise wrtie 000000
-				if (room.collision_rectangles.Count() > 0)
+				if (room.collisionRectangles.Count() > 0)
 				{
 					ROM.WriteLong(room_pointer, Utils.PcToSnes(data_pointer));
 				}
@@ -189,19 +189,19 @@ namespace ZeldaFullEditor
 
 				room_pointer += 3;
 
-				foreach (var rectangle in room.collision_rectangles)
+				foreach (var rectangle in room.collisionRectangles)
 				{
 					Console.WriteLine(rectangle.ToString());
 
-					ROM.WriteShort(data_pointer, rectangle.index_data);
+					ROM.WriteShort(data_pointer, rectangle.IndexData);
 					data_pointer += 2;
-					ROM.WriteShort(data_pointer, rectangle.width);
+					ROM.WriteShort(data_pointer, rectangle.Width);
 					data_pointer += 1;
-					ROM.WriteShort(data_pointer, rectangle.height);
+					ROM.WriteShort(data_pointer, rectangle.Height);
 					data_pointer += 1;
-					for (int j = 0; j < rectangle.width * rectangle.height; j++)
+					for (int j = 0; j < rectangle.Width * rectangle.Height; j++)
 					{
-						ROM.WriteShort(data_pointer, rectangle.tile_data[j]);
+						ROM.WriteShort(data_pointer, rectangle.TileData[j]);
 						data_pointer += 1;
 					}
 
@@ -210,7 +210,7 @@ namespace ZeldaFullEditor
 				}
 
 				// Add 0xFFFF to the end of this rooms list to tell the ASM to stop here
-				if (room.collision_rectangles.Count() > 0)
+				if (room.collisionRectangles.Count() > 0)
 				{
 					ROM.WriteLong(data_pointer, 0x00FFFF);
 					data_pointer += 2;
