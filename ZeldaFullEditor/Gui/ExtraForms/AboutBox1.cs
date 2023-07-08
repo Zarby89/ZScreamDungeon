@@ -26,10 +26,5 @@ namespace ZeldaFullEditor
         {
             System.Diagnostics.Process.Start(UIText.ASAR);
         }
-
-        private void AboutBox1_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

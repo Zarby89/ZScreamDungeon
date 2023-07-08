@@ -3040,13 +3040,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     sb.Append("v " + triforceVertices[i].x + " " + triforceVertices[i].y + " " + triforceVertices[i].z + "\r\n");
                 }
+
                 for (int i = 0; i < triforceface3Ds.Length; i++)
                 {
                     sb.Append("f ");
                     for (int j = 0; j < triforceface3Ds[i].vertex.Length; j++)
                     {
-                        sb.Append(triforceface3Ds[i].vertex[j] + " ");
+                        sb.Append(triforceface3Ds[i].vertex[j] + 1 + " ");
                     }
+
                     sb.Append("\r\n");
                 }
             }
