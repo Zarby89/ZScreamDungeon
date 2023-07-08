@@ -10,103 +10,103 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class DungeonPropertiesForm : Form
-	{
-		DungeonProperty[] properties = new DungeonProperty[12];
+    public partial class DungeonPropertiesForm : Form
+    {
+        DungeonProperty[] properties = new DungeonProperty[12];
 
-		bool changedFromForm = false;
+        bool changedFromForm = false;
 
-		public DungeonPropertiesForm()
-		{
-			InitializeComponent();
-		}
+        public DungeonPropertiesForm()
+        {
+            InitializeComponent();
+        }
 
-		// TODO move elsewhere for consistency
-		private void DungeonPropertiesForm_Load(object sender, EventArgs e)
-		{
-			listBox1.Items.Add("Pendant 1 - Green (Eastern)");
-			listBox1.Items.Add("Pendant 2 - Blue (Desert)");
-			listBox1.Items.Add("Pendant 3 - Red (Hera)");
-			listBox1.Items.Add("Agahnim 1");
-			listBox1.Items.Add("Crystal 2 (Swamp)");
-			listBox1.Items.Add("Crystal 1 (Darkness)");
-			listBox1.Items.Add("Crystal 3 (Skullswood)");
-			listBox1.Items.Add("Crystal 6 (Mire)");
-			listBox1.Items.Add("Crystal 5 (Ice)");
-			listBox1.Items.Add("Crystal 7 (Turtle)");
-			listBox1.Items.Add("Crystal 4 (Thieves)");
-			listBox1.Items.Add("Agahnim 2");
+        // TODO move elsewhere for consistency
+        private void DungeonPropertiesForm_Load(object sender, EventArgs e)
+        {
+            listBox1.Items.Add("Pendant 1 - Green (Eastern)");
+            listBox1.Items.Add("Pendant 2 - Blue (Desert)");
+            listBox1.Items.Add("Pendant 3 - Red (Hera)");
+            listBox1.Items.Add("Agahnim 1");
+            listBox1.Items.Add("Crystal 2 (Swamp)");
+            listBox1.Items.Add("Crystal 1 (Darkness)");
+            listBox1.Items.Add("Crystal 3 (Skullswood)");
+            listBox1.Items.Add("Crystal 6 (Mire)");
+            listBox1.Items.Add("Crystal 5 (Ice)");
+            listBox1.Items.Add("Crystal 7 (Turtle)");
+            listBox1.Items.Add("Crystal 4 (Thieves)");
+            listBox1.Items.Add("Agahnim 2");
 
-			for (int i = 0; i < 12; i++)
-			{
-				properties[i] = new DungeonProperty
-				(
-					ROM.DATA[Constants.dungeons_startrooms + i],
-					ROM.DATA[Constants.dungeons_endrooms + i],
-					(short) ((ROM.DATA[Constants.dungeons_bossrooms + (i * 2) + 1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)])
-				);
-			}
+            for (int i = 0; i < 12; i++)
+            {
+                properties[i] = new DungeonProperty
+                (
+                    ROM.DATA[Constants.dungeons_startrooms + i],
+                    ROM.DATA[Constants.dungeons_endrooms + i],
+                    (short)((ROM.DATA[Constants.dungeons_bossrooms + (i * 2) + 1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)])
+                );
+            }
 
-			listBox1.SelectedIndex = 0;
-		}
+            listBox1.SelectedIndex = 0;
+        }
 
-		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			changedFromForm = true;
-			startroomTextbox.Text = properties[listBox1.SelectedIndex].startroom.ToString();
-			endroomTextbox.Text = properties[listBox1.SelectedIndex].endroom.ToString();
-			bossroomTextbox.Text = properties[listBox1.SelectedIndex].bossroom.ToString();
-			changedFromForm = false;
-		}
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            changedFromForm = true;
+            startroomTextbox.Text = properties[listBox1.SelectedIndex].startroom.ToString();
+            endroomTextbox.Text = properties[listBox1.SelectedIndex].endroom.ToString();
+            bossroomTextbox.Text = properties[listBox1.SelectedIndex].bossroom.ToString();
+            changedFromForm = false;
+        }
 
-		private void bossroomTextbox_TextChanged(object sender, EventArgs e)
-		{
-			if (!changedFromForm)
-			{
-				if (int.TryParse(startroomTextbox.Text, out int r))
-				{
-					properties[listBox1.SelectedIndex].startroom = (byte) r;
-				}
-				if (int.TryParse(endroomTextbox.Text, out r))
-				{
-					properties[listBox1.SelectedIndex].endroom = (byte) r;
-				}
-				if (int.TryParse(bossroomTextbox.Text, out r))
-				{
-					properties[listBox1.SelectedIndex].bossroom = (short) r;
-				}
-			}
-		}
+        private void bossroomTextbox_TextChanged(object sender, EventArgs e)
+        {
+            if (!changedFromForm)
+            {
+                if (int.TryParse(startroomTextbox.Text, out int r))
+                {
+                    properties[listBox1.SelectedIndex].startroom = (byte)r;
+                }
+                if (int.TryParse(endroomTextbox.Text, out r))
+                {
+                    properties[listBox1.SelectedIndex].endroom = (byte)r;
+                }
+                if (int.TryParse(bossroomTextbox.Text, out r))
+                {
+                    properties[listBox1.SelectedIndex].bossroom = (short)r;
+                }
+            }
+        }
 
-		private void button1_Click(object sender, EventArgs e)
-		{
-			for (int i = 0; i < 12; i++)
-			{
-				ROM.Write(Constants.dungeons_startrooms + i, properties[i].startroom, WriteType.DungeonPrize);
-				ROM.Write(Constants.dungeons_endrooms + i, properties[i].endroom, WriteType.DungeonPrize);
-				ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, WriteType.DungeonPrize);
-			}
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                ROM.Write(Constants.dungeons_startrooms + i, properties[i].startroom, WriteType.DungeonPrize);
+                ROM.Write(Constants.dungeons_endrooms + i, properties[i].endroom, WriteType.DungeonPrize);
+                ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, WriteType.DungeonPrize);
+            }
 
-			this.Close();
-		}
+            this.Close();
+        }
 
-		private void button2_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
-	}
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+    }
 
-	public class DungeonProperty
-	{
-		public byte startroom = 0;
-		public byte endroom = 0;
-		public short bossroom = 0;
+    public class DungeonProperty
+    {
+        public byte startroom = 0;
+        public byte endroom = 0;
+        public short bossroom = 0;
 
-		public DungeonProperty(byte startroom, byte endroom, short bossroom)
-		{
-			this.startroom = startroom;
-			this.endroom = endroom;
-			this.bossroom = bossroom;
-		}
-	}
+        public DungeonProperty(byte startroom, byte endroom, short bossroom)
+        {
+            this.startroom = startroom;
+            this.endroom = endroom;
+            this.bossroom = bossroom;
+        }
+    }
 }
