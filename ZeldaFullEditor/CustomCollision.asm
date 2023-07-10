@@ -16,18 +16,23 @@
 
 RoomPointer = $258090
 
-org $01B95B
-	JSL CustomRoomCollision
-	NOP #6
+org $01B95B ; restored code from previous version overwritten
+db $A5, $B4, $C9, $00, $20, $D0, $03, $EE, $00, $02
 
+org $01B986
+	JSL CustomRoomCollision
+	NOP #$01
 org $258000
 CustomRoomCollision_easyout:
 {
+	PLP
+	LDA.w #$3030 : STA $00
 	RTL
 }
 
 CustomRoomCollision:
 {
+	PHP
 	LDA $B4 : CMP.w #$2000 : BNE .notEndOfTable
         
         INC $0200
@@ -80,6 +85,8 @@ CustomRoomCollision:
 
 .done
 	PLB
+	PLP
+	LDA.w #$3030 : STA $00
 	RTL
 
 .new_rectangle
