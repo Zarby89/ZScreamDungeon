@@ -351,7 +351,7 @@ namespace ZeldaFullEditor
             }
             else if (selectedMode == ObjectMode.Gravestone)
             {
-                gravestoneMode.onMouseUp(e);
+                gravestoneMode.OnMouseUp(e);
             }
 
             owForm.objectGroupbox.Text = text;
@@ -439,7 +439,7 @@ namespace ZeldaFullEditor
                     transportMode.onMouseMove(e);
                     break;
                 case ObjectMode.Gravestone:
-                    gravestoneMode.onMouseMove(e);
+                    gravestoneMode.OnMouseMove(e);
                     break;
             }
 

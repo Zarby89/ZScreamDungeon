@@ -1875,11 +1875,12 @@ namespace ZeldaFullEditor
                 ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.AllGraves[i].YTilePos, WriteType.Gravestone);
                 ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.AllGraves[i].TilemapPos, WriteType.Gravestone);
 
-                if (i == 0x0E)
+                if (i == 0x0D)
                 {
                     ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.AllGraves[i].TilemapPos - 0x80, WriteType.Gravestone);
                 }
-                if (i == 0x0D)
+
+                if (i == 0x0E)
                 {
                     ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.AllGraves[i].TilemapPos - 0x80, WriteType.Gravestone);
                 }
