@@ -67,7 +67,7 @@ namespace ZeldaFullEditor.Properties
                                 else if (im.Data[0] == 64) // Save signal
                                 {
                                     Console.WriteLine("Client requested a save!");
-                                    form.saveToolStripMenuItem_Click(null, null);
+                                    form.SaveToolStripMenuItem_Click(null, null);
 
                                 }
                                 else if (im.Data[0] == 03) //checksum request for LW

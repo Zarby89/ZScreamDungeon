@@ -857,7 +857,7 @@ namespace ZeldaFullEditor
             mainForm.activeScene = this;
 
             room.has_changed = true;
-            mainForm.checkAnyChanges();
+            mainForm.CheckAnyChanges();
 
             if (selectedMode == ObjectMode.EntrancePlacing)
             {
@@ -929,7 +929,7 @@ namespace ZeldaFullEditor
 
                     if (spr != null)
                     {
-                        mainForm.update_modes_buttons(mainForm.spritemodeButton, new EventArgs());
+                        mainForm.Update_modes_buttons(mainForm.spritemodeButton, new EventArgs());
                         room.selectedObject.Add(spr);
                         dragx = 0;
                         dragy = 0;
@@ -1234,7 +1234,7 @@ namespace ZeldaFullEditor
                         mainForm.selectedGroupbox.Text = "Selected object: " + id + " " + name + "";
                         mainForm.doorselectPanel.Visible = true;
                         mainForm.doorselectPanel.BringToFront();
-                        int[] aposes = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray();
+                        int[] aposes = mainForm.DoorIndex.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray();
                         int apos = 0;
 
                         if (aposes.Length > 0)
@@ -2331,7 +2331,7 @@ namespace ZeldaFullEditor
         public override void deleteSelected()
         {
             room.has_changed = true;
-            mainForm.checkAnyChanges();
+            mainForm.CheckAnyChanges();
 
             foreach (Object o in room.selectedObject)
             {
@@ -2562,7 +2562,7 @@ namespace ZeldaFullEditor
             //Room r = (Room)room.Clone();
             //clearUselessRoomStuff(r);
             room.has_changed = true;
-            mainForm.checkAnyChanges();
+            mainForm.CheckAnyChanges();
             //undoRooms.Add(r);
 
             var odata = new List<SaveObject>();

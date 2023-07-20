@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor
@@ -12,9 +8,9 @@ namespace ZeldaFullEditor
     /// </summary>
     public static class UIText
     {
-        //===========================================================================================
+        // ===========================================================================================
         // META
-        //===========================================================================================
+        // ===========================================================================================
         public const string APPNAME = "ZScream";
         public const string VERSION = "3.1.1";
 
@@ -22,9 +18,9 @@ namespace ZeldaFullEditor
         public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
         public const string ASAR = "https://github.com/RPGHacker/asar";
 
-        //===========================================================================================
+        // ===========================================================================================
         // File explorer
-        //===========================================================================================
+        // ===========================================================================================
         public const string ROMExtension = ".sfc";
         public const string JPROMType = "ALTTP JP1.0 ROM Image|*.sfc;*.smc";
         public const string USROMType = "ALTTP US ROM Image|*.sfc;*.smc";
@@ -47,14 +43,14 @@ namespace ZeldaFullEditor
 
         public const string BMP8Type = "Indexed Image File (8 bits per pixel)|*.bmp";
 
-        //===========================================================================================
+        // ===========================================================================================
         // Warnings
-        //===========================================================================================
+        // ===========================================================================================
         public const string Range0toFF = "The selected value must be between 0x00 and 0xFF, inclusive.";
 
-        //===========================================================================================
+        // ===========================================================================================
         // Formatting
-        //===========================================================================================
+        // ===========================================================================================
         public static string FormatSelectedObject(Room_Object o)
         {
             switch (o.options)
@@ -78,7 +74,7 @@ namespace ZeldaFullEditor
         }
 
         /// <summary>
-        /// Returns a path with system-specific path separators, where each argument is a different segment of the file path.
+        ///     Returns a path with system-specific path separators, where each argument is a different segment of the file path.
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -94,45 +90,40 @@ namespace ZeldaFullEditor
                     ret.Append(System.IO.Path.DirectorySeparatorChar);
                 }
             }
+
             return ret.ToString();
         }
 
-        //===========================================================================================
+        // ===========================================================================================
         // Messages
-        //===========================================================================================
+        // ===========================================================================================
         public const string DefaultWarning = "You have unsaved changes that will be lost.";
         public const string RoomWarning = "You have unsaved room changes that will be lost by closing this tab.";
         public const string CloseROMWarning = "Closing this ROM will result in all unsaved changes being lost.";
 
         public static DialogResult WarnAboutSaving(string message = DefaultWarning)
         {
-            return MessageBox.Show
-                (
-                    message + "\nDo you wish to save before continuing?",
-                    "Unsaved changes",
-                    MessageBoxButtons.YesNoCancel,
-                    MessageBoxIcon.Warning
-                );
+            return MessageBox.Show(
+                message + "\nDo you wish to save before continuing?",
+                "Unsaved changes",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Warning);
         }
 
         public static void CryAboutSaving(string message = "OHNO")
         {
-            MessageBox.Show
-            (
+            MessageBox.Show(
                 "Failed to save;\n" + message,
                 "Bad Error",
-                MessageBoxButtons.OK
-            );
+                MessageBoxButtons.OK);
         }
 
         public static void WarnAboutMissingFile(string message)
         {
-            MessageBox.Show
-            (
+            MessageBox.Show(
                 "Missing File: " + message + " Please make sure that:\n1. You have extracted all the files from the .zip\n2. You are running the ZScream.exe within the same folder as the other files that it came with.",
                 "Bad Error",
-                MessageBoxButtons.OK
-            );
+                MessageBoxButtons.OK);
         }
     }
 }

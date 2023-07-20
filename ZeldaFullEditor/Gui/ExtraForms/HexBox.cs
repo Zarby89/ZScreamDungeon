@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
@@ -23,6 +19,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         private bool enforcepad = false;
 
         public bool errorValue = false;
+
         // Just turn that on when updating the Hexvalue so the textchanged event is not called.
         private bool disableTextChanged = false;
 
@@ -32,8 +29,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             One = 15,
             Two = 255,
             Three = 4095,
-            Four = 65535
+            Four = 65535,
         };
+
         private HexDigits digits;
 
         [Description("HexValue"), Category("Data")]
@@ -52,38 +50,38 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         [Description("MaxValue"), Category("Data")]
         public int MaxValue
         {
-            get => maxValue;
+            get => this.maxValue;
             set
             {
-                maxValue = value;
+                this.maxValue = value;
 
-                EnforceRange();
-                UpdateText();
+                this.EnforceRange();
+                this.UpdateText();
             }
         }
 
         [Description("MinValue"), Category("Data")]
         public int MinValue
         {
-            get => minValue;
+            get => this.minValue;
             set
             {
-                minValue = value;
+                this.minValue = value;
 
-                EnforceRange();
-                UpdateText();
+                this.EnforceRange();
+                this.UpdateText();
             }
         }
 
         [Description("MinValue"), Category("Data")]
         public HexDigits Digits
         {
-            get => digits;
+            get => this.digits;
             set
             {
-                digits = value;
+                this.digits = value;
 
-                switch (Digits)
+                switch (this.Digits)
                 {
                     case HexDigits.One:
                         this.MaxLength = 1;
@@ -99,17 +97,19 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                         break;
                 }
 
-                EnforceRange();
-                UpdateText();
+                this.EnforceRange();
+                this.UpdateText();
             }
         }
 
-        public Hexbox() : base()
+        public Hexbox()
+            : base()
         {
-            digits = HexDigits.Two;
-            maxValue = 0xFF;
-            minValue = 0x00;
-            hexValue = 0x00;
+            this.digits = HexDigits.Two;
+            this.maxValue = 0xFF;
+            this.minValue = 0x00;
+            this.hexValue = 0x00;
+
             // Removed as its not necessary, can be set in the properties tab under text align.
             //this.TextAlign = HorizontalAlignment.Right;
             this.CharacterCasing = CharacterCasing.Upper;
@@ -117,83 +117,82 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         protected override void InitLayout()
         {
-            EnforceRange();
-            UpdateText();
+            this.EnforceRange();
+            this.UpdateText();
 
             base.InitLayout();
         }
 
         private void UpdateText()
         {
-            bool pad = enforcepad | !this.Focused;
-            switch (Digits)
+            bool pad = this.enforcepad | !this.Focused;
+            switch (this.Digits)
             {
                 case HexDigits.One:
-                    this.Text = hexValue.ToString(pad ? Format1 : Format0);
+                    this.Text = this.hexValue.ToString(pad ? Format1 : Format0);
                     break;
                 case HexDigits.Two:
-                    this.Text = hexValue.ToString(pad ? Format2 : Format0);
+                    this.Text = this.hexValue.ToString(pad ? Format2 : Format0);
                     break;
                 case HexDigits.Three:
-                    this.Text = hexValue.ToString(pad ? Format3 : Format0);
+                    this.Text = this.hexValue.ToString(pad ? Format3 : Format0);
                     break;
                 case HexDigits.Four:
-                    this.Text = hexValue.ToString(pad ? Format4 : Format0);
+                    this.Text = this.hexValue.ToString(pad ? Format4 : Format0);
                     break;
             }
         }
 
         private void EnforceRange()
         {
-            if (minValue > (int)digits)
+            if (this.minValue > (int)this.digits)
             {
-                minValue = 0;
+                this.minValue = 0;
             }
 
-            if (maxValue > (int)digits)
+            if (this.maxValue > (int)this.digits)
             {
-                maxValue = (int)digits;
+                this.maxValue = (int)this.digits;
             }
 
-            if (minValue > maxValue)
+            if (this.minValue > this.maxValue)
             {
-                int t = minValue;
-                minValue = maxValue;
-                maxValue = t;
+                int t = this.minValue;
+                this.minValue = this.maxValue;
+                this.maxValue = t;
             }
 
-            if (hexValue < minValue)
+            if (this.hexValue < this.minValue)
             {
-                hexValue = minValue;
+                this.hexValue = this.minValue;
             }
-            else if (hexValue > MaxValue)
+            else if (this.hexValue > this.MaxValue)
             {
-                hexValue = maxValue;
+                this.hexValue = this.maxValue;
             }
         }
 
         protected override void OnTextChanged(EventArgs e)
         {
             string regex = "[^a-fA-F0-9]";
-            Text = Regex.Replace(Text, regex, "");
+            this.Text = Regex.Replace(this.Text, regex, string.Empty);
 
-
-            if (int.TryParse(Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
+            if (int.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
             {
-                hexValue = r;
+                this.hexValue = r;
             }
             else
             {
-                hexValue = minValue;
+                this.hexValue = this.minValue;
             }
 
             //EnforceRange();
             //UpdateText();
 
-            if (!disableTextChanged)
+            if (!this.disableTextChanged)
             {
                 base.OnTextChanged(e);
-                disableTextChanged = false;
+                this.disableTextChanged = false;
             }
         }
 
@@ -201,110 +200,105 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         {
             if (e.Delta > 0)
             {
-                hexValue++;
+                this.hexValue++;
             }
             else
             {
                 hexValue--;
             }
 
-            EnforceRange();
-            enforcepad = true;
-            UpdateText();
-            enforcepad = false;
+            this.EnforceRange();
+            this.enforcepad = true;
+            this.UpdateText();
+            this.enforcepad = false;
             base.OnMouseWheel(e);
         }
-
 
         protected override void OnLostFocus(EventArgs e)
         {
             string regex = "[^a-fA-F0-9]";
-            Text = Regex.Replace(Text, regex, "0");
+            this.Text = Regex.Replace(this.Text, regex, "0");
 
-
-            if (int.TryParse(Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
+            if (int.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
             {
-                hexValue = r;
+                this.hexValue = r;
             }
             else
             {
-                hexValue = minValue;
+                this.hexValue = this.minValue;
             }
 
-            EnforceRange();
-            enforcepad = true;
-            UpdateText();
-            enforcepad = false;
+            this.EnforceRange();
+            this.enforcepad = true;
+            this.UpdateText();
+            this.enforcepad = false;
             base.OnLostFocus(e);
         }
 
         private void InitializeComponent()
         {
             this.SuspendLayout();
-            // 
-            // Hexbox
-            // 
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Hexbox_KeyPress);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Hexbox_KeyUp);
-            this.Leave += new System.EventHandler(this.Hexbox_Leave);
-            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Hexbox_PreviewKeyDown);
-            this.ResumeLayout(false);
 
+            // Hexbox
+            this.KeyPress += new KeyPressEventHandler(this.Hexbox_KeyPress);
+            this.KeyUp += new KeyEventHandler(this.Hexbox_KeyUp);
+            this.Leave += new EventHandler(this.Hexbox_Leave);
+            this.PreviewKeyDown += new PreviewKeyDownEventHandler(this.Hexbox_PreviewKeyDown);
+            this.ResumeLayout(false);
         }
 
         private void Hexbox_KeyUp(object sender, KeyEventArgs e)
         {
-
-
-            base.OnKeyUp(e);
+            this.OnKeyUp(e);
         }
 
         private void Hexbox_Leave(object sender, EventArgs e)
         {
-            /*if (errorValue)
+            /*
+            if (errorValue)
 			{
 				hexValue = minValue;
-			}*/
+			}
+            */
+
             string regex = "[^a-fA-F0-9]";
-            Text = Regex.Replace(Text, regex, "0");
+            this.Text = Regex.Replace(this.Text, regex, "0");
 
-
-            if (int.TryParse(Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
+            if (int.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
             {
-                hexValue = r;
+                this.hexValue = r;
             }
             else
             {
-                hexValue = minValue;
+                this.hexValue = this.minValue;
             }
 
-            EnforceRange();
-            enforcepad = true;
-            UpdateText();
-            enforcepad = false;
-            base.OnLeave(e);
+            this.EnforceRange();
+            this.enforcepad = true;
+            this.UpdateText();
+            this.enforcepad = false;
+            this.OnLeave(e);
         }
 
         private void Hexbox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Console.WriteLine("HEX VALUE CHANGED!!!");
             string regex = "[^a-fA-F0-9]";
-            Text = Regex.Replace(Text, regex, "0");
+            this.Text = Regex.Replace(this.Text, regex, "0");
 
-
-            if (int.TryParse(Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
+            if (int.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out int r))
             {
-                hexValue = r;
-
+                this.hexValue = r;
             }
             else
             {
-                hexValue = minValue;
+                this.hexValue = this.minValue;
             }
-            EnforceRange();
-            UpdateText();
 
-            base.OnKeyPress(e);
+            this.EnforceRange();
+            this.UpdateText();
+
+            this.OnKeyPress(e);
         }
 
         private void Hexbox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

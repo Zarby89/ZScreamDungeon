@@ -157,7 +157,7 @@ namespace ZeldaFullEditor.Gui
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            mainForm.saveToolStripMenuItem_Click(sender, e);
+            mainForm.SaveToolStripMenuItem_Click(sender, e);
         }
 
         private void gfxTextbox_TextChanged(object sender, EventArgs e)

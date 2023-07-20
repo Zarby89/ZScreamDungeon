@@ -50,9 +50,11 @@ namespace ZeldaFullEditor
         private Background2 _bg2;
 
         public TagKey tag1 { get; set; }
+
         public TagKey tag2 { get; set; }
 
         public CollisionKey collision { get; set; }
+
         public EffectKey effect { get; set; }
 
         private byte _holewarp;

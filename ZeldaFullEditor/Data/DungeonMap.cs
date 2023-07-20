@@ -30,7 +30,7 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Gets or sets the gfx of the map.
         /// </summary>
-        public List<byte[]> FloorGfx { get; set; } = new List<byte[]>();
+        public List<byte[]> FloorGFX { get; set; } = new List<byte[]>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DungeonMap"/> class.
@@ -46,7 +46,7 @@ namespace ZeldaFullEditor
             this.NumberOfFloors = numberOfFloors;
             this.NumberOfBasements = numberOfBasements;
             this.FloorRooms = new List<byte[]>(floorRooms);
-            this.FloorGfx = new List<byte[]>(floorGFX);
+            this.FloorGFX = new List<byte[]>(floorGFX);
         }
     }
 }

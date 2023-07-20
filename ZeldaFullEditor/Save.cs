@@ -1429,7 +1429,7 @@ namespace ZeldaFullEditor
         /// <returns> True if the saving failed. </returns>
         public bool SaveLargeMaps(SceneOW scene)
         {
-            string parentMapLine = "";
+            string parentMapLine = string.Empty;
 
             string[] parentMap = new string[8];
 
@@ -1451,7 +1451,7 @@ namespace ZeldaFullEditor
                 {
                     parentMap[((i + 1) / 8) - 1] = parentMapLine;
 
-                    parentMapLine = "";
+                    parentMapLine = string.Empty;
                 }
 
                 if (checkedMap.Contains((byte)i))
@@ -1722,7 +1722,7 @@ namespace ZeldaFullEditor
             ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 4, 0x007F);
             ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 6, 0x007F);
 
-            string temp = "";
+            string temp = string.Empty;
             Console.WriteLine("Overworld parent map: \n");
             for (int i = 0; i < 8; i++)
             {
@@ -1732,7 +1732,7 @@ namespace ZeldaFullEditor
             Console.WriteLine("\nCheck 1: overworldMapSize \n");
             for (int i = 0; i < 8; i++)
             {
-                temp = "";
+                temp = string.Empty;
                 for (int j = 0; j < 8; j++)
                 {
                     temp += " " + ROM.DATA[Constants.overworldMapSize + (j + (i * 8))].ToString("X2").PadLeft(2, '0');
@@ -1744,18 +1744,19 @@ namespace ZeldaFullEditor
             Console.WriteLine("\nCheck 2: overworldMapSizeHighByte \n");
             for (int i = 0; i < 8; i++)
             {
-                temp = "";
+                temp = string.Empty;
                 for (int j = 0; j < 8; j++)
                 {
                     temp += " " + ROM.DATA[Constants.overworldMapSizeHighByte + (j + (i * 8))].ToString("X2").PadLeft(2, '0');
                 }
+
                 Console.WriteLine(temp);
             }
 
             Console.WriteLine("\nCheck 3: overworldScreenSize \n");
             for (int i = 0; i < 8; i++)
             {
-                temp = "";
+                temp = string.Empty;
                 for (int j = 0; j < 8; j++)
                 {
                     temp += " " + ROM.DATA[Constants.overworldScreenSize + (j + (i * 8))].ToString("X2").PadLeft(2, '0');
@@ -1766,11 +1767,12 @@ namespace ZeldaFullEditor
             Console.WriteLine("\nCheck 4: OverworldScreenSizeForLoading \n");
             for (int i = 0; i < 8; i++)
             {
-                temp = "";
+                temp = string.Empty;
                 for (int j = 0; j < 8; j++)
                 {
                     temp += " " + ROM.DATA[Constants.OverworldScreenSizeForLoading + (j + (i * 8))].ToString("X2").PadLeft(2, '0');
                 }
+
                 Console.WriteLine(temp);
             }
 
@@ -1781,7 +1783,7 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
 
@@ -1792,7 +1794,7 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
 
@@ -1803,7 +1805,7 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
 
@@ -1814,7 +1816,7 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
 
@@ -1826,7 +1828,7 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
 
@@ -1837,7 +1839,7 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
 
@@ -1848,7 +1850,7 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
 
@@ -1859,14 +1861,20 @@ namespace ZeldaFullEditor
 
                 if ((i + 1) % 8 == 0)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine(string.Empty);
                 }
             }
-            Console.WriteLine("");
+
+            Console.WriteLine(string.Empty);
 
             return false;
         }
 
+        /// <summary>
+        ///     Writes gravestone data to ROM and applies the custom gravestone ASM.s
+        /// </summary>
+        /// <param name="scene"> The overworld scene to get the data from. </param>
+        /// <returns> False if we were successful in writing to the ROM. True if we were unsuccessful. </returns>
         public bool SaveGravestones(SceneOW scene)
         {
             for (int i = 0; i < 0x0F; i++)
@@ -1891,8 +1899,14 @@ namespace ZeldaFullEditor
             // TODO: handle differently in projects.
             if (File.Exists("newgraves.asm"))
             {
-                Console.WriteLine("Applying Custom Grave ASM");
-                Asar.patch("newgraves.asm", ref ROM.DATA);
+                if (Asar.patch("newgraves.asm", ref ROM.DATA))
+                {
+                    Console.WriteLine("Successfully applied Custom Grave ASM");
+                }
+                else
+                {
+                    UIText.CryAboutSaving("Error applying ASM file 'newgraves.asm'.\nSaving will continue but the ASM will not be applied.");
+                }
             }
             else
             {
