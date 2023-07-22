@@ -5615,5 +5615,12 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
+        private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AsmPlugin windowPlugin = new AsmPlugin();
+            windowPlugin.projectPath = Path.GetDirectoryName(projectFilename);
+            windowPlugin.Show();
+        }
     }
 }

@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -426,6 +426,7 @@ namespace ZeldaFullEditor
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
+            this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1846,13 +1847,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 289);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -3314,7 +3315,8 @@ namespace ZeldaFullEditor
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveSettingsToolStripMenuItem,
             this.loadNamesFileToolStripMenuItem,
-            this.memoryManagementToolStripMenuItem});
+            this.memoryManagementToolStripMenuItem,
+            this.pluginsToolStripMenuItem});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -3357,7 +3359,7 @@ namespace ZeldaFullEditor
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
             this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.runToolStripMenuItem.Text = "Run…";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.RunToolStripMenuItem_Click);
             // 
@@ -3365,7 +3367,7 @@ namespace ZeldaFullEditor
             // 
             this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
             this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.debugRunToolStripMenuItem.Text = "Debug Run…";
             // 
             // roomToolStripMenuItem
@@ -4561,6 +4563,13 @@ namespace ZeldaFullEditor
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
             // 
+            // pluginsToolStripMenuItem
+            // 
+            this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
+            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.pluginsToolStripMenuItem.Text = "Plugins (asm)";
+            this.pluginsToolStripMenuItem.Click += new System.EventHandler(this.pluginsToolStripMenuItem_Click);
+            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5038,6 +5047,7 @@ namespace ZeldaFullEditor
 		public System.Windows.Forms.Timer loadTimer;
 		private System.Windows.Forms.ToolStripMenuItem saveToNewROMToolStripMenuItem;
 		private System.Windows.Forms.Panel panel4;
-	}
+        private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
+    }
 }
 
