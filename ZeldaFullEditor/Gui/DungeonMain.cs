@@ -1269,7 +1269,7 @@ namespace ZeldaFullEditor
             {
                 // Name that layout
                 string name = "Room_Object";
-                if (data[0].type == typeof(Room_Object))
+                if (data[0].Type == typeof(Room_Object))
                 {
                     name = "Room_Object";
                 }
@@ -1286,7 +1286,7 @@ namespace ZeldaFullEditor
 
                     foreach (SaveObject o in data)
                     {
-                        o.saveToFile(bw);
+                        o.SaveToFile(bw);
                     }
 
                     bw.Close();

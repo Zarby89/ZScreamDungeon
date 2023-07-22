@@ -2381,13 +2381,13 @@ namespace ZeldaFullEditor
                         {
                             if (data.Count > 0)
                             {
-                                if (o.x < most_x)
+                                if (o.X < most_x)
                                 {
-                                    most_x = o.x;
+                                    most_x = o.X;
                                 }
-                                if (o.y < most_y)
+                                if (o.Y < most_y)
                                 {
-                                    most_y = o.y;
+                                    most_y = o.Y;
                                 }
                             }
                             else
@@ -2400,27 +2400,27 @@ namespace ZeldaFullEditor
                         room.selectedObject.Clear();
                         foreach (SaveObject o in data)
                         {
-                            if (o.type == typeof(Sprite))
+                            if (o.Type == typeof(Sprite))
                             {
                                 selectedMode = ObjectMode.Spritemode;
-                                Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.subtype, o.layer));
+                                Sprite spr = (new Sprite(room, o.ID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Subtype, o.Layer));
                                 room.sprites.Add(spr);
                                 room.selectedObject.Add(spr);
                             }
-                            else if (o.type == typeof(Room_Object))
+                            else if (o.Type == typeof(Room_Object))
                             {
-                                if ((o.options & ObjectOption.Door) == ObjectOption.Door)
+                                if ((o.Options & ObjectOption.Door) == ObjectOption.Door)
                                 {
                                     selectedMode = ObjectMode.Doormode;
-                                    object_door ro = new object_door(o.tid, o.x, o.y, 0, o.layer);
+                                    object_door ro = new object_door(o.TileID, o.X, o.Y, 0, o.Layer);
                                     ro.setRoom(room);
-                                    ro.options = o.options;
+                                    ro.options = o.Options;
                                     room.tilesObjects.Add(ro);
                                     room.selectedObject.Add(ro);
                                 }
                                 else
                                 {
-                                    Room_Object ro = room.addObject(o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), o.size, o.layer);
+                                    Room_Object ro = room.addObject(o.TileID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Size, o.Layer);
 
                                     if (ro != null)
                                     {
@@ -2438,16 +2438,16 @@ namespace ZeldaFullEditor
                                         }
 
                                         ro.setRoom(room);
-                                        ro.options = o.options;
+                                        ro.options = o.Options;
                                         room.tilesObjects.Add(ro);
                                         room.selectedObject.Add(ro);
                                     }
                                 }
                             }
-                            else if (o.type == typeof(PotItem))
+                            else if (o.Type == typeof(PotItem))
                             {
                                 selectedMode = ObjectMode.Itemmode;
-                                PotItem item = (new PotItem((byte)o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), o.layer == 1));
+                                PotItem item = (new PotItem((byte)o.TileID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Layer == 1));
                                 room.pot_items.Add(item);
                                 room.selectedObject.Add(item);
                             }
@@ -2512,13 +2512,13 @@ namespace ZeldaFullEditor
                 {
                     if (data.Count > 0)
                     {
-                        if (o.x < most_x)
+                        if (o.X < most_x)
                         {
-                            most_x = o.x;
+                            most_x = o.X;
                         }
-                        if (o.y < most_y)
+                        if (o.Y < most_y)
                         {
-                            most_y = o.y;
+                            most_y = o.Y;
                         }
                     }
                     else
@@ -2531,19 +2531,19 @@ namespace ZeldaFullEditor
 
                 foreach (SaveObject o in data)
                 {
-                    if (o.type == typeof(Sprite))
+                    if (o.Type == typeof(Sprite))
                     {
-                        Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.subtype, o.layer));
+                        Sprite spr = (new Sprite(room, o.ID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Subtype, o.Layer));
                         room.sprites.Add(spr);
                         room.selectedObject.Add(spr);
                     }
-                    else if (o.type == typeof(Room_Object))
+                    else if (o.Type == typeof(Room_Object))
                     {
-                        Room_Object ro = room.addObject(o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), o.size, o.layer);
+                        Room_Object ro = room.addObject(o.TileID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Size, o.Layer);
                         if (ro != null)
                         {
                             ro.setRoom(room);
-                            ro.options = o.options;
+                            ro.options = o.Options;
                             room.tilesObjects.Add(ro);
                             room.selectedObject.Add(ro);
                         }

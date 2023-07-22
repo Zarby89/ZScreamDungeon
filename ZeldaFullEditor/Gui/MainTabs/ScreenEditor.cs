@@ -200,12 +200,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             SetColorsPalette
             (
-                Palettes.overworld_MainPalettes[5], Palettes.overworld_AnimatedPalettes[0],
-                Palettes.overworld_AuxPalettes[3], Palettes.overworld_AuxPalettes[3],
+                Palettes.OverworldMainPalettes[5], Palettes.OverworldAnimatedPalettes[0],
+                Palettes.OverworldAuxPalettes[3], Palettes.OverworldAuxPalettes[3],
                 Palettes.HudPalettes[0],
                 Color.FromArgb(0, 0, 0, 0),
-                Palettes.spritesAux1_Palettes[1],
-                Palettes.spritesAux1_Palettes[1]
+                Palettes.SpritesAux1Palettes[1],
+                Palettes.SpritesAux1Palettes[1]
             );
 
             int p = Constants.IDKZarby;
@@ -372,12 +372,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             SetColorsPalette
             (
-                Palettes.overworld_MainPalettes[5], Palettes.overworld_AnimatedPalettes[0],
-                Palettes.overworld_AuxPalettes[3], Palettes.overworld_AuxPalettes[3],
+                Palettes.OverworldMainPalettes[5], Palettes.OverworldAnimatedPalettes[0],
+                Palettes.OverworldAuxPalettes[3], Palettes.OverworldAuxPalettes[3],
                 Palettes.HudPalettes[0],
                 Color.FromArgb(0, 0, 0, 0),
-                Palettes.spritesAux1_Palettes[1],
-                Palettes.spritesAux1_Palettes[1]
+                Palettes.SpritesAux1Palettes[1],
+                Palettes.SpritesAux1Palettes[1]
             );
         }
 
@@ -1166,7 +1166,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 8; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.spritesAux1_Palettes[1][k++];
+                    currentPalette[x + (16 * y)] = Palettes.SpritesAux1Palettes[1][k++];
                 }
             }
 
@@ -1176,7 +1176,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 9; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.spritesAux3_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.SpritesAux3Palettes[0][k++];
                 }
             }
 
@@ -1186,7 +1186,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.globalSprite_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.GlobalSpritePalettes[0][k++];
                 }
             }
 
@@ -1216,14 +1216,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.armors_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.ArmorPalettes[0][k++];
                 }
             }
 
             k = 0;
             for (int x = 1; x < 8; x++)
             {
-                currentPalette[x + (16 * 8)] = Palettes.spritesAux1_Palettes[11][k++];
+                currentPalette[x + (16 * 8)] = Palettes.SpritesAux1Palettes[11][k++];
             }
 
             try

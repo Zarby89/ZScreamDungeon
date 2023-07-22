@@ -387,7 +387,7 @@ namespace ZeldaFullEditor
             byte pal5 = ROM.DATA[Constants.overworldSpritePaletteGroup + (this.SpritePalette[this.overworld.GameState] * 2) + 1]; // spr4
 
             Color[] aux1, aux2, main, animated, hud, spr, spr2;
-            Color bgr = Palettes.overworld_GrassPalettes[0];
+            Color bgr = Palettes.OverworldGrassPalettes[0];
 
             if (pal1 == 255)
             {
@@ -401,11 +401,11 @@ namespace ZeldaFullEditor
                     pal1 = 19;
                 }
 
-                aux1 = Palettes.overworld_AuxPalettes[pal1];
+                aux1 = Palettes.OverworldAuxPalettes[pal1];
             }
             else
             {
-                aux1 = Palettes.overworld_AuxPalettes[0];
+                aux1 = Palettes.OverworldAuxPalettes[0];
             }
 
             if (pal2 == 255)
@@ -420,11 +420,11 @@ namespace ZeldaFullEditor
                     pal2 = 19;
                 }
 
-                aux2 = Palettes.overworld_AuxPalettes[pal2];
+                aux2 = Palettes.OverworldAuxPalettes[pal2];
             }
             else
             {
-                aux2 = Palettes.overworld_AuxPalettes[0];
+                aux2 = Palettes.OverworldAuxPalettes[0];
             }
 
             if (pal3 == 255)
@@ -439,11 +439,11 @@ namespace ZeldaFullEditor
 
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
-                    bgr = Palettes.overworld_BackgroundPalette[this.ParentID];
+                    bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
                 }
                 else
                 {
-                    bgr = Palettes.overworld_GrassPalettes[0];
+                    bgr = Palettes.OverworldGrassPalettes[0];
                 }
 
                 // Hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
@@ -470,11 +470,11 @@ namespace ZeldaFullEditor
                 pal0 = 1;
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
-                    bgr = Palettes.overworld_BackgroundPalette[this.ParentID];
+                    bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
                 }
                 else
                 {
-                    bgr = Palettes.overworld_GrassPalettes[1];
+                    bgr = Palettes.OverworldGrassPalettes[1];
                 }
 
                 // Hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
@@ -502,11 +502,11 @@ namespace ZeldaFullEditor
 
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
-                    bgr = Palettes.overworld_BackgroundPalette[this.ParentID];
+                    bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
                 }
                 else
                 {
-                    bgr = Palettes.overworld_GrassPalettes[2];
+                    bgr = Palettes.OverworldGrassPalettes[2];
                 }
             }
 
@@ -525,11 +525,11 @@ namespace ZeldaFullEditor
 
             if (pal0 != 255)
             {
-                main = Palettes.overworld_MainPalettes[pal0];
+                main = Palettes.OverworldMainPalettes[pal0];
             }
             else
             {
-                main = Palettes.overworld_MainPalettes[0];
+                main = Palettes.OverworldMainPalettes[0];
             }
 
             if (pal3 >= 14)
@@ -537,7 +537,7 @@ namespace ZeldaFullEditor
                 pal3 = 13;
             }
 
-            animated = Palettes.overworld_AnimatedPalettes[pal3];
+            animated = Palettes.OverworldAnimatedPalettes[pal3];
 
             hud = Palettes.HudPalettes[0];
             if (pal4 == 255)
@@ -555,7 +555,7 @@ namespace ZeldaFullEditor
                 pal4 = 23;
             }
 
-            spr = Palettes.spritesAux3_Palettes[pal4];
+            spr = Palettes.SpritesAux3Palettes[pal4];
 
             if (pal5 == 255)
             {
@@ -572,7 +572,7 @@ namespace ZeldaFullEditor
                 pal5 = 23;
             }
 
-            spr2 = Palettes.spritesAux3_Palettes[pal5];
+            spr2 = Palettes.SpritesAux3Palettes[pal5];
 
             this.SetColorsPalette(main, animated, aux1, aux2, hud, bgr, spr, spr2);
         }
@@ -880,7 +880,7 @@ namespace ZeldaFullEditor
             {
                 for (int x = 1; x < 8; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.spritesAux1_Palettes[1][k++];
+                    currentPalette[x + (16 * y)] = Palettes.SpritesAux1Palettes[1][k++];
                 }
             }
 
@@ -890,7 +890,7 @@ namespace ZeldaFullEditor
             {
                 for (int x = 9; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.spritesAux3_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.SpritesAux3Palettes[0][k++];
                 }
             }
 
@@ -900,7 +900,7 @@ namespace ZeldaFullEditor
             {
                 for (int x = 1; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.globalSprite_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.GlobalSpritePalettes[0][k++];
                 }
             }
 
@@ -930,7 +930,7 @@ namespace ZeldaFullEditor
             {
                 for (int x = 1; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.armors_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.ArmorPalettes[0][k++];
                 }
             }
 

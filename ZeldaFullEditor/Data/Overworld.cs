@@ -887,8 +887,8 @@ namespace ZeldaFullEditor
                     int sx = fakeID - (sy * 8);
 
                     allItems.Add(new RoomPotSaveEditor(b3, (ushort)i, (x * 16) + (sx * 512), (y * 16) + (sy * 512), false));
-                    allItems[allItems.Count - 1].gameX = (byte)x;
-                    allItems[allItems.Count - 1].gameY = (byte)y;
+                    allItems[allItems.Count - 1].GameX = (byte)x;
+                    allItems[allItems.Count - 1].GameY = (byte)y;
                     addr += 3;
                 }
             }

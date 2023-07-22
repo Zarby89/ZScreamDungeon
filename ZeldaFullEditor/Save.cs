@@ -779,12 +779,12 @@ namespace ZeldaFullEditor
                 roomItems[i] = new List<RoomPotSaveEditor>();
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
-                    if (item.roomMapId == i)
+                    if (item.RoomMapID == i)
                     {
                         roomItems[i].Add(item);
-                        if (item.id == 0x86)
+                        if (item.ID == 0x86)
                         {
-                            ROM.WriteShort(0x16DC5 + (i * 2), (item.gameX + (item.gameY * 64)) * 2);
+                            ROM.WriteShort(0x16DC5 + (i * 2), (item.GameX + (item.GameY * 64)) * 2);
                         }
                     }
                 }
@@ -821,11 +821,11 @@ namespace ZeldaFullEditor
                     itemPointers[i] = dataPos;
                     foreach (RoomPotSaveEditor item in roomItems[i])
                     {
-                        short mapPos = (short)(((item.gameY << 6) + item.gameX) << 1);
+                        short mapPos = (short)(((item.GameY << 6) + item.GameX) << 1);
 
                         ROM.Write(
                             dataPos,
-                            new byte[3] { (byte)(mapPos & 0xFF), (byte)(mapPos >> 8), (byte)(item.id) },
+                            new byte[3] { (byte)(mapPos & 0xFF), (byte)(mapPos >> 8), (byte)(item.ID) },
                             WriteType.PotItemData
                         );
 
@@ -1004,9 +1004,9 @@ namespace ZeldaFullEditor
                 for (int j = 0; j < itemArray2.Length; j++)
                 {
                     // Check all sprite in 2nd array if one match
-                    if (itemArray1[i].x == itemArray2[j].x &&
-                        itemArray1[i].y == itemArray2[j].y &&
-                        itemArray1[i].id == itemArray2[j].id)
+                    if (itemArray1[i].X == itemArray2[j].X &&
+                        itemArray1[i].Y == itemArray2[j].Y &&
+                        itemArray1[i].ID == itemArray2[j].ID)
                     {
                         match = true;
                         break;

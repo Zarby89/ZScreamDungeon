@@ -1224,9 +1224,9 @@ namespace ZeldaFullEditor.Gui
 
                             foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                             {
-                                if (o.roomMapId == m)
+                                if (o.RoomMapID == m)
                                 {
-                                    o.updateMapStuff(scene.ow.AllMaps[m].ParentID);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].ParentID);
                                 }
                             }
 
@@ -1305,9 +1305,9 @@ namespace ZeldaFullEditor.Gui
 
                             foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                             {
-                                if (o.roomMapId == m)
+                                if (o.RoomMapID == m)
                                 {
-                                    o.updateMapStuff(scene.ow.AllMaps[m].ParentID);
+                                    o.UpdateMapStuff(scene.ow.AllMaps[m].ParentID);
                                 }
                             }
 
@@ -1551,31 +1551,31 @@ namespace ZeldaFullEditor.Gui
                         j = 0;
                         foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                         {
-                            if (o.roomMapId == m)
+                            if (o.RoomMapID == m)
                             {
-                                if (o.gameX < 32)
+                                if (o.GameX < 32)
                                 {
-                                    if (o.gameY < 32)
+                                    if (o.GameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].Index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].Index);
                                         j++;
                                     }
                                 }
                                 else
                                 {
-                                    if (o.gameY < 32)
+                                    if (o.GameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].Index);
                                         j++;
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].Index);
                                         j++;
                                     }
                                 }
@@ -1836,28 +1836,28 @@ namespace ZeldaFullEditor.Gui
                         }
                         foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                         {
-                            if (o.roomMapId == m)
+                            if (o.RoomMapID == m)
                             {
-                                if (o.gameX < 32)
+                                if (o.GameX < 32)
                                 {
-                                    if (o.gameY < 32)
+                                    if (o.GameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m].Index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m + 8].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 8].Index);
                                     }
                                 }
                                 else
                                 {
-                                    if (o.gameY < 32)
+                                    if (o.GameY < 32)
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m + 1].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 1].Index);
                                     }
                                     else
                                     {
-                                        o.updateMapStuff(scene.ow.AllMaps[m + 9].Index);
+                                        o.UpdateMapStuff(scene.ow.AllMaps[m + 9].Index);
                                     }
                                 }
                             }
@@ -2050,7 +2050,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearAreaItems()
         {
-            overworld.AllItems.RemoveAll(o => o.roomMapId == scene.selectedMapParent);
+            overworld.AllItems.RemoveAll(o => o.RoomMapID == scene.selectedMapParent);
         }
 
         /// <summary>
@@ -2127,10 +2127,10 @@ namespace ZeldaFullEditor.Gui
         {
             int selectedParent = scene.ow.AllMaps[scene.selectedMap].ParentID;
 
-            cd.Color = Palettes.overworld_BackgroundPalette[selectedParent];
+            cd.Color = Palettes.OverworldBackgroundPalette[selectedParent];
             if (cd.ShowDialog() == DialogResult.OK)
             {
-                Palettes.overworld_BackgroundPalette[selectedParent] = cd.Color;
+                Palettes.OverworldBackgroundPalette[selectedParent] = cd.Color;
                 areaBGColorPictureBox.Refresh();
             }
 
@@ -2146,9 +2146,9 @@ namespace ZeldaFullEditor.Gui
         {
             int selectedParent = scene.ow.AllMaps[scene.selectedMap].ParentID;
 
-            if (selectedParent < Palettes.overworld_BackgroundPalette.Length)
+            if (selectedParent < Palettes.OverworldBackgroundPalette.Length)
             {
-                e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[selectedParent]), Constants.Rect_0_0_24_24);
+                e.Graphics.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[selectedParent]), Constants.Rect_0_0_24_24);
             }
             else
             {
@@ -2181,12 +2181,12 @@ namespace ZeldaFullEditor.Gui
                     int y = (i / 8) * 512;
 
                     int k = overworld.AllMaps[i].ParentID;
-                    g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k]), new Rectangle(x, y, 512, 512));
+                    g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k]), new Rectangle(x, y, 512, 512));
                 }
             }
             else
             {
-                g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
+                g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
             }
 
             for (int i = 0; i < 64; i++)
@@ -2210,12 +2210,12 @@ namespace ZeldaFullEditor.Gui
                     int y = (i / 8) * 512;
 
                     int k = overworld.AllMaps[i].ParentID;
-                    g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 64]), new Rectangle(x, y, 512, 512));
+                    g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k + 64]), new Rectangle(x, y, 512, 512));
                 }
             }
             else
             {
-                g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+                g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
             }
 
             for (int i = 0; i < 64; i++)
@@ -2239,12 +2239,12 @@ namespace ZeldaFullEditor.Gui
                     int y = (i / 8) * 512;
 
                     int k = overworld.AllMaps[i].ParentID;
-                    g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k + 128]), new Rectangle(x, y, 512, 512));
+                    g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k + 128]), new Rectangle(x, y, 512, 512));
                 }
             }
             else
             {
-                g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+                g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
             }
 
             for (int i = 0; i < 32; i++)

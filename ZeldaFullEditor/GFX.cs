@@ -569,7 +569,7 @@ namespace ZeldaFullEditor
 
                     // Dungeon Palette
                     //palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
-                    palettes[x, y] = Palettes.dungeonsMain_Palettes[pId][i];
+                    palettes[x, y] = Palettes.DungeonsMainPalettes[pId][i];
                     if (x == 8)
                     {
                         palettes[x, y] = Color.Black;
@@ -596,40 +596,40 @@ namespace ZeldaFullEditor
                                                                                                                                        //short palette_pos4 = (short)(ROM.DATA[0xDEBC6 + 10]); // 140?
 
             // ID = dungeon palette id
-            palettes[9, 5] = Palettes.swords_Palettes[0][0];
-            palettes[10, 5] = Palettes.swords_Palettes[0][1];
-            palettes[11, 5] = Palettes.swords_Palettes[0][2];
-            palettes[12, 5] = Palettes.shields_Palettes[0][0];
-            palettes[13, 5] = Palettes.shields_Palettes[0][1];
-            palettes[14, 5] = Palettes.shields_Palettes[0][2];
-            palettes[15, 5] = Palettes.shields_Palettes[0][3];
+            palettes[9, 5] = Palettes.SwordsPalettes[0][0];
+            palettes[10, 5] = Palettes.SwordsPalettes[0][1];
+            palettes[11, 5] = Palettes.SwordsPalettes[0][2];
+            palettes[12, 5] = Palettes.ShieldsPalettes[0][0];
+            palettes[13, 5] = Palettes.ShieldsPalettes[0][1];
+            palettes[14, 5] = Palettes.ShieldsPalettes[0][2];
+            palettes[15, 5] = Palettes.ShieldsPalettes[0][3];
 
             for (int x = 0; x < 15; x++)
             {
                 if (x < 7)
                 {
-                    palettes[x + 1, 0] = Palettes.spritesAux1_Palettes[(palette_pos1 / 14)][x];
-                    palettes[x + 1, 5] = Palettes.spritesAux3_Palettes[(palette_pos2 / 14)][x];
-                    palettes[x + 1, 6] = Palettes.spritesAux3_Palettes[(palette_pos3 / 14)][x];
+                    palettes[x + 1, 0] = Palettes.SpritesAux1Palettes[(palette_pos1 / 14)][x];
+                    palettes[x + 1, 5] = Palettes.SpritesAux3Palettes[(palette_pos2 / 14)][x];
+                    palettes[x + 1, 6] = Palettes.SpritesAux3Palettes[(palette_pos3 / 14)][x];
                 }
                 else
                 {
                     palettes[x + 1, 0] = GFX.loadedPalettes[x - 7, 2];
                     if (x < 14)
                     {
-                        palettes[x + 2, 6] = Palettes.spritesAux2_Palettes[10][x - 7];
+                        palettes[x + 2, 6] = Palettes.SpritesAux2Palettes[10][x - 7];
                     }
                 }
 
                 // SP-1
                 //getColor((short)((ROM.DATA[0xDD218 + i + 1] << 8) + ROM.DATA[0xDD218 + i]));
-                palettes[x + 1, 1] = Palettes.globalSprite_Palettes[0][x];
+                palettes[x + 1, 1] = Palettes.GlobalSpritePalettes[0][x];
                 // SP-2
-                palettes[x + 1, 2] = Palettes.globalSprite_Palettes[0][x + (15)];
+                palettes[x + 1, 2] = Palettes.GlobalSpritePalettes[0][x + (15)];
                 // SP-3
-                palettes[x + 1, 3] = Palettes.globalSprite_Palettes[0][x + (30)];
+                palettes[x + 1, 3] = Palettes.GlobalSpritePalettes[0][x + (30)];
                 // SP-4
-                palettes[x + 1, 4] = Palettes.globalSprite_Palettes[0][x + (45)];
+                palettes[x + 1, 4] = Palettes.GlobalSpritePalettes[0][x + (45)];
 
                 //SP-6
                 /*
@@ -812,7 +812,7 @@ namespace ZeldaFullEditor
             {
                 // 55B27 = US LW
                 // 55C27 = US DW
-                cp.Entries[i] = Palettes.overworld_Mini_Map_Palettes[offset][i];
+                cp.Entries[i] = Palettes.OverworldMiniMapPalettes[offset][i];
             }
 
             int k = 0;
@@ -821,7 +821,7 @@ namespace ZeldaFullEditor
             {
                 for (int x = 0; x < 15; x++)
                 {
-                    cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j++];
+                    cp.Entries[145 + k] = Palettes.GlobalSpritePalettes[0][j++];
                     k++;
                 }
 
