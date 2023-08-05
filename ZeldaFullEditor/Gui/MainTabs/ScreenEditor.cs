@@ -200,12 +200,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             SetColorsPalette
             (
-                Palettes.overworld_MainPalettes[5], Palettes.overworld_AnimatedPalettes[0],
-                Palettes.overworld_AuxPalettes[3], Palettes.overworld_AuxPalettes[3],
+                Palettes.OverworldMainPalettes[5], Palettes.OverworldAnimatedPalettes[0],
+                Palettes.OverworldAuxPalettes[3], Palettes.OverworldAuxPalettes[3],
                 Palettes.HudPalettes[0],
                 Color.FromArgb(0, 0, 0, 0),
-                Palettes.spritesAux1_Palettes[1],
-                Palettes.spritesAux1_Palettes[1]
+                Palettes.SpritesAux1Palettes[1],
+                Palettes.SpritesAux1Palettes[1]
             );
 
             int p = Constants.IDKZarby;
@@ -372,12 +372,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             SetColorsPalette
             (
-                Palettes.overworld_MainPalettes[5], Palettes.overworld_AnimatedPalettes[0],
-                Palettes.overworld_AuxPalettes[3], Palettes.overworld_AuxPalettes[3],
+                Palettes.OverworldMainPalettes[5], Palettes.OverworldAnimatedPalettes[0],
+                Palettes.OverworldAuxPalettes[3], Palettes.OverworldAuxPalettes[3],
                 Palettes.HudPalettes[0],
                 Color.FromArgb(0, 0, 0, 0),
-                Palettes.spritesAux1_Palettes[1],
-                Palettes.spritesAux1_Palettes[1]
+                Palettes.SpritesAux1Palettes[1],
+                Palettes.SpritesAux1Palettes[1]
             );
         }
 
@@ -1166,7 +1166,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 8; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.spritesAux1_Palettes[1][k++];
+                    currentPalette[x + (16 * y)] = Palettes.SpritesAux1Palettes[1][k++];
                 }
             }
 
@@ -1176,7 +1176,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 9; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.spritesAux3_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.SpritesAux3Palettes[0][k++];
                 }
             }
 
@@ -1186,7 +1186,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.globalSprite_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.GlobalSpritePalettes[0][k++];
                 }
             }
 
@@ -1216,14 +1216,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.armors_Palettes[0][k++];
+                    currentPalette[x + (16 * y)] = Palettes.ArmorPalettes[0][k++];
                 }
             }
 
             k = 0;
             for (int x = 1; x < 8; x++)
             {
-                currentPalette[x + (16 * 8)] = Palettes.spritesAux1_Palettes[11][k++];
+                currentPalette[x + (16 * 8)] = Palettes.SpritesAux1Palettes[11][k++];
             }
 
             try
@@ -1843,7 +1843,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         public void updateDungMap()
         {
             currentFloorRooms = dungmaps[dungmapListbox.SelectedIndex].FloorRooms.ToArray();
-            currentFloorGfx = dungmaps[dungmapListbox.SelectedIndex].FloorGfx.ToArray();
+            currentFloorGfx = dungmaps[dungmapListbox.SelectedIndex].FloorGFX.ToArray();
             nbrBasement = dungmaps[dungmapListbox.SelectedIndex].NumberOfBasements;
             nbrFloor = dungmaps[dungmapListbox.SelectedIndex].NumberOfFloors;
             totalFloors = nbrBasement + nbrFloor;
@@ -2330,10 +2330,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     for (int r = 0; r < 25; r++) // For all rooms on that floor
                     {
-                        if (dungmaps[d].FloorGfx[f][r] != 0xFF)
+                        if (dungmaps[d].FloorGFX[f][r] != 0xFF)
                         {
                             //ROM.DATA[pos] = dungmaps[d].FloorGfx[f][r];
-                            ROM.Write(pos, dungmaps[d].FloorGfx[f][r], WriteType.DungeonMap);
+                            ROM.Write(pos, dungmaps[d].FloorGFX[f][r], WriteType.DungeonMap);
                             pos++; // Increment position at each write
 
                             if (pos >= 0x575D9 && pos <= 0x57620)
@@ -2388,7 +2388,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             dungmaps[dungmapListbox.SelectedIndex].FloorRooms.Add(rdata);
-            dungmaps[dungmapListbox.SelectedIndex].FloorGfx.Add(gdata);
+            dungmaps[dungmapListbox.SelectedIndex].FloorGFX.Add(gdata);
             currentFloor = 0;
             dungmaps[dungmapListbox.SelectedIndex].NumberOfFloors++;
             updateDungMap();
@@ -2430,7 +2430,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             dungmaps[dungmapListbox.SelectedIndex].FloorRooms.Insert(0, rdata);
-            dungmaps[dungmapListbox.SelectedIndex].FloorGfx.Insert(0, gdata);
+            dungmaps[dungmapListbox.SelectedIndex].FloorGFX.Insert(0, gdata);
             currentFloor = 0;
             dungmaps[dungmapListbox.SelectedIndex].NumberOfBasements++;
             updateDungMap();
@@ -2444,7 +2444,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             dungmaps[dungmapListbox.SelectedIndex].FloorRooms.RemoveAt(0);
-            dungmaps[dungmapListbox.SelectedIndex].FloorGfx.RemoveAt(0);
+            dungmaps[dungmapListbox.SelectedIndex].FloorGFX.RemoveAt(0);
             dungmaps[dungmapListbox.SelectedIndex].NumberOfBasements--;
             updateDungMap();
         }
@@ -2457,7 +2457,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             dungmaps[dungmapListbox.SelectedIndex].FloorRooms.RemoveAt(dungmaps[dungmapListbox.SelectedIndex].FloorRooms.Count - 1);
-            dungmaps[dungmapListbox.SelectedIndex].FloorGfx.RemoveAt(dungmaps[dungmapListbox.SelectedIndex].FloorGfx.Count - 1);
+            dungmaps[dungmapListbox.SelectedIndex].FloorGFX.RemoveAt(dungmaps[dungmapListbox.SelectedIndex].FloorGFX.Count - 1);
             dungmaps[dungmapListbox.SelectedIndex].NumberOfFloors--;
             updateDungMap();
         }
@@ -2467,7 +2467,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             for (int i = 0; i < 25; i++)
             {
                 copiedDataRooms[i] = dungmaps[dungmapListbox.SelectedIndex].FloorRooms[currentFloor][i];
-                copiedDataGfx[i] = dungmaps[dungmapListbox.SelectedIndex].FloorGfx[currentFloor][i];
+                copiedDataGfx[i] = dungmaps[dungmapListbox.SelectedIndex].FloorGFX[currentFloor][i];
             }
 
             updateDungMap();
@@ -2478,7 +2478,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             for (int i = 0; i < 25; i++)
             {
                 dungmaps[dungmapListbox.SelectedIndex].FloorRooms[currentFloor][i] = copiedDataRooms[i];
-                dungmaps[dungmapListbox.SelectedIndex].FloorGfx[currentFloor][i] = copiedDataGfx[i];
+                dungmaps[dungmapListbox.SelectedIndex].FloorGFX[currentFloor][i] = copiedDataGfx[i];
             }
 
             updateDungMap();

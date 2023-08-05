@@ -36,16 +36,16 @@ namespace ZeldaFullEditor.OWSceneModes
 
             foreach (RoomPotSaveEditor item in scene.ow.AllItems)
             {
-                if (item.roomMapId >= 0 + (scene.ow.WorldOffset) && item.roomMapId < (64 + scene.ow.WorldOffset))
+                if (item.RoomMapID >= 0 + (scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
                 {
-                    if (e.X >= item.x && e.X <= item.x + 16 && e.Y >= item.y && e.Y <= item.y + 16)
+                    if (e.X >= item.X && e.X <= item.X + 16 && e.Y >= item.Y && e.Y <= item.Y + 16)
                     {
                         selectedItem = item;
                         lastselectedItem = item;
-                        byte nid = item.id;
-                        if ((item.id & 0x80) == 0x80)
+                        byte nid = item.ID;
+                        if ((item.ID & 0x80) == 0x80)
                         {
-                            nid = (byte)(((item.id - 0x80) / 2) + 0x17);
+                            nid = (byte)(((item.ID - 0x80) / 2) + 0x17);
                         }
 
                         //scene.mainForm.owcombobox.SelectedIndex = nid;
@@ -100,7 +100,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
-                    selectedItem.updateMapStuff(mid);
+                    selectedItem.UpdateMapStuff(mid);
                     lastselectedItem = selectedItem;
                     SendItemData(lastselectedItem);
                     selectedItem = null;
@@ -164,8 +164,8 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (scene.mouse_down)
                     {
-                        selectedItem.x = (e.X / 16) * 16;
-                        selectedItem.y = (e.Y / 16) * 16;
+                        selectedItem.X = (e.X / 16) * 16;
+                        selectedItem.Y = (e.Y / 16) * 16;
 
                         // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 
@@ -178,7 +178,7 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (lastselectedItem != null)
             {
-                lastselectedItem.deleted = true;
+                lastselectedItem.Deleted = true;
                 SendItemData(lastselectedItem);
                 scene.ow.AllItems.Remove(lastselectedItem);
                 lastselectedItem = null;
@@ -190,30 +190,30 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-            scene.ow.AllItems.RemoveAll(x => x.deleted);
+            scene.ow.AllItems.RemoveAll(x => x.Deleted);
             if (scene.lowEndMode)
             {
                 Brush bgrBrush;
                 g.CompositingMode = CompositingMode.SourceOver;
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
-                    if (item.roomMapId != scene.ow.AllMaps[scene.selectedMap].ParentID)
+                    if (item.RoomMapID != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }
 
-                    if (item.roomMapId >= (0 + scene.ow.WorldOffset) && item.roomMapId < (64 + scene.ow.WorldOffset))
+                    if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
                     {
 
                         bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
-                        g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.x), (item.y), 16, 16));
-                        byte nid = item.id;
+                        g.FillRectangle(bgrBrush, new Rectangle((item.X), (item.Y), 16, 16));
+                        g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.X), (item.Y), 16, 16));
+                        byte nid = item.ID;
 
-                        if ((item.id & 0x80) == 0x80)
+                        if ((item.ID & 0x80) == 0x80)
                         {
-                            nid = (byte)(((item.id - 0x80) / 2) + 0x17);
+                            nid = (byte)(((item.ID - 0x80) / 2) + 0x17);
                         }
 
                         if (nid > ItemsNames.name.Length)
@@ -221,7 +221,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             continue;
                         }
 
-                        scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
+                        scene.drawText(g, (item.X) - 1, (item.Y) + 1, item.ID.ToString("X2") + " - " + ItemsNames.name[nid]);
                     }
                 }
 
@@ -234,17 +234,17 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
-                    if (item.roomMapId >= (0 + scene.ow.WorldOffset) && item.roomMapId < (64 + scene.ow.WorldOffset))
+                    if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
                     {
                         bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
-                        g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.x), (item.y), 16, 16));
-                        byte nid = item.id;
+                        g.FillRectangle(bgrBrush, new Rectangle((item.X), (item.Y), 16, 16));
+                        g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.X), (item.Y), 16, 16));
+                        byte nid = item.ID;
 
-                        if ((item.id & 0x80) == 0x80)
+                        if ((item.ID & 0x80) == 0x80)
                         {
-                            nid = (byte)(((item.id - 0x80) / 2) + 0x17);
+                            nid = (byte)(((item.ID - 0x80) / 2) + 0x17);
                         }
 
                         if (nid > ItemsNames.name.Length)
@@ -252,7 +252,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             continue;
                         }
 
-                        scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
+                        scene.drawText(g, (item.X) - 1, (item.Y) + 1, item.ID.ToString("X2") + " - " + ItemsNames.name[nid]);
                     }
                 }
 
@@ -266,15 +266,15 @@ namespace ZeldaFullEditor.OWSceneModes
             NetZSBuffer buffer = new NetZSBuffer(24);
             buffer.Write((byte)09); // pot item data
             buffer.Write((byte)NetZS.userID); //user ID
-            buffer.Write((int)item.uniqueID);
-            buffer.Write((byte)item.gameX);
-            buffer.Write((byte)item.gameY);
-            buffer.Write((byte)item.id);
-            buffer.Write((int)item.x);
-            buffer.Write((int)item.y);
-            buffer.Write((ushort)item.roomMapId);
-            buffer.Write((byte)(item.bg2 ? 1 : 0));
-            buffer.Write((byte)(item.deleted ? 1 : 0));
+            buffer.Write((int)item.UniqueID);
+            buffer.Write((byte)item.GameX);
+            buffer.Write((byte)item.GameY);
+            buffer.Write((byte)item.ID);
+            buffer.Write((int)item.X);
+            buffer.Write((int)item.Y);
+            buffer.Write((ushort)item.RoomMapID);
+            buffer.Write((byte)(item.BG2 ? 1 : 0));
+            buffer.Write((byte)(item.Deleted ? 1 : 0));
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);

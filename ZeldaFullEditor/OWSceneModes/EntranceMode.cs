@@ -315,7 +315,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 scene.mainForm.entrancetreeView.SelectedNode = treeNodes[0];
                             }
 
-                            scene.mainForm.addRoomTab(DungeonsData.Entrances[en.EntranceID].Room);
+                            scene.mainForm.AddRoomTab(DungeonsData.Entrances[en.EntranceID].Room);
                             scene.mainForm.editorsTabControl.SelectedIndex = 0;
                             //scene.mainForm.dungeonButton_Click(scene.mainForm.dungeonButton, null);
                         }
@@ -344,7 +344,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                     scene.mainForm.entrancetreeView.SelectedNode = treeNodes[0];
                                 }
 
-                                scene.mainForm.addRoomTab(DungeonsData.Entrances[en.EntranceID].Room);
+                                scene.mainForm.AddRoomTab(DungeonsData.Entrances[en.EntranceID].Room);
                                 scene.mainForm.editorsTabControl.SelectedIndex = 0;
                             }
                         }

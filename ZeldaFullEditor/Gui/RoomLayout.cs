@@ -73,13 +73,13 @@ namespace ZeldaFullEditor
 
             foreach (SaveObject o in data)
             {
-                if (o.type == typeof(Room_Object))
+                if (o.Type == typeof(Room_Object))
                 {
-                    Room_Object ro = scene.room.addObject(o.tid, o.x, o.y, o.size, o.layer);
+                    Room_Object ro = scene.room.addObject(o.TileID, o.X, o.Y, o.Size, o.Layer);
                     if (ro != null)
                     {
                         ro.setRoom(scene.room);
-                        ro.options = o.options;
+                        ro.options = o.Options;
                         scene.room.tilesObjects.Add(ro);
                     }
                 }

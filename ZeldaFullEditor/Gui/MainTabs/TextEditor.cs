@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-using System.IO;
-using ZeldaFullEditor.Gui.TextEditorExtra;
 using System.Text.RegularExpressions;
-using System.Globalization;
+using System.Windows.Forms;
 using ZeldaFullEditor.Data;
-using System.Drawing.Drawing2D;
+using ZeldaFullEditor.Gui.TextEditorExtra;
 
 namespace ZeldaFullEditor
 {
@@ -19,7 +19,7 @@ namespace ZeldaFullEditor
     {
         readonly byte[] widthArray = new byte[100];
         static readonly int defaultColor = 6;
-        readonly string romname = "";
+        readonly string romname = string.Empty;
 
         int textLine = 0;
         readonly List<MessageData> ListOfTexts = new List<MessageData>();
@@ -47,23 +47,28 @@ namespace ZeldaFullEditor
 
         public static List<DictionaryEntry> AllDictionaries = new List<DictionaryEntry>();
 
-
         public TextEditor()
         {
             this.InitializeComponent();
             this.TextCommandList.Items.AddRange(TextCommands);
             this.SpecialsList.Items.AddRange(SpecialChars);
-            this.pictureBox1.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
+            this.pictureBox1.MouseWheel += new MouseEventHandler(this.PictureBox1_MouseWheel);
         }
 
         public class TextElement
         {
             public byte ID { get; internal set; }
+
             public string Token { get; internal set; }
+
             public string GenericToken { get; internal set; }
+
             public string Pattern { get; internal set; }
+
             public string StrictPattern { get; internal set; }
+
             public string Description { get; internal set; }
+
             public bool HasArgument { get; internal set; }
 
             public TextElement(byte id, string token, bool arg, string description)
@@ -89,7 +94,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            override public string ToString()
+            public override string ToString()
             {
                 return string.Format("{0} {1}", this.GenericToken, this.Description);
             }
@@ -103,6 +108,7 @@ namespace ZeldaFullEditor
         public class ParsedElement
         {
             public TextElement Parent { get; internal set; }
+
             public byte Value { get; internal set; }
 
             public ParsedElement(TextElement textElement, byte value)
@@ -115,9 +121,13 @@ namespace ZeldaFullEditor
         public class DictionaryEntry
         {
             public byte ID { get; internal set; }
+
             public string Contents { get; internal set; }
+
             public byte[] Data { get; internal set; }
+
             public int Length { get; internal set; }
+
             public string Token { get; internal set; }
 
             public DictionaryEntry(byte id, string contents)
@@ -155,7 +165,7 @@ namespace ZeldaFullEditor
         }
 
         /// <summary>
-        ///		
+        ///
         /// </summary>
         /// <param name="str"> The string to find. </param>
         /// <returns></returns>
@@ -182,9 +192,9 @@ namespace ZeldaFullEditor
             match = DictionaryElement.MatchMe(str);
             if (match.Success)
             {
-                return new ParsedElement(DictionaryElement,
-                    (byte)(DICTOFF + (byte.Parse(match.Groups[1].Value, NumberStyles.HexNumber))
-                ));
+                return new ParsedElement(
+                    DictionaryElement,
+                    (byte)(DICTOFF + byte.Parse(match.Groups[1].Value, NumberStyles.HexNumber)));
             }
 
             return null;
@@ -386,8 +396,10 @@ namespace ZeldaFullEditor
             if (id < this.textListbox.Items.Count)
             {
                 this.textListbox.SelectedIndex = id;
+
                 return true;
             }
+
             return false;
         }
 
@@ -409,12 +421,13 @@ namespace ZeldaFullEditor
 
                 if (value == MESSAGETERMINATOR)
                 {
-                    var message = new MessageData(messageID++, pos,
+                    var message = new MessageData(
+                        messageID++,
+                        pos,
                         currentMessageRaw.ToString(),
                         tempBytesRaw.ToArray(),
                         currentMessageParsed.ToString(),
-                        tempBytesParsed.ToArray()
-                        );
+                        tempBytesParsed.ToArray());
 
                     this.ListOfTexts.Add(message);
 
@@ -422,6 +435,7 @@ namespace ZeldaFullEditor
                     tempBytesParsed.Clear();
                     currentMessageRaw.Clear();
                     currentMessageParsed.Clear();
+
                     continue;
                 }
                 else if (value == 0xFF)
@@ -456,7 +470,7 @@ namespace ZeldaFullEditor
                 }
 
                 // Check for special characters.
-                textElement = FindMatchingSpecial(value);
+                textElement = this.FindMatchingSpecial(value);
 
                 if (textElement != null)
                 {
@@ -483,12 +497,11 @@ namespace ZeldaFullEditor
                     for (int i = address; i < addressEnd; i++)
                     {
                         tempBytesParsed.Add(ROM.DATA[i]);
-                        currentMessageParsed.Append(ParseTextDataByte(ROM.DATA[i]));
+                        currentMessageParsed.Append(this.ParseTextDataByte(ROM.DATA[i]));
                     }
 
                     continue;
                 }
-
 
                 // Everything else.
                 if (CharEncoder.ContainsKey(value))
@@ -509,21 +522,19 @@ namespace ZeldaFullEditor
                 var bytes = new List<byte>();
                 var stringBuilder = new StringBuilder();
 
-                int address = Utils.SnesToPc((0x0E0000) +
+                int address = Utils.SnesToPc(0x0E0000 +
                     (ROM.DATA[Constants.pointers_dictionaries + (i * 2) + 1] << 8) +
-                    ROM.DATA[Constants.pointers_dictionaries + (i * 2)]
-                );
+                    ROM.DATA[Constants.pointers_dictionaries + (i * 2)]);
 
-                int tempAddress = Utils.SnesToPc((0x0E0000) +
+                int tempAddress = Utils.SnesToPc(0x0E0000 +
                     (ROM.DATA[Constants.pointers_dictionaries + ((i + 1) * 2) + 1] << 8) +
-                    ROM.DATA[Constants.pointers_dictionaries + ((i + 1) * 2)]
-                );
+                    ROM.DATA[Constants.pointers_dictionaries + ((i + 1) * 2)]);
 
                 while (address < tempAddress)
                 {
                     byte byteDictionary = ROM.DATA[address++];
                     bytes.Add(byteDictionary);
-                    stringBuilder.Append(ParseTextDataByte(byteDictionary));
+                    stringBuilder.Append(this.ParseTextDataByte(byteDictionary));
                 }
 
                 AllDictionaries.Add(new DictionaryEntry((byte)i, stringBuilder.ToString()));
@@ -586,7 +597,6 @@ namespace ZeldaFullEditor
             return bytes.ToArray();
         }
 
-
         public string ParseTextDataByte(byte value)
         {
             if (CharEncoder.ContainsKey(value))
@@ -595,7 +605,7 @@ namespace ZeldaFullEditor
             }
 
             // Check for command.
-            TextElement textElement = FindMatchingCommand(value);
+            TextElement textElement = this.FindMatchingCommand(value);
 
             if (textElement != null)
             {
@@ -603,7 +613,7 @@ namespace ZeldaFullEditor
             }
 
             // Check for special characters.
-            textElement = FindMatchingSpecial(value);
+            textElement = this.FindMatchingSpecial(value);
 
             if (textElement != null)
             {
@@ -611,7 +621,7 @@ namespace ZeldaFullEditor
             }
 
             // Check for dictionary.
-            int dictionary = FindDictionaryEntry(value);
+            int dictionary = this.FindDictionaryEntry(value);
 
             if (dictionary >= 0)
             {
@@ -637,7 +647,7 @@ namespace ZeldaFullEditor
                 Color.DimGray,
                 Color.DarkBlue,
                 Color.White,
-                Color.DarkOrange
+                Color.DarkOrange,
             };
 
             ColorPalette colorPallete = GFX.fontgfxBitmap.Palette;
@@ -674,22 +684,32 @@ namespace ZeldaFullEditor
             return Regex.Replace(str, @"\[[123V]\]", "\r\n$0");
         }
 
-        private void textListbox_SelectedIndexChanged(object sender, EventArgs e)
+        private void TextListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.textListbox.SelectedIndex == -1)
             {
-                //CurrentMessage = null;
+                /*
+                CurrentMessage = null;
+                */
+
                 return;
             }
 
-            //MessageData msg = listOfTexts[(int) (textListbox.Items[textListbox.SelectedIndex] as ListViewItem).Tag];
-            this.CurrentMessage = this.textListbox.Items[textListbox.SelectedIndex] as MessageData;
-            //Console.WriteLine(savedTexts[textListbox.SelectedIndex]);
-            /*for (int i = 0; i < savedBytes[textListbox.SelectedIndex].Length; i++)
+            /*
+            MessageData msg = listOfTexts[(int) (textListbox.Items[textListbox.SelectedIndex] as ListViewItem).Tag];
+            */
+
+            this.CurrentMessage = this.textListbox.Items[this.textListbox.SelectedIndex] as MessageData;
+
+            /*
+            Console.WriteLine(savedTexts[textListbox.SelectedIndex]);
+            for (int i = 0; i < savedBytes[textListbox.SelectedIndex].Length; i++)
             {
                 Console.Write(savedBytes[textListbox.SelectedIndex][i].ToString("X2") + " ");
-            }*/
-            //Console.WriteLine();
+            }
+
+            Console.WriteLine();
+            */
 
             // TODO: Need to adjust this because it keeps moving where the cursor is.
             this.textBox1.Text = AddNewLinesToCommands(this.CurrentMessage.ContentsParsed);
@@ -787,7 +807,7 @@ namespace ZeldaFullEditor
 
         public unsafe void DrawMessagePreview() // From Parsing.
         {
-            //defaultColor = 6;
+            // defaultColor = 6;
             this.textLine = 0;
             byte* ptr = (byte*)GFX.currentfontgfx16Ptr.ToPointer();
 
@@ -808,7 +828,7 @@ namespace ZeldaFullEditor
 
             byte* pointer = (byte*)GFX.currentfontgfx16Ptr.ToPointer();
 
-            int drawid = (srcx + (srcy * 32));
+            int drawid = srcx + (srcy * 32);
             for (int yl = 0; yl < sizey * 8; yl++)
             {
                 for (int xl = 0; xl < 4; xl++)
@@ -817,12 +837,12 @@ namespace ZeldaFullEditor
                     int my = yl;
 
                     // Formula information to get tile index position in the array.
-                    //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                    // ((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                     int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                     byte pixel = allTileData[tx + (yl * 64) + xl];
-                    //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
 
-                    int index = (x) + (y * 172) + ((mx * 2) + (my * (172)));
+                    // nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                    int index = x + (y * 172) + (mx * 2) + (my * 172);
                     if ((pixel & 0x0F) != 0)
                     {
                         pointer[index + 1] = (byte)((pixel & 0x0F) + (0 * 4));
@@ -836,7 +856,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void searchTextbox_TextChanged(object sender, EventArgs e)
+        private void SearchTextbox_TextChanged(object sender, EventArgs e)
         {
             this.DisplayedMessages.Clear();
             string searchText = this.searchTextbox.Text.ToLower();
@@ -855,13 +875,13 @@ namespace ZeldaFullEditor
             this.textListbox.EndUpdate();
         }
 
-        private void pictureBox2_Paint(object sender, PaintEventArgs e)
+        private void PictureBox2_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.DrawImage(GFX.fontgfxBitmap, Constants.Rect_0_0_256_256);
 
-            if (fontGridBox.Checked)
+            if (this.fontGridBox.Checked)
             {
                 for (int i = 0; i < 16; i++)
                 {
@@ -874,22 +894,22 @@ namespace ZeldaFullEditor
                 }
             }
 
-            int srcY = selectedTile / 16;
-            int srcX = selectedTile - (srcY * 16);
+            int srcY = this.selectedTile / 16;
+            int srcX = this.selectedTile - (srcY * 16);
             e.Graphics.DrawRectangle(CharHilite, new Rectangle(srcX * 16, srcY * 32, 16, 32));
         }
 
-
-        private void pictureBox3_Paint(object sender, PaintEventArgs e)
+        private void PictureBox3_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.DrawImage(GFX.fontgfxBitmap,
+            e.Graphics.DrawImage(
+                GFX.fontgfxBitmap,
                 Constants.Rect_0_0_64_128,
                 new Rectangle((this.selectedTile - (this.selectedTile & 0xF0)) * 8, this.selectedTile & 0xF0, 8, 16),
                 GraphicsUnit.Pixel);
 
-            if (fontGridBox.Checked)
+            if (this.fontGridBox.Checked)
             {
                 for (int i = 0; i < 8; i++)
                 {
@@ -903,7 +923,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             ColorPalette colorPallete = GFX.currentfontgfx16Bitmap.Palette;
@@ -926,7 +946,7 @@ namespace ZeldaFullEditor
 
             e.Graphics.DrawImage(
                 GFX.currentfontgfx16Bitmap,
-                new Rectangle(0, 0, 340, pictureBox2.Height),
+                new Rectangle(0, 0, 340, this.pictureBox2.Height),
                 new Rectangle(0, this.shownLines * 16, 170, this.pictureBox2.Height / 2),
                 GraphicsUnit.Pixel);
 
@@ -935,7 +955,7 @@ namespace ZeldaFullEditor
                 new Rectangle(344 - 8, 0, 4, this.pictureBox2.Height));
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             using (var saveFileDialog = new SaveFileDialog())
             {
@@ -957,7 +977,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             using (var openFileDialog = new OpenFileDialog())
             {
@@ -972,13 +992,19 @@ namespace ZeldaFullEditor
 
                     for (int i = 0; i < 0x1000; i++)
                     {
-                        //ROM.DATA[Constants.gfx_font + i] = data[i];
+                        /*
+                        ROM.DATA[Constants.gfx_font + i] = data[i];
+                        */
+
                         ROM.Write(Constants.gfx_font + i, data[i], WriteType.FontData);
                     }
 
                     for (int i = 0; i < 100; i++)
                     {
-                        //ROM.DATA[Constants.characters_width + i] = data[i + 0x1000];
+                        /*
+                        ROM.DATA[Constants.characters_width + i] = data[i + 0x1000];
+                        */
+
                         ROM.Write(Constants.characters_width + i, data[i + 0x1000], WriteType.FontData);
                     }
 
@@ -994,14 +1020,17 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 100; i++)
             {
-                //ROM.DATA[Constants.characters_width + i] = widthArray[i];
+                /*
+                ROM.DATA[Constants.characters_width + i] = widthArray[i];
+                */
+
                 ROM.Write(Constants.characters_width + i, this.widthArray[i], WriteType.FontData);
             }
 
             int pos = Constants.text_data;
             bool inSecondBank = false;
 
-            foreach (MessageData message in ListOfTexts)
+            foreach (MessageData message in this.ListOfTexts)
             {
                 foreach (byte value in message.Data)
                 {
@@ -1059,15 +1088,15 @@ namespace ZeldaFullEditor
             MessageBox.Show(message);
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             if (!this.fromForm)
             {
-                this.widthArray[selectedTile] = (byte)this.numericUpDown1.Value;
+                this.widthArray[this.selectedTile] = (byte)this.numericUpDown1.Value;
             }
         }
 
-        private void pictureBox2_MouseDown(object sender, MouseEventArgs e)
+        private void PictureBox2_MouseDown(object sender, MouseEventArgs e)
         {
             this.selectedTile = (e.X / 16) + ((e.Y / 32) * 16);
 
@@ -1077,15 +1106,15 @@ namespace ZeldaFullEditor
             }
 
             this.fromForm = true;
-            this.numericUpDown1.Value = this.widthArray[selectedTile];
+            this.numericUpDown1.Value = this.widthArray[this.selectedTile];
             this.fromForm = false;
-            this.SelectedTileID.Text = selectedTile.ToString("X2");
-            this.SelectedTileASCII.Text = this.ParseTextDataByte((byte)selectedTile);
+            this.SelectedTileID.Text = this.selectedTile.ToString("X2");
+            this.SelectedTileASCII.Text = this.ParseTextDataByte((byte)this.selectedTile);
             this.pictureBox2.Refresh();
             this.pictureBox3.Refresh();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void TextBox1_TextChanged(object sender, EventArgs e)
         {
             // TODO is fromForm necessary?
             //if (!fromForm) 
@@ -1101,7 +1130,7 @@ namespace ZeldaFullEditor
         /// <param name="e"></param>
         private void InsertCommandButton_Click_1(object sender, EventArgs e)
         {
-            this.InsertSelectedText(TextCommands[TextCommandList.SelectedIndex].GetParameterizedToken((byte)ParamsBox.HexValue));
+            this.InsertSelectedText(TextCommands[this.TextCommandList.SelectedIndex].GetParameterizedToken((byte)this.ParamsBox.HexValue));
         }
 
         /// <summary>
@@ -1111,7 +1140,7 @@ namespace ZeldaFullEditor
         /// <param name="e"></param>
         private void InsertSpecialButton_Click(object sender, EventArgs e)
         {
-            this.InsertSelectedText(SpecialChars[SpecialsList.SelectedIndex].GetParameterizedToken());
+            this.InsertSelectedText(SpecialChars[this.SpecialsList.SelectedIndex].GetParameterizedToken());
         }
 
         private void InsertSelectedText(string str)
@@ -1129,16 +1158,15 @@ namespace ZeldaFullEditor
         /// </summary>
         private void UpdateTextBox()
         {
-            if (textListbox.SelectedItem != null)
+            if (this.textListbox.SelectedItem != null)
             {
-                this.CurrentMessage.SetMessage(Regex.Replace(this.textBox1.Text, @"[\r\n]", ""));
+                this.CurrentMessage.SetMessage(Regex.Replace(this.textBox1.Text, @"[\r\n]", string.Empty));
                 this.DrawMessagePreview();
                 this.pictureBox1.Refresh();
-
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
             var dictionariesForm = new DictionariesForm();
             dictionariesForm.listBox1.Items.Clear();
@@ -1147,16 +1175,17 @@ namespace ZeldaFullEditor
             {
                 dictionariesForm.listBox1.Items.Insert(
                     dictionaryEntry.ID,
-                    string.Format("{0:X2} [{1:X2}] - {2}",
-                    dictionaryEntry.ID,
-                    dictionaryEntry.ID + DICTOFF,
-                    dictionaryEntry.Contents.Replace(" ", "[Space]")));
+                    string.Format(
+                        "{0:X2} [{1:X2}] - {2}",
+                        dictionaryEntry.ID,
+                        dictionaryEntry.ID + DICTOFF,
+                        dictionaryEntry.Contents.Replace(" ", "[Space]")));
             }
 
             dictionariesForm.ShowDialog();
         }
 
-        private void dumpTextsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DumpTextsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string[] alltexts = new string[this.ListOfTexts.Count];
             int i = 0;
@@ -1168,7 +1197,7 @@ namespace ZeldaFullEditor
             File.WriteAllLines("dump.txt", alltexts);
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void Button5_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < 100; i++)
             {
@@ -1184,29 +1213,31 @@ namespace ZeldaFullEditor
         }
 
         // TODO: needs a rewrite.
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        private void ToolStripButton2_Click(object sender, EventArgs e)
         {
-            //using (OpenFileDialog of = new OpenFileDialog()) 
-            //{
-            //    of.DefaultExt = ".txt";
-            //    if (of.ShowDialog() == DialogResult.OK) 
-            //    {
-            //        string[] alltexts = File.ReadAllLines(of.FileName);
-            //        for (int i = 0; i < alltexts.Length; i++)
-            //        {
-            //            if (alltexts[i].Length > 3)
-            //            {
-            //                int id = int.Parse(alltexts[i].Substring(0, 3));
-            //                listOfTexts[id] = new StringKey(alltexts[i].Substring(5, alltexts[i].Length - 5), new byte[] { });
-            //            }
-            //        }
-            //
-            //        sortText();
-            //    }
-            //}
+            /*
+            using (OpenFileDialog of = new OpenFileDialog())
+            {
+                of.DefaultExt = ".txt";
+                if (of.ShowDialog() == DialogResult.OK)
+                {
+                    string[] alltexts = File.ReadAllLines(of.FileName);
+                    for (int i = 0; i < alltexts.Length; i++)
+                    {
+                        if (alltexts[i].Length > 3)
+                        {
+                            int id = int.Parse(alltexts[i].Substring(0, 3));
+                            listOfTexts[id] = new StringKey(alltexts[i].Substring(5, alltexts[i].Length - 5), new byte[] { });
+                        }
+                    }
+
+                    sortText();
+                }
+            }
+            */
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void ToolStripButton1_Click(object sender, EventArgs e)
         {
             using (var saveFileDialog = new SaveFileDialog())
             {
@@ -1224,12 +1255,12 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void ToolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
-        public void delete()
+        public void Delete()
         {
             // Determine if any text is selected in the TextBox control.
             if (this.textBox1.SelectionLength == 0)
@@ -1239,29 +1270,30 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void selectAll()
+        public void SelectAll()
         {
             // Determine if any text is selected in the TextBox control.
             if (this.textBox1.SelectionLength == 0)
             {
                 // Select all text in the text box.
                 this.textBox1.SelectAll();
+
                 // Move the cursor to the text box.
                 this.textBox1.Focus();
             }
         }
 
-        public void cut()
+        public void Cut()
         {
             // Ensure that text is currently selected in the text box.
-            if (this.textBox1.SelectedText != "")
+            if (this.textBox1.SelectedText != string.Empty)
             {
                 // Cut the selected text in the control and paste it into the Clipboard.
                 this.textBox1.Cut();
             }
         }
 
-        public void paste()
+        public void Paste()
         {
             // Determine if there is any text in the Clipboard to paste into the textbox.
             if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text))
@@ -1270,7 +1302,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void copy()
+        public void Copy()
         {
             // Ensure that text is selected in the text box.
             if (this.textBox1.SelectionLength > 0)
@@ -1280,19 +1312,20 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void undo()
+        public void Undo()
         {
             // Determine if last operation can be undone in text box.
             if (this.textBox1.CanUndo)
             {
                 // Undo the last operation.
                 this.textBox1.Undo();
+
                 // Clear the undo buffer to prevent last action from being redone.
                 this.textBox1.ClearUndo();
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.ParamsBox.Enabled = TextCommands[this.TextCommandList.SelectedIndex].HasArgument;
         }
@@ -1308,14 +1341,13 @@ namespace ZeldaFullEditor
             byter.ShowBytes(this.CurrentMessage);
         }
 
-        private void fontGridBox_CheckedChanged(object sender, EventArgs e)
+        private void FontGridBox_CheckedChanged(object sender, EventArgs e)
         {
             this.pictureBox2.Refresh();
             this.pictureBox3.Refresh();
         }
 
-
-        private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
+        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta > 1)
             {
@@ -1327,7 +1359,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void downButton_Click(object sender, EventArgs e)
+        private void DownButton_Click(object sender, EventArgs e)
         {
             this.ScrollTextPreviewDown();
         }
@@ -1342,7 +1374,7 @@ namespace ZeldaFullEditor
             this.pictureBox1.Refresh();
         }
 
-        private void upButton_Click(object sender, EventArgs e)
+        private void UpButton_Click(object sender, EventArgs e)
         {
             this.ScrollTextPreviewUp();
         }
@@ -1357,7 +1389,7 @@ namespace ZeldaFullEditor
             this.pictureBox1.Refresh();
         }
 
-        private void textBox1_Leave(object sender, EventArgs e)
+        private void TextBox1_Leave(object sender, EventArgs e)
         {
             this.textListbox.BeginUpdate();
             this.textListbox.DataSource = null;

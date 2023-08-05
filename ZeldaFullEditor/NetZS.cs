@@ -67,7 +67,7 @@ namespace ZeldaFullEditor.Properties
                                 else if (im.Data[0] == 64) // Save signal
                                 {
                                     Console.WriteLine("Client requested a save!");
-                                    form.saveToolStripMenuItem_Click(null, null);
+                                    form.SaveToolStripMenuItem_Click(null, null);
 
                                 }
                                 else if (im.Data[0] == 03) //checksum request for LW
@@ -519,12 +519,12 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
 
             int uId = buffer.ReadInt(); // item unique id
-            RoomPotSaveEditor[] items = form.overworldEditor.scene.ow.AllItems.Where(x => x.uniqueID == uId).ToArray();
+            RoomPotSaveEditor[] items = form.overworldEditor.scene.ow.AllItems.Where(x => x.UniqueID == uId).ToArray();
             RoomPotSaveEditor item = null;
             if (items.Length == 0)
             {
                 item = new RoomPotSaveEditor(0, 0, 0, 0, false);
-                item.uniqueID = uId;
+                item.UniqueID = uId;
                 form.overworldEditor.scene.ow.AllItems.Add(item);
             }
             else
@@ -533,14 +533,14 @@ namespace ZeldaFullEditor.Properties
             }
 
 
-            item.gameX = buffer.ReadByte();
-            item.gameY = buffer.ReadByte();
-            item.id = buffer.ReadByte();
-            item.x = buffer.ReadInt();
-            item.y = buffer.ReadInt();
-            item.roomMapId = buffer.ReadUShort();
-            item.bg2 = (buffer.ReadByte() == 1 ? true : false);
-            item.deleted = (buffer.ReadByte() == 1 ? true : false);
+            item.GameX = buffer.ReadByte();
+            item.GameY = buffer.ReadByte();
+            item.ID = buffer.ReadByte();
+            item.X = buffer.ReadInt();
+            item.Y = buffer.ReadInt();
+            item.RoomMapID = buffer.ReadUShort();
+            item.BG2 = (buffer.ReadByte() == 1 ? true : false);
+            item.Deleted = (buffer.ReadByte() == 1 ? true : false);
             form.overworldEditor.scene.Invalidate();
             Console.WriteLine("Item " + uId + " changed!");
         }

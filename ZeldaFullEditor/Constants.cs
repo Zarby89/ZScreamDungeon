@@ -509,8 +509,8 @@ namespace ZeldaFullEditor
         public static int GravesYLine = 0x4993A; // Short (0x08 entries)
         public static int GravesCountOnY = 0x499E0; // Byte 0x09 entries
 
-        public static int GraveLinkSpecialHole = 0x46DD9; // Short
-        public static int GraveLinkSpecialStairs = 0x46DE0; // Short
+        public static int GraveLinkSpecialStairs = 0x46DD9; // Short
+        public static int GraveLinkSpecialHole = 0x46DE0; // Short
 
         //===========================================================================================
         // Palettes Related Variables - This contain all the palettes of the game

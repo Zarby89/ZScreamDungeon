@@ -301,19 +301,19 @@ namespace ZeldaFullEditor
                 if (itemMode.lastselectedItem != null)
                 {
                     owForm.SetSelectedObjectLabels(
-                        itemMode.lastselectedItem.id,
-                        itemMode.lastselectedItem.x,
-                        itemMode.lastselectedItem.y);
+                        itemMode.lastselectedItem.ID,
+                        itemMode.lastselectedItem.X,
+                        itemMode.lastselectedItem.Y);
 
                     owForm.objCombobox.Items.AddRange(ItemsNames.name);
 
-                    if ((itemMode.lastselectedItem.id & 0x80) == 0x80)
+                    if ((itemMode.lastselectedItem.ID & 0x80) == 0x80)
                     {
-                        owForm.objCombobox.SelectedIndex = (23 + ((itemMode.lastselectedItem.id - 0x80) / 2));
+                        owForm.objCombobox.SelectedIndex = (23 + ((itemMode.lastselectedItem.ID - 0x80) / 2));
                     }
                     else
                     {
-                        owForm.objCombobox.SelectedIndex = itemMode.lastselectedItem.id;
+                        owForm.objCombobox.SelectedIndex = itemMode.lastselectedItem.ID;
                     }
 
                     owForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
@@ -351,7 +351,7 @@ namespace ZeldaFullEditor
             }
             else if (selectedMode == ObjectMode.Gravestone)
             {
-                gravestoneMode.onMouseUp(e);
+                gravestoneMode.OnMouseUp(e);
             }
 
             owForm.objectGroupbox.Text = text;
@@ -405,7 +405,7 @@ namespace ZeldaFullEditor
             }
 
 
-            itemMode.lastselectedItem.id = id;
+            itemMode.lastselectedItem.ID = id;
             itemMode.SendItemData(itemMode.lastselectedItem);
             InvalidateHighEnd();
         }
@@ -439,7 +439,7 @@ namespace ZeldaFullEditor
                     transportMode.onMouseMove(e);
                     break;
                 case ObjectMode.Gravestone:
-                    gravestoneMode.onMouseMove(e);
+                    gravestoneMode.OnMouseMove(e);
                     break;
             }
 
@@ -619,11 +619,11 @@ namespace ZeldaFullEditor
                     {
                         if (OverworldEditor.UseAreaSpecificBgColor)
                         {
-                            g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.AllMaps[selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 1024, 1024));
+                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 1024, 1024));
                         }
                         else
                         {
-                            g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
+                            g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
                         }
 
                         g.DrawImage(ow.AllMaps[ow.AllMaps[selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
@@ -635,11 +635,11 @@ namespace ZeldaFullEditor
                     {
                         if (OverworldEditor.UseAreaSpecificBgColor)
                         {
-                            g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.AllMaps[selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                         }
                         else
                         {
-                            g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
+                            g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
                         }
 
                         g.DrawImage(ow.AllMaps[ow.AllMaps[selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
@@ -649,15 +649,15 @@ namespace ZeldaFullEditor
                 {
                     if (ow.WorldOffset == 64)
                     {
-                        g.Clear(Palettes.overworld_GrassPalettes[1]);
+                        g.Clear(Palettes.OverworldGrassPalettes[1]);
                     }
                     else if (ow.WorldOffset == 128)
                     {
-                        g.Clear(Palettes.overworld_GrassPalettes[2]);
+                        g.Clear(Palettes.OverworldGrassPalettes[2]);
                     }
                     else
                     {
-                        g.Clear(Palettes.overworld_GrassPalettes[0]);
+                        g.Clear(Palettes.OverworldGrassPalettes[0]);
                     }
 
                     // TODO make a single PointF and Rectangle variable to reuse
@@ -713,11 +713,11 @@ namespace ZeldaFullEditor
 
                                     if (OverworldEditor.UseAreaSpecificBgColor)
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                     else
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                 }
                                 else if (i >= 64 && i < 128)
@@ -726,11 +726,11 @@ namespace ZeldaFullEditor
 
                                     if (OverworldEditor.UseAreaSpecificBgColor)
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                     else
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[1]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                 }
                                 else
@@ -739,11 +739,11 @@ namespace ZeldaFullEditor
 
                                     if (OverworldEditor.UseAreaSpecificBgColor)
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                     else
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[2]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[2]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                 }
                             }

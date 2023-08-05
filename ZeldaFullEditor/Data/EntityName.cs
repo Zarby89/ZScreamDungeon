@@ -11,7 +11,7 @@
         public int ID { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Name of the entity.
+        ///     Gets or sets the name of the entity.
         /// </summary>
         public string Name { get; set; }
 
@@ -19,7 +19,7 @@
         ///     Initializes a new instance of the <see cref="EntityName"/> class.
         /// </summary>
         /// <param name="id"> The ID. </param>
-        /// <param name="name"> The Name. </param>
+        /// <param name="name"> The name. </param>
         public EntityName(int id, string name)
         {
             this.ID = id;
@@ -45,7 +45,7 @@
         /// Initializes a new instance of the <see cref="SpriteName"/> class.
         /// </summary>
         /// <param name="id"> The ID. </param>
-        /// <param name="name"> The Name. </param>
+        /// <param name="name"> The name. </param>
         public SpriteName(int id, string name)
             : base(id, name)
         {
@@ -61,7 +61,7 @@
         /// Initializes a new instance of the <see cref="TileTypeName"/> class.
         /// </summary>
         /// <param name="id"> The ID. </param>
-        /// <param name="name"> The Name. </param>
+        /// <param name="name"> The name. </param>
         public TileTypeName(int id, string name)
             : base(id, name)
         {
@@ -77,7 +77,7 @@
         /// Initializes a new instance of the <see cref="RoomObjectName"/> class.
         /// </summary>
         /// <param name="id"> The ID. </param>
-        /// <param name="name"> The Name. </param>
+        /// <param name="name"> The name. </param>
         public RoomObjectName(int id, string name)
             : base(id, name)
         {
@@ -102,7 +102,7 @@
         /// Initializes a new instance of the <see cref="RoomTagName"/> class.
         /// </summary>
         /// <param name="id"> The ID. </param>
-        /// <param name="name"> The Name. </param>
+        /// <param name="name"> The name. </param>
         public RoomTagName(int id, string name)
             : base(id, name)
         {
@@ -127,7 +127,7 @@
         /// Initializes a new instance of the <see cref="RoomEffectName"/> class.
         /// </summary>
         /// <param name="id"> The ID. </param>
-        /// <param name="name"> The Name. </param>
+        /// <param name="name"> The name. </param>
         public RoomEffectName(int id, string name)
             : base(id, name)
         {

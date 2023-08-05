@@ -44,56 +44,66 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        public void onMouseMove(MouseEventArgs e)
+        /// <summary>
+        ///     Triggers on mouse move in gravestone mode.
+        /// </summary>
+        /// <param name="e"> Event args. </param>
+        public void OnMouseMove(MouseEventArgs e)
         {
-            if (scene.mouse_down)
+            if (this.scene.mouse_down)
             {
                 int mouseTileX = e.X / 16;
                 int mouseTileY = e.Y / 16;
-                int mapX = (mouseTileX / 32);
-                int mapY = (mouseTileY / 32);
+                int mapX = mouseTileX / 32;
+                int mapY = mouseTileY / 32;
 
-                scene.mapHover = mapX + (mapY * 8);
+                int tempMapHover = mapX + (mapY * 8);
 
-                if (selectedGrave != null)
+                this.scene.mapHover = this.scene.ow.AllMaps[tempMapHover].ParentID;
+
+                if (this.selectedGrave != null)
                 {
-                    selectedGrave.XTilePos = (ushort)e.X;
-                    selectedGrave.YTilePos = (ushort)e.Y;
-                    if (scene.snapToGrid)
+                    this.selectedGrave.XTilePos = (ushort)e.X;
+                    this.selectedGrave.YTilePos = (ushort)e.Y;
+                    if (this.scene.snapToGrid)
                     {
-                        selectedGrave.XTilePos = (ushort)((e.X / 8) * 8);
-                        selectedGrave.YTilePos = (ushort)((e.Y / 8) * 8);
+                        this.selectedGrave.XTilePos = (ushort)((e.X / 8) * 8);
+                        this.selectedGrave.YTilePos = (ushort)((e.Y / 8) * 8);
                     }
                 }
             }
         }
 
-        public void onMouseUp(MouseEventArgs e)
+        /// <summary>
+        ///     Triggers on mouse up in gravestone mode. Calculates grave data.
+        /// </summary>
+        /// <param name="e"> Event args. </param>
+        public void OnMouseUp(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (selectedGrave != null)
+                if (this.selectedGrave != null)
                 {
-                    if (scene.mapHover >= 64)
+                    if (this.scene.mapHover >= 64)
                     {
-                        scene.mapHover -= 64;
+                        this.scene.mapHover -= 64;
                     }
-                    int mx = (scene.mapHover - ((scene.mapHover / 8) * 8));
-                    int my = ((scene.mapHover / 8));
 
-                    byte xx = (byte)((selectedGrave.XTilePos - (mx * 512)) / 16);
-                    byte yy = (byte)((selectedGrave.YTilePos - (my * 512)) / 16);
+                    int mx = this.scene.mapHover - ((this.scene.mapHover / 8) * 8);
+                    int my = this.scene.mapHover / 8;
 
-                    selectedGrave.TilemapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
+                    byte xx = (byte)((this.selectedGrave.XTilePos - (mx * 512)) / 16);
+                    byte yy = (byte)((this.selectedGrave.YTilePos - (my * 512)) / 16);
 
-                    lastselectedGrave = selectedGrave;
-                    SendGraveData(lastselectedGrave);
-                    selectedGrave = null;
-                    scene.mouse_down = false;
+                    this.selectedGrave.TilemapPos = (ushort)(((yy << 6) | (xx & 0x3F)) << 1);
+
+                    this.lastselectedGrave = this.selectedGrave;
+                    this.SendGraveData(this.lastselectedGrave);
+                    this.selectedGrave = null;
+                    this.scene.mouse_down = false;
                 }
             }
         }
-
 
         public void Draw(Graphics g)
         {
