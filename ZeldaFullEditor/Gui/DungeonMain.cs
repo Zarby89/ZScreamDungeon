@@ -13,6 +13,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using System.Windows.Markup;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
 using ZeldaFullEditor.Data;
@@ -2131,29 +2132,42 @@ namespace ZeldaFullEditor
 
         public void runtestButton_Click(object sender, EventArgs e)
         {
-            /*
+            this.SaveToolStripMenuItem_Click(this.saveToolStripMenuItem, new EventArgs());
             if (File.Exists("temp.sfc"))
             {
                 File.Delete("temp.sfc");
             }
 
-            FileStream brom = new FileStream(baseROM, FileMode.Open, FileAccess.Read);
-            brom.Read(ROM.DATA, 0, (int)brom.Length);
-            brom.Close();
 
-            saveToolStripMenuItem_Click(sender, e);
+            byte[] data = new byte[ROM.DATA.Length];
+            ROM.DATA.CopyTo(data, 0);
+            this.SaveToolStripMenuItem_Click(sender, e);
+            AsarCLR.Asar.init();
+
+            string ProjectPath = Path.GetDirectoryName(projectFilename);
+            if (File.Exists(ProjectPath + "\\Patches\\main.asm"))
+            {
+                AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Patches\\main.asm", ref data);
+            }
+
+            if (File.Exists(ProjectPath + "\\Patches\\generated.asm"))
+            {
+                AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Patches\\generated.asm", ref data);
+            }
+
+            foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+            {
+                Console.WriteLine(error.Fullerrdata.ToString());
+            }
+
 
             FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
-
-            fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+            fs.Write(data, 0, data.Length);
             fs.Close();
-            Process p = Process.Start("temp.sfc");
-            */
 
-            this.SaveToolStripMenuItem_Click(this.saveToolStripMenuItem, new EventArgs());
             if (Settings.Default.emulatorPath == string.Empty)
             {
-                Process p = Process.Start(this.projectFilename);
+                Process p = Process.Start("temp.sfc");
             }
             else
             {
@@ -5616,11 +5630,55 @@ namespace ZeldaFullEditor
             }
         }
 
+
+        
         private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AsmPlugin windowPlugin = new AsmPlugin();
-            windowPlugin.projectPath = Path.GetDirectoryName(projectFilename);
+            windowPlugin.ProjectPath = Path.GetDirectoryName(projectFilename);
             windowPlugin.Show();
+        }
+
+        private void buildROMwithASMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveToolStripMenuItem_Click(this.saveToolStripMenuItem, new EventArgs());
+
+
+
+
+
+            SaveFileDialog sf = new SaveFileDialog();
+            sf.DefaultExt = ".sfc";
+            sf.Filter = "ZScream Project File .sfc|*.sfc";
+
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                byte[] data = new byte[ROM.DATA.Length];
+                ROM.DATA.CopyTo(data, 0);
+                this.SaveToolStripMenuItem_Click(sender, e);
+                AsarCLR.Asar.init();
+
+                string ProjectPath = Path.GetDirectoryName(projectFilename);
+                if (File.Exists(ProjectPath + "\\Patches\\main.asm"))
+                {
+                    AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Patches\\main.asm", ref data);
+                }
+
+                if (File.Exists(ProjectPath + "\\Patches\\generated.asm"))
+                {
+                    AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Patches\\generated.asm", ref data);
+                }
+
+                foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+                {
+                    Console.WriteLine(error.Fullerrdata.ToString());
+                }
+
+
+                FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
+                fs.Write(data, 0, data.Length);
+                fs.Close();
+            }
         }
     }
 }

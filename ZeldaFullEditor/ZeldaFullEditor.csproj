@@ -154,6 +154,7 @@
     <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
     </Reference>
@@ -241,6 +242,8 @@
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
     <Compile Include="ColoringInfo.cs" />
+    <Compile Include="Data\AsmPatch.cs" />
+    <Compile Include="Data\AsmPropertyType.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DungeonMap.cs" />
     <Compile Include="Data\EntityName.cs" />
@@ -250,6 +253,12 @@
     <Compile Include="Data\OAMTile.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Data\SongAddress.cs" />
+    <Compile Include="Gui\AddDirectoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\AddDirectoryForm.Designer.cs">
+      <DependentUpon>AddDirectoryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\DataExtractor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -626,6 +635,9 @@
     <Compile Include="ZCompressLibrary\Decompress.cs" />
     <Compile Include="ZCompressLibrary\fake_mem.cs" />
     <Compile Include="ZSSerializer.cs" />
+    <EmbeddedResource Include="Gui\AddDirectoryForm.resx">
+      <DependentUpon>AddDirectoryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\DataExtractor.resx">
       <DependentUpon>DataExtractor.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -844,6 +856,63 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
+    <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Items\AST Boots.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Big Bomb Requirements.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\IntroSkip.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\JP1.0 Glitches.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Link Bed Start Position.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\NoRocks.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Rainstate Skip.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\TorchTags.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Weathervane.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Music\LostWoodsExitMusic.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Npcs\Bottle Vendor.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Crystalswitch Conveyor.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Elemental Trinexx.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Eye Lasers Active.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Khodstare Speeds.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Spike Damage.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Spikes_Subtype.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Version.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\xbutton.png" />
     <None Include="Resources\starn.bmp" />
     <None Include="Resources\starl.bmp" />
@@ -874,6 +943,9 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ZS_Patches\UNPATCHED\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

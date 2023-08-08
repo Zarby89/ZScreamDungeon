@@ -117,8 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>The Add Asm Patch button is only copying the asm in the Patches folder of your project, this can be done manually too
-removing the patch from the project will remove all settings for it too and will also delete it from the Patch folder</value>
-  </data>
 </root>
