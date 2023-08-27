@@ -307,6 +307,36 @@ namespace ZeldaFullEditor
             return false;
         }
 
+        public bool saveOverworldAnimatedGFX(SceneOW scene)
+        {
+            Console.WriteLine("Saving Overworld Custom Animated Tiles ASM");
+
+            for (int i = 0; i < scene.ow.AllMaps.Length; i++)
+            {
+                ROM.Write(Constants.OverworldCustomAnimatedGFXArray + i, scene.ow.AllMaps[i].AnimatedGFX);
+            }
+
+            Asar.init();
+
+            // TODO: handle differently in projects.
+            if (File.Exists("AreaSpecificAnimatedTiles.asm"))
+            {
+                Asar.patch("AreaSpecificAnimatedTiles.asm", ref ROM.DATA);
+            }
+            else
+            {
+                UIText.CryAboutSaving("Missing ASM file 'AreaSpecificAnimatedTiles.asm'.\nSaving will continue but the ASM will not be applied.");
+            }
+
+            foreach (Asarerror error in Asar.geterrors())
+            {
+                Console.WriteLine(error.Fullerrdata.ToString());
+                return true;
+            }
+
+            return false;
+        }
+
         public bool saveTorches()
         {
             int bytes_count = ROM.ReadShort(Constants.torches_length_pointer);

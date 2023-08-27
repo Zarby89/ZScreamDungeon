@@ -514,19 +514,25 @@ namespace ZeldaFullEditor
 
                 if (this.saveSettingsArr[40] && save.saveOverworldMessagesIds(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("problem saving  overworld map tiles Types ???");
+                    UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
                     break;
                 }
 
                 if (save.saveAreaSpecificBG(this.saveSettingsArr[41]))
                 {
-                    UIText.CryAboutSaving("problem saving  overworld area specific BG color ASM");
+                    UIText.CryAboutSaving("problem saving overworld area specific BG color ASM");
                     break;
                 }
 
                 if (save.saveOverworldMosaic(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("problem saving  overworld custom mosaic ASM");
+                    UIText.CryAboutSaving("problem saving overworld custom mosaic ASM");
+                    break;
+                }
+
+                if (save.saveOverworldAnimatedGFX(this.overworldEditor.scene))
+                {
+                    UIText.CryAboutSaving("problem saving custom animated tiles ASM");
                     break;
                 }
 

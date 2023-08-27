@@ -9,9 +9,9 @@ namespace ZeldaFullEditor
 {
     public static class Constants
     {
-        //===========================================================================================
+        // ===========================================================================================
         // Magic numbers
-        //===========================================================================================
+        // ===========================================================================================
         /// <summary>
         /// Bit set for object priority
         /// </summary>
@@ -51,9 +51,9 @@ namespace ZeldaFullEditor
 
         public static byte[] FontSpacings = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
 
-        //===========================================================================================
+        // ===========================================================================================
         // Geometry - shapes and points we don't need to constantly reinstantiate
-        //===========================================================================================
+        // ===========================================================================================
         public static readonly Point Point_0_0 = new Point(0, 0);
         public static readonly Point Point_512_0 = new Point(512, 0);
 
@@ -90,14 +90,14 @@ namespace ZeldaFullEditor
         public static readonly Size Size1024x1024 = new Size(1024, 1024);
         public static readonly Size Size4096x4096 = new Size(4096, 4096);
 
-        //===========================================================================================
+        // ===========================================================================================
         // Fonts
-        //===========================================================================================
+        // ===========================================================================================
         public static readonly Font Arial7 = new Font("Arial", 7);
 
-        //===========================================================================================
+        // ===========================================================================================
         // Colors - colors we use for consistency and avoiding redundant instantiations
-        //===========================================================================================
+        // ===========================================================================================
         public static readonly Color HalfWhite = Color.FromArgb(128, 255, 255, 255);
         public static readonly Pen HalfWhitePen = new Pen(HalfWhite);
 
@@ -181,9 +181,9 @@ namespace ZeldaFullEditor
         public static readonly Pen Azure200Pen = new Pen(Azure200);
         public static readonly Brush Azure200Brush = new SolidBrush(Azure200);
 
-        //===========================================================================================
+        // ===========================================================================================
         // GFX Related Variables
-        //===========================================================================================
+        // ===========================================================================================
         public static int tile_address = 0x1B52; // JP = Same //i don't think that need a pointer
         public static int tile_address_floor = 0x1B5A; // JP = Same //i don't think that need a pointer
         public static int subtype1_tiles = 0x8000; // JP = Same //i don't think that need a pointer
@@ -197,9 +197,9 @@ namespace ZeldaFullEditor
         public static int hud_palettes = 0xDD660;
         public static int maxGfx = 0xC3FB5;
 
-        //===========================================================================================
+        // ===========================================================================================
         // Overworld Related Variables
-        //===========================================================================================
+        // ===========================================================================================
         public static int compressedAllMap32PointersHigh = 0x1794D;
         public static int compressedAllMap32PointersLow = 0x17B2D;
         public static int overworldgfxGroups = 0x05D97;
@@ -285,12 +285,15 @@ namespace ZeldaFullEditor
         public static int transition_target_north = 0x13EE2;
         public static int transition_target_west = 0x13F62;
 
-        public static int overworldCustomMosaicASM = 0x1401E0;
+        public static int overworldCustomMosaicASM = 0x1402A0;
         public static int overworldCustomMosaicArray = 0x140200;
 
-        //===========================================================================================
+        public static int OverworldCustomAnimatedGFXASM = 0x1403A0;
+        public static int OverworldCustomAnimatedGFXArray = 0x140300;
+
+        // ===========================================================================================
         // Overworld Exits/Entrances Variables
-        //===========================================================================================
+        // ===========================================================================================
         public static int OWExitRoomId = 0x15D8A; // 0x15E07 Credits sequences
                                                   // 105C2 Ending maps
                                                   // 105E2 Sprite Group Table for Ending
@@ -327,9 +330,9 @@ namespace ZeldaFullEditor
         public static int OWWhirlpoolPosition = 0x16CF8;   // JP = ;016F94
         public static int OWWhirlpoolCount = 0x11;
 
-        //===========================================================================================
+        // ===========================================================================================
         // Dungeon Related Variables
-        //===========================================================================================
+        // ===========================================================================================
         // That could be turned into a pointer :
         public static int dungeons_palettes_groups = 0x75460; // JP 0x67DD0
         public static int dungeons_main_bg_palette_pointers = 0xDEC4B; // JP Same
@@ -392,9 +395,9 @@ namespace ZeldaFullEditor
         public static int pointers_dictionaries = 0x74703;
         public static int characters_width = 0x74ADF;
 
-        //===========================================================================================
-        //Dungeon Entrances Related Variables
-        //===========================================================================================
+        // ===========================================================================================
+        // Dungeon Entrances Related Variables
+        // ===========================================================================================
         public static int entrance_room = 0x14813; // 0x14577 // Word value for each room
         public static int entrance_scrolledge = 0x1491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
                                                          // TODO: Swap CameraX and CameraY position because X is stored first!!
@@ -496,9 +499,9 @@ namespace ZeldaFullEditor
         public static int bedSheetPositionX = 0x0480BD; // Short value
         public static int bedSheetPositionY = 0x0480B8; // Short value
 
-        //===========================================================================================
+        // ===========================================================================================
         // Gravestones related variables
-        //===========================================================================================
+        // ===========================================================================================
 
         public static int GravesYTilePos = 0x49968; // Short (0x0F entries)
         public static int GravesXTilePos = 0x49986; // Short (0x0F entries)
@@ -512,9 +515,9 @@ namespace ZeldaFullEditor
         public static int GraveLinkSpecialStairs = 0x46DD9; // Short
         public static int GraveLinkSpecialHole = 0x46DE0; // Short
 
-        //===========================================================================================
+        // ===========================================================================================
         // Palettes Related Variables - This contain all the palettes of the game
-        //===========================================================================================  asdfasdfasdfasfadf
+        // ===========================================================================================  asdfasdfasdfasfadf
         public static int overworldPaletteMain = 0xDE6C8;
         public static int overworldPaletteAuxialiary = 0xDE86C;
         public static int overworldPaletteAnimated = 0xDE604;
@@ -544,9 +547,9 @@ namespace ZeldaFullEditor
         public static int customAreaSpecificBGASM = 0x140150;
         public static int customAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
 
-        //===========================================================================================
+        // ===========================================================================================
         // Dungeon Map Related Variables
-        //===========================================================================================
+        // ===========================================================================================
         public static int dungeonMap_rooms_ptr = 0x57605; // 14 pointers of map data
         public static int dungeonMap_floors = 0x575D9; // 14 words values
 
@@ -572,23 +575,23 @@ namespace ZeldaFullEditor
         public static int triforceFacesPointer = 0x4FF96;
         public static int triforceMaxSize = 0x2E;
 
-        //===========================================================================================
+        // ===========================================================================================
         // Title screen GFX group set
-        //===========================================================================================
+        // ===========================================================================================
         public static int titleScreenTilesGFX = 0x64207; // 1 Byte
         public static int titleScreenSpritesGFX = 0x6420C; // 1 Byte
         public static int titleScreenExtraTilesGFX = 0x64211; // 1 Byte
         public static int titleScreenExtraSpritesGFX = 0x64216; // 1 Byte
 
-        //===========================================================================================
+        // ===========================================================================================
         // Custom Collision
-        //===========================================================================================
+        // ===========================================================================================
         public static int customCollisionRoomPointers = 0x128090; // Array 3 bytes per room
         public static int customCollisionDataPosition = 0x128450; // A bunch of FFFF ended arrays
 
-        //===========================================================================================
+        // ===========================================================================================
         // End Main Addresses
-        //===========================================================================================
+        // ===========================================================================================
 
         public static bool Rando = false; // Is it a rando rom?
 
@@ -709,9 +712,9 @@ namespace ZeldaFullEditor
             }
         }
 
-        //===========================================================================================
+        // ===========================================================================================
         // Things
-        //===========================================================================================
+        // ===========================================================================================
 
         public class FloorNumber
         {
@@ -761,10 +764,10 @@ namespace ZeldaFullEditor
             new FloorNumber("8F", 0x07)
         };
 
-        //===========================================================================================
+        // ===========================================================================================
         // Names
         // TODO moved to DefaultEntities.cs once we start working on projects
-        //===========================================================================================
+        // ===========================================================================================
         public static string[] RoomEffects = new string[]
         {
             "Nothing",

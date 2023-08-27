@@ -93,9 +93,14 @@ namespace ZeldaFullEditor
 
         /// <summary>
         ///     Gets the static GFX index.
-        ///     TODO: trees, houses and stuff? Needs to be verified.
+        ///     Essentially the GFX groups loaded from different tables and used to load all the gfx for each area.
         /// </summary>
         public byte[] StaticGFX { get; internal set; } = new byte[16];
+
+        /// <summary>
+        ///     Gets or sets the Animated GFX used to replace StaticGFX[7] with custom area specific animated GFX.
+        /// </summary>
+        public byte AnimatedGFX { get; set; }
 
         /// <summary>
         ///     Gets the used tiles.
@@ -137,16 +142,35 @@ namespace ZeldaFullEditor
                 }
             }
 
+            // If the custom mosaic ASM has NOT already been applied, manually set the vanilla mosaic values.
             if (ROM.DATA[Constants.overworldCustomMosaicASM] == 0x00)
             {
                 this.Mosaic = index == 0 || index == 64 || index == 128 || index == 129 || index == 136;
             }
             else
             {
-                if (ROM.DATA[Constants.overworldCustomMosaicArray + index] != 0x00)
+                this.Mosaic = ROM.DATA[Constants.overworldCustomMosaicArray + index] != 0x00;
+            }
+
+            // If the custom animated tiles ASM has NOT already bee applied, manually set the vanilla tile values.
+            if (ROM.DATA[Constants.OverworldCustomAnimatedGFXASM] == 0x00)
+            {
+                if (index == 0x03 || index == 0x05 || index == 0x07)
                 {
-                    this.Mosaic = true;
+                    this.AnimatedGFX = 89;
                 }
+                else if (index == 0x43 || index == 0x45 || index == 0x47)
+                {
+                    this.AnimatedGFX = 89;
+                }
+                else
+                {
+                    this.AnimatedGFX = 91;
+                }
+            }
+            else
+            {
+                this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomAnimatedGFXArray + index];
             }
 
             if (index < 64)
@@ -593,7 +617,7 @@ namespace ZeldaFullEditor
             }
             else if (this.ParentID == 0x88)
             {
-                indexWorld = 36;
+                indexWorld = 0x24;
             }
 
             // Sprites Blocksets
@@ -634,35 +658,8 @@ namespace ZeldaFullEditor
                 this.StaticGFX[6] = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3];
             }
 
-            // Hardcoded overworld GFX Values, for death mountain
-            // Commented out in favor of just checking for area's 3, 5, and 7 and their DW equivilants for the sake of consistency, but may need to be changed later. -Jared_Brian_
-            /*
-			if ((this.Parent >= 0x03 && this.Parent <= 0x07) || (this.Parent >= 0x0B && this.Parent <= 0x0E))
-			{
-				this.StaticGFX[7] = 89;
-			}
-			else if ((this.Parent >= 0x43 && this.Parent <= 0x47) || (this.Parent >= 0x4B && this.Parent <= 0x4E))
-			{
-				this.StaticGFX[7] = 89;
-			}
-			else
-			{
-				this.StaticGFX[7] = 91;
-			}
-			*/
-
-            if (this.ParentID == 0x03 || this.ParentID == 0x05 || this.ParentID == 0x07)
-            {
-                this.StaticGFX[7] = 89;
-            }
-            else if (this.ParentID == 0x43 || this.ParentID == 0x45 || this.ParentID == 0x47)
-            {
-                this.StaticGFX[7] = 89;
-            }
-            else
-            {
-                this.StaticGFX[7] = 91;
-            }
+            // Replace the animated tiles with the custom set ones.
+            this.StaticGFX[7] = this.overworld.AllMaps[this.ParentID].AnimatedGFX;
 
             /*
 			if (this.Parent >= 128 & this.Parent < 148)
@@ -674,9 +671,9 @@ namespace ZeldaFullEditor
 
             unsafe
             {
-                // NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
-                byte* currentmapgfx8Data = (byte*)ZeldaFullEditor.GFX.currentOWgfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point)
-                byte* allgfxData = (byte*)ZeldaFullEditor.GFX.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
+                // NEEDS TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
+                byte* currentmapgfx8Data = (byte*)ZeldaFullEditor.GFX.currentOWgfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point).
+                byte* allgfxData = (byte*)ZeldaFullEditor.GFX.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp).
                 for (int i = 0; i < 16; i++)
                 {
                     for (int j = 0; j < 2048; j++)
@@ -692,7 +689,7 @@ namespace ZeldaFullEditor
                                 break;
                         }
 
-                        currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
+                        currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data.
                     }
                 }
             }

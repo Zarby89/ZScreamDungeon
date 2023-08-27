@@ -123,17 +123,23 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        public void UpdateGUIProperties(OverworldMap m, int gamestate = 0)
+        /// <summary>
+        ///     Updates GUI texts and states of the overworld properites.
+        /// </summary>
+        /// <param name="map"> The current overworld map. </param>
+        /// <param name="gamestate"> The game state. </param>
+        public void UpdateGUIProperties(OverworldMap map, int gamestate = 0)
         {
-            propertiesChangedFromForm = true;
-            OWProperty_BGGFX.HexValue = m.GFX;
-            OWProperty_BGPalette.HexValue = m.Palette;
-            OWProperty_SPRGFX.HexValue = m.SpriteGFX[gamestate];
-            OWProperty_SPRPalette.HexValue = m.SpritePalette[gamestate];
+            this.propertiesChangedFromForm = true;
+            this.OWProperty_BGGFX.HexValue = map.GFX;
+            this.OWProperty_BGPalette.HexValue = map.Palette;
+            this.OWProperty_SPRGFX.HexValue = map.SpriteGFX[gamestate];
+            this.OWProperty_SPRPalette.HexValue = map.SpritePalette[gamestate];
+            this.OWProperty_AniGFX.HexValue = map.AnimatedGFX;
 
-            largemapCheckbox.Checked = m.LargeMap;
-            mosaicCheckBox.Checked = m.Mosaic;
-            propertiesChangedFromForm = false;
+            this.largemapCheckbox.Checked = map.LargeMap;
+            this.mosaicCheckBox.Checked = map.Mosaic;
+            this.propertiesChangedFromForm = false;
         }
 
         private void ModeButton_Click(object sender, EventArgs e)
@@ -170,59 +176,64 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
+        /// <summary>
+        ///     Updates the map's properties based on the values on the overworld GUI.
+        /// </summary>
+        /// <param name="mapParent"> The map parent. </param>
         public void UpdateMapProperties(OverworldMap mapParent)
         {
-            if (scene.ow.AllMaps[scene.selectedMap].ParentID == 255)
+            if (this.scene.ow.AllMaps[this.scene.selectedMap].ParentID == 255)
             {
-                mapParent = scene.ow.AllMaps[scene.selectedMap];
+                mapParent = this.scene.ow.AllMaps[this.scene.selectedMap];
             }
 
-            mapParent.Palette = (byte)OWProperty_BGPalette.HexValue;
-            mapParent.GFX = (byte)OWProperty_BGGFX.HexValue;
-            mapParent.MessageID = (short)OWProperty_MessageID.HexValue;
+            mapParent.Palette = (byte)this.OWProperty_BGPalette.HexValue;
+            mapParent.GFX = (byte)this.OWProperty_BGGFX.HexValue;
+            mapParent.MessageID = (short)this.OWProperty_MessageID.HexValue;
 
             if (mapParent.Index >= 64)
             {
-                mapParent.SpriteGFX[0] = (byte)OWProperty_SPRGFX.HexValue;
-                mapParent.SpritePalette[0] = (byte)OWProperty_SPRPalette.HexValue;
+                mapParent.SpriteGFX[0] = (byte)this.OWProperty_SPRGFX.HexValue;
+                mapParent.SpritePalette[0] = (byte)this.OWProperty_SPRPalette.HexValue;
             }
             else
             {
-                scene.ow.AllMaps[mapParent.Index].SpriteGFX[scene.ow.GameState] = (byte)OWProperty_SPRGFX.HexValue;
-                mapParent.SpritePalette[scene.ow.GameState] = (byte)OWProperty_SPRPalette.HexValue;
+                this.scene.ow.AllMaps[mapParent.Index].SpriteGFX[this.scene.ow.GameState] = (byte)this.OWProperty_SPRGFX.HexValue;
+                mapParent.SpritePalette[this.scene.ow.GameState] = (byte)this.OWProperty_SPRPalette.HexValue;
             }
+
+            mapParent.AnimatedGFX = (byte)this.OWProperty_AniGFX.HexValue;
 
             if (mapParent.LargeMap)
             {
-                scene.ow.AllMaps[mapParent.Index + 1].GFX = mapParent.GFX;
-                scene.ow.AllMaps[mapParent.Index + 1].SpriteGFX = mapParent.SpriteGFX;
-                scene.ow.AllMaps[mapParent.Index + 1].Palette = mapParent.Palette;
-                scene.ow.AllMaps[mapParent.Index + 1].SpritePalette = mapParent.SpritePalette;
+                this.scene.ow.AllMaps[mapParent.Index + 1].GFX = mapParent.GFX;
+                this.scene.ow.AllMaps[mapParent.Index + 1].SpriteGFX = mapParent.SpriteGFX;
+                this.scene.ow.AllMaps[mapParent.Index + 1].Palette = mapParent.Palette;
+                this.scene.ow.AllMaps[mapParent.Index + 1].SpritePalette = mapParent.SpritePalette;
 
-                scene.ow.AllMaps[mapParent.Index + 8].GFX = mapParent.GFX;
-                scene.ow.AllMaps[mapParent.Index + 8].SpriteGFX = mapParent.SpriteGFX;
-                scene.ow.AllMaps[mapParent.Index + 8].Palette = mapParent.Palette;
-                scene.ow.AllMaps[mapParent.Index + 8].SpritePalette = mapParent.SpritePalette;
+                this.scene.ow.AllMaps[mapParent.Index + 8].GFX = mapParent.GFX;
+                this.scene.ow.AllMaps[mapParent.Index + 8].SpriteGFX = mapParent.SpriteGFX;
+                this.scene.ow.AllMaps[mapParent.Index + 8].Palette = mapParent.Palette;
+                this.scene.ow.AllMaps[mapParent.Index + 8].SpritePalette = mapParent.SpritePalette;
 
-                scene.ow.AllMaps[mapParent.Index + 9].GFX = mapParent.GFX;
-                scene.ow.AllMaps[mapParent.Index + 9].SpriteGFX = mapParent.SpriteGFX;
-                scene.ow.AllMaps[mapParent.Index + 9].Palette = mapParent.Palette;
-                scene.ow.AllMaps[mapParent.Index + 9].SpritePalette = mapParent.SpritePalette;
+                this.scene.ow.AllMaps[mapParent.Index + 9].GFX = mapParent.GFX;
+                this.scene.ow.AllMaps[mapParent.Index + 9].SpriteGFX = mapParent.SpriteGFX;
+                this.scene.ow.AllMaps[mapParent.Index + 9].Palette = mapParent.Palette;
+                this.scene.ow.AllMaps[mapParent.Index + 9].SpritePalette = mapParent.SpritePalette;
 
                 mapParent.BuildMap();
-                scene.ow.AllMaps[mapParent.Index + 1].BuildMap();
-                scene.ow.AllMaps[mapParent.Index + 8].BuildMap();
-                scene.ow.AllMaps[mapParent.Index + 9].BuildMap();
+                this.scene.ow.AllMaps[mapParent.Index + 1].BuildMap();
+                this.scene.ow.AllMaps[mapParent.Index + 8].BuildMap();
+                this.scene.ow.AllMaps[mapParent.Index + 9].BuildMap();
             }
             else
             {
                 mapParent.BuildMap();
             }
 
-            //scene.updateMapGfx();
-            scene.Invalidate();
-            //scene.Refresh();
-
+            // scene.updateMapGfx();
+            this.scene.Invalidate();
+            // scene.Refresh();
         }
 
         private void tilePictureBox_Paint(object sender, PaintEventArgs e)
