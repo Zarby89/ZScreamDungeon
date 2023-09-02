@@ -591,14 +591,14 @@ namespace ZeldaFullEditor
         //===========================================================================================
         // Sprite Properties
         //===========================================================================================
-        public static int sprHarmlessOamSlotVelocity = 0x06B080; // ((!Harmless<<7)|(!HVelocity<<6)|!NbrTiles)
-        public static int sprHealth = 0x06B173;
-        public static int sprDamage = 0x06B266;
-        public static int sprDeathAnimImpervAllShadowsPalette = 0x06B359; // ((!DeathAnimation<<7)|(!ImperviousAll<<6)|(!SmallShadow<<5)|(!Shadow<<4)|(!Palette<<1))
-        public static int sprHitboxPersistStatis = 0x06B44C; // ((!CollisionLayer<<7)|(!Statis<<6)|(!Persist<<5)|(!Hitbox))
-        public static int sprBossFallDeflectArrow = 0x06B53F; // ((!DeflectArrow<<3)|(!Boss<<1)|!CanFall)
-        public static int sprInteractWaterBlockSoundPrize = 0x06B632; // ((!Interaction<<7)|(!WaterSprite<<6)|(!Blockable<<5)|(!Sound<<4)|!Prize)
-        public static int sprStatueDeflectProjImpervSwordHammerArrows = 0x06B725; // ($40|(!Statue<<5)|(!DeflectProjectiles<<4)|(!ImpervSwordHammer<<2)|(!ImperviousArrow<<1))
+        public static int Sprite_0DB080 = 0x06B080;
+        public static int Sprite_Health = 0x06B173;
+        public static int Sprite_0DB266 = 0x06B266;
+        public static int Sprite_0DB359 = 0x06B359;
+        public static int Sprite_0DB44C = 0x06B44C;
+        public static int Sprite_0DB53F = 0x06B53F;
+        public static int Sprite_0DB632 = 0x06B632;
+        public static int Sprite_0DB725 = 0x06B725;
 
         //===========================================================================================
         // End Main Addresses

@@ -512,6 +512,7 @@
     <Compile Include="Data\OverlayData.cs" />
     <Compile Include="Data\Overworld.cs" />
     <Compile Include="Data\OverworldMap.cs" />
+    <Compile Include="IntFunctions.cs" />
     <Compile Include="LogInfos.cs" />
     <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
     <Compile Include="OWSceneModes\DoorMode.cs" />

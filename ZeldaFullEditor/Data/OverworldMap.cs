@@ -604,6 +604,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 4; i++)
             {
+
                 this.StaticGFX[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (this.SpriteGFX[this.overworld.GameState] * 4) + i] + 115);
             }
 

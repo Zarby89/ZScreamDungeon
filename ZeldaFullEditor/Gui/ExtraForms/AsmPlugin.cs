@@ -541,7 +541,13 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                     if (MessageBox.Show("There's an update available!\r\nWould you like to download it automatically?", "Update!",MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         DownloadUpdate(client);
+                        if (!Directory.Exists("ZS_Patches"))
+                        {
+                            Directory.CreateDirectory("ZS_Patches");
+                        }
+
                         File.WriteAllText("ZS_Patches//Version.txt", serverVersion); // Update the version !
+                        clientVersion = serverVersion;
                     }
                 }
                 else

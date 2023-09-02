@@ -8,274 +8,123 @@ using ZeldaFullEditor;
 
 namespace ZeldaFullEditor.Data
 {
+    [System.ComponentModel.DefaultBindingProperty]
     public class SpriteProperty
     {
-        internal byte oamSlot = 0;
-        internal byte palette = 0;
-        internal byte hitbox = 0;
-        internal byte inthitbox = 0;
-        internal byte health = 0;
-        internal byte damagetype = 0;
-        internal byte prizepack = 0;
-
-        internal bool drawShadow = false;
-        internal bool deathAnim = false;
-        internal bool boss = false;
-        internal bool blockable = false;
-        internal bool statis = false;
-        internal bool persist = false;
-        internal bool fall = false;
-        internal bool alternatesound = false;
-        internal bool ignorecollision = false;
-        internal bool tileinteraction = false;
-        internal bool imperviousswordhammer = false;
-        internal bool deflectprojectile = false;
-        internal bool imperviousarrow = false;
-        internal bool collideless = false;
-        internal bool harmless = false;
-        internal bool invulnerable = false;
-        internal bool adjcoord = false;
-        internal bool waterspr = false;
-        internal bool statue = false;
-        internal bool highspeed = false;
-
-
-
-
+        internal byte OamAllocation { get; set; } = 0;
+        internal byte Palette { get; set; } = 0;
+        internal byte Hitbox { get; set; } = 0;
+        internal byte Tilehitbox { get; set; } = 0;
+        internal byte Health { get; set; } = 0;
+        internal byte Prizepack { get; set; } = 0;
+        internal byte Bumpdamageclass { get; set; } = 0;
+        internal bool Harmless { get; set; } = false;
+        internal bool Deathprevent { get; set; } = false; // hidden
+        internal bool Litetilehit { get; set; } = false; // hidden
+        internal bool Recoilwithoutcollision { get; set; } = false;
+        internal bool Beetarget { get; set; } = false;
+        internal bool Immunepowder { get; set; } = false;
+        internal bool Allowedbossfight { get; set; } = false;
+        internal bool Customdeathanimation { get; set; } = false;
+        internal bool Invulnerable { get; set; } = false;
+        internal bool Smallshadow { get; set; } = false;
+        internal bool Drawshadow { get; set; } = false;
+        internal bool Graphicspage { get; set; } = false;
+        internal bool Singlelayercollision { get; set; } = false;
+        internal bool Ignoredbykillrooms { get; set; } = false;
+        internal bool Persistoffscreenow { get; set; } = false;
+        internal bool Deflectarrows { get; set; } = false;
+        internal bool Overrideslashimminuty { get; set; } = false;
+        internal bool Dielikeaboss { get; set; } = false;
+        internal bool Invertpitbehavior { get; set; } = false;
+        internal bool Ignorepitconveyors { get; set; } = false;
+        internal bool Checkforwater { get; set; } = false;
+        internal bool Blockedbyshield { get; set; } = false;
+        internal bool Bossdamagesound { get; set; } = false;
+        internal bool Activeoffscreen { get; set; } = false;
+        internal bool Dieoffscreen { get; set; } = false;
+        internal bool Hiddenprop { get; set; } = false;
+        internal bool Hiddenunused { get; set; } = false;
+        internal bool Projectilelikecollision { get; set; } = false;
+        internal bool Immunetoswordhammer { get; set; } = false;
+        internal bool Immunetoarrowrumbleable { get; set; } = false;
+        internal bool Nopermadeathindungeons { get; set; } = false;
 
         public SpriteProperty(byte id)
         {
-            if ((ROM.ReadByte(Constants.sprHarmlessOamSlotVelocity + id) & 0x80) == 0x80)
-            {
-                harmless = true;
-            }
+            byte addr0DB080 = ROM.ReadByte(Constants.Sprite_0DB080 + id);
+            byte addr0DB266 = ROM.ReadByte(Constants.Sprite_0DB266 + id);
+            byte addr0DB359 = ROM.ReadByte(Constants.Sprite_0DB359 + id);
+            byte addr0DB44C = ROM.ReadByte(Constants.Sprite_0DB44C + id);
+            byte addr0DB53F = ROM.ReadByte(Constants.Sprite_0DB53F + id);
+            byte addr0DB632 = ROM.ReadByte(Constants.Sprite_0DB632 + id);
+            byte addr0DB725 = ROM.ReadByte(Constants.Sprite_0DB725 + id);
+            Health = ROM.ReadByte(Constants.Sprite_Health + id);
 
-            if ((ROM.ReadByte(Constants.sprHarmlessOamSlotVelocity + id) & 0x40) == 0x40)
-            {
-                highspeed = true;
-            }
+            Harmless = addr0DB080.BitIsOn(0x80);
+            Deathprevent = addr0DB080.BitIsOn(0x40);
+            Litetilehit = addr0DB080.BitIsOn(0x20);
+            OamAllocation = (byte)(addr0DB080 & 0x1F);
 
-            oamSlot = (byte)(ROM.ReadByte(Constants.sprHarmlessOamSlotVelocity + id) & 0x3F);
+            Recoilwithoutcollision = addr0DB266.BitIsOn(0x80);
+            Beetarget = addr0DB266.BitIsOn(0x40);
+            Immunepowder = addr0DB266.BitIsOn(0x20);
+            Allowedbossfight = addr0DB266.BitIsOn(0x10);
+            Bumpdamageclass = (byte)(addr0DB266 & 0x0F);
 
-            health = (byte)(ROM.ReadByte(Constants.sprHealth + id));
-            damagetype = (byte)(ROM.ReadByte(Constants.sprDamage + id));
+            Customdeathanimation = addr0DB359.BitIsOn(0x80);
+            Invulnerable = addr0DB359.BitIsOn(0x40);
+            Smallshadow = addr0DB359.BitIsOn(0x20);
+            Drawshadow = addr0DB359.BitIsOn(0x10);
+            Graphicspage = addr0DB359.BitIsOn(0x01);
+            Palette = (byte)((addr0DB359 & 0x0E) >> 1);
 
-            if ((ROM.ReadByte(Constants.sprDeathAnimImpervAllShadowsPalette + id) & 0x80) == 0x80)
-            {
-                deathAnim = true;
-            }
+            Singlelayercollision = addr0DB44C.BitIsOn(0x80);
+            Ignoredbykillrooms = addr0DB44C.BitIsOn(0x40);
+            Persistoffscreenow = addr0DB44C.BitIsOn(0x20);
+            Hitbox = (byte)(addr0DB44C & 0x1F);
 
-            if ((ROM.ReadByte(Constants.sprDeathAnimImpervAllShadowsPalette + id) & 0x40) == 0x40)
-            {
-                invulnerable = true;
-            }
+            Tilehitbox = (byte)((addr0DB53F & 0xF0) >> 4);
+            Deflectarrows = addr0DB53F.BitIsOn(0x08);
+            Overrideslashimminuty = addr0DB53F.BitIsOn(0x04);
+            Dielikeaboss = addr0DB53F.BitIsOn(0x02);
+            Invertpitbehavior = addr0DB53F.BitIsOn(0x01);
 
-            if ((ROM.ReadByte(Constants.sprDeathAnimImpervAllShadowsPalette + id) & 0x20) == 0x20)
-            {
-                drawShadow = true;
-            }
+            Ignorepitconveyors = addr0DB632.BitIsOn(0x80);
+            Checkforwater = addr0DB632.BitIsOn(0x40);
+            Blockedbyshield = addr0DB632.BitIsOn(0x20);
+            Bossdamagesound = addr0DB632.BitIsOn(0x10);
+            Prizepack = (byte)(addr0DB632 & 0x0F);
 
-            palette = (byte)((ROM.ReadByte(Constants.sprDeathAnimImpervAllShadowsPalette + id) & 0x0E) >> 1);
-
-            if ((ROM.ReadByte(Constants.sprHitboxPersistStatis + id) & 0x80) == 0x80) // both layer
-            {
-                collideless = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprHitboxPersistStatis + id) & 0x40) == 0x40)
-            {
-                statis = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprHitboxPersistStatis + id) & 0x20) == 0x20)
-            {
-                persist = true;
-            }
-
-            hitbox = (byte)(ROM.ReadByte(Constants.sprHitboxPersistStatis + id) & 0x1F);
-
-
-            if ((ROM.ReadByte(Constants.sprBossFallDeflectArrow + id) & 0x08) == 0x08)
-            {
-                imperviousarrow = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprBossFallDeflectArrow + id) & 0x02) == 0x02)
-            {
-                boss = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprBossFallDeflectArrow + id) & 0x01) == 0x01)
-            {
-                fall = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprInteractWaterBlockSoundPrize + id) & 0x80) == 0x80)
-            {
-                tileinteraction = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprInteractWaterBlockSoundPrize + id) & 0x40) == 0x40)
-            {
-                waterspr = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprInteractWaterBlockSoundPrize + id) & 0x20) == 0x20)
-            {
-                blockable = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprInteractWaterBlockSoundPrize + id) & 0x10) == 0x10)
-            {
-                alternatesound = true;
-            }
-
-            prizepack = (byte)(ROM.ReadByte(Constants.sprInteractWaterBlockSoundPrize + id) & 0x0F);
-
-            if ((ROM.ReadByte(Constants.sprStatueDeflectProjImpervSwordHammerArrows + id) & 0x20) == 0x20)
-            {
-                statue = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprStatueDeflectProjImpervSwordHammerArrows + id) & 0x10) == 0x10)
-            {
-                deflectprojectile = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprStatueDeflectProjImpervSwordHammerArrows + id) & 0x04) == 0x04)
-            {
-                imperviousswordhammer = true;
-            }
-
-            if ((ROM.ReadByte(Constants.sprStatueDeflectProjImpervSwordHammerArrows + id) & 0x02) == 0x02)
-            {
-                imperviousarrow = true;
-            }
-
-
-
+            Activeoffscreen = addr0DB725.BitIsOn(0x80);
+            Dieoffscreen = addr0DB725.BitIsOn(0x40);
+            Hiddenprop = addr0DB725.BitIsOn(0x20);
+            Hiddenunused = addr0DB725.BitIsOn(0x10);
+            Projectilelikecollision = addr0DB725.BitIsOn(0x08);
+            Immunetoswordhammer = addr0DB725.BitIsOn(0x04);
+            Immunetoarrowrumbleable = addr0DB725.BitIsOn(0x02);
+            Nopermadeathindungeons = addr0DB725.BitIsOn(0x01);
         }
+
+
         public void SaveToROM(byte id)
         {
-            byte sprDeathAnimImpervAllShadowsPalette = (byte)(ROM.ReadByte(Constants.sprDeathAnimImpervAllShadowsPalette + id) & 0x01);
-            byte sprStatueDeflectProjImpervSwordHammerArrows = (byte)(ROM.ReadByte(Constants.sprStatueDeflectProjImpervSwordHammerArrows + id) & 0xC1);
-            byte sprBossFallDeflectArrow = (byte)(ROM.ReadByte(Constants.sprBossFallDeflectArrow + id) & 0xF4);
-            byte sprHitboxPersistStatis = 0;
-            byte sprInteractWaterBlockSoundPrize = prizepack;
-            byte sprHarmlessOamSlotVelocity = 0;
+            byte addr0DB080 = (byte)(OamAllocation | IntFunctions.MakeBitfield(Harmless, Deathprevent, Litetilehit));
+            byte addr0DB266 = (byte)(Bumpdamageclass | IntFunctions.MakeBitfield(Recoilwithoutcollision, Beetarget, Immunepowder, Allowedbossfight));
+            byte addr0DB359 = (byte)((Palette << 1) | IntFunctions.MakeBitfield(Customdeathanimation, Invulnerable, Smallshadow, Drawshadow, false, false, false, Graphicspage));
+            byte addr0DB44C = (byte)(Hitbox | IntFunctions.MakeBitfield(Singlelayercollision, Ignoredbykillrooms, Persistoffscreenow));
+            byte addr0DB53F = (byte)((Tilehitbox << 4) | IntFunctions.MakeBitfield(false, false, false, false, Deflectarrows,Overrideslashimminuty,Dielikeaboss,Invertpitbehavior));
+            byte addr0DB632 = (byte)(Prizepack | IntFunctions.MakeBitfield(Ignorepitconveyors, Checkforwater, Blockedbyshield, Bossdamagesound));
+            byte addr0DB725 = IntFunctions.MakeBitfield(Activeoffscreen, Dieoffscreen, Hiddenprop, Hiddenunused, Projectilelikecollision, Immunetoswordhammer, Immunetoarrowrumbleable, Nopermadeathindungeons);
 
-
-
-            if (deathAnim)
-            {
-                sprDeathAnimImpervAllShadowsPalette |= 0x80;
-            }
-
-            if (drawShadow)
-            {
-                sprDeathAnimImpervAllShadowsPalette |= 0x20;
-            }
-
-            if (invulnerable)
-            {
-                sprDeathAnimImpervAllShadowsPalette |= 0x40;
-            }
-
-            sprDeathAnimImpervAllShadowsPalette |= (byte)(palette << 1);
-
-            sprHarmlessOamSlotVelocity = oamSlot;
-            if (harmless)
-            {
-                sprHarmlessOamSlotVelocity |= 0x80;
-            }
-
-            if (highspeed)
-            {
-                sprHarmlessOamSlotVelocity |= 0x40;
-            }
-
-            sprHitboxPersistStatis = hitbox;
-
-            if (collideless)
-            {
-                sprHitboxPersistStatis |= 0x80;
-            }
-            if (statis)
-            {
-                sprHitboxPersistStatis |= 0x40;
-            }
-
-            if (persist)
-            {
-                sprHitboxPersistStatis |= 0x20;
-            }
-
-            hitbox = (byte)(ROM.ReadByte(Constants.sprHitboxPersistStatis + id) & 0x1F);
-
-
-            if (boss)
-            {
-                sprBossFallDeflectArrow |= 0x02;
-            }
-
-            if (fall)
-            {
-                sprBossFallDeflectArrow |= 0x01;
-            }
-
-            if (imperviousarrow)
-            {
-                sprBossFallDeflectArrow |= 0x08;
-            }
-
-
-            if (waterspr)
-            {
-                sprInteractWaterBlockSoundPrize |= 0x40;
-            }
-            if (blockable)
-            {
-                sprInteractWaterBlockSoundPrize |= 0x20;
-            }
-            if (alternatesound)
-            {
-                sprInteractWaterBlockSoundPrize |= 0x10;
-            }
-            if (tileinteraction)
-            {
-                sprInteractWaterBlockSoundPrize |= 0x80;
-            }
-
-            if (statue)
-            {
-                sprStatueDeflectProjImpervSwordHammerArrows |= 0x20;
-            }
-            if (deflectprojectile)
-            {
-                sprStatueDeflectProjImpervSwordHammerArrows |= 0x10;
-            }
-            if (imperviousswordhammer)
-            {
-                sprStatueDeflectProjImpervSwordHammerArrows |= 0x04;
-            }
-            if (imperviousarrow)
-            {
-                sprStatueDeflectProjImpervSwordHammerArrows |= 0x02;
-            }
-
-
-            ROM.Write(Constants.sprHealth + id, health);
-            ROM.Write(Constants.sprDamage + id, damagetype);
-
-            ROM.Write(Constants.sprDeathAnimImpervAllShadowsPalette + id, sprDeathAnimImpervAllShadowsPalette);
-            ROM.Write(Constants.sprHarmlessOamSlotVelocity + id, sprHarmlessOamSlotVelocity);
-            ROM.Write(Constants.sprHitboxPersistStatis + id, sprHitboxPersistStatis);
-            ROM.Write(Constants.sprBossFallDeflectArrow + id, sprBossFallDeflectArrow);
-            ROM.Write(Constants.sprInteractWaterBlockSoundPrize + id, sprInteractWaterBlockSoundPrize);
-            ROM.Write(Constants.sprStatueDeflectProjImpervSwordHammerArrows + id, sprStatueDeflectProjImpervSwordHammerArrows);
-
-
-
+            ROM.Write(Constants.Sprite_0DB080 + id, addr0DB080);
+            ROM.Write(Constants.Sprite_0DB266 + id, addr0DB266);
+            ROM.Write(Constants.Sprite_0DB359 + id, addr0DB359);
+            ROM.Write(Constants.Sprite_0DB44C + id, addr0DB44C);
+            ROM.Write(Constants.Sprite_0DB53F + id, addr0DB53F);
+            ROM.Write(Constants.Sprite_0DB632 + id, addr0DB632);
+            ROM.Write(Constants.Sprite_0DB725 + id, addr0DB725);
+            ROM.Write(Constants.Sprite_Health + id, Health);
         }
 
 
