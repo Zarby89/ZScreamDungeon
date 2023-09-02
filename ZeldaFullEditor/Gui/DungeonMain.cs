@@ -821,6 +821,8 @@ namespace ZeldaFullEditor
 
 
             this.projectLoaded = true;
+
+            this.mapPicturebox.Refresh();
         }
 
         private void InitDungeonViewer()
