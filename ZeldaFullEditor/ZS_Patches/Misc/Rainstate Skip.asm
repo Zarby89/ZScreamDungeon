@@ -32,7 +32,7 @@ if !BedIntro == 00
 
 	PLX
 
-	LDA.b #!BedIntro ; will take care of the bed intro wether we are in game rainstate or not
+	LDA.b #$00 ; will take care of the bed intro wether we are in game rainstate or not
 +	RTL
 
 else

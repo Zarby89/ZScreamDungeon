@@ -10,8 +10,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using Lidgren.Network;
@@ -69,6 +72,7 @@ namespace ZeldaFullEditor
         public Room previewRoom = null;
         public ScreenEditor screenEditor = new ScreenEditor();
         public MusicEditor musicEditor = new MusicEditor();
+        public SpriteEditor spriteEditor = new SpriteEditor();
         public string loadFromExported = string.Empty;
 
         public List<Room_Object> listoftilesobjects = new List<Room_Object>();
@@ -182,6 +186,7 @@ namespace ZeldaFullEditor
             this.dungeonViewer.Visible = false;
             this.screenEditor.Visible = false;
             this.musicEditor.Visible = false;
+            this.spriteEditor.Visible = false;
 
             this.objDesigner.Dock = DockStyle.Fill;
             this.overworldEditor.Dock = DockStyle.Fill;
@@ -190,6 +195,7 @@ namespace ZeldaFullEditor
             this.dungeonViewer.Dock = DockStyle.Fill;
             this.screenEditor.Dock = DockStyle.Fill;
             this.musicEditor.Dock = DockStyle.Fill;
+            this.spriteEditor.Dock = DockStyle.Fill;
 
             this.Controls.Add(this.overworldEditor);
             this.Controls.Add(this.textEditor);
@@ -198,6 +204,7 @@ namespace ZeldaFullEditor
             this.Controls.Add(this.dungeonViewer);
             this.Controls.Add(this.screenEditor);
             this.Controls.Add(this.musicEditor);
+            this.Controls.Add(this.spriteEditor);
 
             // If we are in a debug version, show the Experimental Features drop down menu.
 #if DEBUG
@@ -586,6 +593,8 @@ namespace ZeldaFullEditor
                 this.openfileButton.Enabled = false;
                 this.recentROMToolStripMenuItem.Enabled = false;
             }
+
+
         }
 
         public void CheckAnyChanges()
@@ -804,6 +813,12 @@ namespace ZeldaFullEditor
             this.textEditor.InitializeOnOpen();
             this.screenEditor.Init();
             //InitDungeonViewer();
+
+            for (int i = 0; i < Sprites_Names.name.Length; i++)
+            {
+                DungeonsData.SpriteProperties.Add(new SpriteProperty((byte)i));
+            }
+
 
             this.projectLoaded = true;
         }
@@ -2133,9 +2148,9 @@ namespace ZeldaFullEditor
         public void runtestButton_Click(object sender, EventArgs e)
         {
             this.SaveToolStripMenuItem_Click(this.saveToolStripMenuItem, new EventArgs());
-            if (File.Exists("temp.sfc"))
+            if (File.Exists(UIText.TestROM))
             {
-                File.Delete("temp.sfc");
+                File.Delete(UIText.TestROM);
             }
 
 
@@ -2161,18 +2176,19 @@ namespace ZeldaFullEditor
             }
 
 
-            FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
+            FileStream fs = new FileStream(UIText.TestROM, FileMode.CreateNew, FileAccess.Write);
             fs.Write(data, 0, data.Length);
             fs.Close();
 
             if (Settings.Default.emulatorPath == string.Empty)
             {
-                Process p = Process.Start("temp.sfc");
+                Process p = Process.Start(UIText.TestROM);
             }
             else
             {
-                Process.Start(Settings.Default.emulatorPath, "temp.sfc");
+                Process.Start(Settings.Default.emulatorPath, UIText.TestROM);
             }
+
         }
 
         private void unselectedBGTransparentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2204,21 +2220,32 @@ namespace ZeldaFullEditor
 
         private void debugtestButton_Click(object sender, EventArgs e)
         {
-            if (File.Exists(UIText.TestROM))
-            {
-                File.Delete(UIText.TestROM);
-            }
+
 
             //Console.WriteLine(Path.GetDirectoryName(projectFilename));
             //return;
             byte[] data = new byte[ROM.DATA.Length];
             ROM.DATA.CopyTo(data, 0);
             this.SaveToolStripMenuItem_Click(sender, e);
+
+
+            if (File.Exists(UIText.TestROM))
+            {
+                File.Delete(UIText.TestROM);
+            }
+
+
             AsarCLR.Asar.init();
 
-            if (File.Exists(Path.GetDirectoryName(this.projectFilename) + "\\Main.asm"))
+            string ProjectPath = Path.GetDirectoryName(projectFilename);
+            if (File.Exists(ProjectPath + "\\Patches\\main.asm"))
             {
-                AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Main.asm", ref data);
+                AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Patches\\main.asm", ref data);
+            }
+
+            if (File.Exists(ProjectPath + "\\Patches\\generated.asm"))
+            {
+                AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Patches\\generated.asm", ref data);
             }
 
             foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
@@ -3940,6 +3967,16 @@ namespace ZeldaFullEditor
             else
             {
                 this.musicEditor.Visible = false;
+            }
+
+            if (this.editorsTabControl.SelectedTab.Name == "SpriteEditor")
+            {
+                this.spriteEditor.BringToFront();
+                this.spriteEditor.Visible = true;
+            }
+            else
+            {
+                this.spriteEditor.Visible = false;
             }
         }
 
@@ -5678,6 +5715,180 @@ namespace ZeldaFullEditor
                 FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
                 fs.Write(data, 0, data.Length);
                 fs.Close();
+            }
+        }
+
+        private void exportSelectedRoomsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            using (SaveFileDialog sf = new SaveFileDialog())
+            {
+                if (sf.ShowDialog() == DialogResult.OK)
+                {
+                    
+                    BinaryWriter bw = new BinaryWriter(new FileStream(sf.FileName, FileMode.OpenOrCreate));
+                    bw.Write((int)opened_rooms.Count);
+                    foreach (Room r in opened_rooms)
+                    {
+                        bw.Write(r.index);
+                        byte[] roomObjects = r.getTilesBytes();
+                        bw.Write((int)roomObjects.Length);
+                        bw.Write(roomObjects);
+
+                        byte sprCount = (byte)r.sprites.Count;
+                        bw.Write(sprCount);
+                        foreach(Sprite sprite in r.sprites)
+                        {
+                            bw.Write(sprite.roomid); // short
+                            bw.Write(sprite.id); // byte
+                            bw.Write(sprite.x); // byte
+                            bw.Write(sprite.y); // byte
+                            bw.Write(sprite.subtype); // byte
+                            bw.Write(sprite.layer); // byte
+                        }
+
+                        byte itemCount = (byte)r.pot_items.Count;
+                        bw.Write(itemCount);
+                        foreach (PotItem item in r.pot_items)
+                        {
+                            bw.Write(item.id); // byte
+                            bw.Write(item.x); // byte
+                            bw.Write(item.y); // byte
+                            bw.Write(item.bg2); // bool
+                        }
+
+                        byte chestItemCount = (byte)r.chest_list.Count;
+                        bw.Write(chestItemCount);
+                        foreach (Chest item in r.chest_list)
+                        {
+                            bw.Write(item.x); // byte
+                            bw.Write(item.y); // byte
+                            bw.Write(item.item); // byte
+                            bw.Write(item.bigChest); // bool
+                        }
+
+                        bw.Write(r.damagepit);
+                        bw.Write((byte)r.holewarp);
+                        bw.Write(r.staircase1);
+                        bw.Write(r.staircase2);
+                        bw.Write(r.staircase3);
+                        bw.Write(r.staircase4);
+                        bw.Write((byte)r.holewarp_plane);
+                        bw.Write(r.staircase1Plane);
+                        bw.Write(r.staircase2Plane);
+                        bw.Write(r.staircase3Plane);
+                        bw.Write(r.staircase4Plane);
+                        bw.Write((byte)r.tag1);
+                        bw.Write((byte)r.tag2);
+                        bw.Write((byte)r.bg2);
+                        bw.Write((byte)r.spriteset);
+                        bw.Write((bool)r.sortsprites);
+                        bw.Write((byte)r.palette);
+                        bw.Write((byte)r.messageid);
+                        bw.Write((byte)r.effect);
+                        bw.Write((byte)r.floor1);
+                        bw.Write((byte)r.floor2);
+                        bw.Write((byte)r.collision);
+                        bw.Write(r.light);
+                        bw.Write((byte)r.blockset);
+                        bw.Write((byte)r.layout);
+                    }
+                    bw.Close();
+                }
+            }
+        }
+
+        private void importDungeonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog sf = new OpenFileDialog())
+            {
+                if (sf.ShowDialog() == DialogResult.OK)
+                {
+
+                    BinaryReader br = new BinaryReader(new FileStream(sf.FileName,FileMode.Open));
+                    int roomCount = br.ReadInt32(); // nbr of rooms
+
+                    for(int i = 0;i<roomCount;i++) 
+                    {
+                        int rIndex = br.ReadInt32();
+
+                        int nbrObjects = br.ReadInt32();
+                        byte[] objectsData = br.ReadBytes(nbrObjects);
+
+                        DungeonsData.AllRooms[rIndex].tilesObjects.Clear();
+
+                        DungeonsData.AllRooms[rIndex].loadTilesObjectsFromArray(objectsData);
+
+
+
+                        DungeonsData.AllRooms[rIndex].sprites.Clear();
+                        int sprCount = br.ReadByte();
+                        for(int j = 0;j<sprCount;j++)
+                        {
+                            short roomindex = br.ReadInt16(); // room
+                            byte id = br.ReadByte(); // byte
+                            byte x = br.ReadByte(); // byte
+                            byte y = br.ReadByte();  // byte
+                            byte subtype = br.ReadByte();  // byte
+                            byte layer = br.ReadByte();  // byte
+                            DungeonsData.AllRooms[rIndex].sprites.Add(new Sprite(DungeonsData.AllRooms[rIndex], id, x, y, subtype, layer));
+                        }
+
+
+                        DungeonsData.AllRooms[rIndex].pot_items.Clear();
+                        int potCount = br.ReadByte();
+                        for (int j = 0; j < potCount; j++)
+                        {
+                            byte id = br.ReadByte(); // byte
+                            byte x = br.ReadByte(); // byte
+                            byte y = br.ReadByte();  // byte
+                            bool bg2 = br.ReadBoolean();
+                            DungeonsData.AllRooms[rIndex].pot_items.Add(new PotItem(id, x, y, bg2));
+                        }
+
+                        DungeonsData.AllRooms[rIndex].chest_list.Clear();
+                        int chestCount = br.ReadByte();
+                        for (int j = 0; j < chestCount; j++)
+                        {
+                            
+                            byte x = br.ReadByte(); // byte
+                            byte y = br.ReadByte();  // byte
+                            byte item = br.ReadByte(); // byte
+                            bool bigchest = br.ReadBoolean();
+                            DungeonsData.AllRooms[rIndex].chest_list.Add(new Chest(x, y, item, bigchest));
+                        }
+
+
+                        DungeonsData.AllRooms[rIndex].damagepit = br.ReadBoolean();
+                        DungeonsData.AllRooms[rIndex].holewarp = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase1 = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase2 = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase3 = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase4 = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].holewarp_plane = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase1Plane = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase2Plane = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase3Plane = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].staircase4Plane = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].tag1 = (TagKey)br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].tag2 = (TagKey)br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].bg2 = (Background2)br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].spriteset = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].sortsprites = br.ReadBoolean();
+                        DungeonsData.AllRooms[rIndex].palette = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].messageid = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].effect = (EffectKey)br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].floor1 = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].floor2 = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].collision = (CollisionKey)br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].light = br.ReadBoolean();
+                        DungeonsData.AllRooms[rIndex].blockset = br.ReadByte();
+                        DungeonsData.AllRooms[rIndex].layout = br.ReadByte();
+
+                    }
+                    br.Close();
+                }
+                
             }
         }
     }
