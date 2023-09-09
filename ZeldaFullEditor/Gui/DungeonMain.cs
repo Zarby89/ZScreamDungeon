@@ -120,14 +120,14 @@ namespace ZeldaFullEditor
 
         int romID = 00;
 
-        // TODO: save this in a config file and load the values into this array on startup
+        // TODO: Save this in a config file and load the values into this array on startup.
         public bool[] saveSettingsArr = new bool[]
         {
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
-            true, false,
+            true, false, false, false, false,
         };
 
         // Constuctor
@@ -327,55 +327,55 @@ namespace ZeldaFullEditor
             bool badSave = true;
             do
             {
-                if (this.saveSettingsArr[0] && save.saveallSprites())
+                if (this.saveSettingsArr[0] && save.SaveAllSprites())
                 {
                     UIText.CryAboutSaving("there are too many sprites");
                     break;
                 }
 
-                if (this.saveSettingsArr[1] && save.saveallPots())
+                if (this.saveSettingsArr[1] && save.SaveAllPots())
                 {
                     UIText.CryAboutSaving("there are too many pot items");
                     break;
                 }
 
-                if (this.saveSettingsArr[2] && save.saveallChests())
+                if (this.saveSettingsArr[2] && save.SaveAllChests())
                 {
                     UIText.CryAboutSaving("there are too many chest items");
                     break;
                 }
 
-                if (this.saveSettingsArr[3] && save.saveAllObjects())
+                if (this.saveSettingsArr[3] && save.SaveAllObjects())
                 {
                     UIText.CryAboutSaving("there are too many tiles objects");
                     break;
                 }
 
-                if (this.saveSettingsArr[4] && save.saveBlocks())
+                if (this.saveSettingsArr[4] && save.SaveBlocks())
                 {
                     UIText.CryAboutSaving("there are too many pushable blocks");
                     break;
                 }
 
-                if (this.saveSettingsArr[5] && save.saveTorches())
+                if (this.saveSettingsArr[5] && save.SaveTorches())
                 {
                     UIText.CryAboutSaving("there are too many torches");
                     break;
                 }
 
-                if (this.saveSettingsArr[6] && save.saveAllPits())
+                if (this.saveSettingsArr[6] && save.SaveAllPits())
                 {
                     UIText.CryAboutSaving("there are too many pits with damage");
                     break;
                 }
 
-                if (this.saveSettingsArr[7] && save.saveRoomsHeaders())
+                if (this.saveSettingsArr[7] && save.SaveRoomsHeaders())
                 {
                     //UIText.CryAboutSaving("there are too many chest items);
                     //break;
                 }
 
-                if (this.saveSettingsArr[8] && save.saveEntrances(DungeonsData.Entrances, DungeonsData.StartingEntrances))
+                if (this.saveSettingsArr[8] && save.SaveEntrances(DungeonsData.Entrances, DungeonsData.StartingEntrances))
                 {
                     UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
                     break;
@@ -387,13 +387,13 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[10] && save.saveOWItems(this.overworldEditor.scene))
+                if (this.saveSettingsArr[10] && save.SaveOWItems(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("overworld items out of range");
                     break;
                 }
 
-                if (this.saveSettingsArr[11] && save.saveOWEntrances(this.overworldEditor.scene))
+                if (this.saveSettingsArr[11] && save.SaveOWEntrances(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("??, no idea why LUL");
                     break;
@@ -405,7 +405,7 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[13] && save.saveOWExits(this.overworldEditor.scene))
+                if (this.saveSettingsArr[13] && save.SaveOWExits(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("overworld Exits or something IDK");
                     break;
@@ -444,7 +444,7 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[25] && save.saveAllText(this.textEditor))
+                if (this.saveSettingsArr[25] && save.SaveAllText(this.textEditor))
                 {
                     UIText.CryAboutSaving("impossible to save text");
                     break;
@@ -452,19 +452,19 @@ namespace ZeldaFullEditor
 
                 // 17
 
-                if (this.saveSettingsArr[28] && save.saveCustomCollision())
+                if (this.saveSettingsArr[28] && save.SaveCustomCollision())
                 {
                     UIText.CryAboutSaving("there was an error saving the custom collision rectangles");
                     break;
                 }
 
-                if (this.saveSettingsArr[31] && save.saveMapOverlays(this.overworldEditor.scene))
+                if (this.saveSettingsArr[31] && save.SaveMapOverlays(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("overworld map overlays ???");
                     break;
                 }
 
-                if (this.saveSettingsArr[32] && save.saveOverworldMusics(this.overworldEditor.scene))
+                if (this.saveSettingsArr[32] && save.SaveOverworldMusic(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("overworld map tile types ???");
                     break;
@@ -482,7 +482,7 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[35] && save.saveOverworldTilesType(this.overworldEditor.scene))
+                if (this.saveSettingsArr[35] && save.SaveOverworldTilesType(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
                     break;
@@ -512,31 +512,20 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[40] && save.saveOverworldMessagesIds(this.overworldEditor.scene))
+                if (this.saveSettingsArr[40] && save.SaveOverworldMessagesIDs(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
                     break;
                 }
 
-                if (save.saveAreaSpecificBG(this.saveSettingsArr[41]))
+                // The mosaic byte is hardcoded to false on purpose for now.
+                if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], false, this.saveSettingsArr[43], this.saveSettingsArr[44]))
                 {
                     UIText.CryAboutSaving("problem saving overworld area specific BG color ASM");
                     break;
                 }
 
-                if (save.saveOverworldMosaic(this.overworldEditor.scene))
-                {
-                    UIText.CryAboutSaving("problem saving overworld custom mosaic ASM");
-                    break;
-                }
-
-                if (save.saveOverworldAnimatedGFX(this.overworldEditor.scene))
-                {
-                    UIText.CryAboutSaving("problem saving custom animated tiles ASM");
-                    break;
-                }
-
-                // If we made it here, everything was fine
+                // If we made it here, everything was fine.
                 badSave = false;
             }
             while (false);
@@ -4717,7 +4706,7 @@ namespace ZeldaFullEditor
 
                 if (rm.checkBox5.Checked)
                 {
-                    if (save.saveallSprites2(listofrooms.ToArray())) // Sprites, there's a protection
+                    if (save.SaveAllSprites2(listofrooms.ToArray())) // Sprites, there's a protection
                     {
                         UIText.CryAboutSaving("there are too many sprites");
                         return;
@@ -4726,7 +4715,7 @@ namespace ZeldaFullEditor
 
                 if (rm.checkBox1.Checked)
                 {
-                    if (save.saveAllObjects2(listofrooms.ToArray())) // There is a protection - Tested
+                    if (save.SaveAllObjects2(listofrooms.ToArray())) // There is a protection - Tested
                     {
                         UIText.CryAboutSaving("there are too many tiles objects");
                         return;
@@ -4735,7 +4724,7 @@ namespace ZeldaFullEditor
 
                 if (rm.checkBox2.Checked)
                 {
-                    if (save.saveallPots2(listofrooms.ToArray())) // There is a protection - Tested
+                    if (save.SaveAllPots2(listofrooms.ToArray())) // There is a protection - Tested
                     {
                         UIText.CryAboutSaving("there are too many pot items");
                         return;

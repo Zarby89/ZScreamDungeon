@@ -47,15 +47,26 @@ namespace ZeldaFullEditor
         public byte[] SpriteGFX { get; set; } = new byte[3];
 
         /// <summary>
-        ///     Gets or sets the palette of the map.
+        ///     Gets or sets the Aux palette of the map.
         /// </summary>
-        public byte Palette { get; set; } = 0;
+        public byte AuxPalette { get; set; } = 0;
+
+        /// <summary>
+        ///     Gets or sets the Main palette of the map.
+        /// </summary>
+        public byte MainPalette { get; set; } = 0;
 
         /// <summary>
         ///     Gets or sets the sprite palette of the map.
-        ///     There is one palette for each game phase (rain, pre agah, post agah).
+        ///     There is one palette for each game phase (rain, pre Agah, post Agah).
         /// </summary>
         public byte[] SpritePalette { get; set; } = new byte[3];
+
+        /// <summary>
+        ///     Gets or sets the subscreen overlay of the map.
+        ///     This is things like the rain overlay, lost woods fog overly, death mountain sky background, and the pyramid background.
+        /// </summary>
+        public ushort SubscreenOverlay { get; set; } = 0;
 
         /// <summary>
         ///     Gets or sets the map music.
@@ -142,35 +153,86 @@ namespace ZeldaFullEditor
                 }
             }
 
-            // If the custom mosaic ASM has NOT already been applied, manually set the vanilla mosaic values.
-            if (ROM.DATA[Constants.overworldCustomMosaicASM] == 0x00)
+            // If the custom overworld ASM has NOT already been applied, manually set the vanilla values.
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
             {
-                this.Mosaic = index == 0 || index == 64 || index == 128 || index == 129 || index == 136;
-            }
-            else
-            {
-                this.Mosaic = ROM.DATA[Constants.overworldCustomMosaicArray + index] != 0x00;
-            }
+                // Set the main palette values.
+                if (index < 0x40)
+                {
+                    this.MainPalette = 0;
+                }
+                else if (index >= 0x40 && index < 0x80)
+                {
+                    this.MainPalette = 1;
+                }
+                else if (index >= 0x80 && index < 0xA0)
+                {
+                    this.MainPalette = 0;
+                }
 
-            // If the custom animated tiles ASM has NOT already bee applied, manually set the vanilla tile values.
-            if (ROM.DATA[Constants.OverworldCustomAnimatedGFXASM] == 0x00)
-            {
                 if (index == 0x03 || index == 0x05 || index == 0x07)
                 {
-                    this.AnimatedGFX = 89;
+                    this.MainPalette = 2;
                 }
                 else if (index == 0x43 || index == 0x45 || index == 0x47)
                 {
-                    this.AnimatedGFX = 89;
+                    this.MainPalette = 3;
+                }
+                else if (index == 0x88)
+                {
+                    this.MainPalette = 4;
+                }
+
+                // Set the mosaic values.
+                this.Mosaic = index == 0 || index == 64 || index == 128 || index == 129 || index == 136;
+
+                // Set the animated GFX values.
+                if (index == 0x03 || index == 0x05 || index == 0x07 || index == 0x43 || index == 0x45 || index == 0x47)
+                {
+                    this.AnimatedGFX = 0x59;
                 }
                 else
                 {
-                    this.AnimatedGFX = 91;
+                    this.AnimatedGFX = 0x5B;
+                }
+
+                // Set the subscreen overlay values.
+                this.SubscreenOverlay = 0x00FF;
+
+                if (index == 0x00 || index == 0x40)
+                {
+                    this.SubscreenOverlay = 0x009D;
+                }
+                else if (index == 0x03 || index == 0x05 || index == 0x07)
+                {
+                    this.SubscreenOverlay = 0x0095;
+                }
+                else if (index == 0x1B || index == 0x5B)
+                {
+                    this.SubscreenOverlay = 0x0096;
+                }
+                else if (index == 0x70)
+                {
+                    this.SubscreenOverlay = 0x009F;
+                }
+                else if (index == 0x80)
+                {
+                    this.SubscreenOverlay = 0x0097;
+                }
+                else if (index == 0x88)
+                {
+                    this.SubscreenOverlay = 0x0093;
                 }
             }
             else
             {
+                this.MainPalette = ROM.DATA[Constants.OverworldCustomMainPaletteArray + index];
+
+                this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
+
                 this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomAnimatedGFXArray + index];
+
+                this.SubscreenOverlay = ROM.DATA[Constants.OverworldCustomSubscreenOverlayArray + (index * 2)];
             }
 
             if (index < 64)
@@ -179,7 +241,7 @@ namespace ZeldaFullEditor
                 this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 64];
                 this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID];
                 this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 64];
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
@@ -194,7 +256,7 @@ namespace ZeldaFullEditor
                 this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
                 this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
                 this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
@@ -254,21 +316,21 @@ namespace ZeldaFullEditor
                 this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
 
-                this.Palette = ROM.DATA[Constants.overworldSpecialPALGroup + this.ParentID - 128];
+                this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + this.ParentID - 128];
                 if ((index >= 0x80 && index <= 0x8A && index != 0x88) || index == 0x94)
                 {
                     this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
-                    this.Palette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+                    this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
                 }
                 else if (index == 0x88)
                 {
                     this.GFX = 81;
-                    this.Palette = 0;
+                    this.AuxPalette = 0;
                 }
                 else // Pyramid bg use 0x5B map.
                 {
                     this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                    this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                    this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 }
             }
         }
@@ -294,17 +356,17 @@ namespace ZeldaFullEditor
                         if (this.Index >= 0x80 && this.Index <= 0x8A && this.Index != 0x88)
                         {
                             this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
-                            this.Palette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+                            this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
                         }
                         else if (this.Index == 0x88)
                         {
                             this.GFX = 81;
-                            this.Palette = 0;
+                            this.AuxPalette = 0;
                         }
                         else
                         {
                             this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                            this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                            this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                         }
 
                         this.FirstLoad = true;
@@ -396,16 +458,14 @@ namespace ZeldaFullEditor
                 previousSprPalId = ROM.DATA[Constants.overworldSpritePalette + this.ParentID - 1];
             }
 
-            if (this.Palette >= 0xA3)
+            if (this.AuxPalette >= 0xA3)
             {
-                this.Palette = 0xA3;
+                this.AuxPalette = 0xA3;
             }
 
-            byte pal0 = 0;
-
-            byte pal1 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.Palette * 4)]; // aux1
-            byte pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.Palette * 4) + 1]; // aux2
-            byte pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.Palette * 4) + 2]; // animated
+            byte pal1 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4)]; // aux1
+            byte pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4) + 1]; // aux2
+            byte pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4) + 2]; // animated
 
             byte pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (this.SpritePalette[this.overworld.GameState] * 2)]; // spr3
             byte pal5 = ROM.DATA[Constants.overworldSpritePaletteGroup + (this.SpritePalette[this.overworld.GameState] * 2) + 1]; // spr4
@@ -458,9 +518,6 @@ namespace ZeldaFullEditor
 
             if (this.ParentID < 0x40)
             {
-                // Default LW Palette.
-                pal0 = 0;
-
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
                     bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
@@ -469,29 +526,9 @@ namespace ZeldaFullEditor
                 {
                     bgr = Palettes.OverworldGrassPalettes[0];
                 }
-
-                // Hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
-                // Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later.
-                /*
-				if ((parent >= 0x03 && parent <= 0x07))
-				{
-					pal0 = 2;
-				}
-				else if (parent >= 0x0B && parent <= 0x0E)
-				{
-					pal0 = 2;
-				}
-				*/
-
-                if (this.ParentID == 0x03 || this.ParentID == 0x05 || this.ParentID == 0x07)
-                {
-                    pal0 = 2;
-                }
             }
             else if (this.ParentID >= 0x40 && this.ParentID < 0x80)
             {
-                // Default DW Palette.
-                pal0 = 1;
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
                     bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
@@ -500,30 +537,9 @@ namespace ZeldaFullEditor
                 {
                     bgr = Palettes.OverworldGrassPalettes[1];
                 }
-
-                // Hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
-                // Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later.
-                /*
-				if (parent >= 0x43 && parent <= 0x47)
-				{
-					pal0 = 3;
-				}
-				else if (parent >= 0x4B && parent <= 0x4E)
-				{
-					pal0 = 3;
-				}
-				*/
-
-                if (this.ParentID == 0x43 || this.ParentID == 0x45 || this.ParentID == 0x47)
-                {
-                    pal0 = 3;
-                }
             }
             else if (this.ParentID >= 128 && this.ParentID < Constants.NumberOfOWMaps)
             {
-                // Default SP Palette.
-                pal0 = 0;
-
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
                     bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
@@ -534,22 +550,9 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (this.ParentID == 0x88)
+            if (this.overworld.AllMaps[this.ParentID].MainPalette != 255)
             {
-                pal0 = 4;
-            }
-
-            /*
-            else if (parent >= 128) //special area like Zora's domain, etc...
-            {
-                bgr = Palettes.overworld_GrassPalettes[2];
-                pal0 = 4;
-            }
-            */
-
-            if (pal0 != 255)
-            {
-                main = Palettes.OverworldMainPalettes[pal0];
+                main = Palettes.OverworldMainPalettes[this.overworld.AllMaps[this.ParentID].MainPalette];
             }
             else
             {

@@ -285,11 +285,22 @@ namespace ZeldaFullEditor
         public static int transition_target_north = 0x13EE2;
         public static int transition_target_west = 0x13F62;
 
-        public static int overworldCustomMosaicASM = 0x1402A0;
-        public static int overworldCustomMosaicArray = 0x140200;
+        public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, not 0 if enabled
 
-        public static int OverworldCustomAnimatedGFXASM = 0x1403A0;
-        public static int OverworldCustomAnimatedGFXArray = 0x140300;
+        public static int customAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (0x140)
+        public static int customAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomMainPaletteArray = 0x140160; // 1 byte for each overworld area (0xA0)
+        public static int OverworldCustomMainPaletteEnabled = 0x140141; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomMosaicArray = 0x140200; // 1 byte for each overworld area (0xA0)
+        public static int OverworldCustomMosaicEnabled = 0x140142; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomAnimatedGFXArray = 0x1402A0; // 1 byte for each overworld area (0xA0)
+        public static int OverworldCustomAnimatedGFXEnabled = 0x140143; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomSubscreenOverlayArray = 0x140340; // 2 bytes for each overworld area (0x140)
+        public static int OverworldCustomSubscreenOverlayEnabled = 0x140144; // 1 byte, not 0 if enabled
 
         // ===========================================================================================
         // Overworld Exits/Entrances Variables
@@ -502,7 +513,6 @@ namespace ZeldaFullEditor
         // ===========================================================================================
         // Gravestones related variables
         // ===========================================================================================
-
         public static int GravesYTilePos = 0x49968; // Short (0x0F entries)
         public static int GravesXTilePos = 0x49986; // Short (0x0F entries)
         public static int GravesTilemapPos = 0x499A4; // Short (0x0F entries)
@@ -542,10 +552,6 @@ namespace ZeldaFullEditor
         public static int overworldMiniMapPalettes = 0x55B27;
         public static int triforcePalette = 0x64425;
         public static int crystalPalette = 0xF4CD3;
-
-        public static int customAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (320)
-        public static int customAreaSpecificBGASM = 0x140150;
-        public static int customAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
 
         // ===========================================================================================
         // Dungeon Map Related Variables

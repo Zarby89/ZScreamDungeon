@@ -101,7 +101,6 @@ namespace ZeldaFullEditor.Gui
             pictureBox1.Refresh();
         }
 
-
         public void saveScratchPad()
         {
             byte[] file = new byte[(225 * 16) * 2];
@@ -132,10 +131,12 @@ namespace ZeldaFullEditor.Gui
         {
             this.propertiesChangedFromForm = true;
             this.OWProperty_BGGFX.HexValue = map.GFX;
-            this.OWProperty_BGPalette.HexValue = map.Palette;
+            this.OWProperty_AuxPalette.HexValue = map.AuxPalette;
             this.OWProperty_SPRGFX.HexValue = map.SpriteGFX[gamestate];
             this.OWProperty_SPRPalette.HexValue = map.SpritePalette[gamestate];
             this.OWProperty_AniGFX.HexValue = map.AnimatedGFX;
+            this.OWProperty_MainPalette.HexValue = map.MainPalette;
+            this.OWProperty_SubscreenOverlay.HexValue = map.SubscreenOverlay;
 
             this.largemapCheckbox.Checked = map.LargeMap;
             this.mosaicCheckBox.Checked = map.Mosaic;
@@ -166,13 +167,13 @@ namespace ZeldaFullEditor.Gui
             mainForm.SaveToolStripMenuItem_Click(sender, e);
         }
 
-        private void gfxTextbox_TextChanged(object sender, EventArgs e)
+        private void OverworldPropertyTextbox_TextChanged(object sender, EventArgs e)
         {
-            if (!propertiesChangedFromForm)
+            if (!this.propertiesChangedFromForm)
             {
-                OverworldMap mapParent = scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].ParentID];
-                UpdateMapProperties(mapParent);
-                SendMapProperties(mapParent);
+                OverworldMap mapParent = this.scene.ow.AllMaps[this.scene.ow.AllMaps[this.scene.selectedMap].ParentID];
+                this.UpdateMapProperties(mapParent);
+                this.SendMapProperties(mapParent);
             }
         }
 
@@ -187,7 +188,7 @@ namespace ZeldaFullEditor.Gui
                 mapParent = this.scene.ow.AllMaps[this.scene.selectedMap];
             }
 
-            mapParent.Palette = (byte)this.OWProperty_BGPalette.HexValue;
+            mapParent.AuxPalette = (byte)this.OWProperty_AuxPalette.HexValue;
             mapParent.GFX = (byte)this.OWProperty_BGGFX.HexValue;
             mapParent.MessageID = (short)this.OWProperty_MessageID.HexValue;
 
@@ -202,23 +203,27 @@ namespace ZeldaFullEditor.Gui
                 mapParent.SpritePalette[this.scene.ow.GameState] = (byte)this.OWProperty_SPRPalette.HexValue;
             }
 
+            mapParent.MainPalette = (byte)this.OWProperty_MainPalette.HexValue;
+
             mapParent.AnimatedGFX = (byte)this.OWProperty_AniGFX.HexValue;
+
+            mapParent.SubscreenOverlay = (ushort)this.OWProperty_SubscreenOverlay.HexValue;
 
             if (mapParent.LargeMap)
             {
                 this.scene.ow.AllMaps[mapParent.Index + 1].GFX = mapParent.GFX;
                 this.scene.ow.AllMaps[mapParent.Index + 1].SpriteGFX = mapParent.SpriteGFX;
-                this.scene.ow.AllMaps[mapParent.Index + 1].Palette = mapParent.Palette;
+                this.scene.ow.AllMaps[mapParent.Index + 1].AuxPalette = mapParent.AuxPalette;
                 this.scene.ow.AllMaps[mapParent.Index + 1].SpritePalette = mapParent.SpritePalette;
 
                 this.scene.ow.AllMaps[mapParent.Index + 8].GFX = mapParent.GFX;
                 this.scene.ow.AllMaps[mapParent.Index + 8].SpriteGFX = mapParent.SpriteGFX;
-                this.scene.ow.AllMaps[mapParent.Index + 8].Palette = mapParent.Palette;
+                this.scene.ow.AllMaps[mapParent.Index + 8].AuxPalette = mapParent.AuxPalette;
                 this.scene.ow.AllMaps[mapParent.Index + 8].SpritePalette = mapParent.SpritePalette;
 
                 this.scene.ow.AllMaps[mapParent.Index + 9].GFX = mapParent.GFX;
                 this.scene.ow.AllMaps[mapParent.Index + 9].SpriteGFX = mapParent.SpriteGFX;
-                this.scene.ow.AllMaps[mapParent.Index + 9].Palette = mapParent.Palette;
+                this.scene.ow.AllMaps[mapParent.Index + 9].AuxPalette = mapParent.AuxPalette;
                 this.scene.ow.AllMaps[mapParent.Index + 9].SpritePalette = mapParent.SpritePalette;
 
                 mapParent.BuildMap();
@@ -285,14 +290,14 @@ namespace ZeldaFullEditor.Gui
                 y = tilePictureBox.Size.Height - tabPage1.Size.Height;
             }
 
-            // TODO: fix this garbage, it doesn't update all of the time for some reason but works better without the if. -Jared_Brian_
+            // TODO: Fix this garbage, it doesn't update all of the time for some reason but works better without the if. -Jared_Brian_
             //if (y < tabPage1.VerticalScroll.Value || y > tabPage1.VerticalScroll.Value + tabPage1.Size.Height)
             //{
             tabPage1.VerticalScroll.Value = y;
             tilePictureBox.Refresh();
             tabPage1.Update();
             tabPage1.Refresh();
-            //
+            //}
         }
 
         private void tilePictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -546,6 +551,7 @@ namespace ZeldaFullEditor.Gui
                             sizeX = (globalmouseTileDownX - tileX) + 1;
                             reverseX = true;
                         }
+
                         if (tileY < globalmouseTileDownY)
                         {
                             sizeY = (globalmouseTileDownY - tileY) + 1;
@@ -559,6 +565,7 @@ namespace ZeldaFullEditor.Gui
                         {
                             pX = 0;
                         }
+
                         if (pY < 0)
                         {
                             pY = 0;
@@ -922,6 +929,7 @@ namespace ZeldaFullEditor.Gui
                 mx = 3 - x;
                 r = 1;
             }
+
             if (tile.V)
             {
                 my = 7 - y;
@@ -946,6 +954,7 @@ namespace ZeldaFullEditor.Gui
                 mx = 3 - x;
                 r = 1;
             }
+
             if (mirrorYCheckbox.Checked)
             {
                 my = 7 - y;
@@ -1097,11 +1106,11 @@ namespace ZeldaFullEditor.Gui
         }
 
         /// <summary>
-        /// Called when the largemap checkbox is clicke, upataes the world layout and then updates all of the sprites within that area.
+        ///     Called when the largemap checkbox is clicke, upataes the world layout and then updates all of the sprites within that area.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        // TODO copy and string builder
+        // TODO: Copy and string builder.
         private void largemapCheckbox_Clicked(object sender, EventArgs e)
         {
             if (!propertiesChangedFromForm)
@@ -1120,18 +1129,20 @@ namespace ZeldaFullEditor.Gui
                 if (scene.ow.AllMaps[m + 1].LargeMap || scene.ow.AllMaps[m + 8].LargeMap || scene.ow.AllMaps[m + 9].LargeMap)
                 {
                     int i = 0;
-                    string temp = "";
+                    string temp = string.Empty;
 
                     if (scene.ow.AllMaps[m + 1].LargeMap)
                     {
                         temp += (m + 1).ToString("X2") + ", ";
                         i++;
                     }
+
                     if (scene.ow.AllMaps[m + 8].LargeMap)
                     {
                         temp += (m + 8).ToString("X2") + ", ";
                         i++;
                     }
+
                     if (scene.ow.AllMaps[m + 9].LargeMap)
                     {
                         temp += (m + 9).ToString("X2") + ", ";
@@ -1366,6 +1377,7 @@ namespace ZeldaFullEditor.Gui
                     scene.ow.AllMaps[m + 64 + 8].SetAsSmallMap();
                     scene.ow.AllMaps[m + 64 + 9].SetAsSmallMap();
                 }
+
                 // If we are in the dark world, set the light world opposite too.
                 else if (m >= 64 && m < 128)
                 {
@@ -1421,6 +1433,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         Console.WriteLine("Total entrances moved: " + j);
                         j = 0;
                         foreach (EntranceOW o in scene.ow.AllHoles)
@@ -1490,6 +1503,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         Console.WriteLine("Total brids moved: " + j);
                         j = 0;
                         foreach (TransportOW o in scene.ow.AllWhirlpools)
@@ -1524,6 +1538,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         Console.WriteLine("Total whirlpools moved: " + j);
                         j = 0;
                         foreach (ExitOW o in scene.ow.AllExits)
@@ -1558,6 +1573,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         Console.WriteLine("Total exits moved: " + j);
                         j = 0;
                         foreach (RoomPotSaveEditor o in scene.ow.AllItems)
@@ -1592,6 +1608,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         Console.WriteLine("Total items moved: " + j);
                         j = 0;
                         foreach (Sprite o in scene.ow.AllSprites[0])
@@ -1626,6 +1643,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         Console.WriteLine("Total sprites (0,1) moved: " + j);
                         j = 0;
                         foreach (Sprite o in scene.ow.AllSprites[1])
@@ -1660,6 +1678,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         Console.WriteLine("Total sprites (2) moved: " + j);
                         j = 0;
                         foreach (Sprite o in scene.ow.AllSprites[2])
@@ -1688,9 +1707,11 @@ namespace ZeldaFullEditor.Gui
                                         o.updateMapStuff(scene.ow.AllMaps[m + 9].Index);
                                     }
                                 }
+
                                 j++;
                             }
                         }
+
                         Console.WriteLine("Total sprites (3) moved: " + j);
                         j = 0;
                     }
@@ -1732,6 +1753,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         foreach (EntranceOW o in scene.ow.AllHoles)
                         {
                             if (o.MapID == m)
@@ -1789,6 +1811,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         foreach (TransportOW o in scene.ow.AllWhirlpools)
                         {
                             if (o.mapId == m)
@@ -1817,6 +1840,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         foreach (ExitOW o in scene.ow.AllExits)
                         {
                             if (o.MapID == m)
@@ -1845,6 +1869,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         foreach (RoomPotSaveEditor o in scene.ow.AllItems)
                         {
                             if (o.RoomMapID == m)
@@ -1873,6 +1898,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         foreach (Sprite o in scene.ow.AllSprites[0])
                         {
                             if (o.mapid == m)
@@ -1901,6 +1927,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         foreach (Sprite o in scene.ow.AllSprites[1])
                         {
                             if (o.mapid == m)
@@ -1929,6 +1956,7 @@ namespace ZeldaFullEditor.Gui
                                 }
                             }
                         }
+
                         foreach (Sprite o in scene.ow.AllSprites[2])
                         {
                             if (o.mapid == m)
@@ -1963,8 +1991,6 @@ namespace ZeldaFullEditor.Gui
                 Console.WriteLine("Done updating object locations ");
             }
         }
-
-
 
         /// <summary>
         /// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)
@@ -2299,7 +2325,6 @@ namespace ZeldaFullEditor.Gui
             NetZS.client.FlushSendQueue();
         }
 
-
         public void SendMapProperties(OverworldMap map)
         {
             if (!NetZS.connected) { return; }
@@ -2307,7 +2332,7 @@ namespace ZeldaFullEditor.Gui
             buffer.Write((byte)13); // map properties
             buffer.Write((byte)NetZS.userID); //user ID
             buffer.Write((byte)map.Index);
-            buffer.Write((byte)map.Palette);
+            buffer.Write((byte)map.AuxPalette);
             buffer.Write((byte)map.GFX);
             buffer.Write((short)map.MessageID);
 
@@ -2328,8 +2353,6 @@ namespace ZeldaFullEditor.Gui
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
-
     }
 }
