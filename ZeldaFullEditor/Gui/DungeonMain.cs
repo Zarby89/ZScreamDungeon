@@ -518,8 +518,8 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                // The mosaic byte is hardcoded to false on purpose for now.
-                if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], false, this.saveSettingsArr[43], this.saveSettingsArr[44]))
+                // The mosaic byte is hardcoded to true on purpose for now.
+                if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44]))
                 {
                     UIText.CryAboutSaving("problem saving overworld area specific BG color ASM");
                     break;

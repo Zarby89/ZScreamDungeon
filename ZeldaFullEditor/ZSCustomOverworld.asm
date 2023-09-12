@@ -100,60 +100,60 @@ Pool:
     ; 555 color value $0000 to $7FFF.
 
     ; LW
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
     ; DW
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
     ; SW
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+    dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
     warnpc $288140
 
-    org $288140
+    org $288140 ; $140140
     .EnableTable ; 0x20
     ; Valid values:
     ; $00 - Disabled
     ; $01 - Enabled
 
-    org $288140
+    org $288140 ; $140140
     .EnableBGColor
     ;db $00
 
-    org $288141
+    org $288141 ; $140141
     .EnableMainPalette 
     ;db $00
     
-    org $288142
+    org $288142 ; $140142
     .EnableMosaic ; Unused for now.
     ;db $00
 
-    org $288143
+    org $288143 ; $140143
     .EnableAnimated
     ;db $00
     
-    org $288144
+    org $288144 ; $140144
     .EnableSubScreenOverlay
     ;db $00
 
     ; This is a reserved value that ZS will write to when it has applied the ASM.
     ; That way the next time ZS loads the ROM it knows to read the custom values
     ; instead of using the default ones.
-    org $288145
+    org $288145 ; $140145
     .ZSAppliedASM
     ;db $FF
     
@@ -164,7 +164,7 @@ Pool:
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     warnpc $288160
 
-    org $288160
+    org $288160 ; $140160
     .MainPaletteTable ; 0xA0
     ; Valid values:
     ; Main overworld palette index $00 to $05.
@@ -176,92 +176,92 @@ Pool:
     ; $05 is the title screen palette?
 
     ; LW
-    ;db $00, $00, $00, $02, $00, $20, $00, $20
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $02, $00, $20, $00, $20
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
     ; DW
-    ;db $01, $01, $01, $03, $01, $03, $01, $03
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $03, $01, $03, $01, $03
+    db $01, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $01, $01, $01, $01, $01
+    db $01, $01, $01, $01, $01, $01, $01, $01
     ; SW
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $04, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $04, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
     warnpc $288200
     
-    org $288200
+    org $288200 ; $140200
     .MosaicTable ; 0xA0
     ; Valid values:
     ; $01 to enable mosaic, $00 to disable.
 
     ; LW
-    ;db $01, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    db $01, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
     ; DW
-    ;db $01, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    db $01, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
     ; SW
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    db $01, $01, $00, $00, $00, $00, $00, $00
+    db $01, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
+    db $00, $00, $00, $00, $00, $00, $00, $00
     warnpc $2882A0
 
-    org $2882A0
+    org $2882A0 ; $1402A0
     .AnimatedTable ; 0xA0
     ; Valid values:
     ; GFX index $00 to $FF.
     ; In vanilla, $59 are the clouds and $5B are the regular water tiles.
 
     ; LW
-    ;db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
     ; DW
-    ;db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
     ; SW
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+    db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
     warnpc $288340
 
-    org $288340
+    org $288340 ; $140340
     .OverlayTable ; 0x140
     ; Valid values:
     ; Can be any value $00 to $FF but is stored as 2 bytes instead of one to help the code out below.
@@ -280,34 +280,88 @@ Pool:
     ; $009F is the rain overlay.
 
     ;LW
-    ;dw $009D, $00FF, $00FF, $0095, $00FF, $0095, $00FF, $0095
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $0096, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $009D, $00FF, $00FF, $0095, $00FF, $0095, $00FF, $0095
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
     ;DW
-    ;dw $009D, $00FF, $00FF, $009C, $00FF, $009C, $00FF, $009C
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $0096, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $009F, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $009D, $00FF, $00FF, $009C, $00FF, $009C, $00FF, $009C
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $0096, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $009F, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
     ;SP
-    ;dw $0097, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $0093, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $0097, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $0093, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+    dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
     warnpc $288480
 }
 
+; Start of expanded space.
+org $288480 ; $140480
 pushpc
 
+; Debug addresses
+; 00D8D5 ; W6 Animated tiles on warp
+!Func00D8D5 = $00
+; 00DA63 ; W7 Enable/Disable subscreen
+!Func00DA63 = $00
+; 00EEBC
+!Func00EEBC = $00
+; 00FF7C ; W8 BG scrolling for HC and the pyramid area.
+!Func00FF7C = $00
+; 028027
+!Func028027 = $00
+; 029C0C
+!Func029C0C = $00
+; 029D1E
+!Func029D1E = $00
+; 029F82
+!Func029F82 = $00
+; 0283EE
+!Func0283EE = $00
+; 028632
+!Func028632 = $00
+; 029AA6
+!Func029AA6 = $00
+; 02AF58 ; W2 Main subscreen loading function
+!Func02AF58 = $00
+; 02B2D4 ; W1 turns on subscreen for pyramid
+!Func02B2D4 = $00
+; 0284DA ; Activate subscreen durring pyramid warp
+!Func0284DA = $00
+; 02BC44
+!Func02BC44 = $00
+; 02C02D ; T4 pyramid bg scroll
+!Func02C02D = $00
+; 02C692 ; W3 Main palette loading routine
+!Func02C692 = $00
+; 02AADB ; T1 Mosaic
+!Func02AADB = $00
+; 02ABB8 ; T2 transition animated and main palette
+!Func02ABB8 = $00
+; 0ABC5A
+!Func0ABC5A = $00
+; 0AB8F5
+!Func0AB8F5 = $00
+; 0BFEC6 ; W5 T3 Load overlay and default color
+!Func0BFEC6 = $01
+; 0ED627 ; W4 Transparent color durring warp
+!Func0ED627 = $00
+; 0ED8AE
+!Func0ED8AE = $00
+
 ; ==============================================================================
+
+if !Func00D8D5 = 1
 
 ; Replaces a function that decompresses animated tiles in certain mirror warp conditions.
 org $00D8D5 ; $0058D5
@@ -324,26 +378,39 @@ org $00D8D5 ; $0058D5
     PLX
 
     JSL DecompOwAnimatedTiles
-        
+            
     RTL
 }
 warnpc $00D8EE
 
+endif
+
 ; ==============================================================================
+
+if !Func00DA63 = 1
 
 ; Sets the $1D Sub Screen Designation to either enable or disable BG for screens with special overlays.
 org $00DA63 ; $005A63
 {
     STZ $1D
 
+    PHX
+
+    REP #$20
     ; Get the overlay value for this overworld area
     LDA $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X : CMP.b #$FF : BEQ .normal
+    LDA.l Pool_OverlayTable, X : CMP.w #$00FF : BEQ .normal
         ; If not $FF, assume we want an overlay.
+        SEP #$20
+
         ; Turn on BG1.
         LDA.b #$01 : STA $1D
 
     .normal
+
+    SEP #$20
+
+    PLX
 
     ; From this point on it is the vanilla function.
     PHB : PHK : PLB
@@ -373,14 +440,18 @@ org $00DA63 ; $005A63
 }
 warnpc $00DABB
 
+endif
+
 ; ==============================================================================
+
+if !Func00EEBC = 1
 
 ; Zeros out the BG color when mirror warping to the pyramid area.
 org $00EEBC ; $006EBC
 {
     ; Check if we are warping to an area with the pyramid BG.
     LDA $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X : CMP.b #$0096 : BNE .notHyruleCastle
+    LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BNE .notHyruleCastle
         ; This is annoying but I just needed a little bit of extra space.
         JSL EraseBGColors
 
@@ -396,6 +467,8 @@ org $00EEBC ; $006EBC
 }
 warnpc $00EEE0
 
+endif
+
 pullpc
 EraseBGColors:
 {
@@ -407,8 +480,10 @@ pushpc
 
 ; ==============================================================================
 
+if !Func00FF7C = 1
+
 ; Controls the BG scrolling for HC and the pyramid area.
-org $00FF7D ; $007F7D
+org $00FF7C ; $007F7C
 {
     LDA $1C80 : ORA $1C90 : ORA $1CA0 : ORA $1CB0 : CMP $E2 : BNE .BRANCH_DELTA
         SEP #$20
@@ -418,9 +493,10 @@ org $00FF7D ; $007F7D
         INC $B0
         
         JSL $0BFE70 ; $5FE70 IN ROM
+
         ; Check if we are warping to an area with the pyramid BG.
         LDA $8A : ASL : TAX
-        LDA.l Pool_OverlayTable, X : CMP.b #$96 : BEQ .dont_align_bgs
+        LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BEQ .dont_align_bgs
             REP #$20
             
             LDA $E2 : STA $E0 : STA $0120 : STA $011E
@@ -435,7 +511,11 @@ org $00FF7D ; $007F7D
 }
 warnpc $00FFC0 ; This end point also uses up a null block at the end of the function.
 
+endif
+
 ; ==============================================================================
+
+if !Func0283EE = 1
 
 ; Replaces a bunch of calls to a shared function.
 ; Intro_SetupScreen:
@@ -597,7 +677,11 @@ PreOverworld_LoadProperties_LoadMain:
 }
 warnpc $02856A
 
+endif
+
 ; ==============================================================================
+
+if !Func028632 = 1
 
 ; Changes a function that loads animated tiles under certain conditions.
 org $028632 ; $010632
@@ -650,7 +734,11 @@ org $028632 ; $010632
 }
 warnpc $028697
 
+endif
+
 ; ==============================================================================
+
+if !Func029AA6 = 1
 
 ; Changes part of a function that changes the special BG color when leaving dungeons? not sure.
 org $029AA6 ; $011AA6
@@ -659,6 +747,7 @@ org $029AA6 ; $011AA6
     LDX.w #$4C26
     LDY.w #$8C4C
         
+    ; TODO: Wtf why is this 0x00?
     LDA $8A : ASL : TAX
     LDA.l Pool_OverlayTable, X
 
@@ -669,6 +758,7 @@ org $029AA6 ; $011AA6
         
         ; Check for DW death mountain. 
         CMP.w #$009C : BEQ .mountain
+            BRA .other
     
     .mountain
     
@@ -682,10 +772,14 @@ org $029AA6 ; $011AA6
 }
 warnpc $029AD3
 
+endif
+
 ; ==============================================================================
 
+if !Func02AF58 = 1
+
 ; TODO: If something is broken, its probably here, this function is scuffed.
-; Main overlay loading function. Changed so that they will load from a table
+; Main subscreen overlay loading function. Changed so that they will load from a table.
 ; This does not change the event overlays like the lost woods changing to the tree canopy or the misery mire rain.
 ; This also does not change the overlay for under the bridge because it shares an area with the master sword.
 org $02AF58 ; $012F58
@@ -871,7 +965,11 @@ org $02AF58 ; $012F58
 }
 warnpc $02B0D2
 
+endif
+
 ; ==============================================================================
+
+if !Func02B2D4 = 1
 
 ; Turns on the subscreen if the pyramid is loaded.
 org $02B2D4 ; $132D4
@@ -884,6 +982,8 @@ org $02B2D4 ; $132D4
     RTL
 }
 warnpc $02B2E6
+
+endif
 
 pullpc
 EnableSubScreenCheck:
@@ -906,6 +1006,8 @@ EnableSubScreenCheck:
 pushpc
 
 ; ==============================================================================
+
+if !Func0284DA = 1
 
 ; Handles activating the subscreen and special BG color when warping to an area with the pyramid BG.
 org $0284DA ; $0104DA
@@ -954,7 +1056,11 @@ org $0284DA ; $0104DA
 }
 warnpc $02B40A
 
+endif
+
 ; ==============================================================================
+
+if !Func02BC44 = 1
 
 ; Controls overworld vertical subscreen movement for the pyramid BG.
 org $02BC44 ; $013C44
@@ -972,6 +1078,8 @@ org $02BC44 ; $013C44
 }
 warnpc $02BC60
 
+endif
+
 pullpc
 ReadOverlayArray:
 {
@@ -983,13 +1091,13 @@ ReadOverlayArray:
 
 ReadOverlayArray2:
 {
-    REP #$20
+    REP #$10
 
     LDA $8A : ASL : TAX
     LDA.l Pool_OverlayTable, X
     TAY
 
-    SEP #$20
+    SEP #$10
 
     RTL
 }
@@ -997,20 +1105,28 @@ pushpc
 
 ; ==============================================================================
 
+if !Func02C02D = 1
+
 ; Changes how the pyramid BG scrolls.
 org $02C02D ; $01402D
 {
-    NOP : NOP
-
+    PHA
     JSL ReadOverlayArray2
-    CPY.b #$96 : BEQ .dontMoveBg1  
+    PLA
+    
+    ; TODO: figure out this garbage, in vanilla its a BEQ but BEQ doesn't work here for some reason.
+    CPY.b #$96 : BNE .dontMoveBg1  
         STA $E0, X
     
     .dontMoveBg1
 }
 warnpc $02C039
 
+endif
+
 ; ==============================================================================
+
+if !Func02C692 = 1
 
 ; Replaces a call to a shared function. Normally this is goes to .lightworld to change the main color palette manually but we change it here so that it just uses the same table as everything else.
 org $02A07A ; $01207A
@@ -1054,11 +1170,17 @@ Overworld_LoadAreaPalettes:
 }
 warnpc $02C6EB
 
+endif
+
 ; ==============================================================================
+
+if !Func02AADB = 1
 
 ; Main Mosaic Hook. Changes it to use a table instead of hardcoded to the woods areas.
 org $02AADB ; $012ADB
     JML MosaicAreaCheck
+
+endif
 
 pullpc
 MosaicAreaCheck:
@@ -1090,8 +1212,12 @@ pushpc
 
 ; ==============================================================================
 
+if !Func02ABB8 = 1
+
 org $02ABB8 ; $012BB8
     JML CheckForChangeGraphicsTransitionLoad
+
+endif
 
 ; Loads the animated tiles after most of the transition gfx changes take place
 pullpc
@@ -1129,8 +1255,12 @@ pushpc
 
 ; ==============================================================================
 
+if !Func0ABC5A = 1
+
 org $0ABC5A ; $053C5A
     JSL CheckForChangeGraphicsNormalLoad
+
+endif
 
 ; Loads the animated tiles after the overworld map is closed.
 pullpc
@@ -1155,6 +1285,8 @@ CheckForChangeGraphicsNormalLoad:
 pushpc
 
 ; ==============================================================================
+
+if !Func0AB8F5 = 1
 
 ; Loads different animated tiles when returning from bird travel.
 org $0AB8F5 ; $0538F5
@@ -1201,9 +1333,13 @@ org $0AB8F5 ; $0538F5
 }
 warnpc $0AB948
 
+endif
+
 ; ==============================================================================
 
-; Loads different special transparent colors and overlay speeds based on the overlay under certain cases. Exact cases need to be investigated.
+if !Func0BFEC6 = 1
+
+; Loads different special transparent colors and overlay speeds based on the overlay during transition and under other certain cases. Exact cases need to be investigated.
 org $0BFEC6 ; $05FEC6
 Overworld_LoadBGColorAndSubscreenOverlay:
 {
@@ -1216,24 +1352,25 @@ Overworld_LoadBGColorAndSubscreenOverlay:
     LDA $8A : ASL : TAX
     LDA.l Pool_OverlayTable, X
 
-    ; TODO: Check for misery mire.
+    ; Check for misery mire.
     CMP.w #$009F : BNE .notMire
         JMP .subscreenOnAndReturn
     
     .notMire
     
-    ; TODO: Check for lost woods, skull woods, and pyramid area.
-    CMP.w #$0040 : BEQ .noCustomFixedColor
+    ; Check for lost woods?, skull woods, and pyramid area.
+    CMP.w #$009D : BEQ .noCustomFixedColor
+    CMP.w #$0096 : BEQ .noCustomFixedColor
         LDX.w #$4C26
         LDY.w #$8C4C
         
-        ; TODO: Check for LW Death mountain.
-        CMP.w #$0003 : BEQ .setCustomFixedColor
+        ; Check for LW Death mountain.
+        CMP.w #$0095 : BEQ .setCustomFixedColor
             LDX.w #$4A26
             LDY.w #$874A
             
-            ; TODO: Check for DW Death mountain. (not turtle rock?)
-            CMP.w #$0043 : BEQ .setCustomFixedColor
+            ; Check for DW Death mountain. (not turtle rock?)
+            CMP.w #$009C : BEQ .setCustomFixedColor
 
             SEP #$30
             
@@ -1254,7 +1391,6 @@ Overworld_LoadBGColorAndSubscreenOverlay:
         LDA $E8 : STA $E6
         LDA $E2 : STA $E0
             
-        ; TODO: Check for HC or pyramid.
         LDA $8A : ASL : TAX
         LDA.l Pool_OverlayTable, X
             
@@ -1325,6 +1461,8 @@ Overworld_LoadBGColorAndSubscreenOverlay:
 }
 warnpc $0BFFA8
 
+endif
+
 pullpc
 ReplaceBGColor:
 {
@@ -1357,10 +1495,15 @@ pushpc
 
 ; ==============================================================================
 
-; Loads the transparent color under some load conditions
+if !Func0ED627 = 1
+
+; Loads the transparent color under some load conditions such as the mirror warp.
+; TODO: Investigate the other conditions.
 org $0ED627 ; $075627
     JML IntColorLoad2
     NOP
+
+endif
 
 pullpc
 IntColorLoad2:
@@ -1399,11 +1542,13 @@ IntColorLoad2:
 
 ; ==============================================================================
 
+if !Func0ED8AE = 1
+
 ; Resets the area special color after the screen flashes.
 org $0ED8AE ; $0758AE
 {
     LDA $1B : BNE .noSpecialColor
-        REP #$10
+        REP #$30
 
         LDX.w #$4020 : STX $9C
         LDX.w #$8040 : STX $9D
@@ -1413,20 +1558,20 @@ org $0ED8AE ; $0758AE
         
         ; Lost woods and skull woods.
         LDA $8A : ASL : TAX
-        LDA.l Pool_OverlayTable, X : CMP.b #$9D : BEQ .noSpecialColor
-            CMP.b #$40 : BEQ .noSpecialColor
+        LDA.l Pool_OverlayTable, X : CMP.w #$009D : BEQ .noSpecialColor
+            CMP.w #$0040 : BEQ .noSpecialColor
                 ; Pyramid area.
-                CMP.b #$96 : BEQ .specialColor
+                CMP.w #$0096 : BEQ .specialColor
                     LDX.w #$4C26
                     LDY.w #$8C4C
                     
                     ; LW death mountain.
-                    CMP.b #$95 : BEQ .specialColor
+                    CMP.w #$0095 : BEQ .specialColor
                         LDX.w #$4A26
                         LDY.w #$874A
                         
                         ; DW death mountain.
-                        CMP.b #$9C : BEQ .specialColor
+                        CMP.w #$009C : BEQ .specialColor
                 
                 .specialColor
 
@@ -1435,10 +1580,12 @@ org $0ED8AE ; $0758AE
         
         .noSpecialColor
     
-    SEP #$10
+    SEP #$30
         
     RTL
 }
 warnpc $0ED8FB
+
+endif
 
 ; ==============================================================================

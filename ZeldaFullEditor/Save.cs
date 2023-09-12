@@ -269,6 +269,42 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00, true, "Disabled area specific BG color");
             }
 
+            if (enableMainPalette)
+            {
+                ROM.Write(Constants.OverworldCustomMainPaletteEnabled, 0xFF, true, "Enabled overworld main palette");
+            }
+            else
+            {
+                ROM.Write(Constants.OverworldCustomMainPaletteEnabled, 0x00, true, "Disabled overworld main palette");
+            }
+
+            if (enableMosaic)
+            {
+                ROM.Write(Constants.OverworldCustomMosaicEnabled, 0xFF, true, "Enabled overworld mosaic");
+            }
+            else
+            {
+                ROM.Write(Constants.OverworldCustomMosaicEnabled, 0x00, true, "Disabled overworld mosaic");
+            }
+
+            if (enableAnimated)
+            {
+                ROM.Write(Constants.OverworldCustomAnimatedGFXEnabled, 0xFF, true, "Enabled overworld animated tiles GFX");
+            }
+            else
+            {
+                ROM.Write(Constants.OverworldCustomAnimatedGFXEnabled, 0x00, true, "Disabled overworld animated tiles GFX");
+            }
+
+            if (enableSubscreenOverlay)
+            {
+                ROM.Write(Constants.OverworldCustomSubscreenOverlayEnabled, 0xFF, true, "Enabled subscreen overlay");
+            }
+            else
+            {
+                ROM.Write(Constants.OverworldCustomSubscreenOverlayEnabled, 0x00, true, "Disabled subscreen overlay");
+            }
+
             // Write the main palette table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)
             {
@@ -288,10 +324,16 @@ namespace ZeldaFullEditor
                 }
             }
 
-            // Write the animated tiles table array.
+            // Write the animated tiles table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)
             {
                 ROM.Write(Constants.OverworldCustomAnimatedGFXArray + i, scene.ow.AllMaps[i].AnimatedGFX);
+            }
+
+            // Write the subscreen overlay table.
+            for (int i = 0; i < scene.ow.AllMaps.Length; i++)
+            {
+                ROM.WriteShort(Constants.OverworldCustomSubscreenOverlayArray + (i * 2), scene.ow.AllMaps[i].SubscreenOverlay);
             }
 
             Asar.init();

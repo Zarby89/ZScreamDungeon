@@ -184,7 +184,7 @@ namespace ZeldaFullEditor
                 }
 
                 // Set the mosaic values.
-                this.Mosaic = index == 0 || index == 64 || index == 128 || index == 129 || index == 136;
+                this.Mosaic = index == 0x00 || index == 0x40 || index == 0x80 || index == 0x81 || index == 0x88;
 
                 // Set the animated GFX values.
                 if (index == 0x03 || index == 0x05 || index == 0x07 || index == 0x43 || index == 0x45 || index == 0x47)
@@ -207,7 +207,7 @@ namespace ZeldaFullEditor
                 {
                     this.SubscreenOverlay = 0x0095;
                 }
-                else if (index == 0x1B || index == 0x5B)
+                else if (index == 0x5B) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
                 {
                     this.SubscreenOverlay = 0x0096;
                 }
