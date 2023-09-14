@@ -151,7 +151,6 @@ namespace ZeldaFullEditor
 
 		public bool saveCustomCollision()
 		{
-			Console.WriteLine("Saving Custom Collision");
 			/*
             Format:
                 dw<offset> : db width, height
@@ -167,7 +166,6 @@ namespace ZeldaFullEditor
 
 			Console.WriteLine(room_pointer + " " + data_pointer);
 
-			//for ( int i = 0; i < Constants.NumberOfRooms; i++ )
 			foreach (Room room in all_rooms)
 			{
 				// @zarby: for each room -> ROM.WriteLong(0x100000), Utils.PcToSnes(ptrsCounter))
@@ -216,6 +214,75 @@ namespace ZeldaFullEditor
 					data_pointer += 2;
 				}
 			}
+
+			string projectFilename = mainForm.projectFilename;
+
+			AsarCLR.Asar.init();
+
+			// TODO handle differently in projects
+			if (File.Exists("CustomCollision.asm"))
+			{
+				Console.WriteLine("Applying Custom Collision ASM");
+				AsarCLR.Asar.patch("CustomCollision.asm", ref ROM.DATA);
+			}
+
+			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+			{
+				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool saveCustomCollisionV2()
+		{
+			int room_pointer = Constants.customCollisionRoomPointers;
+			int data_pointer = Constants.customCollisionDataPosition;
+
+			// Use a List to batch the writes.
+			List<byte> dataToWrite = new List<byte>();
+
+			Parallel.ForEach(all_rooms, (room) =>
+			{
+				room.ClearCollisionLayout();
+				room.LoadCollisionLayout(false);
+
+				if (room.collisionRectangles.Count > 0)
+				{
+					dataToWrite.AddRange(BitConverter.GetBytes(Utils.PcToSnes(data_pointer)));
+				}
+				else
+				{
+					dataToWrite.AddRange(new byte[4]);
+				}
+
+				room_pointer += 3;
+
+				foreach (var rectangle in room.collisionRectangles)
+				{
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.IndexData));
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.Width));
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.Height));
+
+					for (int j = 0; j < rectangle.Width * rectangle.Height; j++)
+					{
+						dataToWrite.AddRange(BitConverter.GetBytes(rectangle.TileData[j]));
+					}
+				}
+
+				if (room.collisionRectangles.Count > 0)
+				{
+					dataToWrite.AddRange(new byte[] { 0x00, 0xFF, 0xFF });
+					data_pointer += 2;
+				}
+			});
+
+			foreach (var room_data in dataToWrite)
+			{
+				ROM.Write(room_pointer, room_data);
+			}
+
 
 			string projectFilename = mainForm.projectFilename;
 
