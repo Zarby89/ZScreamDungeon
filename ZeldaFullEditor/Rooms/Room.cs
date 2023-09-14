@@ -310,138 +310,154 @@ namespace ZeldaFullEditor
             }
         }
 
-        // @author: scawful
-        // @brief: Creates a list of valid rectangles from user inputted collision 
-        public void loadCollisionLayout(bool output = false)
-        {
-            Dictionary<int, bool> collision_validity = new Dictionary<int, bool>();
+		/// <summary>
+		/// Author: scawful
+		/// Loads the collision layout by processing each cell of the collision map and generates a collection 
+		/// of rectangles for the valid collision areas. Called in Save.cs 
+		/// 
+		/// Test code in SceneUW.cs, activated with the "Up" key (for some reason which is unclear to us all)
+		/// </summary>
+		/// <param name="output">When set to true will print collision info to the terminal, default false</param>
+		public void LoadCollisionLayout(bool output = false)
+		{
+			Dictionary<int, bool> collisionValidity = GenerateInitialCollisionValidity();
 
-            for (int i = 0; i < collisionMap.Length; ++i)
-            {
-                collision_validity[i] = false;
-            }
+			for (int i = 0; i < collisionMap.Length; ++i)
+			{
+				if (collisionMap[i] != 0xFF && !collisionValidity[i])
+				{
+					ProcessCollision(i, ref collisionValidity);
+				}
+			}
 
-            int rectangle_index = 0;
-            for (int i = 0; i < collisionMap.Length; ++i)
-            {
-                if (collisionMap[i] != 0xFF && !collision_validity[i])
-                {
-                    int rectangle_width = 1;
-                    int rectangle_height = 1;
-                    bool found_blank = false;
+			if (output)
+			{
+				PrintRectangles();
+			}
+		}
 
-                    if (collisionMap[i + 1] == 0xFF && collisionMap[i + 64] == 0xFF)
-                    {
-                        ushort[] new_tile_data = { collisionMap[i] };
-                        collision_validity[i] = true;
-                        collision_rectangles.Add(new CollisionRectangle(1, 1, (ushort)i, new_tile_data));
-                    }
-                    else
-                    {
-                        while (!found_blank)
-                        {
-                            if (collisionMap[i + rectangle_width] != 0xFF)
-                            {
-                                rectangle_width++;
-                            }
-                            else
-                            {
-                                found_blank = true;
-                            }
-                        }
+		/// <summary>
+		/// Generates the initial collision validity map marking all cells as non-collidable.
+		/// </summary>
+		private Dictionary<int, bool> GenerateInitialCollisionValidity()
+		{
+			var collisionValidity = new Dictionary<int, bool>();
+			for (int i = 0; i < collisionMap.Length; ++i)
+			{
+				collisionValidity[i] = false;
+			}
+			return collisionValidity;
+		}
 
-                        found_blank = false;
-                        while (!found_blank)
-                        {
-                            if ((i + (rectangle_height * 64)) < 4096)
-                            {
-                                if (collisionMap[i + (rectangle_height * 64)] != 0xFF)
-                                {
-                                    rectangle_height++;
-                                }
-                                else
-                                {
-                                    found_blank = true;
-                                }
-                            }
-                            else
-                            {
-                                found_blank = true;
-                            }
-                        }
+		/// <summary>
+		/// Processes a given collision map cell. 
+		/// If the cell is not marked as non-collidable, it generates collision rectangle data and updates the collision validity map.
+		/// </summary>
+		private void ProcessCollision(int index, ref Dictionary<int, bool> collisionValidity)
+		{
+			int rectangleWidth = 1;
+			int rectangleHeight = 1;
 
-                        /* 
-                        //removed as it is unnecessary and causes errors when you have a rectangle with different tile data in it
-                        bool discrepancy = false;
-                        byte rectangle_type = collisionMap[i];
+			if (collisionMap[index + 1] == 0xFF && collisionMap[index + 64] == 0xFF)
+			{
+				ushort[] newTileData = { collisionMap[index] };
+				collisionValidity[index] = true;
+				collision_rectangles.Add(new CollisionRectangle(1, 1, (ushort) index, newTileData));
+			}
+			else
+			{
+				rectangleWidth = FindRectangleWidth(index);
+				rectangleHeight = FindRectangleHeight(index);
 
-                        for (int y = 0; y < rectangle_height; ++y)
-                        {
-                            for (int x = 0; x < rectangle_width; ++x)
-                            {
-                                if (collisionMap[i + (x + (y * 64))] != rectangle_type && !discrepancy)
-                                {
-                                    if (rectangle_width > x)
-                                    {
-                                        rectangle_height = y;
-                                        discrepancy = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        */
+				ushort[] newTileData = GenerateTileData(index, rectangleWidth, rectangleHeight, ref collisionValidity);
+				collision_rectangles.Add(new CollisionRectangle((byte) rectangleWidth, (byte) rectangleHeight, (ushort) index, newTileData));
+			}
+		}
 
-                        List<ushort> new_tile_data = new List<ushort>();
-                        for (int y = 0; y < rectangle_height; ++y)
-                        {
-                            for (int x = 0; x < rectangle_width; ++x)
-                            {
-                                new_tile_data.Add(collisionMap[i + (x + (y * 64))]);
-                                collision_validity[i + (x + (y * 64))] = true;
-                            }
-                        }
+		/// <summary>
+		/// Searches horizontally from a given index in the collision map until 
+		/// a non-collidable cell is found, determining the width of the collidable area.
+		/// </summary>
+		private int FindRectangleWidth(int index)
+		{
+			int rectangleWidth = 1;
+			bool foundBlank = false;
 
-                        ushort[] _new_tile_data = new_tile_data.ToArray();
-                        collision_rectangles.Add(new CollisionRectangle((byte)rectangle_width, (byte)rectangle_height, (ushort)i, _new_tile_data));
-                    }
-                }
-            }
+			while (!foundBlank)
+			{
+				if (collisionMap[index + rectangleWidth] != 0xFF)
+				{
+					rectangleWidth++;
+				}
+				else
+				{
+					foundBlank = true;
+				}
+			}
 
-            if (output)
-            {
-                Console.WriteLine("\nGenerate Rectangles:");
-                foreach (CollisionRectangle each_rect in collision_rectangles)
-                {
-                    Console.WriteLine((int)each_rect.index_data + " : " + (int)each_rect.width + " x " + (int)each_rect.height);
-                }
-            }
+			return rectangleWidth;
+		}
 
-            /* 
-            upper bound 
-            512 pixels/8px per tile, so 64
-            a full room would be dw $0000 : db 64, 64
-            followed by 64x64 bytes
-            then FFFF
-            */
+		/// <summary>
+		/// Searches vertically from a given index in the collision map until a non-collidable cell is found, determining the height of the collidable area.
+		/// </summary>
+		private int FindRectangleHeight(int index)
+		{
+			int rectangleHeight = 1;
+			bool foundBlank = false;
 
-            /*
-            put $F0F0 then put 2 byte index and the 1 byte of data
-            index is just Y*64+X
-            +$1000 if lower layer
+			while (!foundBlank)
+			{
+				if ((index + (rectangleHeight * 64)) < 4096 && collisionMap[index + (rectangleHeight * 64)] != 0xFF)
+				{
+					rectangleHeight++;
+				}
+				else
+				{
+					foundBlank = true;
+				}
+			}
 
-            only the index and tokens are 16 bit
-            everything else, width, height, data, are 8 bit 
-            */
-        }
+			return rectangleHeight;
+		}
 
-        /// <summary>
-        /// clears the list of valid rectangles from user inputted collision 
-        /// </summary>
-        public void ClearCollisionLayout()
-        {
-            collision_rectangles.Clear();
-        }
+		/// <summary>
+		/// Generates tile data for a given collision rectangle based on the width and height of the rectangle and updates the collision validity map.
+		/// </summary>
+		private ushort[] GenerateTileData(int index, int rectangleWidth, int rectangleHeight, ref Dictionary<int, bool> collisionValidity)
+		{
+			List<ushort> newTileData = new List<ushort>();
+			for (int y = 0; y < rectangleHeight; ++y)
+			{
+				for (int x = 0; x < rectangleWidth; ++x)
+				{
+					newTileData.Add(collisionMap[index + (x + (y * 64))]);
+					collisionValidity[index + (x + (y * 64))] = true;
+				}
+			}
+			return newTileData.ToArray();
+		}
+
+		/// <summary>
+		/// Prints out the data of each generated collision rectangle to the console.
+		/// </summary>
+		private void PrintRectangles()
+		{
+			Console.WriteLine("\nGenerate Rectangles:");
+			foreach (CollisionRectangle eachRect in collision_rectangles)
+			{
+				Console.WriteLine($"{(int) eachRect.index_data} : {(int) eachRect.width} x {(int) eachRect.height}");
+			}
+		}
+
+
+		/// <summary>
+		/// clears the list of valid rectangles from user inputted collision 
+		/// </summary>
+		public void ClearCollisionLayout()
+		{
+			collision_rectangles.Clear();
+		}
 
         /// <summary>
         /// Reads the custom collsion data from the ROM and adds it to the collisionMap for the room

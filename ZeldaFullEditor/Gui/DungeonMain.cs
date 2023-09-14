@@ -452,7 +452,7 @@ namespace ZeldaFullEditor
 
                 // 17
 
-                if (this.saveSettingsArr[28] && save.saveCustomCollision())
+                if (this.saveSettingsArr[28] && save.SaveCustomCollision())
                 {
                     UIText.CryAboutSaving("there was an error saving the custom collision rectangles");
                     break;

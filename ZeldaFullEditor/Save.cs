@@ -145,10 +145,9 @@ namespace ZeldaFullEditor
             return false; // False = no error.
         }
 
-        public bool saveCustomCollision()
-        {
-            Console.WriteLine("Saving Custom Collision");
-            /*
+		public bool SaveCustomCollision()
+		{
+			/*
             Format:
                 dw<offset> : db width, height
                 dw < tile data >, ...
@@ -158,8 +157,8 @@ namespace ZeldaFullEditor
                 if < offset > == $FFFF, stop
             */
 
-            int room_pointer = Constants.customCollisionRoomPointers; // @zarby: save all 320 rooms pointers to 0x128000.
-            int data_pointer = Constants.customCollisionDataPosition; // @zarby: the actual data at 0x1283C0.
+			int room_pointer = Constants.customCollisionRoomPointers; // @zarby: save all 320 rooms pointers to 0x128000
+			int data_pointer = Constants.customCollisionDataPosition; // @zarby: the actual data at 0x1283C0
 
             Console.WriteLine(room_pointer + " " + data_pointer);
 
@@ -171,7 +170,7 @@ namespace ZeldaFullEditor
 
                 // Clear the room's rectangle list and then re-populate it.
                 room.ClearCollisionLayout();
-                room.loadCollisionLayout(false);
+                room.LoadCollisionLayout(false);
 
                 // If there is triangle in the room, write the room pointer, otherwise wrtie 000000.
                 if (room.collision_rectangles.Count() > 0)
@@ -183,7 +182,7 @@ namespace ZeldaFullEditor
                     ROM.WriteLong(room_pointer, 0x000000);
                 }
 
-                room_pointer += 3;
+				room_pointer += 3;
 
                 foreach (var rectangle in room.collision_rectangles)
                 {
@@ -237,29 +236,87 @@ namespace ZeldaFullEditor
             return false;
         }
 
-        public bool saveAreaSpecificBG(bool enabled)
-        {
-            Asar.init();
+		public bool SaveCustomCollisionV2()
+		{
+			int room_pointer = Constants.customCollisionRoomPointers;
+			int data_pointer = Constants.customCollisionDataPosition;
 
-            // TODO: handle differently in projects.
-            if (File.Exists("AreaSpecificBGColor.asm"))
-            {
-                Console.WriteLine("Saving Area Specific BG colors ASM");
-                Asar.patch("AreaSpecificBGColor.asm", ref ROM.DATA);
-            }
-            else
-            {
-                UIText.CryAboutSaving("Missing ASM file 'AreaSpecificBGColor.asm'.\nSaving will continue but the ASM will not be applied.");
-            }
+			// Use a List to batch the writes.
+			List<byte> dataToWrite = new List<byte>();
 
-            if (enabled)
-            {
-                ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF, true, "Enabled area specific BG color");
-            }
-            else
-            {
-                ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00, true, "Disabled area specific BG color");
-            }
+            System.Threading.Tasks.Parallel.ForEach(this.AllRooms, (room) =>
+			{
+				room.ClearCollisionLayout();
+				room.LoadCollisionLayout(false);
+
+				if (room.collision_rectangles.Count > 0)
+				{
+					dataToWrite.AddRange(BitConverter.GetBytes(Utils.PcToSnes(data_pointer)));
+				}
+				else
+				{
+					dataToWrite.AddRange(new byte[4]);
+				}
+
+				room_pointer += 3;
+
+				foreach (var rectangle in room.collision_rectangles)
+				{
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.index_data));
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.width));
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.height));
+
+					for (int j = 0; j < rectangle.width * rectangle.height; j++)
+					{
+						dataToWrite.AddRange(BitConverter.GetBytes(rectangle.tile_data[j]));
+					}
+				}
+
+				if (room.collision_rectangles.Count > 0)
+				{
+					dataToWrite.AddRange(new byte[] { 0x00, 0xFF, 0xFF });
+					data_pointer += 2;
+				}
+			});
+
+			foreach (var room_data in dataToWrite)
+			{
+				ROM.Write(room_pointer, room_data);
+			}
+
+
+			string projectFilename = MainForm.projectFilename;
+
+			AsarCLR.Asar.init();
+
+			// TODO handle differently in projects
+			if (File.Exists("CustomCollision.asm"))
+			{
+				Console.WriteLine("Applying Custom Collision ASM");
+				AsarCLR.Asar.patch("CustomCollision.asm", ref ROM.DATA);
+			}
+
+			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+			{
+				Console.WriteLine(error.Fullerrdata.ToString());
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool saveAreaSpecificBG(bool enabled)
+		{
+			Console.WriteLine("Saving Area Specific BG colors ASM");
+
+			if (enabled)
+			{
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF, true, "Enabled area specific BG color");
+			}
+			else
+			{
+				ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00, true, "Disabled area specific BG color");
+			}
 
             foreach (Asarerror error in Asar.geterrors())
             {
