@@ -98,7 +98,7 @@
             this.textListbox.Name = "textListbox";
             this.textListbox.Size = new System.Drawing.Size(433, 668);
             this.textListbox.TabIndex = 1;
-            this.textListbox.SelectedIndexChanged += new System.EventHandler(this.textListbox_SelectedIndexChanged);
+            this.textListbox.SelectedIndexChanged += new System.EventHandler(this.TextListbox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -117,7 +117,7 @@
             this.searchTextbox.Name = "searchTextbox";
             this.searchTextbox.Size = new System.Drawing.Size(433, 20);
             this.searchTextbox.TabIndex = 9;
-            this.searchTextbox.TextChanged += new System.EventHandler(this.searchTextbox_TextChanged);
+            this.searchTextbox.TextChanged += new System.EventHandler(this.SearchTextbox_TextChanged);
             // 
             // label4
             // 
@@ -182,7 +182,7 @@
             this.fontGridBox.TabIndex = 34;
             this.fontGridBox.Text = "Show grid";
             this.fontGridBox.UseVisualStyleBackColor = true;
-            this.fontGridBox.CheckedChanged += new System.EventHandler(this.fontGridBox_CheckedChanged);
+            this.fontGridBox.CheckedChanged += new System.EventHandler(this.FontGridBox_CheckedChanged);
             // 
             // BytesDDD
             // 
@@ -228,7 +228,7 @@
             this.TextCommandList.Name = "TextCommandList";
             this.TextCommandList.Size = new System.Drawing.Size(163, 134);
             this.TextCommandList.TabIndex = 25;
-            this.TextCommandList.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.TextCommandList.SelectedIndexChanged += new System.EventHandler(this.ListBox1_SelectedIndexChanged);
             this.TextCommandList.DoubleClick += new System.EventHandler(this.InsertCommandButton_Click_1);
             // 
             // label3
@@ -249,8 +249,8 @@
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(340, 152);
             this.textBox1.TabIndex = 20;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
+            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            this.textBox1.Leave += new System.EventHandler(this.TextBox1_Leave);
             // 
             // label12
             // 
@@ -269,7 +269,7 @@
             this.button5.TabIndex = 17;
             this.button5.Text = "Save VWF font";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.Button5_Click);
             // 
             // button6
             // 
@@ -317,7 +317,7 @@
             this.pictureBox3.Size = new System.Drawing.Size(64, 128);
             this.pictureBox3.TabIndex = 6;
             this.pictureBox3.TabStop = false;
-            this.pictureBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox3_Paint);
+            this.pictureBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox3_Paint);
             // 
             // SelectedTileASCII
             // 
@@ -347,7 +347,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(44, 20);
             this.numericUpDown1.TabIndex = 3;
             this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.NumericUpDown1_ValueChanged);
             // 
             // label8
             // 
@@ -384,7 +384,7 @@
             this.button4.TabIndex = 21;
             this.button4.Text = "Dictionary entries";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
             // button3
             // 
@@ -394,7 +394,7 @@
             this.button3.TabIndex = 16;
             this.button3.Text = "Import GFX+Width (2BPP)";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
             // 
             // button2
             // 
@@ -404,7 +404,7 @@
             this.button2.TabIndex = 15;
             this.button2.Text = "Export GFX+Width (2BPP)";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // label5
             // 
@@ -423,8 +423,8 @@
             this.pictureBox2.Size = new System.Drawing.Size(256, 258);
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
-            this.pictureBox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox2_MouseDown);
+            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox2_Paint);
+            this.pictureBox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox2_MouseDown);
             // 
             // pictureBox1
             // 
@@ -436,7 +436,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(340, 192);
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox1_Paint);
             // 
             // toolStrip1
             // 
@@ -448,7 +448,7 @@
             this.toolStrip1.Size = new System.Drawing.Size(981, 25);
             this.toolStrip1.TabIndex = 24;
             this.toolStrip1.Text = "toolStrip1";
-            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
+            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStrip1_ItemClicked);
             // 
             // toolStripButton1
             // 
@@ -458,7 +458,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "Export text";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
             // toolStripButton2
             // 
@@ -468,7 +468,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "Import text";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click);
             // 
             // TextEditor
             // 
@@ -479,7 +479,6 @@
             this.Controls.Add(this.panel2);
             this.Name = "TextEditor";
             this.Size = new System.Drawing.Size(981, 758);
-            this.Load += new System.EventHandler(this.TextEditor_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

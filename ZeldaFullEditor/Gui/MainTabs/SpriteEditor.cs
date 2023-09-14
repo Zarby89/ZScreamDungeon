@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui.MainTabs
 {
-	public partial class SpriteEditor : UserControl
-	{
-		public SpriteEditor()
-		{
-			InitializeComponent();
-		}
-	}
+    public partial class SpriteEditor : UserControl
+    {
+        public SpriteEditor()
+        {
+            InitializeComponent();
+        }
+    }
 }
