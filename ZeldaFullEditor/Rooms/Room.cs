@@ -362,7 +362,7 @@ namespace ZeldaFullEditor
 			{
 				ushort[] newTileData = { collisionMap[index] };
 				collisionValidity[index] = true;
-				collisionRectangles.Add(new CollisionRectangle(1, 1, (ushort) index, newTileData));
+				collision_rectangles.Add(new CollisionRectangle(1, 1, (ushort) index, newTileData));
 			}
 			else
 			{
@@ -370,7 +370,7 @@ namespace ZeldaFullEditor
 				rectangleHeight = FindRectangleHeight(index);
 
 				ushort[] newTileData = GenerateTileData(index, rectangleWidth, rectangleHeight, ref collisionValidity);
-				collisionRectangles.Add(new CollisionRectangle((byte) rectangleWidth, (byte) rectangleHeight, (ushort) index, newTileData));
+				collision_rectangles.Add(new CollisionRectangle((byte) rectangleWidth, (byte) rectangleHeight, (ushort) index, newTileData));
 			}
 		}
 
@@ -444,9 +444,9 @@ namespace ZeldaFullEditor
 		private void PrintRectangles()
 		{
 			Console.WriteLine("\nGenerate Rectangles:");
-			foreach (CollisionRectangle eachRect in collisionRectangles)
+			foreach (CollisionRectangle eachRect in collision_rectangles)
 			{
-				Console.WriteLine($"{(int) eachRect.IndexData} : {(int) eachRect.Width} x {(int) eachRect.Height}");
+				Console.WriteLine($"{(int) eachRect.index_data} : {(int) eachRect.width} x {(int) eachRect.height}");
 			}
 		}
 
@@ -456,7 +456,7 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public void ClearCollisionLayout()
 		{
-			collisionRectangles.Clear();
+			collision_rectangles.Clear();
 		}
 
         /// <summary>

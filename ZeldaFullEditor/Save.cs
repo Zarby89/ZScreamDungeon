@@ -145,7 +145,7 @@ namespace ZeldaFullEditor
             return false; // False = no error.
         }
 
-		public bool saveCustomCollision()
+		public bool SaveCustomCollision()
 		{
 			/*
             Format:
@@ -170,7 +170,7 @@ namespace ZeldaFullEditor
 
                 // Clear the room's rectangle list and then re-populate it.
                 room.ClearCollisionLayout();
-                room.loadCollisionLayout(false);
+                room.LoadCollisionLayout(false);
 
                 // If there is triangle in the room, write the room pointer, otherwise wrtie 000000.
                 if (room.collision_rectangles.Count() > 0)
@@ -236,7 +236,7 @@ namespace ZeldaFullEditor
             return false;
         }
 
-		public bool saveCustomCollisionV2()
+		public bool SaveCustomCollisionV2()
 		{
 			int room_pointer = Constants.customCollisionRoomPointers;
 			int data_pointer = Constants.customCollisionDataPosition;
@@ -244,12 +244,12 @@ namespace ZeldaFullEditor
 			// Use a List to batch the writes.
 			List<byte> dataToWrite = new List<byte>();
 
-			Parallel.ForEach(all_rooms, (room) =>
+            System.Threading.Tasks.Parallel.ForEach(this.AllRooms, (room) =>
 			{
 				room.ClearCollisionLayout();
 				room.LoadCollisionLayout(false);
 
-				if (room.collisionRectangles.Count > 0)
+				if (room.collision_rectangles.Count > 0)
 				{
 					dataToWrite.AddRange(BitConverter.GetBytes(Utils.PcToSnes(data_pointer)));
 				}
@@ -260,19 +260,19 @@ namespace ZeldaFullEditor
 
 				room_pointer += 3;
 
-				foreach (var rectangle in room.collisionRectangles)
+				foreach (var rectangle in room.collision_rectangles)
 				{
-					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.IndexData));
-					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.Width));
-					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.Height));
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.index_data));
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.width));
+					dataToWrite.AddRange(BitConverter.GetBytes(rectangle.height));
 
-					for (int j = 0; j < rectangle.Width * rectangle.Height; j++)
+					for (int j = 0; j < rectangle.width * rectangle.height; j++)
 					{
-						dataToWrite.AddRange(BitConverter.GetBytes(rectangle.TileData[j]));
+						dataToWrite.AddRange(BitConverter.GetBytes(rectangle.tile_data[j]));
 					}
 				}
 
-				if (room.collisionRectangles.Count > 0)
+				if (room.collision_rectangles.Count > 0)
 				{
 					dataToWrite.AddRange(new byte[] { 0x00, 0xFF, 0xFF });
 					data_pointer += 2;
@@ -285,7 +285,7 @@ namespace ZeldaFullEditor
 			}
 
 
-			string projectFilename = mainForm.projectFilename;
+			string projectFilename = MainForm.projectFilename;
 
 			AsarCLR.Asar.init();
 
