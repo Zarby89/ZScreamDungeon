@@ -81,7 +81,6 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
                                 tf = scene.compareTilePosT(tp, scene.ow.AllOverlays[mid].TileDataList.ToArray());
-
                             }
 
                             if (Control.ModifierKeys == Keys.Control)
@@ -128,10 +127,10 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (scene.mouse_down)
             {
-                int tileX = (e.X / 16);
-                int tileY = (e.Y / 16);
-                int superX = (tileX / 32);
-                int superY = (tileY / 32);
+                int tileX = e.X / 16;
+                int tileY = e.Y / 16;
+                int superX = tileX / 32;
+                int superY = tileY / 32;
                 int mapId = (superY * 8) + superX + scene.ow.WorldOffset;
                 int mid = scene.ow.AllMaps[scene.selectedMap].ParentID;
                 int superMX = (mid % 8) * 32;
@@ -141,7 +140,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (tileX == scene.globalmouseTileDownX && tileY == scene.globalmouseTileDownY)
                     {
-                        TilePos tp = new TilePos((byte)(tileX - (superMX)), (byte)(tileY - (superMY)), 0);
+                        TilePos tp = new TilePos((byte)(tileX - superMX), (byte)(tileY - superMY), 0);
                         TilePos tf = scene.compareTilePosT(tp, scene.ow.AllOverlays[mid].TileDataList.ToArray());
 
                         if (tf == null)
@@ -156,7 +155,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             scene.selectedTile = new ushort[1] { tf.tileId };
                             scene.selectedTileSizeX = 1;
-
                         }
                     }
                     else
@@ -194,9 +192,10 @@ namespace ZeldaFullEditor.OWSceneModes
                             }
                         }
                     }
+
                     if (scene.selectedTile.Length > 0)
                     {
-                        int scrollpos = ((scene.selectedTile[0] / 8) * 16);
+                        int scrollpos = (scene.selectedTile[0] / 8) * 16;
                         if (scrollpos >= scene.owForm.splitContainer1.Panel1.VerticalScroll.Maximum)
                         {
                             scene.owForm.splitContainer1.Panel1.VerticalScroll.Value = scene.owForm.splitContainer1.Panel1.VerticalScroll.Maximum;

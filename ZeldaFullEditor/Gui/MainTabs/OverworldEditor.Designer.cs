@@ -906,7 +906,6 @@
             this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
             this.areaBGColorPictureBox.TabIndex = 23;
             this.areaBGColorPictureBox.TabStop = false;
-            this.areaBGColorPictureBox.Visible = false;
             this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
             this.areaBGColorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AreaBGColorPicturebox_Paint);
             // 
@@ -918,7 +917,6 @@
             this.label7.Size = new System.Drawing.Size(48, 13);
             this.label7.TabIndex = 15;
             this.label7.Text = "BG color";
-            this.label7.Visible = false;
             // 
             // largemapCheckbox
             // 

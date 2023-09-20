@@ -191,28 +191,47 @@ namespace ZeldaFullEditor
                 OverworldMiniMapPalettes[i] = ReadPalette(romData, Constants.overworldMiniMapPalettes + (i * 256), 128);
             }
 
-            // TODO: Check for the paletts in the empty bank space that kan will allocate and read them in here.
-            // TODO: Magic colors.
-            // LW
-            int j = 0;
-            while (j < 64)
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
             {
-                OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
-            }
+                // TODO: Magic colors.
+                // LW
+                int j = 0;
+                while (j < 64)
+                {
+                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+                }
 
-            // DW
-            while (j < 128)
+                // DW
+                while (j < 128)
+                {
+                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+                }
+
+                // SW
+                while (j < Constants.NumberOfOWMaps)
+                {
+                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x30, 0x70, 0x30);
+                }
+
+                // Certain other areas start out with a BG color of black so that the subscreen overlay BGs look correct.
+
+                // LW Death Mountain
+                OverworldBackgroundPalette[0x03] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x05] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x07] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+
+                // DW Death Mountain
+                OverworldBackgroundPalette[0x43] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x45] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x47] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+
+                // The pyramid area
+                OverworldBackgroundPalette[0x5B] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+            }
+            else
             {
-                OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+                OverworldBackgroundPalette = ReadPalette(romData, Constants.customAreaSpecificBGPalette, 160);
             }
-
-            // SP
-            while (j < Constants.NumberOfOWMaps)
-            {
-                OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
-            }
-
-            OverworldBackgroundPalette = ReadPalette(romData, Constants.customAreaSpecificBGPalette, 160);
         }
 
         /// <summary>

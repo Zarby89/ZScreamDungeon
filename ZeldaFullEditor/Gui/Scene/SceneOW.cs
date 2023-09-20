@@ -147,10 +147,10 @@ namespace ZeldaFullEditor
 
         public void updateMapGfx()
         {
-            if (this.selectedMap + this.ow.WorldOffset <= 159)
+            if (this.selectedMap <= 159)
             {
                 this.owForm.propertiesChangedFromForm = true;
-                OverworldMap map = this.ow.AllMaps[this.selectedMap + this.ow.WorldOffset];
+                OverworldMap map = this.ow.AllMaps[this.selectedMap];
                 if (map.NeedRefresh)
                 {
                     map.BuildMap();
@@ -183,59 +183,59 @@ namespace ZeldaFullEditor
             int superY = tileY / 32;
             int mapId = (superY * 8) + superX;
 
-            if (mapId + this.ow.WorldOffset < this.ow.AllMaps.Length)
-            {
-                this.globalmouseTileDownX = tileX;
-                this.globalmouseTileDownY = tileY;
-
-                this.mainForm.anychange = true;
-                this.selectedMap = mapId;
-
-                this.selectedMapParent = this.ow.AllMaps[this.selectedMap + this.ow.WorldOffset].ParentID;
-
-                this.owForm.previewTextPicturebox.Visible = false;
-                this.updateMapGfx();
-                this.owForm.updateTiles();
-
-                switch (this.selectedMode)
-                {
-                    case ObjectMode.Tile:
-                        this.tilemode.OnMouseDown(e);
-                        break;
-                    case ObjectMode.Overlay:
-                        this.overlayMode.OnMouseDown(e);
-                        break;
-                    case ObjectMode.Exits:
-                        this.exitmode.onMouseDown(e);
-                        break;
-                    case ObjectMode.OWDoor:
-                        this.doorMode.OnMouseDown(e);
-                        break;
-                    case ObjectMode.Entrances:
-                        this.entranceMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Itemmode:
-                        this.itemMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Spritemode:
-                        this.spriteMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Flute:
-                        this.transportMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Gravestone:
-                        this.gravestoneMode.onMouseDown(e);
-                        break;
-                }
-
-                this.InvalidateHighEnd();
-
-                base.OnMouseDown(e);
-            }
-            else
+            if (mapId + this.ow.WorldOffset >= this.ow.AllMaps.Length)
             {
                 Console.WriteLine("Invalid area selected");
+                return;
             }
+
+            this.selectedMap = mapId + this.ow.WorldOffset;
+
+            this.globalmouseTileDownX = tileX;
+            this.globalmouseTileDownY = tileY;
+
+            this.mainForm.anychange = true;
+
+            this.selectedMapParent = this.ow.AllMaps[this.selectedMap].ParentID;
+
+            this.owForm.previewTextPicturebox.Visible = false;
+            this.updateMapGfx();
+            this.owForm.UpdateTiles();
+
+            switch (this.selectedMode)
+            {
+                case ObjectMode.Tile:
+                    this.tilemode.OnMouseDown(e);
+                    break;
+                case ObjectMode.Overlay:
+                    this.overlayMode.OnMouseDown(e);
+                    break;
+                case ObjectMode.Exits:
+                    this.exitmode.onMouseDown(e);
+                    break;
+                case ObjectMode.OWDoor:
+                    this.doorMode.OnMouseDown(e);
+                    break;
+                case ObjectMode.Entrances:
+                    this.entranceMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Itemmode:
+                    this.itemMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Spritemode:
+                    this.spriteMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Flute:
+                    this.transportMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Gravestone:
+                    this.gravestoneMode.onMouseDown(e);
+                    break;
+            }
+
+            this.InvalidateHighEnd();
+
+            base.OnMouseDown(e);
         }
 
         // TODO switch statements
@@ -869,7 +869,7 @@ namespace ZeldaFullEditor
                     }
 
                     int temp = this.selectedMap;
-                    temp = temp % 64;
+                    temp %= 64;
 
                     int x = this.ow.AllMaps[temp].ParentID % 8;
                     int y = this.ow.AllMaps[temp].ParentID / 8;

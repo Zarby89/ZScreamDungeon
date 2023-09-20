@@ -4129,10 +4129,12 @@ namespace ZeldaFullEditor
             // 
             // useAreaSpecificBGColorToolStripMenuItem
             // 
+            this.useAreaSpecificBGColorToolStripMenuItem.Checked = true;
             this.useAreaSpecificBGColorToolStripMenuItem.CheckOnClick = true;
+            this.useAreaSpecificBGColorToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.useAreaSpecificBGColorToolStripMenuItem.Name = "useAreaSpecificBGColorToolStripMenuItem";
             this.useAreaSpecificBGColorToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.useAreaSpecificBGColorToolStripMenuItem.Text = "Use Area Specific BG Color";
+            this.useAreaSpecificBGColorToolStripMenuItem.Text = "Show Area Specific BG Color";
             this.useAreaSpecificBGColorToolStripMenuItem.ToolTipText = "For this to work in game, the \"Area Specific BG Color\" setting in project setting" +
     "s needs to be enabled.";
             this.useAreaSpecificBGColorToolStripMenuItem.CheckedChanged += new System.EventHandler(this.UseAreaSpecificBGColorToolStripMenuItem_CheckedChanged);

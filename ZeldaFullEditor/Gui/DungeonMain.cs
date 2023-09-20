@@ -130,7 +130,9 @@ namespace ZeldaFullEditor
             true, false, false, false, false,
         };
 
-        // Constuctor
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DungeonMain"/> class.
+        /// </summary>
         public DungeonMain()
         {
             this.InitializeComponent();
@@ -245,7 +247,7 @@ namespace ZeldaFullEditor
         Stopwatch sw = new Stopwatch();
         */
 
-        // TODO : Move that to the save class
+        // TODO : Move that to the save class.
         public void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Save Functions
@@ -564,7 +566,7 @@ namespace ZeldaFullEditor
             fs.Close();
         }
 
-        // TODO: move more of the failure stuff here
+        // TODO: Move more of the failure stuff here.
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -798,6 +800,27 @@ namespace ZeldaFullEditor
             this.textEditor.InitializeOnOpen();
             this.screenEditor.Init();
             //InitDungeonViewer();
+
+            // TODO: We should probably move this to a better spot and include all the save settings but this will work for now.
+            if (ROM.DATA[Constants.customAreaSpecificBGEnabled] != 0x00)
+            {
+                this.saveSettingsArr[41] = true;
+            }
+
+            if (ROM.DATA[Constants.OverworldCustomMainPaletteEnabled] != 0x00)
+            {
+                this.saveSettingsArr[42] = true;
+            }
+
+            if (ROM.DATA[Constants.OverworldCustomAnimatedGFXEnabled] != 0x00)
+            {
+                this.saveSettingsArr[43] = true;
+            }
+
+            if (ROM.DATA[Constants.OverworldCustomSubscreenOverlayEnabled] != 0x00)
+            {
+                this.saveSettingsArr[44] = true;
+            }
 
             this.projectLoaded = true;
 

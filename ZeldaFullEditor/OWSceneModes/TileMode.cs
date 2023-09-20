@@ -227,8 +227,6 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-
-
         public void OnMouseUp(MouseEventArgs e)
         {
             if (scene.mouse_down)

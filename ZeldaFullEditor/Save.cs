@@ -260,6 +260,7 @@ namespace ZeldaFullEditor
         {
             Console.WriteLine("Saving Custom Overworld ASM");
 
+            // Set the enable/disable settings.
             if (enableBGColor)
             {
                 ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF, true, "Enabled area specific BG color");
@@ -304,6 +305,9 @@ namespace ZeldaFullEditor
             {
                 ROM.Write(Constants.OverworldCustomSubscreenOverlayEnabled, 0x00, true, "Disabled subscreen overlay");
             }
+
+            // Write a byte indicating that we have applied this ASM that way ZS knows to look for those values on restart.
+            ROM.Write(Constants.OverworldCustomASMHasBeenApplied, 0xFF, true, "Enabled applied ASM byte");
 
             // Write the main palette table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)

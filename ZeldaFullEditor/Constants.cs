@@ -245,11 +245,11 @@ namespace ZeldaFullEditor
         public static int overworldMessages = 0x3F51D;
 
         // TODO:
-        public static int overworldMusicBegining = 0x14303;
-        public static int overworldMusicZelda = 0x14303 + 0x40;
-        public static int overworldMusicMasterSword = 0x14303 + 0x80;
-        public static int overworldMusicAgahim = 0x14303 + 0xC0;
-        public static int overworldMusicDW = 0x14403;
+        public static int overworldMusicBegining = 0x14303; // 0x40
+        public static int overworldMusicZelda = 0x14303 + 0x40; // 0x40
+        public static int overworldMusicMasterSword = 0x14303 + 0x80; // 0x40
+        public static int overworldMusicAgahim = 0x14303 + 0xC0; // 0x40
+        public static int overworldMusicDW = 0x14403; // 0x60
 
         public static int overworldEntranceAllowedTilesLeft = 0xDB8C1;
         public static int overworldEntranceAllowedTilesRight = 0xDB917;
