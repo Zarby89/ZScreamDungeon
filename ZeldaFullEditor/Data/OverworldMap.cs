@@ -199,27 +199,31 @@ namespace ZeldaFullEditor
                 // Set the subscreen overlay values.
                 this.SubscreenOverlay = 0x00FF;
 
-                if (index == 0x00 || index == 0x40)
+                if (index == 0x00 || index == 0x40) // Add fog 2 to the lost woods and skull woods.
                 {
                     this.SubscreenOverlay = 0x009D;
                 }
-                else if (index == 0x03 || index == 0x05 || index == 0x07)
+                else if (index == 0x03 || index == 0x05 || index == 0x07) // Add the sky BG to LW death mountain.
                 {
                     this.SubscreenOverlay = 0x0095;
+                }
+                else if (index == 0x43 || index == 0x45 || index == 0x47) // Add the lava to DW death mountain.
+                {
+                    this.SubscreenOverlay = 0x009C;
                 }
                 else if (index == 0x5B) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
                 {
                     this.SubscreenOverlay = 0x0096;
                 }
-                else if (index == 0x70)
+                else if (index == 0x70) // Add the rain to misery mire.
                 {
                     this.SubscreenOverlay = 0x009F;
                 }
-                else if (index == 0x80)
+                else if (index == 0x80) // Add fog 1 to the master sword area.
                 {
                     this.SubscreenOverlay = 0x0097;
                 }
-                else if (index == 0x88)
+                else if (index == 0x88) // Add the triforce room curtains to the triforce room.
                 {
                     this.SubscreenOverlay = 0x0093;
                 }
