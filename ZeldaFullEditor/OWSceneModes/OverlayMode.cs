@@ -131,6 +131,8 @@ namespace ZeldaFullEditor.OWSceneModes
                 int tileY = e.Y / 16;
                 int superX = tileX / 32;
                 int superY = tileY / 32;
+
+                // TODO: Why are we calculating the mapId and then right after using what could be the previous one? is there a reason for this? Needs more investigation.
                 int mapId = (superY * 8) + superX + scene.ow.WorldOffset;
                 int mid = scene.ow.AllMaps[scene.selectedMap].ParentID;
                 int superMX = (mid % 8) * 32;

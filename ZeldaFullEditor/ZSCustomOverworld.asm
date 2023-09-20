@@ -326,9 +326,9 @@ org $288480 ; $140480
 pushpc
 
 ; Debug addresses
-; 00D8D5 ; W7 Animated tiles on warp
+; 00D8D5 ; W7 Animated tiles on warp.
 !Func00D8D5 = $01
-; 00DA63 ; W8 Enable/Disable subscreen
+; 00DA63 ; W8 Enable/Disable subscreen.
 !Func00DA63 = $01
 ; 00EEBC
 !Func00EEBC = $01
@@ -348,21 +348,23 @@ pushpc
 !Func028632 = $01
 ; 029AA6 ; E1
 !Func029AA6 = $01
-; 02AF58 ; T2 W2 Main subscreen loading function
+; 02AF58 ; T2 W2 Main subscreen loading function.
 !Func02AF58 = $01
-; 02B2D4 ; W1 turns on subscreen for pyramid
+; 02B2D4 ; W1 turns on subscreen for pyramid.
 !Func02B2D4 = $01
-; 02B3A1 ; W6 Activate subscreen durring pyramid warp
+; 02B3A1 ; W6 Activate subscreen durring pyramid warp.
 !Func02B3A1 = $01
 ; 02BC44
 !Func02BC44 = $01
-; 02C02D ; T4 pyramid bg scroll
+; 02C02D ; T4 pyramid bg scroll.
 !Func02C02D = $01
-; 02C692 ; W3 Main palette loading routine
+; 02C692 ; W3 Main palette loading routine.
 !Func02C692 = $01
+; 0124CD ; Rain animation code.
+!Func02A4CD = $01
 ; 02AADB ; T1 Mosaic
 !Func02AADB = $01
-; 02ABB8 ; T3 transition animated and main palette
+; 02ABB8 ; T3 transition animated and main palette.
 !Func02ABB8 = $01
 ; 0ABC5A
 !Func0ABC5A = $01
@@ -370,7 +372,7 @@ pushpc
 !Func0AB8F5 = $01
 ; 0BFEC6 ; W5 Load overlay, fixed color, and BG color.
 !Func0BFEC6 = $01
-; 0ED627 ; W4 Transparent color durring warp
+; 0ED627 ; W4 Transparent color durring warp.
 !Func0ED627 = $01
 ; 0ED8AE
 !Func0ED8AE = $01
@@ -540,17 +542,25 @@ if !Func0283EE = 1
 org $028027
     JSR PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
 
+warnpc $02802B
+
 ; Dungeon_LoadSongBankIfNeeded:
 org $029C0C
     JMP PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+
+warnpc $029C0F
 
 ; Mirror_LoadMusic:
 org $029D1E
     JSR PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
 
+warnpc $029D22
+
 ; GanonEmerges_LOadPyramidArea:
 org $029F82
     JSR PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+
+warnpc $029F86
 
 ; Changes the function that loads overworld properties when exiting a dungeon.
 ; Includes removing asm that plays music in certain areas and changing how animated tiles are loaded.
@@ -1169,6 +1179,8 @@ if !Func02C692 = 1
 org $02A07A ; $01207A
     JSR Overworld_LoadAreaPalettes
 
+warnpc $02A07D
+
 ; The main overworld palette loading routine un-hardcoded to load the custom main palette.
 org $02C692 ; $14692
 Overworld_LoadAreaPalettes:
@@ -1211,11 +1223,26 @@ endif
 
 ; ==============================================================================
 
+if !Func02A4CD = 1
+
+; Rain animation code. Just replaces a single check that checks for the
+; misery mire to instead check the current overlay to see if it's rain.
+org $02A4CD
+    LDA $8C : CMP.b #$9F
+
+warnpc $02A4D1
+
+endif
+
+; ==============================================================================
+
 if !Func02AADB = 1
 
 ; Main Mosaic Hook. Changes it to use a table instead of hardcoded to the woods areas.
 org $02AADB ; $012ADB
     JML MosaicAreaCheck
+
+warnpc $02AADF
 
 endif
 
@@ -1255,6 +1282,8 @@ if !Func02ABB8 = 1
 
 org $02ABB8 ; $012BB8
     JML CheckForChangeGraphicsTransitionLoad
+
+warnpc $02ABBC
 
 endif
 
@@ -1435,6 +1464,8 @@ if !Func0ABC5A = 1
 
 org $0ABC5A ; $053C5A
     JSL CheckForChangeGraphicsNormalLoad
+
+warnpc $0ABC5E
 
 endif
 
@@ -1675,6 +1706,8 @@ if !Func0ED627 = 1
 org $0ED627 ; $075627
     JML IntColorLoad2
     NOP
+
+warnpc $0ED62C
 
 endif
 
