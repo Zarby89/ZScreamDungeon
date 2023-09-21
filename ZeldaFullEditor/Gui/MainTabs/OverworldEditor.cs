@@ -415,18 +415,18 @@ namespace ZeldaFullEditor.Gui
         private void musicButton_Click(object sender, EventArgs e)
         {
             var owmf = new OWMusicForm();
-            owmf.mapIndex = (byte)this.scene.selectedMap;
-            owmf.musics[0] = this.scene.ow.AllMaps[this.scene.selectedMap].Music[0];
-            owmf.musics[1] = this.scene.ow.AllMaps[this.scene.selectedMap].Music[1];
-            owmf.musics[2] = this.scene.ow.AllMaps[this.scene.selectedMap].Music[2];
-            owmf.musics[3] = this.scene.ow.AllMaps[this.scene.selectedMap].Music[3];
+            owmf.mapIndex = (byte)this.scene.selectedMapParent;
+            owmf.musics[0] = this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[0];
+            owmf.musics[1] = this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[1];
+            owmf.musics[2] = this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[2];
+            owmf.musics[3] = this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[3];
 
             if (owmf.ShowDialog() == DialogResult.OK)
             {
-                this.scene.ow.AllMaps[this.scene.selectedMap].Music[0] = owmf.musics[0];
-                this.scene.ow.AllMaps[this.scene.selectedMap].Music[1] = owmf.musics[1];
-                this.scene.ow.AllMaps[this.scene.selectedMap].Music[2] = owmf.musics[2];
-                this.scene.ow.AllMaps[this.scene.selectedMap].Music[3] = owmf.musics[3];
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[0] = owmf.musics[0];
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[1] = owmf.musics[1];
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[2] = owmf.musics[2];
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[3] = owmf.musics[3];
             }
         }
 

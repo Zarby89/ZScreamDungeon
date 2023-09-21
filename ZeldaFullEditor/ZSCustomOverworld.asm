@@ -360,7 +360,7 @@ pushpc
 !Func02C02D = $01
 ; 02C692 ; W3 Main palette loading routine.
 !Func02C692 = $01
-; 0124CD ; Rain animation code.
+; 02A4CD ; Rain animation code.
 !Func02A4CD = $01
 ; 02AADB ; T1 Mosaic
 !Func02AADB = $01
@@ -517,8 +517,6 @@ org $00FF7C ; $007F7C
         ; Check if we are warping to an area with the pyramid BG.
         LDA.b $8A : ASL : TAX
         LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BEQ .dont_align_bgs
-            REP #$20 ; Set A in 16bit mode
-            
             LDA.b $E2 : STA.b $E0 : STA.w $0120 : STA.w $011E
             LDA.b $E8 : STA.b $E6 : STA.w $0122 : STA.w $0124
         
@@ -1147,7 +1145,7 @@ org $02C02D ; $01402D
     PLA
     
     ; TODO: figure out this garbage, in vanilla its a BEQ but BEQ doesn't work here for some reason.
-    CPY.b #$96 : BNE .dontMoveBg1  
+    CPY.b #$96 : BEQ .dontMoveBg1  
         STA.b $E0, X
     
     .dontMoveBg1
@@ -1227,10 +1225,63 @@ if !Func02A4CD = 1
 
 ; Rain animation code. Just replaces a single check that checks for the
 ; misery mire to instead check the current overlay to see if it's rain.
-org $02A4CD
-    LDA $8C : CMP.b #$9F
+org $02A4CD ; $0124CD
+RainAnimation:
+{
+    LDA $8C : CMP.b #$9F : BEQ .evilSwamp
+        ; Check the progress indicator
+        LDA $7EF3C5 : CMP.b #$02 : BCS .skipMovement
+            .evilSwamp
 
-warnpc $02A4D1
+            ; If misery mire has been opened already, we're done.
+            ;LDA $7EF2F0 : AND.b #$20 : BNE .skipMovement
+                ; Check the frame counter.
+                ; On the third frame do a flash of lightning.
+                LDA $1A
+
+                CMP.b #$03 : BEQ .lightning ; On the 0x03rd frame, cue the lightning.
+                    CMP.b #$05 : BEQ .normalLight ; On the 0x05th frame, normal light level.
+                        CMP.b #$24 : BEQ .thunder ; On the 0x24th frame, cue the thunder.
+                            CMP.b #$2C : BEQ .normalLight ; On the 0x2Cth frame, normal light level.
+                                CMP.b #$58 : BEQ .lightning ; On the 0x58th frame, cue the lightning.
+                                    CMP.b #$5A : BNE .moveOverlay ; On the 0x5Ath frame, normal light level.
+
+                .normalLight
+
+                ; Keep the screen semi-dark.
+                LDA.b #$72
+
+                BRA .setBrightness
+
+                .thunder
+
+                ; Play the thunder sound when outdoors.
+                LDX.b #$36 : STX $012E
+
+                .lightning
+
+                LDA.b #$32 ; Make the screen flash with lightning.
+
+                .setBrightness
+
+                STA $9A
+
+                .moveOverlay
+
+                ; Overlay is only moved every 4th frame.
+                LDA $1A : AND.b #$03 : BNE .skipMovement
+                    LDA $0494 : INC A : AND.b #$03 : STA $0494 : TAX
+
+                    LDA $E1 : CLC : ADC.l $02A46D, X : STA $E1
+                    LDA $E7 : CLC : ADC.l $02A471, X : STA $E7
+
+    .skipMovement
+
+    RTL
+}
+
+
+;warnpc $02A4D1
 
 endif
 

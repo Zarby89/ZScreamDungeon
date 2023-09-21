@@ -1279,7 +1279,7 @@ namespace ZeldaFullEditor
         {
             ROM.StartBlockLogWriting("Overworld Musics IDs", Constants.overworldMessages);
 
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 ROM.Write(Constants.overworldMusicBegining + i, scene.ow.AllMaps[i].Music[0], true, "OW Musics ID for map " + i.ToString("D3"));
                 ROM.Write(Constants.overworldMusicZelda + i, scene.ow.AllMaps[i].Music[1], true, "OW Musics ID for map " + i.ToString("D3"));
@@ -1287,9 +1287,9 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.overworldMusicAgahim + i, scene.ow.AllMaps[i].Music[3], true, "OW Musics ID for map " + i.ToString("D3"));
             }
 
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
-                ROM.Write(Constants.overworldMusicDW + i, scene.ow.AllMaps[i + 64].Music[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
+                ROM.Write(Constants.overworldMusicDW + i, scene.ow.AllMaps[i + 0x40].Music[0], true, "OW Musics ID for map " + (i + 64).ToString("D3"));
             }
 
             ROM.EndBlockLogWriting();
