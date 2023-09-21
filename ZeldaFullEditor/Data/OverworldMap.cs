@@ -266,6 +266,15 @@ namespace ZeldaFullEditor
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
 
                 this.Music[0] = ROM.DATA[Constants.overworldMusicDW + (this.ParentID - 64)];
+
+                // Make the mire have rain sfx by default.
+                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0)
+                {
+                    if (index == 0x70)
+                    {
+                        this.Music[0] = 0x19;
+                    }
+                }
             }
             else
             {
