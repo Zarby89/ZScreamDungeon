@@ -821,9 +821,10 @@ endif
 if !Func02AF58 = 1
 
 ; TODO: If something is broken, its probably here, this function is scuffed.
-; Main subscreen overlay loading function. Changed so that they will load from a table.
-; This does not change the event overlays like the lost woods changing to the tree canopy or the misery mire rain.
-; This also does not change the overlay for under the bridge because it shares an area with the master sword.
+; Main subscreen overlay loading function. Changed so that they will load
+; from a table. This does not change the event overlays like the lost woods 
+; changing to the tree canopy, the master sword area or the misery mire rain. This also does not change
+; the overlay for under the bridge because it shares an area with the master sword.
 org $02AF58 ; $012F58
 {
     ; $0182 is the exit room number used for getting to Zora's Domain.
@@ -843,7 +844,7 @@ org $02AF58 ; $012F58
         ; $0180 is the exit room number used for getting into the mastersword area.
         LDA.b $A0 : CMP.w #$0180 : BNE .notMasterSwordArea
             ; If the Master sword is retrieved, don't do the mist overlay.
-            LDA.l $7EF300, X : AND.w #$0040 : BNE .noSubscreenOverlay ; TODO: Write a patch to change what overlay is loaded here?
+            LDA.l $7EF300 : AND.w #$0040 : BNE .noSubscreenOverlay ; TODO: Write a patch to change what overlay is loaded here?
                 .loadOverlayShortcut
 
                 LDA.b $8A : ASL : TAX
@@ -1279,9 +1280,7 @@ RainAnimation:
 
     RTL
 }
-
-
-;warnpc $02A4D1
+warnpc $02A52D
 
 endif
 
@@ -1346,48 +1345,52 @@ CheckForChangeGraphicsTransitionLoad:
 
     ; Are we currently in a mosaic?
     LDA $11 : CMP.b #$0F : BEQ .mosaic
-        ; Just a normal transition, Not a mosaic.
-        LDA.w Pool_EnableAnimated : BEQ .dontUpdateAnimated1
-            ; Check to see if we need to update the animated tiles by checking what was previously loaded.
-            LDX.b $8A
-            LDA.w Pool_AnimatedTable, X : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated1
-                STA.w AnimatedTileGFXSet : DEC : TAY
+        ; Are we entering a special area?
+        LDA $11 : CMP.b #$1A : BEQ .mosaic
+            ; Are we leaving a special area?
+            LDA $11 : CMP.b #$26 : BEQ .mosaic
+                ; Just a normal transition, Not a mosaic.
+                LDA.w Pool_EnableAnimated : BEQ .dontUpdateAnimated1
+                    ; Check to see if we need to update the animated tiles by checking what was previously loaded.
+                    LDX.b $8A
+                    LDA.w Pool_AnimatedTable, X : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated1
+                        STA.w AnimatedTileGFXSet : DEC : TAY
 
-                JSL DecompOwAnimatedTiles ; This forces the game to update the animated tiles when going from one area to another.
+                        JSL DecompOwAnimatedTiles ; This forces the game to update the animated tiles when going from one area to another.
 
-        .dontUpdateAnimated1
+                .dontUpdateAnimated1
 
-        LDA.w Pool_EnableAnimated : BEQ .dontUpdateMain1
-            ; Check to see if we need to update the main palette by checking
-            ; what was previously loaded.
-            LDX.b $8A
-            LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
-                STA.w $0AB3
+                LDA.w Pool_EnableAnimated : BEQ .dontUpdateMain1
+                    ; Check to see if we need to update the main palette by checking
+                    ; what was previously loaded.
+                    LDX.b $8A
+                    LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
+                        STA.w $0AB3
 
-                ; Run the modified routine that loads the buffer and normal color ram.
-                JSL Palette_OverworldBgMain2
+                        ; Run the modified routine that loads the buffer and normal color ram.
+                        JSL Palette_OverworldBgMain2
 
-        .dontUpdateMain1
+                .dontUpdateMain1
 
-        LDA.w Pool_EnableBGColor : BEQ .dontUpdateBGColor1
-            LDA $8A : ASL : TAX ; Get area code and times it by 2
-            
-            REP #$20 ; Set A in 16bit mode
+                LDA.w Pool_EnableBGColor : BEQ .dontUpdateBGColor1
+                    REP #$30 ; Set A, X, and Y in 16bit mode.
 
-            LDA Pool_BGColorTable, X ; pc 140000 is where ZS saves the array of palettes
-            ;STA $7EC300 : STA $7EC500
+                    LDA $8A : ASL : TAX ; Get area code and times it by 2
 
-            SEP #$20 ; Set A in 8bit mode
+                    LDA Pool_BGColorTable, X ; pc 140000 is where ZS saves the array of palettes
+                    STA $7EC300 : STA $7EC500
 
-            INC $15 ; trigger the buffer into the CGRAM
-        
-        .dontUpdateBGColor1
+                    SEP #$30 ; Set A, X, and Y in 8bit mode.
 
-        LDA.b #$09 ; Replaced code.
+                    INC $15 ; trigger the buffer into the CGRAM.
+                
+                .dontUpdateBGColor1
 
-        PLB
-            
-        JML Overworld_FinishTransGfx_firstHalf
+                LDA.b #$09 ; Replaced code.
+
+                PLB
+                    
+                JML Overworld_FinishTransGfx_firstHalf
 
     .mosaic
 
@@ -1411,14 +1414,14 @@ CheckForChangeGraphicsTransitionLoad:
 
     .dontUpdateMain2
 
+    REP #$30 ; Set A, X, and Y in 16bit mode.
+
     LDA $8A : ASL : TAX ; Get area code and times it by 2
-        
-    REP #$20 ; Set A in 16bit mode
 
     LDA Pool_BGColorTable, X ; pc 140000 is where ZS saves the array of palettes
     STA $7EC300 ;set transparent color ; only set the buffer so it fades in right during mosaic transition
 
-    SEP #$20 ; Set A in 8bit mode
+    SEP #$30 ; Set A, X, and Y in 8bit mode.
 
     INC $15 ; trigger the buffer into the CGRAM
 

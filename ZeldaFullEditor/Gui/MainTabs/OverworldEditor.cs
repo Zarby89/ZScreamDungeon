@@ -41,7 +41,7 @@ namespace ZeldaFullEditor.Gui
 
         private readonly ColorDialog cd = new ColorDialog();
 
-        public static bool UseAreaSpecificBgColor = false;
+        public static bool UseAreaSpecificBgColor = true;
         public static bool scratchPadGrid = false;
 
         public OverworldEditor()
