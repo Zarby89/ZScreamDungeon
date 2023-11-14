@@ -40,5 +40,10 @@ namespace ZeldaFullEditor
 
         public static List<SpriteProperty> SpriteProperties = new List<SpriteProperty>();
 
+        public static byte[] SpriteDamageTaken = new byte[0x1000];
+
+        public static byte[] globalDamages = new byte[0x80];
+
+
     }
 }

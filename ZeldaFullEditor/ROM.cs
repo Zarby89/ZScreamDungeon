@@ -201,6 +201,18 @@ namespace ZeldaFullEditor
             return DATA[addr];
         }
 
+        public static byte[] ReadBlock(int addr, int length)
+        {
+            byte[] arr = new byte[length];
+            for(int i = 0; i< length; i++)
+            {
+                arr[i] = DATA[addr + i];
+            }
+            
+            return arr;
+        }
+
+
         public static short ReadReverseShort(int addr)
         {
             return (short)((DATA[addr] << 8) + DATA[addr + 1]);

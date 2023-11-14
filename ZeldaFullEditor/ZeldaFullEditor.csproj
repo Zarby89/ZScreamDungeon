@@ -260,6 +260,12 @@
     <Compile Include="Gui\AddDirectoryForm.Designer.cs">
       <DependentUpon>AddDirectoryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\DamageClassControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\DamageClassControl.Designer.cs">
+      <DependentUpon>DamageClassControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\DataExtractor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -533,6 +539,11 @@
       <DependentUpon>RoomMover.cs</DependentUpon>
     </Compile>
     <Compile Include="NetZS.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
@@ -639,6 +650,9 @@
     <Compile Include="ZSSerializer.cs" />
     <EmbeddedResource Include="Gui\AddDirectoryForm.resx">
       <DependentUpon>AddDirectoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\DamageClassControl.resx">
+      <DependentUpon>DamageClassControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\DataExtractor.resx">
       <DependentUpon>DataExtractor.cs</DependentUpon>
@@ -788,14 +802,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Gui\RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
@@ -858,6 +867,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
+    <Content Include="Resources\damageclass.png" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

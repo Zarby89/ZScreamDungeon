@@ -4859,6 +4859,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
+
             base.Draw();
 
             int sizex = ((Size >> 2) & 0x03);

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.Gui.MainTabs
 {
@@ -11,11 +13,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
             InitializeComponent();
 
         }
-
+        
         bool fromUser = false;
 
         private void SpriteEditor_Load(object sender, EventArgs e)
         {
+            
             for (int i = 0; i < Sprites_Names.name.Length; i++)
             {
                 spriteListbox.Items.Add(Sprites_Names.name[i]);
@@ -64,7 +67,24 @@ namespace ZeldaFullEditor.Gui.MainTabs
             checkforwaterCheckbox.Checked = selectedProperty.Checkforwater;
             nopermadeathindungeonsCheckbox.Checked = selectedProperty.Nopermadeathindungeons;
 
-        fromUser = true;
+
+            damage00Hexbox.HexValue = selectedProperty.DamagesTaken[0];
+            damage01Hexbox.HexValue = selectedProperty.DamagesTaken[1];
+            damage02Hexbox.HexValue = selectedProperty.DamagesTaken[2];
+            damage03Hexbox.HexValue = selectedProperty.DamagesTaken[3];
+            damage04Hexbox.HexValue = selectedProperty.DamagesTaken[4];
+            damage05Hexbox.HexValue = selectedProperty.DamagesTaken[5];
+            damage06Hexbox.HexValue = selectedProperty.DamagesTaken[6];
+            damage07Hexbox.HexValue = selectedProperty.DamagesTaken[7];
+            damage08Hexbox.HexValue = selectedProperty.DamagesTaken[8];
+            damage09Hexbox.HexValue = selectedProperty.DamagesTaken[9];
+            damage0aHexbox.HexValue = selectedProperty.DamagesTaken[10];
+            damage0bHexbox.HexValue = selectedProperty.DamagesTaken[11];
+            damage0cHexbox.HexValue = selectedProperty.DamagesTaken[12];
+            damage0dHexbox.HexValue = selectedProperty.DamagesTaken[13];
+            damage0eHexbox.HexValue = selectedProperty.DamagesTaken[14];
+            damage0fHexbox.HexValue = selectedProperty.DamagesTaken[15];
+            fromUser = true;
         }
 
         private void properties_CheckedChanged(object sender, EventArgs e)
@@ -119,6 +139,23 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 selectedProperty.Palette = (byte)paletteHexbox.HexValue;
                 selectedProperty.Prizepack = (byte)prizepackHexbox.HexValue;
                 selectedProperty.Health = (byte)healthHexbox.HexValue;
+
+                selectedProperty.DamagesTaken[0] = (byte)damage00Hexbox.HexValue;
+                selectedProperty.DamagesTaken[1] = (byte)damage01Hexbox.HexValue;
+                selectedProperty.DamagesTaken[2] = (byte)damage02Hexbox.HexValue;
+                selectedProperty.DamagesTaken[3] = (byte)damage03Hexbox.HexValue;
+                selectedProperty.DamagesTaken[4] = (byte)damage04Hexbox.HexValue;
+                selectedProperty.DamagesTaken[5] = (byte)damage05Hexbox.HexValue;
+                selectedProperty.DamagesTaken[6] = (byte)damage06Hexbox.HexValue;
+                selectedProperty.DamagesTaken[7] = (byte)damage07Hexbox.HexValue;
+                selectedProperty.DamagesTaken[8] = (byte)damage08Hexbox.HexValue;
+                selectedProperty.DamagesTaken[9] = (byte)damage09Hexbox.HexValue;
+                selectedProperty.DamagesTaken[10] = (byte)damage0aHexbox.HexValue;
+                selectedProperty.DamagesTaken[11] = (byte)damage0bHexbox.HexValue;
+                selectedProperty.DamagesTaken[12] = (byte)damage0cHexbox.HexValue;
+                selectedProperty.DamagesTaken[13] = (byte)damage0dHexbox.HexValue;
+                selectedProperty.DamagesTaken[14] = (byte)damage0eHexbox.HexValue;
+                selectedProperty.DamagesTaken[15] = (byte)damage0fHexbox.HexValue;
             }
         }
 
@@ -128,6 +165,16 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
             }
+        }
+
+        private void damageClassControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void damageClassControl1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

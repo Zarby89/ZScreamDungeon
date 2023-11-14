@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Security.Policy;
+using System.ServiceModel.Channels;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using Lidgren.Network;
@@ -755,6 +756,8 @@ namespace ZeldaFullEditor
                 this.selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
             }
 
+
+
             /*
             string s = "";
 
@@ -813,12 +816,18 @@ namespace ZeldaFullEditor
             this.textEditor.InitializeOnOpen();
             this.screenEditor.Init();
             //InitDungeonViewer();
+            this.mapPicturebox.Refresh();
+
+            int compsize = 0;
+            DungeonsData.SpriteDamageTaken = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.ReadBlock(Constants.Sprite_DamageTaken, 0x1000), 0, 0x1000, ref compsize);
+
 
             for (int i = 0; i < Sprites_Names.name.Length; i++)
             {
                 DungeonsData.SpriteProperties.Add(new SpriteProperty((byte)i));
             }
 
+            DungeonsData.globalDamages = ROM.ReadBlock(Constants.DamageClass, 0x80);
 
             this.projectLoaded = true;
 

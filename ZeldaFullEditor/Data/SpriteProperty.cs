@@ -50,6 +50,10 @@ namespace ZeldaFullEditor.Data
         internal bool Immunetoarrowrumbleable { get; set; } = false;
         internal bool Nopermadeathindungeons { get; set; } = false;
 
+        internal byte[] DamagesTaken = new byte[16];
+
+        
+
         public SpriteProperty(byte id)
         {
             byte addr0DB080 = ROM.ReadByte(Constants.Sprite_0DB080 + id);
@@ -104,6 +108,16 @@ namespace ZeldaFullEditor.Data
             Immunetoswordhammer = addr0DB725.BitIsOn(0x04);
             Immunetoarrowrumbleable = addr0DB725.BitIsOn(0x02);
             Nopermadeathindungeons = addr0DB725.BitIsOn(0x01);
+
+            if (id <= 0xD7)
+            {
+                for (int i = 0; i < 8; i += 1)
+                {
+                    DamagesTaken[(i * 2)] = (byte)((DungeonsData.SpriteDamageTaken[(i) + (id * 8)] & 0x0F));
+                    DamagesTaken[(i * 2) + 1] = (byte)((DungeonsData.SpriteDamageTaken[(i) + (id * 8)] & 0xF0) >> 4);
+                }
+            }
+
         }
 
 

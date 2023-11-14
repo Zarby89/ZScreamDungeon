@@ -136,6 +136,11 @@ namespace ZeldaFullEditor
 
         public virtual void Draw()
         {
+            if (room == null)
+            {
+                room = DungeonsData.AllRooms[0];
+                
+            }
             collisionPoint.Clear();
         }
 

@@ -20,6 +20,8 @@ namespace ZeldaFullEditor
         public static IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
         public static Bitmap allgfxBitmap;
 
+        public static StringBuilder DEBUGSB = new StringBuilder();
+
         /*
         public static IntPtr allgfx16EDITPtr = Marshal.AllocHGlobal((128 * 7136));
         public static Bitmap allgfxEDITBitmap;
