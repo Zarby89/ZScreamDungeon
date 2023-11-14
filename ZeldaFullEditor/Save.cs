@@ -538,28 +538,28 @@ namespace ZeldaFullEditor
                 else if (section4Index + roomBytes.Length <= 0x1E7FFF) // 0x1EB90 to 0x1FFFF.
                 {
                     // Write the room.
-                    saveObjectBytes(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
+                    this.SaveObjectBytes(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
                     section4Index += roomBytes.Length;
                     continue;
                 }
                 else if (section5Index + roomBytes.Length <= 0x1EFFFF) // 0x1EB90 to 0x1FFFF.
                 {
                     // Write the room.
-                    saveObjectBytes(this.AllRooms[i].index, section5Index, roomBytes, doorPos);
+                    this.SaveObjectBytes(this.AllRooms[i].index, section5Index, roomBytes, doorPos);
                     section5Index += roomBytes.Length;
                     continue;
                 }
                 else if (section6Index + roomBytes.Length <= 0x1F7FFF) // 0x1EB90 to 0x1FFFF.
                 {
                     // Write the room.
-                    saveObjectBytes(this.AllRooms[i].index, section6Index, roomBytes, doorPos);
+                    this.SaveObjectBytes(this.AllRooms[i].index, section6Index, roomBytes, doorPos);
                     section6Index += roomBytes.Length;
                     continue;
                 }
                 else if (section7Index + roomBytes.Length <= 0x1FFFFF) // 0x1EB90 to 0x1FFFF.
                 {
                     // Write the room.
-                    saveObjectBytes(this.AllRooms[i].index, section7Index, roomBytes, doorPos);
+                    this.SaveObjectBytes(this.AllRooms[i].index, section7Index, roomBytes, doorPos);
                     section7Index += roomBytes.Length;
                     continue;
                 }
@@ -887,7 +887,7 @@ namespace ZeldaFullEditor
 
                         ROM.Write(
                             dataPos,
-                            new byte[3] { (byte)(mapPos & 0xFF), (byte)(mapPos >> 8), (byte)(item.ID) },
+                            new byte[3] { (byte)(mapPos & 0xFF), (byte)(mapPos >> 8), (byte)item.ID },
                             WriteType.PotItemData
                         );
 
@@ -908,7 +908,7 @@ namespace ZeldaFullEditor
                 }
 
                 int snesaddr = Utils.PcToSnes(itemPointers[i]);
-                ROM.WriteShort(Constants.overworldItemsPointers + (i * 2), (snesaddr), true, "Item Pointer for room" + i.ToString("D3"));
+                ROM.WriteShort(Constants.overworldItemsPointers + (i * 2), snesaddr, true, "Item Pointer for room" + i.ToString("D3"));
             }
 
             if (dataPos > Constants.overworldItemsEndData)
@@ -1090,25 +1090,25 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0x11; i++)
             {
-                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].mapId), true, "MapId");
+                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].mapId, true, "MapId");
 
-                ROM.WriteShort(Constants.OWExitXScrollWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].xScroll), true, "XScroll");
+                ROM.WriteShort(Constants.OWExitXScrollWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].xScroll, true, "XScroll");
 
-                ROM.WriteShort(Constants.OWExitYScrollWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].yScroll), true, "YScroll");
+                ROM.WriteShort(Constants.OWExitYScrollWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].yScroll, true, "YScroll");
 
-                ROM.WriteShort(Constants.OWExitXCameraWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].cameraX), true, "XCamera");
+                ROM.WriteShort(Constants.OWExitXCameraWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].cameraX, true, "XCamera");
 
-                ROM.WriteShort(Constants.OWExitYCameraWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].cameraY), true, "YCamera");
+                ROM.WriteShort(Constants.OWExitYCameraWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].cameraY, true, "YCamera");
 
-                ROM.WriteShort(Constants.OWExitVramWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].vramLocation), true, "VRAM");
+                ROM.WriteShort(Constants.OWExitVramWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].vramLocation, true, "VRAM");
 
-                ROM.WriteShort(Constants.OWExitXPlayerWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].playerX), true, "XPlayer");
+                ROM.WriteShort(Constants.OWExitXPlayerWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].playerX, true, "XPlayer");
 
-                ROM.WriteShort(Constants.OWExitYPlayerWhirlpool + (i * 2), (scene.ow.AllWhirlpools[i].playerY), true, "YPlayer");
+                ROM.WriteShort(Constants.OWExitYPlayerWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].playerY, true, "YPlayer");
 
                 if (i > 8)
                 {
-                    ROM.WriteShort(Constants.OWWhirlpoolPosition + ((i - 9) * 2), (scene.ow.AllWhirlpools[i].whirlpoolPos), true, "Pos");
+                    ROM.WriteShort(Constants.OWWhirlpoolPosition + ((i - 9) * 2), scene.ow.AllWhirlpools[i].whirlpoolPos, true, "Pos");
                 }
             }
 
@@ -1136,7 +1136,7 @@ namespace ZeldaFullEditor
             {
                 ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX);
                 ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].Palette, WriteType.Palette);
+                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
                 ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
             }
 
@@ -2339,28 +2339,28 @@ namespace ZeldaFullEditor
                     else if (section4Index + roomBytes.Length <= 0x1E7FFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
                         section4Index += roomBytes.Length;
                         continue;
                     }
                     else if (section5Index + roomBytes.Length <= 0x1EFFFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(this.AllRooms[i].index, section5Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(this.AllRooms[i].index, section5Index, roomBytes, doorPos);
                         section5Index += roomBytes.Length;
                         continue;
                     }
                     else if (section6Index + roomBytes.Length <= 0x1F7FFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(this.AllRooms[i].index, section6Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(this.AllRooms[i].index, section6Index, roomBytes, doorPos);
                         section6Index += roomBytes.Length;
                         continue;
                     }
                     else if (section7Index + roomBytes.Length <= 0x1FFFFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(this.AllRooms[i].index, section7Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(this.AllRooms[i].index, section7Index, roomBytes, doorPos);
                         section7Index += roomBytes.Length;
                         continue;
                     }
@@ -2420,28 +2420,28 @@ namespace ZeldaFullEditor
                     else if (section4Index + roomBytes.Length <= 0x1E7FFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section4Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section4Index, roomBytes, doorPos);
                         section4Index += roomBytes.Length;
                         continue;
                     }
                     else if (section5Index + roomBytes.Length <= 0x1EFFFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section5Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section5Index, roomBytes, doorPos);
                         section5Index += roomBytes.Length;
                         continue;
                     }
                     else if (section6Index + roomBytes.Length <= 0x1F7FFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section6Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section6Index, roomBytes, doorPos);
                         section6Index += roomBytes.Length;
                         continue;
                     }
                     else if (section7Index + roomBytes.Length <= 0x1FFFFF) // 0x1EB90 to 0x1FFFF.
                     {
                         // Write the room.
-                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section7Index, roomBytes, doorPos);
+                        this.SaveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section7Index, roomBytes, doorPos);
                         section7Index += roomBytes.Length;
                         continue;
                     }
