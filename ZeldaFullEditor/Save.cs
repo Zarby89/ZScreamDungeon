@@ -476,22 +476,14 @@ namespace ZeldaFullEditor
 
         public bool SaveAllObjects()
         {
-            var section1Index = 0x50008; // 0x50000 to 0x5374F  // 53730.
+            var section1Index = 0x50008; // 0x50000 to 0x5374F  // 53730
             var section2Index = 0xF878A; // 0xF878A to 0xFFFFF.
             var section3Index = 0x1EB90; // 0x1EB90 to 0x1FFFF.
-            var section4Index = 0x1112C0; // If vanilla space is used use expanded region.
-            int section4Start = 0x1112C0;
-            bool usedSection4 = false;
-            /*
-            while (ROM.DATA[section4Index] != 0)
-            {
-                 //section4Index += 0x010000;
-            }
-            */
+            var section4Index = 0x1E0000;
+            var section5Index = 0x1E8000;
+            var section6Index = 0x1F0000;
+            var section7Index = 0x1F8000;
 
-            // Check if room is already using that space first before skipping position!!
-            section4Start = section4Index;
-            // Reorder room from bigger to lower.
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
@@ -543,28 +535,38 @@ namespace ZeldaFullEditor
                     section3Index += roomBytes.Length;
                     continue;
                 }
+                else if (section4Index + roomBytes.Length <= 0x1E7FFF) // 0x1EB90 to 0x1FFFF.
+                {
+                    // Write the room.
+                    saveObjectBytes(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
+                    section4Index += roomBytes.Length;
+                    continue;
+                }
+                else if (section5Index + roomBytes.Length <= 0x1EFFFF) // 0x1EB90 to 0x1FFFF.
+                {
+                    // Write the room.
+                    saveObjectBytes(this.AllRooms[i].index, section5Index, roomBytes, doorPos);
+                    section5Index += roomBytes.Length;
+                    continue;
+                }
+                else if (section6Index + roomBytes.Length <= 0x1F7FFF) // 0x1EB90 to 0x1FFFF.
+                {
+                    // Write the room.
+                    saveObjectBytes(this.AllRooms[i].index, section6Index, roomBytes, doorPos);
+                    section6Index += roomBytes.Length;
+                    continue;
+                }
+                else if (section7Index + roomBytes.Length <= 0x1FFFFF) // 0x1EB90 to 0x1FFFF.
+                {
+                    // Write the room.
+                    saveObjectBytes(this.AllRooms[i].index, section7Index, roomBytes, doorPos);
+                    section7Index += roomBytes.Length;
+                    continue;
+                }
                 else
                 {
-                    // Ran out of space.
-                    // Write the room.
-                    //saveObjectBytes(i, section4Index, roomBytes);
-                    //section4Index += roomBytes.Length;
-
-                    this.SaveObjectBytes(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
-                    section4Index += roomBytes.Length;
-                    usedSection4 = true;
-                    continue;
-
-                    // Move to EXPANDED region.
-                    //Console.WriteLine("Room " + i + " no more space jump to 0x121210");
-                    //currentPos = 0x121210;
-                    //MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x121210");
+                    return true; // False = no error.
                 }
-            }
-
-            if (usedSection4)
-            {
-                Console.WriteLine("Used section4 for tiles index at location : " + section4Start.ToString("X6") + "Length of :" + (section4Index - section4Start).ToString("X6"));
             }
 
             int objectPointer = Utils.SnesToPc(ROM.ReadLong(Constants.room_object_pointer));
@@ -1134,12 +1136,8 @@ namespace ZeldaFullEditor
             {
                 ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX);
                 ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].SpriteGFX[1], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].SpriteGFX[2], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
+                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].Palette, WriteType.Palette);
                 ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].SpritePalette[1], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].SpritePalette[2], WriteType.SpritePalette);
             }
 
             ROM.EndBlockLogWriting();
@@ -2271,8 +2269,11 @@ namespace ZeldaFullEditor
             var section1Index = 0x50008; // 0x50000 to 0x5374F  // 53730
             var section2Index = 0xF878A; // 0xF878A to 0xFFFFF.
             var section3Index = 0x1EB90; // 0x1EB90 to 0x1FFFF.
-            var section4Index = 0x1112C0; // If vanilla space is used use expanded region.
-            int section4Start = 0x1112C0;
+            var section4Index = 0x1E0000;
+            var section5Index = 0x1E8000;
+            var section6Index = 0x1F0000;
+            var section7Index = 0x1F8000;
+
             bool usedSection4 = false;
             /*
             while (ROM.DATA[section4Index] != 0)
@@ -2282,7 +2283,6 @@ namespace ZeldaFullEditor
             */
 
             // Check if room is already using that space first before skipping position!!
-            section4Start = section4Index;
             // Reorder room from bigger to lower.
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
@@ -2336,22 +2336,37 @@ namespace ZeldaFullEditor
                         section3Index += roomBytes.Length;
                         continue;
                     }
+                    else if (section4Index + roomBytes.Length <= 0x1E7FFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
+                        section4Index += roomBytes.Length;
+                        continue;
+                    }
+                    else if (section5Index + roomBytes.Length <= 0x1EFFFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(this.AllRooms[i].index, section5Index, roomBytes, doorPos);
+                        section5Index += roomBytes.Length;
+                        continue;
+                    }
+                    else if (section6Index + roomBytes.Length <= 0x1F7FFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(this.AllRooms[i].index, section6Index, roomBytes, doorPos);
+                        section6Index += roomBytes.Length;
+                        continue;
+                    }
+                    else if (section7Index + roomBytes.Length <= 0x1FFFFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(this.AllRooms[i].index, section7Index, roomBytes, doorPos);
+                        section7Index += roomBytes.Length;
+                        continue;
+                    }
                     else
                     {
-                        // Ran out of space.
-                        // Write the room.
-                        //saveObjectBytes(i, section4Index, roomBytes);
-                        //section4Index += roomBytes.Length;
-
-                        SaveObjectBytes2(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
-                        section4Index += roomBytes.Length;
-                        usedSection4 = true;
-                        continue;
-
-                        // Move to EXPANDED region.
-                        //Console.WriteLine("Room " + i + " no more space jump to 0x121210");
-                        //currentPos = 0x121210;
-                        //MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x121210");
+                        return true; // False = no error.
                     }
                 }
                 else
@@ -2402,30 +2417,45 @@ namespace ZeldaFullEditor
                         section3Index += roomBytes.Length;
                         continue;
                     }
+                    else if (section4Index + roomBytes.Length <= 0x1E7FFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section4Index, roomBytes, doorPos);
+                        section4Index += roomBytes.Length;
+                        continue;
+                    }
+                    else if (section5Index + roomBytes.Length <= 0x1EFFFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section5Index, roomBytes, doorPos);
+                        section5Index += roomBytes.Length;
+                        continue;
+                    }
+                    else if (section6Index + roomBytes.Length <= 0x1F7FFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section6Index, roomBytes, doorPos);
+                        section6Index += roomBytes.Length;
+                        continue;
+                    }
+                    else if (section7Index + roomBytes.Length <= 0x1FFFFF) // 0x1EB90 to 0x1FFFF.
+                    {
+                        // Write the room.
+                        saveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section7Index, roomBytes, doorPos);
+                        section7Index += roomBytes.Length;
+                        continue;
+                    }
                     else
                     {
-                        // Ran out of space.
-                        // Write the room.
-                        //saveObjectBytes(i, section4Index, roomBytes);
-                        //section4Index += roomBytes.Length;
-
-                        SaveObjectBytes2(DungeonsData.AllRoomsMoved[i].index, section4Index, roomBytes, doorPos);
-                        section4Index += roomBytes.Length;
-                        usedSection4 = true;
-                        continue;
-
-                        // Move to EXPANDED region
-                        //Console.WriteLine("Room " + i + " no more space jump to 0x121210");
-                        //currentPos = 0x121210;
-                        //MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x121210");
+                        return true; // False = no error.
                     }
                 }
             }
 
-            if (usedSection4)
+            /*if (usedSection4)
             {
                 Console.WriteLine("Used section4 for tiles index at location : " + section4Start.ToString("X6") + "Length of :" + (section4Index - section4Start).ToString("X6"));
-            }
+            }*/
 
             int objectPointer = Utils.SnesToPc(ROM.ReadLong(Constants.room_object_pointer));
             ROM.StartBlockLogWriting("Room And Doors Pointers", objectPointer);

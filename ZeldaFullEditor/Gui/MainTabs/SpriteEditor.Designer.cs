@@ -29,191 +29,128 @@ namespace ZeldaFullEditor.Gui.MainTabs
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.spriteListbox = new System.Windows.Forms.ListBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.oamUpdown = new System.Windows.Forms.NumericUpDown();
-            this.paletteUpdown = new System.Windows.Forms.NumericUpDown();
-            this.hitboxUpdown = new System.Windows.Forms.NumericUpDown();
-            this.inthitboxUpdown = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.harmlessCheckbox = new System.Windows.Forms.CheckBox();
-            this.invulnerableCheckbox = new System.Windows.Forms.CheckBox();
-            this.childcoordinateCheckbox = new System.Windows.Forms.CheckBox();
-            this.drawshadowCheckbox = new System.Windows.Forms.CheckBox();
-            this.nodeathanimationCheckbox = new System.Windows.Forms.CheckBox();
-            this.dieslikeabossCheckbox = new System.Windows.Forms.CheckBox();
-            this.isshieldblockableCheckbox = new System.Windows.Forms.CheckBox();
-            this.statisCheckbox = new System.Windows.Forms.CheckBox();
-            this.persistCheckbox = new System.Windows.Forms.CheckBox();
-            this.fallinholesCheckbox = new System.Windows.Forms.CheckBox();
-            this.alternatedamagesoundCheckbox = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.healthUpDown = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.damagetypeUpdown = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
-            this.prizepackUpdown = new System.Windows.Forms.NumericUpDown();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.nopermadeathindungeonsCheckbox = new System.Windows.Forms.CheckBox();
+            this.immunearrowrumbleableCheckbox = new System.Windows.Forms.CheckBox();
+            this.immuneswordhammerCheckbox = new System.Windows.Forms.CheckBox();
+            this.projectilelikecollisionCheckbox = new System.Windows.Forms.CheckBox();
+            this.dieoffscreenCheckbox = new System.Windows.Forms.CheckBox();
+            this.activeoffscreenCheckbox = new System.Windows.Forms.CheckBox();
+            this.bossdamagesoundCheckbox = new System.Windows.Forms.CheckBox();
+            this.blockedbyshieldCheckbox = new System.Windows.Forms.CheckBox();
+            this.checkforwaterCheckbox = new System.Windows.Forms.CheckBox();
+            this.invertpitbehaviorCheckbox = new System.Windows.Forms.CheckBox();
+            this.dielikeabossCheckbox = new System.Windows.Forms.CheckBox();
+            this.overrideslashimmunityCheckbox = new System.Windows.Forms.CheckBox();
+            this.deflectarrowsCheckbox = new System.Windows.Forms.CheckBox();
+            this.persistoffscreenowCheckbox = new System.Windows.Forms.CheckBox();
+            this.ignoredbykillroomsCheckbox = new System.Windows.Forms.CheckBox();
+            this.singlelayercollisionCheckbox = new System.Windows.Forms.CheckBox();
+            this.graphicspageCheckbox = new System.Windows.Forms.CheckBox();
+            this.drawshadowCheckbox = new System.Windows.Forms.CheckBox();
+            this.smallshadowCheckbox = new System.Windows.Forms.CheckBox();
+            this.invulnerableCheckbox = new System.Windows.Forms.CheckBox();
+            this.customdeathanimationCheckbox = new System.Windows.Forms.CheckBox();
+            this.allowedbossfightCheckbox = new System.Windows.Forms.CheckBox();
+            this.immunepowderCheckbox = new System.Windows.Forms.CheckBox();
+            this.beetargetCheckbox = new System.Windows.Forms.CheckBox();
+            this.recoilwithoutcollisionCheckbox = new System.Windows.Forms.CheckBox();
+            this.harmlessCheckbox = new System.Windows.Forms.CheckBox();
+            this.prizepackHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damagetypeHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.healthHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.inthitHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.hitboxHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.paletteHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.oamslotHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.sprsaveButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.damagegroupCombobox = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.damage0fHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0eHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0dHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.damage0bHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0aHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage09Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.damage07Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.damage06Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.damage05Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.damage0cHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.damage08Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.damage04Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage03Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage02Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage01Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage00Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.damageClassControl1 = new ZeldaFullEditor.Gui.DamageClassControl();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.oamUpdown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.paletteUpdown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hitboxUpdown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.inthitboxUpdown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.healthUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.damagetypeUpdown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.prizepackUpdown)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // listBox1
+            // spriteListbox
             // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(0, 0);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(192, 557);
-            this.listBox1.TabIndex = 0;
+            this.spriteListbox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.spriteListbox.FormattingEnabled = true;
+            this.spriteListbox.Location = new System.Drawing.Point(0, 0);
+            this.spriteListbox.Name = "spriteListbox";
+            this.spriteListbox.Size = new System.Drawing.Size(192, 657);
+            this.spriteListbox.TabIndex = 0;
+            this.spriteListbox.SelectedIndexChanged += new System.EventHandler(this.spriteListbox_SelectedIndexChanged);
             // 
-            // groupBox1
+            // label17
             // 
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.prizepackUpdown);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.damagetypeUpdown);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.healthUpDown);
-            this.groupBox1.Controls.Add(this.checkBox9);
-            this.groupBox1.Controls.Add(this.checkBox8);
-            this.groupBox1.Controls.Add(this.checkBox7);
-            this.groupBox1.Controls.Add(this.checkBox6);
-            this.groupBox1.Controls.Add(this.checkBox5);
-            this.groupBox1.Controls.Add(this.checkBox4);
-            this.groupBox1.Controls.Add(this.checkBox3);
-            this.groupBox1.Controls.Add(this.checkBox2);
-            this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Controls.Add(this.alternatedamagesoundCheckbox);
-            this.groupBox1.Controls.Add(this.fallinholesCheckbox);
-            this.groupBox1.Controls.Add(this.persistCheckbox);
-            this.groupBox1.Controls.Add(this.statisCheckbox);
-            this.groupBox1.Controls.Add(this.isshieldblockableCheckbox);
-            this.groupBox1.Controls.Add(this.dieslikeabossCheckbox);
-            this.groupBox1.Controls.Add(this.nodeathanimationCheckbox);
-            this.groupBox1.Controls.Add(this.drawshadowCheckbox);
-            this.groupBox1.Controls.Add(this.childcoordinateCheckbox);
-            this.groupBox1.Controls.Add(this.invulnerableCheckbox);
-            this.groupBox1.Controls.Add(this.harmlessCheckbox);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.inthitboxUpdown);
-            this.groupBox1.Controls.Add(this.hitboxUpdown);
-            this.groupBox1.Controls.Add(this.paletteUpdown);
-            this.groupBox1.Controls.Add(this.oamUpdown);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(192, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(626, 194);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Selected Sprite Properties";
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(394, 549);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(210, 13);
+            this.label17.TabIndex = 3;
+            this.label17.Text = "01E800 <- Address of compressed damage";
+            this.label17.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 13);
+            this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "OAM Slots";
+            this.label1.Text = "OAM allocation";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 42);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 13);
+            this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Palette :";
-            // 
-            // oamUpdown
-            // 
-            this.oamUpdown.Location = new System.Drawing.Point(82, 16);
-            this.oamUpdown.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.oamUpdown.Name = "oamUpdown";
-            this.oamUpdown.Size = new System.Drawing.Size(43, 20);
-            this.oamUpdown.TabIndex = 2;
-            // 
-            // paletteUpdown
-            // 
-            this.paletteUpdown.Location = new System.Drawing.Point(82, 40);
-            this.paletteUpdown.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.paletteUpdown.Name = "paletteUpdown";
-            this.paletteUpdown.Size = new System.Drawing.Size(43, 20);
-            this.paletteUpdown.TabIndex = 3;
-            // 
-            // hitboxUpdown
-            // 
-            this.hitboxUpdown.Location = new System.Drawing.Point(82, 64);
-            this.hitboxUpdown.Maximum = new decimal(new int[] {
-            31,
-            0,
-            0,
-            0});
-            this.hitboxUpdown.Name = "hitboxUpdown";
-            this.hitboxUpdown.Size = new System.Drawing.Size(43, 20);
-            this.hitboxUpdown.TabIndex = 4;
-            // 
-            // inthitboxUpdown
-            // 
-            this.inthitboxUpdown.Location = new System.Drawing.Point(82, 88);
-            this.inthitboxUpdown.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.inthitboxUpdown.Name = "inthitboxUpdown";
-            this.inthitboxUpdown.Size = new System.Drawing.Size(43, 20);
-            this.inthitboxUpdown.TabIndex = 5;
+            this.label2.Text = "Palette";
             // 
             // label3
             // 
@@ -231,208 +168,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(55, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Int. Hitbox";
-            // 
-            // harmlessCheckbox
-            // 
-            this.harmlessCheckbox.AutoSize = true;
-            this.harmlessCheckbox.Location = new System.Drawing.Point(471, 19);
-            this.harmlessCheckbox.Name = "harmlessCheckbox";
-            this.harmlessCheckbox.Size = new System.Drawing.Size(90, 17);
-            this.harmlessCheckbox.TabIndex = 8;
-            this.harmlessCheckbox.Text = "Harmless       ";
-            this.harmlessCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // invulnerableCheckbox
-            // 
-            this.invulnerableCheckbox.AutoSize = true;
-            this.invulnerableCheckbox.Location = new System.Drawing.Point(471, 42);
-            this.invulnerableCheckbox.Name = "invulnerableCheckbox";
-            this.invulnerableCheckbox.Size = new System.Drawing.Size(90, 17);
-            this.invulnerableCheckbox.TabIndex = 9;
-            this.invulnerableCheckbox.Text = "Invulnerable  ";
-            this.invulnerableCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // childcoordinateCheckbox
-            // 
-            this.childcoordinateCheckbox.AutoSize = true;
-            this.childcoordinateCheckbox.Location = new System.Drawing.Point(471, 65);
-            this.childcoordinateCheckbox.Name = "childcoordinateCheckbox";
-            this.childcoordinateCheckbox.Size = new System.Drawing.Size(90, 17);
-            this.childcoordinateCheckbox.TabIndex = 10;
-            this.childcoordinateCheckbox.Text = "Adj. Coord.    ";
-            this.childcoordinateCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // drawshadowCheckbox
-            // 
-            this.drawshadowCheckbox.AutoSize = true;
-            this.drawshadowCheckbox.Location = new System.Drawing.Point(148, 19);
-            this.drawshadowCheckbox.Name = "drawshadowCheckbox";
-            this.drawshadowCheckbox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.drawshadowCheckbox.Size = new System.Drawing.Size(93, 17);
-            this.drawshadowCheckbox.TabIndex = 11;
-            this.drawshadowCheckbox.Text = "Draw Shadow";
-            this.drawshadowCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // nodeathanimationCheckbox
-            // 
-            this.nodeathanimationCheckbox.AutoSize = true;
-            this.nodeathanimationCheckbox.Location = new System.Drawing.Point(148, 42);
-            this.nodeathanimationCheckbox.Name = "nodeathanimationCheckbox";
-            this.nodeathanimationCheckbox.Size = new System.Drawing.Size(121, 17);
-            this.nodeathanimationCheckbox.TabIndex = 12;
-            this.nodeathanimationCheckbox.Text = "No Death Animation";
-            this.nodeathanimationCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // dieslikeabossCheckbox
-            // 
-            this.dieslikeabossCheckbox.AutoSize = true;
-            this.dieslikeabossCheckbox.Location = new System.Drawing.Point(148, 65);
-            this.dieslikeabossCheckbox.Name = "dieslikeabossCheckbox";
-            this.dieslikeabossCheckbox.Size = new System.Drawing.Size(106, 17);
-            this.dieslikeabossCheckbox.TabIndex = 13;
-            this.dieslikeabossCheckbox.Text = "Dies Like A Boss";
-            this.dieslikeabossCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // isshieldblockableCheckbox
-            // 
-            this.isshieldblockableCheckbox.AutoSize = true;
-            this.isshieldblockableCheckbox.Location = new System.Drawing.Point(148, 88);
-            this.isshieldblockableCheckbox.Name = "isshieldblockableCheckbox";
-            this.isshieldblockableCheckbox.Size = new System.Drawing.Size(116, 17);
-            this.isshieldblockableCheckbox.TabIndex = 14;
-            this.isshieldblockableCheckbox.Text = "Is Shield Blockable";
-            this.isshieldblockableCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // statisCheckbox
-            // 
-            this.statisCheckbox.AutoSize = true;
-            this.statisCheckbox.Location = new System.Drawing.Point(148, 113);
-            this.statisCheckbox.Name = "statisCheckbox";
-            this.statisCheckbox.Size = new System.Drawing.Size(52, 17);
-            this.statisCheckbox.TabIndex = 15;
-            this.statisCheckbox.Text = "Statis";
-            this.statisCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // persistCheckbox
-            // 
-            this.persistCheckbox.AutoSize = true;
-            this.persistCheckbox.Location = new System.Drawing.Point(148, 136);
-            this.persistCheckbox.Name = "persistCheckbox";
-            this.persistCheckbox.Size = new System.Drawing.Size(57, 17);
-            this.persistCheckbox.TabIndex = 16;
-            this.persistCheckbox.Text = "Persist";
-            this.persistCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // fallinholesCheckbox
-            // 
-            this.fallinholesCheckbox.AutoSize = true;
-            this.fallinholesCheckbox.Location = new System.Drawing.Point(148, 159);
-            this.fallinholesCheckbox.Name = "fallinholesCheckbox";
-            this.fallinholesCheckbox.Size = new System.Drawing.Size(89, 17);
-            this.fallinholesCheckbox.TabIndex = 17;
-            this.fallinholesCheckbox.Text = "Falls In Holes";
-            this.fallinholesCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // alternatedamagesoundCheckbox
-            // 
-            this.alternatedamagesoundCheckbox.AutoSize = true;
-            this.alternatedamagesoundCheckbox.Location = new System.Drawing.Point(289, 19);
-            this.alternatedamagesoundCheckbox.Name = "alternatedamagesoundCheckbox";
-            this.alternatedamagesoundCheckbox.Size = new System.Drawing.Size(145, 17);
-            this.alternatedamagesoundCheckbox.TabIndex = 18;
-            this.alternatedamagesoundCheckbox.Text = "Alternate Damage Sound";
-            this.alternatedamagesoundCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(289, 42);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(138, 17);
-            this.checkBox1.TabIndex = 19;
-            this.checkBox1.Text = "Ignore Collision Settings";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(289, 65);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(139, 17);
-            this.checkBox2.TabIndex = 20;
-            this.checkBox2.Text = "Disable Tile Interactions";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(289, 88);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(170, 17);
-            this.checkBox3.TabIndex = 21;
-            this.checkBox3.Text = "Imprevious To Sword/Hammer";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(289, 113);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(116, 17);
-            this.checkBox4.TabIndex = 22;
-            this.checkBox4.Text = "Deflects Projectiles";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(289, 136);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(128, 17);
-            this.checkBox5.TabIndex = 23;
-            this.checkBox5.Text = "Impervious To Arrows";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // checkBox6
-            // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(289, 159);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(132, 17);
-            this.checkBox6.TabIndex = 24;
-            this.checkBox6.Text = "Collide With Less Tiles";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            // 
-            // checkBox7
-            // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(471, 88);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(100, 17);
-            this.checkBox7.TabIndex = 25;
-            this.checkBox7.Text = "Walk On Water";
-            this.checkBox7.UseVisualStyleBackColor = true;
-            // 
-            // checkBox8
-            // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(471, 110);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(78, 17);
-            this.checkBox8.TabIndex = 26;
-            this.checkBox8.Text = "Is A Statue";
-            this.checkBox8.UseVisualStyleBackColor = true;
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(471, 133);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(118, 17);
-            this.checkBox9.TabIndex = 27;
-            this.checkBox9.Text = "High Velocity Sprite";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.label4.Text = "Tile hitbox";
             // 
             // label5
             // 
@@ -443,38 +179,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.label5.TabIndex = 29;
             this.label5.Text = "Health";
             // 
-            // healthUpDown
-            // 
-            this.healthUpDown.Location = new System.Drawing.Point(82, 112);
-            this.healthUpDown.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.healthUpDown.Name = "healthUpDown";
-            this.healthUpDown.Size = new System.Drawing.Size(43, 20);
-            this.healthUpDown.TabIndex = 28;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 138);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 13);
+            this.label6.Size = new System.Drawing.Size(102, 13);
             this.label6.TabIndex = 31;
-            this.label6.Text = "Damage Type";
-            // 
-            // damagetypeUpdown
-            // 
-            this.damagetypeUpdown.Location = new System.Drawing.Point(82, 136);
-            this.damagetypeUpdown.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.damagetypeUpdown.Name = "damagetypeUpdown";
-            this.damagetypeUpdown.Size = new System.Drawing.Size(43, 20);
-            this.damagetypeUpdown.TabIndex = 30;
+            this.label6.Text = "Bump damage class";
             // 
             // label7
             // 
@@ -485,224 +197,941 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.label7.TabIndex = 33;
             this.label7.Text = "Prize Pack";
             // 
-            // prizepackUpdown
+            // groupBox1
             // 
-            this.prizepackUpdown.Location = new System.Drawing.Point(82, 160);
-            this.prizepackUpdown.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.prizepackUpdown.Name = "prizepackUpdown";
-            this.prizepackUpdown.Size = new System.Drawing.Size(43, 20);
-            this.prizepackUpdown.TabIndex = 32;
+            this.groupBox1.Controls.Add(this.nopermadeathindungeonsCheckbox);
+            this.groupBox1.Controls.Add(this.immunearrowrumbleableCheckbox);
+            this.groupBox1.Controls.Add(this.immuneswordhammerCheckbox);
+            this.groupBox1.Controls.Add(this.projectilelikecollisionCheckbox);
+            this.groupBox1.Controls.Add(this.dieoffscreenCheckbox);
+            this.groupBox1.Controls.Add(this.activeoffscreenCheckbox);
+            this.groupBox1.Controls.Add(this.bossdamagesoundCheckbox);
+            this.groupBox1.Controls.Add(this.blockedbyshieldCheckbox);
+            this.groupBox1.Controls.Add(this.checkforwaterCheckbox);
+            this.groupBox1.Controls.Add(this.invertpitbehaviorCheckbox);
+            this.groupBox1.Controls.Add(this.dielikeabossCheckbox);
+            this.groupBox1.Controls.Add(this.overrideslashimmunityCheckbox);
+            this.groupBox1.Controls.Add(this.deflectarrowsCheckbox);
+            this.groupBox1.Controls.Add(this.persistoffscreenowCheckbox);
+            this.groupBox1.Controls.Add(this.ignoredbykillroomsCheckbox);
+            this.groupBox1.Controls.Add(this.singlelayercollisionCheckbox);
+            this.groupBox1.Controls.Add(this.graphicspageCheckbox);
+            this.groupBox1.Controls.Add(this.drawshadowCheckbox);
+            this.groupBox1.Controls.Add(this.smallshadowCheckbox);
+            this.groupBox1.Controls.Add(this.invulnerableCheckbox);
+            this.groupBox1.Controls.Add(this.customdeathanimationCheckbox);
+            this.groupBox1.Controls.Add(this.allowedbossfightCheckbox);
+            this.groupBox1.Controls.Add(this.immunepowderCheckbox);
+            this.groupBox1.Controls.Add(this.beetargetCheckbox);
+            this.groupBox1.Controls.Add(this.recoilwithoutcollisionCheckbox);
+            this.groupBox1.Controls.Add(this.harmlessCheckbox);
+            this.groupBox1.Controls.Add(this.prizepackHexbox);
+            this.groupBox1.Controls.Add(this.damagetypeHexbox);
+            this.groupBox1.Controls.Add(this.healthHexbox);
+            this.groupBox1.Controls.Add(this.inthitHexbox);
+            this.groupBox1.Controls.Add(this.hitboxHexbox);
+            this.groupBox1.Controls.Add(this.paletteHexbox);
+            this.groupBox1.Controls.Add(this.oamslotHexbox);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(192, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(797, 186);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Selected Sprite Properties";
             // 
-            // groupBox2
+            // nopermadeathindungeonsCheckbox
             // 
-            this.groupBox2.Controls.Add(this.label16);
-            this.groupBox2.Controls.Add(this.textBox8);
-            this.groupBox2.Controls.Add(this.label15);
-            this.groupBox2.Controls.Add(this.textBox7);
-            this.groupBox2.Controls.Add(this.label14);
-            this.groupBox2.Controls.Add(this.textBox6);
-            this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.textBox5);
-            this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.textBox4);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.textBox3);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.textBox1);
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.damagegroupCombobox);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(192, 194);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(626, 114);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Damage Group Table, Values are in Hexadecimal (all sprites share these values)";
+            this.nopermadeathindungeonsCheckbox.AutoSize = true;
+            this.nopermadeathindungeonsCheckbox.Location = new System.Drawing.Point(620, 114);
+            this.nopermadeathindungeonsCheckbox.Name = "nopermadeathindungeonsCheckbox";
+            this.nopermadeathindungeonsCheckbox.Size = new System.Drawing.Size(160, 17);
+            this.nopermadeathindungeonsCheckbox.TabIndex = 65;
+            this.nopermadeathindungeonsCheckbox.Text = "No permadeath in dungeons";
+            this.nopermadeathindungeonsCheckbox.UseVisualStyleBackColor = true;
+            this.nopermadeathindungeonsCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // immunearrowrumbleableCheckbox
+            // 
+            this.immunearrowrumbleableCheckbox.AutoSize = true;
+            this.immunearrowrumbleableCheckbox.Location = new System.Drawing.Point(620, 89);
+            this.immunearrowrumbleableCheckbox.Name = "immunearrowrumbleableCheckbox";
+            this.immunearrowrumbleableCheckbox.Size = new System.Drawing.Size(165, 17);
+            this.immunearrowrumbleableCheckbox.TabIndex = 64;
+            this.immunearrowrumbleableCheckbox.Text = "Immune to arrows/rumbleable";
+            this.immunearrowrumbleableCheckbox.UseVisualStyleBackColor = true;
+            this.immunearrowrumbleableCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // immuneswordhammerCheckbox
+            // 
+            this.immuneswordhammerCheckbox.AutoSize = true;
+            this.immuneswordhammerCheckbox.Location = new System.Drawing.Point(620, 64);
+            this.immuneswordhammerCheckbox.Name = "immuneswordhammerCheckbox";
+            this.immuneswordhammerCheckbox.Size = new System.Drawing.Size(148, 17);
+            this.immuneswordhammerCheckbox.TabIndex = 63;
+            this.immuneswordhammerCheckbox.Text = "Immune to sword/hammer";
+            this.immuneswordhammerCheckbox.UseVisualStyleBackColor = true;
+            this.immuneswordhammerCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // projectilelikecollisionCheckbox
+            // 
+            this.projectilelikecollisionCheckbox.AutoSize = true;
+            this.projectilelikecollisionCheckbox.Location = new System.Drawing.Point(620, 39);
+            this.projectilelikecollisionCheckbox.Name = "projectilelikecollisionCheckbox";
+            this.projectilelikecollisionCheckbox.Size = new System.Drawing.Size(128, 17);
+            this.projectilelikecollisionCheckbox.TabIndex = 62;
+            this.projectilelikecollisionCheckbox.Text = "Projectile-like collision";
+            this.projectilelikecollisionCheckbox.UseVisualStyleBackColor = true;
+            this.projectilelikecollisionCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // dieoffscreenCheckbox
+            // 
+            this.dieoffscreenCheckbox.AutoSize = true;
+            this.dieoffscreenCheckbox.Location = new System.Drawing.Point(620, 14);
+            this.dieoffscreenCheckbox.Name = "dieoffscreenCheckbox";
+            this.dieoffscreenCheckbox.Size = new System.Drawing.Size(92, 17);
+            this.dieoffscreenCheckbox.TabIndex = 61;
+            this.dieoffscreenCheckbox.Text = "Die off screen";
+            this.dieoffscreenCheckbox.UseVisualStyleBackColor = true;
+            this.dieoffscreenCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // activeoffscreenCheckbox
+            // 
+            this.activeoffscreenCheckbox.AutoSize = true;
+            this.activeoffscreenCheckbox.Location = new System.Drawing.Point(469, 165);
+            this.activeoffscreenCheckbox.Name = "activeoffscreenCheckbox";
+            this.activeoffscreenCheckbox.Size = new System.Drawing.Size(106, 17);
+            this.activeoffscreenCheckbox.TabIndex = 60;
+            this.activeoffscreenCheckbox.Text = "Active off screen";
+            this.activeoffscreenCheckbox.UseVisualStyleBackColor = true;
+            this.activeoffscreenCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // bossdamagesoundCheckbox
+            // 
+            this.bossdamagesoundCheckbox.AutoSize = true;
+            this.bossdamagesoundCheckbox.Location = new System.Drawing.Point(469, 140);
+            this.bossdamagesoundCheckbox.Name = "bossdamagesoundCheckbox";
+            this.bossdamagesoundCheckbox.Size = new System.Drawing.Size(122, 17);
+            this.bossdamagesoundCheckbox.TabIndex = 59;
+            this.bossdamagesoundCheckbox.Text = "Boss damage sound";
+            this.bossdamagesoundCheckbox.UseVisualStyleBackColor = true;
+            this.bossdamagesoundCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // blockedbyshieldCheckbox
+            // 
+            this.blockedbyshieldCheckbox.AutoSize = true;
+            this.blockedbyshieldCheckbox.Location = new System.Drawing.Point(469, 115);
+            this.blockedbyshieldCheckbox.Name = "blockedbyshieldCheckbox";
+            this.blockedbyshieldCheckbox.Size = new System.Drawing.Size(109, 17);
+            this.blockedbyshieldCheckbox.TabIndex = 58;
+            this.blockedbyshieldCheckbox.Text = "Blocked by shield";
+            this.blockedbyshieldCheckbox.UseVisualStyleBackColor = true;
+            this.blockedbyshieldCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // checkforwaterCheckbox
+            // 
+            this.checkforwaterCheckbox.AutoSize = true;
+            this.checkforwaterCheckbox.Location = new System.Drawing.Point(469, 90);
+            this.checkforwaterCheckbox.Name = "checkforwaterCheckbox";
+            this.checkforwaterCheckbox.Size = new System.Drawing.Size(101, 17);
+            this.checkforwaterCheckbox.TabIndex = 57;
+            this.checkforwaterCheckbox.Text = "Check for water";
+            this.checkforwaterCheckbox.UseVisualStyleBackColor = true;
+            this.checkforwaterCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // invertpitbehaviorCheckbox
+            // 
+            this.invertpitbehaviorCheckbox.AutoSize = true;
+            this.invertpitbehaviorCheckbox.Location = new System.Drawing.Point(469, 64);
+            this.invertpitbehaviorCheckbox.Name = "invertpitbehaviorCheckbox";
+            this.invertpitbehaviorCheckbox.Size = new System.Drawing.Size(111, 17);
+            this.invertpitbehaviorCheckbox.TabIndex = 56;
+            this.invertpitbehaviorCheckbox.Text = "Invert pit behavior";
+            this.invertpitbehaviorCheckbox.UseVisualStyleBackColor = true;
+            this.invertpitbehaviorCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // dielikeabossCheckbox
+            // 
+            this.dielikeabossCheckbox.AutoSize = true;
+            this.dielikeabossCheckbox.Location = new System.Drawing.Point(469, 39);
+            this.dielikeabossCheckbox.Name = "dielikeabossCheckbox";
+            this.dielikeabossCheckbox.Size = new System.Drawing.Size(95, 17);
+            this.dielikeabossCheckbox.TabIndex = 55;
+            this.dielikeabossCheckbox.Text = "Die like a boss";
+            this.dielikeabossCheckbox.UseVisualStyleBackColor = true;
+            this.dielikeabossCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // overrideslashimmunityCheckbox
+            // 
+            this.overrideslashimmunityCheckbox.AutoSize = true;
+            this.overrideslashimmunityCheckbox.Location = new System.Drawing.Point(469, 14);
+            this.overrideslashimmunityCheckbox.Name = "overrideslashimmunityCheckbox";
+            this.overrideslashimmunityCheckbox.Size = new System.Drawing.Size(136, 17);
+            this.overrideslashimmunityCheckbox.TabIndex = 54;
+            this.overrideslashimmunityCheckbox.Text = "Override slash immunity";
+            this.overrideslashimmunityCheckbox.UseVisualStyleBackColor = true;
+            this.overrideslashimmunityCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // deflectarrowsCheckbox
+            // 
+            this.deflectarrowsCheckbox.AutoSize = true;
+            this.deflectarrowsCheckbox.Location = new System.Drawing.Point(320, 165);
+            this.deflectarrowsCheckbox.Name = "deflectarrowsCheckbox";
+            this.deflectarrowsCheckbox.Size = new System.Drawing.Size(94, 17);
+            this.deflectarrowsCheckbox.TabIndex = 53;
+            this.deflectarrowsCheckbox.Text = "Deflect arrows";
+            this.deflectarrowsCheckbox.UseVisualStyleBackColor = true;
+            this.deflectarrowsCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // persistoffscreenowCheckbox
+            // 
+            this.persistoffscreenowCheckbox.AutoSize = true;
+            this.persistoffscreenowCheckbox.Location = new System.Drawing.Point(320, 140);
+            this.persistoffscreenowCheckbox.Name = "persistoffscreenowCheckbox";
+            this.persistoffscreenowCheckbox.Size = new System.Drawing.Size(137, 17);
+            this.persistoffscreenowCheckbox.TabIndex = 52;
+            this.persistoffscreenowCheckbox.Text = "Persist offscreen in OW";
+            this.persistoffscreenowCheckbox.UseVisualStyleBackColor = true;
+            this.persistoffscreenowCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // ignoredbykillroomsCheckbox
+            // 
+            this.ignoredbykillroomsCheckbox.AutoSize = true;
+            this.ignoredbykillroomsCheckbox.Location = new System.Drawing.Point(320, 115);
+            this.ignoredbykillroomsCheckbox.Name = "ignoredbykillroomsCheckbox";
+            this.ignoredbykillroomsCheckbox.Size = new System.Drawing.Size(122, 17);
+            this.ignoredbykillroomsCheckbox.TabIndex = 51;
+            this.ignoredbykillroomsCheckbox.Text = "Ignored by kill rooms";
+            this.ignoredbykillroomsCheckbox.UseVisualStyleBackColor = true;
+            this.ignoredbykillroomsCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // singlelayercollisionCheckbox
+            // 
+            this.singlelayercollisionCheckbox.AutoSize = true;
+            this.singlelayercollisionCheckbox.Location = new System.Drawing.Point(320, 90);
+            this.singlelayercollisionCheckbox.Name = "singlelayercollisionCheckbox";
+            this.singlelayercollisionCheckbox.Size = new System.Drawing.Size(120, 17);
+            this.singlelayercollisionCheckbox.TabIndex = 50;
+            this.singlelayercollisionCheckbox.Text = "Single layer collision";
+            this.singlelayercollisionCheckbox.UseVisualStyleBackColor = true;
+            this.singlelayercollisionCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // graphicspageCheckbox
+            // 
+            this.graphicspageCheckbox.AutoSize = true;
+            this.graphicspageCheckbox.Location = new System.Drawing.Point(320, 65);
+            this.graphicspageCheckbox.Name = "graphicspageCheckbox";
+            this.graphicspageCheckbox.Size = new System.Drawing.Size(95, 17);
+            this.graphicspageCheckbox.TabIndex = 49;
+            this.graphicspageCheckbox.Text = "Graphics page";
+            this.graphicspageCheckbox.UseVisualStyleBackColor = true;
+            this.graphicspageCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // drawshadowCheckbox
+            // 
+            this.drawshadowCheckbox.AutoSize = true;
+            this.drawshadowCheckbox.Location = new System.Drawing.Point(320, 40);
+            this.drawshadowCheckbox.Name = "drawshadowCheckbox";
+            this.drawshadowCheckbox.Size = new System.Drawing.Size(97, 17);
+            this.drawshadowCheckbox.TabIndex = 48;
+            this.drawshadowCheckbox.Text = "Draw shadow?";
+            this.drawshadowCheckbox.UseVisualStyleBackColor = true;
+            this.drawshadowCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // smallshadowCheckbox
+            // 
+            this.smallshadowCheckbox.AutoSize = true;
+            this.smallshadowCheckbox.Location = new System.Drawing.Point(320, 16);
+            this.smallshadowCheckbox.Name = "smallshadowCheckbox";
+            this.smallshadowCheckbox.Size = new System.Drawing.Size(97, 17);
+            this.smallshadowCheckbox.TabIndex = 47;
+            this.smallshadowCheckbox.Text = "Small shadow?";
+            this.smallshadowCheckbox.UseVisualStyleBackColor = true;
+            this.smallshadowCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // invulnerableCheckbox
+            // 
+            this.invulnerableCheckbox.AutoSize = true;
+            this.invulnerableCheckbox.Location = new System.Drawing.Point(174, 165);
+            this.invulnerableCheckbox.Name = "invulnerableCheckbox";
+            this.invulnerableCheckbox.Size = new System.Drawing.Size(84, 17);
+            this.invulnerableCheckbox.TabIndex = 46;
+            this.invulnerableCheckbox.Text = "Invulnerable";
+            this.invulnerableCheckbox.UseVisualStyleBackColor = true;
+            this.invulnerableCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // customdeathanimationCheckbox
+            // 
+            this.customdeathanimationCheckbox.AutoSize = true;
+            this.customdeathanimationCheckbox.Location = new System.Drawing.Point(174, 140);
+            this.customdeathanimationCheckbox.Name = "customdeathanimationCheckbox";
+            this.customdeathanimationCheckbox.Size = new System.Drawing.Size(139, 17);
+            this.customdeathanimationCheckbox.TabIndex = 45;
+            this.customdeathanimationCheckbox.Text = "Custom death animation";
+            this.customdeathanimationCheckbox.UseVisualStyleBackColor = true;
+            this.customdeathanimationCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // allowedbossfightCheckbox
+            // 
+            this.allowedbossfightCheckbox.AutoSize = true;
+            this.allowedbossfightCheckbox.Location = new System.Drawing.Point(174, 115);
+            this.allowedbossfightCheckbox.Name = "allowedbossfightCheckbox";
+            this.allowedbossfightCheckbox.Size = new System.Drawing.Size(127, 17);
+            this.allowedbossfightCheckbox.TabIndex = 44;
+            this.allowedbossfightCheckbox.Text = "Allowed in boss fights";
+            this.allowedbossfightCheckbox.UseVisualStyleBackColor = true;
+            this.allowedbossfightCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // immunepowderCheckbox
+            // 
+            this.immunepowderCheckbox.AutoSize = true;
+            this.immunepowderCheckbox.Location = new System.Drawing.Point(174, 90);
+            this.immunepowderCheckbox.Name = "immunepowderCheckbox";
+            this.immunepowderCheckbox.Size = new System.Drawing.Size(113, 17);
+            this.immunepowderCheckbox.TabIndex = 43;
+            this.immunepowderCheckbox.Text = "Immune to powder";
+            this.immunepowderCheckbox.UseVisualStyleBackColor = true;
+            this.immunepowderCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // beetargetCheckbox
+            // 
+            this.beetargetCheckbox.AutoSize = true;
+            this.beetargetCheckbox.Location = new System.Drawing.Point(174, 65);
+            this.beetargetCheckbox.Name = "beetargetCheckbox";
+            this.beetargetCheckbox.Size = new System.Drawing.Size(75, 17);
+            this.beetargetCheckbox.TabIndex = 42;
+            this.beetargetCheckbox.Text = "Bee target";
+            this.beetargetCheckbox.UseVisualStyleBackColor = true;
+            this.beetargetCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // recoilwithoutcollisionCheckbox
+            // 
+            this.recoilwithoutcollisionCheckbox.AutoSize = true;
+            this.recoilwithoutcollisionCheckbox.Location = new System.Drawing.Point(174, 40);
+            this.recoilwithoutcollisionCheckbox.Name = "recoilwithoutcollisionCheckbox";
+            this.recoilwithoutcollisionCheckbox.Size = new System.Drawing.Size(133, 17);
+            this.recoilwithoutcollisionCheckbox.TabIndex = 41;
+            this.recoilwithoutcollisionCheckbox.Text = "Recoil without collision";
+            this.recoilwithoutcollisionCheckbox.UseVisualStyleBackColor = true;
+            this.recoilwithoutcollisionCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // harmlessCheckbox
+            // 
+            this.harmlessCheckbox.AutoSize = true;
+            this.harmlessCheckbox.Location = new System.Drawing.Point(174, 16);
+            this.harmlessCheckbox.Name = "harmlessCheckbox";
+            this.harmlessCheckbox.Size = new System.Drawing.Size(69, 17);
+            this.harmlessCheckbox.TabIndex = 40;
+            this.harmlessCheckbox.Text = "Harmless";
+            this.harmlessCheckbox.UseVisualStyleBackColor = true;
+            this.harmlessCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
+            // 
+            // prizepackHexbox
+            // 
+            this.prizepackHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.prizepackHexbox.Decimal = false;
+            this.prizepackHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.prizepackHexbox.HexValue = 0;
+            this.prizepackHexbox.Location = new System.Drawing.Point(115, 159);
+            this.prizepackHexbox.MaxLength = 1;
+            this.prizepackHexbox.MaxValue = 7;
+            this.prizepackHexbox.MinValue = 0;
+            this.prizepackHexbox.Name = "prizepackHexbox";
+            this.prizepackHexbox.Size = new System.Drawing.Size(53, 20);
+            this.prizepackHexbox.TabIndex = 39;
+            this.prizepackHexbox.Text = "0";
+            this.prizepackHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            // 
+            // damagetypeHexbox
+            // 
+            this.damagetypeHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damagetypeHexbox.Decimal = false;
+            this.damagetypeHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damagetypeHexbox.HexValue = 0;
+            this.damagetypeHexbox.Location = new System.Drawing.Point(115, 135);
+            this.damagetypeHexbox.MaxLength = 1;
+            this.damagetypeHexbox.MaxValue = 15;
+            this.damagetypeHexbox.MinValue = 0;
+            this.damagetypeHexbox.Name = "damagetypeHexbox";
+            this.damagetypeHexbox.Size = new System.Drawing.Size(53, 20);
+            this.damagetypeHexbox.TabIndex = 38;
+            this.damagetypeHexbox.Text = "0";
+            this.damagetypeHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            // 
+            // healthHexbox
+            // 
+            this.healthHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.healthHexbox.Decimal = false;
+            this.healthHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.healthHexbox.HexValue = 0;
+            this.healthHexbox.Location = new System.Drawing.Point(115, 112);
+            this.healthHexbox.MaxLength = 2;
+            this.healthHexbox.MaxValue = 255;
+            this.healthHexbox.MinValue = 0;
+            this.healthHexbox.Name = "healthHexbox";
+            this.healthHexbox.Size = new System.Drawing.Size(53, 20);
+            this.healthHexbox.TabIndex = 37;
+            this.healthHexbox.Text = "00";
+            this.healthHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            // 
+            // inthitHexbox
+            // 
+            this.inthitHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.inthitHexbox.Decimal = false;
+            this.inthitHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.inthitHexbox.HexValue = 0;
+            this.inthitHexbox.Location = new System.Drawing.Point(115, 88);
+            this.inthitHexbox.MaxLength = 1;
+            this.inthitHexbox.MaxValue = 15;
+            this.inthitHexbox.MinValue = 0;
+            this.inthitHexbox.Name = "inthitHexbox";
+            this.inthitHexbox.Size = new System.Drawing.Size(53, 20);
+            this.inthitHexbox.TabIndex = 36;
+            this.inthitHexbox.Text = "0";
+            this.inthitHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            // 
+            // hitboxHexbox
+            // 
+            this.hitboxHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.hitboxHexbox.Decimal = false;
+            this.hitboxHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.hitboxHexbox.HexValue = 0;
+            this.hitboxHexbox.Location = new System.Drawing.Point(115, 64);
+            this.hitboxHexbox.MaxLength = 1;
+            this.hitboxHexbox.MaxValue = 15;
+            this.hitboxHexbox.MinValue = 0;
+            this.hitboxHexbox.Name = "hitboxHexbox";
+            this.hitboxHexbox.Size = new System.Drawing.Size(53, 20);
+            this.hitboxHexbox.TabIndex = 35;
+            this.hitboxHexbox.Text = "0";
+            this.hitboxHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            // 
+            // paletteHexbox
+            // 
+            this.paletteHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.paletteHexbox.Decimal = false;
+            this.paletteHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.paletteHexbox.HexValue = 0;
+            this.paletteHexbox.Location = new System.Drawing.Point(115, 40);
+            this.paletteHexbox.MaxLength = 1;
+            this.paletteHexbox.MaxValue = 7;
+            this.paletteHexbox.MinValue = 0;
+            this.paletteHexbox.Name = "paletteHexbox";
+            this.paletteHexbox.Size = new System.Drawing.Size(53, 20);
+            this.paletteHexbox.TabIndex = 34;
+            this.paletteHexbox.Text = "0";
+            this.paletteHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            // 
+            // oamslotHexbox
+            // 
+            this.oamslotHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.oamslotHexbox.Decimal = false;
+            this.oamslotHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.oamslotHexbox.HexValue = 0;
+            this.oamslotHexbox.Location = new System.Drawing.Point(115, 16);
+            this.oamslotHexbox.MaxLength = 2;
+            this.oamslotHexbox.MaxValue = 64;
+            this.oamslotHexbox.MinValue = 0;
+            this.oamslotHexbox.Name = "oamslotHexbox";
+            this.oamslotHexbox.Size = new System.Drawing.Size(53, 20);
+            this.oamslotHexbox.TabIndex = 4;
+            this.oamslotHexbox.Text = "00";
+            this.oamslotHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            // 
+            // sprsaveButton
+            // 
+            this.sprsaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.sprsaveButton.Location = new System.Drawing.Point(911, 631);
+            this.sprsaveButton.Name = "sprsaveButton";
+            this.sprsaveButton.Size = new System.Drawing.Size(75, 23);
+            this.sprsaveButton.TabIndex = 4;
+            this.sprsaveButton.Text = "Save";
+            this.sprsaveButton.UseVisualStyleBackColor = true;
+            this.sprsaveButton.Click += new System.EventHandler(this.sprsaveButton_Click);
             // 
             // label8
             // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 40);
+            this.label8.Location = new System.Drawing.Point(198, 644);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(25, 13);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "[00]";
+            this.label8.Size = new System.Drawing.Size(407, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "This feature is not tested you must use the Save button to save changes to the RO" +
+    "M";
             // 
-            // damagegroupCombobox
+            // groupBox2
             // 
-            this.damagegroupCombobox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.damagegroupCombobox.FormattingEnabled = true;
-            this.damagegroupCombobox.Location = new System.Drawing.Point(3, 16);
-            this.damagegroupCombobox.Name = "damagegroupCombobox";
-            this.damagegroupCombobox.Size = new System.Drawing.Size(620, 21);
-            this.damagegroupCombobox.TabIndex = 4;
+            this.groupBox2.Controls.Add(this.damage0fHexbox);
+            this.groupBox2.Controls.Add(this.damage0eHexbox);
+            this.groupBox2.Controls.Add(this.damage0dHexbox);
+            this.groupBox2.Controls.Add(this.label25);
+            this.groupBox2.Controls.Add(this.label24);
+            this.groupBox2.Controls.Add(this.label23);
+            this.groupBox2.Controls.Add(this.damage0bHexbox);
+            this.groupBox2.Controls.Add(this.damage0aHexbox);
+            this.groupBox2.Controls.Add(this.damage09Hexbox);
+            this.groupBox2.Controls.Add(this.label22);
+            this.groupBox2.Controls.Add(this.label21);
+            this.groupBox2.Controls.Add(this.label20);
+            this.groupBox2.Controls.Add(this.damage07Hexbox);
+            this.groupBox2.Controls.Add(this.label19);
+            this.groupBox2.Controls.Add(this.damage06Hexbox);
+            this.groupBox2.Controls.Add(this.label18);
+            this.groupBox2.Controls.Add(this.damage05Hexbox);
+            this.groupBox2.Controls.Add(this.label16);
+            this.groupBox2.Controls.Add(this.label15);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.damage0cHexbox);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Controls.Add(this.damage08Hexbox);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.damage04Hexbox);
+            this.groupBox2.Controls.Add(this.damage03Hexbox);
+            this.groupBox2.Controls.Add(this.damage02Hexbox);
+            this.groupBox2.Controls.Add(this.damage01Hexbox);
+            this.groupBox2.Controls.Add(this.damage00Hexbox);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Location = new System.Drawing.Point(192, 186);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(797, 121);
+            this.groupBox2.TabIndex = 6;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Damage subclass";
             // 
-            // label9
+            // damage0fHexbox
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(36, 40);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(25, 13);
-            this.label9.TabIndex = 5;
-            this.label9.Text = "[01]";
+            this.damage0fHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0fHexbox.Decimal = false;
+            this.damage0fHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0fHexbox.HexValue = 0;
+            this.damage0fHexbox.Location = new System.Drawing.Point(511, 92);
+            this.damage0fHexbox.MaxLength = 1;
+            this.damage0fHexbox.MaxValue = 15;
+            this.damage0fHexbox.MinValue = 0;
+            this.damage0fHexbox.Name = "damage0fHexbox";
+            this.damage0fHexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage0fHexbox.TabIndex = 95;
+            this.damage0fHexbox.Text = "0";
             // 
-            // textBox1
+            // damage0eHexbox
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 56);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(25, 20);
-            this.textBox1.TabIndex = 6;
+            this.damage0eHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0eHexbox.Decimal = false;
+            this.damage0eHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0eHexbox.HexValue = 0;
+            this.damage0eHexbox.Location = new System.Drawing.Point(511, 66);
+            this.damage0eHexbox.MaxLength = 1;
+            this.damage0eHexbox.MaxValue = 15;
+            this.damage0eHexbox.MinValue = 0;
+            this.damage0eHexbox.Name = "damage0eHexbox";
+            this.damage0eHexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage0eHexbox.TabIndex = 94;
+            this.damage0eHexbox.Text = "0";
             // 
-            // textBox2
+            // damage0dHexbox
             // 
-            this.textBox2.Location = new System.Drawing.Point(36, 56);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(25, 20);
-            this.textBox2.TabIndex = 7;
+            this.damage0dHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0dHexbox.Decimal = false;
+            this.damage0dHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0dHexbox.HexValue = 0;
+            this.damage0dHexbox.Location = new System.Drawing.Point(511, 40);
+            this.damage0dHexbox.MaxLength = 1;
+            this.damage0dHexbox.MaxValue = 15;
+            this.damage0dHexbox.MinValue = 0;
+            this.damage0dHexbox.Name = "damage0dHexbox";
+            this.damage0dHexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage0dHexbox.TabIndex = 93;
+            this.damage0dHexbox.Text = "0";
             // 
-            // textBox3
+            // label25
             // 
-            this.textBox3.Location = new System.Drawing.Point(67, 56);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(25, 20);
-            this.textBox3.TabIndex = 9;
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(417, 94);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(60, 13);
+            this.label25.TabIndex = 92;
+            this.label25.Text = "0F (Quake)";
             // 
-            // label10
+            // label24
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(67, 40);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(25, 13);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "[02]";
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(417, 69);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(54, 13);
+            this.label24.TabIndex = 91;
+            this.label24.Text = "0E (Ether)";
             // 
-            // textBox4
+            // label23
             // 
-            this.textBox4.Location = new System.Drawing.Point(98, 56);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(25, 20);
-            this.textBox4.TabIndex = 11;
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(417, 43);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(68, 13);
+            this.label23.TabIndex = 90;
+            this.label23.Text = "0D (Bombos)";
             // 
-            // label11
+            // damage0bHexbox
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(98, 40);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(25, 13);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "[03]";
+            this.damage0bHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0bHexbox.Decimal = false;
+            this.damage0bHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0bHexbox.HexValue = 0;
+            this.damage0bHexbox.Location = new System.Drawing.Point(374, 92);
+            this.damage0bHexbox.MaxLength = 1;
+            this.damage0bHexbox.MaxValue = 15;
+            this.damage0bHexbox.MinValue = 0;
+            this.damage0bHexbox.Name = "damage0bHexbox";
+            this.damage0bHexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage0bHexbox.TabIndex = 89;
+            this.damage0bHexbox.Text = "0";
             // 
-            // textBox5
+            // damage0aHexbox
             // 
-            this.textBox5.Location = new System.Drawing.Point(129, 56);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(25, 20);
-            this.textBox5.TabIndex = 13;
+            this.damage0aHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0aHexbox.Decimal = false;
+            this.damage0aHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0aHexbox.HexValue = 0;
+            this.damage0aHexbox.Location = new System.Drawing.Point(374, 66);
+            this.damage0aHexbox.MaxLength = 1;
+            this.damage0aHexbox.MaxValue = 7;
+            this.damage0aHexbox.MinValue = 0;
+            this.damage0aHexbox.Name = "damage0aHexbox";
+            this.damage0aHexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage0aHexbox.TabIndex = 88;
+            this.damage0aHexbox.Text = "0";
             // 
-            // label12
+            // damage09Hexbox
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(129, 40);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(25, 13);
-            this.label12.TabIndex = 12;
-            this.label12.Text = "[04]";
+            this.damage09Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage09Hexbox.Decimal = false;
+            this.damage09Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage09Hexbox.HexValue = 0;
+            this.damage09Hexbox.Location = new System.Drawing.Point(374, 40);
+            this.damage09Hexbox.MaxLength = 1;
+            this.damage09Hexbox.MaxValue = 15;
+            this.damage09Hexbox.MinValue = 0;
+            this.damage09Hexbox.Name = "damage09Hexbox";
+            this.damage09Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage09Hexbox.TabIndex = 87;
+            this.damage09Hexbox.Text = "0";
             // 
-            // textBox6
+            // label22
             // 
-            this.textBox6.Location = new System.Drawing.Point(160, 56);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(25, 20);
-            this.textBox6.TabIndex = 15;
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(280, 94);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(69, 13);
+            this.label22.TabIndex = 86;
+            this.label22.Text = "0B (Fire Rod)";
             // 
-            // label13
+            // label21
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(160, 40);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(25, 13);
-            this.label13.TabIndex = 14;
-            this.label13.Text = "[05]";
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(280, 69);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(65, 13);
+            this.label21.TabIndex = 85;
+            this.label21.Text = "0A (Powder)";
             // 
-            // textBox7
+            // label20
             // 
-            this.textBox7.Location = new System.Drawing.Point(191, 56);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(25, 20);
-            this.textBox7.TabIndex = 17;
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(280, 42);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(88, 13);
+            this.label20.TabIndex = 84;
+            this.label20.Text = "09 (Silver arrows)";
             // 
-            // label14
+            // damage07Hexbox
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(191, 40);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(25, 13);
-            this.label14.TabIndex = 16;
-            this.label14.Text = "[06]";
+            this.damage07Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage07Hexbox.Decimal = false;
+            this.damage07Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage07Hexbox.HexValue = 0;
+            this.damage07Hexbox.Location = new System.Drawing.Point(237, 92);
+            this.damage07Hexbox.MaxLength = 1;
+            this.damage07Hexbox.MaxValue = 15;
+            this.damage07Hexbox.MinValue = 0;
+            this.damage07Hexbox.Name = "damage07Hexbox";
+            this.damage07Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage07Hexbox.TabIndex = 83;
+            this.damage07Hexbox.Text = "0";
             // 
-            // textBox8
+            // label19
             // 
-            this.textBox8.Location = new System.Drawing.Point(222, 56);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(25, 20);
-            this.textBox8.TabIndex = 19;
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(143, 94);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(74, 13);
+            this.label19.TabIndex = 82;
+            this.label19.Text = "07 (Hookshot)";
             // 
-            // label15
+            // damage06Hexbox
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(222, 40);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(25, 13);
-            this.label15.TabIndex = 18;
-            this.label15.Text = "[07]";
+            this.damage06Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage06Hexbox.Decimal = false;
+            this.damage06Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage06Hexbox.HexValue = 0;
+            this.damage06Hexbox.Location = new System.Drawing.Point(237, 66);
+            this.damage06Hexbox.MaxLength = 1;
+            this.damage06Hexbox.MaxValue = 15;
+            this.damage06Hexbox.MinValue = 0;
+            this.damage06Hexbox.Name = "damage06Hexbox";
+            this.damage06Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage06Hexbox.TabIndex = 81;
+            this.damage06Hexbox.Text = "0";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(143, 68);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(60, 13);
+            this.label18.TabIndex = 80;
+            this.label18.Text = "06 (Arrows)";
+            // 
+            // damage05Hexbox
+            // 
+            this.damage05Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage05Hexbox.Decimal = false;
+            this.damage05Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage05Hexbox.HexValue = 0;
+            this.damage05Hexbox.Location = new System.Drawing.Point(237, 40);
+            this.damage05Hexbox.MaxLength = 1;
+            this.damage05Hexbox.MaxValue = 15;
+            this.damage05Hexbox.MinValue = 0;
+            this.damage05Hexbox.Name = "damage05Hexbox";
+            this.damage05Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage05Hexbox.TabIndex = 79;
+            this.damage05Hexbox.Text = "0";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 79);
+            this.label16.Location = new System.Drawing.Point(143, 42);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(583, 26);
-            this.label16.TabIndex = 20;
-            this.label16.Text = "The value is the damage, do not go over 0x80 special values are\r\nFF - Long Stun, " +
-    "FC - Normal Stun, FB - Small Stun, FA - Slime (Quake/Powder), FD - Burn (Fire Ro" +
-    "d), FE - Freeze (Ice Rod)";
+            this.label16.Size = new System.Drawing.Size(73, 13);
+            this.label16.TabIndex = 78;
+            this.label16.Text = "05 (Sword L5)";
             // 
-            // label17
+            // label15
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(399, 390);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(210, 13);
-            this.label17.TabIndex = 3;
-            this.label17.Text = "01E800 <- Address of compressed damage";
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 94);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(73, 13);
+            this.label15.TabIndex = 77;
+            this.label15.Text = "03 (Sword L3)";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 68);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(73, 13);
+            this.label14.TabIndex = 76;
+            this.label14.Text = "02 (Sword L2)";
+            // 
+            // damage0cHexbox
+            // 
+            this.damage0cHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0cHexbox.Decimal = false;
+            this.damage0cHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0cHexbox.HexValue = 0;
+            this.damage0cHexbox.Location = new System.Drawing.Point(511, 13);
+            this.damage0cHexbox.MaxLength = 1;
+            this.damage0cHexbox.MaxValue = 15;
+            this.damage0cHexbox.MinValue = 0;
+            this.damage0cHexbox.Name = "damage0cHexbox";
+            this.damage0cHexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage0cHexbox.TabIndex = 75;
+            this.damage0cHexbox.Text = "0";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(417, 16);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(67, 13);
+            this.label13.TabIndex = 74;
+            this.label13.Text = "0C (Ice Rod)";
+            // 
+            // damage08Hexbox
+            // 
+            this.damage08Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage08Hexbox.Decimal = false;
+            this.damage08Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage08Hexbox.HexValue = 0;
+            this.damage08Hexbox.Location = new System.Drawing.Point(374, 13);
+            this.damage08Hexbox.MaxLength = 1;
+            this.damage08Hexbox.MaxValue = 15;
+            this.damage08Hexbox.MinValue = 0;
+            this.damage08Hexbox.Name = "damage08Hexbox";
+            this.damage08Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage08Hexbox.TabIndex = 73;
+            this.damage08Hexbox.Text = "0";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(280, 16);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(60, 13);
+            this.label12.TabIndex = 72;
+            this.label12.Text = "08 (Bombs)";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(143, 16);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(73, 13);
+            this.label11.TabIndex = 71;
+            this.label11.Text = "04 (Sword L4)";
+            // 
+            // damage04Hexbox
+            // 
+            this.damage04Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage04Hexbox.Decimal = false;
+            this.damage04Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage04Hexbox.HexValue = 0;
+            this.damage04Hexbox.Location = new System.Drawing.Point(237, 13);
+            this.damage04Hexbox.MaxLength = 1;
+            this.damage04Hexbox.MaxValue = 15;
+            this.damage04Hexbox.MinValue = 0;
+            this.damage04Hexbox.Name = "damage04Hexbox";
+            this.damage04Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage04Hexbox.TabIndex = 70;
+            this.damage04Hexbox.Text = "0";
+            // 
+            // damage03Hexbox
+            // 
+            this.damage03Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage03Hexbox.Decimal = false;
+            this.damage03Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage03Hexbox.HexValue = 0;
+            this.damage03Hexbox.Location = new System.Drawing.Point(100, 91);
+            this.damage03Hexbox.MaxLength = 1;
+            this.damage03Hexbox.MaxValue = 15;
+            this.damage03Hexbox.MinValue = 0;
+            this.damage03Hexbox.Name = "damage03Hexbox";
+            this.damage03Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage03Hexbox.TabIndex = 69;
+            this.damage03Hexbox.Text = "0";
+            // 
+            // damage02Hexbox
+            // 
+            this.damage02Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage02Hexbox.Decimal = false;
+            this.damage02Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage02Hexbox.HexValue = 0;
+            this.damage02Hexbox.Location = new System.Drawing.Point(100, 65);
+            this.damage02Hexbox.MaxLength = 1;
+            this.damage02Hexbox.MaxValue = 15;
+            this.damage02Hexbox.MinValue = 0;
+            this.damage02Hexbox.Name = "damage02Hexbox";
+            this.damage02Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage02Hexbox.TabIndex = 68;
+            this.damage02Hexbox.Text = "0";
+            // 
+            // damage01Hexbox
+            // 
+            this.damage01Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage01Hexbox.Decimal = false;
+            this.damage01Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage01Hexbox.HexValue = 0;
+            this.damage01Hexbox.Location = new System.Drawing.Point(100, 39);
+            this.damage01Hexbox.MaxLength = 1;
+            this.damage01Hexbox.MaxValue = 15;
+            this.damage01Hexbox.MinValue = 0;
+            this.damage01Hexbox.Name = "damage01Hexbox";
+            this.damage01Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage01Hexbox.TabIndex = 67;
+            this.damage01Hexbox.Text = "0";
+            // 
+            // damage00Hexbox
+            // 
+            this.damage00Hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage00Hexbox.Decimal = false;
+            this.damage00Hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage00Hexbox.HexValue = 0;
+            this.damage00Hexbox.Location = new System.Drawing.Point(100, 13);
+            this.damage00Hexbox.MaxLength = 1;
+            this.damage00Hexbox.MaxValue = 15;
+            this.damage00Hexbox.MinValue = 0;
+            this.damage00Hexbox.Name = "damage00Hexbox";
+            this.damage00Hexbox.Size = new System.Drawing.Size(29, 20);
+            this.damage00Hexbox.TabIndex = 66;
+            this.damage00Hexbox.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 40);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(73, 13);
+            this.label10.TabIndex = 1;
+            this.label10.Text = "01 (Sword L1)";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(82, 13);
+            this.label9.TabIndex = 0;
+            this.label9.Text = "00 (Boomerang)";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.damageClassControl1);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(192, 307);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(797, 296);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Damage classes (global same for all sprites)";
+            // 
+            // damageClassControl1
+            // 
+            this.damageClassControl1.Location = new System.Drawing.Point(6, 19);
+            this.damageClassControl1.Name = "damageClassControl1";
+            this.damageClassControl1.Size = new System.Drawing.Size(307, 277);
+            this.damageClassControl1.TabIndex = 0;
+            this.damageClassControl1.Load += new System.EventHandler(this.damageClassControl1_Load);
+            this.damageClassControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.damageClassControl1_Paint);
             // 
             // SpriteEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label17);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.sprsaveButton);
+            this.Controls.Add(this.label17);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.spriteListbox);
             this.Name = "SpriteEditor";
-            this.Size = new System.Drawing.Size(818, 557);
+            this.Size = new System.Drawing.Size(989, 657);
+            this.Load += new System.EventHandler(this.SpriteEditor_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.oamUpdown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.paletteUpdown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.hitboxUpdown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.inthitboxUpdown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.healthUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.damagetypeUpdown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.prizepackUpdown)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -710,61 +1139,85 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.NumericUpDown prizepackUpdown;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown damagetypeUpdown;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown healthUpDown;
-        private System.Windows.Forms.CheckBox checkBox9;
-        private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox alternatedamagesoundCheckbox;
-        private System.Windows.Forms.CheckBox fallinholesCheckbox;
-        private System.Windows.Forms.CheckBox persistCheckbox;
-        private System.Windows.Forms.CheckBox statisCheckbox;
-        private System.Windows.Forms.CheckBox isshieldblockableCheckbox;
-        private System.Windows.Forms.CheckBox dieslikeabossCheckbox;
-        private System.Windows.Forms.CheckBox nodeathanimationCheckbox;
-        private System.Windows.Forms.CheckBox drawshadowCheckbox;
-        private System.Windows.Forms.CheckBox childcoordinateCheckbox;
-        private System.Windows.Forms.CheckBox invulnerableCheckbox;
-        private System.Windows.Forms.CheckBox harmlessCheckbox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown inthitboxUpdown;
-        private System.Windows.Forms.NumericUpDown hitboxUpdown;
-        private System.Windows.Forms.NumericUpDown paletteUpdown;
-        private System.Windows.Forms.NumericUpDown oamUpdown;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox damagegroupCombobox;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ListBox spriteListbox;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private ExtraForms.Hexbox oamslotHexbox;
+        private ExtraForms.Hexbox paletteHexbox;
+        private ExtraForms.Hexbox hitboxHexbox;
+        private ExtraForms.Hexbox inthitHexbox;
+        private ExtraForms.Hexbox healthHexbox;
+        private ExtraForms.Hexbox damagetypeHexbox;
+        private ExtraForms.Hexbox prizepackHexbox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button sprsaveButton;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox harmlessCheckbox;
+        private System.Windows.Forms.CheckBox smallshadowCheckbox;
+        private System.Windows.Forms.CheckBox invulnerableCheckbox;
+        private System.Windows.Forms.CheckBox customdeathanimationCheckbox;
+        private System.Windows.Forms.CheckBox allowedbossfightCheckbox;
+        private System.Windows.Forms.CheckBox immunepowderCheckbox;
+        private System.Windows.Forms.CheckBox beetargetCheckbox;
+        private System.Windows.Forms.CheckBox recoilwithoutcollisionCheckbox;
+        private System.Windows.Forms.CheckBox invertpitbehaviorCheckbox;
+        private System.Windows.Forms.CheckBox dielikeabossCheckbox;
+        private System.Windows.Forms.CheckBox overrideslashimmunityCheckbox;
+        private System.Windows.Forms.CheckBox deflectarrowsCheckbox;
+        private System.Windows.Forms.CheckBox persistoffscreenowCheckbox;
+        private System.Windows.Forms.CheckBox ignoredbykillroomsCheckbox;
+        private System.Windows.Forms.CheckBox singlelayercollisionCheckbox;
+        private System.Windows.Forms.CheckBox graphicspageCheckbox;
+        private System.Windows.Forms.CheckBox drawshadowCheckbox;
+        private System.Windows.Forms.CheckBox immunearrowrumbleableCheckbox;
+        private System.Windows.Forms.CheckBox immuneswordhammerCheckbox;
+        private System.Windows.Forms.CheckBox projectilelikecollisionCheckbox;
+        private System.Windows.Forms.CheckBox dieoffscreenCheckbox;
+        private System.Windows.Forms.CheckBox activeoffscreenCheckbox;
+        private System.Windows.Forms.CheckBox bossdamagesoundCheckbox;
+        private System.Windows.Forms.CheckBox blockedbyshieldCheckbox;
+        private System.Windows.Forms.CheckBox checkforwaterCheckbox;
+        private System.Windows.Forms.CheckBox nopermadeathindungeonsCheckbox;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private ExtraForms.Hexbox damage04Hexbox;
+        private ExtraForms.Hexbox damage03Hexbox;
+        private ExtraForms.Hexbox damage02Hexbox;
+        private ExtraForms.Hexbox damage01Hexbox;
+        private ExtraForms.Hexbox damage00Hexbox;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private ExtraForms.Hexbox damage07Hexbox;
+        private System.Windows.Forms.Label label19;
+        private ExtraForms.Hexbox damage06Hexbox;
+        private System.Windows.Forms.Label label18;
+        private ExtraForms.Hexbox damage05Hexbox;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private ExtraForms.Hexbox damage0cHexbox;
+        private System.Windows.Forms.Label label13;
+        private ExtraForms.Hexbox damage08Hexbox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private ExtraForms.Hexbox damage0fHexbox;
+        private ExtraForms.Hexbox damage0eHexbox;
+        private ExtraForms.Hexbox damage0dHexbox;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private ExtraForms.Hexbox damage0bHexbox;
+        private ExtraForms.Hexbox damage0aHexbox;
+        private ExtraForms.Hexbox damage09Hexbox;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private DamageClassControl damageClassControl1;
     }
 }

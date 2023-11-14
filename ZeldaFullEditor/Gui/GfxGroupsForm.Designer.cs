@@ -1,4 +1,6 @@
-﻿namespace ZeldaFullEditor.Gui
+﻿using ZeldaFullEditor.Gui.ExtraForms;
+
+namespace ZeldaFullEditor.Gui
 {
     partial class GfxGroupsForm
     {
@@ -32,34 +34,34 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
             this.mainGroupbox = new System.Windows.Forms.GroupBox();
-            this.main8Box = new System.Windows.Forms.TextBox();
-            this.main7Box = new System.Windows.Forms.TextBox();
-            this.main6Box = new System.Windows.Forms.TextBox();
-            this.main5Box = new System.Windows.Forms.TextBox();
-            this.main4Box = new System.Windows.Forms.TextBox();
-            this.main3Box = new System.Windows.Forms.TextBox();
-            this.main2Box = new System.Windows.Forms.TextBox();
-            this.main1Box = new System.Windows.Forms.TextBox();
+            this.main8Box = new Hexbox();
+            this.main7Box = new Hexbox();
+            this.main6Box = new Hexbox();
+            this.main5Box = new Hexbox();
+            this.main4Box = new Hexbox();
+            this.main3Box = new Hexbox();
+            this.main2Box = new Hexbox();
+            this.main1Box = new Hexbox();
             this.mainBlocksetUpDown = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.roomTab = new System.Windows.Forms.TabPage();
             this.roomGroupbox = new System.Windows.Forms.GroupBox();
-            this.room4Box = new System.Windows.Forms.TextBox();
-            this.room3Box = new System.Windows.Forms.TextBox();
-            this.room2Box = new System.Windows.Forms.TextBox();
-            this.room1Box = new System.Windows.Forms.TextBox();
+            this.room4Box = new Hexbox();
+            this.room3Box = new Hexbox();
+            this.room2Box = new Hexbox();
+            this.room1Box = new Hexbox();
             this.roomUpDown = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spriteTab = new System.Windows.Forms.TabPage();
             this.spritesGroupbox = new System.Windows.Forms.GroupBox();
-            this.sprite4Box = new System.Windows.Forms.TextBox();
-            this.sprite3Box = new System.Windows.Forms.TextBox();
-            this.sprite2Box = new System.Windows.Forms.TextBox();
-            this.sprite1Box = new System.Windows.Forms.TextBox();
+            this.sprite4Box = new Hexbox();
+            this.sprite3Box = new Hexbox();
+            this.sprite2Box = new Hexbox();
+            this.sprite1Box = new Hexbox();
             this.spriteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -70,10 +72,10 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.palette4Box = new System.Windows.Forms.TextBox();
-            this.palette3Box = new System.Windows.Forms.TextBox();
-            this.palette2Box = new System.Windows.Forms.TextBox();
-            this.palette1Box = new System.Windows.Forms.TextBox();
+            this.palette4Box = new Hexbox();
+            this.palette3Box = new Hexbox();
+            this.palette2Box = new Hexbox();
+            this.palette1Box = new Hexbox();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
@@ -156,6 +158,8 @@
             this.main8Box.Name = "main8Box";
             this.main8Box.Size = new System.Drawing.Size(48, 20);
             this.main8Box.TabIndex = 7;
+            this.main8Box.MaxValue = 223;
+            this.main8Box.Digits = Hexbox.HexDigits.Two;
             this.main8Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main7Box
@@ -163,7 +167,9 @@
             this.main7Box.Location = new System.Drawing.Point(114, 45);
             this.main7Box.Name = "main7Box";
             this.main7Box.Size = new System.Drawing.Size(48, 20);
+            this.main7Box.MaxValue = 223;
             this.main7Box.TabIndex = 6;
+            this.main7Box.Digits = Hexbox.HexDigits.Two;
             this.main7Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main6Box
@@ -172,6 +178,8 @@
             this.main6Box.Name = "main6Box";
             this.main6Box.Size = new System.Drawing.Size(48, 20);
             this.main6Box.TabIndex = 5;
+            this.main6Box.MaxValue = 223;
+            this.main6Box.Digits = Hexbox.HexDigits.Two;
             this.main6Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main5Box
@@ -180,6 +188,8 @@
             this.main5Box.Name = "main5Box";
             this.main5Box.Size = new System.Drawing.Size(48, 20);
             this.main5Box.TabIndex = 4;
+            this.main5Box.MaxValue = 223;
+            this.main5Box.Digits = Hexbox.HexDigits.Two;
             this.main5Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main4Box
@@ -188,6 +198,8 @@
             this.main4Box.Name = "main4Box";
             this.main4Box.Size = new System.Drawing.Size(48, 20);
             this.main4Box.TabIndex = 3;
+            this.main4Box.MaxValue = 223;
+            this.main4Box.Digits = Hexbox.HexDigits.Two;
             this.main4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main3Box
@@ -196,6 +208,8 @@
             this.main3Box.Name = "main3Box";
             this.main3Box.Size = new System.Drawing.Size(48, 20);
             this.main3Box.TabIndex = 2;
+            this.main3Box.MaxValue = 223;
+            this.main3Box.Digits = Hexbox.HexDigits.Two;
             this.main3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main2Box
@@ -204,6 +218,8 @@
             this.main2Box.Name = "main2Box";
             this.main2Box.Size = new System.Drawing.Size(48, 20);
             this.main2Box.TabIndex = 1;
+            this.main2Box.MaxValue = 223;
+            this.main2Box.Digits = Hexbox.HexDigits.Two;
             this.main2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main1Box
@@ -212,6 +228,8 @@
             this.main1Box.Name = "main1Box";
             this.main1Box.Size = new System.Drawing.Size(48, 20);
             this.main1Box.TabIndex = 0;
+            this.main1Box.MaxValue = 223;
+            this.main1Box.Digits = Hexbox.HexDigits.Two;
             this.main1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // mainBlocksetUpDown
@@ -225,6 +243,7 @@
             this.mainBlocksetUpDown.Name = "mainBlocksetUpDown";
             this.mainBlocksetUpDown.Size = new System.Drawing.Size(118, 20);
             this.mainBlocksetUpDown.TabIndex = 9;
+            this.mainBlocksetUpDown.Increment = 0.33m;
             this.mainBlocksetUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
             // 
             // label2
@@ -293,6 +312,8 @@
             this.room4Box.TabIndex = 7;
             this.room4Box.Click += new System.EventHandler(this.allbox_click);
             this.room4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.room4Box.MaxValue = 223;
+            this.room4Box.Digits = Hexbox.HexDigits.Two;
             // 
             // room3Box
             // 
@@ -302,6 +323,8 @@
             this.room3Box.TabIndex = 6;
             this.room3Box.Click += new System.EventHandler(this.allbox_click);
             this.room3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.room3Box.MaxValue = 223;
+            this.room3Box.Digits = Hexbox.HexDigits.Two;
             // 
             // room2Box
             // 
@@ -311,6 +334,8 @@
             this.room2Box.TabIndex = 5;
             this.room2Box.Click += new System.EventHandler(this.allbox_click);
             this.room2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.room2Box.MaxValue = 223;
+            this.room2Box.Digits = Hexbox.HexDigits.Two;
             // 
             // room1Box
             // 
@@ -320,6 +345,8 @@
             this.room1Box.TabIndex = 4;
             this.room1Box.Click += new System.EventHandler(this.allbox_click);
             this.room1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.room1Box.MaxValue = 223;
+            this.room1Box.Digits = Hexbox.HexDigits.Two;
             // 
             // roomUpDown
             // 
@@ -389,6 +416,8 @@
             this.spritesGroupbox.Size = new System.Drawing.Size(223, 50);
             this.spritesGroupbox.TabIndex = 15;
             this.spritesGroupbox.TabStop = false;
+            
+
             this.spritesGroupbox.Text = "Values - 4 subset";
             // 
             // sprite4Box
@@ -399,6 +428,8 @@
             this.sprite4Box.TabIndex = 7;
             this.sprite4Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.sprite4Box.MaxValue = 255;
+            this.sprite4Box.Digits = Hexbox.HexDigits.Two;
             // 
             // sprite3Box
             // 
@@ -408,6 +439,8 @@
             this.sprite3Box.TabIndex = 6;
             this.sprite3Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.sprite3Box.MaxValue = 255;
+            this.sprite3Box.Digits = Hexbox.HexDigits.Two;
             // 
             // sprite2Box
             // 
@@ -417,6 +450,8 @@
             this.sprite2Box.TabIndex = 5;
             this.sprite2Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.sprite2Box.MaxValue = 255;
+            this.sprite2Box.Digits = Hexbox.HexDigits.Two;
             // 
             // sprite1Box
             // 
@@ -426,6 +461,8 @@
             this.sprite1Box.TabIndex = 4;
             this.sprite1Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.sprite1Box.MaxValue = 255;
+            this.sprite1Box.Digits = Hexbox.HexDigits.Two;
             // 
             // spriteUpDown
             // 
@@ -438,6 +475,7 @@
             this.spriteUpDown.Name = "spriteUpDown";
             this.spriteUpDown.Size = new System.Drawing.Size(118, 20);
             this.spriteUpDown.TabIndex = 14;
+            this.spriteUpDown.Increment = 0.33m;
             this.spriteUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
             // 
             // label5
@@ -543,6 +581,8 @@
             this.palette4Box.TabIndex = 7;
             this.palette4Box.Click += new System.EventHandler(this.allbox_click);
             this.palette4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.palette4Box.MaxValue = 255;
+            this.palette4Box.Digits = Hexbox.HexDigits.Two;
             // 
             // palette3Box
             // 
@@ -552,6 +592,8 @@
             this.palette3Box.TabIndex = 6;
             this.palette3Box.Click += new System.EventHandler(this.allbox_click);
             this.palette3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.palette3Box.MaxValue = 255;
+            this.palette3Box.Digits = Hexbox.HexDigits.Two;
             // 
             // palette2Box
             // 
@@ -561,6 +603,8 @@
             this.palette2Box.TabIndex = 5;
             this.palette2Box.Click += new System.EventHandler(this.allbox_click);
             this.palette2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.palette2Box.MaxValue = 255;
+            this.palette2Box.Digits = Hexbox.HexDigits.Two;
             // 
             // palette1Box
             // 
@@ -570,6 +614,8 @@
             this.palette1Box.TabIndex = 4;
             this.palette1Box.Click += new System.EventHandler(this.allbox_click);
             this.palette1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
+            this.palette1Box.MaxValue = 255;
+            this.palette1Box.Digits = Hexbox.HexDigits.Two;
             // 
             // paletteUpDown
             // 
@@ -583,6 +629,7 @@
             this.paletteUpDown.Size = new System.Drawing.Size(118, 20);
             this.paletteUpDown.TabIndex = 19;
             this.paletteUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
+            this.paletteUpDown.Increment = 0.33m;
             // 
             // label7
             // 
@@ -628,6 +675,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(61, 20);
             this.numericUpDown1.TabIndex = 6;
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.blocksetchanged);
+            this.numericUpDown1.Increment = 0.33m;
             // 
             // paletteRadioButton
             // 
@@ -732,37 +780,37 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown mainBlocksetUpDown;
         private System.Windows.Forms.GroupBox mainGroupbox;
-        private System.Windows.Forms.TextBox main8Box;
-        private System.Windows.Forms.TextBox main7Box;
-        private System.Windows.Forms.TextBox main6Box;
-        private System.Windows.Forms.TextBox main5Box;
-        private System.Windows.Forms.TextBox main4Box;
-        private System.Windows.Forms.TextBox main3Box;
-        private System.Windows.Forms.TextBox main2Box;
-        private System.Windows.Forms.TextBox main1Box;
+        private Hexbox main8Box;
+        private Hexbox main7Box;
+        private Hexbox main6Box;
+        private Hexbox main5Box;
+        private Hexbox main4Box;
+        private Hexbox main3Box;
+        private Hexbox main2Box;
+        private Hexbox main1Box;
         private System.Windows.Forms.GroupBox roomGroupbox;
-        private System.Windows.Forms.TextBox room4Box;
-        private System.Windows.Forms.TextBox room3Box;
-        private System.Windows.Forms.TextBox room2Box;
-        private System.Windows.Forms.TextBox room1Box;
+        private Hexbox room4Box;
+        private Hexbox room3Box;
+        private Hexbox room2Box;
+        private Hexbox room1Box;
         private System.Windows.Forms.NumericUpDown roomUpDown;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.GroupBox spritesGroupbox;
-        private System.Windows.Forms.TextBox sprite4Box;
-        private System.Windows.Forms.TextBox sprite3Box;
-        private System.Windows.Forms.TextBox sprite2Box;
-        private System.Windows.Forms.TextBox sprite1Box;
+        private Hexbox sprite4Box;
+        private Hexbox sprite3Box;
+        private Hexbox sprite2Box;
+        private Hexbox sprite1Box;
         private System.Windows.Forms.NumericUpDown spriteUpDown;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox palette4Box;
-        private System.Windows.Forms.TextBox palette3Box;
-        private System.Windows.Forms.TextBox palette2Box;
-        private System.Windows.Forms.TextBox palette1Box;
+        private Hexbox palette4Box;
+        private Hexbox palette3Box;
+        private Hexbox palette2Box;
+        private Hexbox palette1Box;
         private System.Windows.Forms.NumericUpDown paletteUpDown;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.PictureBox pictureBox4;

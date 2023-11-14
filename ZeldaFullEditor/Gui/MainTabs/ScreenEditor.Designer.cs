@@ -108,6 +108,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dungmapPicturebox = new System.Windows.Forms.PictureBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.importObjButton = new System.Windows.Forms.Button();
+            this.exportObjButton = new System.Windows.Forms.Button();
             this.crystalRadio = new System.Windows.Forms.RadioButton();
             this.triforceRadio = new System.Windows.Forms.RadioButton();
             this.label13 = new System.Windows.Forms.Label();
@@ -116,8 +118,6 @@
             this.triforcebox2 = new System.Windows.Forms.PictureBox();
             this.triforceLabel1 = new System.Windows.Forms.Label();
             this.triforcebox1 = new System.Windows.Forms.PictureBox();
-            this.exportObjButton = new System.Windows.Forms.Button();
-            this.importObjButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.extraSpritesNumBox)).BeginInit();
@@ -200,6 +200,7 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Titlescreen";
             this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // grid3CheckBox
             // 
@@ -1096,6 +1097,26 @@
             this.tabPage4.Text = "Triforce/Crystal Editor";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // importObjButton
+            // 
+            this.importObjButton.Location = new System.Drawing.Point(28, 358);
+            this.importObjButton.Name = "importObjButton";
+            this.importObjButton.Size = new System.Drawing.Size(104, 23);
+            this.importObjButton.TabIndex = 9;
+            this.importObjButton.Text = "Import .obj";
+            this.importObjButton.UseVisualStyleBackColor = true;
+            this.importObjButton.Click += new System.EventHandler(this.importObjButton_Click);
+            // 
+            // exportObjButton
+            // 
+            this.exportObjButton.Location = new System.Drawing.Point(28, 329);
+            this.exportObjButton.Name = "exportObjButton";
+            this.exportObjButton.Size = new System.Drawing.Size(104, 23);
+            this.exportObjButton.TabIndex = 8;
+            this.exportObjButton.Text = "Export as .obj";
+            this.exportObjButton.UseVisualStyleBackColor = true;
+            this.exportObjButton.Click += new System.EventHandler(this.exportObjButton_Click);
+            // 
             // crystalRadio
             // 
             this.crystalRadio.AutoSize = true;
@@ -1188,26 +1209,6 @@
             this.triforcebox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseDown);
             this.triforcebox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseMove);
             this.triforcebox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseUp);
-            // 
-            // exportObjButton
-            // 
-            this.exportObjButton.Location = new System.Drawing.Point(28, 329);
-            this.exportObjButton.Name = "exportObjButton";
-            this.exportObjButton.Size = new System.Drawing.Size(104, 23);
-            this.exportObjButton.TabIndex = 8;
-            this.exportObjButton.Text = "Export as .obj";
-            this.exportObjButton.UseVisualStyleBackColor = true;
-            this.exportObjButton.Click += new System.EventHandler(this.exportObjButton_Click);
-            // 
-            // importObjButton
-            // 
-            this.importObjButton.Location = new System.Drawing.Point(28, 358);
-            this.importObjButton.Name = "importObjButton";
-            this.importObjButton.Size = new System.Drawing.Size(104, 23);
-            this.importObjButton.TabIndex = 9;
-            this.importObjButton.Text = "Import .obj";
-            this.importObjButton.UseVisualStyleBackColor = true;
-            this.importObjButton.Click += new System.EventHandler(this.importObjButton_Click);
             // 
             // ScreenEditor
             // 

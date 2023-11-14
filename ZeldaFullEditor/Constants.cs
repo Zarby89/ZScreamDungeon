@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -595,7 +596,22 @@ namespace ZeldaFullEditor
         public static int customCollisionRoomPointers = 0x128090; // Array 3 bytes per room
         public static int customCollisionDataPosition = 0x128450; // A bunch of FFFF ended arrays
 
-        // ===========================================================================================
+
+        //===========================================================================================
+        // Sprite Properties
+        //===========================================================================================
+        public static int Sprite_0DB080 = 0x06B080;
+        public static int Sprite_Health = 0x06B173;
+        public static int Sprite_0DB266 = 0x06B266;
+        public static int Sprite_0DB359 = 0x06B359;
+        public static int Sprite_0DB44C = 0x06B44C;
+        public static int Sprite_0DB53F = 0x06B53F;
+        public static int Sprite_0DB632 = 0x06B632;
+        public static int Sprite_0DB725 = 0x06B725;
+        public static int Sprite_DamageTaken = 0x1E800;
+        public static int DamageClass = 0x06B8F1;
+
+        //===========================================================================================
         // End Main Addresses
         // ===========================================================================================
 

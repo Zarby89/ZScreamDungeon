@@ -258,6 +258,7 @@ namespace ZeldaFullEditor
             this.textPage = new System.Windows.Forms.TabPage();
             this.ScreenEditor = new System.Windows.Forms.TabPage();
             this.MusicEditor = new System.Windows.Forms.TabPage();
+            this.SpriteEditor = new System.Windows.Forms.TabPage();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -265,6 +266,7 @@ namespace ZeldaFullEditor
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToNewROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildROMwithASMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -290,6 +292,7 @@ namespace ZeldaFullEditor
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadNamesFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.memoryManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -308,6 +311,8 @@ namespace ZeldaFullEditor
             this.showRoomsInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectedObjectInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoDoorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportSelectedRoomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importDungeonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dungeonViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1187,6 +1192,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_Blockset
             // 
             this.EntranceProperties_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_Blockset.Decimal = false;
             this.EntranceProperties_Blockset.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperties_Blockset.HexValue = 0;
             this.EntranceProperties_Blockset.Location = new System.Drawing.Point(174, 29);
@@ -1203,6 +1209,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_Music
             // 
             this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_Music.Decimal = false;
             this.EntranceProperties_Music.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperties_Music.HexValue = 0;
             this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
@@ -1219,6 +1226,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_DungeonID
             // 
             this.EntranceProperties_DungeonID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_DungeonID.Decimal = false;
             this.EntranceProperties_DungeonID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperties_DungeonID.HexValue = 0;
             this.EntranceProperties_DungeonID.Location = new System.Drawing.Point(62, 29);
@@ -1235,6 +1243,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_Exit
             // 
             this.EntranceProperties_Exit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_Exit.Decimal = false;
             this.EntranceProperties_Exit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperties_Exit.HexValue = 0;
             this.EntranceProperties_Exit.Location = new System.Drawing.Point(228, 198);
@@ -1251,6 +1260,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_CameraTriggerY
             // 
             this.EntranceProperties_CameraTriggerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_CameraTriggerY.Decimal = false;
             this.EntranceProperties_CameraTriggerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.EntranceProperties_CameraTriggerY.HexValue = 0;
             this.EntranceProperties_CameraTriggerY.Location = new System.Drawing.Point(131, 142);
@@ -1267,6 +1277,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_CameraTriggerX
             // 
             this.EntranceProperties_CameraTriggerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_CameraTriggerX.Decimal = false;
             this.EntranceProperties_CameraTriggerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.EntranceProperties_CameraTriggerX.HexValue = 0;
             this.EntranceProperties_CameraTriggerX.Location = new System.Drawing.Point(68, 142);
@@ -1301,6 +1312,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_CameraX
             // 
             this.EntranceProperties_CameraX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_CameraX.Decimal = false;
             this.EntranceProperties_CameraX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.EntranceProperties_CameraX.HexValue = 0;
             this.EntranceProperties_CameraX.Location = new System.Drawing.Point(68, 117);
@@ -1317,6 +1329,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_CameraY
             // 
             this.EntranceProperties_CameraY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_CameraY.Decimal = false;
             this.EntranceProperties_CameraY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.EntranceProperties_CameraY.HexValue = 0;
             this.EntranceProperties_CameraY.Location = new System.Drawing.Point(131, 117);
@@ -1333,6 +1346,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_PlayerY
             // 
             this.EntranceProperties_PlayerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_PlayerY.Decimal = false;
             this.EntranceProperties_PlayerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.EntranceProperties_PlayerY.HexValue = 0;
             this.EntranceProperties_PlayerY.Location = new System.Drawing.Point(131, 93);
@@ -1349,6 +1363,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_PlayerX
             // 
             this.EntranceProperties_PlayerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_PlayerX.Decimal = false;
             this.EntranceProperties_PlayerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.EntranceProperties_PlayerX.HexValue = 0;
             this.EntranceProperties_PlayerX.Location = new System.Drawing.Point(68, 93);
@@ -1383,6 +1398,7 @@ namespace ZeldaFullEditor
             // EntranceProperties_RoomID
             // 
             this.EntranceProperties_RoomID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_RoomID.Decimal = false;
             this.EntranceProperties_RoomID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
             this.EntranceProperties_RoomID.HexValue = 0;
             this.EntranceProperties_RoomID.Location = new System.Drawing.Point(6, 29);
@@ -1422,6 +1438,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryFE
             // 
             this.EntranceProperty_BoundaryFE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryFE.Decimal = false;
             this.EntranceProperty_BoundaryFE.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryFE.HexValue = 0;
             this.EntranceProperty_BoundaryFE.Location = new System.Drawing.Point(225, 61);
@@ -1438,6 +1455,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryFW
             // 
             this.EntranceProperty_BoundaryFW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryFW.Decimal = false;
             this.EntranceProperty_BoundaryFW.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryFW.HexValue = 0;
             this.EntranceProperty_BoundaryFW.Location = new System.Drawing.Point(169, 61);
@@ -1454,6 +1472,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryQE
             // 
             this.EntranceProperty_BoundaryQE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryQE.Decimal = false;
             this.EntranceProperty_BoundaryQE.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryQE.HexValue = 0;
             this.EntranceProperty_BoundaryQE.Location = new System.Drawing.Point(225, 35);
@@ -1470,6 +1489,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryQW
             // 
             this.EntranceProperty_BoundaryQW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryQW.Decimal = false;
             this.EntranceProperty_BoundaryQW.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryQW.HexValue = 0;
             this.EntranceProperty_BoundaryQW.Location = new System.Drawing.Point(169, 35);
@@ -1486,6 +1506,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryFS
             // 
             this.EntranceProperty_BoundaryFS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryFS.Decimal = false;
             this.EntranceProperty_BoundaryFS.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryFS.HexValue = 0;
             this.EntranceProperty_BoundaryFS.Location = new System.Drawing.Point(116, 61);
@@ -1502,6 +1523,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryFN
             // 
             this.EntranceProperty_BoundaryFN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryFN.Decimal = false;
             this.EntranceProperty_BoundaryFN.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryFN.HexValue = 0;
             this.EntranceProperty_BoundaryFN.Location = new System.Drawing.Point(60, 61);
@@ -1518,6 +1540,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryQS
             // 
             this.EntranceProperty_BoundaryQS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryQS.Decimal = false;
             this.EntranceProperty_BoundaryQS.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryQS.HexValue = 0;
             this.EntranceProperty_BoundaryQS.Location = new System.Drawing.Point(116, 35);
@@ -1534,6 +1557,7 @@ namespace ZeldaFullEditor
             // EntranceProperty_BoundaryQN
             // 
             this.EntranceProperty_BoundaryQN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperty_BoundaryQN.Decimal = false;
             this.EntranceProperty_BoundaryQN.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.EntranceProperty_BoundaryQN.HexValue = 0;
             this.EntranceProperty_BoundaryQN.Location = new System.Drawing.Point(60, 35);
@@ -2449,6 +2473,7 @@ namespace ZeldaFullEditor
             // RoomProperty_DestinationStair4
             // 
             this.RoomProperty_DestinationStair4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_DestinationStair4.Decimal = false;
             this.RoomProperty_DestinationStair4.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_DestinationStair4.HexValue = 0;
             this.RoomProperty_DestinationStair4.Location = new System.Drawing.Point(428, 102);
@@ -2465,6 +2490,7 @@ namespace ZeldaFullEditor
             // RoomProperty_DestinationStair3
             // 
             this.RoomProperty_DestinationStair3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_DestinationStair3.Decimal = false;
             this.RoomProperty_DestinationStair3.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_DestinationStair3.HexValue = 0;
             this.RoomProperty_DestinationStair3.Location = new System.Drawing.Point(428, 82);
@@ -2481,6 +2507,7 @@ namespace ZeldaFullEditor
             // RoomProperty_DestinationStair2
             // 
             this.RoomProperty_DestinationStair2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_DestinationStair2.Decimal = false;
             this.RoomProperty_DestinationStair2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_DestinationStair2.HexValue = 0;
             this.RoomProperty_DestinationStair2.Location = new System.Drawing.Point(428, 62);
@@ -2497,6 +2524,7 @@ namespace ZeldaFullEditor
             // RoomProperty_DestinationStair1
             // 
             this.RoomProperty_DestinationStair1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_DestinationStair1.Decimal = false;
             this.RoomProperty_DestinationStair1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_DestinationStair1.HexValue = 0;
             this.RoomProperty_DestinationStair1.Location = new System.Drawing.Point(428, 42);
@@ -2513,6 +2541,7 @@ namespace ZeldaFullEditor
             // RoomProperty_DestinationPit
             // 
             this.RoomProperty_DestinationPit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_DestinationPit.Decimal = false;
             this.RoomProperty_DestinationPit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_DestinationPit.HexValue = 0;
             this.RoomProperty_DestinationPit.Location = new System.Drawing.Point(428, 22);
@@ -2529,6 +2558,7 @@ namespace ZeldaFullEditor
             // RoomProperty_MessageID
             // 
             this.RoomProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_MessageID.Decimal = false;
             this.RoomProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
             this.RoomProperty_MessageID.HexValue = 0;
             this.RoomProperty_MessageID.Location = new System.Drawing.Point(300, 22);
@@ -2545,6 +2575,7 @@ namespace ZeldaFullEditor
             // RoomProperty_SpriteSet
             // 
             this.RoomProperty_SpriteSet.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_SpriteSet.Decimal = false;
             this.RoomProperty_SpriteSet.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_SpriteSet.HexValue = 0;
             this.RoomProperty_SpriteSet.Location = new System.Drawing.Point(245, 22);
@@ -2561,6 +2592,7 @@ namespace ZeldaFullEditor
             // RoomProperty_Palette
             // 
             this.RoomProperty_Palette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_Palette.Decimal = false;
             this.RoomProperty_Palette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_Palette.HexValue = 0;
             this.RoomProperty_Palette.Location = new System.Drawing.Point(246, 62);
@@ -2577,6 +2609,7 @@ namespace ZeldaFullEditor
             // RoomProperty_Floor2
             // 
             this.RoomProperty_Floor2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_Floor2.Decimal = false;
             this.RoomProperty_Floor2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_Floor2.HexValue = 0;
             this.RoomProperty_Floor2.Location = new System.Drawing.Point(190, 62);
@@ -2593,6 +2626,7 @@ namespace ZeldaFullEditor
             // RoomProperty_Floor1
             // 
             this.RoomProperty_Floor1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_Floor1.Decimal = false;
             this.RoomProperty_Floor1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_Floor1.HexValue = 0;
             this.RoomProperty_Floor1.Location = new System.Drawing.Point(135, 62);
@@ -2609,6 +2643,7 @@ namespace ZeldaFullEditor
             // RoomProperty_Blockset
             // 
             this.RoomProperty_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_Blockset.Decimal = false;
             this.RoomProperty_Blockset.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.RoomProperty_Blockset.HexValue = 0;
             this.RoomProperty_Blockset.Location = new System.Drawing.Point(190, 22);
@@ -2625,6 +2660,7 @@ namespace ZeldaFullEditor
             // RoomProperty_Layout
             // 
             this.RoomProperty_Layout.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.RoomProperty_Layout.Decimal = false;
             this.RoomProperty_Layout.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
             this.RoomProperty_Layout.HexValue = 0;
             this.RoomProperty_Layout.Location = new System.Drawing.Point(135, 22);
@@ -2991,6 +3027,7 @@ namespace ZeldaFullEditor
             this.editorsTabControl.Controls.Add(this.textPage);
             this.editorsTabControl.Controls.Add(this.ScreenEditor);
             this.editorsTabControl.Controls.Add(this.MusicEditor);
+            this.editorsTabControl.Controls.Add(this.SpriteEditor);
             this.editorsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.editorsTabControl.Enabled = false;
             this.editorsTabControl.Location = new System.Drawing.Point(0, 739);
@@ -3056,6 +3093,15 @@ namespace ZeldaFullEditor
             this.MusicEditor.Text = "Music Viewer";
             this.MusicEditor.UseVisualStyleBackColor = true;
             // 
+            // SpriteEditor
+            // 
+            this.SpriteEditor.Location = new System.Drawing.Point(4, 25);
+            this.SpriteEditor.Name = "SpriteEditor";
+            this.SpriteEditor.Size = new System.Drawing.Size(1169, 0);
+            this.SpriteEditor.TabIndex = 7;
+            this.SpriteEditor.Text = "Sprite Properties";
+            this.SpriteEditor.UseVisualStyleBackColor = true;
+            // 
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
@@ -3089,7 +3135,8 @@ namespace ZeldaFullEditor
             this.recentROMToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveasToolStripMenuItem,
-            this.saveToNewROMToolStripMenuItem});
+            this.saveToNewROMToolStripMenuItem,
+            this.buildROMwithASMToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -3099,14 +3146,14 @@ namespace ZeldaFullEditor
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.openToolStripMenuItem.Text = "Open ROM…";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // recentROMToolStripMenuItem
             // 
             this.recentROMToolStripMenuItem.Name = "recentROMToolStripMenuItem";
-            this.recentROMToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.recentROMToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.recentROMToolStripMenuItem.Text = "Open recent ROM…";
             // 
             // saveToolStripMenuItem
@@ -3114,7 +3161,7 @@ namespace ZeldaFullEditor
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.saveToolStripMenuItem.Text = "Save ROM";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
@@ -3122,7 +3169,7 @@ namespace ZeldaFullEditor
             // 
             this.saveasToolStripMenuItem.Enabled = false;
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
-            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.saveasToolStripMenuItem.Text = "Save ROM as…";
             this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
@@ -3130,9 +3177,16 @@ namespace ZeldaFullEditor
             // 
             this.saveToNewROMToolStripMenuItem.Enabled = false;
             this.saveToNewROMToolStripMenuItem.Name = "saveToNewROMToolStripMenuItem";
-            this.saveToNewROMToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.saveToNewROMToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.saveToNewROMToolStripMenuItem.Text = "Save to New ROM";
             this.saveToNewROMToolStripMenuItem.Click += new System.EventHandler(this.SaveToNewROMToolStripMenuItem_Click);
+            // 
+            // buildROMwithASMToolStripMenuItem
+            // 
+            this.buildROMwithASMToolStripMenuItem.Name = "buildROMwithASMToolStripMenuItem";
+            this.buildROMwithASMToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.buildROMwithASMToolStripMenuItem.Text = "Build ROM (with ASM)";
+            this.buildROMwithASMToolStripMenuItem.Click += new System.EventHandler(this.buildROMwithASMToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -3314,7 +3368,8 @@ namespace ZeldaFullEditor
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveSettingsToolStripMenuItem,
             this.loadNamesFileToolStripMenuItem,
-            this.memoryManagementToolStripMenuItem});
+            this.memoryManagementToolStripMenuItem,
+            this.pluginsToolStripMenuItem});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -3342,6 +3397,13 @@ namespace ZeldaFullEditor
             this.memoryManagementToolStripMenuItem.Text = "Memory Management";
             this.memoryManagementToolStripMenuItem.Click += new System.EventHandler(this.MemoryManagementToolStripMenuItem_Click);
             // 
+            // pluginsToolStripMenuItem
+            // 
+            this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
+            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.pluginsToolStripMenuItem.Text = "ROM Patches";
+            this.pluginsToolStripMenuItem.Click += new System.EventHandler(this.pluginsToolStripMenuItem_Click);
+            // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3357,7 +3419,7 @@ namespace ZeldaFullEditor
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
             this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.runToolStripMenuItem.Text = "Run…";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.RunToolStripMenuItem_Click);
             // 
@@ -3365,7 +3427,7 @@ namespace ZeldaFullEditor
             // 
             this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
             this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.debugRunToolStripMenuItem.Text = "Debug Run…";
             // 
             // roomToolStripMenuItem
@@ -3384,7 +3446,9 @@ namespace ZeldaFullEditor
             this.importRoomToolStripMenuItem,
             this.showRoomsInHexToolStripMenuItem,
             this.selectedObjectInHexToolStripMenuItem,
-            this.autoDoorsToolStripMenuItem});
+            this.autoDoorsToolStripMenuItem,
+            this.exportSelectedRoomsToolStripMenuItem,
+            this.importDungeonToolStripMenuItem});
             this.roomToolStripMenuItem.Enabled = false;
             this.roomToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.roomToolStripMenuItem.Name = "roomToolStripMenuItem";
@@ -3489,6 +3553,20 @@ namespace ZeldaFullEditor
             this.autoDoorsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.autoDoorsToolStripMenuItem.Text = "Auto. Doors";
             this.autoDoorsToolStripMenuItem.Click += new System.EventHandler(this.AutoDoorButton_Click_1);
+            // 
+            // exportSelectedRoomsToolStripMenuItem
+            // 
+            this.exportSelectedRoomsToolStripMenuItem.Name = "exportSelectedRoomsToolStripMenuItem";
+            this.exportSelectedRoomsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.exportSelectedRoomsToolStripMenuItem.Text = "Export Dungeon";
+            this.exportSelectedRoomsToolStripMenuItem.Click += new System.EventHandler(this.exportSelectedRoomsToolStripMenuItem_Click);
+            // 
+            // importDungeonToolStripMenuItem
+            // 
+            this.importDungeonToolStripMenuItem.Name = "importDungeonToolStripMenuItem";
+            this.importDungeonToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.importDungeonToolStripMenuItem.Text = "Import Dungeon";
+            this.importDungeonToolStripMenuItem.Click += new System.EventHandler(this.importDungeonToolStripMenuItem_Click);
             // 
             // dungeonViewToolStripMenuItem
             // 
@@ -4402,21 +4480,21 @@ namespace ZeldaFullEditor
             // howToUseToolStripMenuItem
             // 
             this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.howToUseToolStripMenuItem.Text = "How to Use";
             this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.HowToUseToolStripMenuItem_Click);
             // 
             // patchNotesToolStripMenuItem
             // 
             this.patchNotesToolStripMenuItem.Name = "patchNotesToolStripMenuItem";
-            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.patchNotesToolStripMenuItem.Text = "Patch Notes";
             this.patchNotesToolStripMenuItem.Click += new System.EventHandler(this.PatchNotesToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -5040,6 +5118,11 @@ namespace ZeldaFullEditor
 		public System.Windows.Forms.Timer loadTimer;
 		private System.Windows.Forms.ToolStripMenuItem saveToNewROMToolStripMenuItem;
 		private System.Windows.Forms.Panel panel4;
-	}
+        private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildROMwithASMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportSelectedRoomsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importDungeonToolStripMenuItem;
+        private System.Windows.Forms.TabPage SpriteEditor;
+    }
 }
 

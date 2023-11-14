@@ -66,6 +66,15 @@ namespace ZeldaFullEditor.Gui
         {
             selectedSheet = (e.Y / 64);
             allgfxPicturebox.Refresh();
+            if (GFX.isbpp3[selectedSheet])
+            {
+                selectedLabel.Text = "Sheet Selected : " + selectedSheet.ToString() + " (3bpp)";
+            }
+            else
+            {
+                selectedLabel.Text = "Sheet Selected : " + selectedSheet.ToString() + " (2bpp)";
+            }
+            
         }
 
         private void allgfxPicturebox_Paint(object sender, PaintEventArgs e)
