@@ -65,14 +65,15 @@ namespace ZeldaFullEditor
             ROM.StartBlockLogWriting("Room Headers", headerPointer);
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
-                int newPointerAddress = (Utils.PcToSnes((headerPointer + 640) + (i * 14)));
-                ROM.WriteShort((headerPointer) + (i * 2), newPointerAddress, true, "Header " + i.ToString("D3") + " Pointer");
-                SaveHeader((headerPointer + 640), i);
+                int newPointerAddress = Utils.PcToSnes(headerPointer + 640 + (i * 14));
+                ROM.WriteShort(headerPointer + (i * 2), newPointerAddress, true, "Header " + i.ToString("D3") + " Pointer");
+                SaveHeader(headerPointer + 640, i);
             }
 
             ROM.EndBlockLogWriting();
 
             ROM.StartBlockLogWriting("Rooms Messages", Constants.messages_id_dungeon);
+
             //ROM.SaveLogs();
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
@@ -85,7 +86,7 @@ namespace ZeldaFullEditor
 
         public int GetLongPointerSNESToPC(int pos)
         {
-            return (Utils.SnesToPc(ROM.ReadLong(pos)));
+            return Utils.SnesToPc(ROM.ReadLong(pos));
         }
 
         /// <summary>
@@ -172,7 +173,7 @@ namespace ZeldaFullEditor
 
             Console.WriteLine(room_pointer + " " + data_pointer);
 
-            //for ( int i = 0; i < Constants.NumberOfRooms; i++ )
+            // for ( int i = 0; i < Constants.NumberOfRooms; i++ )
             foreach (Room room in this.AllRooms)
             {
                 // @zarby: for each room -> ROM.WriteLong(0x100000), Utils.PcToSnes(ptrsCounter))
@@ -589,8 +590,8 @@ namespace ZeldaFullEditor
             this.roomTilesPointers[roomId] = this.saddr;
             int daddr = Utils.PcToSnes(position + doorOffset);
             this.roomDoorsPointers[roomId] = daddr;
-            // Update the index.
 
+            // Update the index.
             ROM.StartBlockLogWriting("Room " + roomId.ToString("D3") + " Tiles Data", position);
             if (ROM.AdvancedLogs)
             {
@@ -646,7 +647,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            //Console.WriteLine("Nbr of chests : " + chestCount);
+            // Console.WriteLine("Nbr of chests : " + chestCount);
             if (chestCount > 168)
             {
                 return true; // False = no error.
@@ -682,13 +683,13 @@ namespace ZeldaFullEditor
                         this.AllRooms[i].pot_items[j].bg2 = true;
                     }
 
-                    int xy = (((this.AllRooms[i].pot_items[j].y * 64) + this.AllRooms[i].pot_items[j].x) << 1);
+                    int xy = ((this.AllRooms[i].pot_items[j].y * 64) + this.AllRooms[i].pot_items[j].x) << 1;
 
                     byte[] data = new byte[3]
                     {
                        (byte)(xy & 0xFF),
                        (byte)(((xy >> 8) & 0xFF) + (this.AllRooms[i].pot_items[j].bg2 ? 0x20 : 0x00)),
-                       this.AllRooms[i].pot_items[j].id
+                       this.AllRooms[i].pot_items[j].id,
                     };
                     ROM.Write(pos, data, true, "Items Data for Room " + i.ToString("D3"));
                     pos += 3;
@@ -730,6 +731,7 @@ namespace ZeldaFullEditor
             try
             {
                 int pos = 0x282;
+
                 // Set empty room.
                 sprites_buffer[0x280] = 0x00;
                 sprites_buffer[0x281] = 0xFF;
@@ -738,13 +740,13 @@ namespace ZeldaFullEditor
                 {
                     if (i >= Constants.NumberOfRooms || this.AllRooms[i].sprites.Count <= 0)
                     {
-                        sprites_buffer[(i * 2)] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF));
-                        sprites_buffer[(i * 2) + 1] = (byte)(((Utils.SnesToPc(spritePointer + 0x280)) >> 8) & 0xFF);
+                        sprites_buffer[i * 2] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF);
+                        sprites_buffer[(i * 2) + 1] = (byte)((Utils.SnesToPc(spritePointer + 0x280) >> 8) & 0xFF);
                     }
                     else
                     {
                         // Pointer:
-                        sprites_buffer[(i * 2)] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF));
+                        sprites_buffer[i * 2] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF);
                         sprites_buffer[(i * 2) + 1] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) >> 8) & 0xFF);
 
                         sprites_buffer[pos++] = (byte)(this.AllRooms[i].sortsprites ? 0x01 : 0x00); // Unknown byte??
@@ -753,7 +755,7 @@ namespace ZeldaFullEditor
                         {
                             sprites_buffer[pos++] = (byte)((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
                             sprites_buffer[pos++] = (byte)(((spr.subtype & 0x07) << 5) + spr.x);
-                            sprites_buffer[pos++] = (spr.id);
+                            sprites_buffer[pos++] = spr.id;
 
                             // If current sprite hold a key then save it before.
                             if (spr.keyDrop == 1)
@@ -791,17 +793,17 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 78; i++)
             {
-                ROM.Write(Constants.OWExitMapId + (i), (byte)((scene.ow.AllExits[i].MapID) & 0xFF), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXScroll + (i * 2), ((scene.ow.AllExits[i].XScroll)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYScroll + (i * 2), ((scene.ow.AllExits[i].YScroll)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXCamera + (i * 2), ((scene.ow.AllExits[i].CameraX)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYCamera + (i * 2), ((scene.ow.AllExits[i].CameraY)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitVram + (i * 2), ((scene.ow.AllExits[i].VRAMLocation)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitRoomId + (i * 2), ((scene.ow.AllExits[i].RoomID)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitXPlayer + (i * 2), ((scene.ow.AllExits[i].PlayerX)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitYPlayer + (i * 2), ((scene.ow.AllExits[i].PlayerY)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitDoorType1 + (i * 2), ((scene.ow.AllExits[i].DoorType1)), WriteType.ExitProperties);
-                ROM.WriteShort(Constants.OWExitDoorType2 + (i * 2), ((scene.ow.AllExits[i].DoorType2)), WriteType.ExitProperties);
+                ROM.Write(Constants.OWExitMapId + i, (byte)(scene.ow.AllExits[i].MapID & 0xFF), WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXScroll + (i * 2), scene.ow.AllExits[i].XScroll, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYScroll + (i * 2), scene.ow.AllExits[i].YScroll, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXCamera + (i * 2), scene.ow.AllExits[i].CameraX, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYCamera + (i * 2), scene.ow.AllExits[i].CameraY, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitVram + (i * 2), scene.ow.AllExits[i].VRAMLocation, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitRoomId + (i * 2), scene.ow.AllExits[i].RoomID, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitXPlayer + (i * 2), scene.ow.AllExits[i].PlayerX, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitYPlayer + (i * 2), scene.ow.AllExits[i].PlayerY, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitDoorType1 + (i * 2), scene.ow.AllExits[i].DoorType1, WriteType.ExitProperties);
+                ROM.WriteShort(Constants.OWExitDoorType2 + (i * 2), scene.ow.AllExits[i].DoorType2, WriteType.ExitProperties);
             }
 
             ROM.EndBlockLogWriting();
@@ -827,6 +829,7 @@ namespace ZeldaFullEditor
             }
 
             ROM.EndBlockLogWriting();
+
             //WriteLog("Overworld Entrances data loaded properly", Color.Green);
             return false;
         }
@@ -1177,6 +1180,7 @@ namespace ZeldaFullEditor
 
             int ptrStart = 0x77657 + 0x20;
             int snesptrstart = Utils.PcToSnes(ptrStart);
+
             // 10, 16,
             ROM.WriteLong(0x77657 + 10, snesptrstart, true, "Overlay Pointerp1");
             ROM.WriteLong(0x77657 + 16, snesptrstart + 2, true, "Overlay Pointerp2");
@@ -1386,8 +1390,8 @@ namespace ZeldaFullEditor
 
                     if (this.compareArray(b, this.mapDatap2[j]))
                     {
-                        this.mapPointers2id[i] = j;
                         // Reuse pointer id j for P2 (b)
+                        this.mapPointers2id[i] = j;
                     }
                 }
 
@@ -1720,6 +1724,7 @@ namespace ZeldaFullEditor
                     }
 
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2), 0x0040);
+
                     // If the area to the right is a large map, we don't need to add an offset to it. otherwise leave it the same.
                     // Just to make sure where don't try to read outside of the array.
                     if (i + 1 < 64 && parentxPos != 7)
@@ -1736,6 +1741,7 @@ namespace ZeldaFullEditor
                     }
 
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2), 0x1800);
+
                     // If the area above is a large map, we don't need to add an offset to it. otherwise leave it the same.
                     // Just to make sure where don't try to read outside of the array.
                     if (i - 8 >= 0)
@@ -1752,6 +1758,7 @@ namespace ZeldaFullEditor
                     }
 
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2), 0x1000);
+
                     // If the area below is a large map, we don't need to add an offset to it. otherwise leave it the same.
                     // Just to make sure where don't try to read outside of the array.
                     if (i + 8 < 64)
@@ -1770,8 +1777,8 @@ namespace ZeldaFullEditor
                     ROM.WriteShort(Constants.transition_target_north + (i * 2), (ushort)((yPos * 0x200) - 0xE0));
                     ROM.WriteShort(Constants.transition_target_west + (i * 2), (ushort)((xPos * 0x200) - 0x100));
 
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), (xPos * 0x200));
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), (yPos * 0x200));
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), xPos * 0x200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), yPos * 0x200);
 
                     checkedMap.Add((byte)i);
                 }
@@ -2028,14 +2035,15 @@ namespace ZeldaFullEditor
             ROM.StartBlockLogWriting("Room Headers", headerPointer);
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
-                int newPointerAddress = (Utils.PcToSnes((headerPointer + 640) + (i * 14)));
-                ROM.WriteShort2((headerPointer) + (i * 2), newPointerAddress, true, "Header " + i.ToString("D3") + " Pointer");
-                this.saveHeader2((headerPointer + 640), i);
+                int newPointerAddress = Utils.PcToSnes((headerPointer + 640) + (i * 14));
+                ROM.WriteShort2(headerPointer + (i * 2), newPointerAddress, true, "Header " + i.ToString("D3") + " Pointer");
+                this.saveHeader2(headerPointer + 640, i);
             }
 
             ROM.EndBlockLogWriting();
 
             ROM.StartBlockLogWriting("Rooms Messages", Constants.messages_id_dungeon);
+
             //ROM.SaveLogs();
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
@@ -2057,13 +2065,13 @@ namespace ZeldaFullEditor
                 ((byte)this.AllRooms[i].effect),
                 ((byte)this.AllRooms[i].tag1),
                 ((byte)this.AllRooms[i].tag2),
-                (byte)((this.AllRooms[i].holewarp_plane) + (this.AllRooms[i].staircase1Plane << 2) + (this.AllRooms[i].staircase2Plane << 4) + (this.AllRooms[i].staircase3Plane << 6)),
+                (byte)(this.AllRooms[i].holewarp_plane + (this.AllRooms[i].staircase1Plane << 2) + (this.AllRooms[i].staircase2Plane << 4) + (this.AllRooms[i].staircase3Plane << 6)),
                 this.AllRooms[i].staircase4Plane,
                 this.AllRooms[i].holewarp,
                 this.AllRooms[i].staircase1,
                 this.AllRooms[i].staircase2,
                 this.AllRooms[i].staircase3,
-                this.AllRooms[i].staircase4
+                this.AllRooms[i].staircase4,
             };
 
             ROM.Write2(pos + (i * 14), headerData, true, "Room Header " + i.ToString("D3"));
@@ -2120,6 +2128,7 @@ namespace ZeldaFullEditor
             try
             {
                 int pos = 0x282;
+
                 // Set empty room.
                 sprites_buffer[0x280] = 0x00;
                 sprites_buffer[0x281] = 0xFF;
@@ -2130,13 +2139,13 @@ namespace ZeldaFullEditor
                     {
                         if (i >= Constants.NumberOfRooms || this.AllRooms[i].sprites.Count <= 0)
                         {
-                            sprites_buffer[(i * 2)] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF));
-                            sprites_buffer[(i * 2) + 1] = (byte)(((Utils.SnesToPc(spritePointer + 0x280)) >> 8) & 0xFF);
+                            sprites_buffer[i * 2] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF);
+                            sprites_buffer[(i * 2) + 1] = (byte)((Utils.SnesToPc(spritePointer + 0x280) >> 8) & 0xFF);
                         }
                         else
                         {
                             // Pointer:
-                            sprites_buffer[(i * 2)] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF));
+                            sprites_buffer[i * 2] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF);
                             sprites_buffer[(i * 2) + 1] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) >> 8) & 0xFF);
 
                             sprites_buffer[pos] = (byte)(this.AllRooms[i].sortsprites ? 0x01 : 0x00); // Unknown byte??
@@ -2192,13 +2201,13 @@ namespace ZeldaFullEditor
                     {
                         if (i >= Constants.NumberOfRooms || DungeonsData.AllRoomsMoved[i].sprites.Count <= 0)
                         {
-                            sprites_buffer[(i * 2)] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF));
-                            sprites_buffer[(i * 2) + 1] = (byte)(((Utils.SnesToPc(spritePointer + 0x280)) >> 8) & 0xFF);
+                            sprites_buffer[(i * 2)] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF);
+                            sprites_buffer[(i * 2) + 1] = (byte)((Utils.SnesToPc(spritePointer + 0x280) >> 8) & 0xFF);
                         }
                         else
                         {
                             // Pointer:
-                            sprites_buffer[(i * 2)] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF));
+                            sprites_buffer[i * 2] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF);
                             sprites_buffer[(i * 2) + 1] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) >> 8) & 0xFF);
 
                             sprites_buffer[pos] = (byte)(DungeonsData.AllRoomsMoved[i].sortsprites ? 0x01 : 0x00); // Unknown byte??
@@ -2208,7 +2217,7 @@ namespace ZeldaFullEditor
                             {
                                 byte b1 = (byte)((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
                                 byte b2 = (byte)(((spr.subtype & 0x07) << 5) + spr.x);
-                                byte b3 = (spr.id);
+                                byte b3 = spr.id;
 
                                 sprites_buffer[pos] = b1;
                                 pos++;
@@ -2388,6 +2397,7 @@ namespace ZeldaFullEditor
                                 doorPos += 2;
                                 break;
                             }
+
                             doorPos -= 2;
                         }
                         else
@@ -2529,13 +2539,13 @@ namespace ZeldaFullEditor
                             this.AllRooms[i].pot_items[j].bg2 = true;
                         }
 
-                        int xy = (((this.AllRooms[i].pot_items[j].y * 64) + this.AllRooms[i].pot_items[j].x) << 1);
+                        int xy = ((this.AllRooms[i].pot_items[j].y * 64) + this.AllRooms[i].pot_items[j].x) << 1;
 
                         byte[] data = new byte[3]
                         {
                            (byte)(xy & 0xFF),
                            (byte)(((xy >> 8) & 0xFF) + (this.AllRooms[i].pot_items[j].bg2 ? 0x20 : 0x00)),
-                           this.AllRooms[i].pot_items[j].id
+                           this.AllRooms[i].pot_items[j].id,
                         };
 
                         ROM.Write2(pos, data, true, "Items Data for Room " + i.ToString("D3"));
@@ -2571,13 +2581,13 @@ namespace ZeldaFullEditor
                             DungeonsData.AllRoomsMoved[i].pot_items[j].bg2 = true;
                         }
 
-                        int xy = (((DungeonsData.AllRoomsMoved[i].pot_items[j].y * 64) + DungeonsData.AllRoomsMoved[i].pot_items[j].x) << 1);
+                        int xy = ((DungeonsData.AllRoomsMoved[i].pot_items[j].y * 64) + DungeonsData.AllRoomsMoved[i].pot_items[j].x) << 1;
 
                         byte[] data = new byte[3]
                         {
                            (byte)(xy & 0xFF),
                            (byte)(((xy >> 8) & 0xFF) + (DungeonsData.AllRoomsMoved[i].pot_items[j].bg2 ? 0x20 : 0x00)),
-                           DungeonsData.AllRoomsMoved[i].pot_items[j].id
+                           DungeonsData.AllRoomsMoved[i].pot_items[j].id,
                         };
 
                         ROM.Write2(pos, data, true, "Items Data for Room " + i.ToString("D3"));
@@ -2614,13 +2624,13 @@ namespace ZeldaFullEditor
                 {
                     if ((room.options & ObjectOption.Block) == ObjectOption.Block) // If we find a block save it.
                     {
-                        int xy = (((room.Y * 64) + room.X) << 1);
+                        int xy = ((room.Y * 64) + room.X) << 1;
                         byte[] data = new byte[4]
                         {
-                            (byte)((i & 0xFF)),
-                            (byte)(((i >> 8) & 0xFF)),
+                            (byte)(i & 0xFF),
+                            (byte)((i >> 8) & 0xFF),
                             (byte)(xy & 0xFF),
-                            ((byte)(((xy >> 8) & 0x1F) + ((byte)room.Layer * 0x20)))
+                            ((byte)(((xy >> 8) & 0x1F) + ((byte)room.Layer * 0x20))),
                         };
 
                         ROM.Write2(pos, data, true, "Room:" + i.ToString("D3") + "X:" + room.X.ToString("D2") + " Y:" + room.X.ToString("D2") + " L:" + room.X.ToString("D2"));

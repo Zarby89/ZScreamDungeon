@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     public class LogInfos
     {
         public int address = 0;
-        public string text = "";
+        public string text = string.Empty;
 
         public LogInfos(int address, string text)
         {

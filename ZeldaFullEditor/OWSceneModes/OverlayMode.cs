@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lidgren.Network;
-using ZeldaFullEditor.OWSceneModes.ClipboardData;
 using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes

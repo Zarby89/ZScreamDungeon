@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -22,13 +15,14 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (e.Button == MouseButtons.Left)
             {
-                int mapy = (scene.exitmode.lastselectedExit.MapID / 8);
+                int mapy = scene.exitmode.lastselectedExit.MapID / 8;
                 int mapx = scene.exitmode.lastselectedExit.MapID - (mapy * 8);
-                int mouse_tile_x_down = ((e.X / 16)) - (mapx * 32);
-                int mouse_tile_y_down = ((e.Y / 16)) - (mapy * 32);
+                int mouse_tile_x_down = (e.X / 16) - (mapx * 32);
+                int mouse_tile_y_down = (e.Y / 16) - (mapy * 32);
 
                 scene.exitmode.lastselectedExit.DoorXEditor = (byte)mouse_tile_x_down;
                 scene.exitmode.lastselectedExit.DoorYEditor = (byte)mouse_tile_y_down;
+
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 scene.exitmode.exitProperty_Click(null, null);
             }
@@ -54,22 +48,38 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (scene.lastTileHoverX != mouseTileX || scene.lastTileHoverY != mouseTileY)
                 {
-                    int tileX = (e.X / 16);
-                    int tileY = (e.Y / 16);
-                    if (tileX < 0) { tileX = 0; }
-                    if (tileY < 0) { tileY = 0; }
-                    if (tileX > 255) { tileX = 255; }
-                    if (tileY > 255) { tileY = 255; }
-                    int superX = (tileX / 32);
-                    int superY = (tileY / 32);
+                    int tileX = e.X / 16;
+                    int tileY = e.Y / 16;
+                    if (tileX < 0)
+                    {
+                        tileX = 0;
+                    }
+
+                    if (tileY < 0)
+                    {
+                        tileY = 0;
+                    }
+
+                    if (tileX > 255)
+                    {
+                        tileX = 255; 
+                    }
+
+                    if (tileY > 255)
+                    {
+                        tileY = 255;
+                    }
+
+                    int superX = tileX / 32;
+                    int superY = tileY / 32;
                     scene.globalmouseTileDownX = tileX;
                     scene.globalmouseTileDownY = tileY;
 
                     // Refresh the tile preview
                     if (scene.selectedTile.Length >= 1)
                     {
-                        int sX = (mouseTileX / 32);
-                        int sY = (mouseTileY / 32);
+                        int sX = mouseTileX / 32;
+                        int sY = mouseTileY / 32;
                         int y = 0;
                         int x = 0;
                         int mapId = 0;
@@ -77,8 +87,8 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
                             {
-                                sX = ((mouseTileX + x) / 32);
-                                sY = ((mouseTileY + y) / 32);
+                                sX = (mouseTileX + x) / 32;
+                                sY = (mouseTileY + y) / 32;
                                 mapId = (sY * 8) + sX;
                                 if (mapId > 63)
                                 {
@@ -117,7 +127,8 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     scene.lastTileHoverX = mouseTileX;
                     scene.lastTileHoverY = mouseTileY;
-                    /* 
+
+                    /*
                     int tileX = (e.X / 16);
                     int tileY = (e.Y / 16);
                     int superX = (tileX / 32);

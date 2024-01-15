@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
@@ -27,6 +25,7 @@ namespace ZeldaFullEditor
         public static int uniqueTransportID = 0;
         public static int uniqueRoomObjectID = 0;
         public static int uniqueGraveID = 0;
+
         public static void StartBlockLogWriting(string name, int addr)
         {
             //romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") +" [Block of Data](" + name + ")\r\n");
@@ -112,6 +111,7 @@ namespace ZeldaFullEditor
                     DATA[addr + i] = value[i];
                 }
             }
+
             advancedLogData.Add(new LogInfos(addr, sb.ToString() + info + "\r\n"));
             sb.Clear();
         }
@@ -208,10 +208,9 @@ namespace ZeldaFullEditor
             {
                 arr[i] = DATA[addr + i];
             }
-            
+
             return arr;
         }
-
 
         public static short ReadReverseShort(int addr)
         {
@@ -261,7 +260,7 @@ namespace ZeldaFullEditor
             {
                 if ((addr + value.Length) > biggerAddress)
                 {
-                    biggerAddress = (addr + value.Length);
+                    biggerAddress = addr + value.Length;
                 }
             }
 

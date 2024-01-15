@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     public static class Sprite_SubsetNames
     {
@@ -94,7 +88,7 @@ namespace ZeldaFullEditor
             "92:Items",
             "93:Items/Ending Stuff",
             "94:Sword",
-            "95:Shield"
+            "95:Shield",
         };
     }
 }

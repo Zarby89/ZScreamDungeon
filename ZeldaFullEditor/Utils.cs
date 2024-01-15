@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
@@ -37,7 +32,7 @@ namespace ZeldaFullEditor
             //return ((addr * 2) & 0xFF0000) + (addr & 0x7FFF) + 0x8000;
         }
 
-        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+        // gets a 24-bit address from the specified snes address, using the input's high byte as the bank
         public static int Get24Local(int addr, bool pc = true)
         {
             int a = SnesToPc(addr);
@@ -54,7 +49,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+        // gets a 24-bit address from the specified snes address, using the input's high byte as the bank
         public static int Get24LocalFromPC(int addr, bool pc = true)
         {
             int ret = (PcToSnes(addr) & 0xFF0000) |
@@ -87,12 +82,13 @@ namespace ZeldaFullEditor
             {
                 v = max;
             }
+
             if (v <= min)
             {
                 v = min;
             }
 
-            return (v);
+            return v;
         }
 
         public static short Clamp(short v, int min, int max)
@@ -115,12 +111,13 @@ namespace ZeldaFullEditor
             {
                 v = (ushort)max;
             }
+
             if (v <= min)
             {
                 v = (ushort)min;
             }
 
-            return (v);
+            return v;
         }
 
         public static byte Clamp(byte v, int min, int max)
@@ -134,7 +131,7 @@ namespace ZeldaFullEditor
                 v = (byte)min;
             }
 
-            return (v);
+            return v;
         }
 
         public static string[] DeepCopyStrings(string[] a)

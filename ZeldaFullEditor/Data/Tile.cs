@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 
 namespace ZeldaFullEditor
 {
@@ -23,7 +14,6 @@ namespace ZeldaFullEditor
     [Serializable]
     public class Tile
     {
-
         private bool priority, hflip, vflip;
 
         /// <summary>
@@ -50,11 +40,13 @@ namespace ZeldaFullEditor
             {
                 return (ushort)(priority ? 1 : 0);
             }
+
             set
             {
                 priority = value == 0x0001;
             }
         }
+
         /// <summary>
         /// 0x0001 if h flip
         /// </summary>
@@ -64,6 +56,7 @@ namespace ZeldaFullEditor
             {
                 return (ushort)(hflip ? 1 : 0);
             }
+
             set
             {
                 hflip = value == 0x0001;
@@ -79,13 +72,12 @@ namespace ZeldaFullEditor
             {
                 return (ushort)(vflip ? 1 : 0);
             }
+
             set
             {
                 vflip = value == 0x0001;
             }
         }
-
-
 
         public ushort id = 0;
         public byte palette = 4;
@@ -133,6 +125,7 @@ namespace ZeldaFullEditor
         public ushort getshortileinfo()
         {
             ushort value = 0;
+
             // vhopppcc cccccccc
             if (priority) { value |= Constants.TilePriorityBit; };
             if (hflip) { value |= Constants.TileHFlipBit; };

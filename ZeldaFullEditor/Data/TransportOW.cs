@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
@@ -28,6 +24,7 @@ namespace ZeldaFullEditor
         public bool isAutomatic = true;
 
         public int uniqueID = 0;
+
         public TransportOW(byte mapId, short vramLocation, short yScroll, short xScroll, short playerY, short playerX, short cameraY, short cameraX, byte unk1, byte unk2, short whirlpoolPos)
         {
             this.mapId = mapId;

@@ -1,58 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading.Tasks;
-using ZeldaFullEditor;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
     [System.ComponentModel.DefaultBindingProperty]
     public class SpriteProperty
     {
         internal byte OamAllocation { get; set; } = 0;
+
         internal byte Palette { get; set; } = 0;
+
         internal byte Hitbox { get; set; } = 0;
+
         internal byte Tilehitbox { get; set; } = 0;
+
         internal byte Health { get; set; } = 0;
+
         internal byte Prizepack { get; set; } = 0;
+
         internal byte Bumpdamageclass { get; set; } = 0;
+
         internal bool Harmless { get; set; } = false;
+
         internal bool Deathprevent { get; set; } = false; // hidden
+
         internal bool Litetilehit { get; set; } = false; // hidden
+
         internal bool Recoilwithoutcollision { get; set; } = false;
+
         internal bool Beetarget { get; set; } = false;
+
         internal bool Immunepowder { get; set; } = false;
+
         internal bool Allowedbossfight { get; set; } = false;
+
         internal bool Customdeathanimation { get; set; } = false;
+
         internal bool Invulnerable { get; set; } = false;
+
         internal bool Smallshadow { get; set; } = false;
+
         internal bool Drawshadow { get; set; } = false;
+
         internal bool Graphicspage { get; set; } = false;
+
         internal bool Singlelayercollision { get; set; } = false;
+
         internal bool Ignoredbykillrooms { get; set; } = false;
+
         internal bool Persistoffscreenow { get; set; } = false;
+
         internal bool Deflectarrows { get; set; } = false;
+
         internal bool Overrideslashimminuty { get; set; } = false;
+
         internal bool Dielikeaboss { get; set; } = false;
+
         internal bool Invertpitbehavior { get; set; } = false;
+
         internal bool Ignorepitconveyors { get; set; } = false;
+
         internal bool Checkforwater { get; set; } = false;
+
         internal bool Blockedbyshield { get; set; } = false;
+
         internal bool Bossdamagesound { get; set; } = false;
+
         internal bool Activeoffscreen { get; set; } = false;
+
         internal bool Dieoffscreen { get; set; } = false;
+
         internal bool Hiddenprop { get; set; } = false;
+
         internal bool Hiddenunused { get; set; } = false;
+
         internal bool Projectilelikecollision { get; set; } = false;
+
         internal bool Immunetoswordhammer { get; set; } = false;
+
         internal bool Immunetoarrowrumbleable { get; set; } = false;
+
         internal bool Nopermadeathindungeons { get; set; } = false;
 
         internal byte[] DamagesTaken = new byte[16];
-
-        
 
         public SpriteProperty(byte id)
         {
@@ -113,13 +140,11 @@ namespace ZeldaFullEditor.Data
             {
                 for (int i = 0; i < 8; i += 1)
                 {
-                    DamagesTaken[(i * 2)] = (byte)((DungeonsData.SpriteDamageTaken[(i) + (id * 8)] & 0x0F));
+                    DamagesTaken[i * 2] = (byte)(DungeonsData.SpriteDamageTaken[(i) + (id * 8)] & 0x0F);
                     DamagesTaken[(i * 2) + 1] = (byte)((DungeonsData.SpriteDamageTaken[(i) + (id * 8)] & 0xF0) >> 4);
                 }
             }
-
         }
-
 
         public void SaveToROM(byte id)
         {
@@ -140,10 +165,5 @@ namespace ZeldaFullEditor.Data
             ROM.Write(Constants.Sprite_0DB725 + id, addr0DB725);
             ROM.Write(Constants.Sprite_Health + id, Health);
         }
-
-
-
     }
-
 }
-

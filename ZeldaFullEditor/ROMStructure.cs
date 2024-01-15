@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using Microsoft.VisualBasic;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 
 namespace ZeldaFullEditor
 {
@@ -177,7 +170,7 @@ namespace ZeldaFullEditor
                 "Archery Minigame","DW Church/Shop","Grave Cave","Fairy Fountain","Fairy Upgrade","Pyramid Fairy","Spike Cave",
                 "Chest Minigame","Blind Hut","Bonzai Cave","Circle of bush Cave","Big Bomb Shop, C-House","Blind Hut 2","Hype Cave",
                 "Shop","Ice Cave","Smith","Fortune Teller","MiniMoldorm Cave","Under Rock Caves","Smith","Cave","Mazeblock Cave",
-                "Smith Peg Cave"
+                "Smith Peg Cave",
             };
         }
 
@@ -211,7 +204,7 @@ namespace ZeldaFullEditor
 
                 // Backgrounds
                 "Triforce Room", "Master Sword/Under Bridge Mask", "Death Mountain BGR", "Pyramid BGR", "Forest BGR",
-                "Unused", "Unused", "Unused", "Unused", "???", "Cloud Overlay", "Tree Overlay", "Rain Overlay"
+                "Unused", "Unused", "Unused", "Unused", "???", "Cloud Overlay", "Tree Overlay", "Rain Overlay",
             };
         }
 

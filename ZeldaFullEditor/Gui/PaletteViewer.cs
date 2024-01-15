@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -90,8 +82,8 @@ namespace ZeldaFullEditor
             if (e.Button == MouseButtons.Right)
             {
 
-                int px = (e.X / 16);
-                int py = (e.Y / 16);
+                int px = e.X / 16;
+                int py = e.Y / 16;
                 mousePal = px + (py * xSize);
                 oldColor = colorpalettes[px + (py * xSize)];
                 colorpalettes[px + (py * xSize)] = Color.FromArgb(255, 0, 254);
@@ -136,8 +128,8 @@ namespace ZeldaFullEditor
         {
             if (e.Button == MouseButtons.Left)
             {
-                int px = (e.X / 16);
-                int py = (e.Y / 16);
+                int px = e.X / 16;
+                int py = e.Y / 16;
                 cd.Color = colorpalettes[px + (py * xSize)];
 
                 if (cd.ShowDialog() == DialogResult.OK)
@@ -198,9 +190,9 @@ namespace ZeldaFullEditor
             int y = 0;
             for (int i = 0; i < 180; i += 2) // 180 in enemizer
             {
-                if ((colors[(i)] is Color))
+                if (colors[i] is Color)
                 {
-                    setColor((x), y, (Color)colors[(i)], (int)(colors[(i) + 1]));
+                    setColor(x, y, (Color)colors[i], (int)colors[i + 1]);
                 }
 
                 x++;
@@ -288,9 +280,9 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < shade; i++)
             {
-                r = (r - (r / 5));
-                g = (g - (g / 5));
-                b = (b - (b / 5));
+                r = r - (r / 5);
+                g = g - (g / 5);
+                b = b - (b / 5);
             }
 
             r = (int)(r / 255f * 0x1F);

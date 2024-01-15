@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
     internal class AsmPropertyType
     {
@@ -15,8 +9,6 @@ namespace ZeldaFullEditor.Data
         //item
         //bool
 
-
         public string Name { get; set; }
-
     }
 }
