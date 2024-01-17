@@ -264,11 +264,11 @@ namespace ZeldaFullEditor
             // Set the enable/disable settings.
             if (enableBGColor)
             {
-                ROM.Write(Constants.customAreaSpecificBGEnabled, 0xFF, true, "Enabled area specific BG color");
+                ROM.Write(Constants.OverworldCustomAreaSpecificBGEnabled, 0xFF, true, "Enabled area specific BG color");
             }
             else
             {
-                ROM.Write(Constants.customAreaSpecificBGEnabled, 0x00, true, "Disabled area specific BG color");
+                ROM.Write(Constants.OverworldCustomAreaSpecificBGEnabled, 0x00, true, "Disabled area specific BG color");
             }
 
             if (enableMainPalette)
@@ -477,14 +477,11 @@ namespace ZeldaFullEditor
 
         public bool SaveAllObjects()
         {
-            var section1Index = 0x50008; // 0x50000 to 0x5374F  // 53730
-            var section2Index = 0xF878A; // 0xF878A to 0xFFFFF.
-            var section3Index = 0x1EB90; // 0x1EB90 to 0x1FFFF.
-            var section4Index = 0x1E0000;
-            var section5Index = 0x1E8000;
-            var section6Index = 0x1F0000;
-            var section7Index = 0x1F8000;
-
+            var section1Index = Constants.DungeonSection1Index; // 0x50000 to 0x5374F  // 53730
+            var section2Index = Constants.DungeonSection2Index; // 0xF878A to 0xFFFFF.
+            var section3Index = Constants.DungeonSection3Index; // 0x1EB90 to 0x1FFFF.
+            var section4Index = Constants.DungeonSection4Index;
+            var section5Index = Constants.DungeonSection5Index;
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
@@ -515,59 +512,43 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                if (section1Index + roomBytes.Length <= 0x53730) // 0x50000 to 0x5374F.
+                if (section1Index + roomBytes.Length <= Constants.DungeonSection1EndIndex) // 0x50000 to 0x5374F.
                 {
                     // Write the room.
                     this.SaveObjectBytes(this.AllRooms[i].index, section1Index, roomBytes, doorPos);
                     section1Index += roomBytes.Length;
                     continue;
                 }
-                else if (section2Index + roomBytes.Length <= 0xFFFFF) // 0xF878A to 0xFFFF7.
+                else if (section2Index + roomBytes.Length <= Constants.DungeonSection2EndIndex) // 0xF878A to 0xFFFF7.
                 {
                     // Write the room.
                     this.SaveObjectBytes(this.AllRooms[i].index, section2Index, roomBytes, doorPos);
                     section2Index += roomBytes.Length;
                     continue;
                 }
-                else if (section3Index + roomBytes.Length <= 0x1FFFF) // 0x1EB90 to 0x1FFFF.
+                else if (section3Index + roomBytes.Length <= Constants.DungeonSection3EndIndex) // 0x1EB90 to 0x1FFFF.
                 {
                     // Write the room.
                     this.SaveObjectBytes(this.AllRooms[i].index, section3Index, roomBytes, doorPos);
                     section3Index += roomBytes.Length;
                     continue;
                 }
-                else if (section4Index + roomBytes.Length <= 0x1E7FFF) // 0x1EB90 to 0x1FFFF.
+                else if (section4Index + roomBytes.Length <= Constants.DungeonSection4EndIndex) // 0x138000 to 0x13FFFF.
                 {
                     // Write the room.
                     this.SaveObjectBytes(this.AllRooms[i].index, section4Index, roomBytes, doorPos);
                     section4Index += roomBytes.Length;
                     continue;
                 }
-                else if (section5Index + roomBytes.Length <= 0x1EFFFF) // 0x1EB90 to 0x1FFFF.
+                else if (section5Index + roomBytes.Length <= Constants.DungeonSection5EndIndex) // 0x148000 to 0x14FFFF.
                 {
                     // Write the room.
                     this.SaveObjectBytes(this.AllRooms[i].index, section5Index, roomBytes, doorPos);
                     section5Index += roomBytes.Length;
                     continue;
                 }
-                else if (section6Index + roomBytes.Length <= 0x1F7FFF) // 0x1EB90 to 0x1FFFF.
-                {
-                    // Write the room.
-                    this.SaveObjectBytes(this.AllRooms[i].index, section6Index, roomBytes, doorPos);
-                    section6Index += roomBytes.Length;
-                    continue;
-                }
-                else if (section7Index + roomBytes.Length <= 0x1FFFFF) // 0x1EB90 to 0x1FFFF.
-                {
-                    // Write the room.
-                    this.SaveObjectBytes(this.AllRooms[i].index, section7Index, roomBytes, doorPos);
-                    section7Index += roomBytes.Length;
-                    continue;
-                }
-                else
-                {
-                    return true; // False = no error.
-                }
+
+                return true; // False = no error.
             }
 
             int objectPointer = Utils.SnesToPc(ROM.ReadLong(Constants.room_object_pointer));
@@ -1377,7 +1358,7 @@ namespace ZeldaFullEditor
 
                 if ((pos + a.Length) >= 0x6411F && (pos + a.Length) <= 0x70000)
                 {
-                    pos = Constants.OverowrldMapDataOverflow; // 0x0F8780;
+                    pos = Constants.OverworldMapDataOverflow; // 0x0F8780;
                 }
 
                 for (int j = 0; j < i; j++)
@@ -1420,9 +1401,10 @@ namespace ZeldaFullEditor
                 else
                 {
                     int snesPos = this.mapPointers1[mapPointers1id[i]];
-                    ROM.Write((Constants.compressedAllMap32PointersLow) + 0 + 3 * i, (byte)(snesPos & 0xFF), WriteType.OverworldMapPointer);
-                    ROM.Write((Constants.compressedAllMap32PointersLow) + 1 + 3 * i, (byte)((snesPos >> 8) & 0xFF), WriteType.OverworldMapPointer);
-                    ROM.Write((Constants.compressedAllMap32PointersLow) + 2 + 3 * i, (byte)((snesPos >> 16) & 0xFF), WriteType.OverworldMapPointer);
+                    ROM.Write(Constants.compressedAllMap32PointersLow + 0 + (3 * i), (byte)(snesPos & 0xFF), WriteType.OverworldMapPointer);
+                    ROM.Write(Constants.compressedAllMap32PointersLow + 1 + (3 * i), (byte)((snesPos >> 8) & 0xFF), WriteType.OverworldMapPointer);
+                    ROM.Write(Constants.compressedAllMap32PointersLow + 2 + (3 * i), (byte)((snesPos >> 16) & 0xFF), WriteType.OverworldMapPointer);
+
                     /*
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
@@ -1434,9 +1416,10 @@ namespace ZeldaFullEditor
                 {
                     pos = 0x60000;
                 }
+
                 if ((pos + b.Length) >= 0x6411F && (pos + b.Length) <= 0x70000)
                 {
-                    pos = Constants.OverowrldMapDataOverflow;
+                    pos = Constants.OverworldMapDataOverflow;
                 }
 
                 // Map2
@@ -1446,9 +1429,9 @@ namespace ZeldaFullEditor
                     int snesPos = Utils.PcToSnes(pos);
                     this.mapPointers2[i] = snesPos;
 
-                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 0 + 3 * i, (byte)(snesPos & 0xFF), WriteType.OverworldMapPointer);
-                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 1 + 3 * i, (byte)((snesPos >> 8) & 0xFF), WriteType.OverworldMapPointer);
-                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 2 + 3 * i, (byte)((snesPos >> 16) & 0xFF), WriteType.OverworldMapPointer);
+                    ROM.Write(Constants.compressedAllMap32PointersHigh + 0 + (3 * i), (byte)(snesPos & 0xFF), WriteType.OverworldMapPointer);
+                    ROM.Write(Constants.compressedAllMap32PointersHigh + 1 + (3 * i), (byte)((snesPos >> 8) & 0xFF), WriteType.OverworldMapPointer);
+                    ROM.Write(Constants.compressedAllMap32PointersHigh + 2 + (3 * i), (byte)((snesPos >> 16) & 0xFF), WriteType.OverworldMapPointer);
 
                     ROM.Write(pos, b);
 

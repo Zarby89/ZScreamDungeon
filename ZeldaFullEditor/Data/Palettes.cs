@@ -230,7 +230,7 @@ namespace ZeldaFullEditor
             }
             else
             {
-                OverworldBackgroundPalette = ReadPalette(romData, Constants.customAreaSpecificBGPalette, 160);
+                OverworldBackgroundPalette = ReadPalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, 160);
             }
         }
 
@@ -349,7 +349,7 @@ namespace ZeldaFullEditor
             }
 
             // TODO: Set to 147 and not 160 because it seems the area numbers for all areas after 147 are messed up and it causes the palettes to save over eachother.
-            WritePalette(romData, Constants.customAreaSpecificBGPalette, OverworldBackgroundPalette, 147);
+            WritePalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, OverworldBackgroundPalette, 147);
 
             return false;
         }

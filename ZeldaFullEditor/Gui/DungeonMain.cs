@@ -822,7 +822,7 @@ namespace ZeldaFullEditor
             DungeonsData.globalDamages = ROM.ReadBlock(Constants.DamageClass, 0x80);
 
             // TODO: We should probably move this to a better spot and include all the save settings but this will work for now.
-            if (ROM.DATA[Constants.customAreaSpecificBGEnabled] != 0x00)
+            if (ROM.DATA[Constants.OverworldCustomAreaSpecificBGEnabled] != 0x00)
             {
                 this.saveSettingsArr[41] = true;
             }

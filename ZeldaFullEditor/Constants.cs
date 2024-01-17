@@ -7,6 +7,7 @@ namespace ZeldaFullEditor
         // ===========================================================================================
         // Magic numbers
         // ===========================================================================================
+
         /// <summary>
         /// Bit set for object priority
         /// </summary>
@@ -275,15 +276,15 @@ namespace ZeldaFullEditor
 
         public static int OverworldScreenTileMapChangeMask = 0x1262C;
 
-        public static int OverowrldMapDataOverflow = 0x130000;
+        public static int OverworldMapDataOverflow = 0x130000;
 
         public static int transition_target_north = 0x13EE2;
         public static int transition_target_west = 0x13F62;
 
         public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, not 0 if enabled
 
-        public static int customAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (0x140)
-        public static int customAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
+        public static int OverworldCustomAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (0x140)
+        public static int OverworldCustomAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
 
         public static int OverworldCustomMainPaletteArray = 0x140160; // 1 byte for each overworld area (0xA0)
         public static int OverworldCustomMainPaletteEnabled = 0x140141; // 1 byte, not 0 if enabled
@@ -400,6 +401,21 @@ namespace ZeldaFullEditor
         public static int text_data2_end = 0x773FF;
         public static int pointers_dictionaries = 0x74703;
         public static int characters_width = 0x74ADF;
+
+        public static int DungeonSection1Index = 0x50008; // 0x50000 to 0x5374F
+        public static int DungeonSection1EndIndex = 0x53730;
+
+        public static int DungeonSection2Index = 0xF878A; // 0xF878A to 0xFFFFF.
+        public static int DungeonSection2EndIndex = 0xFFFFF;
+
+        public static int DungeonSection3Index = 0x1EB90; // 0x1EB90 to 0x1FFFF.
+        public static int DungeonSection3EndIndex = 0x1FFFF;
+
+        public static int DungeonSection4Index = 0x138000; // 0x138000 to 0x13FFFF.
+        public static int DungeonSection4EndIndex = 0x13FFFF;
+
+        public static int DungeonSection5Index = 0x148000; // 0x148000 to 0x14FFFF.
+        public static int DungeonSection5EndIndex = 0x14FFFF;
 
         // ===========================================================================================
         // Dungeon Entrances Related Variables
