@@ -237,6 +237,8 @@ namespace ZeldaFullEditor
         public static int overlayData1 = 0x77676;
         public static int overlayData2 = 0x077677;
 
+        public static int ExpandedOverlaySpace = 0x120000;
+
         public static int overworldTilesType = 0x71459;
         public static int overworldMessages = 0x3F51D;
 
@@ -351,6 +353,8 @@ namespace ZeldaFullEditor
         public static int rooms_sprite_pointer = 0x4C298; // JP Same //2byte bank 09D62E
         public static int room_header_pointer = 0xB5DD; // LONG
         public static int room_header_pointers_bank = 0xB5E7; // JP Same
+
+        public static int room_header_expanded_default = 0x110000;
 
         public static int gfx_groups_pointer = 0x6237;
         public static int room_object_layout_pointer = 0x882D;
@@ -508,7 +512,6 @@ namespace ZeldaFullEditor
         public static int dungeons_bossrooms = 0x10954; // Short value
 
         // Bed Related Values (Starting location)
-
         public static int bedPositionX = 0x039A37; // Short value
         public static int bedPositionY = 0x039A32; // Short value
 
@@ -600,16 +603,17 @@ namespace ZeldaFullEditor
         public static int titleScreenExtraTilesGFX = 0x64211; // 1 Byte
         public static int titleScreenExtraSpritesGFX = 0x64216; // 1 Byte
 
+        public static int TitleScreenPosition = 0x108000;
+
         // ===========================================================================================
         // Custom Collision
         // ===========================================================================================
         public static int customCollisionRoomPointers = 0x128090; // Array 3 bytes per room
         public static int customCollisionDataPosition = 0x128450; // A bunch of FFFF ended arrays
 
-
-        //===========================================================================================
+        // ===========================================================================================
         // Sprite Properties
-        //===========================================================================================
+        // ===========================================================================================
         public static int Sprite_0DB080 = 0x06B080;
         public static int Sprite_Health = 0x06B173;
         public static int Sprite_0DB266 = 0x06B266;
@@ -621,7 +625,7 @@ namespace ZeldaFullEditor
         public static int Sprite_DamageTaken = 0x1E800;
         public static int DamageClass = 0x06B8F1;
 
-        //===========================================================================================
+        // ===========================================================================================
         // End Main Addresses
         // ===========================================================================================
 
@@ -667,8 +671,8 @@ namespace ZeldaFullEditor
             entrance_floor = 0x1516A; // 1byte
             entrance_dungeon = 0x151EF; // 1byte (dungeon id)
             entrance_door = 0x15274; // 1byte
-            entrance_ladderbg = 0x152F9; //1 byte, ---b ---a b = bg2, a = need to check -_-
-            entrance_scrolling = 0x1537E; //1byte --h- --v-
+            entrance_ladderbg = 0x152F9; // 1 byte, ---b ---a b = bg2, a = need to check -_-
+            entrance_scrolling = 0x1537E; // 1byte --h- --v-
             entrance_scrollquadrant = 0x15403; // 1byte
             entrance_exit = 0x15488; // 2byte word
             entrance_music = 0x15592;
@@ -747,11 +751,15 @@ namespace ZeldaFullEditor
         // ===========================================================================================
         // Things
         // ===========================================================================================
-
         public class FloorNumber
         {
-            private readonly string nom; public string Name { get => nom; }
-            private readonly byte val; public byte ByteValue { get => val; }
+            private readonly string nom;
+
+            public string Name { get => nom; }
+
+            private readonly byte val;
+
+            public byte ByteValue { get => val; }
 
             public FloorNumber(string n, byte v)
             {
@@ -777,7 +785,8 @@ namespace ZeldaFullEditor
             }
         }
 
-        public static FloorNumber[] floors = new FloorNumber[] {
+        public static FloorNumber[] floors = new FloorNumber[]
+        {
             new FloorNumber("B8", 0xF8),
             new FloorNumber("B7", 0xF9),
             new FloorNumber("B6", 0xFA),
@@ -793,7 +802,7 @@ namespace ZeldaFullEditor
             new FloorNumber("5F", 0x04),
             new FloorNumber("6F", 0x05),
             new FloorNumber("7F", 0x06),
-            new FloorNumber("8F", 0x07)
+            new FloorNumber("8F", 0x07),
         };
 
         // ===========================================================================================
@@ -809,7 +818,7 @@ namespace ZeldaFullEditor
             "Trinexx Shell",
             "Red Flashes",
             "Light Torch to See Floor",
-            "Ganon's Darkness"
+            "Ganon's Darkness",
         };
 
         public static string[] RoomTags = new string[]
@@ -882,7 +891,7 @@ namespace ZeldaFullEditor
             "Push Block for Chest",
             "Clear Room for Triforce Door",
             "Light Torches for Chest",
-            "Kill Boss Again"
+            "Kill Boss Again",
         };
 
         public static string[] SecretItemNames = new string[]
@@ -917,8 +926,8 @@ namespace ZeldaFullEditor
             "Warp",
             "Staircase",
             "Bombable",
-            "Switch"
-           };
+            "Switch",
+        };
 
         public static string[] Type1RoomObjectNames = new string[]
         {
@@ -1629,7 +1638,7 @@ namespace ZeldaFullEditor
             "Door X top? (unused?)",
             "Door X top? (unused?)",
             "Door X top? (unused?)",
-            "Door X top? (unused?)"
+            "Door X top? (unused?)",
         };
     }
 }

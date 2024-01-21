@@ -29,6 +29,9 @@ org $00E556
 org $02ABBE
     Overworld_FinishTransGfx_firstHalf:
 
+org $02AF19 
+    Overworld_LoadSubscreenAndSilenceSFX1:
+
 org $02FD0D
     LoadSubscreenOverlay:
 
@@ -144,7 +147,7 @@ Pool:
     .EnableTable ; 0x20
     ; Valid values:
     ; $00 - Disabled
-    ; $01 - Enabled
+    ; $FF - Enabled
 
     org $288140 ; $140140
     .EnableBGColor
@@ -321,61 +324,59 @@ Pool:
     warnpc $288480
 }
 
-; Start of expanded space.
-org $288480 ; $140480
-pushpc
-
 ; Debug addresses
 ; 00D8D5 ; W7 Animated tiles on warp.
-!Func00D8D5 = $01
+!Func00D8D5 = $01 ; Disable
 ; 00DA63 ; W8 Enable/Disable subscreen.
 !Func00DA63 = $01
-; 00EEBC
-!Func00EEBC = $01
+; 00EEBC ; Zeros out the BG color when mirror warping to the pyramid area.
+!Func00EEBC = $01 ; Disable
 ; 00FF7C ; W9 BG scrolling for HC and the pyramid area.
 !Func00FF7C = $01
+
 ; 028027
-!Func028027 = $01
 ; 029C0C
-!Func029C0C = $01
 ; 029D1E
-!Func029D1E = $01
 ; 029F82
-!Func029F82 = $01
-; 0283EE ; E2
-!Func0283EE = $01
-; 028632
-!Func028632 = $01
-; 029AA6 ; E1
-!Func029AA6 = $01
+
+; 0283EE ; E2 ; Changes the function that loads overworld properties when exiting a dungeon. Includes removing asm that plays music in certain areas and changing how animated tiles are loaded.
+!Func0283EE = $01 ; Disable
+; 028632 ; Changes a function that loads animated tiles under certain conditions.
+!Func028632 = $01 ; Disable
+; 029AA6 ; E1 ; Changes part of a function that changes the special BG color when leaving dungeons? not sure.
+!Func029AA6 = $01 ; Disable
 ; 02AF58 ; T2 W2 Main subscreen loading function.
 !Func02AF58 = $01
 ; 02B2D4 ; W1 turns on subscreen for pyramid.
 !Func02B2D4 = $01
 ; 02B3A1 ; W6 Activate subscreen durring pyramid warp.
-!Func02B3A1 = $01
-; 02BC44
+!Func02B3A1 = $01 
+; 02BC44 ; Controls overworld vertical subscreen movement for the pyramid BG.
 !Func02BC44 = $01
-; 02C02D ; T4 pyramid bg scroll.
+; 02C02D ; T4 Changes how the pyramid BG scrolls durring transition.
 !Func02C02D = $01
 ; 02C692 ; W3 Main palette loading routine.
-!Func02C692 = $01
+!Func02C692 = $01 
 ; 02A4CD ; Rain animation code.
 !Func02A4CD = $01
 ; 02AADB ; T1 Mosaic
 !Func02AADB = $01
 ; 02ABB8 ; T3 transition animated and main palette.
 !Func02ABB8 = $01
-; 0ABC5A
-!Func0ABC5A = $01
-; 0AB8F5
-!Func0AB8F5 = $01
+; 0ABC5A ; Loads the animated tiles after the overworld map is closed.
+!Func0ABC5A = $01 ; Disable
+; 0AB8F5 ; Loads different animated tiles when returning from bird travel.
+!Func0AB8F5 = $01 ; prob disable
 ; 0BFEC6 ; W5 Load overlay, fixed color, and BG color.
 !Func0BFEC6 = $01
 ; 0ED627 ; W4 Transparent color durring warp.
 !Func0ED627 = $01
-; 0ED8AE
-!Func0ED8AE = $01
+; 0ED8AE ; Resets the area special color after the screen flashes.
+!Func0ED8AE = $01 ; Disable
+
+; Start of expanded space.
+org $288480 ; $140480
+pushpc
 
 ; ==============================================================================
 
@@ -384,7 +385,7 @@ if !Func00D8D5 = 1
 ; Replaces a function that decompresses animated tiles in certain mirror warp conditions.
 org $00D8D5 ; $0058D5
 {
-    PHX ; TODO: I'm pretty sure this is necessary but make sure.
+    PHX
 
     ; Get the animated tiles value for this overworld area.
     LDX.b $8A
@@ -410,25 +411,7 @@ if !Func00DA63 = 1
 ; Sets the $1D Sub Screen Designation to either enable or disable BG for screens with special overlays.
 org $00DA63 ; $005A63
 {
-    STZ $1D
-
-    PHX
-
-    REP #$20 ; Set A in 16bit mode
-    ; Get the overlay value for this overworld area
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X : CMP.w #$00FF : BEQ .normal
-        ; If not $FF, assume we want an overlay.
-        SEP #$20 ; Set A in 8bit mode
-
-        ; Turn on BG1.
-        LDA.b #$01 : STA.b $1D
-
-    .normal
-
-    SEP #$20 ; Set A in 8bit mode
-
-    PLX
+    JSL ActivateSubScreen
 
     ; From this point on it is the vanilla function.
     PHB : PHK : PLB
@@ -460,6 +443,59 @@ warnpc $00DABB
 
 endif
 
+pullpc
+ActivateSubScreen:
+{
+    STZ $1D
+
+    PHX
+
+    REP #$20 ; Set A in 16bit mode
+
+    LDA.b $8A : BNE .notForest
+        ; Check if we have the master sword.
+        LDA.l $7EF300 : AND.w #$0040 : BEQ .notForest
+            ; The forest canopy overlay
+            BRA .turnOn
+    
+    .notForest
+
+    ; Check if we need to disable the rain in the misery mire
+    LDA.b $8A : CMP.w #$0070 : BNE .notMire
+        ; Has Misery Mire been triggered yet?
+        LDA.l $7EF2F0 : AND.w #$0020 : BEQ .notMire
+            BRA .turnOn
+        
+    .notMire
+
+    ; Check if we are in the beginning phase, if not, no rain.
+    ; If $7EF3C5 >= 0x02
+    LDA.l $7EF3C5 : AND.w #$00FF : CMP.w #$0002 : BCS .noRain
+        BRA .turnOn
+        
+    .noRain
+    
+    ; Get the overlay value for this overworld area
+    LDA.b $8A : ASL : TAX
+    LDA.l Pool_OverlayTable, X : CMP.w #$00FF : BEQ .normal
+        ; If not $FF, assume we want an overlay.
+
+        .turnOn
+        SEP #$20 ; Set A in 8bit mode
+
+        ; Turn on BG1.
+        LDA.b #$01 : STA.b $1D
+
+    .normal
+
+    SEP #$20 ; Set A in 8bit mode
+
+    PLX
+
+    RTL
+}
+pushpc
+
 ; ==============================================================================
 
 if !Func00EEBC = 1
@@ -467,6 +503,7 @@ if !Func00EEBC = 1
 ; Zeros out the BG color when mirror warping to the pyramid area.
 org $00EEBC ; $006EBC
 {
+    ; TODO: probably not needed.
     ; Check if we are warping to an area with the pyramid BG.
     LDA.b $8A : ASL : TAX
     LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BNE .notHyruleCastle
@@ -510,7 +547,7 @@ org $00FF7C ; $007F7C
         
         INC $B0
         
-        JSL $0BFE70 ; $5FE70 IN ROM
+        JSL $0BFE70 ; $05FE70 IN ROM
 
         REP #$30 ; Set A, X, and Y in 16bit mode.
 
@@ -576,7 +613,7 @@ PreOverworld_LoadProperties_LoadMain:
                     CMP.b #$80 : BCS .setNormalSong
             ; Does Link have a moon pearl?
             LDA.l $7EF357 : BNE .setNormalSong
-                ; If not, play that stupid music that plays when you're a bunny in the Dark World.
+                ; If not, play the music that plays when you're a bunny in the Dark World.
                 LDX.b #$04
 
                 BRA .setToFull
@@ -601,7 +638,7 @@ PreOverworld_LoadProperties_LoadMain:
 
     JSL DecompOwAnimatedTiles       ; $5394 IN ROM
     JSL InitTilesets                ; $619B IN ROM; Decompress all other graphics
-    JSR Overworld_LoadAreaPalettes  ; $14692 IN ROM; Load palettes for overworld
+    JSR Overworld_LoadAreaPalettes  ; $014692 IN ROM; Load palettes for overworld
         
     LDX.b $8A
         
@@ -609,11 +646,11 @@ PreOverworld_LoadProperties_LoadMain:
         
     LDA.l $00FD1C, X
         
-    JSL Overworld_LoadPalettes      ; $755A8 IN ROM; Load some other palettes
-    JSL Palette_SetOwBgColor_Long   ; $75618 IN ROM; Sets the background color (changes depending on area)
+    JSL Overworld_LoadPalettes      ; $0755A8 IN ROM; Load some other palettes
+    JSL Palette_SetOwBgColor_Long   ; $075618 IN ROM; Sets the background color (changes depending on area)
         
     LDA.b $10 : CMP.b #$08 : BNE .specialArea2
-        ; $1465F IN ROM; Copies $7EC300[0x200] to $7EC500[0x200]
+        ; $01465F IN ROM; Copies $7EC300[0x200] to $7EC500[0x200]
         JSR $C65F
         
         BRA .normalArea2
@@ -621,11 +658,11 @@ PreOverworld_LoadProperties_LoadMain:
     .specialArea2
     
     ; apparently special overworld handles palettes a bit differently?
-    JSR $C6EB ; $146EB IN ROM
+    JSR $C6EB ; $0146EB IN ROM
     
     .normalArea2
     
-    JSL $0BFE70 ; $5FE70 IN ROM; Sets fixed colors and scroll values
+    JSL $0BFE70 ; $05FE70 IN ROM; Sets fixed colors and scroll values
         
     ; Something fixed color related
     LDA.b #$00 : STA.l $7EC017
@@ -647,7 +684,7 @@ PreOverworld_LoadProperties_LoadMain:
         
     ; Are we in the dark world? If so, there's no warp vortex there.
     LDA.b $8A : AND.b #$40 : BNE .noWarpVortex
-        JSL Sprite_ReinitWarpVortex ; $4AF89 IN ROM
+        JSL Sprite_ReinitWarpVortex ; $04AF89 IN ROM
     
     .noWarpVortex
         
@@ -667,7 +704,7 @@ PreOverworld_LoadProperties_LoadMain:
     STZ $0351
         
     ; Reinitialize many of Link's gameplay variables
-    JSR $8B0C ; $10B0C IN ROM
+    JSR $8B0C ; $010B0C IN ROM
         
     LDA.l $7EF357 : BNE .notBunny
     LDA.l $7EF3CA : BEQ .notBunny
@@ -715,6 +752,9 @@ PreOverworld_LoadProperties_LoadMain:
         LDA.b #$81 : STA.w $4200
     
     .no_music_load_needed
+
+    ; PLACE CUSTOM GFX LOAD HERE!
+    JSL CheckForChangeGraphicsNormalLoadCastle
     
     RTS
 }
@@ -742,7 +782,7 @@ org $028632 ; $010632
     LDA.l $0285F3, X : PHA
         
     JSL InitTilesets                ; $619B IN ROM
-    JSR Overworld_LoadAreaPalettes  ; $14692 IN ROM ; Load Palettes
+    JSR Overworld_LoadAreaPalettes  ; $014692 IN ROM ; Load Palettes
         
     PLA : STA.b $00
         
@@ -750,22 +790,22 @@ org $028632 ; $010632
         
     LDA.l $00FD1C, X
         
-    JSL Overworld_LoadPalettes ; $755A8 IN ROM
+    JSL Overworld_LoadPalettes ; $0755A8 IN ROM
         
     LDA.b #$01 : STA.w $0AB2
         
-    JSL Palette_Hud ; $DEE52 IN ROM
+    JSL Palette_Hud ; $0DEE52 IN ROM
         
     LDA.l $11 : BNE .BRANCH_4
         JSL CopyFontToVram  ; $6556 IN ROM
     
     .BRANCH_4
     
-    JSR $C65F   ; $1465F IN ROM
-    JSL $0BFE70 ; $5FE70 IN ROM
+    JSR $C65F   ; $01465F IN ROM
+    JSL $0BFE70 ; $05FE70 IN ROM
         
     LDA.l $8A : CMP.b #$80 : BCC .BRANCH_5
-        JSL Palette_SetOwBgColor_Long ; $75618 IN ROM
+        JSL Palette_SetOwBgColor_Long ; $075618 IN ROM
     
     .BRANCH_5
     
@@ -850,11 +890,14 @@ org $02AF58 ; $012F58
                 LDA.b $8A : ASL : TAX
                 LDA.l Pool_OverlayTable, X : TAX
 
+                ; Save the overlay for later
+                PHX
+
                 JMP .loadSubScreenOverlay
     
         .notMasterSwordArea
     
-        ; $0189 is the exit room number used for getting to the Triforce room? TODO: Confirm this.
+        ; $0189 is the exit room number used for getting to the Triforce room.
         CMP.w #$0189 : BEQ .loadOverlayShortcut
             ; The second mastersword/under the bridge area.
             LDX.w #$0094
@@ -878,12 +921,10 @@ org $02AF58 ; $012F58
     
     LDA.b $8A : BNE .notForest
         ; Check if we have the master sword.
-        LDA.l $7EF300 : AND.w #$0040 : BEQ .loadSubScreenOverlay
+        LDA.l $7EF300 : AND.w #$0040 : BEQ .notForest
             ; TODO: Write a patch to change this?
             ; The forest canopy overlay
             LDX.w #$009E
-            
-            BRA .loadSubScreenOverlay
     
     .notForest
 
@@ -896,6 +937,18 @@ org $02AF58 ; $012F58
         
     .notMire
 
+    ; Check if we are in the beginning phase, if not, no rain.
+    ; If $7EF3C5 >= 0x02
+    LDA.l $7EF3C5 : AND.w #$00FF : CMP.w #$0002 : BCS .noRain
+    
+        ; The rain overlay
+        ;LDX.w #$009F
+        
+    .noRain
+    
+    ; Store the overlay for later.
+    PHX
+
     ; If the value is 0xFF that means we didn't set any overlay so load the pyramid one by default.
     CPX.w #$00FF : BNE .notFF
         ; The pyramid background
@@ -903,15 +956,7 @@ org $02AF58 ; $012F58
 
     .notFF
     
-    ; Check if we are in the beginning phase, if not, no rain.
-    ; If $7EF3C5 >= 0x02
-    LDA.l $7EF3C5 : AND.w #$00FF : CMP.w #$0002 : BCS .loadSubScreenOverlay
-        .makeItRain
-    
-        ; The rain overlay
-        LDX.w #$009F
-    
-    ; *$1300B ALTERNATE ENTRY POINT ; TODO: Verify this. If it is an alternate entry I can't find where it is reference anywhere.
+    ; $01300B ALTERNATE ENTRY POINT ; TODO: Verify this. If it is an alternate entry I can't find where it is referenced anywhere.
     .loadSubScreenOverlay
     STY.b $84
         
@@ -933,17 +978,9 @@ org $02AF58 ; $012F58
         
     ; Puts BG1 on the subscreen
     LDA.b #$01 : STA.b $1D
-        
-    ; Save X for uno momento.
-    ;PHX
-        
-    ; TODO: This was commented out for the reasons specified below but make sure.
-    ; Set the ambient sound effect. Why? $8A is the current overlay right now,
-    ; we shouldn't load the ambient sound fromt here. Plus the sound gets loaded
-    ; in another spot later on again so this shouldn't be necessary.
-    ;LDX.b $8A : LDA.l $7F5B00, X : LSR #4 : STA.w $012D
-        
-    ;PLX 
+
+    ; Pull the 16 bit overlay from earlier and just discard the high byte.
+    PLX : PLA
         
     ; One possible configuration for $2131 (CGADSUB)
     LDA.b #$72
@@ -958,17 +995,13 @@ org $02AF58 ; $012F58
         ; alternative setting for CGADSUB (only background is enabled on subscreen)
         LDA.b #$20 
         
-        CPX.b #$95 : BEQ .loadOverlay
-        CPX.b #$9C : BEQ .loadOverlay
-            LDA.l $7EC213 : TAX
-        
-            LDA.b #$20
-        
-            CPX.b #$5B : BEQ .loadOverlay
-            CPX.b #$1B : BNE .disableSubscreen
+        CPX.b #$95 : BEQ .loadOverlay ; Sky
+        CPX.b #$9C : BEQ .loadOverlay ; Lava
+    
+            CPX.b #$96 : BEQ .loadOverlay ; Pyramid BG
                 LDX.b $11
         
-                CPX.b #$23 : BEQ .loadOverlay
+                CPX.b #$23 : BEQ .loadOverlay ; TODO: Investigate what these checks are for.
                 CPX.b #$2C : BEQ .loadOverlay
     
             .disableSubscreen
@@ -1018,10 +1051,11 @@ if !Func02B2D4 = 1
 ; Turns on the subscreen if the pyramid is loaded.
 org $02B2D4 ; $132D4
 {
-    JSR $AF19 ; $012F19 IN ROM
+    JSR Overworld_LoadSubscreenAndSilenceSFX1 ; $012F19 IN ROM
 
-    ; Just because we are a few bytes short.
-    JSL EnableSubScreenCheck
+    ; Just because we are a few bytes short. Actually jk I don't think this is needed at all.
+    ; It seems to be handled elsewhere.
+    ;JSL EnableSubScreenCheck
 
     RTL
 }
@@ -1057,9 +1091,10 @@ if !Func02B3A1 = 1
 org $02B3A1 ; $0133A1
 {
     ; Oh look at that we can just use this same function lucky us.
+    ; TODO: May not be needed anymore.
     JSL EnableSubScreenCheck
     
-    REP #$20 ; Set A in 16bit mode
+    REP #$20 ; Set A in 16bit mode.
         
     LDX.b #$00
         
@@ -1071,14 +1106,15 @@ org $02B3A1 ; $0133A1
         
     INX #2 : CPX.b #$20 : BNE .setBgPalettesToWhite
         
-    ; Also set the background color to white
+    ; Also set the background color to white.
     STA.l $7EC500
 
     LDA.b $8A : ASL : TAX
     LDA.l Pool_OverlayTable, X
         
+    ; TODO: May not be needed anymore.
     CMP.w #$0096 : BNE .notPyramidOfPower
-        LDA.w #$0000 : STA.l $7EC500 : STA.l $7EC540
+        LDA.w #$0000 : STA.l $7EC300 : STA.l $7EC340
     
     .notPyramidOfPower
     
@@ -1086,8 +1122,8 @@ org $02B3A1 ; $0133A1
         
     JSL Sprite_ResetAll
     JSL Sprite_OverworldReloadAll
-    JSL $07B107 ; $3B107 IN ROM
-    JSR $8B0C   ; $10B0C IN ROM
+    JSL $07B107 ; $03B107 IN ROM
+    JSR $8B0C   ; $010B0C IN ROM
         
     LDA.b #$14 : STA.b $5D
         
@@ -1110,14 +1146,26 @@ if !Func02BC44 = 1
 org $02BC44 ; $013C44
 {
     NOP : JSL ReadOverlayArray : CMP.w #$0096 : BNE .BRANCH_IOTA
-        LDA.w #$0600 : CMP.b $E6 : BCC .BRANCH_NU
-            STA.b $E6
+        ; TODO: I think these comparison values will need to be calulated somehow
+        ; depending on the area. Right now they are hardcoded to work with the
+        ; castle of shadows area.
+
+        JSL BGControl
+        BRA .BRANCH_IOTA
+
+        ; Don't let the BG scroll down further than the "top" of the bg when walking up.
+        ;LDA.w #$0208 : CMP.b $E6 : BCC .BRANCH_NU ; #$0600 
+            ;STA.b $E6
     
-        .BRANCH_NU
+        ;.BRANCH_NU
     
-        LDA.w #$06C0 : CMP.b $E6 : BCS .BRANCH_IOTA
-            STA.b $E6
+        ; Don't let the BG scroll up further than the "bottom" of the bg when walking down.
+        ;LDA.w #$02C0 : CMP.b $E6 : BCS .BRANCH_IOTA ;#$06C0 
+           ; STA.b $E6
     
+    warnpc $02BC60
+
+    org $02BC60
     .BRANCH_IOTA
 }
 warnpc $02BC60
@@ -1132,22 +1180,54 @@ ReadOverlayArray:
 
     RTL
 }
+
+BGControl:
+{
+    LDA.b $20 : CMP.w #$0180 : BCC .startShowingMountains
+        ; Lock the position so that nothing shows through the trees
+        LDA.w #$02C0 : STA.b $E6
+
+        RTL
+
+    .startShowingMountains
+
+    ; Lock the position to just above right where the last tree block is based on
+    ; the actual tile BG.
+    LDA.b $E8 : CLC : ADC.w #$01A0 : STA.b $E6
+
+    ; Don't let the BG scroll down further than the "top" of the bg when walking up.
+    LDA.w #$0208 : CMP.b $E6 : BCC .dontLock ; #$0600 
+        STA.b $E6
+    
+    .dontLock
+    
+    ; Don't let the BG scroll up further than the "bottom" of the bg when walking down.
+    LDA.w #$02C0 : CMP.b $E6 : BCS .dontLock2 ;#$06C0 
+        STA.b $E2
+
+    .dontLock2
+
+    RTL
+}
 pushpc
 
 ; ==============================================================================
 
 if !Func02C02D = 1
 
-; Changes how the pyramid BG scrolls.
+; Changes how the pyramid BG scrolls durring transition.
 org $02C02D ; $01402D
 {
     PHA
     JSL ReadOverlayArray2
     PLA
     
-    ; TODO: figure out this garbage, in vanilla its a BEQ but BEQ doesn't work here for some reason.
     CPY.b #$96 : BEQ .dontMoveBg1  
-        STA.b $E0, X
+        ; TODO: This may or not be needed.
+        ; It shifts the BG over by a half small area's width. I think this is to line up the
+        ; mountain with the tower in the distance at the appropriate location when coming into
+        ; the pyramid area from the right.
+        STA.b $E0, X 
     
     .dontMoveBg1
 }
@@ -1158,6 +1238,9 @@ endif
 pullpc
 ReadOverlayArray2:
 {
+    PHX
+
+    ; A is already 16 bit here.
     REP #$10 ; Set X and Y in 16bit mode.
 
     LDA.b $8A : ASL : TAX
@@ -1165,6 +1248,8 @@ ReadOverlayArray2:
     TAY
 
     SEP #$10 ; Set X and Y in 8bit mode.
+
+    PLX
 
     RTL
 }
@@ -1192,13 +1277,13 @@ Overworld_LoadAreaPalettes:
         
     STZ $0AA9
         
-    JSL Palette_MainSpr         ; $DEC9E IN ROM; load SP1 through SP4
-    JSL Palette_MiscSpr         ; $DED6E IN ROM; load SP0 (2nd half) and SP6 (2nd half)
-    JSL Palette_SpriteAux1      ; $DECC5 IN ROM; load SP5 (1st half)
-    JSL Palette_SpriteAux2      ; $DECE4 IN ROM; load SP6 (1st half)
-    JSL Palette_Sword           ; $DED03 IN ROM; load SP5 (2nd half, 1st 3 colors), which is the sword palette
-    JSL Palette_Shield          ; $DED29 IN ROM; load SP5 (2nd half, next 4 colors), which is the shield
-    JSL Palette_ArmorAndGloves  ; $DEDF9 IN ROM; load SP7 (full) Link's whole palette, including Armor
+    JSL Palette_MainSpr         ; $0DEC9E IN ROM; load SP1 through SP4
+    JSL Palette_MiscSpr         ; $0DED6E IN ROM; load SP0 (2nd half) and SP6 (2nd half)
+    JSL Palette_SpriteAux1      ; $0DECC5 IN ROM; load SP5 (1st half)
+    JSL Palette_SpriteAux2      ; $0DECE4 IN ROM; load SP6 (1st half)
+    JSL Palette_Sword           ; $0DED03 IN ROM; load SP5 (2nd half, 1st 3 colors), which is the sword palette
+    JSL Palette_Shield          ; $0DED29 IN ROM; load SP5 (2nd half, next 4 colors), which is the shield
+    JSL Palette_ArmorAndGloves  ; $0DEDF9 IN ROM; load SP7 (full) Link's whole palette, including Armor
         
     LDX.b #$01
         
@@ -1210,9 +1295,9 @@ Overworld_LoadAreaPalettes:
     
     STX.w $0AAC
         
-    JSL Palette_SpriteAux3      ; $DEC77 IN ROM; load SP0 (first half) (or SP7 (first half))
-    JSL Palette_Hud             ; $DEE52 IN ROM; load BP0 and BP1 (first halves)
-    JSL Palette_OverworldBgMain ; $DEEC7 IN ROM; load BP2 through BP5 (first halves)
+    JSL Palette_SpriteAux3      ; $0DEC77 IN ROM; load SP0 (first half) (or SP7 (first half))
+    JSL Palette_Hud             ; $0DEE52 IN ROM; load BP0 and BP1 (first halves)
+    JSL Palette_OverworldBgMain ; $0DEEC7 IN ROM; load BP2 through BP5 (first halves)
         
     RTS
 }
@@ -1229,10 +1314,10 @@ if !Func02A4CD = 1
 org $02A4CD ; $0124CD
 RainAnimation:
 {
-    LDA $8C : CMP.b #$9F : BEQ .evilSwamp
+    LDA $8C : CMP.b #$9F : BEQ .rainOverlaySet
         ; Check the progress indicator
-        LDA $7EF3C5 : CMP.b #$02 : BCS .skipMovement
-            .evilSwamp
+        LDA $7EF3C5 : CMP.b #$02 : BRA .skipMovement
+            .rainOverlaySet
 
             ; If misery mire has been opened already, we're done.
             ;LDA $7EF2F0 : AND.b #$20 : BNE .skipMovement
@@ -1346,9 +1431,9 @@ CheckForChangeGraphicsTransitionLoad:
     ; Are we currently in a mosaic?
     LDA $11 : CMP.b #$0F : BEQ .mosaic
         ; Are we entering a special area?
-        LDA $11 : CMP.b #$1A : BEQ .mosaic
+        CMP.b #$1A : BEQ .mosaic
             ; Are we leaving a special area?
-            LDA $11 : CMP.b #$26 : BEQ .mosaic
+            CMP.b #$26 : BEQ .mosaic
                 ; Just a normal transition, Not a mosaic.
                 LDA.w Pool_EnableAnimated : BEQ .dontUpdateAnimated1
                     ; Check to see if we need to update the animated tiles by checking what was previously loaded.
@@ -1360,7 +1445,7 @@ CheckForChangeGraphicsTransitionLoad:
 
                 .dontUpdateAnimated1
 
-                LDA.w Pool_EnableAnimated : BEQ .dontUpdateMain1
+                LDA.w Pool_EnableMainPalette : BEQ .dontUpdateMain1
                     ; Check to see if we need to update the main palette by checking
                     ; what was previously loaded.
                     LDX.b $8A
@@ -1377,8 +1462,8 @@ CheckForChangeGraphicsTransitionLoad:
 
                     LDA $8A : ASL : TAX ; Get area code and times it by 2
 
-                    LDA Pool_BGColorTable, X ; pc 140000 is where ZS saves the array of palettes
-                    STA $7EC300 : STA $7EC500
+                    LDA Pool_BGColorTable, X ; Where ZS saves the array of palettes
+                    STA.l $7EC300 : STA.l $7EC500 : STA.l $7EC540 : STA.l $7EC340
 
                     SEP #$30 ; Set A, X, and Y in 8bit mode.
 
@@ -1416,20 +1501,31 @@ CheckForChangeGraphicsTransitionLoad:
 
     REP #$30 ; Set A, X, and Y in 16bit mode.
 
-    LDA $8A : ASL : TAX ; Get area code and times it by 2
+    LDA.b $8A : ASL : TAX ; Get area code and times it by 2
 
-    LDA Pool_BGColorTable, X ; pc 140000 is where ZS saves the array of palettes
-    STA $7EC300 ;set transparent color ; only set the buffer so it fades in right during mosaic transition
+    LDA Pool_BGColorTable, X ; Where ZS saves the array of palettes
+    STA.l $7EC300 : STA.l $7EC340 ;set transparent color ; only set the buffer so it fades in right during mosaic transition.
 
     SEP #$30 ; Set A, X, and Y in 8bit mode.
 
-    INC $15 ; trigger the buffer into the CGRAM
+    INC.b $15 ; trigger the buffer into the CGRAM
 
     LDA.b #$09 ; Replaced code.
+
+    ; PLACE CUSTOM GFX LOAD HERE!
+    JML CheckForChangeGraphicsTransitionLoadCastle
+
+    CheckForChangeGraphicsTransitionLoadRetrun:
 
     PLB
         
     JML Overworld_FinishTransGfx_firstHalf
+
+    SkipOverworld_FinishTransGfx_firstHalf:
+
+    PLB
+
+    JML $02ABC3 ;skips Overworld_FinishTransGfx_firstHalf
 }
 
 ; The following 2 functions are copied from the palettes.asm but they only copied colors
@@ -1537,6 +1633,9 @@ CheckForChangeGraphicsNormalLoad:
     ; TODO: this whole function may not be needed.
     ; This forces the game to update the animated tiles when going from one area to another.
     ;JSL DecompOwAnimatedTiles 
+
+    ; PLACE CUSTOM GFX LOAD HERE!
+    JSL CheckForChangeGraphicsNormalLoadCastle
         
     PLB
 
@@ -1560,7 +1659,7 @@ org $0AB8F5 ; $0538F5
     
     ; From this point on it is the vanilla function.
     JSL DecompOwAnimatedTiles ; $5394 IN ROM
-    JSL $0BFE70 ; $5FE70 IN ROM
+    JSL $0BFE70 ; $05FE70 IN ROM
         
     STZ $0AA9
     STZ $0AB2
@@ -1571,7 +1670,7 @@ org $0AB8F5 ; $0538F5
         
     STZ $B2
         
-    JSL $02B1F4 ; $131F4 IN ROM
+    JSL $02B1F4 ; $0131F4 IN ROM
         
     ; Play sound effect indicating we're coming out of map mode
     LDA.b #$10 : STA.w $012F
@@ -1588,6 +1687,9 @@ org $0AB8F5 ; $0538F5
     .different_music
     
     STX.w $012C
+
+    ; PLACE CUSTOM GFX LOAD HERE!
+    JSL CheckForChangeGraphicsNormalLoadCastle
         
     RTL
 }
@@ -1599,7 +1701,7 @@ endif
 
 if !Func0BFEC6 = 1
 
-; Loads different special transparent colors and overlay speeds based on the overlay during transition and under other certain cases. Exact cases need to be investigated.
+; Loads different special transparent colors and overlay speeds based on the overlay during transition and under other certain cases. Exact cases need to be investigated. When leaving dungeon.
 org $0BFEC6 ; $05FEC6
 Overworld_LoadBGColorAndSubscreenOverlay:
 {
@@ -1690,7 +1792,6 @@ Overworld_LoadBGColorAndSubscreenOverlay:
     
     .BRANCH_11
     
-    ; TODO: Check for HC or pyramid.
     LDA.b $8A : ASL : TAX
     LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BNE .subscreenOnAndReturn
         ; Synchronize Y scrolls on BG0 and BG1. Same for X scrolls
@@ -1726,18 +1827,20 @@ ReplaceBGColor:
 {
     PHB : PHK : PLB
 
-    SEP #$20 ; Set A in 8bit mode
+    ; TODO: This may need to check if we are in a warp and then if so load the custom color.
+    ; If not, then chceck if its enabled or not.
+    ;SEP #$20 ; Set A in 8bit mode
 
-    LDA.w Pool_EnableBGColor : BNE .custom
-        REP #$20 ; Set A in 16bit mode
+    ;LDA.w Pool_EnableBGColor : BNE .custom
+        ;REP #$20 ; Set A in 16bit mode
 
-        PLB
+        ;PLB
 
-        RTL
+        ;RTL
 
-    .custom
+    ;.custom
 
-    REP #$20 ; Set A in 16bit mode
+    ;REP #$20 ; Set A in 16bit mode
 
     LDA.b $8A : ASL : TAX ; Get area code and times it by 2
     LDA.w Pool_BGColorTable, X ; Get the color.
@@ -1753,10 +1856,14 @@ pushpc
 
 ; ==============================================================================
 
+; Fixes an old hook.
+org $0ED627
+    LDA $8A : CMP.w #$0080
+
 if !Func0ED627 = 1
 
 ; Loads the transparent color under some load conditions such as the mirror warp.
-; TODO: Investigate the other conditions.
+; TODO: Investigate the other conditions. Exiting dungeons.
 org $0ED627 ; $075627
     JML IntColorLoad2
     NOP
@@ -1770,29 +1877,33 @@ IntColorLoad2:
 {
     PHB : PHK : PLB
 
-    SEP #$20 ; Set A in 8bit mode
+    ; I don't think this is needed. Since this is just for warp we should always load the color i think.
+    ;SEP #$20 ; Set A in 8bit mode
 
-    LDA.w Pool_EnableBGColor : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
-        REP #$20 ; Set A in 16bit mode
+    ;LDA.w Pool_EnableBGColor : BNE .custom ; pc 140140 is where ZS saves whether to use the asm or not
+        ;REP #$20 ; Set A in 16bit mode
 
-        LDA.b $8A : CMP.w #$0080 : BCC .notSpecialArea
-            PLB
-            JML $0ED62E
+        ;LDA.b $8A : CMP.w #$0080 : BCC .notSpecialArea
+            ;PLB
+            ;JML $0ED62E
 
         .notSpecialArea
 
-        PLB
-        JML $0ED644
+        ;PLB
+        ;JML $0ED644
 
     .custom
 
-    REP #$20 ; Set A in 16bit mode
+    ;REP #$20 ; Set A in 16bit mode
 
     LDA.b $8A : ASL : TAX ; Get area code and times it by 2
     LDA.w Pool_BGColorTable, X ; Get the color.
     TAX
 
-    STA.l $7EC300 ;set transparent color
+    STA.l $7EC300 : STA.l $7EC340 ;set transparent color
+    STA.l $7EC500 : STA.l $7EC540
+
+    INC $15
 
     PLB
 

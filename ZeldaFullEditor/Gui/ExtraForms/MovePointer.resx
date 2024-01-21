@@ -122,6 +122,6 @@
  in expanded region in order to work where would you like to move them?
 
 New address in HEX, (PC Address), 100000 is the start of the expanded rom
-(100000 is recommended if you don't have anything in expended region)</value>
+(110000 is recommended if you don't have anything in expended region)</value>
   </data>
 </root>
