@@ -516,15 +516,15 @@ namespace ZeldaFullEditor.Properties
             transport.AreaX = buffer.ReadByte();
             transport.AreaY = buffer.ReadByte();
 
-            transport.vramLocation = buffer.ReadShort();
-            transport.xScroll = buffer.ReadShort();
-            transport.yScroll = buffer.ReadShort();
-            transport.playerX = buffer.ReadShort();
-            transport.playerY = buffer.ReadShort();
-            transport.cameraX = buffer.ReadShort();
-            transport.cameraY = buffer.ReadShort();
-            transport.mapId = buffer.ReadShort();
-            transport.whirlpoolPos = buffer.ReadShort();
+            transport.vramLocation = buffer.ReadUShort();
+            transport.xScroll = buffer.ReadUShort();
+            transport.yScroll = buffer.ReadUShort();
+            transport.playerX = buffer.ReadUShort();
+            transport.playerY = buffer.ReadUShort();
+            transport.cameraX = buffer.ReadUShort();
+            transport.cameraY = buffer.ReadUShort();
+            transport.mapId = buffer.ReadUShort();
+            transport.whirlpoolPos = buffer.ReadUShort();
 
             form.overworldEditor.scene.Invalidate();
             Console.WriteLine("Transport " + uId + " changed!");

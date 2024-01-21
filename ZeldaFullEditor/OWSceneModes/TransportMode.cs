@@ -33,7 +33,8 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 selectedTransport = en;
                                 lastselectedTransport = en;
-                                //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+
+                                // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                                 scene.mouse_down = true;
                             }
                         }
@@ -48,19 +49,19 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 int mouseTileX = e.X / 16;
                 int mouseTileY = e.Y / 16;
-                int mapX = (mouseTileX / 32);
-                int mapY = (mouseTileY / 32);
+                int mapX = mouseTileX / 32;
+                int mapY = mouseTileY / 32;
 
                 scene.mapHover = mapX + (mapY * 8);
 
                 if (selectedTransport != null)
                 {
-                    selectedTransport.playerX = (short)e.X;
-                    selectedTransport.playerY = (short)e.Y;
+                    selectedTransport.playerX = (ushort)e.X;
+                    selectedTransport.playerY = (ushort)e.Y;
                     if (scene.snapToGrid)
                     {
-                        selectedTransport.playerX = (short)((e.X / 8) * 8);
-                        selectedTransport.playerY = (short)((e.Y / 8) * 8);
+                        selectedTransport.playerX = (ushort)((e.X / 8) * 8);
+                        selectedTransport.playerY = (ushort)((e.Y / 8) * 8);
                     }
 
                     byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
@@ -71,7 +72,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     selectedTransport.updateMapStuff(mid, scene.ow);
 
-                    //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+                    // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 }
             }
         }
@@ -114,7 +115,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     }
                 }
 
-                //scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
+                // scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
             }
         }
 
@@ -125,7 +126,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
             if (wf.ShowDialog() == DialogResult.OK)
             {
-                short.TryParse(wf.textBox1.Text, out short v);
+                ushort.TryParse(wf.textBox1.Text, out ushort v);
                 lastselectedTransport.whirlpoolPos = v;
                 SendTransportData(lastselectedTransport);
             }
@@ -154,7 +155,8 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 bgrBrush = Constants.Azure200Brush;
                                 scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
-                                //scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
+
+                                // scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
                                 scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
                             }
                             else
@@ -197,7 +199,8 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 bgrBrush = Constants.Azure200Brush;
                                 scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
-                                //scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
+
+                                // scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
                                 scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
                             }
                             else
@@ -230,7 +233,7 @@ namespace ZeldaFullEditor.OWSceneModes
             if (!NetZS.connected) { return; }
             NetZSBuffer buffer = new NetZSBuffer(32);
             buffer.Write((byte)10); // transport data
-            buffer.Write((byte)NetZS.userID); //user ID
+            buffer.Write((byte)NetZS.userID); // user ID
             buffer.Write((int)transport.uniqueID);
 
             buffer.Write((byte)transport.unk1);

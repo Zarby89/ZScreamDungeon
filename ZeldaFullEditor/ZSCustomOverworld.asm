@@ -754,7 +754,7 @@ PreOverworld_LoadProperties_LoadMain:
     .no_music_load_needed
 
     ; PLACE CUSTOM GFX LOAD HERE!
-    JSL CheckForChangeGraphicsNormalLoadCastle
+    ;JSL CheckForChangeGraphicsNormalLoadCastle
     
     RTS
 }
@@ -1513,7 +1513,7 @@ CheckForChangeGraphicsTransitionLoad:
     LDA.b #$09 ; Replaced code.
 
     ; PLACE CUSTOM GFX LOAD HERE!
-    JML CheckForChangeGraphicsTransitionLoadCastle
+    ;JML CheckForChangeGraphicsTransitionLoadCastle
 
     CheckForChangeGraphicsTransitionLoadRetrun:
 
@@ -1635,7 +1635,7 @@ CheckForChangeGraphicsNormalLoad:
     ;JSL DecompOwAnimatedTiles 
 
     ; PLACE CUSTOM GFX LOAD HERE!
-    JSL CheckForChangeGraphicsNormalLoadCastle
+    ;JSL CheckForChangeGraphicsNormalLoadCastle
         
     PLB
 
@@ -1689,7 +1689,7 @@ org $0AB8F5 ; $0538F5
     STX.w $012C
 
     ; PLACE CUSTOM GFX LOAD HERE!
-    JSL CheckForChangeGraphicsNormalLoadCastle
+    ;JSL CheckForChangeGraphicsNormalLoadCastle
         
     RTL
 }

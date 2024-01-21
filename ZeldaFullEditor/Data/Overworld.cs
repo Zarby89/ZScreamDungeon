@@ -762,20 +762,20 @@ namespace ZeldaFullEditor
             for (int i = 0; i < Constants.OWWhirlpoolCount; i++)
             {
                 byte whirlpoolMapID = (byte)((ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2)]);
-                short whirlpoolVRAM = (short)((ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2)]);
-                short whirlpoolYScroll = (short)((ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2)]);
-                short whirlpoolXScroll = (short)((ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2)]);
-                short whirlpoolYPlayer = (short)((ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2)]);
-                short whirlpoolXPlayer = (short)((ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2)]);
-                short whirlpoolYCamera = (short)((ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2)]);
-                short whirlpoolXCamera = (short)((ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2)]);
+                ushort whirlpoolVRAM = (ushort)((ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2)]);
+                ushort whirlpoolYScroll = (ushort)((ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2)]);
+                ushort whirlpoolXScroll = (ushort)((ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2)]);
+                ushort whirlpoolYPlayer = (ushort)((ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2)]);
+                ushort whirlpoolXPlayer = (ushort)((ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2)]);
+                ushort whirlpoolYCamera = (ushort)((ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2)]);
+                ushort whirlpoolXCamera = (ushort)((ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2)]);
                 byte whirlpoolScrollModY = ROM.DATA[Constants.OWExitScrollModYWhirlpool + i];
                 byte whirlpoolScrollModX = ROM.DATA[Constants.OWExitScrollModXWhirlpool + i];
-                short whirlpoolPosition = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2)]);
+                ushort whirlpoolPosition = (ushort)((ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2)]);
 
                 if (i > 8)
                 {
-                    whirlpoolPosition = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2)]);
+                    whirlpoolPosition = (ushort)((ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2)]);
                 }
 
                 var transport = new TransportOW(whirlpoolMapID, whirlpoolVRAM, whirlpoolYScroll, whirlpoolXScroll, whirlpoolYPlayer, whirlpoolXPlayer, whirlpoolYCamera, whirlpoolXCamera, whirlpoolScrollModY, whirlpoolScrollModX, whirlpoolPosition);
@@ -829,6 +829,12 @@ namespace ZeldaFullEditor
                 int x = p % 64;
                 int y = p >> 6;
                 EntranceOW eo = new EntranceOW((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, (ushort)(mapPos + 0x400), true);
+
+                if (eo.MapPos == 0xFFFF)
+                {
+                    eo.Deleted = true;
+                }
+
                 allHoles[i] = eo;
             }
 
