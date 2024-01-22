@@ -27,6 +27,10 @@ public class RoomArtist : TilemapArtist
 
 	public override Bitmap FinalOutput { get; } = new(512, 512);
 
+
+	public RoomObjectTileLister TileLister => ZScreamer.ActiveScreamer?.TileLister;
+
+
 	public RoomArtist() : base() { }
 
 	private void RebuildTileMap()
@@ -34,10 +38,10 @@ public class RoomArtist : TilemapArtist
 		ZScreamer.ActiveScreamer.TileLister.CurrentFloor1 = CurrentRoom.Floor1Graphics;
 		ZScreamer.ActiveScreamer.TileLister.CurrentFloor2 = CurrentRoom.Floor2Graphics;
 
-		var Floor2Shorts = ZScreamer.ActiveScreamer.TileLister[Constants.Floor2ObjectID].ToUnsignedShorts();
+		var Floor2Shorts = ZScreamer.ActiveScreamer.TileLister.GetUnsignedFloor2Shorts();
 		FillTilemapWithFloorShort(Layer2TileMap, Floor2Shorts);
 
-		var Floor1Shorts = ZScreamer.ActiveScreamer.TileLister[Constants.Floor1ObjectID].ToUnsignedShorts();
+		var Floor1Shorts = ZScreamer.ActiveScreamer.TileLister.GetUnsignedFloor1Shorts();
 		FillTilemapWithFloorShort(Layer1TileMap, Floor1Shorts);
 
 		DrawEntireList(ZScreamer.ActiveScreamer.LayoutLister[CurrentRoom.Layout]);
@@ -183,6 +187,21 @@ public class RoomArtist : TilemapArtist
 
 	public override void DrawTileForPreview(Tile t, int indexoff) { }
 
+	public void AddIndexedObjectTileToTilemap(ushort tileindex, ushort tilemap, RoomLayer layer)
+	{
+		var w = layer switch
+		{
+			RoomLayer.Layer3 or
+			RoomLayer.Layer1 => Layer1TileMap,
+			RoomLayer.Layer2 => Layer2TileMap,
+			_ => throw new ArgumentException(),
+		};
+
+		w[tilemap] = TileLister[tileindex].ToUnsignedShort();
+	}
+
+
+
 	public void AddTilesToTilemap(RoomObject obj)
 	{
 		var t = obj.ObjectType;
@@ -221,13 +240,14 @@ public class RoomArtist : TilemapArtist
 
 			if (tm is <Constants.TilesPerUnderworldRoom and >= 0)
 			{
-				td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip);
+				td = ZScreamer.ActiveScreamer.TileLister[obj.ObjectType.TileIndex, d.TileOffset]
+					.GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip);
 
 				obj.CollisionRectangles.Add(new(d.XOff + obj.RealX, d.YOff + obj.RealY, 8, 8));
 
 				tileUnder = d.TileUnder switch
 				{
-					not null => obj.Tiles[(int) d.TileUnder].ToUnsignedShort(),
+					not null => d.TileUnder,
 					null => null,
 				};
 

@@ -248,17 +248,7 @@ public partial class TextEditor
 		}
 	}
 
-	private class ParsedElement
-	{
-		public TextElement Parent { get; }
-		public byte Value { get; }
-
-		public ParsedElement(TextElement t, byte v)
-		{
-			Parent = t;
-			Value = v;
-		}
-	}
+	private record ParsedElement(TextElement Parent, byte Value);
 
 	private static List<DictionaryEntry> AllDicts = new();
 

@@ -1608,7 +1608,7 @@ public partial class RoomObjectType
 
 	private static void RoomDraw_RightwardsDoubled2x2spaced2_1to16(List<DrawInfo> list, int objSize)
 	{
-		int size = objSize * 32;
+		int size = (objSize + 1) * 32;
 
 		for (int s = 0; s < size; s += 32)
 		{
@@ -1619,8 +1619,8 @@ public partial class RoomObjectType
 				new DrawInfo(3, s + 8, 8),
 
 				new DrawInfo(0, s, 48),
-				new DrawInfo(1, s, 48),
-				new DrawInfo(2, s + 8, 56),
+				new DrawInfo(1, s, 56),
+				new DrawInfo(2, s + 8, 48),
 				new DrawInfo(3, s + 8, 56)
 			);
 		}
@@ -1631,19 +1631,9 @@ public partial class RoomObjectType
 		RoomDraw_RightwardsXbyY(list, objSize, objSize + 8, sizex: 1, sizey: 1);
 	}
 
-	private static void RoomDraw_RightwardsFakePots2x2_1to16(List<DrawInfo> list, int objSize)
-	{
-		RoomDraw_RightwardsXbyY(list, objSize, objSize + 1, sizex: 2, sizey: 2);
-	}
-
 	private static void RoomDraw_RightwardsFloorTile4x2_1to16(List<DrawInfo> list, int objSize)
 	{
 		RoomDraw_RightwardsXbyY(list, objSize, objSize + 1, sizex: 4, sizey: 2);
-	}
-
-	private static void RoomDraw_RightwardsHammerPegs2x2_1to16(List<DrawInfo> list, int objSize)
-	{
-		RoomDraw_RightwardsXbyY(list, objSize, objSize + 1, sizex: 2, sizey: 2);
 	}
 
 	private static void RoomDraw_RightwardsHasEdge1x1_1to16_plus2(List<DrawInfo> list, int objSize)

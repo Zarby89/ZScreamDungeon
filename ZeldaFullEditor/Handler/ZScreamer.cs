@@ -123,6 +123,7 @@ public partial class ZScreamer
 		OverworldScene.UpdateForMode(om);
 	}
 
+
 	public void SetSelectedMessageID(int id)
 	{
 		ZGUI.TextEditor.SelectMessageID(id);

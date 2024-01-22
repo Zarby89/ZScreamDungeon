@@ -17,7 +17,7 @@ public interface IMouseCollidable
 	public Rectangle BoundingBox { get; }
 
 	/// <summary>
-	/// Checks the dynamically calculated hitbox specific to this entity in its current state for the specified coordinates.
+	/// Checks the dynamically calculated hitbox specific to this entity in its current state against the specified coordinates.
 	/// </summary>
 	/// <returns><see langword="true"/> if the point falls within the entity's hitbox.</returns>
 	public bool PointIsInHitbox(int x, int y);

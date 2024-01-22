@@ -5,5 +5,8 @@
 /// </summary>
 public interface IMultilayered
 {
+	/// <summary>
+	/// The layer this entity currently resides on.
+	/// </summary>
 	public RoomLayer Layer { get; set; }
 }

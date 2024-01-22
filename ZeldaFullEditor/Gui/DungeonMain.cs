@@ -50,6 +50,7 @@ public partial class ZScreamForm : Form
 	// TODO move this?
 	public int lastRoomID = -1;
 
+	// TODO: make this a class, not random fucking booleans
 	// TODO: save this in a config file and load the values into this array on startup
 	public bool[] saveSettingsArr = new[]
 	{
@@ -84,8 +85,7 @@ public partial class ZScreamForm : Form
 
 		penModeButton.Tag = OverworldEditMode.Tile16;
 		fillModeButton.Tag = OverworldEditMode.Tile16Fill;
-		entranceModeButton.Tag = OverworldEditMode.Entrances;
-		exitModeButton.Tag = OverworldEditMode.Exits;
+		entranceModeButton.Tag = OverworldEditMode.EntranceExit;
 		itemModeButton.Tag = OverworldEditMode.Secrets;
 		owSpriteModeButton.Tag = OverworldEditMode.Sprites;
 		transportModeButton.Tag = OverworldEditMode.Transports;
@@ -1360,7 +1360,7 @@ public partial class ZScreamForm : Form
 			SelectedObjectYLabel.Visible = true;
 
 			SelectedObjectXLabel.Text = $"X: {f.GridX:X2}";
-			SelectedObjectYLabel.Text = $"X: {f.GridY:X2}";
+			SelectedObjectYLabel.Text = $"Y: {f.GridY:X2}";
 		}
 		else
 		{

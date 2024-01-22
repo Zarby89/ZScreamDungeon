@@ -496,15 +496,12 @@ public class Room
 		var rtype = RoomObjectType.GetTypeFromID(oid);
 		if (rtype is null) return null;
 
-		var defn = zs.TileLister[oid];
-		if (defn is null) return null;
-
 		if (rtype.Resizeability is ObjectResizability.None)
 		{
 			size = 0;
 		}
 
-		return new RoomObject(rtype, defn)
+		return new RoomObject(rtype)
 		{
 			GridX = posX,
 			GridY = posY,

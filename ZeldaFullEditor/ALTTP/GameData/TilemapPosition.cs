@@ -16,7 +16,7 @@ public static class UWTilemapPosition
 	public static (byte x, byte y, byte layer) CreateXYZFromTileMap(byte low, byte high)
 	{
 		int manip = (high & 0x1F) << 7 | (low >> 1);
-		byte x = (byte) (manip % 64);
+		byte x = (byte) (manip & 0x3F);
 		byte y = (byte) (manip >> 6);
 		byte layer = (byte) (high >> 5);
 

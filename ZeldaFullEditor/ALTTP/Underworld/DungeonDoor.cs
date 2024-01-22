@@ -10,54 +10,30 @@ public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveIn
 {
 	public byte ID => DoorType.ID;
 
-	public int RealX => position.RealX;
-	public int RealY => position.RealY;
+	public int RealX => Position.RealX;
+	public int RealY => Position.RealY;
 
 	// TODO need a way to change shape for the special door draws
-	public Rectangle BoundingBox => position.BoundingBox;
+	public Rectangle BoundingBox => Position.BoundingBox;
 
-	private DungeonDoorType doortype = DungeonDoorType.DoorType00;
-	public DungeonDoorType DoorType {
-		get => doortype;
-		set
-		{
-			doortype = value;
-			//FindNewTileSet();
-		}
-	}
+	public DungeonDoorType DoorType { get; set; } = DungeonDoorType.DoorType00;
+	public DungeonDoorPosition Position { get; set; } = DungeonDoorPosition.North00;
 
-	private DungeonDoorPosition position = DungeonDoorPosition.North00;
-	public DungeonDoorPosition Position
+	public ushort CurrentObjectListIndex => Position.Direction switch
 	{
-		get => position;
-		set
-		{
-			position = value;
-			//UpdateTilesForPosition();
-		}
-	}
-
-	private DoorTilesList DoorTiles = DoorTilesList.EmptySet;
-
-	public TilesList Tiles { get; private set; }
+		DoorDirection.North => DoorType.TileIndexNorth,
+		DoorDirection.South => DoorType.TileIndexSouth,
+		DoorDirection.West => DoorType.TileIndexWest,
+		DoorDirection.East => DoorType.TileIndexEast,
+		_ => 0x0000,
+	};
 
 	public string Name => DoorType.Name;
 
 	public DungeonDoor(DungeonDoorType type, DungeonDoorPosition position)
 	{
-		this.position = position;
+		Position = position;
 		DoorType = type;
-	}
-
-	private void FindNewTileSet()
-	{
-		DoorTiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(ID);
-		UpdateTilesForPosition();
-	}
-
-	private void UpdateTilesForPosition()
-	{
-		Tiles = DoorTiles[Position.Direction];
 	}
 
 	public void Draw(IDrawArt artist)
@@ -77,12 +53,5 @@ public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveIn
 	public byte[] GetByteData()
 	{
 		return new byte[] { Position.Token, ID };
-	}
-}
-
-public class DungeonDoorPreview : DungeonDoor
-{
-	public DungeonDoorPreview(DungeonDoorType type, DungeonDoorPosition position) : base(type, position)
-	{
 	}
 }

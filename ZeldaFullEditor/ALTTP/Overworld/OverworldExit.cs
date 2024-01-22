@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.ALTTP.Overworld;
 
 [Serializable]
-public class OverworldExit : OverworldDestination, IMouseCollidable, IFreelyPlaceable, IHaveInfo
+public class OverworldExit : OverworldDestination, IMouseCollidable, IFreelyPlaceable, IHaveInfo, IOverworldUWLink
 {
 	public byte unk1 { get; set; }
 	public byte unk2 { get; set; }
@@ -11,6 +11,12 @@ public class OverworldExit : OverworldDestination, IMouseCollidable, IFreelyPlac
 	public byte doorYEditor { get; set; }
 
 	public ushort TargetRoomID { get; set; }
+
+	public ushort TargetID
+	{
+		get => TargetRoomID;
+		set => TargetRoomID = value;
+	}
 
 	public override string Name => "Exit";
 	public ushort doorType1 { get; set; }

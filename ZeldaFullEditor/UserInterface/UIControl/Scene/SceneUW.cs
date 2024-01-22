@@ -299,11 +299,6 @@ public partial class SceneUW : Scene
 		Room?.ClearCollisionLayout();
 	}
 
-	public void getObjectsRectangle()
-	{
-		throw new NotImplementedException();
-	}
-
 	public override void Undo()
 	{
 		Room?.Undo();

@@ -5,13 +5,48 @@
 /// </summary>
 public static class IntFunctions
 {
+	/// <summary>
+	/// Tests whether any of the bits in <paramref name="b"/> are contained in <paramref name="test"/>.
+	/// </summary>
+	/// <returns><see langword="true"/> if the logical and of <paramref name="b"/> and <paramref name="test"/> is nonzero;
+	/// otherwise <see langword="false"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitIsOn(this byte b, byte test) => (b & test) != 0;
+
+
+	/// <summary>
+	/// Tests an operand to see if it fully contains a specified bitmask.
+	/// </summary>
+	/// <param name="b">Value to test</param>
+	/// <param name="test">Bitmask to test</param>
+	/// <returns><see langword="true"/> if <c><paramref name="b"/> &amp; <paramref name="test"/> = <paramref name="test"/></c>;
+	/// otherwise <see langword="false"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitsAllSet(this byte b, byte test) => (b & test) == test;
+
+	/// <inheritdoc cref="BitIsOn(byte, byte)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitIsOn(this int b, int test) => (b & test) != 0;
+
+	/// <inheritdoc cref="BitsAllSet(byte, byte)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitsAllSet(this int b, int test) => (b & test) == test;
+
+
+	/// <inheritdoc cref="BitIsOn(byte, byte)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitIsOn(this short b, short test) => (b & test) != 0;
+
+	/// <inheritdoc cref="BitsAllSet(byte, byte)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitsAllSet(this short b, short test) => (b & test) == test;
+
+	/// <inheritdoc cref="BitIsOn(byte, byte)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitIsOn(this ushort b, ushort test) => (b & test) != 0;
+
+	/// <inheritdoc cref="BitsAllSet(byte, byte)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool BitsAllSet(this ushort b, ushort test) => (b & test) == test;
 
 	public static byte GetMaskWithLowSignificance(this byte b, byte mask)
@@ -41,13 +76,17 @@ public static class IntFunctions
 		);
 	}
 
+	/// <summary>
+	/// Clamps value <paramref name="v"/> to be within the range [<paramref name="min"/>, <paramref name="max"/>].
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static int Clamp(this int v, int min, int max)
 	{
-		if (v >= max)
+		if (v > max)
 		{
 			v = max;
 		}
-		else if (v <= min)
+		else if (v < min)
 		{
 			v = min;
 		}
@@ -55,6 +94,8 @@ public static class IntFunctions
 		return v;
 	}
 
+	/// <inheritdoc cref="Clamp(int, int, int)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ushort Clamp(this ushort v, ushort min, ushort max)
 	{
 		if (v >= max)
@@ -69,6 +110,8 @@ public static class IntFunctions
 		return v;
 	}
 
+	/// <inheritdoc cref="Clamp(int, int, int)"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static byte Clamp(this byte v, byte min, byte max)
 	{
 		if (v >= max)

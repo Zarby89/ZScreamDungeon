@@ -121,8 +121,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="UserInterface\UIControl\Scene\SceneOW.DoorMode.cs" />
-    <Compile Update="UserInterface\UIControl\Scene\SceneOW.EntranceMode.cs" />
-    <Compile Update="UserInterface\UIControl\Scene\SceneOW.ExitMode.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneOW.SecretsMode.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneUW.LayerMode.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneOW.SpriteMode.cs" />

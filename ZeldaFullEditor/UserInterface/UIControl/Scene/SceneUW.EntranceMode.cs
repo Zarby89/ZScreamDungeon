@@ -57,6 +57,7 @@ public partial class SceneUW
 			(false, false) => 0x12,
 		};
 
+		// TODO ???????????
 		sel.CameraX = (ushort) ((sel.YPosition % 512) switch
 		{
 			<= 150 => ey,

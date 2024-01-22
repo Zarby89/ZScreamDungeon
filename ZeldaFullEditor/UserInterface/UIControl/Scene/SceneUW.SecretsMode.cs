@@ -61,7 +61,7 @@ public partial class SceneUW
 		{
 			GridX = (byte) MouseX,
 			GridY = (byte) MouseY,
-			Layer = 0,
+			Layer = Layer,
 		};
 
 		Room.AttemptToAddEntityAsSelected(b, CurrentMode);

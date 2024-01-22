@@ -19,7 +19,7 @@ public partial class SceneOW
 				break;
 			}
 
-			foreach (var spr in ZS.OverworldManager.CurrentStateSprites) // TODO : Check if that need to be changed to LINQ mapid == maphover
+			foreach (var spr in ZS.OverworldManager.CurrentStateSprites)
 			{
 				if (spr.MouseIsInHitbox(e))
 				{
@@ -256,6 +256,5 @@ public partial class SceneOW
 	private void SelectAll_Sprites()
 	{
 		return;
-		throw new NotImplementedException();
 	}
 }

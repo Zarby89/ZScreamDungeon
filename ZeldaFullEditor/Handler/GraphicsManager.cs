@@ -7,7 +7,7 @@ public class GraphicsManager
 	private const int SpriteSheetOffset = 0x73;
 
 
-	// TODO move to cosntants or something
+	// TODO move to constants or something
 	public static Bitmap moveableBlock { get; } = new Bitmap(Resources.Mblock);
 	public static Bitmap spriteFont { get; } = new Bitmap(Resources.spriteFont);
 	public static Bitmap favStar1 { get; } = new Bitmap(Resources.starn);

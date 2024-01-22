@@ -44,7 +44,7 @@
 			this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
 			this.palette8Box = new System.Windows.Forms.PictureBox();
 			this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
-			this.OWTabExitProps = new System.Windows.Forms.TabPage();
+			this.OWTabEntranceExitProps = new System.Windows.Forms.TabPage();
 			this.OWExitPanel = new System.Windows.Forms.Panel();
 			this.OWExitDisabled = new System.Windows.Forms.Label();
 			this.OWExitPropY = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
@@ -53,15 +53,6 @@
 			this.label13 = new System.Windows.Forms.Label();
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
-			this.OWTabEntranceProps = new System.Windows.Forms.TabPage();
-			this.OWEntrancePanel = new System.Windows.Forms.Panel();
-			this.OWEntranceDisabled = new System.Windows.Forms.Label();
-			this.OWEntrancePropY = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
-			this.OWEntrancePropX = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
-			this.OWEntrancePropID = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
-			this.label15 = new System.Windows.Forms.Label();
-			this.label17 = new System.Windows.Forms.Label();
-			this.label18 = new System.Windows.Forms.Label();
 			this.OWTabTransportProps = new System.Windows.Forms.TabPage();
 			this.OWTransportPanel = new System.Windows.Forms.Panel();
 			this.OWTransportDisabled = new System.Windows.Forms.Label();
@@ -102,6 +93,14 @@
 			this.selectedTileLabel = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.stateCombobox = new System.Windows.Forms.ComboBox();
+			this.OWEntrancePanel = new System.Windows.Forms.Panel();
+			this.OWEntranceDisabled = new System.Windows.Forms.Label();
+			this.OWEntrancePropY = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
+			this.OWEntrancePropX = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
+			this.OWEntrancePropID = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
+			this.label15 = new System.Windows.Forms.Label();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label18 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -117,10 +116,8 @@
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
-			this.OWTabExitProps.SuspendLayout();
+			this.OWTabEntranceExitProps.SuspendLayout();
 			this.OWExitPanel.SuspendLayout();
-			this.OWTabEntranceProps.SuspendLayout();
-			this.OWEntrancePanel.SuspendLayout();
 			this.OWTabTransportProps.SuspendLayout();
 			this.OWTransportPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
@@ -130,6 +127,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
 			this.groupBox1.SuspendLayout();
+			this.OWEntrancePanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -158,8 +156,7 @@
 			this.OverworldAuxSideTabs.Controls.Add(this.tabPage1);
 			this.OverworldAuxSideTabs.Controls.Add(this.tabPage2);
 			this.OverworldAuxSideTabs.Controls.Add(this.Tiles8);
-			this.OverworldAuxSideTabs.Controls.Add(this.OWTabExitProps);
-			this.OverworldAuxSideTabs.Controls.Add(this.OWTabEntranceProps);
+			this.OverworldAuxSideTabs.Controls.Add(this.OWTabEntranceExitProps);
 			this.OverworldAuxSideTabs.Controls.Add(this.OWTabTransportProps);
 			this.OverworldAuxSideTabs.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.OverworldAuxSideTabs.Location = new System.Drawing.Point(0, 0);
@@ -198,10 +195,10 @@
 			// 
 			this.tabPage2.AutoScroll = true;
 			this.tabPage2.Controls.Add(this.scratchPicturebox);
-			this.tabPage2.Location = new System.Drawing.Point(4, 44);
+			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(280, 596);
+			this.tabPage2.Size = new System.Drawing.Size(292, 618);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Tile 16 scratchpad";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -222,9 +219,9 @@
 			// 
 			this.Tiles8.Controls.Add(this.panel2);
 			this.Tiles8.Controls.Add(this.panel1);
-			this.Tiles8.Location = new System.Drawing.Point(4, 44);
+			this.Tiles8.Location = new System.Drawing.Point(4, 22);
 			this.Tiles8.Name = "Tiles8";
-			this.Tiles8.Size = new System.Drawing.Size(280, 596);
+			this.Tiles8.Size = new System.Drawing.Size(292, 618);
 			this.Tiles8.TabIndex = 2;
 			this.Tiles8.Text = "Tile 8";
 			this.Tiles8.UseVisualStyleBackColor = true;
@@ -236,7 +233,7 @@
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel2.Location = new System.Drawing.Point(0, 217);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(280, 379);
+			this.panel2.Size = new System.Drawing.Size(292, 401);
 			this.panel2.TabIndex = 3;
 			// 
 			// pictureBox1
@@ -259,7 +256,7 @@
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(280, 217);
+			this.panel1.Size = new System.Drawing.Size(292, 217);
 			this.panel1.TabIndex = 2;
 			// 
 			// priorityCheckbox
@@ -314,15 +311,16 @@
 			this.mirrorXCheckbox.UseVisualStyleBackColor = true;
 			this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
 			// 
-			// OWTabExitProps
+			// OWTabEntranceExitProps
 			// 
-			this.OWTabExitProps.Controls.Add(this.OWExitPanel);
-			this.OWTabExitProps.Location = new System.Drawing.Point(4, 44);
-			this.OWTabExitProps.Name = "OWTabExitProps";
-			this.OWTabExitProps.Size = new System.Drawing.Size(280, 596);
-			this.OWTabExitProps.TabIndex = 3;
-			this.OWTabExitProps.Text = "Exit";
-			this.OWTabExitProps.UseVisualStyleBackColor = true;
+			this.OWTabEntranceExitProps.Controls.Add(this.OWEntrancePanel);
+			this.OWTabEntranceExitProps.Controls.Add(this.OWExitPanel);
+			this.OWTabEntranceExitProps.Location = new System.Drawing.Point(4, 40);
+			this.OWTabEntranceExitProps.Name = "OWTabEntranceExitProps";
+			this.OWTabEntranceExitProps.Size = new System.Drawing.Size(292, 600);
+			this.OWTabEntranceExitProps.TabIndex = 3;
+			this.OWTabEntranceExitProps.Text = "Entrance";
+			this.OWTabEntranceExitProps.UseVisualStyleBackColor = true;
 			// 
 			// OWExitPanel
 			// 
@@ -413,111 +411,12 @@
 			this.label11.TabIndex = 0;
 			this.label11.Text = "Exit ID";
 			// 
-			// OWTabEntranceProps
-			// 
-			this.OWTabEntranceProps.Controls.Add(this.OWEntrancePanel);
-			this.OWTabEntranceProps.Location = new System.Drawing.Point(4, 44);
-			this.OWTabEntranceProps.Name = "OWTabEntranceProps";
-			this.OWTabEntranceProps.Size = new System.Drawing.Size(280, 596);
-			this.OWTabEntranceProps.TabIndex = 4;
-			this.OWTabEntranceProps.Text = "Entrance";
-			this.OWTabEntranceProps.UseVisualStyleBackColor = true;
-			// 
-			// OWEntrancePanel
-			// 
-			this.OWEntrancePanel.Controls.Add(this.OWEntranceDisabled);
-			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropY);
-			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropX);
-			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropID);
-			this.OWEntrancePanel.Controls.Add(this.label15);
-			this.OWEntrancePanel.Controls.Add(this.label17);
-			this.OWEntrancePanel.Controls.Add(this.label18);
-			this.OWEntrancePanel.Location = new System.Drawing.Point(17, 18);
-			this.OWEntrancePanel.Name = "OWEntrancePanel";
-			this.OWEntrancePanel.Size = new System.Drawing.Size(205, 220);
-			this.OWEntrancePanel.TabIndex = 10;
-			// 
-			// OWEntranceDisabled
-			// 
-			this.OWEntranceDisabled.AutoSize = true;
-			this.OWEntranceDisabled.Location = new System.Drawing.Point(8, 7);
-			this.OWEntranceDisabled.Name = "OWEntranceDisabled";
-			this.OWEntranceDisabled.Size = new System.Drawing.Size(109, 13);
-			this.OWEntranceDisabled.TabIndex = 8;
-			this.OWEntranceDisabled.Text = "No entrance selected";
-			// 
-			// OWEntrancePropY
-			// 
-			this.OWEntrancePropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWEntrancePropY.HexValue = 0;
-			this.OWEntrancePropY.Location = new System.Drawing.Point(55, 78);
-			this.OWEntrancePropY.MaxLength = 2;
-			this.OWEntrancePropY.Name = "OWEntrancePropY";
-			this.OWEntrancePropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWEntrancePropY.Size = new System.Drawing.Size(56, 20);
-			this.OWEntrancePropY.TabIndex = 7;
-			this.OWEntrancePropY.Text = "00";
-			this.OWEntrancePropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWEntrancePropX
-			// 
-			this.OWEntrancePropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWEntrancePropX.HexValue = 0;
-			this.OWEntrancePropX.Location = new System.Drawing.Point(55, 52);
-			this.OWEntrancePropX.MaxLength = 2;
-			this.OWEntrancePropX.Name = "OWEntrancePropX";
-			this.OWEntrancePropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWEntrancePropX.Size = new System.Drawing.Size(55, 20);
-			this.OWEntrancePropX.TabIndex = 6;
-			this.OWEntrancePropX.Text = "00";
-			this.OWEntrancePropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWEntrancePropID
-			// 
-			this.OWEntrancePropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWEntrancePropID.HexValue = 0;
-			this.OWEntrancePropID.Location = new System.Drawing.Point(55, 26);
-			this.OWEntrancePropID.MaxLength = 2;
-			this.OWEntrancePropID.Name = "OWEntrancePropID";
-			this.OWEntrancePropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWEntrancePropID.Size = new System.Drawing.Size(55, 20);
-			this.OWEntrancePropID.TabIndex = 5;
-			this.OWEntrancePropID.Text = "00";
-			this.OWEntrancePropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// label15
-			// 
-			this.label15.AutoSize = true;
-			this.label15.Location = new System.Drawing.Point(35, 81);
-			this.label15.Name = "label15";
-			this.label15.Size = new System.Drawing.Size(14, 13);
-			this.label15.TabIndex = 4;
-			this.label15.Text = "Y";
-			// 
-			// label17
-			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(35, 55);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(14, 13);
-			this.label17.TabIndex = 2;
-			this.label17.Text = "X";
-			// 
-			// label18
-			// 
-			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(31, 29);
-			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(18, 13);
-			this.label18.TabIndex = 0;
-			this.label18.Text = "ID";
-			// 
 			// OWTabTransportProps
 			// 
 			this.OWTabTransportProps.Controls.Add(this.OWTransportPanel);
-			this.OWTabTransportProps.Location = new System.Drawing.Point(4, 44);
+			this.OWTabTransportProps.Location = new System.Drawing.Point(4, 40);
 			this.OWTabTransportProps.Name = "OWTabTransportProps";
-			this.OWTabTransportProps.Size = new System.Drawing.Size(280, 596);
+			this.OWTabTransportProps.Size = new System.Drawing.Size(292, 600);
 			this.OWTabTransportProps.TabIndex = 5;
 			this.OWTabTransportProps.Text = "Transport";
 			this.OWTabTransportProps.UseVisualStyleBackColor = true;
@@ -951,6 +850,95 @@
 			this.stateCombobox.TabIndex = 1;
 			this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
 			// 
+			// OWEntrancePanel
+			// 
+			this.OWEntrancePanel.Controls.Add(this.OWEntranceDisabled);
+			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropY);
+			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropX);
+			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropID);
+			this.OWEntrancePanel.Controls.Add(this.label15);
+			this.OWEntrancePanel.Controls.Add(this.label17);
+			this.OWEntrancePanel.Controls.Add(this.label18);
+			this.OWEntrancePanel.Location = new System.Drawing.Point(25, 243);
+			this.OWEntrancePanel.Name = "OWEntrancePanel";
+			this.OWEntrancePanel.Size = new System.Drawing.Size(205, 220);
+			this.OWEntrancePanel.TabIndex = 11;
+			// 
+			// OWEntranceDisabled
+			// 
+			this.OWEntranceDisabled.AutoSize = true;
+			this.OWEntranceDisabled.Location = new System.Drawing.Point(8, 7);
+			this.OWEntranceDisabled.Name = "OWEntranceDisabled";
+			this.OWEntranceDisabled.Size = new System.Drawing.Size(109, 13);
+			this.OWEntranceDisabled.TabIndex = 8;
+			this.OWEntranceDisabled.Text = "No entrance selected";
+			// 
+			// OWEntrancePropY
+			// 
+			this.OWEntrancePropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWEntrancePropY.HexValue = 0;
+			this.OWEntrancePropY.Location = new System.Drawing.Point(55, 78);
+			this.OWEntrancePropY.MaxLength = 2;
+			this.OWEntrancePropY.Name = "OWEntrancePropY";
+			this.OWEntrancePropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.OWEntrancePropY.Size = new System.Drawing.Size(56, 20);
+			this.OWEntrancePropY.TabIndex = 7;
+			this.OWEntrancePropY.Text = "00";
+			this.OWEntrancePropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWEntrancePropX
+			// 
+			this.OWEntrancePropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWEntrancePropX.HexValue = 0;
+			this.OWEntrancePropX.Location = new System.Drawing.Point(55, 52);
+			this.OWEntrancePropX.MaxLength = 2;
+			this.OWEntrancePropX.Name = "OWEntrancePropX";
+			this.OWEntrancePropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.OWEntrancePropX.Size = new System.Drawing.Size(55, 20);
+			this.OWEntrancePropX.TabIndex = 6;
+			this.OWEntrancePropX.Text = "00";
+			this.OWEntrancePropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWEntrancePropID
+			// 
+			this.OWEntrancePropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWEntrancePropID.HexValue = 0;
+			this.OWEntrancePropID.Location = new System.Drawing.Point(55, 26);
+			this.OWEntrancePropID.MaxLength = 2;
+			this.OWEntrancePropID.Name = "OWEntrancePropID";
+			this.OWEntrancePropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.OWEntrancePropID.Size = new System.Drawing.Size(55, 20);
+			this.OWEntrancePropID.TabIndex = 5;
+			this.OWEntrancePropID.Text = "00";
+			this.OWEntrancePropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// label15
+			// 
+			this.label15.AutoSize = true;
+			this.label15.Location = new System.Drawing.Point(35, 81);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(14, 13);
+			this.label15.TabIndex = 4;
+			this.label15.Text = "Y";
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(35, 55);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(14, 13);
+			this.label17.TabIndex = 2;
+			this.label17.Text = "X";
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(31, 29);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(18, 13);
+			this.label18.TabIndex = 0;
+			this.label18.Text = "ID";
+			// 
 			// OverworldEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -976,12 +964,9 @@
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
-			this.OWTabExitProps.ResumeLayout(false);
+			this.OWTabEntranceExitProps.ResumeLayout(false);
 			this.OWExitPanel.ResumeLayout(false);
 			this.OWExitPanel.PerformLayout();
-			this.OWTabEntranceProps.ResumeLayout(false);
-			this.OWEntrancePanel.ResumeLayout(false);
-			this.OWEntrancePanel.PerformLayout();
 			this.OWTabTransportProps.ResumeLayout(false);
 			this.OWTransportPanel.ResumeLayout(false);
 			this.OWTransportPanel.PerformLayout();
@@ -995,6 +980,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			this.OWEntrancePanel.ResumeLayout(false);
+			this.OWEntrancePanel.PerformLayout();
 			this.ResumeLayout(false);
 
         }
@@ -1046,8 +1033,7 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.TabPage OWTabExitProps;
-		private System.Windows.Forms.TabPage OWTabEntranceProps;
+		private System.Windows.Forms.TabPage OWTabEntranceExitProps;
 		private System.Windows.Forms.TabPage OWTabTransportProps;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.Label label12;
@@ -1057,14 +1043,6 @@
 		private UserInterface.GeneralControls.Hexbox OWExitPropY;
 		private UserInterface.GeneralControls.Hexbox OWExitPropX;
 		private UserInterface.GeneralControls.Hexbox OWExitPropID;
-		private System.Windows.Forms.Panel OWEntrancePanel;
-		private System.Windows.Forms.Label OWEntranceDisabled;
-		private UserInterface.GeneralControls.Hexbox OWEntrancePropY;
-		private UserInterface.GeneralControls.Hexbox OWEntrancePropX;
-		private UserInterface.GeneralControls.Hexbox OWEntrancePropID;
-		private System.Windows.Forms.Label label15;
-		private System.Windows.Forms.Label label17;
-		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.Panel OWTransportPanel;
 		private System.Windows.Forms.Label OWTransportDisabled;
 		private UserInterface.GeneralControls.Hexbox OWTransportPropY;
@@ -1073,5 +1051,13 @@
 		private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.Label label19;
 		private System.Windows.Forms.Label label20;
+		private Panel OWEntrancePanel;
+		private Label OWEntranceDisabled;
+		private Hexbox OWEntrancePropY;
+		private Hexbox OWEntrancePropX;
+		private Hexbox OWEntrancePropID;
+		private Label label15;
+		private Label label17;
+		private Label label18;
 	}
 }

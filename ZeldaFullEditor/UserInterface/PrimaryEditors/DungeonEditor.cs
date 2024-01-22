@@ -623,12 +623,12 @@ public partial class DungeonEditor : UserControl
 		ObjectListPanel.Controls.Clear();
 		SpriteListPanel.Controls.Clear();
 
-		foreach (var o in RoomObjectType.ListOf)
-		{
-			RoomObjectPreview p = new(o, ZScreamer.ActiveScreamer.TileLister[o.FullID]);
-			listoftilesobjects.Add(p);
-			p.Draw(UXPreviewArtist);
-		}
+		//foreach (var o in RoomObjectType.ListOf)
+		//{
+		//	RoomObjectPreview p = new(o, ZScreamer.ActiveScreamer.TileLister[o.FullID]);
+		//	listoftilesobjects.Add(p);
+		//	p.Draw(UXPreviewArtist);
+		//}
 
 		foreach (var o in SpriteType.ListOf)
 		{

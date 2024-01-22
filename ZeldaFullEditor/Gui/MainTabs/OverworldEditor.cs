@@ -118,8 +118,7 @@ public partial class OverworldEditor : UserControl
 	{
 		var s = m switch
 		{
-			OverworldEditMode.Entrances => OWTabEntranceProps,
-			OverworldEditMode.Exits => OWTabExitProps,
+			OverworldEditMode.EntranceExit => OWTabEntranceExitProps,
 			OverworldEditMode.Transports => OWTabTransportProps,
 			_ => null
 		};
@@ -129,22 +128,13 @@ public partial class OverworldEditor : UserControl
 
 	private void SwapInAuxTab(TabPage t)
 	{
-		if (t != OWTabEntranceProps)
+		if (t != OWTabEntranceExitProps)
 		{
-			OverworldAuxSideTabs.TabPages.Remove(OWTabEntranceProps);
+			OverworldAuxSideTabs.TabPages.Remove(OWTabEntranceExitProps);
 		}
 		else
 		{
-			ZScreamer.ActiveOWScene.LastSelectedEntrance = null;
-		}
-
-		if (t != OWTabExitProps)
-		{
-			OverworldAuxSideTabs.TabPages.Remove(OWTabExitProps);
-		}
-		else
-		{
-			ZScreamer.ActiveOWScene.LastSelectedExit = null;
+			ZScreamer.ActiveOWScene.LastSelectedEntranceExit = null;
 		}
 
 		if (t != OWTabTransportProps)

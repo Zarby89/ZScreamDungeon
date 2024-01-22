@@ -49,19 +49,16 @@ public class RoomObject : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDeleg
 
 	public RoomObjectType ObjectType { get; }
 
-	public TilesList Tiles { get; }
-
 	public List<Rectangle> CollisionRectangles { get; } = new();
 
-	public RoomObject(RoomObjectType type, TilesList tiles)
+	public RoomObject(RoomObjectType type)
 	{
 		ObjectType = type;
-		Tiles = tiles;
 	}
 
 	public RoomObject Clone()
 	{
-		return new RoomObject(ObjectType, Tiles)
+		return new RoomObject(ObjectType)
 		{
 			GridX = GridX,
 			GridY = GridY,
@@ -164,7 +161,7 @@ public class RoomObjectPreview : RoomObject, IPreview
 	public ImmutableArray<SearchCategory> Categories => ObjectType.Categories;
 	public object EntityType => ObjectType;
 
-	public RoomObjectPreview(RoomObjectType type, TilesList tiles) : base(type, tiles)
+	public RoomObjectPreview(RoomObjectType type) : base(type)
 	{
 	}
 
@@ -178,11 +175,11 @@ public class RoomObjectPreview : RoomObject, IPreview
 
 		List<PreviewInfo> addooo = new(instructions.Length);
 
-		foreach (DrawInfo d in instructions)
-		{
-			Tile t = Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip);
-			addooo.Add(new(t.ID, d.XOff, d.YOff, t.Palette, t.HFlip, t.VFlip));
-		}
+		//foreach (DrawInfo d in instructions)
+		//{
+		//	Tile t = Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip);
+		//	addooo.Add(new(t.ID, d.XOff, d.YOff, t.Palette, t.HFlip, t.VFlip));
+		//}
 		prv.AddToObjectsPreview(this, addooo);
 	}
 }

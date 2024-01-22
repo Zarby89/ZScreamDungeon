@@ -2,6 +2,9 @@
 
 public class LayerEffectType : IEntityType<LayerEffectType>
 {
+	/// <summary>
+	/// The internal ID for this effect that gets written to the ROM.
+	/// </summary>
 	public byte ID { get; }
 	public int ListID => ID;
 	public string Name { get; init; }

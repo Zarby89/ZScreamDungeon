@@ -1,11 +1,17 @@
 ﻿namespace ZeldaFullEditor.ALTTP.Overworld;
 
 [Serializable]
-public class OverworldEntrance : OverworldEntity, IFreelyPlaceable, IMouseCollidable, IHaveInfo
+public class OverworldEntrance : OverworldEntity, IFreelyPlaceable, IMouseCollidable, IHaveInfo, IOverworldUWLink
 {
 	public ushort Map16Index { get; set; }
 	public byte TargetEntranceID { get; set; }
 	public bool IsPitEntrance { get; set; }
+
+	public ushort TargetID
+	{
+		get => TargetEntranceID;
+		set => TargetEntranceID = (byte) value;
+	}
 
 	public override string Name => "Entrance";
 

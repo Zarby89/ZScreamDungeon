@@ -5,5 +5,8 @@
 /// </summary>
 public interface ITypeID
 {
+	/// <summary>
+	/// This instance's unique ID used for sorting, etc.
+	/// </summary>
 	public int TypeID { get; }
 }

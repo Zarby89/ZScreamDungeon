@@ -70,6 +70,11 @@ public class GFXSheetMeta : IEntityType<GFXSheetMeta>
 		};
 	}
 
+
+	public static byte GetRelevantSheetIndices(ushort tile) => (byte) ((tile & 0x03FF) >> 6);
+
+
+
 	public static ImmutableArray<GFXSheetMeta> ListOf { get; }
 
 	// Need to use static constructor for reflection to work properly

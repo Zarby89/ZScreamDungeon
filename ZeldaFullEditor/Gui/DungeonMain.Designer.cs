@@ -64,20 +64,19 @@
 			this.bg1modeButton = new ZeldaFullEditor.DungeonToolStripButton();
 			this.bg2modeButton = new ZeldaFullEditor.DungeonToolStripButton();
 			this.bg3modeButton = new ZeldaFullEditor.DungeonToolStripButton();
+			this.doormodeButton = new ZeldaFullEditor.DungeonToolStripButton();
 			this.spritemodeButton = new ZeldaFullEditor.DungeonToolStripButton();
+			this.potmodeButton = new ZeldaFullEditor.DungeonToolStripButton();
 			this.blockmodeButton = new ZeldaFullEditor.DungeonToolStripButton();
 			this.torchmodeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.potmodeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.doormodeButton = new ZeldaFullEditor.DungeonToolStripButton();
 			this.collisionModeButton = new ZeldaFullEditor.DungeonToolStripButton();
 			this.penModeButton = new ZeldaFullEditor.OverworldToolStripButton();
 			this.fillModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.entranceModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.exitModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.itemModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.owSpriteModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.transportModeButton = new ZeldaFullEditor.OverworldToolStripButton();
 			this.overlayButton = new ZeldaFullEditor.OverworldToolStripButton();
+			this.owSpriteModeButton = new ZeldaFullEditor.OverworldToolStripButton();
+			this.itemModeButton = new ZeldaFullEditor.OverworldToolStripButton();
+			this.entranceModeButton = new ZeldaFullEditor.OverworldToolStripButton();
+			this.transportModeButton = new ZeldaFullEditor.OverworldToolStripButton();
 			this.gravestoneButton = new ZeldaFullEditor.OverworldToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.debugToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -385,6 +384,7 @@
 			this.OverworldEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.OverworldEditor.Location = new System.Drawing.Point(2, 3);
 			this.OverworldEditor.Name = "OverworldEditor";
+			this.OverworldEditor.SelectedTile = null;
 			this.OverworldEditor.Size = new System.Drawing.Size(1146, 714);
 			this.OverworldEditor.TabIndex = 0;
 			// 
@@ -394,7 +394,7 @@
 			this.GfxEditorPage.Location = new System.Drawing.Point(4, 4);
 			this.GfxEditorPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.GfxEditorPage.Name = "GfxEditorPage";
-			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 722);
+			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 720);
 			this.GfxEditorPage.TabIndex = 2;
 			this.GfxEditorPage.Text = "Graphics Manager";
 			this.GfxEditorPage.UseVisualStyleBackColor = true;
@@ -405,7 +405,7 @@
 			this.graphicsManagerForm1.Location = new System.Drawing.Point(0, 0);
 			this.graphicsManagerForm1.Margin = new System.Windows.Forms.Padding(0);
 			this.graphicsManagerForm1.Name = "graphicsManagerForm1";
-			this.graphicsManagerForm1.Size = new System.Drawing.Size(1150, 722);
+			this.graphicsManagerForm1.Size = new System.Drawing.Size(1150, 720);
 			this.graphicsManagerForm1.TabIndex = 0;
 			// 
 			// textPage
@@ -476,20 +476,19 @@
             this.bg1modeButton,
             this.bg2modeButton,
             this.bg3modeButton,
+            this.doormodeButton,
             this.spritemodeButton,
+            this.potmodeButton,
             this.blockmodeButton,
             this.torchmodeButton,
-            this.potmodeButton,
-            this.doormodeButton,
             this.collisionModeButton,
             this.penModeButton,
             this.fillModeButton,
-            this.entranceModeButton,
-            this.exitModeButton,
-            this.itemModeButton,
-            this.owSpriteModeButton,
-            this.transportModeButton,
             this.overlayButton,
+            this.owSpriteModeButton,
+            this.itemModeButton,
+            this.entranceModeButton,
+            this.transportModeButton,
             this.gravestoneButton,
             this.toolStripSeparator3,
             this.debugToolStripButton,
@@ -506,7 +505,7 @@
 			this.toolStrip1.Location = new System.Drawing.Point(4, 24);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 0, 1, 0);
-			this.toolStrip1.Size = new System.Drawing.Size(911, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(888, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 10;
 			this.toolStrip1.Text = "toolStrip1";
@@ -630,6 +629,18 @@
 			this.bg3modeButton.Text = "Layer 3";
 			this.bg3modeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
+			// doormodeButton
+			// 
+			this.doormodeButton.CheckOnClick = true;
+			this.doormodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.doormodeButton.Image = ((System.Drawing.Image)(resources.GetObject("doormodeButton.Image")));
+			this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.doormodeButton.Name = "doormodeButton";
+			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
+			this.doormodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Doors;
+			this.doormodeButton.Text = "Door Mode";
+			this.doormodeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			// 
 			// spritemodeButton
 			// 
 			this.spritemodeButton.CheckOnClick = true;
@@ -641,6 +652,18 @@
 			this.spritemodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Sprites;
 			this.spritemodeButton.Text = "Object Mode";
 			this.spritemodeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			// 
+			// potmodeButton
+			// 
+			this.potmodeButton.CheckOnClick = true;
+			this.potmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.potmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("potmodeButton.Image")));
+			this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.potmodeButton.Name = "potmodeButton";
+			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
+			this.potmodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Secrets;
+			this.potmodeButton.Text = "Secrets Mode";
+			this.potmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// blockmodeButton
 			// 
@@ -665,30 +688,6 @@
 			this.torchmodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Torches;
 			this.torchmodeButton.Text = "Torch Mode";
 			this.torchmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// potmodeButton
-			// 
-			this.potmodeButton.CheckOnClick = true;
-			this.potmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.potmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("potmodeButton.Image")));
-			this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.potmodeButton.Name = "potmodeButton";
-			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.potmodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Secrets;
-			this.potmodeButton.Text = "Secrets Mode";
-			this.potmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// doormodeButton
-			// 
-			this.doormodeButton.CheckOnClick = true;
-			this.doormodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.doormodeButton.Image = ((System.Drawing.Image)(resources.GetObject("doormodeButton.Image")));
-			this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.doormodeButton.Name = "doormodeButton";
-			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
-			this.doormodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Doors;
-			this.doormodeButton.Text = "Door Mode";
-			this.doormodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// collisionModeButton
 			// 
@@ -726,38 +725,16 @@
 			this.fillModeButton.Text = "Fill mode";
 			this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
-			// entranceModeButton
+			// overlayButton
 			// 
-			this.entranceModeButton.CheckOnClick = true;
-			this.entranceModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.entranceModeButton.Image = ((System.Drawing.Image)(resources.GetObject("entranceModeButton.Image")));
-			this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.entranceModeButton.Name = "entranceModeButton";
-			this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
-			this.entranceModeButton.Text = "Entrance mode";
-			this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// exitModeButton
-			// 
-			this.exitModeButton.CheckOnClick = true;
-			this.exitModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.exitModeButton.Image = ((System.Drawing.Image)(resources.GetObject("exitModeButton.Image")));
-			this.exitModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.exitModeButton.Name = "exitModeButton";
-			this.exitModeButton.Size = new System.Drawing.Size(23, 22);
-			this.exitModeButton.Text = "Exit mode";
-			this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// itemModeButton
-			// 
-			this.itemModeButton.CheckOnClick = true;
-			this.itemModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.itemModeButton.Image = ((System.Drawing.Image)(resources.GetObject("itemModeButton.Image")));
-			this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.itemModeButton.Name = "itemModeButton";
-			this.itemModeButton.Size = new System.Drawing.Size(23, 22);
-			this.itemModeButton.Text = "Item mode";
-			this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			this.overlayButton.CheckOnClick = true;
+			this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
+			this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.overlayButton.Name = "overlayButton";
+			this.overlayButton.Size = new System.Drawing.Size(23, 22);
+			this.overlayButton.Text = "Overlay";
+			this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// owSpriteModeButton
 			// 
@@ -770,6 +747,28 @@
 			this.owSpriteModeButton.Text = "Sprite mode";
 			this.owSpriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
+			// itemModeButton
+			// 
+			this.itemModeButton.CheckOnClick = true;
+			this.itemModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.itemModeButton.Image = ((System.Drawing.Image)(resources.GetObject("itemModeButton.Image")));
+			this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.itemModeButton.Name = "itemModeButton";
+			this.itemModeButton.Size = new System.Drawing.Size(23, 22);
+			this.itemModeButton.Text = "Item mode";
+			this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			// 
+			// entranceModeButton
+			// 
+			this.entranceModeButton.CheckOnClick = true;
+			this.entranceModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.entranceModeButton.Image = ((System.Drawing.Image)(resources.GetObject("entranceModeButton.Image")));
+			this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.entranceModeButton.Name = "entranceModeButton";
+			this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
+			this.entranceModeButton.Text = "Entrance mode";
+			this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			// 
 			// transportModeButton
 			// 
 			this.transportModeButton.CheckOnClick = true;
@@ -780,17 +779,6 @@
 			this.transportModeButton.Size = new System.Drawing.Size(23, 22);
 			this.transportModeButton.Text = "Transport mode";
 			this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// overlayButton
-			// 
-			this.overlayButton.CheckOnClick = true;
-			this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
-			this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.overlayButton.Name = "overlayButton";
-			this.overlayButton.Size = new System.Drawing.Size(23, 22);
-			this.overlayButton.Text = "Overlay";
-			this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// gravestoneButton
 			// 
@@ -1284,16 +1272,16 @@
 			// runToolStripMenuItem
 			// 
 			this.runToolStripMenuItem.Name = "runToolStripMenuItem";
-			this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.runToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+			this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F12;
+			this.runToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
 			this.runToolStripMenuItem.Text = "Run…";
 			this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
 			// 
 			// debugRunToolStripMenuItem
 			// 
 			this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
-			this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-			this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+			this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F12)));
+			this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
 			this.debugRunToolStripMenuItem.Text = "Debug Run…";
 			// 
 			// roomToolStripMenuItem
@@ -1895,7 +1883,7 @@
 			this.showSpritesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.showSpritesToolStripMenuItem.Name = "showSpritesToolStripMenuItem";
 			this.showSpritesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-			this.showSpritesToolStripMenuItem.Text = "Show sSprites";
+			this.showSpritesToolStripMenuItem.Text = "Show Sprites";
 			this.showSpritesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
 			// 
 			// showEntrancesToolStripMenuItem
@@ -2630,7 +2618,6 @@
 		private OverworldToolStripButton penModeButton;
 		private OverworldToolStripButton fillModeButton;
 		private OverworldToolStripButton entranceModeButton;
-		private OverworldToolStripButton exitModeButton;
 		private OverworldToolStripButton itemModeButton;
 		private OverworldToolStripButton owSpriteModeButton;
 		private OverworldToolStripButton transportModeButton;

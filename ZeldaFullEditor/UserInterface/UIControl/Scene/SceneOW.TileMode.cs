@@ -8,7 +8,6 @@ public partial class SceneOW
 	private int globalmouseTileDownXLOCK = 0;
 	private int globalmouseTileDownYLOCK = 0;
 
-	// TODO make an enum
 	private LockingDirection lockedDirection = LockingDirection.None;
 
 	private enum LockingDirection

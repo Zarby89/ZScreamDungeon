@@ -44,8 +44,9 @@ public partial class SceneOW : Scene
 	private OverworldEntity hoveredEntity = null;
 	private bool snapToGrid = false;
 
-	private readonly ModeActions tilemode;
-	private readonly ModeActions exitmode;
+	private readonly ModeActions tileMode;
+	private readonly ModeActions exitMode;
+	private readonly ModeActions enexMode;
 	private readonly ModeActions doorMode;
 	private readonly ModeActions entranceMode;
 	private readonly ModeActions spriteMode;
@@ -71,17 +72,14 @@ public partial class SceneOW : Scene
 
 		Size = Constants.FullOverworldSize;
 
-		tilemode = new ModeActions(OnMouseDown_Tiles, OnMouseUp_Tiles, OnMouseMove_Tiles, null,
+		tileMode = new ModeActions(OnMouseDown_Tiles, OnMouseUp_Tiles, OnMouseMove_Tiles, null,
 			Copy_Tiles, Paste_Tiles, null, Delete_Tiles, null);
-
-		exitmode = new ModeActions(OnMouseDown_Exit, OnMouseUp_Exit, OnMouseMove_Exit, null,
-			null, null, null, Delete_Exit, null);
 
 		doorMode = new ModeActions(OnMouseDown_OWDoor, OnMouseUp_OWDoor, OnMouseMove_OWDoor, null,
 			null, null, null, Delete_OWDoor, null);
 
-		entranceMode = new ModeActions(OnMouseDown_Entrance, OnMouseUp_Entrance, OnMouseMove_Entrance, null,
-			null, null, null, Delete_Entrance, null);
+		enexMode = new ModeActions(OnMouseDown_EntranceExit, OnMouseUp_EntranceExit, OnMouseMove_EntranceExit, null,
+			null, null, null, Delete_EntranceExit, null);
 
 		spriteMode = new ModeActions(OnMouseDown_Sprites, OnMouseUp_Sprites, OnMouseMove_Sprites, null,
 			Copy_Sprites, Paste_Sprites, null, Delete_Sprites, SelectAll_Sprites);
@@ -108,12 +106,11 @@ public partial class SceneOW : Scene
 	{
 		ActiveMode = e switch
 		{
-			OverworldEditMode.Tile16 => tilemode,
-			OverworldEditMode.Tile16Fill => tilemode,
+			OverworldEditMode.Tile16 => tileMode,
+			OverworldEditMode.Tile16Fill => tileMode,
 			OverworldEditMode.Sprites => spriteMode,
 			OverworldEditMode.Secrets => itemMode,
-			OverworldEditMode.Entrances => entranceMode,
-			OverworldEditMode.Exits => exitmode,
+			OverworldEditMode.EntranceExit => enexMode,
 			OverworldEditMode.Transports => transportMode,
 			OverworldEditMode.Overlay => overlayMode,
 			OverworldEditMode.Gravestones => gravestoneMode,
@@ -358,7 +355,6 @@ public partial class SceneOW : Scene
 		}
 		else
 		{
-			// TODO make a single PointF and Rectangle variable to reuse
 			int x = 0;
 			int y = 0;
 			g.CompositingMode = CompositingMode.SourceOver;
@@ -366,15 +362,17 @@ public partial class SceneOW : Scene
 			{
 				if (i > 159) continue;
 
+				var loc = new PointF(x, y);
+
 				if (ZGUI.overworldOverlayVisibleToolStripMenuItem.Checked)
 				{
 					if (i is >= 0x03 and <= 0x07)
 					{
-						g.DrawImage(ZS.OverworldManager.allmaps[149].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
+						g.DrawImage(ZS.OverworldManager.allmaps[149].MyArtist.Layer1Canvas.Bitmap, loc);
 					}
 					else if (i is 91 or 92)
 					{
-						g.DrawImage(ZS.OverworldManager.allmaps[150].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
+						g.DrawImage(ZS.OverworldManager.allmaps[150].MyArtist.Layer1Canvas.Bitmap, loc);
 					}
 				}
 				else
@@ -387,7 +385,7 @@ public partial class SceneOW : Scene
 					g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[grass]), new Rectangle(x, y, 512, 512));
 				}
 
-				ZS.OverworldManager.allmaps[i].MyArtist.DrawSelfToImage(g, new PointF(x, y));
+				ZS.OverworldManager.allmaps[i].MyArtist.DrawSelfToImage(g, loc);
 
 				if (ZGUI.overworldOverlayVisibleToolStripMenuItem.Checked)
 				{
@@ -436,15 +434,17 @@ public partial class SceneOW : Scene
 			g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, rectumsize, rectumsize));
 		}
 
-		if (ZGUI.showExits)
-		{
-			DrawExit(g);
-		}
+		//if (ZGUI.showExits)
+		//{
+		//	DrawExit(g);
+		//}
+		//
+		//if (ZGUI.showEntrances)
+		//{
+		//	DrawEntrance(g);
+		//}
 
-		if (ZGUI.showEntrances)
-		{
-			DrawEntrance(g);
-		}
+		DrawEntrancesAndExits(g);
 
 		if (ZGUI.showItems)
 		{
@@ -469,9 +469,9 @@ public partial class SceneOW : Scene
 
 		if (entrancePreview)
 		{
-			var prev = (OverworldEntity) SelectedEntrance ?? SelectedExit;
+			var prev = (OverworldEntity) SelectedEntranceExit;
 
-			if (prev != null)
+			if (prev is not null)
 			{
 				RoomPreviewArtist.DrawSelfToImageSmall(g, prev.GlobalX + 16, prev.GlobalY + 16);
 			}
