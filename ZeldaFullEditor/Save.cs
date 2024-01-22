@@ -438,19 +438,24 @@ namespace ZeldaFullEditor
                 roomsList.Add((AllRooms[i].index, roomBytes, doorPos));
             }
 
-            roomsList.Sort((a, b) => a.data.Length.CompareTo(b.data.Length)); // do them from largest to smallest
+			// do them from largest to smallest
+			roomsList.Sort((a, b) => a.data.Length.CompareTo(b.data.Length));
 
 			foreach (var (roomID, roomData, doorOffset) in roomsList)
             {
-                var blockAreas = ObjectSaveAreas.Where(a => a.writeAddress + roomData.Length < a.endAddress);
-                if (blockAreas.Count() is 0) {
-                    return true; // Fail
+                // Find a block to save in
+                int saveAtBlock = 0;
+                for ( ; saveAtBlock < ObjectSaveAreas.Length; saveAtBlock++) {
+                    if (ObjectSaveAreas[saveAtBlock].writeAddress + roomData.Length < ObjectSaveAreas[saveAtBlock].endAddress) {
+                        break;
+                    }
+                }
+                if (saveAtBlock == ObjectSaveAreas.Length) {
+                    return true; // fail
                 }
 
-                var saveHere = blockAreas.First();
-
-                SaveObjectBytes(roomID, saveHere.writeAddress, roomData, doorOffset);
-				saveHere.writeAddress += roomData.Length;
+				SaveObjectBytes(roomID, ObjectSaveAreas[saveAtBlock].writeAddress, roomData, doorOffset);
+				ObjectSaveAreas[saveAtBlock].writeAddress += roomData.Length;
             }
 
 
