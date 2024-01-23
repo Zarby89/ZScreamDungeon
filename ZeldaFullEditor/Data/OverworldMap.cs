@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
         ///     00 is the lost woods
         /// </summary>
         public byte Index { get; internal set; } = 0;
-
+        
         /// <summary>
         ///     Gets the area'a parent ID. The parent ID of small areas will be set to their Index.
         ///     The parent ID of large areas will be equal to the top left most area of the 4.
@@ -563,9 +563,10 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (this.overworld.AllMaps[this.ParentID].MainPalette != 255)
+            int mainPalette = this.overworld.AllMaps[this.ParentID].MainPalette;
+            if (mainPalette >= 0 && mainPalette < Palettes.OverworldMainPalettes.Length)
             {
-                main = Palettes.OverworldMainPalettes[this.overworld.AllMaps[this.ParentID].MainPalette];
+                main = Palettes.OverworldMainPalettes[mainPalette];
             }
             else
             {
