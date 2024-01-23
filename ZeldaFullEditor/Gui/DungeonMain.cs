@@ -405,7 +405,7 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[12] && save.saveOWTransports(this.overworldEditor.scene))
+                if (this.saveSettingsArr[12] && save.SaveOWTransports(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("overworld transports out of range");
                     break;
@@ -425,7 +425,7 @@ namespace ZeldaFullEditor
 
                 // 15
 
-                if (this.saveSettingsArr[16] && save.saveMapProperties(this.overworldEditor.scene))
+                if (this.saveSettingsArr[16] && save.SaveMapProperties(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("overworld map properties ???");
                     break;
@@ -494,7 +494,7 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[36] && save.saveOverworldMaps(this.overworldEditor.scene))
+                if (this.saveSettingsArr[36] && save.SaveOverworldMaps(this.overworldEditor.scene))
                 {
                     UIText.CryAboutSaving("problem saving overworld maps");
                     break;
@@ -4636,7 +4636,7 @@ namespace ZeldaFullEditor
             }
             else
             {
-                if (s.saveOverworldMaps(this.overworldEditor.scene))
+                if (s.SaveOverworldMaps(this.overworldEditor.scene))
                 {
                     Console.WriteLine("Too many maps out of bound error");
                 }
@@ -4765,17 +4765,18 @@ namespace ZeldaFullEditor
 
                 Save save = new Save(DungeonsData.AllRooms, this);
 
-                //if (rm.checkBox7.Checked)
-                //{
-                if (save.saveRoomsHeaders2()) // No protection always the same size so we don't care :)
+                // if (rm.checkBox7.Checked)
+                // {
+                if (save.SaveRoomsHeaders2()) // No protection always the same size so we don't care :)
                 {
-                    //MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
+                    // MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
                 }
-                //}
+
+                // }
 
                 if (rm.checkBox6.Checked)
                 {
-                    if (save.saveallChests2()) // Chest there's a protection when there's too many chest - tested it works fine
+                    if (save.SaveallChests2()) // Chest there's a protection when there's too many chest - tested it works fine
                     {
                         UIText.CryAboutSaving("there are too many chest items");
                         return;
