@@ -227,6 +227,9 @@ namespace ZeldaFullEditor
 
                 // The pyramid area
                 OverworldBackgroundPalette[0x5B] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+
+                // Under the bridge area
+                OverworldBackgroundPalette[0x94] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
             }
             else
             {
@@ -349,7 +352,8 @@ namespace ZeldaFullEditor
             }
 
             // TODO: Set to 147 and not 160 because it seems the area numbers for all areas after 147 are messed up and it causes the palettes to save over eachother.
-            WritePalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, OverworldBackgroundPalette, 147);
+            // TODO: Figure out what past me was smoking because this does not mess anything up. It just saves the whole table instead of the last 13 values being left as 0x0000.
+            WritePalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, OverworldBackgroundPalette, 160);
 
             return false;
         }

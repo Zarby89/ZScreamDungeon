@@ -525,11 +525,11 @@ namespace ZeldaFullEditor
                 }
 
                 // The mosaic byte is hardcoded to true on purpose for now.
-                /*if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44]))
+                if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44]))
                 {
                     UIText.CryAboutSaving("problem saving ZS Custom Overworld ASM");
                     break;
-                }*/
+                }
 
                 // If we made it here, everything was fine.
                 badSave = false;

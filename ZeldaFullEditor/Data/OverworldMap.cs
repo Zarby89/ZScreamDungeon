@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
         ///     00 is the lost woods
         /// </summary>
         public byte Index { get; internal set; } = 0;
-        
+
         /// <summary>
         ///     Gets the area'a parent ID. The parent ID of small areas will be set to their Index.
         ///     The parent ID of large areas will be equal to the top left most area of the 4.
@@ -268,7 +268,7 @@ namespace ZeldaFullEditor
                 this.Music[0] = ROM.DATA[Constants.overworldMusicDW + (this.ParentID - 64)];
 
                 // Make the mire have rain sfx by default.
-                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0)
+                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
                 {
                     if (index == 0x70)
                     {
