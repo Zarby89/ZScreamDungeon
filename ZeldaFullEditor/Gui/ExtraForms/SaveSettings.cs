@@ -74,7 +74,7 @@ namespace ZeldaFullEditor.Gui
             this.saveArr[42] = this.checkBox43.Checked; // overworld main palette transition
             this.saveArr[43] = this.checkBox44.Checked; // overworld Ani. GFX transition
             this.saveArr[44] = this.checkBox45.Checked; // overworld subscreen overlay transition
-
+            this.saveArr[45] = this.checkBox46.Checked; // sprite damage taken
             this.dungeonMain.saveSettingsArr = this.saveArr;
 
             this.Close();
@@ -139,6 +139,7 @@ namespace ZeldaFullEditor.Gui
             this.checkBox43.Checked = this.saveArr[42]; // overworld main palette transition
             this.checkBox44.Checked = this.saveArr[43]; // overworld Ani. GFX transition
             this.checkBox45.Checked = this.saveArr[44]; // overworld subscreen overlay transition
+            this.checkBox46.Checked = this.saveArr[45]; // sprite damage taken
         }
 
         private void SelectAllButtonClick(object sender, EventArgs e)
@@ -198,6 +199,12 @@ namespace ZeldaFullEditor.Gui
             this.checkBox43.Checked = v; // overworld main palette transition
             this.checkBox44.Checked = v; // overworld Ani. GFX transition
             this.checkBox45.Checked = v; // overworld subscreen overlay transition
+            this.checkBox46.Checked = v; // Sprite Damages taken
+        }
+
+        private void checkBox35_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

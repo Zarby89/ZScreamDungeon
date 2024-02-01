@@ -122,13 +122,13 @@ namespace ZeldaFullEditor
         int romID = 00;
 
         // TODO: Save this in a config file and load the values into this array on startup.
-        public bool[] saveSettingsArr = new bool[]
+        public bool[] saveSettingsArr = new bool[46]
         {
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
-            true, false, false, false, false,
+            true, false, false, false, false, true
         };
 
         /// <summary>
@@ -524,6 +524,12 @@ namespace ZeldaFullEditor
                     break;
                 }
 
+                if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
+                {
+                    UIText.CryAboutSaving("problem saving sprites damages");
+                    return;
+                }
+
                 // The mosaic byte is hardcoded to true on purpose for now.
                 /*if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44]))
                 {
@@ -811,8 +817,11 @@ namespace ZeldaFullEditor
             this.mapPicturebox.Refresh();
 
             int compsize = 0;
-            DungeonsData.SpriteDamageTaken = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.ReadBlock(Constants.Sprite_DamageTaken, 0x1000), 0, 0x1000, ref compsize);
-
+            byte[] dcompData = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.ReadBlock(Constants.Sprite_DamageTaken, 0x1000), 0, 0x1000, ref compsize);
+            for(int i = 0;i<dcompData.Length;i++)
+            {
+                DungeonsData.SpriteDamageTaken[i] = dcompData[i];
+            }
 
             for (int i = 0; i < Sprites_Names.name.Length; i++)
             {
@@ -1690,6 +1699,10 @@ namespace ZeldaFullEditor
         public void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (!this.projectLoaded)
+            {
+                return;
+            }
+            if (e.Node.Parent == null)
             {
                 return;
             }
@@ -4809,6 +4822,8 @@ namespace ZeldaFullEditor
                     }
                 }
 
+
+
                 /*
                 if (rm.checkBox3.Checked)
                 {
@@ -5914,6 +5929,11 @@ namespace ZeldaFullEditor
                 }
                 
             }
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

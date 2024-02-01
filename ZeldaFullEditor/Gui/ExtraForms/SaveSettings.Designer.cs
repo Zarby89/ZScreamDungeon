@@ -83,6 +83,7 @@
             this.checkBox23 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.checkBox46 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -128,6 +129,7 @@
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.checkBox46);
             this.groupBox5.Controls.Add(this.checkBox40);
             this.groupBox5.Controls.Add(this.checkBox38);
             this.groupBox5.Controls.Add(this.checkBox35);
@@ -179,6 +181,7 @@
             this.checkBox35.TabIndex = 13;
             this.checkBox35.Text = "Mini map";
             this.checkBox35.UseVisualStyleBackColor = true;
+            this.checkBox35.CheckedChanged += new System.EventHandler(this.checkBox35_CheckedChanged);
             // 
             // checkBox34
             // 
@@ -765,6 +768,18 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.DeselectAllButtonClick);
             // 
+            // checkBox46
+            // 
+            this.checkBox46.AutoSize = true;
+            this.checkBox46.Checked = true;
+            this.checkBox46.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox46.Location = new System.Drawing.Point(294, 19);
+            this.checkBox46.Name = "checkBox46";
+            this.checkBox46.Size = new System.Drawing.Size(101, 17);
+            this.checkBox46.TabIndex = 16;
+            this.checkBox46.Text = "Sprites Damage";
+            this.checkBox46.UseVisualStyleBackColor = true;
+            // 
             // SaveSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -847,5 +862,6 @@
         private System.Windows.Forms.CheckBox checkBox45;
         private System.Windows.Forms.CheckBox checkBox44;
         private System.Windows.Forms.CheckBox checkBox43;
+        private System.Windows.Forms.CheckBox checkBox46;
     }
 }

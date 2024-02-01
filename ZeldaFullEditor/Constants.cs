@@ -191,7 +191,7 @@ namespace ZeldaFullEditor
         public static int gfx_2_pointer = 0x6795; // D05F ; 00505F
         public static int gfx_3_pointer = 0x679A; // D13E ; 00513E
         public static int hud_palettes = 0xDD660;
-        public static int maxGfx = 0xC3FB5;
+        public static int maxGfx = 0xC3FFF;
 
         // ===========================================================================================
         // Overworld Related Variables

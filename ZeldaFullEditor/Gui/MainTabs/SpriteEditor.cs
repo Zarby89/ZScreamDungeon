@@ -57,12 +57,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
             singlelayercollisionCheckbox.Checked = selectedProperty.Singlelayercollision;
             graphicspageCheckbox.Checked = selectedProperty.Graphicspage;
             drawshadowCheckbox.Checked = selectedProperty.Drawshadow;
-            immunearrowrumbleableCheckbox.Checked = selectedProperty.Immunetoarrowrumbleable;
+            immunearrowrumbleableCheckbox.Checked = selectedProperty.Bonkitem;
             immuneswordhammerCheckbox.Checked = selectedProperty.Immunetoswordhammer;
             projectilelikecollisionCheckbox.Checked = selectedProperty.Projectilelikecollision;
             dieoffscreenCheckbox.Checked = selectedProperty.Dieoffscreen;
             activeoffscreenCheckbox.Checked = selectedProperty.Activeoffscreen;
-            bossdamagesoundCheckbox.Checked = selectedProperty.Bossdamagesound;
+            bossdamagesoundCheckbox.Checked = selectedProperty.Altdamagesound;
             blockedbyshieldCheckbox.Checked = selectedProperty.Blockedbyshield;
             checkforwaterCheckbox.Checked = selectedProperty.Checkforwater;
             nopermadeathindungeonsCheckbox.Checked = selectedProperty.Nopermadeathindungeons;
@@ -121,12 +121,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 selectedProperty.Singlelayercollision = singlelayercollisionCheckbox.Checked;
                 selectedProperty.Graphicspage = graphicspageCheckbox.Checked;
                 selectedProperty.Drawshadow = drawshadowCheckbox.Checked;
-                selectedProperty.Immunetoarrowrumbleable = immunearrowrumbleableCheckbox.Checked;
+                selectedProperty.Bonkitem = immunearrowrumbleableCheckbox.Checked;
                 selectedProperty.Immunetoswordhammer = immuneswordhammerCheckbox.Checked;
                 selectedProperty.Projectilelikecollision = projectilelikecollisionCheckbox.Checked;
                 selectedProperty.Dieoffscreen = dieoffscreenCheckbox.Checked;
                 selectedProperty.Activeoffscreen = activeoffscreenCheckbox.Checked;
-                selectedProperty.Bossdamagesound = bossdamagesoundCheckbox.Checked;
+                selectedProperty.Altdamagesound = bossdamagesoundCheckbox.Checked;
                 selectedProperty.Blockedbyshield = blockedbyshieldCheckbox.Checked;
                 selectedProperty.Checkforwater = checkforwaterCheckbox.Checked;
                 selectedProperty.Nopermadeathindungeons = nopermadeathindungeonsCheckbox.Checked;
@@ -156,6 +156,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 selectedProperty.DamagesTaken[13] = (byte)damage0dHexbox.HexValue;
                 selectedProperty.DamagesTaken[14] = (byte)damage0eHexbox.HexValue;
                 selectedProperty.DamagesTaken[15] = (byte)damage0fHexbox.HexValue;
+
+
             }
         }
 
@@ -165,6 +167,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
             }
+
+
+
+
         }
 
         private void damageClassControl1_Load(object sender, EventArgs e)

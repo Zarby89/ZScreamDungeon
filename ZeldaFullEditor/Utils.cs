@@ -14,22 +14,8 @@ namespace ZeldaFullEditor
 
         public static int PcToSnes(int addr)
         {
-            byte[] b = BitConverter.GetBytes(addr);
-            b[2] = (byte)(b[2] * 2);
-
-            if (b[1] >= 0x80)
-            {
-                b[2] += 1;
-            }
-            else
-            {
-                b[1] += 0x80;
-            }
-
-            return BitConverter.ToInt32(b, 0);
-            // SNES always have + 0x8000 no matter what, the bank on pc is always / 2
-
-            //return ((addr * 2) & 0xFF0000) + (addr & 0x7FFF) + 0x8000;
+            return (0x800000 + (addr & 0x7FFF) | 0x8000 | ((addr & 0x7F8000) << 1));
+            //save in fastrom
         }
 
         // gets a 24-bit address from the specified snes address, using the input's high byte as the bank

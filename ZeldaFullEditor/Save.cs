@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using AsarCLR;
 using ZCompressLibrary;
 
@@ -2719,5 +2720,23 @@ namespace ZeldaFullEditor
             ROM.EndBlockLogWriting();
             return false; // False = no error.
         }
+
+
+        public bool SaveSpritesDamages()
+        {
+            
+            byte[] cData = Compress.ALTTPCompressOverworld(DungeonsData.SpriteDamageTaken, 0, DungeonsData.SpriteDamageTaken.Length);
+            if (cData.Length >= 0x1000)
+            {
+                MessageBox.Show("Too much sprite damage taken data this data is compressed something must have been wrong");
+                return true;
+            }
+
+            ROM.Write(Constants.Sprite_DamageTaken, cData);
+
+            return false;
+        }
+
+
     }
 }

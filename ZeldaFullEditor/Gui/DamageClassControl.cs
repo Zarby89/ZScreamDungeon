@@ -20,6 +20,7 @@ namespace ZeldaFullEditor.Gui
         {
             InitializeComponent();
             controlBitmap = new Bitmap(Resources.damageclass);
+            MouseWheel += DamageClassControl_MouseWheel;
         }
 
         int selectedX = 0;
@@ -153,6 +154,26 @@ namespace ZeldaFullEditor.Gui
                 }
                 
             }
+        }
+
+        private void DamageClassControl_MouseWheel(object sender, MouseEventArgs e)
+        {
+            int index = selectedIndex;
+            if (selectedIndex >= 128)
+            {
+                index = ((selectedIndex - 128) / 2);
+                this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
+            }
+            if (e.Delta > 0)
+            {
+                DungeonsData.globalDamages[index] += 1;
+                
+            }
+            else if (e.Delta < 0)
+            {
+                DungeonsData.globalDamages[index] -= 1;
+            }
+            this.Invalidate(new Rectangle(selectedX, selectedY, 32, 28));
         }
 
         private void DamageClassControl_MouseUp(object sender, MouseEventArgs e)
