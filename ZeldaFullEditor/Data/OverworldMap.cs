@@ -268,7 +268,7 @@ namespace ZeldaFullEditor
                 this.Music[0] = ROM.DATA[Constants.overworldMusicDW + (this.ParentID - 64)];
 
                 // Make the mire have rain sfx by default.
-                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0)
+                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
                 {
                     if (index == 0x70)
                     {
@@ -563,9 +563,10 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (this.overworld.AllMaps[this.ParentID].MainPalette != 255)
+            int mainPalette = this.overworld.AllMaps[this.ParentID].MainPalette;
+            if (mainPalette >= 0 && mainPalette < Palettes.OverworldMainPalettes.Length)
             {
-                main = Palettes.OverworldMainPalettes[this.overworld.AllMaps[this.ParentID].MainPalette];
+                main = Palettes.OverworldMainPalettes[mainPalette];
             }
             else
             {
