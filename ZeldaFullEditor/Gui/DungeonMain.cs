@@ -5513,10 +5513,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void TestToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-        }
-
         private void NetworkBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             if (NetZS.connected)

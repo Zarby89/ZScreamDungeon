@@ -2,6 +2,9 @@
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     This is a class to hold all addresses, "magic numbers", and other constants used accross the editor.
+    /// </summary>
     public static class Constants
     {
         // ===========================================================================================
@@ -40,12 +43,23 @@ namespace ZeldaFullEditor
         public const int NumberOfMap16 = 3752; // 4096
         public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
         public const int NumberOfOWSprites = 352;
-        public const int NumberOfColors = 3415; //3143
+        public const int NumberOfColors = 3415; // 3143
 
         // TODO zarby stop making magic numbers
         public const int IDKZarby = 0x54727;
 
-        public static byte[] FontSpacings = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
+        public static byte[] FontSpacings = new byte[]
+        {
+            4, 3, 5, 7, 5, 6, 5, 3,
+            4, 4, 5, 5, 3, 5, 3, 5,
+            5, 5, 5, 5, 5, 5, 5, 5,
+            5, 5, 3, 3, 5, 5, 5, 5,
+            5, 5, 5, 5, 5, 5, 5, 6,
+            5, 5, 6, 5, 5, 7, 6, 5,
+            5, 5, 5, 5, 5, 5, 5, 7,
+            5, 5, 5, 4, 5, 4, 6, 6,
+            6, 6,
+        };
 
         // ===========================================================================================
         // Geometry - shapes and points we don't need to constantly reinstantiate
@@ -365,8 +379,8 @@ namespace ZeldaFullEditor
 
         public static int chests_length_pointer = 0xEBF6;
         public static int chests_data_pointer1 = 0xEBFB;
-        //public static int chests_data_pointer2 = 0xEC0A; // Disabled for now could be used for expansion
-        //public static int chests_data_pointer3 = 0xEC10; // Disabled for now could be used for expansion
+        // public static int chests_data_pointer2 = 0xEC0A; // Disabled for now could be used for expansion
+        // public static int chests_data_pointer3 = 0xEC10; // Disabled for now could be used for expansion
 
         public static int blocks_length = 0x8896; // Word value
         public static int blocks_pointer1 = 0x15AFA;
@@ -466,7 +480,7 @@ namespace ZeldaFullEditor
         public static int entrance_floor = 0x15406; // 0x1516A 1byte
         public static int entrance_dungeon = 0x1548B; // 0x151EF 1byte (dungeon id)
         public static int entrance_door = 0x15510; // 0x15274 1byte
-        public static int entrance_ladderbg = 0x15595; //0x152F9 // 1byte, ---b ---a b = bg2, a = need to check -_-
+        public static int entrance_ladderbg = 0x15595; // 0x152F9 // 1byte, ---b ---a b = bg2, a = need to check -_-
         public static int entrance_scrolling = 0x1561A; // 0x1537E // 1byte --h- --v-
         public static int entrance_scrollquadrant = 0x1569F; // 0x15403 1byte
         public static int entrance_exit = 0x15724; // 0x15488 // 2byte word
@@ -783,6 +797,7 @@ namespace ZeldaFullEditor
                         return i;
                     }
                 }
+
                 return -1;
             }
         }
