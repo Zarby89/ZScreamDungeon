@@ -807,12 +807,16 @@ namespace ZeldaFullEditor
 
         public bool SaveAllPots()
         {
-            //int pos = Constants.items_data_start + 2; // Skip 2 FF FF that are empty pointer.
-            int ptrOfPointers = Utils.Get24LocalFromPC(Constants.room_items_pointers_ptr);
+
+
+            int ptrOfPointers = Utils.SnesToPc(ROM.ReadLong(Constants.room_items_pointers_ptr));
+            Console.WriteLine("Items Pointers : " + ptrOfPointers.ToString("X6"));
             int emptyroom = ptrOfPointers + 0x27E;
             int pos = ptrOfPointers + 0x280;
 
             ROM.WriteShort(emptyroom, 0xFFFF, true); // write empty room pointer
+
+
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
@@ -2483,7 +2487,7 @@ namespace ZeldaFullEditor
         public bool SaveAllPots2(short[] listofrooms)
         {
 
-            int ptrOfPointers = Utils.Get24LocalFromPC(Constants.room_items_pointers_ptr);
+            int ptrOfPointers = Utils.SnesToPc(ROM.ReadLong(Constants.room_items_pointers_ptr));
             int emptyroom = ptrOfPointers + 0x27E;
             int pos = ptrOfPointers + 0x280;
 

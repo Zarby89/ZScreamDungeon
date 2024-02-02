@@ -1017,7 +1017,7 @@ namespace ZeldaFullEditor
         public void addPotsItems()
         {
 
-            int ptrOfPointers = Utils.Get24LocalFromPC(Constants.room_items_pointers_ptr, false);
+            int ptrOfPointers = ROM.ReadLong(Constants.room_items_pointers_ptr);
             int item_address_snes = (ptrOfPointers & 0xFF0000) +
             (ROM.DATA[Utils.SnesToPc(ptrOfPointers) + (index * 2) + 1] << 8) +
             ROM.DATA[Utils.SnesToPc(ptrOfPointers) + (index * 2)];

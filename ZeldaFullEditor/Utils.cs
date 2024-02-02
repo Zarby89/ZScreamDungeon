@@ -52,6 +52,8 @@ namespace ZeldaFullEditor
         }
 
 
+
+
         public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
         {
             return (addr1 << 16) | (addr2 << 8) | addr3;
