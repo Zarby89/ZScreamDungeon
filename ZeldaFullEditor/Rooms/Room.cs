@@ -1016,10 +1016,11 @@ namespace ZeldaFullEditor
 
         public void addPotsItems()
         {
-            // WTF is that (01 << 16) ?? this is the bank -_-
-            int item_address_snes = (01 << 16) +
-            (ROM.DATA[Constants.room_items_pointers + (index * 2) + 1] << 8) +
-            ROM.DATA[Constants.room_items_pointers + (index * 2)];
+
+            int ptrOfPointers = Utils.Get24LocalFromPC(Constants.room_items_pointers_ptr, false);
+            int item_address_snes = (ptrOfPointers & 0xFF0000) +
+            (ROM.DATA[Utils.SnesToPc(ptrOfPointers) + (index * 2) + 1] << 8) +
+            ROM.DATA[Utils.SnesToPc(ptrOfPointers) + (index * 2)];
 
             int item_address = Utils.SnesToPc(item_address_snes);
 

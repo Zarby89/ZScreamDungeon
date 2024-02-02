@@ -348,7 +348,9 @@ namespace ZeldaFullEditor
         public static int dungeons_palettes = 0xDD734; // JP Same (where all dungeons palettes are)
 
         // That could be turned into a pointer :
-        public static int room_items_pointers = 0xDB69;// JP 0xDB67
+        //public static int room_items_pointers = 0xDB69; // JP 0xDB67
+        public static int room_items_pointers_ptr = 0x00E6C2;
+
 
         public static int rooms_sprite_pointer = 0x4C298; // JP Same //2byte bank 09D62E
         public static int room_header_pointer = 0xB5DD; // LONG
@@ -492,7 +494,7 @@ namespace ZeldaFullEditor
         public static int startingentrance_music = 0x15C4E; // 0x15592
         public static int startingentrance_entrance = 0x15C40;
 
-        public static int items_data_start = 0xDDE9; // Save purpose
+        //public static int items_data_start = 0xDDE9; // Save purpose
         public static int items_data_end = 0xE6B2; // Save purpose
         public static int initial_equipement = 0x271A6;
         public static int messages_id_dungeon = 0x3F61D;
@@ -637,7 +639,7 @@ namespace ZeldaFullEditor
             pit_count = 0x3949D;
             // 04EF2F
             dungeons_palettes_groups = 0x67DD0;
-            room_items_pointers = 0xDB67;
+            //room_items_pointers = 0xDB67;
             torch_data = 0x2704A;
 
             entrance_gfx_group = 0x5DD7;
@@ -649,8 +651,8 @@ namespace ZeldaFullEditor
             chests_length_pointer = 0xEBF4;
             chests_data_pointer1 = 0xEBF9;
             gfx_groups_pointer = 0x6277;
-            items_data_start = 0xDDE7;
-            items_data_end = 0xE6B0;
+            //items_data_start = 0xDDE7;
+            //items_data_end = 0xE6B0;
             gfx_1_pointer = 0x67D0; // 2byte pointer bank 00 -> pc 0x4FC0
             gfx_2_pointer = 0x67D5; // 509F
             gfx_3_pointer = 0x67DA; // 517E

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using AsarCLR;
 using ZCompressLibrary;
@@ -806,19 +807,24 @@ namespace ZeldaFullEditor
 
         public bool SaveAllPots()
         {
-            int pos = Constants.items_data_start + 2; // Skip 2 FF FF that are empty pointer.
-            ROM.StartBlockLogWriting("Pots Items Data", pos);
+            //int pos = Constants.items_data_start + 2; // Skip 2 FF FF that are empty pointer.
+            int ptrOfPointers = Utils.Get24LocalFromPC(Constants.room_items_pointers_ptr);
+            int emptyroom = ptrOfPointers + 0x27E;
+            int pos = ptrOfPointers + 0x280;
+
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
                 if (this.AllRooms[i].pot_items.Count == 0)
                 {
-                    ROM.WriteShort(Constants.room_items_pointers + (i * 2), Utils.PcToSnes(Constants.items_data_start), true, "Items Pointer for Room " + i.ToString("D3"));
+
+
+                    ROM.WriteShort(ptrOfPointers + (i * 2), Utils.PcToSnes(emptyroom), true, "Items Pointer for Room " + i.ToString("D3"));
                     continue;
                 }
 
                 // Pointer.
-                ROM.WriteShort(Constants.room_items_pointers + (i * 2), Utils.PcToSnes(pos), true, "Items Pointer for Room " + i.ToString("D3"));
+                ROM.WriteShort(ptrOfPointers + (i * 2), Utils.PcToSnes(pos), true, "Items Pointer for Room " + i.ToString("D3"));
                 for (int j = 0; j < this.AllRooms[i].pot_items.Count; j++)
                 {
                     if (this.AllRooms[i].pot_items[j].layer == 0)
@@ -845,14 +851,17 @@ namespace ZeldaFullEditor
 
                 ROM.WriteShort(pos, 0xFFFF, true);
                 pos += 2;
-                if (pos > Constants.items_data_end)
+
+
+                if (ptrOfPointers == 0x00DB69) // it's vanilla so add a safety
                 {
-                    ROM.SaveLogs();
-                    return true;
+                    if (pos > Constants.items_data_end)
+                    {
+                        ROM.SaveLogs();
+                        return true;
+                    }
                 }
             }
-
-            ROM.EndBlockLogWriting();
             return false; // False = no error.
         }
 
@@ -2472,7 +2481,11 @@ namespace ZeldaFullEditor
 
         public bool SaveAllPots2(short[] listofrooms)
         {
-            int pos = Constants.items_data_start + 2; // Skip 2 FF FF that are empty pointer.
+
+            int ptrOfPointers = Utils.Get24LocalFromPC(Constants.room_items_pointers_ptr);
+            int emptyroom = ptrOfPointers + 0x27E;
+            int pos = ptrOfPointers + 0x280;
+
             ROM.StartBlockLogWriting("Pots Items Data", pos);
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
@@ -2480,12 +2493,12 @@ namespace ZeldaFullEditor
                 {
                     if (this.AllRooms[i].pot_items.Count == 0)
                     {
-                        ROM.WriteShort2(Constants.room_items_pointers + (i * 2), Utils.PcToSnes(Constants.items_data_start), true, "Items Pointer for Room " + i.ToString("D3"));
+                        ROM.WriteShort2(ptrOfPointers + (i * 2), Utils.PcToSnes(emptyroom), true, "Items Pointer for Room " + i.ToString("D3"));
                         continue;
                     }
 
                     // Pointer:
-                    ROM.WriteShort2(Constants.room_items_pointers + (i * 2), Utils.PcToSnes(pos), true, "Items Pointer for Room " + i.ToString("D3"));
+                    ROM.WriteShort2(ptrOfPointers + (i * 2), Utils.PcToSnes(pos), true, "Items Pointer for Room " + i.ToString("D3"));
                     for (int j = 0; j < this.AllRooms[i].pot_items.Count; j++)
                     {
                         if (this.AllRooms[i].pot_items[j].layer == 0)
@@ -2512,22 +2525,25 @@ namespace ZeldaFullEditor
 
                     ROM.WriteShort2(pos, 0xFFFF, true);
                     pos += 2;
-                    if (pos > Constants.items_data_end)
+                    if (ptrOfPointers == 0x00DB69)
                     {
-                        ROM.SaveLogs();
-                        return true;
+                        if (pos > Constants.items_data_end)
+                        {
+                            ROM.SaveLogs();
+                            return true;
+                        }
                     }
                 }
                 else
                 {
                     if (DungeonsData.AllRoomsMoved[i].pot_items.Count == 0)
                     {
-                        ROM.WriteShort2(Constants.room_items_pointers + (i * 2), Utils.PcToSnes(Constants.items_data_start), true, "Items Pointer for Room " + i.ToString("D3"));
+                        ROM.WriteShort2(ptrOfPointers + (i * 2), Utils.PcToSnes(emptyroom), true, "Items Pointer for Room " + i.ToString("D3"));
                         continue;
                     }
 
                     // Pointer:
-                    ROM.WriteShort2(Constants.room_items_pointers + (i * 2), Utils.PcToSnes(pos), true, "Items Pointer for Room " + i.ToString("D3"));
+                    ROM.WriteShort2(ptrOfPointers + (i * 2), Utils.PcToSnes(pos), true, "Items Pointer for Room " + i.ToString("D3"));
                     for (int j = 0; j < DungeonsData.AllRoomsMoved[i].pot_items.Count; j++)
                     {
                         if (DungeonsData.AllRoomsMoved[i].pot_items[j].layer == 0)
@@ -2554,10 +2570,13 @@ namespace ZeldaFullEditor
 
                     ROM.WriteShort2(pos, 0xFFFF, true);
                     pos += 2;
-                    if (pos > Constants.items_data_end)
+                    if (ptrOfPointers == 0x00DB69)
                     {
-                        ROM.SaveLogs();
-                        return true;
+                        if (pos > Constants.items_data_end)
+                        {
+                            ROM.SaveLogs();
+                            return true;
+                        }
                     }
                 }
             }
