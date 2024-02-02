@@ -215,10 +215,6 @@ namespace ZeldaFullEditor
                 {
                     this.SubscreenOverlay = 0x0096;
                 }
-                else if (index == 0x70) // Add the rain to misery mire.
-                {
-                    this.SubscreenOverlay = 0x009F;
-                }
                 else if (index == 0x80) // Add fog 1 to the master sword area.
                 {
                     this.SubscreenOverlay = 0x0097;
@@ -266,15 +262,6 @@ namespace ZeldaFullEditor
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
 
                 this.Music[0] = ROM.DATA[Constants.overworldMusicDW + (this.ParentID - 64)];
-
-                // Make the mire have rain sfx by default.
-                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
-                {
-                    if (index == 0x70)
-                    {
-                        this.Music[0] = 0x19;
-                    }
-                }
             }
             else
             {

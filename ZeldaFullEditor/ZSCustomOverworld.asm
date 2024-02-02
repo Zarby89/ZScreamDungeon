@@ -182,12 +182,20 @@ Pool:
     .ZSAppliedASM
     ;db $FF
 
+    ; When non 0 this will cause rain to appear on all areas in the beginning phase.
+    ; Default is $FF
     org $288146 ; $140146
     .EnableBeginningRain
     db $FF
+
+    ; When non 0 this will disable the ambiant sound that plays in the mire area after the event is triggered.
+    ; Default is $FF
+    org $288147 ; $140147
+    .EnableRainMireEvent
+    db $FF
     
     ; The rest of these are extra bytes that can be used for anything else later on.
-    ;db $00, $00
+    ;db $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
@@ -344,10 +352,10 @@ Pool:
 ; $00FF7C ; W9 BG scrolling for HC and the pyramid area.
 !Func00FF7C = $01
 
-; 028027
-; 029C0C
-; 029D1E
-; 029F82
+; $028027
+; $029C0C
+; $029D1E
+; $029F82
 
 ; $0283EE ; E2 ; Changes the function that loads overworld properties when exiting a dungeon. Includes removing asm that plays music in certain areas and changing how animated tiles are loaded.
 !Func0283EE = $01 ; Disable
@@ -503,11 +511,12 @@ ActivateSubScreen:
     
     .notForest
 
-    ; Check if we need to disable the rain in the misery mire
-    LDA.b $8A : CMP.w #$0070 : BNE .notMire
-        ; Has Misery Mire been triggered yet?
-        LDA.l $7EF2F0 : AND.w #$0020 : BEQ .notMire
-            BRA .turnOn
+    ; Check if we need to disable the rain in the misery mire.
+    LDA.l Pool_EnableRainMireEvent : BEQ .notMire
+        LDA.b $8A : CMP.w #$0070 : BNE .notMire
+            ; Has Misery Mire been triggered yet?
+            LDA.l $7EF2F0 : AND.w #$0020 : BNE .notMire
+                BRA .turnOn
         
     .notMire
 
@@ -1138,11 +1147,22 @@ Func02AF58:
     .notForest
 
     ; Check if we need to disable the rain in the misery mire
-    LDA.b $8A : CMP.w #$0070 : BNE .notMire
-        ; Has Misery Mire been triggered yet?
-        LDA.l $7EF2F0 : AND.w #$0020 : BEQ .notMire
-            ; The pyramid background
-            LDX.w #$0096
+    LDA.l Pool_EnableRainMireEvent : BEQ .notMire
+        LDA.b $8A : CMP.w #$0070 : BNE .notMire
+            ; Has Misery Mire been triggered yet?
+            LDA.l $7EF2F0 : AND.w #$0020 : BNE .notMire
+                ; The rain overlay
+                LDX.w #$009F
+
+                SEP #$20 ; Set A in 8bit mode
+
+                ; Load the rain sound effect.
+                ; This is done here because of some jank in the vanilla code in this function
+                ; a bit further down. Basically it loads the overlay's ambient sound instead
+                ; of the acutal areas, which only seems to benefit us here.
+                LDA.b #$01 : STA $012D
+
+                REP #$20 ; Set A in 16bit mode
         
     .notMire
 
@@ -1150,7 +1170,6 @@ Func02AF58:
     ; If $7EF3C5 >= 0x02
     LDA.l Pool_EnableBeginningRain : BEQ .noRain
         LDA.l $7EF3C5 : AND.w #$00FF : CMP.w #$0002 : BCS .noRain
-        
             ; The rain overlay
             LDX.w #$009F
         
@@ -1443,22 +1462,8 @@ Func02BC44:
 {
     ; TODO: I had a single nop here for some reason. Verify that we don't actually need it.
     JSL ReadOverlayArray : CMP.w #$0096 : BNE .BRANCH_IOTA
-        ; TODO: I think these comparison values will need to be calulated somehow
-        ; depending on the area. Right now they are hardcoded to work with the
-        ; castle of shadows area.
-
         JSL BGControl
         BRA .BRANCH_IOTA
-
-        ; Don't let the BG scroll down further than the "top" of the bg when walking up.
-        ;LDA.w #$0208 : CMP.b $E6 : BCC .dontLock ; #$0600 
-            ;STA.b $E6
-    
-        ;.dontLock
-    
-        ; Don't let the BG scroll up further than the "bottom" of the bg when walking down.
-        ;LDA.w #$02C0 : CMP.b $E6 : BCS .BRANCH_IOTA ;#$06C0 
-           ; STA.b $E6
     
     warnpc $02BC60 ; $013C60
 
@@ -1489,23 +1494,27 @@ ReadOverlayArray:
 
 BGControl:
 {
+    ; TODO: These comparison values will need to be calulated somehow or set
+    ; depending on the area. Right now they are hardcoded to work with the
+    ; pyramid area.
+
     ; Check link's Y position. This will need to be changed per area and per need.
     LDA.b $20 : CMP.w #$08E0 : BCC .startShowingMountains
         ; Lock the position so that nothing shows through the trees
-        LDA.w #$02C0 : STA.b $E6
+        LDA.w #$06C0 : STA.b $E6
 
         RTL
 
     .startShowingMountains
 
     ; Don't let the BG scroll down further than the "top" of the bg when walking up.
-    LDA.w #$0208 : CMP.b $E6 : BCC .dontLock ; #$0600 
+    LDA.w #$0600 : CMP.b $E6 : BCC .dontLock ; #$0600 
         STA.b $E6
     
     .dontLock
     
     ; Don't let the BG scroll up further than the "bottom" of the bg when walking down.
-    LDA.w #$02C0 : CMP.b $E6 : BCS .dontLock2 ; #$06C0 
+    LDA.w #$06C0 : CMP.b $E6 : BCS .dontLock2 ; #$06C0 
         STA.b $E6 ; $TODO: I had this at $E2 for some reason.
 
     .dontLock2
@@ -2062,14 +2071,13 @@ Func0AB8F5:
         
     JSL $02B1F4 ; $0131F4 IN ROM
         
-    ; Play sound effect indicating we're coming out of map mode
+    ; Play sound effect indicating we're coming out of map mode.
     LDA.b #$10 : STA.w $012F
+
+    JSL LoadAmbientSound
         
-    ; reset the ambient sound effect to what it was
-    LDX.b $8A : LDA.l $7F5B00, X : LSR #4 : STA.w $012D
-        
-    ; if it's a different music track than was playing where we came from,
-    ; simply change to it (as opposed to setting volume back to full)
+    ; If it's a different music track than was playing where we came from,
+    ; simply change to it (as opposed to setting volume back to full).
     LDA.l $7F5B00, X : AND.b #$0F : TAX : CPX.w $0130 : BNE .different_music
         ; otherwise, just set the volume back to full.
         LDX.b #$F3
@@ -2103,28 +2111,59 @@ db $2C, $01, $6B
 
 endif
 
+pullpc
+
+LoadAmbientSound:
+{
+    ; Reset the ambient sound effect to what it was.
+    LDX.b $8A : LDA.l $7F5B00, X : LSR #4 : STA.w $012D
+
+    ; Check if we need to stop the rain sound in the misery mire.
+    LDA.l Pool_EnableRainMireEvent : BEQ .disableRainSound
+        LDA.b $8A : CMP.b #$70 : BNE .disableRainSound
+            ; Has Misery Mire been triggered yet?
+            LDA.l $7EF2F0 : AND.b #$20 : BNE .disableRainSound
+                LDA.b #$01 : STA.w $012D
+        
+    .disableRainSound
+
+    RTL
+}
+
+pushpc
+
 ; ==============================================================================
 
 if !Func0BFEC6 = 1
 
-; Loads different special transparent colors and overlay speeds based on the overlay during transition and under other certain cases. Exact cases need to be investigated. When leaving dungeon.
+; Loads different special transparent colors and overlay speeds based on the
+; overlay duringtransition and under other certain cases. Exact cases need to be
+; investigated. When leaving dungeon.
 org $0BFEC6 ; $05FEC6
 Overworld_LoadBGColorAndSubscreenOverlay:
 {
-    JSL ReplaceBGColor
+    ;JSL ReplaceBGColor
 
     ; set fixed color to neutral
     LDA.w #$4020 : STA.b $9C
     LDA.w #$8040 : STA.b $9D
-    
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X
+
+    ; Check if we need to load the rain in the misery mire.
+    LDA.l Pool_EnableRainMireEvent : BEQ .notMire
+        LDA.b $8A : CMP.w #$0070 : BNE .notMire
+            ; Has Misery Mire been triggered yet?
+            LDA.l $7EF2F0 : AND.w #$0020 : BNE .notMire
+                JMP .subscreenOnAndReturn
+        
+    .notMire
+
+    JSL ReadOverlayArray
 
     ; Check for misery mire.
-    CMP.w #$009F : BNE .notMire
+    CMP.w #$009F : BNE .notRain
         JMP .subscreenOnAndReturn
     
-    .notMire
+    .notRain
     
     ; Check for lost woods?, skull woods, and pyramid area.
     CMP.w #$009D : BEQ .noCustomFixedColor
@@ -2159,52 +2198,26 @@ Overworld_LoadBGColorAndSubscreenOverlay:
         LDA.b $E8 : STA.b $E6
         LDA.b $E2 : STA.b $E0
             
-        LDA.b $8A : ASL : TAX
-        LDA.l Pool_OverlayTable, X
+        ; Just because I need a bit more space.
+        JSL ReadOverlayArray
             
         ; Are we at Hyrule Castle or Pyramid of Power?
         CMP.w #$0096 : BNE .subscreenOnAndReturn
-            LDA.b $E2 : SEC : SBC.w #$0778 : LSR A : TAY : AND.w #$4000 : BEQ .BRANCH_7
-                TYA : ORA.w #$8000 : TAY
-            
-            .BRANCH_7
-            
-            STY.b $00
-                
-            LDA.b $E2 : SEC : SBC.b $00 : STA.b $E0
-                
-            LDA.b $E6 : CMP.w #$06C0 : BCC .BRANCH_9
-                SEC : SBC.w #$0600 : AND.w #$03FF : CMP.w #$0180 : BCS .BRANCH_8
-                    LSR A : ORA.w #$0600
-                
-                    BRA .BRANCH_10
-            
-                .BRANCH_8
-            
-                LDA.w #$06C0
-                
-                BRA .BRANCH_10
-            
-            .BRANCH_9
-
-            LDA.b $E6 : AND.w #$00FF : LSR A : ORA.w #$0600
-            
-            .BRANCH_10
-            
-            ; Set BG1 vertical scroll
-            STA.b $E6
+            JSL NeedSomeSpaceForWhateverThisIs
                 
             BRA .subscreenOnAndReturn
     
     .BRANCH_11
     
     LDA.b $8A : ASL : TAX
+
+    ; Check for the pyramid BG.
     LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BNE .subscreenOnAndReturn
         ; Synchronize Y scrolls on BG0 and BG1. Same for X scrolls
         LDA.b $E8 : STA.b $E6
         LDA.b $E2 : STA.b $E0
             
-        LDA.b $0410 : AND.w #$00FF : CMP.w #$0008 : BEQ .BRANCH_12
+        LDA.w $0410 : AND.w #$00FF : CMP.w #$0008 : BEQ .BRANCH_12
             ; Handles scroll for special areas maybe?
             LDA.w #$0838 : STA.b $E0
         
@@ -2282,13 +2295,48 @@ ReplaceBGColor:
 
     ;REP #$20 ; Set A in 16bit mode
 
-    LDA.b $8A : ASL : TAX ; Get area code and times it by 2
-    LDA.l Pool_BGColorTable, X ; Get the color.
+    ;LDA.b $8A : ASL : TAX ; Get area code and times it by 2
+    ;LDA.l Pool_BGColorTable, X ; Get the color.
 
     ;STA.l $7EC300 : STA.l $7EC340 ; Set the BG color 
     ;STA.l $7EC500 : STA.l $7EC540
 
     PLB
+
+    RTL
+}
+
+NeedSomeSpaceForWhateverThisIs:
+{
+    LDA.b $E2 : SEC : SBC.w #$0778 : LSR A : TAY : AND.w #$4000 : BEQ .BRANCH_7
+        TYA : ORA.w #$8000 : TAY
+            
+    .BRANCH_7
+            
+    STY.b $00
+                
+    LDA.b $E2 : SEC : SBC.b $00 : STA.b $E0
+                
+    LDA.b $E6 : CMP.w #$06C0 : BCC .BRANCH_9
+        SEC : SBC.w #$0600 : AND.w #$03FF : CMP.w #$0180 : BCS .BRANCH_8
+            LSR A : ORA.w #$0600
+                
+                BRA .BRANCH_10
+            
+            .BRANCH_8
+            
+            LDA.w #$06C0
+                
+            BRA .BRANCH_10
+            
+    .BRANCH_9
+
+    LDA.b $E6 : AND.w #$00FF : LSR A : ORA.w #$0600
+            
+    .BRANCH_10
+            
+    ; Set BG1 vertical scroll
+    STA.b $E6
 
     RTL
 }
@@ -2378,6 +2426,7 @@ Func0ED8AE:
                         
                         ; DW death mountain.
                         CMP.w #$009C : BEQ .specialColor
+                            BRA .noSpecialColor
                 
                 .specialColor
 
