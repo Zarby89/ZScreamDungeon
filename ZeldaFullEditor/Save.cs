@@ -812,6 +812,7 @@ namespace ZeldaFullEditor
             int emptyroom = ptrOfPointers + 0x27E;
             int pos = ptrOfPointers + 0x280;
 
+            ROM.WriteShort(emptyroom, 0xFFFF, true); // write empty room pointer
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
@@ -2485,6 +2486,8 @@ namespace ZeldaFullEditor
             int ptrOfPointers = Utils.Get24LocalFromPC(Constants.room_items_pointers_ptr);
             int emptyroom = ptrOfPointers + 0x27E;
             int pos = ptrOfPointers + 0x280;
+
+            ROM.WriteShort2(emptyroom, 0xFFFF, true); // write empty room pointer
 
             ROM.StartBlockLogWriting("Pots Items Data", pos);
             for (int i = 0; i < Constants.NumberOfRooms; i++)
