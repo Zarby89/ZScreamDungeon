@@ -159,7 +159,17 @@ namespace ZeldaFullEditor.Data
             byte addr0DB53F = (byte)(IntFunctions.MakeBitfield(false, false, false, false, Deflectarrows,Overrideslashimminuty,Dielikeaboss,Invertpitbehavior) | (Tilehitbox << 4));
             byte addr0DB632 = (byte)(Prizepack | IntFunctions.MakeBitfield(Ignorepitconveyors, Checkforwater, Blockedbyshield, Altdamagesound));
             byte addr0DB725 = IntFunctions.MakeBitfield(Activeoffscreen, Dieoffscreen, Hiddenprop, Hiddenunused, Projectilelikecollision, Immunetoswordhammer, Bonkitem, Nopermadeathindungeons);
-
+            if (id == 0)
+            {
+                Console.WriteLine("addr0DB080 : " + addr0DB080.ToString("X2"));
+                Console.WriteLine("addr0DB266 : " + addr0DB266.ToString("X2"));
+                Console.WriteLine("addr0DB359 : " + addr0DB359.ToString("X2"));
+                Console.WriteLine("addr0DB44C : " + addr0DB44C.ToString("X2"));
+                Console.WriteLine("addr0DB53F : " + addr0DB53F.ToString("X2"));
+                Console.WriteLine("addr0DB632 : " + addr0DB632.ToString("X2"));
+                Console.WriteLine("addr0DB725 : " + addr0DB725.ToString("X2"));
+                Console.WriteLine("Health : " + Health.ToString("X2"));
+            }
             ROM.Write(Constants.Sprite_0DB080 + id, addr0DB080);
             ROM.Write(Constants.Sprite_0DB266 + id, addr0DB266);
             ROM.Write(Constants.Sprite_0DB359 + id, addr0DB359);

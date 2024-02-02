@@ -809,6 +809,7 @@ namespace ZeldaFullEditor
         {
 
 
+            //int pos = Constants.items_data_start + 2; // Skip 2 FF FF that are empty pointer.
             int ptrOfPointers = Utils.SnesToPc(ROM.ReadLong(Constants.room_items_pointers_ptr));
             Console.WriteLine("Items Pointers : " + ptrOfPointers.ToString("X6"));
             int emptyroom = ptrOfPointers + 0x27E;

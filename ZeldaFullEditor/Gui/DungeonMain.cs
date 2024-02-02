@@ -823,7 +823,7 @@ namespace ZeldaFullEditor
                 DungeonsData.SpriteDamageTaken[i] = dcompData[i];
             }
 
-            for (int i = 0; i < Sprites_Names.name.Length; i++)
+            for (int i = 0; i < 243; i++)
             {
                 DungeonsData.SpriteProperties.Add(new SpriteProperty((byte)i));
             }

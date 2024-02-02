@@ -163,6 +163,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         private void sprsaveButton_Click(object sender, EventArgs e)
         {
+            Console.Write("NBR OF SPRITES : " + DungeonsData.SpriteProperties.Count.ToString());
             for (int i = 0; i < DungeonsData.SpriteProperties.Count; i++)
             {
                 DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
