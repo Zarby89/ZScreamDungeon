@@ -195,7 +195,6 @@ Pool:
     db $FF
     
     ; The rest of these are extra bytes that can be used for anything else later on.
-    ;db $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
@@ -347,8 +346,8 @@ Pool:
 !Func00D8D5 = $01 ; Disable
 ; $00DA63 ; W8 Enable/Disable subscreen.
 !Func00DA63 = $01
-; $00EEBC ; Zeros out the BG color when mirror warping to the pyramid area.
-!Func00EEBC = $01 ; Disable
+; $00EEBB ; Zeros out the BG color when mirror warping to the pyramid area.
+!Func00EEBB = $01 ; Disable
 ; $00FF7C ; W9 BG scrolling for HC and the pyramid area.
 !Func00FF7C = $01
 
@@ -550,11 +549,11 @@ pushpc
 
 ; ==============================================================================
 
-if !Func00EEBC = 1
+if !Func00EEBB = 1
 
 ; Zeros out the BG color when mirror warping to the pyramid area.
-org $00EEBC ; $006EBC
-Func00EEBC:
+org $00EEBB ; $006EBB
+Func00EEBB:
 {
     ; TODO: probably not needed.
     ; Check if we are warping to an area with the pyramid BG.
@@ -578,12 +577,12 @@ warnpc $00EEE0
 else
 
 ; Undo the function above:
-org $00EEBC ; $006EBC
-db $8A, $C9, $1B, $00, $D0, $13, $A9, $00
-db $00, $8F, $00, $C3, $7E, $8F, $40, $C3
-db $7E, $8F, $00, $C5, $7E, $8F, $40, $C5
-db $7E, $E2, $20, $A9, $08, $8D, $BB, $06
-db $9C, $BA, $06, $6B
+org $00EEBB ; $006EBB
+db $A5, $8A, $C9, $1B, $00, $D0, $13, $A9
+db $00, $00, $8F, $00, $C3, $7E, $8F, $40
+db $C3, $7E, $8F, $00, $C5, $7E, $8F, $40
+db $C5. $7E, $E2, $20, $A9, $08, $8D, $BB
+db $06, $9C, $BA, $06, $6B
 
 endif
 
@@ -1055,8 +1054,9 @@ if !Func02AF58 = 1
 
 ; Main subscreen overlay loading function. Changed so that they will load
 ; from a table. This does not change the event overlays like the lost woods 
-; changing to the tree canopy, the master sword area or the misery mire rain. This also does not change
-; the overlay for under the bridge because it shares an area with the master sword.
+; changing to the tree canopy, the master sword area or the misery mire rain.
+; This also does not change the overlay for under the bridge because it shares
+; an area with the master sword.
 org $02AF58 ; $012F58
 Func02AF58:
 {
@@ -1883,7 +1883,7 @@ CheckForChangeGraphicsTransitionLoad:
     LDA.b $8A : ASL : TAX ; Get area code and times it by 2
 
     LDA.l Pool_BGColorTable, X ; Where ZS saves the array of palettes
-    ;STA.l $7EC300 : STA.l $7EC340 ;set transparent color ; only set the buffer so it fades in right during mosaic transition.
+    STA.l $7EC300 : STA.l $7EC340 ;set transparent color ; only set the buffer so it fades in right during mosaic transition.
 
     SEP #$30 ; Set A, X, and Y in 8bit mode.
 
@@ -2112,7 +2112,6 @@ db $2C, $01, $6B
 endif
 
 pullpc
-
 LoadAmbientSound:
 {
     ; Reset the ambient sound effect to what it was.
@@ -2129,7 +2128,6 @@ LoadAmbientSound:
 
     RTL
 }
-
 pushpc
 
 ; ==============================================================================
@@ -2142,7 +2140,7 @@ if !Func0BFEC6 = 1
 org $0BFEC6 ; $05FEC6
 Overworld_LoadBGColorAndSubscreenOverlay:
 {
-    ;JSL ReplaceBGColor
+    JSL ReplaceBGColor
 
     ; set fixed color to neutral
     LDA.w #$4020 : STA.b $9C
@@ -2295,11 +2293,11 @@ ReplaceBGColor:
 
     ;REP #$20 ; Set A in 16bit mode
 
-    ;LDA.b $8A : ASL : TAX ; Get area code and times it by 2
-    ;LDA.l Pool_BGColorTable, X ; Get the color.
+    LDA.b $8A : ASL : TAX ; Get area code and times it by 2
+    LDA.l Pool_BGColorTable, X ; Get the color.
 
     ;STA.l $7EC300 : STA.l $7EC340 ; Set the BG color 
-    ;STA.l $7EC500 : STA.l $7EC540
+    STA.l $7EC500 : STA.l $7EC540
 
     PLB
 
@@ -2392,6 +2390,7 @@ InitColorLoad2:
 
     JML InitColorLoad2_Return ; $0ED652
 }
+pushpc
 
 ; ==============================================================================
 
@@ -2459,3 +2458,5 @@ db $84, $9D, $E2, $10, $6B
 endif
 
 ; ==============================================================================
+
+pullpc
