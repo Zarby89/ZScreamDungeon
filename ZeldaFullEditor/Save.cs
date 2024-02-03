@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using AsarCLR;
 using ZCompressLibrary;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -601,7 +602,7 @@ namespace ZeldaFullEditor
                             break;
                         }
                     }
-
+                    
                     if (section1Index + roomBytes.Length <= Constants.DungeonSection1EndIndex) // 0x50000 to 0x5374F.
                     {
                         // Write the room.
@@ -811,6 +812,7 @@ namespace ZeldaFullEditor
 
             //int pos = Constants.items_data_start + 2; // Skip 2 FF FF that are empty pointer.
             int ptrOfPointers = Utils.SnesToPc(ROM.ReadLong(Constants.room_items_pointers_ptr));
+
             Console.WriteLine("Items Pointers : " + ptrOfPointers.ToString("X6"));
             int emptyroom = ptrOfPointers + 0x27E;
             int pos = ptrOfPointers + 0x280;
@@ -889,27 +891,35 @@ namespace ZeldaFullEditor
         /// <returns> True if there was an error saving the sprites. </returns>
         public bool SaveAllSprites()
         {
+            //ROM.spaceUsedOWSprites
+
+            //Update the pointer
+            ROM.WriteShort(Constants.rooms_sprite_pointer, (Utils.PcToSnes(ROM.spaceUsedOWSprites) & 0x00FFFF));
+
             int spritePointer = (09 << 16) + (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + ROM.DATA[Constants.rooms_sprite_pointer];
+
+
+
             int spritePointerPC = Utils.SnesToPc(spritePointer);
             ROM.StartBlockLogWriting("Dungeon Sprites", spritePointerPC);
             byte[] sprites_buffer = new byte[Constants.sprites_end_data - Utils.SnesToPc(spritePointer)];
 
-            // Empty room data = 0x280
-            // Start of data = 0x282
+            // Empty room data = 0x250
+            // Start of data = 0x252
             try
             {
-                int pos = 0x282;
+                int pos = 0x252;
 
                 // Set empty room.
-                sprites_buffer[0x280] = 0x00;
-                sprites_buffer[0x281] = 0xFF;
+                sprites_buffer[0x250] = 0x00;
+                sprites_buffer[0x251] = 0xFF;
 
-                for (int i = 0; i < 320; i++)
+                for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
                     if (i >= Constants.NumberOfRooms || this.AllRooms[i].sprites.Count <= 0)
                     {
-                        sprites_buffer[i * 2] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF);
-                        sprites_buffer[(i * 2) + 1] = (byte)((Utils.SnesToPc(spritePointer + 0x280) >> 8) & 0xFF);
+                        sprites_buffer[i * 2] = (byte)(Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x250)) & 0xFF);
+                        sprites_buffer[(i * 2) + 1] = (byte)((Utils.SnesToPc(spritePointer + 0x250) >> 8) & 0xFF);
                     }
                     else
                     {
@@ -1100,6 +1110,7 @@ namespace ZeldaFullEditor
 
         public bool SaveOWSprites(SceneOW scene)
         {
+            
             ROM.StartBlockLogWriting("Sprites OW DATA & Pointers", Constants.overworldSpritesBegining);
             var spritePointers = new int[Constants.NumberOfOWSprites];
             var spritePointersReused = new int[Constants.NumberOfOWSprites];
@@ -1185,8 +1196,8 @@ namespace ZeldaFullEditor
                 int SNESAddress = Utils.PcToSnes(spritePointers[i]);
                 ROM.WriteShort(Constants.overworldSpritesBegining + (i * 2), SNESAddress, true, "Sprite Pointer for map" + i.ToString("D3"));
             }
-
-            if (dataPos > 0x4D62E)
+            ROM.spaceUsedOWSprites = dataPos;
+            if (dataPos >= 0x4D62E)
             {
                 Console.WriteLine("Position " + dataPos.ToString("X6"));
                 return true; // Error.
@@ -2735,6 +2746,15 @@ namespace ZeldaFullEditor
             return false;
         }
 
+        public bool SaveSpritesProperties()
+        {
+            for (int i = 0; i < DungeonsData.SpriteProperties.Count; i++)
+            {
+                DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
+            }
 
+
+            return false;
+        }
     }
 }

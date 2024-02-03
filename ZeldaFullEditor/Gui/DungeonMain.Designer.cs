@@ -310,6 +310,7 @@
             this.autoDoorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportSelectedRoomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importDungeonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dungeonViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -3416,7 +3417,7 @@
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
             this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.runToolStripMenuItem.Text = "Run…";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.RunToolStripMenuItem_Click);
             // 
@@ -3424,7 +3425,7 @@
             // 
             this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
             this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.debugRunToolStripMenuItem.Text = "Debug Run…";
             // 
             // roomToolStripMenuItem
@@ -3445,7 +3446,8 @@
             this.selectedObjectInHexToolStripMenuItem,
             this.autoDoorsToolStripMenuItem,
             this.exportSelectedRoomsToolStripMenuItem,
-            this.importDungeonToolStripMenuItem});
+            this.importDungeonToolStripMenuItem,
+            this.propertiesToolStripMenuItem});
             this.roomToolStripMenuItem.Enabled = false;
             this.roomToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.roomToolStripMenuItem.Name = "roomToolStripMenuItem";
@@ -3564,6 +3566,13 @@
             this.importDungeonToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.importDungeonToolStripMenuItem.Text = "Import Dungeon";
             this.importDungeonToolStripMenuItem.Click += new System.EventHandler(this.importDungeonToolStripMenuItem_Click);
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.propertiesToolStripMenuItem.Text = "ZS Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // dungeonViewToolStripMenuItem
             // 
@@ -4362,14 +4371,14 @@
             // hostToolStripMenuItem
             // 
             this.hostToolStripMenuItem.Name = "hostToolStripMenuItem";
-            this.hostToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hostToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.hostToolStripMenuItem.Text = "Host";
             this.hostToolStripMenuItem.Click += new System.EventHandler(this.HostToolStripMenuItem_Click);
             // 
             // joinToolStripMenuItem
             // 
             this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
-            this.joinToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.joinToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.joinToolStripMenuItem.Text = "Join";
             this.joinToolStripMenuItem.Click += new System.EventHandler(this.JoinToolStripMenuItem_Click);
             // 
@@ -5112,6 +5121,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportSelectedRoomsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importDungeonToolStripMenuItem;
         private System.Windows.Forms.TabPage SpriteEditor;
+        private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
     }
 }
 

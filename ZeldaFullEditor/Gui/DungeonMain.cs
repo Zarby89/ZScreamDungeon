@@ -12,7 +12,9 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
 using ZeldaFullEditor.Data;
@@ -122,13 +124,13 @@ namespace ZeldaFullEditor
         int romID = 00;
 
         // TODO: Save this in a config file and load the values into this array on startup.
-        public bool[] saveSettingsArr = new bool[46]
+        public bool[] saveSettingsArr = new bool[47]
         {
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
-            true, false, false, false, false, true
+            true, false, false, false, false, true, false
         };
 
         /// <summary>
@@ -333,6 +335,14 @@ namespace ZeldaFullEditor
             bool badSave = true;
             do
             {
+                // MUST BE CALLED BEFORE SAVEALLSPRITES
+                if (this.saveSettingsArr[9] && save.SaveOWSprites(this.overworldEditor.scene))
+                {
+                    UIText.CryAboutSaving("overworld sprites out of range");
+                    break;
+                }
+
+
                 if (this.saveSettingsArr[0] && save.SaveAllSprites())
                 {
                     UIText.CryAboutSaving("there are too many sprites");
@@ -387,11 +397,7 @@ namespace ZeldaFullEditor
                     break;
                 }
 
-                if (this.saveSettingsArr[9] && save.SaveOWSprites(this.overworldEditor.scene))
-                {
-                    UIText.CryAboutSaving("overworld sprites out of range");
-                    break;
-                }
+
 
                 if (this.saveSettingsArr[10] && save.SaveOWItems(this.overworldEditor.scene))
                 {
@@ -527,6 +533,12 @@ namespace ZeldaFullEditor
                 if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
                 {
                     UIText.CryAboutSaving("problem saving sprites damages");
+                    return;
+                }
+
+                if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
+                {
+                    UIText.CryAboutSaving("problem saving sprites properties");
                     return;
                 }
 
@@ -5930,6 +5942,140 @@ namespace ZeldaFullEditor
 
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
+
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            byte[] bosses = { 0x09, 0x53, 0x54, 0x88, 0x8C, 0x92, 0xA2, 0xBD, 0xCB, 0xCE };
+            //Calculate a bunch of stuff
+            int roomObjectsSize = 0;
+            int roomObjectsCount = 0;
+            int roomUsedCount = 0;
+            int heartPiecesCount = 0;
+            int heartContainerCount = 0;
+            int bossContainer = 0;
+            int potItems = 0;
+            int potItemsSize = 2;
+            int spriteCount = 0;
+            int spriteSize = 2;
+            int owspriteCount = 0;
+            int owspriteSize = 2;
+            int chestItemsCount = 0;
+            int[] allChestItems = new int[76];
+            string roomWTF = "";
+            //byte[] items = 
+            //chest count max = 168
+
+            
+
+
+            foreach (Room room in DungeonsData.AllRooms)
+            {
+                roomObjectsCount += room.tilesObjects.Count;
+                
+                
+                roomObjectsSize += room.getTilesBytes().Length;
+                if (room.tilesObjects.Count > 0) 
+                {
+                    //ROOM IS USED
+                    heartPiecesCount += room.chest_list.Count(x => x.item == 0x17);
+                    heartContainerCount += room.chest_list.Count(x => ((x.item == 0x26) || (x.item == 0x3E) || (x.item == 0x3F)) );
+
+                    heartPiecesCount += room.sprites.Count(x => ((x.id == 0xEB) && (x.subtype & 7) != 7));
+
+
+                    if (room.tag1 != TagKey.Kill_boss_Again && room.tag2 != TagKey.Kill_boss_Again)
+                    {
+                        if (room.sprites.Where(x => bosses.Contains(x.id) && (x.subtype & 7) != 7).ToArray().Length > 0)
+                        {
+                            bossContainer += 1;
+                            //roomWTF += room.index;
+                        }
+                    }
+
+                    chestItemsCount += room.chest_list.Count;
+                    roomUsedCount += 1;
+                    //room.pot_items.Count = roomUsedCount;
+                    if (room.pot_items.Count > 0)
+                    {
+                        potItems += room.pot_items.Count;
+                        potItemsSize += (room.pot_items.Count * 3);
+                        potItemsSize += 2;
+                    }
+
+                    if (room.sprites.Count > 0)
+                    {
+                        spriteCount += room.sprites.Count;
+                        spriteSize += (room.sprites.Count * 3);
+                        spriteSize += 2;
+                    }
+
+
+                    foreach(Chest c in room.chest_list)
+                    {
+                        allChestItems[c.item] += 1;
+                    }
+
+                }
+                else
+                {
+                    //EMTPY ROOM
+
+                    foreach (Chest c in room.chest_list)
+                    {
+                        allChestItems[c.item] += 1;
+                    }
+                }
+
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 76; i++)
+            {
+                sb.AppendLine("0x" + i.ToString("X2") + " - " + ChestItems_Name.name[i] + " : " + allChestItems[i].ToString());
+            }
+            string allchestInfos = sb.ToString();
+            
+            sb.Clear();
+
+            sb.AppendLine("Heart Pieces (including sprites) : " + heartPiecesCount.ToString() + "  (+1 if chest minigame is used)");
+            sb.AppendLine("Heart Container : " + heartContainerCount.ToString());
+            sb.AppendLine("Boss Container : " + bossContainer.ToString());
+            string basicchestInfos = sb.ToString();
+
+            sb.Clear();
+            //10000
+            sb.AppendLine("Rooms Used : " + roomUsedCount + " / 296");
+            sb.AppendLine("Rooms objects count: " + roomObjectsCount.ToString() + "  Size in bytes : 0x" + roomObjectsSize.ToString("X6") + " / 0x1C42B");
+            
+
+            int ptrOfPointers = Utils.SnesToPc(ROM.ReadLong(Constants.room_items_pointers_ptr));
+            string maxSize = "0x08C9";
+            if (ptrOfPointers != 0x00DB69)
+            {
+                maxSize = "[EXPANDED]";
+            }
+            sb.AppendLine("Pots items used : " + potItems + "  Size in bytes : 0x" + potItemsSize.ToString("X4") + " / " + maxSize);
+            
+
+            sb.AppendLine("Sprites used (UW) : " + spriteCount + "  Size (UW and OW) in bytes : 0x" + ((ROM.spaceUsedOWSprites + spriteSize + 0x250) - 0x04C881).ToString("X4") + " / 0x241D");
+            sb.AppendLine("*Note must save to see the right Size used for the sprites");
+
+            string propertiesInfos = sb.ToString();
+            sb.Clear();
+
+            ZSUWProperties zsPropForm = new ZSUWProperties();
+
+            zsPropForm.chestItemsBasic = basicchestInfos;
+            zsPropForm.chestItems = "Chests items total:" + (chestItemsCount).ToString() + " / 168";
+            zsPropForm.chestItemsInfos = allchestInfos.ToString();
+            zsPropForm.Properties = propertiesInfos;
+            
+            zsPropForm.ShowDialog();
+
+
+
 
         }
     }

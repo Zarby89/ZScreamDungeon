@@ -25,6 +25,7 @@ namespace ZeldaFullEditor
         public static int uniqueTransportID = 0;
         public static int uniqueRoomObjectID = 0;
         public static int uniqueGraveID = 0;
+        public static int spaceUsedOWSprites = 0;
 
         public static void StartBlockLogWriting(string name, int addr)
         {

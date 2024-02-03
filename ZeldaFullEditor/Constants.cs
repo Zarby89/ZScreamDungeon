@@ -392,8 +392,9 @@ namespace ZeldaFullEditor
         public static int torches_length_pointer = 0x88C1;
 
         public static int sprite_blockset_pointer = 0x5B57;
-        public static int sprites_data = 0x4D8B0; // It use the unused pointers to have more space //Save purpose
-        public static int sprites_data_empty_room = 0x4D8AE;
+        //04D62E
+        public static int sprites_data = 0x4D880; // It use the unused pointers to have more space //Save purpose
+        public static int sprites_data_empty_room = 0x4D87E;
         public static int sprites_end_data = 0x4EC9E;
 
         public static int pit_pointer = 0x394AB;

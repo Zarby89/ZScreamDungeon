@@ -33,6 +33,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkBox46 = new System.Windows.Forms.CheckBox();
             this.checkBox40 = new System.Windows.Forms.CheckBox();
             this.checkBox38 = new System.Windows.Forms.CheckBox();
             this.checkBox35 = new System.Windows.Forms.CheckBox();
@@ -83,7 +84,7 @@
             this.checkBox23 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.checkBox46 = new System.Windows.Forms.CheckBox();
+            this.checkBox47 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -129,6 +130,7 @@
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.checkBox47);
             this.groupBox5.Controls.Add(this.checkBox46);
             this.groupBox5.Controls.Add(this.checkBox40);
             this.groupBox5.Controls.Add(this.checkBox38);
@@ -145,6 +147,18 @@
             this.groupBox5.TabIndex = 15;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Misc";
+            // 
+            // checkBox46
+            // 
+            this.checkBox46.AutoSize = true;
+            this.checkBox46.Checked = true;
+            this.checkBox46.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox46.Location = new System.Drawing.Point(294, 19);
+            this.checkBox46.Name = "checkBox46";
+            this.checkBox46.Size = new System.Drawing.Size(101, 17);
+            this.checkBox46.TabIndex = 16;
+            this.checkBox46.Text = "Sprites Damage";
+            this.checkBox46.UseVisualStyleBackColor = true;
             // 
             // checkBox40
             // 
@@ -768,17 +782,15 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.DeselectAllButtonClick);
             // 
-            // checkBox46
+            // checkBox47
             // 
-            this.checkBox46.AutoSize = true;
-            this.checkBox46.Checked = true;
-            this.checkBox46.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox46.Location = new System.Drawing.Point(294, 19);
-            this.checkBox46.Name = "checkBox46";
-            this.checkBox46.Size = new System.Drawing.Size(101, 17);
-            this.checkBox46.TabIndex = 16;
-            this.checkBox46.Text = "Sprites Damage";
-            this.checkBox46.UseVisualStyleBackColor = true;
+            this.checkBox47.AutoSize = true;
+            this.checkBox47.Location = new System.Drawing.Point(294, 42);
+            this.checkBox47.Name = "checkBox47";
+            this.checkBox47.Size = new System.Drawing.Size(108, 17);
+            this.checkBox47.TabIndex = 17;
+            this.checkBox47.Text = "Sprites Properties";
+            this.checkBox47.UseVisualStyleBackColor = true;
             // 
             // SaveSettings
             // 
@@ -863,5 +875,6 @@
         private System.Windows.Forms.CheckBox checkBox44;
         private System.Windows.Forms.CheckBox checkBox43;
         private System.Windows.Forms.CheckBox checkBox46;
+        private System.Windows.Forms.CheckBox checkBox47;
     }
 }

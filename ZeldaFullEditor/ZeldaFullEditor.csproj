@@ -394,6 +394,12 @@
     <Compile Include="Gui\ExtraForms\ZSSettings.Designer.cs">
       <DependentUpon>ZSSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\ZSUWProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZSUWProperties.Designer.cs">
+      <DependentUpon>ZSUWProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ImportFromRom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -724,6 +730,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ZSSettings.resx">
       <DependentUpon>ZSSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ZSUWProperties.resx">
+      <DependentUpon>ZSUWProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ImportFromRom.resx">
       <DependentUpon>ImportFromRom.cs</DependentUpon>
