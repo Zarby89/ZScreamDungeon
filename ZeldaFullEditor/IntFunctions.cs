@@ -32,7 +32,9 @@
 			return (byte) ((b & mask) >> i);
 		}
 
-		public static byte MakeBitfield(bool b7 = false, bool b6 = false, bool b5 = false, bool b4 = false, bool b3 = false, bool b2 = false, bool b1 = false, bool b0 = false)
+		public static byte MakeBitfield(
+			bool b7 = false, bool b6 = false, bool b5 = false, bool b4 = false,
+			bool b3 = false, bool b2 = false, bool b1 = false, bool b0 = false)
 		{
 			return (byte)(
 				(b0 ? (1 << 0) : 0) |
@@ -47,13 +49,13 @@
 
 		public static int Clamp(this int v, int min, int max)
 		{
-			if (v >= max)
+			if (v > max)
 			{
-				v = max;
+				return max;
 			}
-			else if (v <= min)
+			else if (v < min)
 			{
-				v = min;
+				return min;
 			}
 
 			return v;
@@ -61,13 +63,13 @@
 
 		public static ushort Clamp(this ushort v, ushort min, ushort max)
 		{
-			if (v >= max)
+			if (v > max)
 			{
-				v = max;
+				return max;
 			}
-			else if (v <= min)
+			else if (v < min)
 			{
-				v = min;
+				return min;
 			}
 
 			return v;
@@ -75,11 +77,11 @@
 
 		public static byte Clamp(this byte v, byte min, byte max)
 		{
-			if (v >= max)
+			if (v > max)
 			{
 				v = max;
 			}
-			else if (v <= min)
+			else if (v < min)
 			{
 				v = min;
 			}

@@ -1,20 +1,20 @@
 ﻿using System;
+using System.Linq;
+using System.Net;
 
 namespace ZeldaFullEditor
 {
-    // TODO function for ByteBitIsSet(), etc
+    // TODO move clamps to IntFunctions
     public static class Utils
     {
-        public static int SnesToPc(int addr)
-        {
-            if (addr >= 0x808000) { addr -= 0x808000; }
-            int temp = (addr & 0x7FFF) + ((addr / 2) & 0xFF8000);
-            return (temp + 0x0);
-        }
+        public static int SnesToPc(this int address)
+		{
+           return address & 0x7FFF | (address & 0x7F0000) >> 1;
+		}
 
-        public static int PcToSnes(int addr)
+        public static int PcToSnes(this int addr)
         {
-            return (0x800000 + (addr & 0x7FFF) | 0x8000 | ((addr & 0x7F8000) << 1));
+            return 0x800000 | (addr & 0x7FFF) | 0x8000 | ((addr & 0x7F8000) << 1);
             //save in fastrom
         }
 
@@ -29,10 +29,8 @@ namespace ZeldaFullEditor
             {
                 return SnesToPc(ret);
             }
-            else
-            {
-                return ret;
-            }
+
+            return ret;
         }
 
         // gets a 24-bit address from the specified snes address, using the input's high byte as the bank
@@ -45,10 +43,8 @@ namespace ZeldaFullEditor
             {
                 return SnesToPc(ret);
             }
-            else
-            {
-                return ret;
-            }
+
+            return ret;
         }
 
 
@@ -66,14 +62,13 @@ namespace ZeldaFullEditor
 
         public static int Clamp(int v, int min, int max)
         {
-            if (v >= max)
+            if (v > max)
             {
-                v = max;
+				return max;
             }
-
-            if (v <= min)
+            else if (v < min)
             {
-                v = min;
+				return min;
             }
 
             return v;
@@ -81,28 +76,27 @@ namespace ZeldaFullEditor
 
         public static short Clamp(short v, int min, int max)
         {
-            if (v >= max)
+            if (v > max)
             {
-                v = (short)max;
+				return (short) max;
             }
-            if (v <= min)
+            else if (v < min)
             {
-                v = (short)min;
+				return (short) min;
             }
 
-            return (v);
+            return v;
         }
 
         public static ushort Clamp(ushort v, int min, int max)
         {
-            if (v >= max)
+            if (v > max)
             {
-                v = (ushort)max;
+				return (ushort) max;
             }
-
-            if (v <= min)
+            else if (v < min)
             {
-                v = (ushort)min;
+				return (ushort) min;
             }
 
             return v;
@@ -110,13 +104,13 @@ namespace ZeldaFullEditor
 
         public static byte Clamp(byte v, int min, int max)
         {
-            if (v >= max)
+            if (v > max)
             {
-                v = (byte)max;
+				return (byte) max;
             }
-            if (v <= min)
+            else if (v < min)
             {
-                v = (byte)min;
+				return (byte) min;
             }
 
             return v;
@@ -124,38 +118,21 @@ namespace ZeldaFullEditor
 
         public static string[] DeepCopyStrings(string[] a)
         {
-            string[] ret = new string[a.Length];
-            int i = 0;
-            foreach (string s in a)
-            {
-                ret[i++] = s.Substring(0);
-            }
-
-            return ret;
-        }
+			return a.Select(s => s.Substring(0)).ToArray();
+		}
 
         public static byte[] DeepCopyBytes(byte[] a)
         {
             byte[] ret = new byte[a.Length];
-            int i = 0;
-            foreach (byte b in a)
-            {
-                ret[i++] = b;
-            }
+            Array.Copy(a, ret, a.Length);
 
             return ret;
         }
 
         public static string[] CreateIndexedList(string[] a)
         {
-            string[] ret = new string[a.Length];
             int i = 0;
-            foreach (string s in a)
-            {
-                ret[i++] = string.Format("{0:X2} - {1}", i, s);
-            }
-
-            return ret;
+			return a.Select(s => $"{i++:X2} - {s}").ToArray();
         }
     }
 }

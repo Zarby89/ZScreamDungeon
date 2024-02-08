@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -22,7 +23,17 @@ namespace ZeldaFullEditor
 
         // All the files required for ZS to function.
         // The files "debug.asm", "spritesmove.asm" appear in the release but don't actually seem to be used anywhere in the solution.
-        private static string[] requiredFiles = new string[] { "asar.dll", "DefaultNames.txt", "Lidgren.Network.dll", "ScratchPad.dat", "ZSCustomOverworld.asm", "CustomCollision.asm", "newgraves.asm", "tempPatch.asm", "ZScream.exe.config" };
+        private static string[] requiredFiles = new string[] {
+            "asar.dll",
+            "DefaultNames.txt",
+            "Lidgren.Network.dll",
+            "ScratchPad.dat",
+            "ZSCustomOverworld.asm",
+            "CustomCollision.asm",
+            "newgraves.asm",
+            "tempPatch.asm",
+            "ZScream.exe.config"
+        };
 
         /// <summary>
         ///		The main entry point for the application.
