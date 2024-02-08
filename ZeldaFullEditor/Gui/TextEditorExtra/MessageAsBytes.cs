@@ -91,7 +91,7 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra
                     break;
             }
 
-            stringBuilder.Append(TextEditor.MESSAGETERMINATOR.ToString("X2"));
+            stringBuilder.Append(TextEditor.MessageTerminator.ToString("X2"));
 
             this.textBox1.Text = stringBuilder.ToString();
         }

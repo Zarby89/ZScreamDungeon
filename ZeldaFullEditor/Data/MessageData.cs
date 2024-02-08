@@ -91,7 +91,7 @@ namespace ZeldaFullEditor.Data
                 stringBuilder.Append(" ");
             }
 
-            stringBuilder.Append(TextEditor.MESSAGETERMINATOR.ToString("X2"));
+            stringBuilder.Append(TextEditor.MessageTerminator.ToString("X2"));
 
             return string.Format("[[[[\r\nMessage {0:X3}]]]]\r\n[Contents]\r\n{1}\r\n\r\n[Data]\r\n{2}\r\n\r\n\r\n\r\n", this.ID, TextEditor.AddNewLinesToCommands(this.ContentsParsed), stringBuilder.ToString());
         }
