@@ -1,117 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor.Gui.TextEditorExtra
 {
-    public partial class MessageAsBytes : Form
-    {
-        private byte[] rawData;
-        private byte[] parsedData;
-        private bool showParsed = false;
+	public partial class MessageAsBytes : Form
+	{
+		private bool showParsed = false;
+		private MessageData displayedMessage = null;
 
-        private int separatorIndex = 1;
-        private int prefixIndex = 0;
+		private string SeparatorString = string.Empty;
+		private string PrefixString = string.Empty;
 
-        public MessageAsBytes()
-        {
-            this.InitializeComponent();
-            this.SeparatorChoose.SelectedIndex = this.separatorIndex;
-            this.PrefixChoose.SelectedIndex = this.prefixIndex;
-        }
+		public MessageAsBytes()
+		{
+			InitializeComponent();
+			SeparatorChoose.SelectedIndex = 1;
+			PrefixChoose.SelectedIndex = 0;
+		}
 
-        public void ShowBytes(MessageData a)
-        {
-            this.rawData = a.Data;
-            this.parsedData = a.DataParsed;
+		public void ShowBytes(MessageData a)
+		{
+			displayedMessage = a;
+			UpdateTextBox();
+			ShowDialog();
+		}
 
-            this.UpdateTextBox();
-            this.ShowDialog();
-        }
+		private void UpdateTextBox()
+		{
+			byte[] msgData = showParsed ? displayedMessage?.DataParsed : displayedMessage?.Data;
 
-        private void UpdateTextBox()
-        {
-            byte[] data = this.showParsed ? this.parsedData : this.rawData;
+			if (msgData == null)
+			{
+				textBox1.Text = "ERROR";
+				SizeOfMessage.Text = "ERROR";
+				return;
+			}
 
-            if (data == null)
-            {
-                return;
-            }
+			var data = msgData.Append(TextEditor.MessageTerminator);
 
-            var stringBuilder = new StringBuilder();
-            this.SizeOfMessage.Text = string.Format("{0:D} (0x{0:X}) bytes", data.Length + 1);
+			var dataReadable = data.Select(b => $"{PrefixString}{b:X2}");
 
-            foreach (byte value in data)
-            {
-                switch (this.prefixIndex)
-                {
-                    case 0:
-                    default:
-                        break;
-                    case 1:
-                        stringBuilder.Append("0x");
-                        break;
-                    case 2:
-                        stringBuilder.Append("$");
-                        break;
-                }
+			textBox1.Text = string.Join(SeparatorString, dataReadable);
 
-                stringBuilder.Append(value.ToString("X2"));
-                switch (this.separatorIndex)
-                {
-                    case 0:
-                    default:
-                        break;
-                    case 1:
-                        stringBuilder.Append(" ");
-                        break;
-                    case 2:
-                        stringBuilder.Append(", ");
-                        break;
-                }
-            }
+			SizeOfMessage.Text = string.Format("{0:D} bytes (0x{0:X3})", data.Count());
+		}
 
-            switch (this.prefixIndex)
-            {
-                case 0:
-                default:
-                    break;
-                case 1:
-                    stringBuilder.Append("0x");
-                    break;
-                case 2:
-                    stringBuilder.Append("$");
-                    break;
-            }
+		private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			switch (SeparatorChoose.SelectedIndex)
+			{
+				case 0:
+				default:
+					SeparatorString = string.Empty;
+					break;
+				case 1:
+					SeparatorString = " ";
+					break;
+				case 2:
+					SeparatorString = ", ";
+					break;
+			}
 
-            stringBuilder.Append(TextEditor.MessageTerminator.ToString("X2"));
+			UpdateTextBox();
+		}
 
-            this.textBox1.Text = stringBuilder.ToString();
-        }
+		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			switch (PrefixChoose.SelectedIndex)
+			{
+				case 0:
+				default:
+					PrefixString = string.Empty;
+					break;
+				case 1:
+					PrefixString = "0x";
+					break;
+				case 2:
+					PrefixString = "$";
+					break;
+			}
 
-        private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.separatorIndex = this.SeparatorChoose.SelectedIndex;
-            this.UpdateTextBox();
-        }
+			UpdateTextBox();
+		}
 
-        private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.prefixIndex = this.PrefixChoose.SelectedIndex;
-            this.UpdateTextBox();
-        }
-
-        private void FormatCheckedChanged(object sender, EventArgs e)
-        {
-            this.showParsed = this.radioButton2.Checked;
-            this.UpdateTextBox();
-        }
-    }
+		private void FormatCheckedChanged(object sender, EventArgs e)
+		{
+			showParsed = radioButton2.Checked;
+			UpdateTextBox();
+		}
+	}
 }
