@@ -121,6 +121,7 @@ namespace ZeldaFullEditor
 		public class DictionaryEntry
 		{
 			public byte ID { get; }
+			public int RealID => ID + DictionaryBase;
 
 			public string Contents { get; }
 
@@ -776,7 +777,7 @@ namespace ZeldaFullEditor
 				}
 				else if (value >= DictionaryBase && value < (DictionaryBase + DictionaryMax))
 				{
-					var dictionaryEntry = AllDictionaries.First(dictionary => dictionary.ID == value);
+					var dictionaryEntry = AllDictionaries.FirstOrDefault(dictionary => dictionary.RealID == value);
 					if (dictionaryEntry != null)
 					{
 						DrawCharacterToPreview(dictionaryEntry.Data);
