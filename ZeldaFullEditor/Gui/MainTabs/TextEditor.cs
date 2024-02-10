@@ -21,7 +21,8 @@ namespace ZeldaFullEditor
 		private const string BankSwapToken = "BANK";
 		public const string DictionaryToken = "D";
 		public const byte DictionaryBase = 0x88;
-		public const byte DictionaryMax = 97;
+		public const byte NumberOfDictionaryEntries = 0x61;
+		private const int Dictionarysize = 0xEC8D9 - 0xEC7C7;
 		public const byte MessageTerminator = 0x7F;
 		public const byte NumberOfCharacters = 100;
 
@@ -498,7 +499,7 @@ namespace ZeldaFullEditor
 
 		public void BuildDictionaryEntriesFromROM()
 		{
-			for (int i = 0; i < DictionaryMax; i++)
+			for (int i = 0; i < NumberOfDictionaryEntries; i++)
 			{
 				var bytes = new List<byte>();
 				var stringBuilder = new StringBuilder();
@@ -611,6 +612,289 @@ namespace ZeldaFullEditor
 
 			return string.Empty;
 		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		// TODO have a way to restore vanilla
+		// TODO have a warning about time (if this takes too long during testing)
+		// TODO add a progress bar?
+		// TODO test and integrate
+		private void ReoptimizeDictionary()
+		{
+			var startOptimization =
+				MessageBox.Show(
+					"You are about to replace the optimization dictionary with new data.\r\n" +
+					"It may be posssible to further optimize the dictionary at a later point if message data is changed.\r\n" +
+					"Do you wish to continue?",
+					"Begin optimization?",
+					MessageBoxButtons.OKCancel,
+					MessageBoxIcon.Warning
+				);
+
+			if (startOptimization == DialogResult.Cancel)
+			{
+				MessageBox.Show(
+					"Dictionary optimization cancelled.",
+					"Optimization cancelled",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Information
+				);
+				return;
+			}
+
+
+			var newCandidates = new Dictionary<string, int>();
+			var allSubstrings = new List<string>();
+
+			// count bytes saved for current dictionary
+			int originalParsedsize = 0;
+			int originalCompressedsize = 0;
+
+
+			// collect all valid substrings for parsing from the existing messages
+			foreach (var msg in ListOfTexts)
+			{
+				var sub = new StringBuilder();
+
+				originalCompressedsize += msg.Data.Length;
+				originalParsedsize += msg.DataParsed.Length;
+
+
+				foreach (var b in msg.DataParsed) // check each byte
+				{
+					// if the byte is a valid character
+					// add it
+					// valid characters are nonspecial and encoded as space or below
+					if (b < 0x5A && CharEncoder.ContainsKey(b))
+					{
+						sub.Append(CharEncoder[b]);
+						continue;
+					}
+
+					// if the byte is not a valid character
+					// end the substring (if necessary) and start a new one
+					// don't add anything that's only 1 character, because that should never be an entry
+					if (sub.Length > 1)
+					{
+						allSubstrings.Add(sub.ToString());
+						sub.Clear();
+					}
+				}
+
+				// add any left overs
+				if (sub.Length > 1)
+				{
+					allSubstrings.Add(sub.ToString());
+				}
+			}
+
+			// count up all the possible substrings
+			foreach (var s in allSubstrings)
+			{
+				for (int start = 0; start < s.Length - 1; start++)
+				{
+					for (int length = 2; length < s.Length - start; length++)
+					{
+						string subD = s.Substring(start, length);
+
+						if (newCandidates.ContainsKey(subD))
+						{
+							newCandidates[subD]++;
+						}
+						else
+						{
+							newCandidates[subD] = 1;
+						}
+					}
+				}
+			}
+
+			// project the substrings with their counts into a sortable thing
+			// also, remove anything with only 1 entry, since it's useless
+			var sortableCandidates = newCandidates.Where(kv => kv.Value > 1).Select(kv => kv).ToList();
+
+			// TODO this number can be finetuned later for time
+			for (int passes = 0; passes < 5; passes++)
+			{
+				SortSelectedCandidates(); // sorting should help with the scraping, but maybe not, depending on the algo
+
+				// remove candidates that are strict substrings of higher scoring entries
+				// TODO there's probably a better way to optimize this
+
+				var removedCandidates = new List<KeyValuePair<string, int>>();
+
+				foreach (var a in sortableCandidates)
+				{
+					if (removedCandidates.Contains(a))
+					{
+						continue;
+					}
+
+					foreach (var b in sortableCandidates)
+					{
+						if (a.Key == b.Key) // skip self
+						{
+							continue;
+						}
+
+						if (removedCandidates.Contains(b)) // skip removed entries
+						{
+							continue;
+						}
+
+						// spaces are kinda special, so they shouldn't be too grossly optimized
+						// TODO or maybe they should?
+
+
+						if (a.Key.Contains(b.Key))
+						{
+							int ascore = ScoreEntry(a);
+							int bscore = ScoreEntry(b);
+
+							// TODO this is going to be the most important algorithm here
+							if (a.Value > (b.Value * 5) && (ascore > bscore * 2))
+							{
+								removedCandidates.Add(b); // delete this substring
+							}
+						}
+					}
+				}
+
+				// remove deleted candidates
+				int changed = sortableCandidates.RemoveAll(kv => removedCandidates.Contains(kv));
+
+				if (changed < 5)
+				{
+					break;
+				}
+
+			}
+
+			// one more sort for good measure
+			SortSelectedCandidates();
+
+			// select candidates by score first, then try to optimize space
+			var selectedCandidates = new List<KeyValuePair<string, int>>();
+			int usedspace = 0;
+			int tokencount = 0;
+			int newCompressedSavings = 0;
+
+			foreach (var cand in sortableCandidates)
+			{
+				// check size
+				if (usedspace + cand.Key.Length > Dictionarysize)
+				{
+					continue;
+				}
+
+				usedspace += cand.Key.Length; 
+				tokencount++;
+
+				selectedCandidates.Add(cand);
+
+				// count up total dictionary savings
+				newCompressedSavings += cand.Value * (cand.Key.Length - 1); // -1 because it's a 1 byte token;
+
+				// stop at max tokens or space
+				if (tokencount == NumberOfDictionaryEntries || usedspace >= (Dictionarysize - 1))
+				{
+					break;
+				}
+			}
+
+			var replaceDictionary = MessageBox.Show(
+				$"You are about to replace the optimization dictionary with new data.\r\n" +
+				$"Your current message data is {originalParsedsize:D} bytes" +
+				$"or {originalCompressedsize:D} bytes with the existing dictionary" +
+				$"for a total savings of {originalParsedsize-originalCompressedsize:D} bytes\r\n" +
+				$"With the new dictionary, your savings will be {newCompressedSavings:D} bytes.\r\n" +
+				$"It may be possible to further optimize the message data if it is changed.\r\n\r\n" +
+				$"Do you wish to continue?",
+
+				"Confirm replacement",
+				MessageBoxButtons.OKCancel,
+				MessageBoxIcon.Warning);
+
+
+			// sort the dictionary by usage, so that the most common things are the first to be checked
+			selectedCandidates.Sort((a, b) =>
+			{
+				int baseCompare = b.Value.CompareTo(a.Value); // compare it backwards to get a free descending sort
+
+				if (baseCompare == 0) // if both have the same score, just go alphabetically
+				{
+					return b.Key.CompareTo(a.Key);
+				}
+
+				return baseCompare;
+			});
+
+			// create the new dictionary
+			AllDictionaries.Clear();
+			byte dID = 0; // dictionary ID
+			selectedCandidates.ForEach(kv =>
+			{
+				AllDictionaries.Add(new DictionaryEntry(dID++, kv.Key));
+			});
+
+			// refresh messages for the new dictionary
+			foreach (var msg in ListOfTexts)
+			{
+				msg.Refresh();
+			}
+
+
+			// sorts candidates by a score that indicates how much they help optimize the data
+			void SortSelectedCandidates()
+			{
+				sortableCandidates.Sort((a, b) =>
+				{
+					int baseCompare = ScoreEntry(b).CompareTo(ScoreEntry(a)); // compare it backwards to get a free descending sort
+
+					if (baseCompare == 0) // if both have the same score, give a better score to the shorter phrase
+					{
+						baseCompare = b.Key.Length.CompareTo(a.Key.Length);
+
+						if (baseCompare == 0) // if they still have the same score, just go alphabetically
+						{
+							return b.Key.CompareTo(a.Key);
+						}
+
+					}
+
+					return baseCompare;
+				});
+			}
+
+			// creates a score for how many bytes are saved by doing count*length
+			int ScoreEntry(KeyValuePair<string, int> scoredCandidate)
+			{
+				return scoredCandidate.Key.Length * scoredCandidate.Value;
+			}
+		}
+
+
+
+
+
+
 
 		public void InitializeOnOpen()
 		{
@@ -775,7 +1059,7 @@ namespace ZeldaFullEditor
 					// Includes parentheses to be longer, since player names can be up to 6 characters.
 					DrawStringToPreview("(NAME)");
 				}
-				else if (value >= DictionaryBase && value < (DictionaryBase + DictionaryMax))
+				else if (value >= DictionaryBase && value < (DictionaryBase + NumberOfDictionaryEntries))
 				{
 					var dictionaryEntry = AllDictionaries.FirstOrDefault(dictionary => dictionary.RealID == value);
 					if (dictionaryEntry != null)
