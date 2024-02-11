@@ -2746,13 +2746,26 @@ namespace ZeldaFullEditor
             return false;
         }
 
+        /// <summary>
+        ///     Saves all of the sprite properties to ROM.
+        /// </summary>
+        /// <returns> True if there was an error saving. </returns>
         public bool SaveSpritesProperties()
         {
-            for (int i = 0; i < DungeonsData.SpriteProperties.Count; i++)
+            try
             {
-                DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
+                for (int i = 0; i < DungeonsData.SpriteProperties.Count; i++)
+                {
+                    DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error saving sprite properties: ");
+                Console.WriteLine(e.ToString());
 
+                return true;
+            }
 
             return false;
         }

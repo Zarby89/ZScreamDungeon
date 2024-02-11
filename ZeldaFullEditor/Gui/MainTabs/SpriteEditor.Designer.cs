@@ -120,7 +120,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.spriteListbox.FormattingEnabled = true;
             this.spriteListbox.Location = new System.Drawing.Point(0, 0);
             this.spriteListbox.Name = "spriteListbox";
-            this.spriteListbox.Size = new System.Drawing.Size(192, 657);
+            this.spriteListbox.Size = new System.Drawing.Size(192, 704);
             this.spriteListbox.TabIndex = 0;
             this.spriteListbox.SelectedIndexChanged += new System.EventHandler(this.spriteListbox_SelectedIndexChanged);
             // 
@@ -199,6 +199,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.nopermadeathindungeonsCheckbox);
             this.groupBox1.Controls.Add(this.immunearrowrumbleableCheckbox);
             this.groupBox1.Controls.Add(this.immuneswordhammerCheckbox);
@@ -239,10 +242,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(192, 0);
+            this.groupBox1.Location = new System.Drawing.Point(198, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(797, 186);
+            this.groupBox1.Size = new System.Drawing.Size(782, 233);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selected Sprite Properties";
@@ -647,8 +649,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             // sprsaveButton
             // 
-            this.sprsaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.sprsaveButton.Location = new System.Drawing.Point(911, 631);
+            this.sprsaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.sprsaveButton.Location = new System.Drawing.Point(903, 619);
             this.sprsaveButton.Name = "sprsaveButton";
             this.sprsaveButton.Size = new System.Drawing.Size(75, 23);
             this.sprsaveButton.TabIndex = 4;
@@ -658,17 +660,20 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             // label8
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(198, 644);
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(198, 622);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(407, 13);
+            this.label8.Size = new System.Drawing.Size(605, 20);
             this.label8.TabIndex = 5;
             this.label8.Text = "This feature is not tested you must use the Save button to save changes to the RO" +
     "M";
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.damage0fHexbox);
             this.groupBox2.Controls.Add(this.damage0eHexbox);
             this.groupBox2.Controls.Add(this.damage0dHexbox);
@@ -701,10 +706,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.groupBox2.Controls.Add(this.damage00Hexbox);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(192, 186);
+            this.groupBox2.Location = new System.Drawing.Point(198, 188);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(797, 121);
+            this.groupBox2.Size = new System.Drawing.Size(782, 168);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Damage subclass";
@@ -1111,23 +1115,22 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.damageClassControl1);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(192, 307);
+            this.groupBox3.Location = new System.Drawing.Point(198, 315);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(797, 296);
+            this.groupBox3.Size = new System.Drawing.Size(782, 301);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Damage classes (global same for all sprites)";
             // 
             // damageClassControl1
             // 
-            this.damageClassControl1.Location = new System.Drawing.Point(6, 19);
+            this.damageClassControl1.Location = new System.Drawing.Point(9, 19);
             this.damageClassControl1.Name = "damageClassControl1";
             this.damageClassControl1.Size = new System.Drawing.Size(307, 277);
             this.damageClassControl1.TabIndex = 0;
-            this.damageClassControl1.Load += new System.EventHandler(this.damageClassControl1_Load);
-            this.damageClassControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.damageClassControl1_Paint);
             // 
             // SpriteEditor
             // 
@@ -1141,7 +1144,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.spriteListbox);
             this.Name = "SpriteEditor";
-            this.Size = new System.Drawing.Size(989, 657);
+            this.Size = new System.Drawing.Size(989, 704);
             this.Load += new System.EventHandler(this.SpriteEditor_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

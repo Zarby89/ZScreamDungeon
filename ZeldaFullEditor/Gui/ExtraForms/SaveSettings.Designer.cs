@@ -33,6 +33,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkBox47 = new System.Windows.Forms.CheckBox();
             this.checkBox46 = new System.Windows.Forms.CheckBox();
             this.checkBox40 = new System.Windows.Forms.CheckBox();
             this.checkBox38 = new System.Windows.Forms.CheckBox();
@@ -84,7 +85,6 @@
             this.checkBox23 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.checkBox47 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -147,6 +147,18 @@
             this.groupBox5.TabIndex = 15;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Misc";
+            // 
+            // checkBox47
+            // 
+            this.checkBox47.AutoSize = true;
+            this.checkBox47.Checked = true;
+            this.checkBox47.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox47.Location = new System.Drawing.Point(294, 42);
+            this.checkBox47.Name = "checkBox47";
+            this.checkBox47.Size = new System.Drawing.Size(108, 17);
+            this.checkBox47.TabIndex = 17;
+            this.checkBox47.Text = "Sprites Properties";
+            this.checkBox47.UseVisualStyleBackColor = true;
             // 
             // checkBox46
             // 
@@ -300,6 +312,8 @@
             // checkBox45
             // 
             this.checkBox45.AutoSize = true;
+            this.checkBox45.Checked = true;
+            this.checkBox45.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox45.Location = new System.Drawing.Point(198, 88);
             this.checkBox45.Name = "checkBox45";
             this.checkBox45.Size = new System.Drawing.Size(237, 17);
@@ -310,6 +324,8 @@
             // checkBox44
             // 
             this.checkBox44.AutoSize = true;
+            this.checkBox44.Checked = true;
+            this.checkBox44.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox44.Location = new System.Drawing.Point(198, 65);
             this.checkBox44.Name = "checkBox44";
             this.checkBox44.Size = new System.Drawing.Size(191, 17);
@@ -320,6 +336,8 @@
             // checkBox43
             // 
             this.checkBox43.AutoSize = true;
+            this.checkBox43.Checked = true;
+            this.checkBox43.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox43.Location = new System.Drawing.Point(198, 42);
             this.checkBox43.Name = "checkBox43";
             this.checkBox43.Size = new System.Drawing.Size(207, 17);
@@ -330,6 +348,8 @@
             // checkBox42
             // 
             this.checkBox42.AutoSize = true;
+            this.checkBox42.Checked = true;
+            this.checkBox42.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox42.Location = new System.Drawing.Point(198, 19);
             this.checkBox42.Name = "checkBox42";
             this.checkBox42.Size = new System.Drawing.Size(191, 17);
@@ -781,16 +801,6 @@
             this.button4.Text = "Deselect all";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.DeselectAllButtonClick);
-            // 
-            // checkBox47
-            // 
-            this.checkBox47.AutoSize = true;
-            this.checkBox47.Location = new System.Drawing.Point(294, 42);
-            this.checkBox47.Name = "checkBox47";
-            this.checkBox47.Size = new System.Drawing.Size(108, 17);
-            this.checkBox47.TabIndex = 17;
-            this.checkBox47.Text = "Sprites Properties";
-            this.checkBox47.UseVisualStyleBackColor = true;
             // 
             // SaveSettings
             // 

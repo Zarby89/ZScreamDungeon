@@ -5,43 +5,43 @@ namespace ZeldaFullEditor.Data
     [System.ComponentModel.DefaultBindingProperty]
     public class SpriteProperty
     {
-        internal byte OamAllocation { get; set; } = 0;
+        internal byte OAMAllocation { get; set; } = 0;
 
         internal byte Palette { get; set; } = 0;
 
         internal byte Hitbox { get; set; } = 0;
 
-        internal byte Tilehitbox { get; set; } = 0;
+        internal byte TileHitBox { get; set; } = 0;
 
         internal byte Health { get; set; } = 0;
 
-        internal byte Prizepack { get; set; } = 0;
+        internal byte PrizePack { get; set; } = 0;
 
-        internal byte Bumpdamageclass { get; set; } = 0;
+        internal byte BumpDamageClass { get; set; } = 0;
 
         internal bool Harmless { get; set; } = false;
 
-        internal bool Deathprevent { get; set; } = false; // hidden
+        internal bool DeathPrevent { get; set; } = false; // hidden
 
-        internal bool Litetilehit { get; set; } = false; // hidden
+        internal bool LiteTileHit { get; set; } = false; // hidden
 
-        internal bool Recoilwithoutcollision { get; set; } = false;
+        internal bool RecoilWithoutCollision { get; set; } = false;
 
-        internal bool Beetarget { get; set; } = false;
+        internal bool BeeTarget { get; set; } = false;
 
-        internal bool Immunepowder { get; set; } = false;
+        internal bool ImmunePowder { get; set; } = false;
 
-        internal bool Allowedbossfight { get; set; } = false;
+        internal bool AllowedBossFight { get; set; } = false;
 
-        internal bool Customdeathanimation { get; set; } = false;
+        internal bool CustomDeathAnimation { get; set; } = false;
 
         internal bool Invulnerable { get; set; } = false;
 
-        internal bool Smallshadow { get; set; } = false;
+        internal bool SmallShadow { get; set; } = false;
 
-        internal bool Drawshadow { get; set; } = false;
+        internal bool DrawShadow { get; set; } = false;
 
-        internal bool Graphicspage { get; set; } = false;
+        internal bool GraphicsPage { get; set; } = false;
 
         internal bool Singlelayercollision { get; set; } = false;
 
@@ -51,35 +51,35 @@ namespace ZeldaFullEditor.Data
 
         internal bool Deflectarrows { get; set; } = false;
 
-        internal bool Overrideslashimminuty { get; set; } = false;
+        internal bool OverrideSlashImminuty { get; set; } = false;
 
-        internal bool Dielikeaboss { get; set; } = false;
+        internal bool DieLikeABoss { get; set; } = false;
 
         internal bool Invertpitbehavior { get; set; } = false;
 
-        internal bool Ignorepitconveyors { get; set; } = false;
+        internal bool IgnorePitConveyors { get; set; } = false;
 
-        internal bool Checkforwater { get; set; } = false;
+        internal bool CheckForWater { get; set; } = false;
 
-        internal bool Blockedbyshield { get; set; } = false;
+        internal bool BlockedByShield { get; set; } = false;
 
-        internal bool Altdamagesound { get; set; } = false;
+        internal bool AltDamageSound { get; set; } = false;
 
-        internal bool Activeoffscreen { get; set; } = false;
+        internal bool ActiveOffScreen { get; set; } = false;
 
-        internal bool Dieoffscreen { get; set; } = false;
+        internal bool DieOffScreen { get; set; } = false;
 
-        internal bool Hiddenprop { get; set; } = false;
+        internal bool HiddenProp { get; set; } = false;
 
-        internal bool Hiddenunused { get; set; } = false;
+        internal bool HiddenUnused { get; set; } = false;
 
-        internal bool Projectilelikecollision { get; set; } = false;
+        internal bool ProjectileLikeCollision { get; set; } = false;
 
-        internal bool Immunetoswordhammer { get; set; } = false;
+        internal bool ImmuneToSwordHammer { get; set; } = false;
 
         internal bool Bonkitem { get; set; } = false;
 
-        internal bool Nopermadeathindungeons { get; set; } = false;
+        internal bool NoPermaDeathInDungeons { get; set; } = false;
 
         internal byte[] DamagesTaken = new byte[16];
 
@@ -92,73 +92,103 @@ namespace ZeldaFullEditor.Data
             byte addr0DB53F = ROM.ReadByte(Constants.Sprite_0DB53F + id);
             byte addr0DB632 = ROM.ReadByte(Constants.Sprite_0DB632 + id);
             byte addr0DB725 = ROM.ReadByte(Constants.Sprite_0DB725 + id);
+
+            // $0E50
             Health = ROM.ReadByte(Constants.Sprite_Health + id);
 
+            // $0E40
             Harmless = addr0DB080.BitIsOn(0x80);
-            Deathprevent = addr0DB080.BitIsOn(0x40);
-            Litetilehit = addr0DB080.BitIsOn(0x20);
-            OamAllocation = (byte)(addr0DB080 & 0x1F);
+            DeathPrevent = addr0DB080.BitIsOn(0x40);
+            LiteTileHit = addr0DB080.BitIsOn(0x20);
+            OAMAllocation = (byte)(addr0DB080 & 0x1F);
 
-            Recoilwithoutcollision = addr0DB266.BitIsOn(0x80);
-            Beetarget = addr0DB266.BitIsOn(0x40);
-            Immunepowder = addr0DB266.BitIsOn(0x20);
-            Allowedbossfight = addr0DB266.BitIsOn(0x10);
-            Bumpdamageclass = (byte)(addr0DB266 & 0x0F);
+            // $0CD2
+            RecoilWithoutCollision = addr0DB266.BitIsOn(0x80);
+            BeeTarget = addr0DB266.BitIsOn(0x40);
+            ImmunePowder = addr0DB266.BitIsOn(0x20);
+            AllowedBossFight = addr0DB266.BitIsOn(0x10);
+            BumpDamageClass = (byte)(addr0DB266 & 0x0F);
 
-            Customdeathanimation = addr0DB359.BitIsOn(0x80);
+            // $0E60 and $0F50 (only last 4 bits go into $0F50)
+            CustomDeathAnimation = addr0DB359.BitIsOn(0x80);
             Invulnerable = addr0DB359.BitIsOn(0x40);
-            Smallshadow = addr0DB359.BitIsOn(0x20);
-            Drawshadow = addr0DB359.BitIsOn(0x10);
-            Graphicspage = addr0DB359.BitIsOn(0x01);
-            Palette = (byte)((addr0DB359 & 0x0E) >> 1);
+            SmallShadow = addr0DB359.BitIsOn(0x20);
+            DrawShadow = addr0DB359.BitIsOn(0x10);
+            GraphicsPage = addr0DB359.BitIsOn(0x01);
+            Palette = (byte)((addr0DB359 & 0x0E) >> 1); // Bit shifted to make it easier to set later. Before we save to rom we shift it back.
 
+            // $0F60
             Singlelayercollision = addr0DB44C.BitIsOn(0x80);
             Ignoredbykillrooms = addr0DB44C.BitIsOn(0x40);
             Persistoffscreenow = addr0DB44C.BitIsOn(0x20);
             Hitbox = (byte)(addr0DB44C & 0x1F);
 
-            Tilehitbox = (byte)((addr0DB53F & 0xF0) >> 4);
+            // $0B6B
+            TileHitBox = (byte)((addr0DB53F & 0xF0) >> 4); // Bit shifted to make it easier to set later. Before we save to rom we shift it back.
             Deflectarrows = addr0DB53F.BitIsOn(0x08);
-            Overrideslashimminuty = addr0DB53F.BitIsOn(0x04);
-            Dielikeaboss = addr0DB53F.BitIsOn(0x02);
+            OverrideSlashImminuty = addr0DB53F.BitIsOn(0x04);
+            DieLikeABoss = addr0DB53F.BitIsOn(0x02);
             Invertpitbehavior = addr0DB53F.BitIsOn(0x01);
 
-            Ignorepitconveyors = addr0DB632.BitIsOn(0x80);
-            Checkforwater = addr0DB632.BitIsOn(0x40);
-            Blockedbyshield = addr0DB632.BitIsOn(0x20);
-            Altdamagesound = addr0DB632.BitIsOn(0x10);
-            Prizepack = (byte)(addr0DB632 & 0x0F);
+            // $0BE0
+            IgnorePitConveyors = addr0DB632.BitIsOn(0x80);
+            CheckForWater = addr0DB632.BitIsOn(0x40);
+            BlockedByShield = addr0DB632.BitIsOn(0x20);
+            AltDamageSound = addr0DB632.BitIsOn(0x10);
+            PrizePack = (byte)(addr0DB632 & 0x0F);
 
-            Activeoffscreen = addr0DB725.BitIsOn(0x80);
-            Dieoffscreen = addr0DB725.BitIsOn(0x40);
-            Hiddenprop = addr0DB725.BitIsOn(0x20);
-            Hiddenunused = addr0DB725.BitIsOn(0x10);
-            Projectilelikecollision = addr0DB725.BitIsOn(0x08);
-            Immunetoswordhammer = addr0DB725.BitIsOn(0x04);
+            // $0CAA
+            ActiveOffScreen = addr0DB725.BitIsOn(0x80);
+            DieOffScreen = addr0DB725.BitIsOn(0x40);
+            HiddenProp = addr0DB725.BitIsOn(0x20);
+            HiddenUnused = addr0DB725.BitIsOn(0x10);
+            ProjectileLikeCollision = addr0DB725.BitIsOn(0x08);
+            ImmuneToSwordHammer = addr0DB725.BitIsOn(0x04);
             Bonkitem = addr0DB725.BitIsOn(0x02);
-            Nopermadeathindungeons = addr0DB725.BitIsOn(0x01);
+            NoPermaDeathInDungeons = addr0DB725.BitIsOn(0x01);
 
             if (id <= 0xD7)
             {
                 for (int i = 0; i < 8; i += 1)
                 {
-                    DamagesTaken[i * 2] = (byte)(DungeonsData.SpriteDamageTaken[(i) + (id * 8)] & 0x0F);
-                    DamagesTaken[(i * 2) + 1] = (byte)((DungeonsData.SpriteDamageTaken[(i) + (id * 8)] & 0xF0) >> 4);
+                    DamagesTaken[i * 2] = (byte)(DungeonsData.SpriteDamageTaken[i + (id * 8)] & 0x0F);
+                    DamagesTaken[(i * 2) + 1] = (byte)((DungeonsData.SpriteDamageTaken[i + (id * 8)] & 0xF0) >> 4);
                 }
             }
         }
 
-        
-
         public void SaveToROM(byte id)
         {
-            byte addr0DB080 = (byte)(OamAllocation | IntFunctions.MakeBitfield(Harmless, Deathprevent, Litetilehit));
-            byte addr0DB266 = (byte)(Bumpdamageclass | IntFunctions.MakeBitfield(Recoilwithoutcollision, Beetarget, Immunepowder, Allowedbossfight));
-            byte addr0DB359 = (byte)(IntFunctions.MakeBitfield(Customdeathanimation, Invulnerable, Smallshadow, Drawshadow, false, false, false, Graphicspage) | (Palette << 1));
-            byte addr0DB44C = (byte)(Hitbox | IntFunctions.MakeBitfield(Singlelayercollision, Ignoredbykillrooms, Persistoffscreenow));
-            byte addr0DB53F = (byte)(IntFunctions.MakeBitfield(false, false, false, false, Deflectarrows,Overrideslashimminuty,Dielikeaboss,Invertpitbehavior) | (Tilehitbox << 4));
-            byte addr0DB632 = (byte)(Prizepack | IntFunctions.MakeBitfield(Ignorepitconveyors, Checkforwater, Blockedbyshield, Altdamagesound));
-            byte addr0DB725 = IntFunctions.MakeBitfield(Activeoffscreen, Dieoffscreen, Hiddenprop, Hiddenunused, Projectilelikecollision, Immunetoswordhammer, Bonkitem, Nopermadeathindungeons);
+            // $0E40
+            byte addr0DB080 = (byte)(IntFunctions.MakeBitfield(Harmless, DeathPrevent, LiteTileHit, false, false, false, false, false) | OAMAllocation);
+
+            // $0CD2
+            byte addr0DB266 = (byte)(IntFunctions.MakeBitfield(RecoilWithoutCollision, BeeTarget, ImmunePowder, AllowedBossFight, false, false, false, false) | BumpDamageClass);
+
+            // $0E60 and $0F50 (only last 4 bits go into $0F50)
+            byte addr0DB359 = (byte)(IntFunctions.MakeBitfield(CustomDeathAnimation, Invulnerable, SmallShadow, DrawShadow, false, false, false, GraphicsPage) | (Palette << 1));
+
+            // $0F60
+            byte addr0DB44C = (byte)(IntFunctions.MakeBitfield(Singlelayercollision, Ignoredbykillrooms, Persistoffscreenow) | Hitbox);
+
+            // $0B6B
+            byte addr0DB53F = (byte)((TileHitBox << 4) | IntFunctions.MakeBitfield(false, false, false, false, Deflectarrows, OverrideSlashImminuty, DieLikeABoss, Invertpitbehavior));
+
+            // $0BE0
+            byte addr0DB632 = (byte)(IntFunctions.MakeBitfield(IgnorePitConveyors, CheckForWater, BlockedByShield, AltDamageSound, false, false, false, false) | PrizePack);
+
+            // $0CAA
+            byte addr0DB725 = IntFunctions.MakeBitfield(ActiveOffScreen, DieOffScreen, HiddenProp, HiddenUnused, ProjectileLikeCollision, ImmuneToSwordHammer, Bonkitem, NoPermaDeathInDungeons);
+
+            ROM.Write(Constants.Sprite_0DB080 + id, addr0DB080);
+            ROM.Write(Constants.Sprite_0DB266 + id, addr0DB266);
+            ROM.Write(Constants.Sprite_0DB359 + id, addr0DB359);
+            ROM.Write(Constants.Sprite_0DB44C + id, addr0DB44C);
+            ROM.Write(Constants.Sprite_0DB53F + id, addr0DB53F);
+            ROM.Write(Constants.Sprite_0DB632 + id, addr0DB632);
+            ROM.Write(Constants.Sprite_0DB725 + id, addr0DB725);
+            ROM.Write(Constants.Sprite_Health + id, Health);
+
             if (id == 0)
             {
                 Console.WriteLine("addr0DB080 : " + addr0DB080.ToString("X2"));
@@ -170,20 +200,11 @@ namespace ZeldaFullEditor.Data
                 Console.WriteLine("addr0DB725 : " + addr0DB725.ToString("X2"));
                 Console.WriteLine("Health : " + Health.ToString("X2"));
             }
-            ROM.Write(Constants.Sprite_0DB080 + id, addr0DB080);
-            ROM.Write(Constants.Sprite_0DB266 + id, addr0DB266);
-            ROM.Write(Constants.Sprite_0DB359 + id, addr0DB359);
-            ROM.Write(Constants.Sprite_0DB44C + id, addr0DB44C);
-            ROM.Write(Constants.Sprite_0DB53F + id, addr0DB53F);
-            ROM.Write(Constants.Sprite_0DB632 + id, addr0DB632);
-            ROM.Write(Constants.Sprite_0DB725 + id, addr0DB725);
-            ROM.Write(Constants.Sprite_Health + id, Health);
 
             for (int i = 0; i < 8; i += 1)
             {
                 DungeonsData.SpriteDamageTaken[i + (id * 8)] = (byte)(DamagesTaken[(i * 2)] | (DamagesTaken[(i * 2) + 1] << 4));
             }
-
         }
     }
 }
