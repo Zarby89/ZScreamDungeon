@@ -19,7 +19,8 @@ using System.IO.Compression;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
 {
-    public partial class AsmPlugin : Form
+	// TODO KAN REFACTOR : magic strings everywhere
+	public partial class AsmPlugin : Form
     {
         private byte[] bitmask = new byte[8] { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
         internal List<AsmPatch> PatchList = new List<AsmPatch>();
@@ -71,7 +72,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 return;
             }
 
-            patchAuthorLabel.Text = "Patch Author : " + selectedPatch.PatchAuthor;
+            patchAuthorLabel.Text = "Patch author(s): " + selectedPatch.PatchAuthor;
             patchDescriptionTextbox.Text = selectedPatch.PatchDescription;
 
 
@@ -108,7 +109,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
                 if (selectedPatch.PatchDefines[keyValue.Key].ContainsKey("decimal"))
                 {
-                    Console.WriteLine("Decimal !");
+                    Console.WriteLine("Decimal, baby!");
                     dec = true;
                 }
 
@@ -497,7 +498,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         private void refreshPluginButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to save the current changes before reloading patches?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Do you want to save your current changes before reloading patches?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 SavePatches();
             }
@@ -538,7 +539,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 string serverVersion = client.DownloadString("https://raw.githubusercontent.com/Zarby89/ZScreamPatches/main/Version.txt");
                 if (serverVersion != clientVersion)
                 {
-                    if (MessageBox.Show("There's an update available!\r\nWould you like to download it automatically?", "Update!",MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("There is an update available!\r\nWould you like to download it now?", "Update!",MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         DownloadUpdate(client);
                         if (!Directory.Exists("ZS_Patches"))
@@ -600,13 +601,13 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             AddDirectoryForm form = new AddDirectoryForm();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.DirName == "")
+                if (string.IsNullOrWhiteSpace(form.DirName))
                 {
-                    MessageBox.Show("Directory Name cannot be empty");
+                    MessageBox.Show("The directory name cannot be empty!");
                 }
                 else if (Directory.Exists(ProjectPath + "\\Patches\\" + form.DirName))
                 {
-                    MessageBox.Show("That directory already exsits");
+                    MessageBox.Show("That directory already exsits!");
                 }
                 else
                 {
@@ -644,13 +645,13 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         {
             if (patchFolderTabcontrol.TabPages.Count == 1)
             {
-                MessageBox.Show("You must have at least one directory/tab!", "Error");
+                MessageBox.Show("You must have at least one directory tab!", "Error");
                 return;
             }
 
             if (Directory.GetFiles(ProjectPath + "\\Patches\\" + patchFolderTabcontrol.SelectedTab.Text).Length > 0)
             {
-                if (MessageBox.Show("The tab " + patchFolderTabcontrol.SelectedTab.Text + " is not empty are you sure you want to delete it?\r\nThis will also delete all the asm files inside\r\nDo you want to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes);
+                if (MessageBox.Show("The directory tab " + patchFolderTabcontrol.SelectedTab.Text + " is not empty.\r\nDeleting it will also delete all the patch files it contains.\r\nDo you wish to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes);
                 {
                     Directory.Delete(ProjectPath + "\\Patches\\" + patchFolderTabcontrol.SelectedTab.Text, true);
                     patchFolderTabcontrol.TabPages.Remove(patchFolderTabcontrol.SelectedTab);
@@ -680,7 +681,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         {
             using (OpenFileDialog of = new OpenFileDialog())
             {
-                of.Filter = "ASM Patches files (*.asm)|*.asm";
+                of.Filter = "ASM source files (*.asm)|*.asm";
                 of.Multiselect = true;
                 of.DefaultExt = "asm";
                 if (of.ShowDialog() == DialogResult.OK)

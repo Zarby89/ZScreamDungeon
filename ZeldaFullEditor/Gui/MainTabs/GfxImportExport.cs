@@ -66,15 +66,11 @@ namespace ZeldaFullEditor.Gui
         {
             selectedSheet = (e.Y / 64);
             allgfxPicturebox.Refresh();
-            if (GFX.isbpp3[selectedSheet])
-            {
-                selectedLabel.Text = "Sheet Selected : " + selectedSheet.ToString() + " (3bpp)";
-            }
-            else
-            {
-                selectedLabel.Text = "Sheet Selected : " + selectedSheet.ToString() + " (2bpp)";
-            }
-            
+
+            int bitDepth = GFX.isbpp3[selectedSheet] ? 3 : 2;
+
+            selectedLabel.Text = $"Selected sheet: {selectedSheet:X2} ({bitDepth}bpp)";
+
         }
 
         private void allgfxPicturebox_Paint(object sender, PaintEventArgs e)
@@ -285,29 +281,51 @@ namespace ZeldaFullEditor.Gui
             }
             */
 
-            infoLabel.Text =
-            "Compressed Size = " + (pos - 0x8b800).ToString("X6") + "\r\n" +
-            "Available Space = " + (Constants.maxGfx - pos).ToString("X6");
+            infoLabel.Text = $"Compressed size: {pos - 0x8B800:X6}\r\nAvailable space: {Constants.maxGfx - pos:X6}";
 
             return false;
         }
 
-        private void palettePicturebox_Paint(object sender, PaintEventArgs e)
+		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
+		{
+			for (int i = 0; i < 256; i++)
+			{
+				if (radioButton1.Checked)
+				{
+					e.Graphics.FillRectangle(new SolidBrush(GFX.roomBg1Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+				}
+				else
+				{
+					e.Graphics.FillRectangle(new SolidBrush(GFX.mapgfx16Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+				}
+			}
+
+			e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, selectedPal * 16, 256, 16));
+		}
+
+        // TODO KAN REFACTOR - test and use this rewritten function
+        /*
+		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
         {
-            for (int i = 0; i < 256; i++)
+			ColorPalette source;
+
+			if (radioButton1.Checked)
+			{
+				source = GFX.roomBg1Bitmap.Palette;
+			}
+			else
+			{
+				source = GFX.mapgfx16Bitmap.Palette;
+			}
+
+			for (int i = 0; i < 256; i++)
             {
-                if (radioButton1.Checked)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(GFX.roomBg1Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
-                }
-                else
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(GFX.mapgfx16Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
-                }
-            }
+				e.Graphics.FillRectangle(new SolidBrush(source.Entries[i]), new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));
+			}
 
             e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, selectedPal * 16, 256, 16));
         }
+        */
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
@@ -316,7 +334,7 @@ namespace ZeldaFullEditor.Gui
 
         private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
         {
-            selectedPal = (e.Y / 16);
+            selectedPal = e.Y / 16;
 
             ColorPalette cp = GFX.allgfxBitmap.Palette;
             for (int i = 0; i < 16; i++)
@@ -477,7 +495,7 @@ namespace ZeldaFullEditor.Gui
                 FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
                 if (fs.Length > Constants.UncompressedSheetSize)
                 {
-                    if (MessageBox.Show("This graphic file seems to be bigger than expected do you still want to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (MessageBox.Show("This graphics file is larger than expected. Do you wish to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         fs.Close();
                         return;

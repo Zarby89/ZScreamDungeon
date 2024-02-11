@@ -118,10 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label1.Text" xml:space="preserve">
-    <value>The rooms header are at their original location, they must be moved to a new location
- in expanded region in order to work where would you like to move them?
+    <value>It has been detected that room header data are saved in the vanilla location. For ZScream to save properly, these data must be moved to a new location.
 
-New address in HEX, (PC Address), 100000 is the start of the expanded rom
-(110000 is recommended if you don't have anything in expended region)</value>
+Click [Finish] to use the default location or, for advanced users, specify a different location in the box below as a binary file offset (PC address).</value>
   </data>
 </root>

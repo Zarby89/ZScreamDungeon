@@ -104,7 +104,7 @@ namespace ZeldaFullEditor
         public static DialogResult WarnAboutSaving(string message = DefaultWarning)
         {
             return MessageBox.Show(
-                message + "\nDo you wish to save before continuing?",
+                $"{message}\nDo you wish to save before continuing?",
                 "Unsaved changes",
                 MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Warning);
@@ -113,7 +113,7 @@ namespace ZeldaFullEditor
         public static void CryAboutSaving(string message = "OHNO")
         {
             MessageBox.Show(
-                "Failed to save;\n" + message,
+                $"Failed to save;\n{message}",
                 "Bad Error",
                 MessageBoxButtons.OK);
         }
@@ -121,7 +121,7 @@ namespace ZeldaFullEditor
         public static void WarnAboutMissingFile(string message)
         {
             MessageBox.Show(
-                "Missing File: " + message + " Please make sure that:\n1. You have extracted all the files from the .zip\n2. You are running the ZScream.exe within the same folder as the other files that it came with.",
+                $"Missing File: {message} Please make sure that:\n1. You have extracted all the files from the .zip\n2. You are running the ZScream.exe within the same folder as the other files that it came with.",
                 "Bad Error",
                 MessageBoxButtons.OK);
         }

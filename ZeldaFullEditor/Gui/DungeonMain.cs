@@ -133,13 +133,16 @@ namespace ZeldaFullEditor
             true, true, true, true, true, true, true,
         };
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="DungeonMain"/> class.
-        /// </summary>
-        public DungeonMain()
+		/// <summary>
+		///     Initializes a new instance of the <see cref="DungeonMain"/> class.
+		/// </summary>
+		// TODO KAN REFACTOR - move some of the string lists into the constructor
+		public DungeonMain()
         {
             this.InitializeComponent();
-            this.tileTypeCombobox.Items.AddRange(Utils.CreateIndexedList(Constants.TileTypeNames));
+			this.Text = $"{UIText.APPNAME} - {UIText.VERSION}";
+
+			this.tileTypeCombobox.Items.AddRange(Utils.CreateIndexedList(Constants.TileTypeNames));
             this.EntranceProperties_FloorSel.Items.AddRange(Constants.floors);
         }
 
@@ -2301,8 +2304,8 @@ namespace ZeldaFullEditor
             {
                 Console.WriteLine(error.Fullerrdata.ToString());
             }
-
-            data[Constants.startingentrance_room + 1] = (byte)((this.selectedEntrance.Room >> 8) & 0xFF);
+			// TODO KANREFACTOR remove these dumb &FFs
+			data[Constants.startingentrance_room + 1] = (byte)((this.selectedEntrance.Room >> 8) & 0xFF);
             data[Constants.startingentrance_room] = (byte)(this.selectedEntrance.Room & 0xFF);
 
             data[Constants.startingentrance_yposition + 1] = (byte)((this.selectedEntrance.YPosition >> 8) & 0xFF);
@@ -3007,7 +3010,8 @@ namespace ZeldaFullEditor
             chestEditorForm.ShowDialog();
         }
 
-        private void MapPicturebox_Paint(object sender, PaintEventArgs e)
+		// TODO KANREFACTOR - alpha on unloaded rooms
+		private void MapPicturebox_Paint(object sender, PaintEventArgs e)
         {
             if (!this.projectLoaded)
             {
@@ -3133,18 +3137,18 @@ namespace ZeldaFullEditor
                 {
                     if (o is object_door d)
                     {
-                        Console.WriteLine("n:" + d.name + ", door dir:" + d.door_dir + ", door pos:" + d.door_pos + ", door type:" + d.door_type);
+                        Console.WriteLine($"n:{d.name}door dir:{d.door_dir}, door pos:{d.door_pos}, door type:{d.door_type}");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("n:" + o.name + ", w:" + o.width + ", h:" + o.height + ", L:" + o.Layer);
+                    Console.WriteLine($"n:{o.name}, w:{o.width}, h:{o.height}, L:{o.Layer}");
                 }
             }
         }
 
-        // TODO DISGUSTING, these "Contains" should instead become properties of the object itself
-        private void RemoveMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
+		// TODO KANREFACTOR DISGUSTING, these "Contains" should instead become properties of the object itself
+		private void RemoveMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<Room_Object> toRemove = new List<Room_Object>();
             foreach (Room_Object o in this.activeScene.room.tilesObjects)
@@ -3704,7 +3708,7 @@ namespace ZeldaFullEditor
                 e.Graphics.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
             }
 
-            this.activeScene.drawText(e.Graphics, 0, 0, "ROOM: " + this.previewRoom.index.ToString());
+            this.activeScene.drawText(e.Graphics, 0, 0, $"ROOM: {previewRoom.index:X2}");
         }
 
         private void MapPicturebox_MouseUp(object sender, MouseEventArgs e)
@@ -4075,12 +4079,12 @@ namespace ZeldaFullEditor
             if (sf.ShowDialog() == DialogResult.OK)
             {
                 string path = Path.GetDirectoryName(sf.FileName);
-                Directory.CreateDirectory(path + "//ExportedRooms");
+                Directory.CreateDirectory($"{path}//ExportedRooms");
                 for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
                     // TODO: system specific path separators
                     byte[] roomBytes = DungeonsData.AllRooms[i].getTilesBytes();
-                    using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("X3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
+                    using (FileStream fs = new FileStream($"{path}//ExportedRooms//room{i:X3}.zrd", FileMode.OpenOrCreate, FileAccess.Write))
                     {
                         fs.Write(roomBytes, 0, roomBytes.Length);
                         fs.Close();
@@ -4187,7 +4191,8 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void ExportMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
+		// TODO KANREFACTOR this is the worst goddamn function ever and it can be greatly optimized for speed, size, and readability with local functions
+		private void ExportMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int selectedMap = this.oweditor2.scene.selectedMap;
             if (selectedMap >= 64)
@@ -4195,10 +4200,10 @@ namespace ZeldaFullEditor
                 selectedMap -= 64;
             }
 
-            Console.WriteLine("Exporting map : " + this.overworldEditor.scene.selectedMap);
+            Console.WriteLine($"Exporting map : {overworldEditor.scene.selectedMap:X2}");
             int sx = selectedMap % 8;
             int sy = selectedMap / 8;
-            string s = "Map" + selectedMap.ToString("D2") + ":\r\n";
+            string s = $"Map{selectedMap:X2}:\r\n";
             int length = 32;
 
             for (int i = 0; i < (length * length); i++)
@@ -4325,7 +4330,8 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void CaptureMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
+
+		private void CaptureMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.lwmdata = new ushort[512, 512];
             this.dwmdata = new ushort[512, 512];
@@ -4476,7 +4482,7 @@ namespace ZeldaFullEditor
 
                         for (int j = 0; j < 8; j++)
                         {
-                            mapArrayData[p++] = (byte)(v & 0xFF);
+                            mapArrayData[p++] = (byte) v;
                             v >>= 8;
                         }
                     }
@@ -4625,9 +4631,9 @@ namespace ZeldaFullEditor
 
                     for (int i = 0; i < Constants.NumberOfRooms; i++)
                     {
-                        if (File.Exists(path + "// room" + i.ToString("D3") + ".bin"))
+                        if (File.Exists(path + "// room" + i.ToString("X3") + ".bin"))
                         {
-                            using (FileStream fs = new FileStream(path + "// room" + i.ToString("D3") + ".bin", FileMode.Open, FileAccess.Read))
+                            using (FileStream fs = new FileStream(path + "// room" + i.ToString("X3") + ".bin", FileMode.Open, FileAccess.Read))
                             {
                                 DungeonsData.AllRooms[i].tilesObjects.Clear(); // Empty the room first
                                 byte[] data = new byte[fs.Length];
@@ -5327,7 +5333,7 @@ namespace ZeldaFullEditor
         private bool ConfirmDeletion(string w)
         {
             return MessageBox.Show(
-                string.Format("You are about to delete all {0}.\nDo you wish to continue?", w),
+                $"You are about to delete all {w}.\nDo you wish to continue?",
                 "Warning",
                 MessageBoxButtons.YesNo) == DialogResult.Yes;
         }
@@ -5339,8 +5345,7 @@ namespace ZeldaFullEditor
         /// <returns>true if yes</returns>
         private bool ConfirmDeletionOWArea(string w)
         {
-            return this.ConfirmDeletion(
-                string.Format("{0} from OW screen {1:X2}", w, this.overworldEditor.scene.selectedMapParent));
+            return ConfirmDeletion($"{w} from OW screen {overworldEditor.scene.selectedMapParent:X2}");
         }
 
         private void DiscordToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5369,7 +5374,7 @@ namespace ZeldaFullEditor
 
         private void ClearDWTilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to clear all tiles of the Dark World?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to clear all tiles in the Dark World?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 int sx = 0;
                 int sy = 0;
@@ -5396,7 +5401,7 @@ namespace ZeldaFullEditor
 
         private void CopyLWToDWToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to copy Light World tiles to the Dark World?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to copy all Light World tiles to the Dark World?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 int sx = 0;
                 int sy = 0;
@@ -5479,7 +5484,7 @@ namespace ZeldaFullEditor
                 this.networkBgWorker.RunWorkerAsync();
                 this.AddNetworkPanel();
 
-                this.networkstatusLabel.Text = "Network Status : " + this.netZS.server.Status.ToString();
+                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status.ToString()}";
             }
         }
 
@@ -5520,7 +5525,7 @@ namespace ZeldaFullEditor
                 NetZS.client.Connect(new IPEndPoint(NetUtility.Resolve(nf.ip), Convert.ToInt32(nf.port)));
                 this.networkBgWorker.RunWorkerAsync();
                 NetZS.connected = true;
-                this.networkstatusLabel.Text = "Network Status : " + NetZS.client.ConnectionStatus.ToString();
+                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus.ToString()}";
                 this.AddNetworkPanel();
             }
         }
@@ -5590,11 +5595,11 @@ namespace ZeldaFullEditor
 
             if (this.netZS.host)
             {
-                this.networkstatusLabel.Text = "Network Status : " + this.netZS.server.Status.ToString();
+                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status.ToString()}";
             }
             else
             {
-                this.networkstatusLabel.Text = "Network Status : " + NetZS.client.ConnectionStatus.ToString();
+                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus.ToString()}";
             }
         }
 
@@ -5705,12 +5710,12 @@ namespace ZeldaFullEditor
                     }
                     else
                     {
-                        fs.Read(ROM.DATA, 0, (int)fs.Length);
+                        fs.Read(ROM.DATA, 0, (int) fs.Length);
                     }
 
                     fs.Close();
 
-                    this.Text = string.Format("{0} - {1}", UIText.APPNAME, ofd.FileName);
+                    this.Text = $"{UIText.APPNAME} - {ofd.FileName}";
                 }
             }
         }
@@ -5775,12 +5780,12 @@ namespace ZeldaFullEditor
                 {
                     
                     BinaryWriter bw = new BinaryWriter(new FileStream(sf.FileName, FileMode.OpenOrCreate));
-                    bw.Write((int)opened_rooms.Count);
+                    bw.Write(opened_rooms.Count);
                     foreach (Room r in opened_rooms)
                     {
                         bw.Write(r.index);
                         byte[] roomObjects = r.getTilesBytes();
-                        bw.Write((int)roomObjects.Length);
+                        bw.Write(roomObjects.Length);
                         bw.Write(roomObjects);
 
                         byte sprCount = (byte)r.sprites.Count;

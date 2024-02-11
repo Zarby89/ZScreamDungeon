@@ -400,20 +400,22 @@ namespace ZeldaFullEditor
 
             if (onlyShow)
             {
-                MessageBox.Show("Number of unique Tiles32: " + uniqueTiles.Count + " Out of: " + Constants.LimitOfMap32);
+                MessageBox.Show($"Unique Tiles32 count: {uniqueTiles.Count} | Max: {Constants.LimitOfMap32}");
             }
             else if (this.UniqueTile32List.Count > Constants.LimitOfMap32)
             {
-                MessageBox.Show(
-                    "Number of unique Tiles32: " + uniqueTiles.Count + " Out of: " + Constants.LimitOfMap32 +
-                    "\r\nUnique Tile32 count exceed the limit" +
-                    "\r\nThe ROM Has not been saved" +
-                    "\r\nYou can fill maps with grass tiles to free some space" +
-                    "\r\nOr use the option Clear DW Tiles in the Overworld Menu");
+                UIText.CryAboutSaving(
+                    $"There are too many unique Tile32 definitions.\r\n" +
+                    $"(Found: {uniqueTiles.Count} | Max: {Constants.LimitOfMap32}\r\n" +
+                    $"To reduce this count, decrease the complexity of your overworld\r\n" +
+                    $"by filling more of the map with common tiles such as grass\r\n" +
+                    $"or empty the Dark World with the \"Clear DW Tiles\" option\r\n" +
+                    $"in the Overworld menu."
+                   );
                 return true;
             }
 
-            Console.WriteLine("Number of unique Tiles32: " + uniqueTiles.Count + " Saved:" + this.UniqueTile32List.Count + " Out of: " + Constants.LimitOfMap32);
+            Console.WriteLine($"Unique Tiles32 count: {uniqueTiles.Count} | Saved: {UniqueTile32List.Count} | Max: {Constants.LimitOfMap32}");
 
             // Fill any extra space with some blank tiles.
             int v = this.UniqueTile32List.Count;
@@ -710,8 +712,8 @@ namespace ZeldaFullEditor
                 }
             }
 
-            Console.WriteLine("Map pointers (lowest) : " + lowest.ToString("X6"));
-            Console.WriteLine("Map pointers (highest) : " + highest.ToString("X6"));
+            Console.WriteLine($"Map pointers (lowest): {lowest:X6}");
+            Console.WriteLine($"Map pointers (highest): {highest:X6}");
 
             return (allMapTile32_LW, allMapTile32_DW, allMapTile32_SP);
         }
@@ -920,7 +922,7 @@ namespace ZeldaFullEditor
                 allOverlays[index] = new OverlayData();
 
                 // OverlayPointers.
-                Console.WriteLine("MapIndex Overlay : " + index.ToString());
+                Console.WriteLine($"MapIndex Overlay: {index:X2}");
 
                 int address = (Constants.overlayPointersBank << 16) +
                 (ROM.DATA[Constants.overlayPointers + (index * 2) + 1] << 8) +
