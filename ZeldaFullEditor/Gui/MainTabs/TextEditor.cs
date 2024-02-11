@@ -22,7 +22,7 @@ namespace ZeldaFullEditor
 		public const string DictionaryToken = "D";
 		public const byte DictionaryBase = 0x88;
 		public const byte NumberOfDictionaryEntries = 0x61;
-		private const int Dictionarysize = 0xEC8D9 - 0xEC7C7;
+		private const int DictionarySize = 0xEC8D9 - 0xEC7C7;
 		public const byte MessageTerminator = 0x7F;
 		public const byte NumberOfCharacters = 100;
 
@@ -122,6 +122,7 @@ namespace ZeldaFullEditor
 		public class DictionaryEntry
 		{
 			public byte ID { get; }
+
 			public int RealID => ID + DictionaryBase;
 
 			public string Contents { get; }
@@ -160,6 +161,7 @@ namespace ZeldaFullEditor
 		public static string ReplaceAllDictionaryWords(string str)
 		{
 			string temp = str;
+
 			foreach (DictionaryEntry dictionaryEntry in AllDictionaries)
 			{
 				if (dictionaryEntry.ContainedInString(temp))
@@ -179,9 +181,11 @@ namespace ZeldaFullEditor
 		public static ParsedElement FindMatchingElement(string str)
 		{
 			Match match;
+
 			foreach (TextElement textElement in TextCommands.Concat(SpecialChars))
 			{
 				match = textElement.MatchMe(str);
+
 				if (match.Success)
 				{
 					if (textElement.HasArgument)
@@ -217,6 +221,7 @@ namespace ZeldaFullEditor
 			return SpecialChars.FirstOrDefault(e => e.ID == value);
 		}
 
+		// TODO make this return the actual dictionary entry
 		public int FindDictionaryEntry(byte value)
 		{
 			if (value < DictionaryBase || value == 0xFF)
@@ -497,6 +502,7 @@ namespace ZeldaFullEditor
 			//00074703
 		}
 
+		// TODO this needs to handle pointers being the same and considering that a stopping point probably
 		public void BuildDictionaryEntriesFromROM()
 		{
 			for (int i = 0; i < NumberOfDictionaryEntries; i++)
@@ -659,7 +665,6 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-
 			var newCandidates = new Dictionary<string, int>();
 			var allSubstrings = new List<string>();
 
@@ -667,15 +672,14 @@ namespace ZeldaFullEditor
 			int originalParsedsize = 0;
 			int originalCompressedsize = 0;
 
+			var sub = new StringBuilder();
 
 			// collect all valid substrings for parsing from the existing messages
 			foreach (var msg in ListOfTexts)
 			{
-				var sub = new StringBuilder();
 
-				originalCompressedsize += msg.Data.Length;
-				originalParsedsize += msg.DataParsed.Length;
-
+				originalCompressedsize += msg.Data.Length + 1; // +1 because message data doesn't include the terminator
+				originalParsedsize += msg.DataParsed.Length + 1;
 
 				foreach (var b in msg.DataParsed) // check each byte
 				{
@@ -689,20 +693,23 @@ namespace ZeldaFullEditor
 					}
 
 					// if the byte is not a valid character
-					// end the substring (if necessary) and start a new one
-					// don't add anything that's only 1 character, because that should never be an entry
+					// add the substring and start a new one
+					// don't add anything that's empty or only 1 character, because that should never be an entry
 					if (sub.Length > 1)
 					{
 						allSubstrings.Add(sub.ToString());
-						sub.Clear();
 					}
+
+					sub.Clear();
 				}
 
-				// add any left overs
+				// add any leftovers
 				if (sub.Length > 1)
 				{
 					allSubstrings.Add(sub.ToString());
 				}
+
+				sub.Clear();
 			}
 
 			// count up all the possible substrings
@@ -730,11 +737,11 @@ namespace ZeldaFullEditor
 			// also, remove anything with only 1 entry, since it's useless
 			var sortableCandidates = newCandidates.Where(kv => kv.Value > 1).Select(kv => kv).ToList();
 
-			// TODO this number can be finetuned later for time
+			SortSelectedCandidates(); // sorting should help with the scraping, but maybe not, depending on the algo
+
+			// TODO this number can be fine-tuned later for time
 			for (int passes = 0; passes < 5; passes++)
 			{
-				SortSelectedCandidates(); // sorting should help with the scraping, but maybe not, depending on the algo
-
 				// remove candidates that are strict substrings of higher scoring entries
 				// TODO there's probably a better way to optimize this
 
@@ -742,7 +749,7 @@ namespace ZeldaFullEditor
 
 				foreach (var a in sortableCandidates)
 				{
-					if (removedCandidates.Contains(a))
+					if (removedCandidates.Contains(a)) // skip removed entries
 					{
 						continue;
 					}
@@ -762,7 +769,6 @@ namespace ZeldaFullEditor
 						// spaces are kinda special, so they shouldn't be too grossly optimized
 						// TODO or maybe they should?
 
-
 						if (a.Key.Contains(b.Key))
 						{
 							int ascore = ScoreEntry(a);
@@ -771,7 +777,7 @@ namespace ZeldaFullEditor
 							// TODO this is going to be the most important algorithm here
 							if (a.Value > (b.Value * 5) && (ascore > bscore * 2))
 							{
-								removedCandidates.Add(b); // delete this substring
+								removedCandidates.Add(b); // don't use this substring
 							}
 						}
 					}
@@ -780,11 +786,11 @@ namespace ZeldaFullEditor
 				// remove deleted candidates
 				int changed = sortableCandidates.RemoveAll(kv => removedCandidates.Contains(kv));
 
+				// short circuit if too few removals
 				if (changed < 5)
 				{
 					break;
 				}
-
 			}
 
 			// one more sort for good measure
@@ -799,7 +805,7 @@ namespace ZeldaFullEditor
 			foreach (var cand in sortableCandidates)
 			{
 				// check size
-				if (usedspace + cand.Key.Length > Dictionarysize)
+				if (usedspace + cand.Key.Length > DictionarySize)
 				{
 					continue;
 				}
@@ -810,10 +816,10 @@ namespace ZeldaFullEditor
 				selectedCandidates.Add(cand);
 
 				// count up total dictionary savings
-				newCompressedSavings += cand.Value * (cand.Key.Length - 1); // -1 because it's a 1 byte token;
+				newCompressedSavings += cand.Value * (cand.Key.Length - 1); // -1 because it's a 1 byte token
 
 				// stop at max tokens or space
-				if (tokencount == NumberOfDictionaryEntries || usedspace >= (Dictionarysize - 1))
+				if (tokencount == NumberOfDictionaryEntries || usedspace >= (DictionarySize - 1))
 				{
 					break;
 				}
@@ -833,12 +839,13 @@ namespace ZeldaFullEditor
 				MessageBoxIcon.Warning);
 
 
-			// sort the dictionary by usage, so that the most common things are the first to be checked
+			// sort the dictionary by size, so that the longest phrases are the first to be checked
 			selectedCandidates.Sort((a, b) =>
 			{
-				int baseCompare = b.Value.CompareTo(a.Value); // compare it backwards to get a free descending sort
 
-				if (baseCompare == 0) // if both have the same score, just go alphabetically
+				int baseCompare = b.Key.Length.CompareTo(a.Key.Length); // compare it backwards to get a free descending sort
+
+				if (baseCompare == 0) // if both have the same length, just go alphabetically
 				{
 					return b.Key.CompareTo(a.Key);
 				}
@@ -926,6 +933,7 @@ namespace ZeldaFullEditor
 			BuildDictionaryEntriesFromROM();
 			ReadAllTextDataFromROM();
 
+			// TODO AddRange
 			foreach (MessageData messageData in ListOfTexts)
 			{
 				DisplayedMessages.Add(messageData);
@@ -1021,40 +1029,41 @@ namespace ZeldaFullEditor
 					DrawTileToPreview(textPos, textLine * 16, srcx, srcy, 0, 1, 2);
 					textPos += widthArray[value];
 				}
-				else if (value == 0x74)
-				{
-					textPos = 0;
-					textLine = 0;
-				}
-				else if (value == 0x73)
+				else if (value == 0x73) // scroll text
 				{
 					textPos = 0;
 					textLine += 1;
 				}
-				else if (value == 0x75)
+				else if (value == 0x74) // line 1
+				{
+					textPos = 0;
+					textLine = 0;
+				}
+				else if (value == 0x75) // line 2
 				{
 					textPos = 0;
 					textLine = 1;
 				}
-				else if (value == 0x76)
+				else if (value == 0x76) // line 3
 				{
 					textPos = 0;
 					textLine = 2;
 				}
+				// command with parameters
 				else if (value == 0x6B || value == 0x6D || value == 0x6E || value == 0x77 || value == 0x78 || value == 0x79 || value == 0x7A)
 				{
 					skipNext = true;
 
 					continue;
 				}
-				else if (value == 0x6C) // BCD numbers.
+				else if (value == 0x6C) // BCD numbers
 				{
-					DrawCharacterToPreview('0');
+					DrawCharacterToPreview('0'); // draw a big character since this command draws characters
 					skipNext = true;
 
 					continue;
 				}
-				else if (value == 0x6A)
+				else if (value == 0x6A) // player name
 				{
 					// Includes parentheses to be longer, since player names can be up to 6 characters.
 					DrawStringToPreview("(NAME)");
@@ -1072,8 +1081,8 @@ namespace ZeldaFullEditor
 
 		public unsafe void DrawMessagePreview() // From Parsing.
 		{
-			// defaultColor = 6;
 			textLine = 0;
+			// TODO try Span<byte> ?
 			byte* ptr = (byte*) GFX.currentfontgfx16Ptr.ToPointer();
 
 			for (int i = 0; i < (172 * 4096); i++)
@@ -1126,6 +1135,7 @@ namespace ZeldaFullEditor
 			DisplayedMessages.Clear();
 			string searchText = searchTextbox.Text.ToLower();
 
+			// TODO use Where
 			foreach (MessageData messageData in ListOfTexts)
 			{
 				if (messageData.ContentsParsed.ToLower().Contains(searchText))
@@ -1249,12 +1259,14 @@ namespace ZeldaFullEditor
 				if (openFileDialog.ShowDialog() == DialogResult.OK)
 				{
 					byte[] data = new byte[0x1000 + NumberOfCharacters];
+
+					// TODO read directly into ROM instead of using data[]
 					using (var fileStream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
 					{
 						fileStream.Read(data, 0, 0x1000 + NumberOfCharacters);
 						fileStream.Close();
 					}
-
+					// TODO use Write(addr, byte[])
 					for (int i = 0; i < 0x1000; i++)
 					{
 						/*
@@ -1283,6 +1295,7 @@ namespace ZeldaFullEditor
 		{
 			byte[] backup = (byte[]) ROM.DATA.Clone();
 
+			// TODO use Write(addr, byte[])
 			for (int i = 0; i < NumberOfCharacters; i++)
 			{
 				/*
@@ -1334,6 +1347,46 @@ namespace ZeldaFullEditor
 
 			ROM.Write(pos, 0xFF, true, "End of text");
 
+			// TODO test
+/*
+			// Save dictionary data
+
+			var dictSave = AllDictionaries.ToList(); // get a copy that we can sort
+			dictSave.Sort((a, b) => a.ID.CompareTo(b.ID)); // so that the original stays sorted by length
+
+			int dictPtr = Constants.pointers_dictionaries;
+			int dictAddr = dictPtr + 2 * NumberOfDictionaryEntries;
+			int dictCount = 0;
+			int dictSize = 0;
+
+			foreach (var d in AllDictionaries)
+			{
+				ROM.WriteShort(dictPtr, dictAddr.PcToSnes());
+				ROM.Write(dictAddr, d.Data);
+				dictPtr += 2;
+				dictAddr += d.Data.Length;
+
+				dictCount++;
+				dictSize += d.Data.Length;
+			}
+
+			if (dictCount > NumberOfDictionaryEntries || dictSize > Dictionarysize)
+			{
+				ROM.DATA = (byte[]) backup.Clone();
+				UIText.CryAboutSaving("The dictionary is too big.");
+				return true;
+			}
+
+			for (; dictCount <= NumberOfDictionaryEntries + 1; dictCount++) // add remaining end pointers
+			{
+				ROM.WriteShort(dictPtr, dictAddr.PcToSnes()); // add end pointer
+				dictPtr += 2;
+			}
+
+			// TODO breakpoint with this to make sure everything is good
+			var gggg = ROM.DATA[Constants.pointers_dictionaries + 2 * NumberOfDictionaryEntries];
+
+*/
 			return false;
 		}
 
@@ -1348,6 +1401,7 @@ namespace ZeldaFullEditor
 			string bankSTR = bank ? "1st" : "2nd";
 			int posOut = (bank ? pos : pos - Constants.text_data2) & 0xFFFF;
 
+			// TODO UIText.CryAboutSaving
 			MessageBox.Show($"There is too much text data in the {bankSTR} block to save.\r\nAvailable: {space:X4} | Used: {posOut:X4}");
 		}
 
@@ -1449,12 +1503,14 @@ namespace ZeldaFullEditor
 
 		private void Button5_Click(object sender, EventArgs e)
 		{
+			// TODO use Write(addr, byte[])
 			for (int i = 0; i < NumberOfCharacters; i++)
 			{
 				//ROM.DATA[Constants.characters_width + i] = widthArray[i];
 				ROM.Write(Constants.characters_width + i, widthArray[i], true, "Font widths");
 			}
 
+			// TODO isn't this wrong...?
 			using (var fileStream = new FileStream(romname, FileMode.OpenOrCreate, FileAccess.Write))
 			{
 				fileStream.Write(ROM.DATA, 0, ROM.DATA.Length);
