@@ -30,7 +30,7 @@ namespace ZeldaFullEditor.Gui
             listBox1.Items.Add("Agahnim 1");
             listBox1.Items.Add("Crystal 2 (Swamp)");
             listBox1.Items.Add("Crystal 1 (Darkness)");
-            listBox1.Items.Add("Crystal 3 (Skullswood)");
+            listBox1.Items.Add("Crystal 3 (Skull)");
             listBox1.Items.Add("Crystal 6 (Mire)");
             listBox1.Items.Add("Crystal 5 (Ice)");
             listBox1.Items.Add("Crystal 7 (Turtle)");

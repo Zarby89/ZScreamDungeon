@@ -100,7 +100,7 @@
             this.propertyGroupbox.Size = new System.Drawing.Size(662, 381);
             this.propertyGroupbox.TabIndex = 9;
             this.propertyGroupbox.TabStop = false;
-            this.propertyGroupbox.Text = "Patch Properties";
+            this.propertyGroupbox.Text = "Patch configuration";
             // 
             // label1
             // 
@@ -131,7 +131,7 @@
             this.patchAuthorLabel.Name = "patchAuthorLabel";
             this.patchAuthorLabel.Size = new System.Drawing.Size(78, 13);
             this.patchAuthorLabel.TabIndex = 5;
-            this.patchAuthorLabel.Text = "Patch Author : ";
+            this.patchAuthorLabel.Text = "Patch author(s): ";
             // 
             // patchDescriptionTextbox
             // 
@@ -151,7 +151,7 @@
             this.labelDescription.Name = "labelDescription";
             this.labelDescription.Size = new System.Drawing.Size(100, 13);
             this.labelDescription.TabIndex = 3;
-            this.labelDescription.Text = "Patch Description : ";
+            this.labelDescription.Text = "Patch description";
             // 
             // panel1
             // 
@@ -193,7 +193,7 @@
             this.RemoveDirectoryButton.Name = "RemoveDirectoryButton";
             this.RemoveDirectoryButton.Size = new System.Drawing.Size(194, 23);
             this.RemoveDirectoryButton.TabIndex = 5;
-            this.RemoveDirectoryButton.Text = "Remove Directory (Tab)";
+            this.RemoveDirectoryButton.Text = "Remove directory tab";
             this.RemoveDirectoryButton.UseVisualStyleBackColor = true;
             this.RemoveDirectoryButton.Click += new System.EventHandler(this.RemoveDirectoryButton_Click);
             // 
@@ -204,7 +204,7 @@
             this.AddDirectoryButton.Name = "AddDirectoryButton";
             this.AddDirectoryButton.Size = new System.Drawing.Size(194, 23);
             this.AddDirectoryButton.TabIndex = 4;
-            this.AddDirectoryButton.Text = "Add Directory (Tab)";
+            this.AddDirectoryButton.Text = "Add directory tab";
             this.AddDirectoryButton.UseVisualStyleBackColor = true;
             this.AddDirectoryButton.Click += new System.EventHandler(this.AddDirectoryButton_Click);
             // 
@@ -215,7 +215,7 @@
             this.removePluginButton.Name = "removePluginButton";
             this.removePluginButton.Size = new System.Drawing.Size(194, 23);
             this.removePluginButton.TabIndex = 3;
-            this.removePluginButton.Text = "Remove selected asm";
+            this.removePluginButton.Text = "Remove selected patch";
             this.removePluginButton.UseVisualStyleBackColor = true;
             this.removePluginButton.Click += new System.EventHandler(this.removePluginButton_Click);
             // 
@@ -226,7 +226,7 @@
             this.addPluginButton.Name = "addPluginButton";
             this.addPluginButton.Size = new System.Drawing.Size(194, 23);
             this.addPluginButton.TabIndex = 2;
-            this.addPluginButton.Text = "Add Asm Patch(es)";
+            this.addPluginButton.Text = "Add ASM Patch(es)";
             this.addPluginButton.UseVisualStyleBackColor = true;
             this.addPluginButton.Click += new System.EventHandler(this.addPluginButton_Click);
             // 
@@ -246,7 +246,7 @@
             this.refreshPluginButton.Name = "refreshPluginButton";
             this.refreshPluginButton.Size = new System.Drawing.Size(106, 23);
             this.refreshPluginButton.TabIndex = 4;
-            this.refreshPluginButton.Text = "Refresh Patches";
+            this.refreshPluginButton.Text = "Refresh patches";
             this.refreshPluginButton.UseVisualStyleBackColor = true;
             this.refreshPluginButton.Click += new System.EventHandler(this.refreshPluginButton_Click);
             // 

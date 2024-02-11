@@ -271,7 +271,7 @@ namespace ZeldaFullEditor.Gui
 
                     // TODO copy
                     e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, 16, 16));
-                    this.selectedTileLabel.Text = "Selected Tile : " + this.scene.selectedTile[0].ToString("X4");
+                    selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}";
                 }
 
                 e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
@@ -1065,7 +1065,7 @@ namespace ZeldaFullEditor.Gui
             foreach (KeyValuePair<ushort, ushort> tiles in alltilesIndexed.OrderBy(key => key.Value))
             {
                 // TODO copy
-                sb.AppendLine("Tile - " + tiles.Key.ToString("X4") + " : " + tiles.Value.ToString("X4"));
+                sb.AppendLine($"Tile - {tiles.Key:X4}: {tiles:X4}");
             }
 
             SearchTilesForm stf = new SearchTilesForm();
@@ -1145,7 +1145,8 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        public void UpdateLargeMap(int m, bool largemapChecked)
+		// TODO KAN REFACTOR THIS IS A HORRIBLE FUCKING FUNCTION AND I HATE IT AND IT NEEDS MASSIVE CLEAN UP
+		public void UpdateLargeMap(int m, bool largemapChecked)
         {
             if (largemapChecked) // Large map
             {
@@ -1155,7 +1156,8 @@ namespace ZeldaFullEditor.Gui
                     int i = 0;
                     string temp = string.Empty;
 
-                    if (this.scene.ow.AllMaps[m + 1].LargeMap)
+					// TODO KAN REFACTOR
+					if (this.scene.ow.AllMaps[m + 1].LargeMap)
                     {
                         temp += (m + 1).ToString("X2") + ", ";
                         i++;
@@ -1218,7 +1220,7 @@ namespace ZeldaFullEditor.Gui
 
                     this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps(this.scene.ow.AllMaps);
 
-                    Console.WriteLine("Updating object locations.");
+                    Console.WriteLine("Updating object locations…");
 
                     if (m < 64)
                     {
