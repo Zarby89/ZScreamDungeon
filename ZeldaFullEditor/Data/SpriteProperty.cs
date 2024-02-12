@@ -51,7 +51,7 @@ namespace ZeldaFullEditor.Data
 
         internal bool Deflectarrows { get; set; } = false;
 
-        internal bool OverrideSlashImminuty { get; set; } = false;
+        internal bool ZeroDamageOverride { get; set; } = false;
 
         internal bool DieLikeABoss { get; set; } = false;
 
@@ -124,9 +124,9 @@ namespace ZeldaFullEditor.Data
             Hitbox = (byte)(addr0DB44C & 0x1F);
 
             // $0B6B
-            TileHitBox = (byte)((addr0DB53F & 0xF0) >> 4); // Bit shifted to make it easier to set later. Before we save to rom we shift it back.
+            TileHitBox = addr0DB53F.GetHighNibble(); // Bit shifted to make it easier to set later. Before we save to rom we shift it back.
             Deflectarrows = addr0DB53F.BitIsOn(0x08);
-            OverrideSlashImminuty = addr0DB53F.BitIsOn(0x04);
+            ZeroDamageOverride = addr0DB53F.BitIsOn(0x04);
             DieLikeABoss = addr0DB53F.BitIsOn(0x02);
             Invertpitbehavior = addr0DB53F.BitIsOn(0x01);
 
@@ -135,7 +135,7 @@ namespace ZeldaFullEditor.Data
             CheckForWater = addr0DB632.BitIsOn(0x40);
             BlockedByShield = addr0DB632.BitIsOn(0x20);
             AltDamageSound = addr0DB632.BitIsOn(0x10);
-            PrizePack = (byte)(addr0DB632 & 0x0F);
+            PrizePack = addr0DB632.GetLowNibble(); ;
 
             // $0CAA
             ActiveOffScreen = addr0DB725.BitIsOn(0x80);
@@ -147,40 +147,40 @@ namespace ZeldaFullEditor.Data
             Bonkitem = addr0DB725.BitIsOn(0x02);
             NoPermaDeathInDungeons = addr0DB725.BitIsOn(0x01);
 
-            if (id <= 0xD7)
+            if (id < 0xD8)
             {
                 for (int i = 0; i < 8; i += 1)
                 {
-                    DamagesTaken[i * 2] = (byte)(DungeonsData.SpriteDamageTaken[i + (id * 8)] & 0x0F);
-                    DamagesTaken[(i * 2) + 1] = (byte)((DungeonsData.SpriteDamageTaken[i + (id * 8)] & 0xF0) >> 4);
+                    DamagesTaken[i * 2] = DungeonsData.SpriteDamageTaken[i + (id * 8)].GetLowNibble();
+                    DamagesTaken[(i * 2) + 1] = DungeonsData.SpriteDamageTaken[i + (id * 8)].GetHighNibble();
                 }
             }
         }
 
         public void SaveToROM(byte id)
         {
-            // $0E40
-            byte addr0DB080 = (byte)(IntFunctions.MakeBitfield(Harmless, DeathPrevent, LiteTileHit, false, false, false, false, false) | OAMAllocation);
+			// $0E40
+			byte addr0DB080 = (byte) (IntFunctions.MakeBitfield(bit7: Harmless, bit6: DeathPrevent, bit5: LiteTileHit) | OAMAllocation);
 
-            // $0CD2
-            byte addr0DB266 = (byte)(IntFunctions.MakeBitfield(RecoilWithoutCollision, BeeTarget, ImmunePowder, AllowedBossFight, false, false, false, false) | BumpDamageClass);
+			// $0CD2
+			byte addr0DB266 = (byte) (IntFunctions.MakeBitfield(bit7: RecoilWithoutCollision, bit6: BeeTarget, bit5: ImmunePowder, bit4: AllowedBossFight) | BumpDamageClass);
 
-            // $0E60 and $0F50 (only last 4 bits go into $0F50)
-            byte addr0DB359 = (byte)(IntFunctions.MakeBitfield(CustomDeathAnimation, Invulnerable, SmallShadow, DrawShadow, false, false, false, GraphicsPage) | (Palette << 1));
+			// $0E60 (full) and $0F50 (low nibble only)
+			byte addr0DB359 = (byte) (IntFunctions.MakeBitfield(bit7: CustomDeathAnimation, bit6: Invulnerable, bit5: SmallShadow, bit4: DrawShadow, bit0: GraphicsPage) | (Palette << 1));
 
-            // $0F60
-            byte addr0DB44C = (byte)(IntFunctions.MakeBitfield(Singlelayercollision, Ignoredbykillrooms, Persistoffscreenow) | Hitbox);
+			// $0F60
+			byte addr0DB44C = (byte) (IntFunctions.MakeBitfield(bit7: Singlelayercollision, bit6: Ignoredbykillrooms, bit5: Persistoffscreenow) | Hitbox);
 
-            // $0B6B
-            byte addr0DB53F = (byte)((TileHitBox << 4) | IntFunctions.MakeBitfield(false, false, false, false, Deflectarrows, OverrideSlashImminuty, DieLikeABoss, Invertpitbehavior));
+			// $0B6B
+			byte addr0DB53F = (byte) ((TileHitBox << 4) | IntFunctions.MakeBitfield(bit3: Deflectarrows, bit2: ZeroDamageOverride, bit1: DieLikeABoss, bit0: Invertpitbehavior));
 
-            // $0BE0
-            byte addr0DB632 = (byte)(IntFunctions.MakeBitfield(IgnorePitConveyors, CheckForWater, BlockedByShield, AltDamageSound, false, false, false, false) | PrizePack);
+			// $0BE0
+			byte addr0DB632 = (byte) (IntFunctions.MakeBitfield(bit7: IgnorePitConveyors, bit6: CheckForWater, bit5: BlockedByShield, bit4: AltDamageSound) | PrizePack);
 
-            // $0CAA
-            byte addr0DB725 = IntFunctions.MakeBitfield(ActiveOffScreen, DieOffScreen, HiddenProp, HiddenUnused, ProjectileLikeCollision, ImmuneToSwordHammer, Bonkitem, NoPermaDeathInDungeons);
+			// $0CAA
+			byte addr0DB725 = IntFunctions.MakeBitfield(bit7: ActiveOffScreen, bit6: DieOffScreen, bit5: HiddenProp, bit4: HiddenUnused, bit3: ProjectileLikeCollision, bit2: ImmuneToSwordHammer, bit1: Bonkitem, bit0: NoPermaDeathInDungeons);
 
-            ROM.Write(Constants.Sprite_0DB080 + id, addr0DB080);
+			ROM.Write(Constants.Sprite_0DB080 + id, addr0DB080);
             ROM.Write(Constants.Sprite_0DB266 + id, addr0DB266);
             ROM.Write(Constants.Sprite_0DB359 + id, addr0DB359);
             ROM.Write(Constants.Sprite_0DB44C + id, addr0DB44C);
@@ -191,14 +191,14 @@ namespace ZeldaFullEditor.Data
 
             if (id == 0)
             {
-                Console.WriteLine("addr0DB080 : " + addr0DB080.ToString("X2"));
-                Console.WriteLine("addr0DB266 : " + addr0DB266.ToString("X2"));
-                Console.WriteLine("addr0DB359 : " + addr0DB359.ToString("X2"));
-                Console.WriteLine("addr0DB44C : " + addr0DB44C.ToString("X2"));
-                Console.WriteLine("addr0DB53F : " + addr0DB53F.ToString("X2"));
-                Console.WriteLine("addr0DB632 : " + addr0DB632.ToString("X2"));
-                Console.WriteLine("addr0DB725 : " + addr0DB725.ToString("X2"));
-                Console.WriteLine("Health : " + Health.ToString("X2"));
+                Console.WriteLine($"addr0DB080: {addr0DB080:X2}");
+                Console.WriteLine($"addr0DB266: {addr0DB266:X2}");
+                Console.WriteLine($"addr0DB359: {addr0DB359:X2}");
+                Console.WriteLine($"addr0DB44C: {addr0DB44C:X2}");
+                Console.WriteLine($"addr0DB53F: {addr0DB53F:X2}");
+                Console.WriteLine($"addr0DB632: {addr0DB632:X2}");
+                Console.WriteLine($"addr0DB725: {addr0DB725:X2}");
+                Console.WriteLine($"Health: {Health:X2}");
             }
 
             for (int i = 0; i < 8; i += 1)

@@ -11,14 +11,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
             InitializeComponent();
         }
         
-        bool fromUser = false;
+        private bool fromUser = false;
 
         private void SpriteEditor_Load(object sender, EventArgs e)
         {
-            for (int i = 0; i < Sprites_Names.name.Length; i++)
-            {
-                spriteListbox.Items.Add(Sprites_Names.name[i]);
-            }
+            spriteListbox.Items.AddRange(Sprites_Names.name);
         }
 
         private void spriteListbox_SelectedIndexChanged(object sender, EventArgs e)
@@ -45,7 +42,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             recoilwithoutcollisionCheckbox.Checked = selectedProperty.RecoilWithoutCollision;
             invertpitbehaviorCheckbox.Checked = selectedProperty.Invertpitbehavior;
             dielikeabossCheckbox.Checked = selectedProperty.DieLikeABoss;
-            overrideslashimmunityCheckbox.Checked = selectedProperty.OverrideSlashImminuty;
+            overrideslashimmunityCheckbox.Checked = selectedProperty.ZeroDamageOverride;
             deflectarrowsCheckbox.Checked = selectedProperty.Deflectarrows;
             persistoffscreenowCheckbox.Checked = selectedProperty.Persistoffscreenow;
             ignoredbykillroomsCheckbox.Checked = selectedProperty.Ignoredbykillrooms;
@@ -61,6 +58,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             blockedbyshieldCheckbox.Checked = selectedProperty.BlockedByShield;
             checkforwaterCheckbox.Checked = selectedProperty.CheckForWater;
             nopermadeathindungeonsCheckbox.Checked = selectedProperty.NoPermaDeathInDungeons;
+
+            DamageSubclassGroupBox.Enabled = spriteListbox.SelectedIndex < 0xD8;
 
             damage00Hexbox.HexValue = selectedProperty.DamagesTaken[0];
             damage01Hexbox.HexValue = selectedProperty.DamagesTaken[1];
@@ -78,6 +77,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             damage0dHexbox.HexValue = selectedProperty.DamagesTaken[13];
             damage0eHexbox.HexValue = selectedProperty.DamagesTaken[14];
             damage0fHexbox.HexValue = selectedProperty.DamagesTaken[15];
+
             fromUser = true;
         }
 
@@ -95,7 +95,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             if (fromUser)
             {
-                SpriteProperty selectedProperty = DungeonsData.SpriteProperties[spriteListbox.SelectedIndex];
+                var selectedProperty = DungeonsData.SpriteProperties[spriteListbox.SelectedIndex];
 
                 selectedProperty.Harmless = harmlessCheckbox.Checked;
                 selectedProperty.SmallShadow = smallshadowCheckbox.Checked;
@@ -107,7 +107,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 selectedProperty.RecoilWithoutCollision = recoilwithoutcollisionCheckbox.Checked;
                 selectedProperty.Invertpitbehavior = invertpitbehaviorCheckbox.Checked;
                 selectedProperty.DieLikeABoss = dielikeabossCheckbox.Checked;
-                selectedProperty.OverrideSlashImminuty = overrideslashimmunityCheckbox.Checked;
+                selectedProperty.ZeroDamageOverride = overrideslashimmunityCheckbox.Checked;
                 selectedProperty.Deflectarrows = deflectarrowsCheckbox.Checked;
                 selectedProperty.Persistoffscreenow = persistoffscreenowCheckbox.Checked;
                 selectedProperty.Ignoredbykillrooms = ignoredbykillroomsCheckbox.Checked;
@@ -148,15 +148,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 selectedProperty.DamagesTaken[13] = (byte)damage0dHexbox.HexValue;
                 selectedProperty.DamagesTaken[14] = (byte)damage0eHexbox.HexValue;
                 selectedProperty.DamagesTaken[15] = (byte)damage0fHexbox.HexValue;
-            }
-        }
-
-        private void sprsaveButton_Click(object sender, EventArgs e)
-        {
-            Console.Write("NBR OF SPRITES : " + DungeonsData.SpriteProperties.Count.ToString());
-            for (int i = 0; i < DungeonsData.SpriteProperties.Count; i++)
-            {
-                DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
             }
         }
     }

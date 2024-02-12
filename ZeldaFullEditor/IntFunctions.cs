@@ -21,6 +21,12 @@
 
 		public static bool BitsAllSet(this ushort b, ushort test) => (b & test) == test;
 
+		public static byte GetLowNibble(this int b) => (byte) (b & 0xF);
+		public static byte GetHighNibble(this int b) => (byte) ((b >> 4) & 0xF);
+		public static byte GetLowNibble(this byte b) => (byte) (b & 0xF);
+		public static byte GetHighNibble(this byte b) => (byte) ((b >> 4) & 0xF);
+
+
 		public static byte GetMaskWithLowSignificance(this byte b, byte mask)
 		{
 			int i = 0;
@@ -33,18 +39,18 @@
 		}
 
 		public static byte MakeBitfield(
-			bool b7 = false, bool b6 = false, bool b5 = false, bool b4 = false,
-			bool b3 = false, bool b2 = false, bool b1 = false, bool b0 = false)
+			bool bit7 = false, bool bit6 = false, bool bit5 = false, bool bit4 = false,
+			bool bit3 = false, bool bit2 = false, bool bit1 = false, bool bit0 = false)
 		{
-			return (byte)(
-				(b0 ? (1 << 0) : 0) |
-				(b1 ? (1 << 1) : 0) |
-				(b2 ? (1 << 2) : 0) |
-				(b3 ? (1 << 3) : 0) |
-				(b4 ? (1 << 4) : 0) |
-				(b5 ? (1 << 5) : 0) |
-				(b6 ? (1 << 6) : 0) |
-                (b7 ? (1 << 7) : 0));
+			return (byte) (
+				(bit0 ? (1 << 0) : 0) |
+				(bit1 ? (1 << 1) : 0) |
+				(bit2 ? (1 << 2) : 0) |
+				(bit3 ? (1 << 3) : 0) |
+				(bit4 ? (1 << 4) : 0) |
+				(bit5 ? (1 << 5) : 0) |
+				(bit6 ? (1 << 6) : 0) |
+				(bit7 ? (1 << 7) : 0));
 		}
 
 		public static int Clamp(this int v, int min, int max)
