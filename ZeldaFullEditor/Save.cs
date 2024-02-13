@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using AsarCLR;
 using ZCompressLibrary;
-using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -57,7 +55,7 @@ namespace ZeldaFullEditor
             if (headerPointer < 0x100000)
             {
                 var movePointer = new MovePointer();
-                movePointer.ShowDialog();
+                _ = movePointer.ShowDialog();
                 headerPointer = movePointer.address;
 
                 int address = Utils.PcToSnes(movePointer.address);
@@ -221,9 +219,10 @@ namespace ZeldaFullEditor
                 }
             }
 
-            string projectFilename = MainForm.projectFilename;
+            // TODO: Use this:
+            // string projectFilename = MainForm.projectFilename;
 
-            Asar.init();
+            _ = Asar.init();
 
             // TODO: handle differently in projects.
             if (File.Exists("CustomCollision.asm"))
@@ -339,7 +338,7 @@ namespace ZeldaFullEditor
                 ROM.WriteShort(Constants.OverworldCustomSubscreenOverlayArray + (i * 2), scene.ow.AllMaps[i].SubscreenOverlay);
             }
 
-            Asar.init();
+            _ = Asar.init();
 
             // TODO: handle differently in projects.
             if (File.Exists("ZSCustomOverworld.asm"))
@@ -745,7 +744,7 @@ namespace ZeldaFullEditor
             if (ROM.AdvancedLogs)
             {
                 int bp = 2;
-                ROM.romLog.Append(bytes[0].ToString("X2") + ", " + bytes[1].ToString("X2") + "// Room Layout and Floors\r\n");
+                _ = ROM.romLog.Append(bytes[0].ToString("X2") + ", " + bytes[1].ToString("X2") + "// Room Layout and Floors\r\n");
                 while (bp < bytes.Length)
                 {
                     for (int i = 0; i < 32; i++)
@@ -755,10 +754,10 @@ namespace ZeldaFullEditor
                             break;
                         }
 
-                        ROM.romLog.Append(bytes[bp++].ToString("X2") + " ");
+                        _ = ROM.romLog.Append(bytes[bp++].ToString("X2") + " ");
                     }
 
-                    ROM.romLog.Append("\r\n");
+                    _ = ROM.romLog.Append("\r\n");
                 }
             }
 
@@ -1667,7 +1666,7 @@ namespace ZeldaFullEditor
                 return true;
             }
 
-            SaveLargeMaps(scene);
+            _ = SaveLargeMaps(scene);
 
             return false;
 
@@ -2154,7 +2153,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            Asar.init();
+            _ = Asar.init();
 
             // TODO: Handle differently in projects.
             if (File.Exists("newgraves.asm"))
@@ -2195,7 +2194,7 @@ namespace ZeldaFullEditor
 
         public bool SaveOverworldMiniMap()
         {
-            this.MainForm.screenEditor.saveOverworldMap();
+            _ = this.MainForm.screenEditor.saveOverworldMap();
             return false;
         }
 
@@ -2215,7 +2214,7 @@ namespace ZeldaFullEditor
             if (headerPointer < 0x100000)
             {
                 var movePointer = new MovePointer();
-                movePointer.ShowDialog();
+                _ = movePointer.ShowDialog();
                 headerPointer = movePointer.address;
 
                 int address = Utils.PcToSnes(movePointer.address);
@@ -2474,7 +2473,7 @@ namespace ZeldaFullEditor
             if (ROM.AdvancedLogs)
             {
                 int bp = 2;
-                ROM.romLog.Append(bytes[0].ToString("X2") + ", " + bytes[1].ToString("X2") + "// Room Layout and Floors\r\n");
+                _ = ROM.romLog.Append(bytes[0].ToString("X2") + ", " + bytes[1].ToString("X2") + "// Room Layout and Floors\r\n");
                 while (bp < bytes.Length)
                 {
                     for (int i = 0; i < 32; i++)
@@ -2484,11 +2483,11 @@ namespace ZeldaFullEditor
                             break;
                         }
 
-                        ROM.romLog.Append(bytes[bp].ToString("X2") + " ");
+                        _ = ROM.romLog.Append(bytes[bp].ToString("X2") + " ");
                         bp++;
                     }
 
-                    ROM.romLog.Append("\r\n");
+                    _ = ROM.romLog.Append("\r\n");
                 }
             }
 
@@ -2730,14 +2729,12 @@ namespace ZeldaFullEditor
             return false; // False = no error.
         }
 
-
         public bool SaveSpritesDamages()
         {
-            
             byte[] cData = Compress.ALTTPCompressOverworld(DungeonsData.SpriteDamageTaken, 0, DungeonsData.SpriteDamageTaken.Length);
             if (cData.Length >= 0x1000)
             {
-                MessageBox.Show("Too much sprite damage taken data this data is compressed something must have been wrong");
+                _ = MessageBox.Show("Too much sprite damage taken data this data is compressed something must have been wrong");
                 return true;
             }
 

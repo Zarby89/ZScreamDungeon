@@ -91,12 +91,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
             damage07Hexbox.HexValue = selectedProperty.DamagesTaken[7];
             damage08Hexbox.HexValue = selectedProperty.DamagesTaken[8];
             damage09Hexbox.HexValue = selectedProperty.DamagesTaken[9];
-            damage0aHexbox.HexValue = selectedProperty.DamagesTaken[10];
-            damage0bHexbox.HexValue = selectedProperty.DamagesTaken[11];
-            damage0cHexbox.HexValue = selectedProperty.DamagesTaken[12];
-            damage0dHexbox.HexValue = selectedProperty.DamagesTaken[13];
-            damage0eHexbox.HexValue = selectedProperty.DamagesTaken[14];
-            damage0fHexbox.HexValue = selectedProperty.DamagesTaken[15];
+            damage0AHexBox.HexValue = selectedProperty.DamagesTaken[10];
+            damage0BHexBox.HexValue = selectedProperty.DamagesTaken[11];
+            damage0CHexBox.HexValue = selectedProperty.DamagesTaken[12];
+            damage0DHexBox.HexValue = selectedProperty.DamagesTaken[13];
+            damage0EHexBox.HexValue = selectedProperty.DamagesTaken[14];
+            damage0FHexBox.HexValue = selectedProperty.DamagesTaken[15];
 
             fromUser = true;
         }
@@ -165,12 +165,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
             selectedProperty.DamagesTaken[7] = (byte)damage07Hexbox.HexValue;
             selectedProperty.DamagesTaken[8] = (byte)damage08Hexbox.HexValue;
             selectedProperty.DamagesTaken[9] = (byte)damage09Hexbox.HexValue;
-            selectedProperty.DamagesTaken[10] = (byte)damage0aHexbox.HexValue;
-            selectedProperty.DamagesTaken[11] = (byte)damage0bHexbox.HexValue;
-            selectedProperty.DamagesTaken[12] = (byte)damage0cHexbox.HexValue;
-            selectedProperty.DamagesTaken[13] = (byte)damage0dHexbox.HexValue;
-            selectedProperty.DamagesTaken[14] = (byte)damage0eHexbox.HexValue;
-            selectedProperty.DamagesTaken[15] = (byte)damage0fHexbox.HexValue;
+            selectedProperty.DamagesTaken[10] = (byte)damage0AHexBox.HexValue;
+            selectedProperty.DamagesTaken[11] = (byte)damage0BHexBox.HexValue;
+            selectedProperty.DamagesTaken[12] = (byte)damage0CHexBox.HexValue;
+            selectedProperty.DamagesTaken[13] = (byte)damage0DHexBox.HexValue;
+            selectedProperty.DamagesTaken[14] = (byte)damage0EHexBox.HexValue;
+            selectedProperty.DamagesTaken[15] = (byte)damage0FHexBox.HexValue;
         }
     }
 }

@@ -697,7 +697,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
-                DungeonsData.AllRooms[i] = new Room(i, this.loadFromExported); // Create all rooms
+                DungeonsData.AllRooms[i] = new Room(i, this.loadFromExported); // Create all rooms.
                 DungeonsData.UndoRoom[i] = new List<Room>();
                 DungeonsData.RedoRoom[i] = new List<Room>();
             }
@@ -769,8 +769,6 @@ namespace ZeldaFullEditor
                 this.selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
             }
 
-
-
             /*
             string s = "";
 
@@ -828,7 +826,7 @@ namespace ZeldaFullEditor
             this.overworldEditor.InitOpen(this);
             this.textEditor.InitializeOnOpen();
             this.screenEditor.Init();
-            //InitDungeonViewer();
+            // InitDungeonViewer();
             this.mapPicturebox.Refresh();
 
             int compsize = 0;
@@ -919,10 +917,10 @@ namespace ZeldaFullEditor
             }
         }
 
-        // TODO: copy and reconfiguring
+        // TODO: Copy and reconfiguring 
         public void InitEntrancesList()
         {
-            // Entrances
+            // Entrances 
             for (int i = 0; i < 0x07; i++)
             {
                 DungeonsData.StartingEntrances[i] = new Entrance((byte)i, true);
@@ -977,13 +975,13 @@ namespace ZeldaFullEditor
             this.bg1modeButton.Enabled = true;
             this.chestmodeButton.Enabled = true;
             this.saveButton.Enabled = true;
-            this.doormodeButton.Enabled = true; // Door mode changed on bg
+            this.doormodeButton.Enabled = true; // Door mode changed on bg.
             this.blockmodeButton.Enabled = true;
             this.torchmodeButton.Enabled = true;
             this.spritemodeButton.Enabled = true;
             this.debugtestButton.Enabled = true;
             this.runtestButton.Enabled = true;
-            this.potmodeButton.Enabled = true; // Can't change to sprite since sprites are using 16x16
+            this.potmodeButton.Enabled = true; // Can't change to sprite since sprites are using 16x16.
             this.saveToolStripMenuItem.Enabled = true;
             this.saveToNewROMToolStripMenuItem.Enabled = true;
             this.saveasToolStripMenuItem.Enabled = true;

@@ -75,14 +75,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.paletteHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.oamslotHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.DamageSubclassGroupBox = new System.Windows.Forms.GroupBox();
-            this.damage0fHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.damage0eHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.damage0dHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0FHexBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0EHexBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0DHexBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label25 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.damage0bHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.damage0aHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0BHexBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0AHexBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.damage09Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -95,7 +95,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.damage0cHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.damage0CHexBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label13 = new System.Windows.Forms.Label();
             this.damage08Hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label12 = new System.Windows.Forms.Label();
@@ -700,14 +700,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.DamageSubclassGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DamageSubclassGroupBox.Controls.Add(this.damage0fHexbox);
-            this.DamageSubclassGroupBox.Controls.Add(this.damage0eHexbox);
-            this.DamageSubclassGroupBox.Controls.Add(this.damage0dHexbox);
+            this.DamageSubclassGroupBox.Controls.Add(this.damage0FHexBox);
+            this.DamageSubclassGroupBox.Controls.Add(this.damage0EHexBox);
+            this.DamageSubclassGroupBox.Controls.Add(this.damage0DHexBox);
             this.DamageSubclassGroupBox.Controls.Add(this.label25);
             this.DamageSubclassGroupBox.Controls.Add(this.label24);
             this.DamageSubclassGroupBox.Controls.Add(this.label23);
-            this.DamageSubclassGroupBox.Controls.Add(this.damage0bHexbox);
-            this.DamageSubclassGroupBox.Controls.Add(this.damage0aHexbox);
+            this.DamageSubclassGroupBox.Controls.Add(this.damage0BHexBox);
+            this.DamageSubclassGroupBox.Controls.Add(this.damage0AHexBox);
             this.DamageSubclassGroupBox.Controls.Add(this.damage09Hexbox);
             this.DamageSubclassGroupBox.Controls.Add(this.label22);
             this.DamageSubclassGroupBox.Controls.Add(this.label21);
@@ -720,7 +720,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.DamageSubclassGroupBox.Controls.Add(this.label16);
             this.DamageSubclassGroupBox.Controls.Add(this.label15);
             this.DamageSubclassGroupBox.Controls.Add(this.label14);
-            this.DamageSubclassGroupBox.Controls.Add(this.damage0cHexbox);
+            this.DamageSubclassGroupBox.Controls.Add(this.damage0CHexBox);
             this.DamageSubclassGroupBox.Controls.Add(this.label13);
             this.DamageSubclassGroupBox.Controls.Add(this.damage08Hexbox);
             this.DamageSubclassGroupBox.Controls.Add(this.label12);
@@ -741,51 +741,51 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             // damage0fHexbox
             // 
-            this.damage0fHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.damage0fHexbox.Decimal = false;
-            this.damage0fHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-            this.damage0fHexbox.HexValue = 0;
-            this.damage0fHexbox.Location = new System.Drawing.Point(511, 92);
-            this.damage0fHexbox.MaxLength = 1;
-            this.damage0fHexbox.MaxValue = 15;
-            this.damage0fHexbox.MinValue = 0;
-            this.damage0fHexbox.Name = "damage0fHexbox";
-            this.damage0fHexbox.Size = new System.Drawing.Size(29, 20);
-            this.damage0fHexbox.TabIndex = 95;
-            this.damage0fHexbox.Text = "0";
-            this.damage0fHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            this.damage0FHexBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0FHexBox.Decimal = false;
+            this.damage0FHexBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0FHexBox.HexValue = 0;
+            this.damage0FHexBox.Location = new System.Drawing.Point(511, 92);
+            this.damage0FHexBox.MaxLength = 1;
+            this.damage0FHexBox.MaxValue = 15;
+            this.damage0FHexBox.MinValue = 0;
+            this.damage0FHexBox.Name = "damage0fHexbox";
+            this.damage0FHexBox.Size = new System.Drawing.Size(29, 20);
+            this.damage0FHexBox.TabIndex = 95;
+            this.damage0FHexBox.Text = "0";
+            this.damage0FHexBox.TextChanged += new System.EventHandler(this.properties_TextChanged);
             // 
             // damage0eHexbox
             // 
-            this.damage0eHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.damage0eHexbox.Decimal = false;
-            this.damage0eHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-            this.damage0eHexbox.HexValue = 0;
-            this.damage0eHexbox.Location = new System.Drawing.Point(511, 66);
-            this.damage0eHexbox.MaxLength = 1;
-            this.damage0eHexbox.MaxValue = 15;
-            this.damage0eHexbox.MinValue = 0;
-            this.damage0eHexbox.Name = "damage0eHexbox";
-            this.damage0eHexbox.Size = new System.Drawing.Size(29, 20);
-            this.damage0eHexbox.TabIndex = 94;
-            this.damage0eHexbox.Text = "0";
-            this.damage0eHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            this.damage0EHexBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0EHexBox.Decimal = false;
+            this.damage0EHexBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0EHexBox.HexValue = 0;
+            this.damage0EHexBox.Location = new System.Drawing.Point(511, 66);
+            this.damage0EHexBox.MaxLength = 1;
+            this.damage0EHexBox.MaxValue = 15;
+            this.damage0EHexBox.MinValue = 0;
+            this.damage0EHexBox.Name = "damage0eHexbox";
+            this.damage0EHexBox.Size = new System.Drawing.Size(29, 20);
+            this.damage0EHexBox.TabIndex = 94;
+            this.damage0EHexBox.Text = "0";
+            this.damage0EHexBox.TextChanged += new System.EventHandler(this.properties_TextChanged);
             // 
             // damage0dHexbox
             // 
-            this.damage0dHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.damage0dHexbox.Decimal = false;
-            this.damage0dHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-            this.damage0dHexbox.HexValue = 0;
-            this.damage0dHexbox.Location = new System.Drawing.Point(511, 40);
-            this.damage0dHexbox.MaxLength = 1;
-            this.damage0dHexbox.MaxValue = 15;
-            this.damage0dHexbox.MinValue = 0;
-            this.damage0dHexbox.Name = "damage0dHexbox";
-            this.damage0dHexbox.Size = new System.Drawing.Size(29, 20);
-            this.damage0dHexbox.TabIndex = 93;
-            this.damage0dHexbox.Text = "0";
-            this.damage0dHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            this.damage0DHexBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0DHexBox.Decimal = false;
+            this.damage0DHexBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0DHexBox.HexValue = 0;
+            this.damage0DHexBox.Location = new System.Drawing.Point(511, 40);
+            this.damage0DHexBox.MaxLength = 1;
+            this.damage0DHexBox.MaxValue = 15;
+            this.damage0DHexBox.MinValue = 0;
+            this.damage0DHexBox.Name = "damage0dHexbox";
+            this.damage0DHexBox.Size = new System.Drawing.Size(29, 20);
+            this.damage0DHexBox.TabIndex = 93;
+            this.damage0DHexBox.Text = "0";
+            this.damage0DHexBox.TextChanged += new System.EventHandler(this.properties_TextChanged);
             // 
             // label25
             // 
@@ -816,35 +816,35 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             // damage0bHexbox
             // 
-            this.damage0bHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.damage0bHexbox.Decimal = false;
-            this.damage0bHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-            this.damage0bHexbox.HexValue = 0;
-            this.damage0bHexbox.Location = new System.Drawing.Point(374, 92);
-            this.damage0bHexbox.MaxLength = 1;
-            this.damage0bHexbox.MaxValue = 15;
-            this.damage0bHexbox.MinValue = 0;
-            this.damage0bHexbox.Name = "damage0bHexbox";
-            this.damage0bHexbox.Size = new System.Drawing.Size(29, 20);
-            this.damage0bHexbox.TabIndex = 89;
-            this.damage0bHexbox.Text = "0";
-            this.damage0bHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            this.damage0BHexBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0BHexBox.Decimal = false;
+            this.damage0BHexBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0BHexBox.HexValue = 0;
+            this.damage0BHexBox.Location = new System.Drawing.Point(374, 92);
+            this.damage0BHexBox.MaxLength = 1;
+            this.damage0BHexBox.MaxValue = 15;
+            this.damage0BHexBox.MinValue = 0;
+            this.damage0BHexBox.Name = "damage0bHexbox";
+            this.damage0BHexBox.Size = new System.Drawing.Size(29, 20);
+            this.damage0BHexBox.TabIndex = 89;
+            this.damage0BHexBox.Text = "0";
+            this.damage0BHexBox.TextChanged += new System.EventHandler(this.properties_TextChanged);
             // 
             // damage0aHexbox
             // 
-            this.damage0aHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.damage0aHexbox.Decimal = false;
-            this.damage0aHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-            this.damage0aHexbox.HexValue = 0;
-            this.damage0aHexbox.Location = new System.Drawing.Point(374, 66);
-            this.damage0aHexbox.MaxLength = 1;
-            this.damage0aHexbox.MaxValue = 15;
-            this.damage0aHexbox.MinValue = 0;
-            this.damage0aHexbox.Name = "damage0aHexbox";
-            this.damage0aHexbox.Size = new System.Drawing.Size(29, 20);
-            this.damage0aHexbox.TabIndex = 88;
-            this.damage0aHexbox.Text = "0";
-            this.damage0aHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            this.damage0AHexBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0AHexBox.Decimal = false;
+            this.damage0AHexBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0AHexBox.HexValue = 0;
+            this.damage0AHexBox.Location = new System.Drawing.Point(374, 66);
+            this.damage0AHexBox.MaxLength = 1;
+            this.damage0AHexBox.MaxValue = 15;
+            this.damage0AHexBox.MinValue = 0;
+            this.damage0AHexBox.Name = "damage0aHexbox";
+            this.damage0AHexBox.Size = new System.Drawing.Size(29, 20);
+            this.damage0AHexBox.TabIndex = 88;
+            this.damage0AHexBox.Text = "0";
+            this.damage0AHexBox.TextChanged += new System.EventHandler(this.properties_TextChanged);
             // 
             // damage09Hexbox
             // 
@@ -984,19 +984,19 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             // damage0cHexbox
             // 
-            this.damage0cHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.damage0cHexbox.Decimal = false;
-            this.damage0cHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-            this.damage0cHexbox.HexValue = 0;
-            this.damage0cHexbox.Location = new System.Drawing.Point(511, 13);
-            this.damage0cHexbox.MaxLength = 1;
-            this.damage0cHexbox.MaxValue = 15;
-            this.damage0cHexbox.MinValue = 0;
-            this.damage0cHexbox.Name = "damage0cHexbox";
-            this.damage0cHexbox.Size = new System.Drawing.Size(29, 20);
-            this.damage0cHexbox.TabIndex = 75;
-            this.damage0cHexbox.Text = "0";
-            this.damage0cHexbox.TextChanged += new System.EventHandler(this.properties_TextChanged);
+            this.damage0CHexBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.damage0CHexBox.Decimal = false;
+            this.damage0CHexBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+            this.damage0CHexBox.HexValue = 0;
+            this.damage0CHexBox.Location = new System.Drawing.Point(511, 13);
+            this.damage0CHexBox.MaxLength = 1;
+            this.damage0CHexBox.MaxValue = 15;
+            this.damage0CHexBox.MinValue = 0;
+            this.damage0CHexBox.Name = "damage0cHexbox";
+            this.damage0CHexBox.Size = new System.Drawing.Size(29, 20);
+            this.damage0CHexBox.TabIndex = 75;
+            this.damage0CHexBox.Text = "0";
+            this.damage0CHexBox.TextChanged += new System.EventHandler(this.properties_TextChanged);
             // 
             // label13
             // 
@@ -1247,19 +1247,19 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
-        private ExtraForms.Hexbox damage0cHexbox;
+        private ExtraForms.Hexbox damage0CHexBox;
         private System.Windows.Forms.Label label13;
         private ExtraForms.Hexbox damage08Hexbox;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
-        private ExtraForms.Hexbox damage0fHexbox;
-        private ExtraForms.Hexbox damage0eHexbox;
-        private ExtraForms.Hexbox damage0dHexbox;
+        private ExtraForms.Hexbox damage0FHexBox;
+        private ExtraForms.Hexbox damage0EHexBox;
+        private ExtraForms.Hexbox damage0DHexBox;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;
-        private ExtraForms.Hexbox damage0bHexbox;
-        private ExtraForms.Hexbox damage0aHexbox;
+        private ExtraForms.Hexbox damage0BHexBox;
+        private ExtraForms.Hexbox damage0AHexBox;
         private ExtraForms.Hexbox damage09Hexbox;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
