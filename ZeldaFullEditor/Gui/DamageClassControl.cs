@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
@@ -13,8 +7,16 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class DamageClassControl : UserControl
     {
-        Bitmap controlBitmap;
-        byte[] origDamages = new byte[0x80];
+        private Bitmap controlBitmap;
+        private byte[] origDamages = new byte[0x80];
+        private int selectedX = 0;
+        private int selectedY = 0;
+        private int prevselectedX = 0;
+        private int prevselectedY = 0;
+        private int selectedIndex = -1;
+        private int lastselectedIndex = -1;
+        private bool top = false;
+        private bool mouseDown = false;
 
         public DamageClassControl()
         {
@@ -23,21 +25,12 @@ namespace ZeldaFullEditor.Gui
             MouseWheel += DamageClassControl_MouseWheel;
         }
 
-        int selectedX = 0;
-        int selectedY = 0;
-        int prevselectedX = 0;
-        int prevselectedY = 0;
-        int selectedIndex = -1;
-        int lastselectedIndex = -1;
-        bool top = false;
-        bool mouseDown = false;
         private void DamageClassControl_Paint(object sender, PaintEventArgs e)
         {
-           
             e.Graphics.DrawImage(controlBitmap, new Rectangle(0,0,302,272), new Rectangle(0, 0, 302, 272), GraphicsUnit.Pixel);
             for (int j = 0; j < 16; j++)
             {
-                //e.Graphics.DrawString(globalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Black, new Point(40 + (j * 32), ));
+                // e.Graphics.DrawString(globalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Black, new Point(40 + (j * 32), ));
                 for (int i = 0; i < 8; i++)
                 {
                     if (DungeonsData.globalDamages[i + (j * 8)] != origDamages[i + (j * 8)])
@@ -48,9 +41,9 @@ namespace ZeldaFullEditor.Gui
                     {
                         e.Graphics.DrawString(DungeonsData.globalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Black, new Point(48 + (i * 32), 18 + (j * 16)));
                     }
-                   
                 }
             }
+
             if (selectedIndex != -1)
             {
                 if (selectedIndex >= 128) // below 128 are the boxes themselves
@@ -78,7 +71,6 @@ namespace ZeldaFullEditor.Gui
             {
                 for (int x = 0; x < 8; x++)
                 {
-
                     if (e.X >= 68 + (x * 32) && e.X <= 78 + (x * 32))
                     {
                         if (e.Y >= 16 + (y * 16) && e.Y <= 24 + (y * 16)) // 1st top arrow
@@ -87,7 +79,6 @@ namespace ZeldaFullEditor.Gui
                             selectedIndex = 0 + (x * 2) + (y * 16) + 128;
                             selectedX = 69 + (x * 32);
                             selectedY = 17 + (y * 16);
-                            
                         }
 
                         if (e.Y >= 25 + (y * 16) && e.Y <= 32 + (y * 16)) // 1st bottom arrow
@@ -124,25 +115,19 @@ namespace ZeldaFullEditor.Gui
                     this.Invalidate(new Rectangle(selectedX - 32, selectedY - 32, 64, 64));
                     this.Invalidate(new Rectangle(prevselectedX - 32, prevselectedY - 32, 64, 64));
                 }
+
                 prevselectedX = selectedX;
                 prevselectedY = selectedY;
             }
-
-            
-
-
-
-            
         }
 
         private void DamageClassControl_MouseDown(object sender, MouseEventArgs e)
         {
-            
             if (selectedIndex >= 128)
             {
                 buttonStartTimer.Enabled = true;
                 mouseDown = true;
-                if ((((selectedIndex - 128)) & 1) == 1)
+                if (((selectedIndex - 128) & 1) == 1)
                 {
                     DungeonsData.globalDamages[(selectedIndex - 128) / 2] -= 1;
                     this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
@@ -152,7 +137,6 @@ namespace ZeldaFullEditor.Gui
                     DungeonsData.globalDamages[(selectedIndex - 128) / 2] += 1;
                     this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
                 }
-                
             }
         }
 
@@ -161,9 +145,15 @@ namespace ZeldaFullEditor.Gui
             int index = selectedIndex;
             if (selectedIndex >= 128)
             {
-                index = ((selectedIndex - 128) / 2);
+                index = (selectedIndex - 128) / 2;
                 this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
             }
+
+            if (index < 0)
+            {
+                return;
+            }
+
             if (e.Delta > 0)
             {
                 DungeonsData.globalDamages[index] += 1;
@@ -173,6 +163,7 @@ namespace ZeldaFullEditor.Gui
             {
                 DungeonsData.globalDamages[index] -= 1;
             }
+
             this.Invalidate(new Rectangle(selectedX, selectedY, 32, 28));
         }
 
@@ -186,19 +177,15 @@ namespace ZeldaFullEditor.Gui
         private void buttonStartTimer_Tick(object sender, EventArgs e)
         {
             buttonTimer.Enabled = true;
-            
         }
 
         private void buttonTimer_Tick(object sender, EventArgs e)
         {
-
-            
-           
             if (mouseDown)
             {
                 if (selectedIndex >= 128)
                 { 
-                    if ((((selectedIndex - 128)) & 1) == 1)
+                    if (((selectedIndex - 128) & 1) == 1)
                     {
                         DungeonsData.globalDamages[(selectedIndex - 128) / 2] -= 1;
                         this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));

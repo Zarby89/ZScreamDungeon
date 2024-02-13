@@ -22,6 +22,17 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             fromUser = false;
 
+            groupBox1.Enabled = spriteListbox.SelectedIndex < 0xF3;
+            if (!groupBox1.Enabled)
+            {
+                groupBox1.Text = "Selected sprite's properties";
+
+                fromUser = true;
+                return;
+            }
+
+            groupBox1.Text = "Selected sprite's properties: " + spriteListbox.SelectedItem.ToString();
+
             SpriteProperty selectedProperty = DungeonsData.SpriteProperties[spriteListbox.SelectedIndex];
 
             oamslotHexbox.HexValue = selectedProperty.OAMAllocation;
@@ -60,6 +71,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
             nopermadeathindungeonsCheckbox.Checked = selectedProperty.NoPermaDeathInDungeons;
 
             DamageSubclassGroupBox.Enabled = spriteListbox.SelectedIndex < 0xD8;
+            if (!DamageSubclassGroupBox.Enabled)
+            {
+                DamageSubclassGroupBox.Text = "Selected sprite's damage subclasses";
+
+                fromUser = true;
+                return;
+            }
+
+            DamageSubclassGroupBox.Text = "Selected sprite's damage subclasses: " + spriteListbox.SelectedItem.ToString();
 
             damage00Hexbox.HexValue = selectedProperty.DamagesTaken[0];
             damage01Hexbox.HexValue = selectedProperty.DamagesTaken[1];
@@ -93,62 +113,64 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         private void updateAllProperties()
         {
-            if (fromUser)
+            if (!fromUser)
             {
-                var selectedProperty = DungeonsData.SpriteProperties[spriteListbox.SelectedIndex];
-
-                selectedProperty.Harmless = harmlessCheckbox.Checked;
-                selectedProperty.SmallShadow = smallshadowCheckbox.Checked;
-                selectedProperty.Invulnerable = invulnerableCheckbox.Checked;
-                selectedProperty.CustomDeathAnimation = customdeathanimationCheckbox.Checked;
-                selectedProperty.AllowedBossFight = allowedbossfightCheckbox.Checked;
-                selectedProperty.ImmunePowder = immunepowderCheckbox.Checked;
-                selectedProperty.BeeTarget = beetargetCheckbox.Checked;
-                selectedProperty.RecoilWithoutCollision = recoilwithoutcollisionCheckbox.Checked;
-                selectedProperty.Invertpitbehavior = invertpitbehaviorCheckbox.Checked;
-                selectedProperty.DieLikeABoss = dielikeabossCheckbox.Checked;
-                selectedProperty.ZeroDamageOverride = overrideslashimmunityCheckbox.Checked;
-                selectedProperty.Deflectarrows = deflectarrowsCheckbox.Checked;
-                selectedProperty.Persistoffscreenow = persistoffscreenowCheckbox.Checked;
-                selectedProperty.Ignoredbykillrooms = ignoredbykillroomsCheckbox.Checked;
-                selectedProperty.Singlelayercollision = singlelayercollisionCheckbox.Checked;
-                selectedProperty.GraphicsPage = graphicspageCheckbox.Checked;
-                selectedProperty.DrawShadow = drawshadowCheckbox.Checked;
-                selectedProperty.Bonkitem = immunearrowrumbleableCheckbox.Checked;
-                selectedProperty.ImmuneToSwordHammer = immuneswordhammerCheckbox.Checked;
-                selectedProperty.ProjectileLikeCollision = projectilelikecollisionCheckbox.Checked;
-                selectedProperty.DieOffScreen = dieoffscreenCheckbox.Checked;
-                selectedProperty.ActiveOffScreen = activeoffscreenCheckbox.Checked;
-                selectedProperty.AltDamageSound = bossdamagesoundCheckbox.Checked;
-                selectedProperty.BlockedByShield = blockedbyshieldCheckbox.Checked;
-                selectedProperty.CheckForWater = checkforwaterCheckbox.Checked;
-                selectedProperty.NoPermaDeathInDungeons = nopermadeathindungeonsCheckbox.Checked;
-
-                selectedProperty.OAMAllocation = (byte)oamslotHexbox.HexValue;
-                selectedProperty.BumpDamageClass = (byte)damagetypeHexbox.HexValue;
-                selectedProperty.Hitbox = (byte)hitboxHexbox.HexValue;
-                selectedProperty.TileHitBox = (byte)inthitHexbox.HexValue;
-                selectedProperty.Palette = (byte)paletteHexbox.HexValue;
-                selectedProperty.PrizePack = (byte)prizepackHexbox.HexValue;
-                selectedProperty.Health = (byte)healthHexbox.HexValue;
-
-                selectedProperty.DamagesTaken[0] = (byte)damage00Hexbox.HexValue;
-                selectedProperty.DamagesTaken[1] = (byte)damage01Hexbox.HexValue;
-                selectedProperty.DamagesTaken[2] = (byte)damage02Hexbox.HexValue;
-                selectedProperty.DamagesTaken[3] = (byte)damage03Hexbox.HexValue;
-                selectedProperty.DamagesTaken[4] = (byte)damage04Hexbox.HexValue;
-                selectedProperty.DamagesTaken[5] = (byte)damage05Hexbox.HexValue;
-                selectedProperty.DamagesTaken[6] = (byte)damage06Hexbox.HexValue;
-                selectedProperty.DamagesTaken[7] = (byte)damage07Hexbox.HexValue;
-                selectedProperty.DamagesTaken[8] = (byte)damage08Hexbox.HexValue;
-                selectedProperty.DamagesTaken[9] = (byte)damage09Hexbox.HexValue;
-                selectedProperty.DamagesTaken[10] = (byte)damage0aHexbox.HexValue;
-                selectedProperty.DamagesTaken[11] = (byte)damage0bHexbox.HexValue;
-                selectedProperty.DamagesTaken[12] = (byte)damage0cHexbox.HexValue;
-                selectedProperty.DamagesTaken[13] = (byte)damage0dHexbox.HexValue;
-                selectedProperty.DamagesTaken[14] = (byte)damage0eHexbox.HexValue;
-                selectedProperty.DamagesTaken[15] = (byte)damage0fHexbox.HexValue;
+                return;
             }
+
+            var selectedProperty = DungeonsData.SpriteProperties[spriteListbox.SelectedIndex];
+
+            selectedProperty.Harmless = harmlessCheckbox.Checked;
+            selectedProperty.SmallShadow = smallshadowCheckbox.Checked;
+            selectedProperty.Invulnerable = invulnerableCheckbox.Checked;
+            selectedProperty.CustomDeathAnimation = customdeathanimationCheckbox.Checked;
+            selectedProperty.AllowedBossFight = allowedbossfightCheckbox.Checked;
+            selectedProperty.ImmunePowder = immunepowderCheckbox.Checked;
+            selectedProperty.BeeTarget = beetargetCheckbox.Checked;
+            selectedProperty.RecoilWithoutCollision = recoilwithoutcollisionCheckbox.Checked;
+            selectedProperty.Invertpitbehavior = invertpitbehaviorCheckbox.Checked;
+            selectedProperty.DieLikeABoss = dielikeabossCheckbox.Checked;
+            selectedProperty.ZeroDamageOverride = overrideslashimmunityCheckbox.Checked;
+            selectedProperty.Deflectarrows = deflectarrowsCheckbox.Checked;
+            selectedProperty.Persistoffscreenow = persistoffscreenowCheckbox.Checked;
+            selectedProperty.Ignoredbykillrooms = ignoredbykillroomsCheckbox.Checked;
+            selectedProperty.Singlelayercollision = singlelayercollisionCheckbox.Checked;
+            selectedProperty.GraphicsPage = graphicspageCheckbox.Checked;
+            selectedProperty.DrawShadow = drawshadowCheckbox.Checked;
+            selectedProperty.Bonkitem = immunearrowrumbleableCheckbox.Checked;
+            selectedProperty.ImmuneToSwordHammer = immuneswordhammerCheckbox.Checked;
+            selectedProperty.ProjectileLikeCollision = projectilelikecollisionCheckbox.Checked;
+            selectedProperty.DieOffScreen = dieoffscreenCheckbox.Checked;
+            selectedProperty.ActiveOffScreen = activeoffscreenCheckbox.Checked;
+            selectedProperty.AltDamageSound = bossdamagesoundCheckbox.Checked;
+            selectedProperty.BlockedByShield = blockedbyshieldCheckbox.Checked;
+            selectedProperty.CheckForWater = checkforwaterCheckbox.Checked;
+            selectedProperty.NoPermaDeathInDungeons = nopermadeathindungeonsCheckbox.Checked;
+
+            selectedProperty.OAMAllocation = (byte)oamslotHexbox.HexValue;
+            selectedProperty.BumpDamageClass = (byte)damagetypeHexbox.HexValue;
+            selectedProperty.Hitbox = (byte)hitboxHexbox.HexValue;
+            selectedProperty.TileHitBox = (byte)inthitHexbox.HexValue;
+            selectedProperty.Palette = (byte)paletteHexbox.HexValue;
+            selectedProperty.PrizePack = (byte)prizepackHexbox.HexValue;
+            selectedProperty.Health = (byte)healthHexbox.HexValue;
+
+            selectedProperty.DamagesTaken[0] = (byte)damage00Hexbox.HexValue;
+            selectedProperty.DamagesTaken[1] = (byte)damage01Hexbox.HexValue;
+            selectedProperty.DamagesTaken[2] = (byte)damage02Hexbox.HexValue;
+            selectedProperty.DamagesTaken[3] = (byte)damage03Hexbox.HexValue;
+            selectedProperty.DamagesTaken[4] = (byte)damage04Hexbox.HexValue;
+            selectedProperty.DamagesTaken[5] = (byte)damage05Hexbox.HexValue;
+            selectedProperty.DamagesTaken[6] = (byte)damage06Hexbox.HexValue;
+            selectedProperty.DamagesTaken[7] = (byte)damage07Hexbox.HexValue;
+            selectedProperty.DamagesTaken[8] = (byte)damage08Hexbox.HexValue;
+            selectedProperty.DamagesTaken[9] = (byte)damage09Hexbox.HexValue;
+            selectedProperty.DamagesTaken[10] = (byte)damage0aHexbox.HexValue;
+            selectedProperty.DamagesTaken[11] = (byte)damage0bHexbox.HexValue;
+            selectedProperty.DamagesTaken[12] = (byte)damage0cHexbox.HexValue;
+            selectedProperty.DamagesTaken[13] = (byte)damage0dHexbox.HexValue;
+            selectedProperty.DamagesTaken[14] = (byte)damage0eHexbox.HexValue;
+            selectedProperty.DamagesTaken[15] = (byte)damage0fHexbox.HexValue;
         }
     }
 }
