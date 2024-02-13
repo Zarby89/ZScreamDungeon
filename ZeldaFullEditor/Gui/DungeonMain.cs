@@ -704,9 +704,9 @@ namespace ZeldaFullEditor
 
             this.TabControl2_SelectedIndexChanged(this.tabControl2.TabPages[0], new EventArgs());
             this.EnableProjectButtons();
-            foreach (ToolStripMenuItem mi in this.menuStrip1.Items)
+            foreach (ToolStripMenuItem menuItem in this.menuStrip1.Items)
             {
-                mi.Enabled = true;
+                menuItem.Enabled = true;
             }
 
             this.roomHeaderPanel.Enabled = true;
@@ -745,15 +745,15 @@ namespace ZeldaFullEditor
             this.InitObjectsList();
             this.spritesView1.items.Clear();
 
-            foreach (Sprite o in this.listofspritesobjects)
+            foreach (Sprite sprite in this.listofspritesobjects)
             {
-                this.spritesView1.items.Add((o));
+                this.spritesView1.items.Add((sprite));
             }
 
             this.objectViewer1.items.Clear();
-            foreach (Room_Object o in this.listoftilesobjects)
+            foreach (Room_Object roomObject in this.listoftilesobjects)
             {
-                this.objectViewer1.items.Add((o));
+                this.objectViewer1.items.Add((roomObject));
             }
 
             this.selecteditemobjectCombobox.Items.Clear();
@@ -826,7 +826,7 @@ namespace ZeldaFullEditor
 
             int compsize = 0;
             byte[] dcompData = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.ReadBlock(Constants.Sprite_DamageTaken, 0x1000), 0, 0x1000, ref compsize);
-            for(int i = 0;i<dcompData.Length;i++)
+            for(int i = 0; i < dcompData.Length; i++)
             {
                 DungeonsData.SpriteDamageTaken[i] = dcompData[i];
             }
@@ -867,9 +867,9 @@ namespace ZeldaFullEditor
         private void InitDungeonViewer()
         {
             this.activeScene.forPreview = true;
-            Bitmap b = new Bitmap(8192, 10752);
+            Bitmap bitmap = new Bitmap(8192, 10752);
 
-            using (Graphics gb = Graphics.FromImage(b))
+            using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
@@ -881,7 +881,7 @@ namespace ZeldaFullEditor
 
                     this.activeScene.Refresh();
 
-                    gb.DrawImage(this.activeScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
+                    graphics.DrawImage(this.activeScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
 
                     /*
                     activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
@@ -889,7 +889,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            this.dungeonViewer.pictureBox1.Image = b;
+            this.dungeonViewer.pictureBox1.Image = bitmap;
             this.activeScene.forPreview = false;
         }
 
@@ -905,9 +905,9 @@ namespace ZeldaFullEditor
             {
                 foreach (string s in Settings.Default.recentFiles)
                 {
-                    ToolStripMenuItem tsmi = new ToolStripMenuItem(s);
-                    tsmi.Click += this.OpenRecentProject;
-                    _ = this.recentROMToolStripMenuItem.DropDownItems.Add(tsmi);
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(s);
+                    menuItem.Click += this.OpenRecentProject;
+                    _ = this.recentROMToolStripMenuItem.DropDownItems.Add(menuItem);
                 }
             }
         }
@@ -929,12 +929,12 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                var tn = new TreeNode(tname)
+                var treeNode = new TreeNode(tname)
                 {
                     Tag = i,
                 };
 
-                _ = this.entrancetreeView.Nodes[1].Nodes.Add(tn);
+                _ = this.entrancetreeView.Nodes[1].Nodes.Add(treeNode);
             }
 
             for (int i = 0; i < 0x85; i++)
@@ -987,11 +987,11 @@ namespace ZeldaFullEditor
             this.searchButton.Enabled = true;
             this.collisionModeButton.Enabled = true;
 
-            foreach (object ti in this.editToolStripMenuItem.DropDownItems)
+            foreach (object menuItem in this.editToolStripMenuItem.DropDownItems)
             {
-                if (ti is ToolStripDropDownItem)
+                if (menuItem is ToolStripDropDownItem)
                 {
-                    (ti as ToolStripDropDownItem).Enabled = true;
+                    (menuItem as ToolStripDropDownItem).Enabled = true;
                 }
             }
         }
@@ -1333,19 +1333,19 @@ namespace ZeldaFullEditor
                 string f = Interaction.InputBox("Name of the new layout", "Name?", "Layout00");
                 if (f != string.Empty)
                 {
-                    BinaryWriter bw = new BinaryWriter(new FileStream(
+                    BinaryWriter binaryWriter = new BinaryWriter(new FileStream(
                         UIText.GetFileName(UIText.LayoutFolder, f),
                         FileMode.OpenOrCreate,
                         FileAccess.Write));
 
-                    bw.Write(name);
+                    binaryWriter.Write(name);
 
-                    foreach (SaveObject o in data)
+                    foreach (SaveObject saveObject in data)
                     {
-                        o.SaveToFile(bw);
+                        saveObject.SaveToFile(binaryWriter);
                     }
 
-                    bw.Close();
+                    binaryWriter.Close();
                 }
             }
         }
@@ -1372,18 +1372,18 @@ namespace ZeldaFullEditor
             {
                 int most_x = 512;
                 int most_y = 512;
-                foreach (Room_Object o in this.layoutForm.scene.room.tilesObjects)
+                foreach (Room_Object roomObject in this.layoutForm.scene.room.tilesObjects)
                 {
                     if (this.layoutForm.scene.room.tilesObjects.Count > 0)
                     {
-                        if (o.X < most_x)
+                        if (roomObject.X < most_x)
                         {
-                            most_x = o.X;
+                            most_x = roomObject.X;
                         }
 
-                        if (o.Y < most_y)
+                        if (roomObject.Y < most_y)
                         {
-                            most_y = o.Y;
+                            most_y = roomObject.Y;
                         }
                     }
                     else
@@ -1393,12 +1393,12 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                foreach (Room_Object o in layoutForm.scene.room.tilesObjects)
+                foreach (Room_Object roomObject in layoutForm.scene.room.tilesObjects)
                 {
-                    o.X = (byte)(o.X - most_x);
-                    o.Y = (byte)(o.Y - most_y);
-                    this.activeScene.room.tilesObjects.Add(o);
-                    this.activeScene.room.selectedObject.Add(o);
+                    roomObject.X = (byte)(roomObject.X - most_x);
+                    roomObject.Y = (byte)(roomObject.Y - most_y);
+                    this.activeScene.room.tilesObjects.Add(roomObject);
+                    this.activeScene.room.selectedObject.Add(roomObject);
                 }
 
                 this.activeScene.dragx = 0;
@@ -1426,14 +1426,14 @@ namespace ZeldaFullEditor
             {
                 if (this.activeScene.room.selectedObject[0] is Room_Object)
                 {
-                    foreach (Room_Object o in this.activeScene.room.selectedObject)
+                    foreach (Room_Object roomObject in this.activeScene.room.selectedObject)
                     {
                         for (int i = 0; i < this.activeScene.room.tilesObjects.Count; i++)
                         {
-                            if (o == this.activeScene.room.tilesObjects[i])
+                            if (roomObject == this.activeScene.room.tilesObjects[i])
                             {
                                 this.activeScene.room.tilesObjects.RemoveAt(i);
-                                this.activeScene.room.tilesObjects.Add(o);
+                                this.activeScene.room.tilesObjects.Add(roomObject);
 
                                 break;
                             }
@@ -1442,14 +1442,14 @@ namespace ZeldaFullEditor
                 }
                 else if (this.activeScene.room.selectedObject[0] is Sprite)
                 {
-                    foreach (Sprite s in this.activeScene.room.selectedObject)
+                    foreach (Sprite sprite in this.activeScene.room.selectedObject)
                     {
                         for (int i = 0; i < this.activeScene.room.sprites.Count; i++)
                         {
-                            if (s == this.activeScene.room.sprites[i])
+                            if (sprite == this.activeScene.room.sprites[i])
                             {
                                 this.activeScene.room.sprites.RemoveAt(i);
-                                activeScene.room.sprites.Add(s);
+                                activeScene.room.sprites.Add(sprite);
 
                                 break;
                             }
@@ -1474,14 +1474,14 @@ namespace ZeldaFullEditor
             {
                 if (this.activeScene.room.selectedObject[0] is Room_Object)
                 {
-                    foreach (Room_Object o in this.activeScene.room.selectedObject)
+                    foreach (Room_Object roomObject in this.activeScene.room.selectedObject)
                     {
                         for (int i = 0; i < this.activeScene.room.tilesObjects.Count; i++)
                         {
-                            if (o == this.activeScene.room.tilesObjects[i])
+                            if (roomObject == this.activeScene.room.tilesObjects[i])
                             {
                                 this.activeScene.room.tilesObjects.RemoveAt(i);
-                                this.activeScene.room.tilesObjects.Insert(0, o);
+                                this.activeScene.room.tilesObjects.Insert(0, roomObject);
 
                                 break;
                             }
@@ -1490,14 +1490,14 @@ namespace ZeldaFullEditor
                 }
                 else if (this.activeScene.room.selectedObject[0] is Sprite)
                 {
-                    foreach (Sprite s in this.activeScene.room.selectedObject)
+                    foreach (Sprite sprite in this.activeScene.room.selectedObject)
                     {
                         for (int i = 0; i < this.activeScene.room.sprites.Count; i++)
                         {
-                            if (s == this.activeScene.room.sprites[i])
+                            if (sprite == this.activeScene.room.sprites[i])
                             {
                                 this.activeScene.room.sprites.RemoveAt(i);
-                                this.activeScene.room.sprites.Insert(0, s);
+                                this.activeScene.room.sprites.Insert(0, sprite);
 
                                 break;
                             }
@@ -2041,7 +2041,6 @@ namespace ZeldaFullEditor
             }
             else
             {
-
                 Room room;
                 if (NetZS.connected)
                 {
@@ -2332,9 +2331,9 @@ namespace ZeldaFullEditor
             data[Constants.startingentrance_scrolledge + 6] = this.selectedEntrance.CameraBoundaryQE;
             data[Constants.startingentrance_scrolledge + 7] = this.selectedEntrance.CameraBoundaryFE;
 
-            FileStream fs = new FileStream(UIText.TestROM, FileMode.CreateNew, FileAccess.Write);
-            fs.Write(data, 0, data.Length);
-            fs.Close();
+            FileStream fileStream = new FileStream(UIText.TestROM, FileMode.CreateNew, FileAccess.Write);
+            fileStream.Write(data, 0, data.Length);
+            fileStream.Close();
 
             if (Settings.Default.emulatorPath == string.Empty)
             {
@@ -2776,16 +2775,16 @@ namespace ZeldaFullEditor
 
             for (int i = 0x100; i < 0x140; i++) // Type 2 objects
             {
-                Room_Object o = activeScene.room.addObject((short)i, 0, 0, 0, 0);
-                o.preview = true;
-                o.previewId = index;
+                Room_Object roomObject = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                roomObject.preview = true;
+                roomObject.previewId = index;
                 index++;
-                o.setRoom(activeScene.room);
+                roomObject.setRoom(activeScene.room);
 
-                if (o != null)
+                if (roomObject != null)
                 {
                     //objectsListbox.Items.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
-                    listoftilesobjects.Add(o);
+                    listoftilesobjects.Add(roomObject);
                 }
             }
 
@@ -3252,15 +3251,15 @@ namespace ZeldaFullEditor
         // TODO: Delete when projects.
         private void LoadNamesFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            using (OpenFileDialog openFile = new OpenFileDialog())
             {
-                ofd.Filter = "Default Names .txt|*.txt";
-                if (ofd.ShowDialog() == DialogResult.OK)
+                openFile.Filter = "Default Names .txt|*.txt";
+                if (openFile.ShowDialog() == DialogResult.OK)
                 {
-                    Sprites_Names.loadFromFile(ofd.FileName);
-                    Room_Name.loadFromFile(ofd.FileName);
-                    ChestItems_Name.loadFromFile(ofd.FileName);
-                    ItemsNames.loadFromFile(ofd.FileName);
+                    Sprites_Names.loadFromFile(openFile.FileName);
+                    Room_Name.loadFromFile(openFile.FileName);
+                    ChestItems_Name.loadFromFile(openFile.FileName);
+                    ItemsNames.loadFromFile(openFile.FileName);
                     this.selecteditemobjectCombobox.Items.Clear();
 
                     for (int i = 0; i < ItemsNames.name.Length; i++)
@@ -3275,13 +3274,13 @@ namespace ZeldaFullEditor
         private void CGRAMViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.cgramViewer = new CGRamViewer();
-            WindowPanel wp = new WindowPanel();
-            wp.Tag = "CGRAM Viewer - Right click to export palettes";
-            wp.Location = Constants.Point_512_0;
-            wp.containerPanel.Controls.Add(this.cgramViewer);
-            wp.Size = new Size(this.cgramViewer.Size.Width + 2, this.cgramViewer.Size.Height + 26);
-            this.customPanel3.Controls.Add(wp);
-            wp.BringToFront();
+            WindowPanel windowPanel = new WindowPanel();
+            windowPanel.Tag = "CGRAM Viewer - Right click to export palettes";
+            windowPanel.Location = Constants.Point_512_0;
+            windowPanel.containerPanel.Controls.Add(this.cgramViewer);
+            windowPanel.Size = new Size(this.cgramViewer.Size.Width + 2, this.cgramViewer.Size.Height + 26);
+            this.customPanel3.Controls.Add(windowPanel);
+            windowPanel.BringToFront();
         }
 
         private void GFXGroupsetsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4068,7 +4067,7 @@ namespace ZeldaFullEditor
                 _ = Directory.CreateDirectory($"{path}//ExportedRooms");
                 for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
-                    // TODO: system specific path separators
+                    // TODO: System specific path separators.
                     byte[] roomBytes = DungeonsData.AllRooms[i].getTilesBytes();
                     using (FileStream fs = new FileStream($"{path}//ExportedRooms//room{i:X3}.zrd", FileMode.OpenOrCreate, FileAccess.Write))
                     {
@@ -4160,7 +4159,7 @@ namespace ZeldaFullEditor
                 ROM.DATA.CopyTo(ROM.TEMPDATA, 0);
                 byte[] data = new byte[ROM.DATA.Length];
                 ROM.DATA = new byte[ROM.DATA.Length];
-                fileStream.Read(data, 0, (int)fileStream.Length);
+                _ = fileStream.Read(data, 0, (int)fileStream.Length);
                 data.CopyTo(ROM.DATA, 0x00);
                 this.oweditor2 = new OverworldEditor();
                 this.oweditor2.InitOpen(this);
@@ -4416,7 +4415,7 @@ namespace ZeldaFullEditor
                 if (opendFile.ShowDialog() == DialogResult.OK)
                 {
                     FileStream fileStreamMap = new FileStream(opendFile.FileName, FileMode.Open, FileAccess.Read);
-                    fileStreamMap.Read(mapArrayData1, 0, (int)fileStreamMap.Length);
+                    _ = fileStreamMap.Read(mapArrayData1, 0, (int)fileStreamMap.Length);
                     fileStreamMap.Close();
 
                     for (int i = 0; i < 64; i++)
@@ -5830,7 +5829,7 @@ namespace ZeldaFullEditor
                 if (openFile.ShowDialog() == DialogResult.OK)
                 {
                     BinaryReader binaryReader = new BinaryReader(new FileStream(openFile.FileName,FileMode.Open));
-                    int roomCount = binaryReader.ReadInt32(); // number of rooms
+                    int roomCount = binaryReader.ReadInt32(); // Number of rooms
 
                     for(int i = 0;i<roomCount;i++) 
                     {
@@ -5918,7 +5917,8 @@ namespace ZeldaFullEditor
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             byte[] bosses = { 0x09, 0x53, 0x54, 0x88, 0x8C, 0x92, 0xA2, 0xBD, 0xCB, 0xCE };
-            //Calculate a bunch of stuff
+
+            // Calculate a bunch of stuff.
             int roomObjectsSize = 0;
             int roomObjectsCount = 0;
             int roomUsedCount = 0;
