@@ -2340,7 +2340,7 @@ namespace ZeldaFullEditor
 
             if (Settings.Default.emulatorPath == string.Empty)
             {
-                _ p = Process.Start(UIText.TestROM);
+                _ = Process.Start(UIText.TestROM);
             }
             else
             {
