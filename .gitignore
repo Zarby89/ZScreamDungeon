@@ -335,6 +335,4 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 
-*.editorconfig
-/.vs/ZeldaFullEditor/v17
-/.vs/ZeldaFullEditor/FileContentIndex
+ZeldaFullEditor/.editorconfig
