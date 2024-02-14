@@ -120,6 +120,9 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="invertpitbehaviorCheckbox.ToolTip" xml:space="preserve">
     <value>Setting this flag will invert pit interactions in two separate and contrary ways:
 Thrown sprites will treat pits as empty floors, shattering upon landing.
@@ -128,5 +131,16 @@ Other sprites will process pits as pits, instead of as solid collision.</value>
   <data name="persistoffscreenowCheckbox.ToolTip" xml:space="preserve">
     <value>Setting this flag will prevent this sprite from being removed when it is off-screen in the overworld.
 When unset, sprites on the overworld will be removed, but able to respawn if they were part of the initial load.</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Values above 0 correspond to an exact amount of damage dealt or to one of these effects:
+
+0xFF - Target is stunned for 0xFF frames.
+0xFE - Target becomes frozen.
+0xFD - Target is incinerated.
+0xFC - Target is stunned for 0x80 frames.
+0xFB - Target is stunned for 0x20 frames.
+0xFA - Target becomes a blob.
+0xF9 - Target becomes a fairy.</value>
   </data>
 </root>
