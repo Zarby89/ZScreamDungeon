@@ -836,7 +836,7 @@ namespace ZeldaFullEditor
                 DungeonsData.SpriteProperties.Add(new SpriteProperty((byte)i));
             }
 
-            DungeonsData.globalDamages = ROM.ReadBlock(Constants.DamageClass, 0x80);
+            DungeonsData.GlobalDamages = ROM.ReadBlock(Constants.DamageClass, 0x80);
 
             // TODO: We should probably move this to a better spot and include all the save settings but this will work for now.
             if (ROM.DATA[Constants.OverworldCustomAreaSpecificBGEnabled] != 0x00)
@@ -3132,8 +3132,8 @@ namespace ZeldaFullEditor
             }
         }
 
-		// TODO KAN REFACTOR DISGUSTING, these "Contains" should instead become properties of the object itself.
-		private void RemoveMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
+        // TODO KAN REFACTOR replace the string based room object association with accessible member variables to represent object properties.
+        private void RemoveMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<Room_Object> toRemove = new List<Room_Object>();
             foreach (Room_Object roomObject in this.activeScene.room.tilesObjects)

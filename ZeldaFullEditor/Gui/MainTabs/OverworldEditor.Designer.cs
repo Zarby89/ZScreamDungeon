@@ -175,7 +175,6 @@
             this.openfileButton.Name = "openfileButton";
             this.openfileButton.Size = new System.Drawing.Size(23, 22);
             this.openfileButton.Text = "Open ROM…";
-            this.openfileButton.Click += new System.EventHandler(this.openfileButton_Click);
             // 
             // saveButton
             // 

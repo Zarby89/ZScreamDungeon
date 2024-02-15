@@ -62,7 +62,7 @@ namespace ZeldaFullEditor.Data
         ///     Sets all the message data based on the given message string.
         /// </summary>
         /// <param name="messageString"> The string to set the message to. </param>
-        // TODO make this use Refresh() in the next version when actual functional changes are valid
+        // TODO: Make this use Refresh() in the next version when actual functional changes are valid.
         public void SetMessage(string messageString)
         {
             this.ContentsParsed = messageString;
@@ -110,7 +110,7 @@ namespace ZeldaFullEditor.Data
         ///     Returns the parsed message as a string with some extra formating.
         /// </summary>
         /// <returns> A string. </returns>
-        // TODO INTERPOLATE
+        // TODO: INTERPOLATE
         public string GetDumpedContents()
         {
             return string.Format("{0:X3} : {1}\r\n\r\n", this.ID, this.ContentsParsed);

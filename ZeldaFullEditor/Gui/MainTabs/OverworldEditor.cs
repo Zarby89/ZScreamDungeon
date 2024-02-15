@@ -2226,11 +2226,6 @@ namespace ZeldaFullEditor.Gui
             this.SelectedObjectY.Text = y.ToString("X2");
         }
 
-        private void exportmultipleROMPNG()
-        {
-            // TODO: Delete this?
-        }
-
         private void exportPNGToolStripButton_Click(object sender, EventArgs e)
         {
             Bitmap temp = new Bitmap(4096, 4096);
@@ -2330,11 +2325,6 @@ namespace ZeldaFullEditor.Gui
         private void mosaicCheckBox_Click(object sender, EventArgs e)
         {
             this.scene.ow.AllMaps[this.scene.ow.AllMaps[this.scene.selectedMap].ParentID].Mosaic = this.mosaicCheckBox.Checked;
-        }
-
-        private void openfileButton_Click(object sender, EventArgs e)
-        {
-            // TODO: Add something here or remove this call.
         }
 
         public void SendLargeMapChanged(int m, bool c)

@@ -54,13 +54,13 @@ namespace ZeldaFullEditor.Data
         /// </summary>
         public bool PatchEnabled { get; set; } = true;
 
-        public AsmPatch(string filename, string subfolder)
+        public AsmPatch(string filePath, string subfolder)
         {
             // filename provided contains path, but FileName contains only file name without path
             Dictionary<string, string> tempDefineData = new Dictionary<string, string>();
             this.PatchFolder = subfolder;
-            this.FileName = Path.GetFileName(filename);
-            WholePatch = File.ReadAllText(filename);
+            this.FileName = Path.GetFileName(filePath);
+            WholePatch = File.ReadAllText(filePath);
             string[] allLines = WholePatch.Split('\n');
 
             bool inDefine = false;
@@ -100,7 +100,6 @@ namespace ZeldaFullEditor.Data
 
                 if (readingDescription)
                 {
-                    
                     PatchDescription += line.TrimStart(';') + "\r\n";
                     
                     continue;
@@ -149,7 +148,6 @@ namespace ZeldaFullEditor.Data
                         PatchDefines.Add(keyValue[0], tempDefineData);
                         tempDefineData = new Dictionary<string, string>(); // reset it for the next one
                         Console.WriteLine("Found Define " + keyValue[0]);
-
                     }
                 }
             }
@@ -168,8 +166,6 @@ namespace ZeldaFullEditor.Data
             WholePatch = WholePatch.Remove(pos, posEnd - pos);
             WholePatch = WholePatch.Insert(pos, ";#ENABLED=" + PatchEnabled.ToString());
 
-
-
             foreach (KeyValuePair<string, Dictionary<string, string>> keyValue in PatchDefines)
             {
                 pos = WholePatch.IndexOf(keyValue.Key);
@@ -177,7 +173,6 @@ namespace ZeldaFullEditor.Data
                 WholePatch = WholePatch.Remove(pos, posEnd - pos);
                 WholePatch = WholePatch.Insert(pos, keyValue.Key + "= " + PatchDefines[keyValue.Key]["_VALUE"]);
             }
-
 
             File.WriteAllText(projectPath + "\\Patches\\" + PatchFolder + "\\" + FileName, WholePatch);
         }

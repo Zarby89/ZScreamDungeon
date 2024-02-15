@@ -221,8 +221,8 @@ namespace ZeldaFullEditor
 			return SpecialChars.FirstOrDefault(e => e.ID == value);
 		}
 
-		// TODO make this return the actual dictionary entry
-		public int FindDictionaryEntry(byte value)
+        // TODO: Modify this routine to take the dictionary as argument and return the value rather than the position.
+        public int FindDictionaryEntry(byte value)
 		{
 			if (value < DictionaryBase || value == 0xFF)
 			{

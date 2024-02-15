@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using ZeldaFullEditor.Properties;
 
-// TODO clean up all the magic numbers
+// TODO: Move all the magic numbers to the constants.cs file.
 namespace ZeldaFullEditor
 {
     public static class GFX

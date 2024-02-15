@@ -33,13 +33,13 @@ namespace ZeldaFullEditor.Gui
                 // e.Graphics.DrawString(globalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Black, new Point(40 + (j * 32), ));
                 for (int i = 0; i < 8; i++)
                 {
-                    if (DungeonsData.globalDamages[i + (j * 8)] != origDamages[i + (j * 8)])
+                    if (DungeonsData.GlobalDamages[i + (j * 8)] != origDamages[i + (j * 8)])
                     {
-                        e.Graphics.DrawString(DungeonsData.globalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Blue, new Point(48 + (i * 32), 18 + (j * 16)));
+                        e.Graphics.DrawString(DungeonsData.GlobalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Blue, new Point(48 + (i * 32), 18 + (j * 16)));
                     }
                     else
                     {
-                        e.Graphics.DrawString(DungeonsData.globalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Black, new Point(48 + (i * 32), 18 + (j * 16)));
+                        e.Graphics.DrawString(DungeonsData.GlobalDamages[i + (j * 8)].ToString("X2"), this.Font, Brushes.Black, new Point(48 + (i * 32), 18 + (j * 16)));
                     }
                 }
             }
@@ -129,12 +129,12 @@ namespace ZeldaFullEditor.Gui
                 mouseDown = true;
                 if (((selectedIndex - 128) & 1) == 1)
                 {
-                    DungeonsData.globalDamages[(selectedIndex - 128) / 2] -= 1;
+                    DungeonsData.GlobalDamages[(selectedIndex - 128) / 2] -= 1;
                     this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
                 }
                 else
                 {
-                    DungeonsData.globalDamages[(selectedIndex - 128) / 2] += 1;
+                    DungeonsData.GlobalDamages[(selectedIndex - 128) / 2] += 1;
                     this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
                 }
             }
@@ -156,12 +156,12 @@ namespace ZeldaFullEditor.Gui
 
             if (e.Delta > 0)
             {
-                DungeonsData.globalDamages[index] += 1;
+                DungeonsData.GlobalDamages[index] += 1;
                 
             }
             else if (e.Delta < 0)
             {
-                DungeonsData.globalDamages[index] -= 1;
+                DungeonsData.GlobalDamages[index] -= 1;
             }
 
             this.Invalidate(new Rectangle(selectedX, selectedY, 32, 28));
@@ -187,12 +187,12 @@ namespace ZeldaFullEditor.Gui
                 { 
                     if (((selectedIndex - 128) & 1) == 1)
                     {
-                        DungeonsData.globalDamages[(selectedIndex - 128) / 2] -= 1;
+                        DungeonsData.GlobalDamages[(selectedIndex - 128) / 2] -= 1;
                         this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
                     }
                     else
                     {
-                        DungeonsData.globalDamages[(selectedIndex - 128) / 2] += 1;
+                        DungeonsData.GlobalDamages[(selectedIndex - 128) / 2] += 1;
                         this.Invalidate(new Rectangle(selectedX - 32, selectedY - 12, 32, 28));
                     }
                 }
@@ -210,7 +210,7 @@ namespace ZeldaFullEditor.Gui
         {
             for (int i = 0; i < origDamages.Length; i++)
             {
-                origDamages[i] = DungeonsData.globalDamages[i];
+                origDamages[i] = DungeonsData.GlobalDamages[i];
             }
         }
     }
