@@ -32,8 +32,8 @@
         /// <returns> A string. </returns>
         public override string ToString()
         {
-            return string.Format("{0:2X} {1}", this.ID, this.Name);
-        }
+            return $"{ID:X2} {Name}";
+		}
     }
 
     /// <summary>
@@ -89,8 +89,8 @@
         /// <returns> A string. </returns>
         public override string ToString()
         {
-            return string.Format("{0:3X} {1}", this.ID, this.Name);
-        }
+            return $"{ID:X3} {Name}";
+		}
     }
 
     /// <summary>

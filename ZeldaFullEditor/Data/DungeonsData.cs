@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -36,5 +37,11 @@ namespace ZeldaFullEditor
         ///     A duplicate storage of all rooms to revert to when using the redo feature.
         /// </summary>
         public static List<Room>[] RedoRoom = new List<Room>[Constants.NumberOfRooms];
+
+        public static List<SpriteProperty> SpriteProperties = new List<SpriteProperty>();
+
+        public static byte[] SpriteDamageTaken = new byte[0x1000];
+
+        public static byte[] GlobalDamages = new byte[0x80];
     }
 }

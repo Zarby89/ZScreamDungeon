@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     public class StringByte
     {
-        public string s = "";
+        public string s = string.Empty;
         public byte[] bytes;
 
         public StringByte(string s, byte[] bytes)

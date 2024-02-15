@@ -1,19 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ZeldaFullEditor.Properties;
 using static ZeldaFullEditor.Room_Object;
 
 namespace ZeldaFullEditor
@@ -242,6 +231,19 @@ namespace ZeldaFullEditor
             setObjectsRoom();
             addPotsItems();
             isdamagePit();
+            //palette
+            byte aux1 = (byte)ROM.DATA[Constants.dungeons_palettes_groups + (palette * 4) + 1];
+            byte aux2 = (byte)ROM.DATA[Constants.dungeons_palettes_groups + (palette * 4) + 2];
+            byte aux3 = (byte)ROM.DATA[Constants.dungeons_palettes_groups + (palette * 4) + 3];
+
+            GFX.DEBUGSB.Append("ROOMID:" + index.ToString("X3") + " | PAL0:"+ aux1.ToString("X2") + " PAL6:" + aux2.ToString("X2") + " PAL7:" + aux3.ToString("X2") + " | Sprites:");
+            foreach(Sprite spr in sprites)
+            {
+                GFX.DEBUGSB.Append(Sprites_Names.name[spr.id] + ", ");
+            }
+            GFX.DEBUGSB.Append("\r\n");
+            File.WriteAllText("PaletteInfos.txt", GFX.DEBUGSB.ToString());
+
             this.name = ROMStructure.roomsNames[index];
             messageid = (short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)]);
 
@@ -1014,10 +1016,11 @@ namespace ZeldaFullEditor
 
         public void addPotsItems()
         {
-            // WTF is that (01 << 16) ?? this is the bank -_-
-            int item_address_snes = (01 << 16) +
-            (ROM.DATA[Constants.room_items_pointers + (index * 2) + 1] << 8) +
-            ROM.DATA[Constants.room_items_pointers + (index * 2)];
+
+            int ptrOfPointers = ROM.ReadLong(Constants.room_items_pointers_ptr);
+            int item_address_snes = (ptrOfPointers & 0xFF0000) +
+            (ROM.DATA[Utils.SnesToPc(ptrOfPointers) + (index * 2) + 1] << 8) +
+            ROM.DATA[Utils.SnesToPc(ptrOfPointers) + (index * 2)];
 
             int item_address = Utils.SnesToPc(item_address_snes);
 

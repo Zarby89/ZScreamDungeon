@@ -1040,5 +1040,46 @@ namespace ZeldaFullEditor.Gui
                 }
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog fd = new SaveFileDialog();
+            byte[] selectedcolorbytes = new byte[selectedPalette.Length*3];
+            int i = 0;
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(fd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+                foreach(Color c in selectedPalette)
+                {
+                    selectedcolorbytes[i] = c.R;
+                    selectedcolorbytes[i+1] = c.G;
+                    selectedcolorbytes[i+2] = c.B;
+                    i += 3;
+                }
+                fs.Write(selectedcolorbytes,0, selectedcolorbytes.Length);
+                fs.Close();
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fd = new OpenFileDialog();
+            byte[] selectedcolorbytes = new byte[selectedPalette.Length * 3];
+            int i = 0;
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(fd.FileName, FileMode.Open, FileAccess.Read);
+                fs.Read(selectedcolorbytes, 0, selectedcolorbytes.Length);
+                foreach (Color c in selectedPalette)
+                {
+                    selectedPalette[i/3] = Color.FromArgb(selectedcolorbytes[i], selectedcolorbytes[i + 1], selectedcolorbytes[i + 2]);
+                    i += 3;
+                }
+                
+                fs.Close();
+                refreshallGfx();
+                
+            }
+        }
     }
 }

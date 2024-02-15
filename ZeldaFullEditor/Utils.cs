@@ -1,176 +1,166 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace ZeldaFullEditor
 {
-    // TODO function for ByteBitIsSet(), etc
-    public static class Utils
-    {
-        public static int SnesToPc(int addr)
-        {
-            if (addr >= 0x808000) { addr -= 0x808000; }
-            int temp = (addr & 0x7FFF) + ((addr / 2) & 0xFF8000);
-            return (temp + 0x0);
-        }
-
-        public static int PcToSnes(int addr)
-        {
-            byte[] b = BitConverter.GetBytes(addr);
-            b[2] = (byte)(b[2] * 2);
-
-            if (b[1] >= 0x80)
-            {
-                b[2] += 1;
-            }
-            else
-            {
-                b[1] += 0x80;
-            }
-
-            return BitConverter.ToInt32(b, 0);
-            // SNES always have + 0x8000 no matter what, the bank on pc is always / 2
-
-            //return ((addr * 2) & 0xFF0000) + (addr & 0x7FFF) + 0x8000;
-        }
-
-        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
-        public static int Get24Local(int addr, bool pc = true)
-        {
-            int a = SnesToPc(addr);
-            int ret = (addr & 0xFF0000) |
-                       (ROM.DATA[a + 1] << 8) |
-                       ROM.DATA[a];
-            if (pc)
-            {
-                return SnesToPc(ret);
-            }
-            else
-            {
-                return ret;
-            }
-        }
-
-        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
-        public static int Get24LocalFromPC(int addr, bool pc = true)
-        {
-            int ret = (PcToSnes(addr) & 0xFF0000) |
-                       (ROM.DATA[addr + 1] << 8) |
-                       ROM.DATA[addr];
-            if (pc)
-            {
-                return SnesToPc(ret);
-            }
-            else
-            {
-                return ret;
-            }
-        }
+	// TODO move clamps to IntFunctions
+	public static class Utils
+	{
+		/// <summary>
+		/// Converts a SNES system bus address from lorom mapping to a binary file offset.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int SnesToPc(this int addr) => (addr & 0x7FFF) | ((addr & 0x7F0000) >> 1);
 
 
-        public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
-        {
-            return (addr1 << 16) | (addr2 << 8) | addr3;
-        }
+		/// <summary>
+		/// Converts a binary file offset to a SNES system bus address for the lorom mapping.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int PcToSnes(this int addr) => 0x800000 | (addr & 0x7FFF) | 0x8000 | ((addr & 0x7F8000) << 1);
 
-        public static short AddressFromBytes(byte addr1, byte addr2)
-        {
-            return (short)((addr1 << 8) | (addr2));
-        }
 
-        public static int Clamp(int v, int min, int max)
-        {
-            if (v >= max)
-            {
-                v = max;
-            }
-            if (v <= min)
-            {
-                v = min;
-            }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int GetBank(this int addr) => addr & 0xFF0000;
 
-            return (v);
-        }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static byte GetBankAsByte(this int addr) => (byte) ((addr & 0xFF0000) >> 16);
 
-        public static short Clamp(short v, int min, int max)
-        {
-            if (v >= max)
-            {
-                v = (short)max;
-            }
-            if (v <= min)
-            {
-                v = (short)min;
-            }
+		public static Color ToColor(this ushort c)
+		{
+			return Color.FromArgb((c & 0x1F) << 3, (c >> 2) & 0xF8, (c >> 7) & 0xF8);
+		}
 
-            return (v);
-        }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ushort ToSNESColor(this Color c)
+		{
+			return (ushort) ((c.R >> 3) | ((c.G & 0xF8) << 2) | ((c.B & 0xF8) << 7));
+		}
 
-        public static ushort Clamp(ushort v, int min, int max)
-        {
-            if (v >= max)
-            {
-                v = (ushort)max;
-            }
-            if (v <= min)
-            {
-                v = (ushort)min;
-            }
+		// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int Get24Local(int addr, bool pc = true)
+		{
+			int a = SnesToPc(addr);
+			int ret = (addr & 0xFF0000) | (ROM.DATA[a + 1] << 8) | ROM.DATA[a];
 
-            return (v);
-        }
+			if (pc)
+			{
+				return SnesToPc(ret);
+			}
 
-        public static byte Clamp(byte v, int min, int max)
-        {
-            if (v >= max)
-            {
-                v = (byte)max;
-            }
-            if (v <= min)
-            {
-                v = (byte)min;
-            }
+			return ret;
+		}
 
-            return (v);
-        }
+		// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int Get24LocalFromPC(int addr, bool pc = true)
+		{
+			int ret = (PcToSnes(addr) & 0xFF0000) |
+					   (ROM.DATA[addr + 1] << 8) |
+					   ROM.DATA[addr];
+			if (pc)
+			{
+				return SnesToPc(ret);
+			}
 
-        public static string[] DeepCopyStrings(string[] a)
-        {
-            string[] ret = new string[a.Length];
-            int i = 0;
-            foreach (string s in a)
-            {
-                ret[i++] = s.Substring(0);
-            }
+			return ret;
+		}
 
-            return ret;
-        }
 
-        public static byte[] DeepCopyBytes(byte[] a)
-        {
-            byte[] ret = new byte[a.Length];
-            int i = 0;
-            foreach (byte b in a)
-            {
-                ret[i++] = b;
-            }
 
-            return ret;
-        }
 
-        public static string[] CreateIndexedList(string[] a)
-        {
-            string[] ret = new string[a.Length];
-            int i = 0;
-            foreach (string s in a)
-            {
-                ret[i++] = string.Format("{0:X2} - {1}", i, s);
-            }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
+		{
+			return (addr1 << 16) | (addr2 << 8) | addr3;
+		}
 
-            return ret;
-        }
-    }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static short AddressFromBytes(byte addr1, byte addr2)
+		{
+			return (short) ((addr1 << 8) | (addr2));
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int Clamp(int v, int min, int max)
+		{
+			if (v > max)
+			{
+				return max;
+			}
+			else if (v < min)
+			{
+				return min;
+			}
+
+			return v;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static short Clamp(short v, int min, int max)
+		{
+			if (v > max)
+			{
+				return (short) max;
+			}
+			else if (v < min)
+			{
+				return (short) min;
+			}
+
+			return v;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ushort Clamp(ushort v, int min, int max)
+		{
+			if (v > max)
+			{
+				return (ushort) max;
+			}
+			else if (v < min)
+			{
+				return (ushort) min;
+			}
+
+			return v;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static byte Clamp(byte v, int min, int max)
+		{
+			if (v > max)
+			{
+				return (byte) max;
+			}
+			else if (v < min)
+			{
+				return (byte) min;
+			}
+
+			return v;
+		}
+
+		public static string[] DeepCopyStrings(string[] a)
+		{
+			return a.Select(s => s.Substring(0)).ToArray();
+		}
+
+		public static byte[] DeepCopyBytes(byte[] a)
+		{
+			byte[] ret = new byte[a.Length];
+			Array.Copy(a, ret, a.Length);
+
+			return ret;
+		}
+
+		public static string[] CreateIndexedList(string[] a)
+		{
+			int i = 0;
+			return a.Select(s => $"{i++:X2} - {s}").ToArray();
+		}
+	}
 }

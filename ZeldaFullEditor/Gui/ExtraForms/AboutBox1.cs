@@ -5,10 +5,12 @@ using System.Windows.Forms;
 namespace ZeldaFullEditor
 {
     partial class AboutBox1 : Form
-    {
-        public AboutBox1()
+	{
+		// TODO KAN REFACTOR - remove all the hardcoded label text and use an array of strings in this file
+		public AboutBox1()
         {
             InitializeComponent();
+            this.Text = $"About {UIText.APPNAME}";
             this.AboutVersion.Text = string.Format("Version: {0}", UIText.VERSION);
         }
 
@@ -25,6 +27,11 @@ namespace ZeldaFullEditor
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(UIText.ASAR);
+        }
+
+        private void AboutBox1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

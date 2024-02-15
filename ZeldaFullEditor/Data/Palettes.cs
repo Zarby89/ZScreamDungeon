@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Linq;
+using System.Text;
 
 namespace ZeldaFullEditor
 {
@@ -191,28 +193,50 @@ namespace ZeldaFullEditor
                 OverworldMiniMapPalettes[i] = ReadPalette(romData, Constants.overworldMiniMapPalettes + (i * 256), 128);
             }
 
-            // TODO: Check for the paletts in the empty bank space that kan will allocate and read them in here.
-            // TODO: Magic colors.
-            // LW
-            int j = 0;
-            while (j < 64)
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
             {
-                OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
-            }
+                // TODO: Magic colors.
+                // LW
+                int j = 0;
+                while (j < 64)
+                {
+                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+                }
 
-            // DW
-            while (j < 128)
+                // DW
+                while (j < 128)
+                {
+                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+                }
+
+                // SW
+                while (j < Constants.NumberOfOWMaps)
+                {
+                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x30, 0x70, 0x30);
+                }
+
+                // Certain other areas start out with a BG color of black so that the subscreen overlay BGs look correct.
+
+                // LW Death Mountain
+                OverworldBackgroundPalette[0x03] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x05] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x07] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+
+                // DW Death Mountain
+                OverworldBackgroundPalette[0x43] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x45] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x47] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+
+                // The pyramid area
+                OverworldBackgroundPalette[0x5B] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+
+                // Under the bridge area
+                OverworldBackgroundPalette[0x94] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+            }
+            else
             {
-                OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+                OverworldBackgroundPalette = ReadPalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, 160);
             }
-
-            // SP
-            while (j < Constants.NumberOfOWMaps)
-            {
-                OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
-            }
-
-            OverworldBackgroundPalette = ReadPalette(romData, Constants.customAreaSpecificBGPalette, 160);
         }
 
         /// <summary>
@@ -329,8 +353,7 @@ namespace ZeldaFullEditor
                 WritePalette(romData, Constants.overworldMiniMapPalettes + (i * 256), OverworldMiniMapPalettes[i]);
             }
 
-            // TODO: Set to 147 and not 160 because it seems the area numbers for all areas after 147 are messed up and it causes the palettes to save over eachother.
-            WritePalette(romData, Constants.customAreaSpecificBGPalette, OverworldBackgroundPalette, 147);
+            WritePalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, OverworldBackgroundPalette, 160);
 
             return false;
         }
@@ -368,41 +391,6 @@ namespace ZeldaFullEditor
             romData[romPosition + 1] = (byte)(color >> 8);
         }
 
-        private static string WritePaletteAsm(Color[] colors, int width, string comment, int romPosition)
-        {
-            string s = "\r\n\r\n\r\n;" + comment + "\r\norg $" + Utils.PcToSnes(romPosition).ToString("X6") + "\r\ndw ";
-            int colorPos = 0;
-            int x = 0;
-
-            while (colorPos < colors.Length)
-            {
-                short color = (short)(((colors[colorPos].B / 8) << 10) | ((colors[colorPos].G / 8) << 5) | (colors[colorPos].R / 8));
-                x++;
-
-                if (x == width)
-                {
-                    if (colorPos == colors.Length - 1)
-                    {
-                        s += "#$" + color.ToString("X4") + "\r\n";
-                    }
-                    else
-                    {
-                        s += "#$" + color.ToString("X4") + "\r\ndw ";
-                    }
-
-                    x = 0;
-                }
-                else
-                {
-                    s += "#$" + color.ToString("X4") + ", ";
-                }
-
-                colorPos++;
-            }
-
-            return s;
-        }
-
         #region Unused
 
         private static Color GetColorShade(Color col, byte shade)
@@ -425,87 +413,106 @@ namespace ZeldaFullEditor
             return Color.FromArgb(r * 8, g * 8, b * 8);
         }
 
-        private static string SavePalettesToAsm(byte[] romData)
-        {
-            string asmString = string.Empty;
-            asmString += WritePaletteAsm(OverworldGrassPalettes, 1, "Grass Color", Constants.hardcodedGrassLW1);
+		private static string SavePalettesToAsm(byte[] romData)
+		{
+			var asmString = new StringBuilder();
 
-            // 35 colors each, 7x5 (0,2 on grid).
-            for (int i = 0; i < 6; i++)
-            {
-                asmString += WritePaletteAsm(OverworldMainPalettes[i], 7, "Main Overworld " + i.ToString("X2"), Constants.overworldPaletteMain + (i * (35 * 2)));
-            }
+			WritePaletteAsm(OverworldGrassPalettes, 1, "Grass Color", Constants.hardcodedGrassLW1);
 
-            // 21 colors each, 7x3 (8,2 and 8,5 on grid).
-            for (int i = 0; i < 20; i++)
-            {
-                asmString += WritePaletteAsm(OverworldAuxPalettes[i], 7, "Overworld Aux Palettes " + i.ToString("X2"), Constants.overworldPaletteAuxialiary + (i * (21 * 2)));
-            }
+			// 35 colors each, 7x5 (0,2 on grid).
+			for (int i = 0; i < 6; i++)
+			{
+				WritePaletteAsm(OverworldMainPalettes[i], 7, $"Main Overworld {i:X2}", Constants.overworldPaletteMain + (i * (35 * 2)));
+			}
 
-            // 7 colors each 7x1 (0,7 on grid).
-            for (int i = 0; i < 14; i++)
-            {
-                asmString += WritePaletteAsm(OverworldAnimatedPalettes[i], 7, "Overworld Animated Palettes " + i.ToString("X2"), Constants.overworldPaletteAnimated + (i * (7 * 2)));
-            }
+			// 21 colors each, 7x3 (8,2 and 8,5 on grid).
+			for (int i = 0; i < 20; i++)
+			{
+				WritePaletteAsm(OverworldAuxPalettes[i], 7, $"Overworld Aux Palettes {i:X2}", Constants.overworldPaletteAuxialiary + (i * (21 * 2)));
+			}
 
-            // 32 colors each 16x2 (0,0 on grid).
-            for (int i = 0; i < 2; i++)
-            {
-                asmString += WritePaletteAsm(HudPalettes[i], 16, "Hud Palettes " + i.ToString("X2"), Constants.hudPalettes + (i * 64));
-            }
+			// 7 colors each 7x1 (0,7 on grid).
+			for (int i = 0; i < 14; i++)
+			{
+				WritePaletteAsm(OverworldAnimatedPalettes[i], 7, $"Overworld Animated Palettes {i:X2}", Constants.overworldPaletteAnimated + (i * (7 * 2)));
+			}
 
-            asmString += WritePaletteAsm(GlobalSpritePalettes[0], 15, "LW Global Sprite Palettes ", Constants.globalSpritePalettesLW);
-            asmString += WritePaletteAsm(GlobalSpritePalettes[1], 15, "DW Global Sprite Palettes ", Constants.globalSpritePalettesDW);
-            for (int i = 0; i < 5; i++)
-            {
-                asmString += WritePaletteAsm(ArmorPalettes[i], 16, "Mails Palettes / bunny / electrocuted " + i.ToString("X2"), Constants.armorPalettes + (i * 30));
-            }
+			// 32 colors each 16x2 (0,0 on grid).
+			for (int i = 0; i < 2; i++)
+			{
+				WritePaletteAsm(HudPalettes[i], 16, $"Hud Palettes {i:X2}", Constants.hudPalettes + (i * 64));
+			}
 
-            for (int i = 0; i < 4; i++)
-            {
-                asmString += WritePaletteAsm(SwordsPalettes[i], 3, "Sword Palettes " + i.ToString("X2"), Constants.swordPalettes + (i * 6));
-            }
+			WritePaletteAsm(GlobalSpritePalettes[0], 15, "LW Global Sprite Palettes ", Constants.globalSpritePalettesLW);
+			WritePaletteAsm(GlobalSpritePalettes[1], 15, "DW Global Sprite Palettes ", Constants.globalSpritePalettesDW);
 
-            for (int i = 0; i < 3; i++)
-            {
-                asmString += WritePaletteAsm(ShieldsPalettes[i], 4, "Shield Palettes " + i.ToString("X2"), Constants.shieldPalettes + (i * 8));
-            }
+			for (int i = 0; i < 5; i++)
+			{
+				WritePaletteAsm(ArmorPalettes[i], 16, $"Mails Palettes / bunny / electrocuted {i:X2}", Constants.armorPalettes + (i * 30));
+			}
 
-            for (int i = 0; i < 12; i++)
-            {
-                asmString += WritePaletteAsm(SpritesAux1Palettes[i], 7, "Sprite Aux1 Palettes " + i.ToString("X2"), Constants.spritePalettesAux1 + (i * 14));
-            }
+			for (int i = 0; i < 4; i++)
+			{
+				WritePaletteAsm(SwordsPalettes[i], 3, $"Sword Palettes {i:X2}", Constants.swordPalettes + (i * 6));
+			}
 
-            for (int i = 0; i < 11; i++)
-            {
-                asmString += WritePaletteAsm(SpritesAux2Palettes[i], 7, "Sprite Aux2 Palettes " + i.ToString("X2"), Constants.spritePalettesAux2 + (i * 14));
-            }
+			for (int i = 0; i < 3; i++)
+			{
+				WritePaletteAsm(ShieldsPalettes[i], 4, $"Shield Palettes {i:X2}", Constants.shieldPalettes + (i * 8));
+			}
 
-            for (int i = 0; i < 24; i++)
-            {
-                asmString += WritePaletteAsm(SpritesAux3Palettes[i], 7, "Sprite Aux3 Palettes " + i.ToString("X2"), Constants.spritePalettesAux3 + (i * 14));
-            }
+			for (int i = 0; i < 12; i++)
+			{
+				WritePaletteAsm(SpritesAux1Palettes[i], 7, $"Sprite Aux1 Palettes {i:X2}", Constants.spritePalettesAux1 + (i * 14));
+			}
 
-            for (int i = 0; i < 20; i++)
-            {
-                asmString += WritePaletteAsm(DungeonsMainPalettes[i], 15, "Dungeon Palettes " + i.ToString("X2"), Constants.dungeonMainPalettes + (i * 180));
-            }
+			for (int i = 0; i < 11; i++)
+			{
+				WritePaletteAsm(SpritesAux2Palettes[i], 7, $"Sprite Aux2 Palettes {i:X2}", Constants.spritePalettesAux2 + (i * 14));
+			}
 
-            asmString += WritePaletteAsm(new Color[1] { OverworldGrassPalettes[0] }, 1, "Hardcoded LW Overworld Grass Palettes", Constants.hardcodedGrassLW1);
-            asmString += WritePaletteAsm(new Color[1] { OverworldGrassPalettes[1] }, 1, "Hardcoded DW Overworld Grass Palettes", Constants.hardcodedGrassDW1);
-            asmString += WritePaletteAsm(new Color[1] { OverworldGrassPalettes[2] }, 1, "Hardcoded SP Overworld Grass Palettes", Constants.hardcodedGrassSpecial);
+			for (int i = 0; i < 24; i++)
+			{
+				WritePaletteAsm(SpritesAux3Palettes[i], 7, $"Sprite Aux3 Palettes {i:X2}", Constants.spritePalettesAux3 + (i * 14));
+			}
 
-            asmString += WritePaletteAsm(Object3DPalettes[0], 8, "Triforce Palette", Constants.triforcePalette);
-            asmString += WritePaletteAsm(Object3DPalettes[1], 8, "Crystal Palette", Constants.crystalPalette);
+			for (int i = 0; i < 20; i++)
+			{
+				WritePaletteAsm(DungeonsMainPalettes[i], 15, $"Dungeon Palettes {i:X2}", Constants.dungeonMainPalettes + (i * 180));
+			}
 
-            for (int i = 0; i < 2; i++)
-            {
-                asmString += WritePaletteAsm(OverworldMiniMapPalettes[i], 16, "Overworld Mini Map Palettes " + i.ToString("X2"), Constants.overworldMiniMapPalettes + (i * 256));
-            }
+			WritePaletteAsm(new Color[1] { OverworldGrassPalettes[0] }, 1, "Hardcoded LW Overworld Grass Palettes", Constants.hardcodedGrassLW1);
+			WritePaletteAsm(new Color[1] { OverworldGrassPalettes[1] }, 1, "Hardcoded DW Overworld Grass Palettes", Constants.hardcodedGrassDW1);
+			WritePaletteAsm(new Color[1] { OverworldGrassPalettes[2] }, 1, "Hardcoded SP Overworld Grass Palettes", Constants.hardcodedGrassSpecial);
 
-            return asmString;
-        }
+			WritePaletteAsm(Object3DPalettes[0], 8, "Triforce Palette", Constants.triforcePalette);
+			WritePaletteAsm(Object3DPalettes[1], 8, "Crystal Palette", Constants.crystalPalette);
 
-        #endregion
-    }
+			for (int i = 0; i < 2; i++)
+			{
+				WritePaletteAsm(OverworldMiniMapPalettes[i], 16, $"Overworld Mini Map Palettes {i:X2}", Constants.overworldMiniMapPalettes + (i * 256));
+			}
+
+			return asmString.ToString();
+
+			void WritePaletteAsm(Color[] colors, int width, string comment, int romPosition)
+			{
+				asmString.AppendLine();
+				asmString.AppendLine();
+				asmString.AppendLine($"; {comment}");
+				asmString.AppendLine($"org ${romPosition.PcToSnes():X6}");
+
+				var colS = colors.Select(c => $"${c.ToSNESColor():X4}").ToList();
+
+				while (colS.Count > 0)
+				{
+					asmString.AppendLine($"\tdw {string.Join(", ", colS.Take(width))}");
+
+					colS.RemoveRange(0, width);
+				}
+			}
+		}
+
+		#endregion
+	}
 }

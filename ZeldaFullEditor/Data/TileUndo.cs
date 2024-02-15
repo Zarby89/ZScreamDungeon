@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
     class TileUndo : ICloneable
     {
         public int mouseXDown { get; set; }
+
         public int mouseYDown { get; set; }
+
         public int lengthX { get; set; }
+
         public ushort[] savedTiles { get; set; }
+
         public ushort[] redosavedTiles { get; set; }
+
         public ushort[,] usedTiles { get; set; }
 
         public TileUndo(int mouseXDown, int mouseYDown, int lengthX, ushort[] savedTiles, ushort[] redosavedTiles, ref ushort[,] usedTiles)
@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    int superX = ((mouseXDown + x) / 32);
-                    int superY = ((mouseYDown + y) / 32);
+                    int superX = (mouseXDown + x) / 32;
+                    int superY = (mouseYDown + y) / 32;
                     int mapId = (superY * 8) + superX + scene.ow.WorldOffset;
                     usedTiles[x + mouseXDown, y + mouseYDown] = savedTiles[i];
                     scene.ow.AllMaps[mapId].BuildMap();
@@ -53,8 +53,8 @@ namespace ZeldaFullEditor
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    int superX = ((mouseXDown + x) / 32);
-                    int superY = ((mouseYDown + y) / 32);
+                    int superX = (mouseXDown + x) / 32;
+                    int superY = (mouseYDown + y) / 32;
                     int mapId = (superY * 8) + superX + scene.ow.WorldOffset; ;
                     usedTiles[x + mouseXDown, y + mouseYDown] = redosavedTiles[i];
                     scene.ow.AllMaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512), redosavedTiles[i], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);

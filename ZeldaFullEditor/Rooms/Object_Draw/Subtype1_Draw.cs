@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
@@ -4859,6 +4855,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
+
             base.Draw();
 
             int sizex = ((Size >> 2) & 0x03);

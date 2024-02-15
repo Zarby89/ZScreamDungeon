@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using AsarCLR;
 using System.IO;
-using static System.Net.WebRequestMethods;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     Start program entry point.
+    /// </summary>
     static class Program
     {
         // var to keep track whether to show the console or not.
@@ -25,7 +23,17 @@ namespace ZeldaFullEditor
 
         // All the files required for ZS to function.
         // The files "debug.asm", "spritesmove.asm" appear in the release but don't actually seem to be used anywhere in the solution.
-        private static string[] requiredFiles = new string[] { "asar.dll", "DefaultNames.txt", "Lidgren.Network.dll", "ScratchPad.dat", "AreaSpecificBGColor.asm", "CustomCollision.asm", "MosaicChange.asm", "newgraves.asm", "tempPatch.asm", "ZScream.exe.config" };
+        private static string[] requiredFiles = new string[] {
+            "asar.dll",
+            "DefaultNames.txt",
+            "Lidgren.Network.dll",
+            "ScratchPad.dat",
+            "ZSCustomOverworld.asm",
+            "CustomCollision.asm",
+            "newgraves.asm",
+            "tempPatch.asm",
+            "ZScream.exe.config"
+        };
 
         /// <summary>
         ///		The main entry point for the application.

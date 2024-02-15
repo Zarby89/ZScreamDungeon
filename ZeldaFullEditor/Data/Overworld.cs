@@ -400,20 +400,22 @@ namespace ZeldaFullEditor
 
             if (onlyShow)
             {
-                MessageBox.Show("Number of unique Tiles32: " + uniqueTiles.Count + " Out of: " + Constants.LimitOfMap32);
+                MessageBox.Show($"Unique Tiles32 count: {uniqueTiles.Count} | Max: {Constants.LimitOfMap32}");
             }
             else if (this.UniqueTile32List.Count > Constants.LimitOfMap32)
             {
-                MessageBox.Show(
-                    "Number of unique Tiles32: " + uniqueTiles.Count + " Out of: " + Constants.LimitOfMap32 +
-                    "\r\nUnique Tile32 count exceed the limit" +
-                    "\r\nThe ROM Has not been saved" +
-                    "\r\nYou can fill maps with grass tiles to free some space" +
-                    "\r\nOr use the option Clear DW Tiles in the Overworld Menu");
+                UIText.CryAboutSaving(
+                    $"There are too many unique Tile32 definitions.\r\n" +
+                    $"(Found: {uniqueTiles.Count} | Max: {Constants.LimitOfMap32}\r\n" +
+                    $"To reduce this count, decrease the complexity of your overworld\r\n" +
+                    $"by filling more of the map with common tiles such as grass\r\n" +
+                    $"or empty the Dark World with the \"Clear DW Tiles\" option\r\n" +
+                    $"in the Overworld menu."
+                   );
                 return true;
             }
 
-            Console.WriteLine("Number of unique Tiles32: " + uniqueTiles.Count + " Saved:" + this.UniqueTile32List.Count + " Out of: " + Constants.LimitOfMap32);
+            Console.WriteLine($"Unique Tiles32 count: {uniqueTiles.Count} | Saved: {UniqueTile32List.Count} | Max: {Constants.LimitOfMap32}");
 
             // Fill any extra space with some blank tiles.
             int v = this.UniqueTile32List.Count;
@@ -710,8 +712,8 @@ namespace ZeldaFullEditor
                 }
             }
 
-            Console.WriteLine("Map pointers (lowest) : " + lowest.ToString("X6"));
-            Console.WriteLine("Map pointers (highest) : " + highest.ToString("X6"));
+            Console.WriteLine($"Map pointers (lowest): {lowest:X6}");
+            Console.WriteLine($"Map pointers (highest): {highest:X6}");
 
             return (allMapTile32_LW, allMapTile32_DW, allMapTile32_SP);
         }
@@ -762,20 +764,20 @@ namespace ZeldaFullEditor
             for (int i = 0; i < Constants.OWWhirlpoolCount; i++)
             {
                 byte whirlpoolMapID = (byte)((ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitMapIdWhirlpool + (i * 2)]);
-                short whirlpoolVRAM = (short)((ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2)]);
-                short whirlpoolYScroll = (short)((ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2)]);
-                short whirlpoolXScroll = (short)((ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2)]);
-                short whirlpoolYPlayer = (short)((ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2)]);
-                short whirlpoolXPlayer = (short)((ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2)]);
-                short whirlpoolYCamera = (short)((ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2)]);
-                short whirlpoolXCamera = (short)((ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2)]);
+                ushort whirlpoolVRAM = (ushort)((ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitVramWhirlpool + (i * 2)]);
+                ushort whirlpoolYScroll = (ushort)((ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYScrollWhirlpool + (i * 2)]);
+                ushort whirlpoolXScroll = (ushort)((ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXScrollWhirlpool + (i * 2)]);
+                ushort whirlpoolYPlayer = (ushort)((ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYPlayerWhirlpool + (i * 2)]);
+                ushort whirlpoolXPlayer = (ushort)((ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXPlayerWhirlpool + (i * 2)]);
+                ushort whirlpoolYCamera = (ushort)((ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitYCameraWhirlpool + (i * 2)]);
+                ushort whirlpoolXCamera = (ushort)((ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWExitXCameraWhirlpool + (i * 2)]);
                 byte whirlpoolScrollModY = ROM.DATA[Constants.OWExitScrollModYWhirlpool + i];
                 byte whirlpoolScrollModX = ROM.DATA[Constants.OWExitScrollModXWhirlpool + i];
-                short whirlpoolPosition = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2)]);
+                ushort whirlpoolPosition = (ushort)((ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + (i * 2)]);
 
                 if (i > 8)
                 {
-                    whirlpoolPosition = (short)((ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2)]);
+                    whirlpoolPosition = (ushort)((ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2) + 1] << 8) + ROM.DATA[Constants.OWWhirlpoolPosition + ((i - 9) * 2)]);
                 }
 
                 var transport = new TransportOW(whirlpoolMapID, whirlpoolVRAM, whirlpoolYScroll, whirlpoolXScroll, whirlpoolYPlayer, whirlpoolXPlayer, whirlpoolYCamera, whirlpoolXCamera, whirlpoolScrollModY, whirlpoolScrollModX, whirlpoolPosition);
@@ -829,6 +831,12 @@ namespace ZeldaFullEditor
                 int x = p % 64;
                 int y = p >> 6;
                 EntranceOW eo = new EntranceOW((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, (ushort)(mapPos + 0x400), true);
+
+                if (eo.MapPos == 0xFFFF)
+                {
+                    eo.Deleted = true;
+                }
+
                 allHoles[i] = eo;
             }
 
@@ -914,7 +922,7 @@ namespace ZeldaFullEditor
                 allOverlays[index] = new OverlayData();
 
                 // OverlayPointers.
-                Console.WriteLine("MapIndex Overlay : " + index.ToString());
+                Console.WriteLine($"MapIndex Overlay: {index:X2}");
 
                 int address = (Constants.overlayPointersBank << 16) +
                 (ROM.DATA[Constants.overlayPointers + (index * 2) + 1] << 8) +

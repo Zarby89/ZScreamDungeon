@@ -101,7 +101,7 @@
             this.Controls.Add(this.button1);
             this.MaximizeBox = false;
             this.Name = "RoomLayout";
-            this.Text = "RoomLayout";
+            this.Text = "Room Layout";
             this.Load += new System.EventHandler(this.RoomLayout_Load);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);

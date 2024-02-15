@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     public class TileInfo
     {
@@ -34,11 +28,13 @@ namespace ZeldaFullEditor
             {
                 return (ushort)(o ? 1 : 0);
             }
+
             set
             {
                 o = value == 0x0001;
             }
         }
+
         /// <summary>
         /// 0x0001 if h flip
         /// </summary>
@@ -48,6 +44,7 @@ namespace ZeldaFullEditor
             {
                 return (ushort)(h ? 1 : 0);
             }
+
             set
             {
                 h = value == 0x0001;
@@ -63,6 +60,7 @@ namespace ZeldaFullEditor
             {
                 return (ushort)(v ? 1 : 0);
             }
+
             set
             {
                 v = value == 0x0001;
@@ -71,6 +69,7 @@ namespace ZeldaFullEditor
 
         public byte palette;
         public ushort id;
+
         // vhopppcc cccccccc
         public TileInfo(ushort id, byte palette, bool o, bool h, bool v)
         {
@@ -80,9 +79,11 @@ namespace ZeldaFullEditor
             this.H = h;
             this.O = o;
         }
+
         public ushort toShort()
         {
             ushort value = 0;
+
             // vhopppcc cccccccc
             if (this.o) { value |= Constants.TilePriorityBit; };
             if (this.h) { value |= Constants.TileHFlipBit; };

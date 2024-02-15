@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-using ZeldaFullEditor.Properties;
-using Microsoft.VisualBasic;
-using System.IO.Compression;
-using static ZeldaFullEditor.DungeonMain;
-using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
-using System.Threading.Tasks;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Lidgren.Network;
-using System.Windows.Media.Media3D;
+using Microsoft.VisualBasic;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {

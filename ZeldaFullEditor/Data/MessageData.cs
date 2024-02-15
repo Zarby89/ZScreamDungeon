@@ -62,6 +62,7 @@ namespace ZeldaFullEditor.Data
         ///     Sets all the message data based on the given message string.
         /// </summary>
         /// <param name="messageString"> The string to set the message to. </param>
+        // TODO: Make this use Refresh() in the next version when actual functional changes are valid.
         public void SetMessage(string messageString)
         {
             this.ContentsParsed = messageString;
@@ -69,11 +70,20 @@ namespace ZeldaFullEditor.Data
             this.RecalculateData();
         }
 
-        /// <summary>
-        ///     Returns the parsed message as a string.
-        /// </summary>
-        /// <returns> A string. </returns>
-        public override string ToString()
+		/// <summary>
+		/// Refreshes the message entirely by reoptimizing it for the dictionary and recalculating the data.
+		/// </summary>
+		public void Refresh()
+		{
+			RawString = OptimizeMessageForDictionary(ContentsParsed);
+			RecalculateData();
+		}
+
+		/// <summary>
+		///     Returns the parsed message as a string.
+		/// </summary>
+		/// <returns> A string. </returns>
+		public override string ToString()
         {
             return string.Format("{0:X3} - {1}", this.ID, this.ContentsParsed);
         }
@@ -91,7 +101,7 @@ namespace ZeldaFullEditor.Data
                 stringBuilder.Append(" ");
             }
 
-            stringBuilder.Append(TextEditor.MESSAGETERMINATOR.ToString("X2"));
+            stringBuilder.Append(TextEditor.MessageTerminator.ToString("X2"));
 
             return string.Format("[[[[\r\nMessage {0:X3}]]]]\r\n[Contents]\r\n{1}\r\n\r\n[Data]\r\n{2}\r\n\r\n\r\n\r\n", this.ID, TextEditor.AddNewLinesToCommands(this.ContentsParsed), stringBuilder.ToString());
         }
@@ -100,6 +110,7 @@ namespace ZeldaFullEditor.Data
         ///     Returns the parsed message as a string with some extra formating.
         /// </summary>
         /// <returns> A string. </returns>
+        // TODO: INTERPOLATE
         public string GetDumpedContents()
         {
             return string.Format("{0:X3} : {1}\r\n\r\n", this.ID, this.ContentsParsed);

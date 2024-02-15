@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-using ZeldaFullEditor.Properties;
-using Microsoft.VisualBasic;
-using System.IO.Compression;
-using static ZeldaFullEditor.DungeonMain;
-using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using ZeldaFullEditor.OWSceneModes;
+using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
-using ZeldaFullEditor.Data;
+using ZeldaFullEditor.OWSceneModes;
+using ZeldaFullEditor.Properties;
+
 namespace ZeldaFullEditor
 {
     public class SceneOW : Scene
@@ -73,26 +64,26 @@ namespace ZeldaFullEditor
 
         public SceneOW(OverworldEditor f, Overworld ow, DungeonMain mform)
         {
-            owForm = f;
-            mainForm = mform;
+            this.owForm = f;
+            this.mainForm = mform;
             this.ow = ow;
             //graphics = Graphics.FromImage(scene_bitmap);
             //this.Image = new Bitmap(4096, 4096);
-            this.MouseUp += new MouseEventHandler(onMouseUp);
-            this.MouseMove += new MouseEventHandler(onMouseMove);
-            this.MouseDoubleClick += new MouseEventHandler(onMouseDoubleClick);
+            this.MouseUp += new MouseEventHandler(this.onMouseUp);
+            this.MouseMove += new MouseEventHandler(this.onMouseMove);
+            this.MouseDoubleClick += new MouseEventHandler(this.onMouseDoubleClick);
             this.MouseWheel += SceneOW_MouseWheel;
-            tilesgfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, temptilesgfxPtr);
-            tilemode = new TileMode(this);
-            exitmode = new ExitMode(this);
-            doorMode = new DoorMode(this);
-            entranceMode = new EntranceMode(this);
-            selectedMode = ObjectMode.Tile;
-            itemMode = new ItemMode(this);
-            spriteMode = new SpriteMode(this);
-            transportMode = new TransportMode(this);
-            overlayMode = new OverlayMode(this);
-            gravestoneMode = new GravestoneMode(this);
+            this.tilesgfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, this.temptilesgfxPtr);
+            this.tilemode = new TileMode(this);
+            this.exitmode = new ExitMode(this);
+            this.doorMode = new DoorMode(this);
+            this.entranceMode = new EntranceMode(this);
+            this.selectedMode = ObjectMode.Tile;
+            this.itemMode = new ItemMode(this);
+            this.spriteMode = new SpriteMode(this);
+            this.transportMode = new TransportMode(this);
+            this.overlayMode = new OverlayMode(this);
+            this.gravestoneMode = new GravestoneMode(this);
 
             //this.Width = 8192;
             //this.Height = 8192;
@@ -109,8 +100,8 @@ namespace ZeldaFullEditor
         private void SceneOW_MouseWheel(object sender, MouseEventArgs e)
         {
             ((HandledMouseEventArgs)e).Handled = true;
-            int xPos = owForm.splitContainer1.Panel2.HorizontalScroll.Value;
-            int yPos = owForm.splitContainer1.Panel2.VerticalScroll.Value;
+            int xPos = this.owForm.splitContainer1.Panel2.HorizontalScroll.Value;
+            int yPos = this.owForm.splitContainer1.Panel2.VerticalScroll.Value;
 
             if (ModifierKeys == Keys.Shift)
             {
@@ -125,7 +116,6 @@ namespace ZeldaFullEditor
             }
             else
             {
-
                 if (ModifierKeys == Keys.Control)
                 {
                     if (e.Delta < 0)
@@ -150,309 +140,304 @@ namespace ZeldaFullEditor
                 }
             }
 
-            owForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
+            this.owForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
+
             //e.Delta
         }
 
         public void updateMapGfx()
         {
-            if (selectedMap + ow.WorldOffset <= 159)
+            if (this.selectedMap <= 159)
             {
-                owForm.propertiesChangedFromForm = true;
-                OverworldMap map = ow.AllMaps[selectedMap + ow.WorldOffset];
+                this.owForm.propertiesChangedFromForm = true;
+                OverworldMap map = this.ow.AllMaps[this.selectedMap];
                 if (map.NeedRefresh)
                 {
                     map.BuildMap();
                     map.NeedRefresh = false;
                 }
 
-                owForm.mapGroupbox.Text = string.Format(
-                    mainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
-                    map.ParentID.ToString("X2")
-                    );
+                this.owForm.mapGroupbox.Text = string.Format(
+                    this.mainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
+                    map.ParentID.ToString("X2"));
 
-                owForm.OWProperty_MessageID.HexValue = ow.AllMaps[map.ParentID].MessageID;
+                this.owForm.OWProperty_MessageID.HexValue = this.ow.AllMaps[map.ParentID].MessageID;
 
-                owForm.UpdateGUIProperties(ow.AllMaps[map.ParentID], ow.WorldOffset >= 64 ? 0 : ow.GameState);
+                this.owForm.UpdateGUIProperties(this.ow.AllMaps[map.ParentID], this.ow.WorldOffset >= 64 ? 0 : this.ow.GameState);
 
-                owForm.propertiesChangedFromForm = false;
-                owForm.tilePictureBox.Refresh();
+                this.owForm.propertiesChangedFromForm = false;
+                this.owForm.tilePictureBox.Refresh();
 
-                owForm.areaBGColorPictureBox.Refresh();
+                this.owForm.areaBGColorPictureBox.Refresh();
             }
 
-            owForm.BuildScratchTilesGfx();
-            owForm.scratchPicturebox.Refresh();
+            this.owForm.BuildScratchTilesGfx();
+            this.owForm.scratchPicturebox.Refresh();
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            int tileX = (e.X / 16);
-            int tileY = (e.Y / 16);
-            int superX = (tileX / 32);
-            int superY = (tileY / 32);
+            int tileX = e.X / 16;
+            int tileY = e.Y / 16;
+            int superX = tileX / 32;
+            int superY = tileY / 32;
             int mapId = (superY * 8) + superX;
 
-            if (mapId + ow.WorldOffset < ow.AllMaps.Length)
-            {
-                globalmouseTileDownX = tileX;
-                globalmouseTileDownY = tileY;
-
-                mainForm.anychange = true;
-                selectedMap = mapId;
-
-                selectedMapParent = ow.AllMaps[selectedMap + ow.WorldOffset].ParentID;
-
-                owForm.previewTextPicturebox.Visible = false;
-                updateMapGfx();
-                owForm.updateTiles();
-
-                switch (selectedMode)
-                {
-                    case ObjectMode.Tile:
-                        tilemode.OnMouseDown(e);
-                        break;
-                    case ObjectMode.Overlay:
-                        overlayMode.OnMouseDown(e);
-                        break;
-                    case ObjectMode.Exits:
-                        exitmode.onMouseDown(e);
-                        break;
-                    case ObjectMode.OWDoor:
-                        doorMode.OnMouseDown(e);
-                        break;
-                    case ObjectMode.Entrances:
-                        entranceMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Itemmode:
-                        itemMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Spritemode:
-                        spriteMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Flute:
-                        transportMode.onMouseDown(e);
-                        break;
-                    case ObjectMode.Gravestone:
-                        gravestoneMode.onMouseDown(e);
-                        break;
-                }
-
-                InvalidateHighEnd();
-
-                base.OnMouseDown(e);
-            }
-            else
+            if (mapId + this.ow.WorldOffset >= this.ow.AllMaps.Length)
             {
                 Console.WriteLine("Invalid area selected");
+                return;
             }
+
+            this.selectedMap = mapId + this.ow.WorldOffset;
+
+            this.globalmouseTileDownX = tileX;
+            this.globalmouseTileDownY = tileY;
+
+            this.mainForm.anychange = true;
+
+            this.selectedMapParent = this.ow.AllMaps[this.selectedMap].ParentID;
+
+            this.owForm.previewTextPicturebox.Visible = false;
+            this.updateMapGfx();
+            this.owForm.UpdateTiles();
+
+            switch (this.selectedMode)
+            {
+                case ObjectMode.Tile:
+                    this.tilemode.OnMouseDown(e);
+                    break;
+                case ObjectMode.Overlay:
+                    this.overlayMode.OnMouseDown(e);
+                    break;
+                case ObjectMode.Exits:
+                    this.exitmode.onMouseDown(e);
+                    break;
+                case ObjectMode.OWDoor:
+                    this.doorMode.OnMouseDown(e);
+                    break;
+                case ObjectMode.Entrances:
+                    this.entranceMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Itemmode:
+                    this.itemMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Spritemode:
+                    this.spriteMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Flute:
+                    this.transportMode.onMouseDown(e);
+                    break;
+                case ObjectMode.Gravestone:
+                    this.gravestoneMode.onMouseDown(e);
+                    break;
+            }
+
+            this.InvalidateHighEnd();
+
+            base.OnMouseDown(e);
         }
 
         // TODO switch statements
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
-            owForm.objCombobox.Items.Clear();
-            owForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
-            owForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedItem;
+            this.owForm.objCombobox.Items.Clear();
+            this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedSprite;
+            this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedItem;
             string text = "Selected object: ";
 
-            if (selectedMode == ObjectMode.Tile)
+            if (this.selectedMode == ObjectMode.Tile)
             {
-                tilemode.OnMouseUp(e);
+                this.tilemode.OnMouseUp(e);
             }
-            else if (selectedMode == ObjectMode.Overlay)
+            else if (this.selectedMode == ObjectMode.Overlay)
             {
-                overlayMode.OnMouseUp(e);
+                this.overlayMode.OnMouseUp(e);
             }
-            else if (selectedMode == ObjectMode.Exits)
+            else if (this.selectedMode == ObjectMode.Exits)
             {
-                exitmode.onMouseUp(e);
+                this.exitmode.onMouseUp(e);
                 text += "Exit";
-                if (exitmode.lastselectedExit != null)
+                if (this.exitmode.lastselectedExit != null)
                 {
-                    owForm.SetSelectedObjectLabels(
-                        exitmode.lastselectedExit.MapID,
-                        exitmode.lastselectedExit.PlayerX,
-                        exitmode.lastselectedExit.PlayerY);
+                    this.owForm.SetSelectedObjectLabels(
+                        this.exitmode.lastselectedExit.MapID,
+                        this.exitmode.lastselectedExit.PlayerX,
+                        this.exitmode.lastselectedExit.PlayerY);
                 }
             }
-            else if (selectedMode == ObjectMode.OWDoor)
+            else if (this.selectedMode == ObjectMode.OWDoor)
             {
                 //doorMode.onMouseUp(e);
             }
-            else if (selectedMode == ObjectMode.Entrances)
+            else if (this.selectedMode == ObjectMode.Entrances)
             {
-                entranceMode.onMouseUp(e);
+                this.entranceMode.onMouseUp(e);
                 text += "Entrance";
 
-                if (entranceMode.lastselectedEntrance != null)
+                if (this.entranceMode.lastselectedEntrance != null)
                 {
-                    owForm.SetSelectedObjectLabels(
-                        entranceMode.lastselectedEntrance.EntranceID,
-                        entranceMode.lastselectedEntrance.X,
-                        entranceMode.lastselectedEntrance.Y);
+                    this.owForm.SetSelectedObjectLabels(
+                        this.entranceMode.lastselectedEntrance.EntranceID,
+                        this.entranceMode.lastselectedEntrance.X,
+                        this.entranceMode.lastselectedEntrance.Y);
                 }
             }
-            else if (selectedMode == ObjectMode.Itemmode)
+            else if (this.selectedMode == ObjectMode.Itemmode)
             {
-                itemMode.onMouseUp(e);
+                this.itemMode.onMouseUp(e);
                 text += "Item";
 
-                if (itemMode.lastselectedItem != null)
+                if (this.itemMode.lastselectedItem != null)
                 {
-                    owForm.SetSelectedObjectLabels(
-                        itemMode.lastselectedItem.ID,
-                        itemMode.lastselectedItem.X,
-                        itemMode.lastselectedItem.Y);
+                    this.owForm.SetSelectedObjectLabels(
+                        this.itemMode.lastselectedItem.ID,
+                        this.itemMode.lastselectedItem.X,
+                        this.itemMode.lastselectedItem.Y);
 
-                    owForm.objCombobox.Items.AddRange(ItemsNames.name);
+                    this.owForm.objCombobox.Items.AddRange(ItemsNames.name);
 
-                    if ((itemMode.lastselectedItem.ID & 0x80) == 0x80)
+                    if ((this.itemMode.lastselectedItem.ID & 0x80) == 0x80)
                     {
-                        owForm.objCombobox.SelectedIndex = (23 + ((itemMode.lastselectedItem.ID - 0x80) / 2));
+                        this.owForm.objCombobox.SelectedIndex = (23 + ((this.itemMode.lastselectedItem.ID - 0x80) / 2));
                     }
                     else
                     {
-                        owForm.objCombobox.SelectedIndex = itemMode.lastselectedItem.ID;
+                        this.owForm.objCombobox.SelectedIndex = this.itemMode.lastselectedItem.ID;
                     }
 
-                    owForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
+                    this.owForm.objCombobox.SelectedIndexChanged += this.ObjCombobox_SelectedIndexChangedItem;
                 }
             }
-            else if (selectedMode == ObjectMode.Spritemode)
+            else if (this.selectedMode == ObjectMode.Spritemode)
             {
-                spriteMode.onMouseUp(e);
+                this.spriteMode.onMouseUp(e);
                 text += "Sprite";
 
-                if (spriteMode.lastselectedSprite != null)
+                if (this.spriteMode.lastselectedSprite != null)
                 {
-                    owForm.SetSelectedObjectLabels(
-                        spriteMode.lastselectedSprite.id,
-                        spriteMode.lastselectedSprite.x,
-                        spriteMode.lastselectedSprite.y);
-                    owForm.objCombobox.Items.AddRange(Sprites_Names.name);
-                    owForm.objCombobox.SelectedIndex = spriteMode.lastselectedSprite.id;
+                    this.owForm.SetSelectedObjectLabels(
+                        this.spriteMode.lastselectedSprite.id,
+                        this.spriteMode.lastselectedSprite.x,
+                        this.spriteMode.lastselectedSprite.y);
+                    this.owForm.objCombobox.Items.AddRange(Sprites_Names.name);
+                    this.owForm.objCombobox.SelectedIndex = this.spriteMode.lastselectedSprite.id;
 
-                    owForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
+                    this.owForm.objCombobox.SelectedIndexChanged += this.ObjCombobox_SelectedIndexChangedSprite;
                 }
             }
-            else if (selectedMode == ObjectMode.Flute)
+            else if (this.selectedMode == ObjectMode.Flute)
             {
-                transportMode.onMouseUp(e);
+                this.transportMode.onMouseUp(e);
                 text += "Transport";
 
-                if (transportMode.lastselectedTransport != null)
+                if (this.transportMode.lastselectedTransport != null)
                 {
-                    owForm.SetSelectedObjectLabels(
-                        transportMode.lastselectedTransport.mapId,
-                        transportMode.lastselectedTransport.playerX,
-                        transportMode.lastselectedTransport.playerY);
+                    this.owForm.SetSelectedObjectLabels(
+                        this.transportMode.lastselectedTransport.mapId,
+                        this.transportMode.lastselectedTransport.playerX,
+                        this.transportMode.lastselectedTransport.playerY);
                 }
             }
-            else if (selectedMode == ObjectMode.Gravestone)
+            else if (this.selectedMode == ObjectMode.Gravestone)
             {
-                gravestoneMode.OnMouseUp(e);
+                this.gravestoneMode.OnMouseUp(e);
             }
 
-            owForm.objectGroupbox.Text = text;
-            InvalidateHighEnd();
+            this.owForm.objectGroupbox.Text = text;
+            this.InvalidateHighEnd();
         }
-
 
         private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
         {
-            spriteMode.lastselectedSprite.id = (byte)owForm.objCombobox.SelectedIndex;
-            spriteMode.lastselectedSprite.name = owForm.objCombobox.Text;
+            this.spriteMode.lastselectedSprite.id = (byte)this.owForm.objCombobox.SelectedIndex;
+            this.spriteMode.lastselectedSprite.name = this.owForm.objCombobox.Text;
 
-            InvalidateHighEnd();
+            this.InvalidateHighEnd();
         }
 
         private void InvalidateHighEnd()
         {
-            if (lowEndMode)
+            if (this.lowEndMode)
             {
-                int x = ow.AllMaps[selectedMap].ParentID % 8;
-                int y = ow.AllMaps[selectedMap].ParentID / 8;
-                if (!ow.AllMaps[ow.AllMaps[selectedMap].ParentID].LargeMap)
+                int x = this.ow.AllMaps[this.selectedMap].ParentID % 8;
+                int y = this.ow.AllMaps[this.selectedMap].ParentID / 8;
+                if (!this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
                 {
-                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                    this.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
                 }
                 else
                 {
-                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    this.Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
                 }
             }
             else
             {
-                Invalidate(new Rectangle(
-                    owForm.splitContainer1.Panel2.HorizontalScroll.Value,
-                    owForm.splitContainer1.Panel2.VerticalScroll.Value,
-                    owForm.splitContainer1.Panel2.Width,
-                    owForm.splitContainer1.Panel2.Height
-                    ));
+                this.Invalidate(
+                    new Rectangle(
+                        this.owForm.splitContainer1.Panel2.HorizontalScroll.Value,
+                        this.owForm.splitContainer1.Panel2.VerticalScroll.Value,
+                        this.owForm.splitContainer1.Panel2.Width,
+                        this.owForm.splitContainer1.Panel2.Height)
+                );
             }
         }
 
-
-
         private void ObjCombobox_SelectedIndexChangedItem(object sender, EventArgs e)
         {
-            byte id = (byte)owForm.objCombobox.SelectedIndex;
-            if (owForm.objCombobox.SelectedIndex >= 23)
+            byte id = (byte)this.owForm.objCombobox.SelectedIndex;
+            if (this.owForm.objCombobox.SelectedIndex >= 23)
             {
-                id = (byte)(((owForm.objCombobox.SelectedIndex - 23) * 2) + 0x80);
-
+                id = (byte)(((this.owForm.objCombobox.SelectedIndex - 23) * 2) + 0x80);
             }
 
-
-            itemMode.lastselectedItem.ID = id;
-            itemMode.SendItemData(itemMode.lastselectedItem);
-            InvalidateHighEnd();
+            this.itemMode.lastselectedItem.ID = id;
+            this.itemMode.SendItemData(this.itemMode.lastselectedItem);
+            this.InvalidateHighEnd();
         }
 
         private void onMouseMove(object sender, MouseEventArgs e)
         {
-            switch (selectedMode)
+            switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
-                    tilemode.OnMouseMove(e);
+                    this.tilemode.OnMouseMove(e);
                     break;
                 case ObjectMode.Overlay:
-                    overlayMode.OnMouseMove(e);
+                    this.overlayMode.OnMouseMove(e);
                     break;
                 case ObjectMode.Exits:
-                    exitmode.onMouseMove(e);
+                    this.exitmode.onMouseMove(e);
                     break;
                 case ObjectMode.OWDoor:
-                    doorMode.onMouseMove(e);
+                    this.doorMode.onMouseMove(e);
                     break;
                 case ObjectMode.Entrances:
-                    entranceMode.onMouseMove(e);
+                    this.entranceMode.onMouseMove(e);
                     break;
                 case ObjectMode.Itemmode:
-                    itemMode.onMouseMove(e);
+                    this.itemMode.onMouseMove(e);
                     break;
                 case ObjectMode.Spritemode:
-                    spriteMode.onMouseMove(e);
+                    this.spriteMode.onMouseMove(e);
                     break;
                 case ObjectMode.Flute:
-                    transportMode.onMouseMove(e);
+                    this.transportMode.onMouseMove(e);
                     break;
                 case ObjectMode.Gravestone:
-                    gravestoneMode.OnMouseMove(e);
+                    this.gravestoneMode.OnMouseMove(e);
                     break;
             }
 
-            InvalidateHighEnd();
-
+            this.InvalidateHighEnd();
         }
 
         public void Undo()
         {
             if (!NetZS.connected)
             {
-                tilemode.Undo();
-                InvalidateHighEnd();
+                this.tilemode.Undo();
+                this.InvalidateHighEnd();
             }
         }
 
@@ -460,117 +445,117 @@ namespace ZeldaFullEditor
         {
             if (!NetZS.connected)
             {
-                tilemode.Redo();
-                InvalidateHighEnd();
+                this.tilemode.Redo();
+                this.InvalidateHighEnd();
             }
         }
 
         public override void paste()
         {
-            switch (selectedMode)
+            switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
-                    tilemode.Paste();
+                    this.tilemode.Paste();
                     break;
                 case ObjectMode.Overlay:
-                    //overlayMode.Paste();
+                    //this.overlayMode.Paste();
                     break;
                 case ObjectMode.Exits:
-                    exitmode.Paste();
+                    this.exitmode.Paste();
                     break;
                 case ObjectMode.OWDoor:
-                    //doorMode.Paste();
+                    //this.doorMode.Paste();
                     break;
                 case ObjectMode.Entrances:
-                    entranceMode.Paste();
+                    this.entranceMode.Paste();
                     break;
                 case ObjectMode.Itemmode:
-                    itemMode.Paste();
+                    this.itemMode.Paste();
                     break;
                 case ObjectMode.Spritemode:
-                    spriteMode.Paste();
+                    this.spriteMode.Paste();
                     break;
                 case ObjectMode.Flute:
-                    //transportMode.Paste();
+                    //this.transportMode.Paste();
                     break;
                 case ObjectMode.Gravestone:
-                    //gravestoneMode.Paste();
+                    //this.gravestoneMode.Paste();
                     break;
             }
 
-            InvalidateHighEnd();
+            this.InvalidateHighEnd();
         }
 
         public override void copy()
         {
-            switch (selectedMode)
+            switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
-                    tilemode.Copy();
+                    this.tilemode.Copy();
                     break;
                 case ObjectMode.Overlay:
-                    //overlayMode.Copy();
+                    //this.overlayMode.Copy();
                     break;
                 case ObjectMode.Exits:
-                    exitmode.Copy();
+                    this.exitmode.Copy();
                     break;
                 case ObjectMode.OWDoor:
-                    //doorMode.Copy();
+                    //this.doorMode.Copy();
                     break;
                 case ObjectMode.Entrances:
-                    entranceMode.Copy();
+                    this.entranceMode.Copy();
                     break;
                 case ObjectMode.Itemmode:
-                    itemMode.Copy();
+                    this.itemMode.Copy();
                     break;
                 case ObjectMode.Spritemode:
-                    spriteMode.Copy();
+                    this.spriteMode.Copy();
                     break;
                 case ObjectMode.Flute:
-                    //transportMode.Copy();
+                    //this.transportMode.Copy();
                     break;
                 case ObjectMode.Gravestone:
-                    //gravestoneMode.Copy();
+                    //this.gravestoneMode.Copy();
                     break;
             }
 
-            InvalidateHighEnd();
+            this.InvalidateHighEnd();
         }
 
         public override void cut()
         {
-            switch (selectedMode)
+            switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
-                    //tilemode.Cut();
+                    //this.tilemode.Cut();
                     break;
                 case ObjectMode.Overlay:
-                    //overlayMode.Cut();
+                    //this.overlayMode.Cut();
                     break;
                 case ObjectMode.Exits:
-                    exitmode.Cut();
+                    this.exitmode.Cut();
                     break;
                 case ObjectMode.OWDoor:
-                    //doorMode.Cut();
+                    //this.doorMode.Cut();
                     break;
                 case ObjectMode.Entrances:
-                    entranceMode.Cut();
+                    this.entranceMode.Cut();
                     break;
                 case ObjectMode.Itemmode:
-                    itemMode.Cut();
+                    this.itemMode.Cut();
                     break;
                 case ObjectMode.Spritemode:
-                    spriteMode.Cut();
+                    this.spriteMode.Cut();
                     break;
                 case ObjectMode.Flute:
-                    //transportMode.Cut();
+                    //this.transportMode.Cut();
                     break;
                 case ObjectMode.Gravestone:
-                    //gravestoneMode.Cut();
+                    //this.gravestoneMode.Cut();
                     break;
             }
 
-            InvalidateHighEnd();
+            this.InvalidateHighEnd();
         }
 
         /// <summary>
@@ -582,7 +567,7 @@ namespace ZeldaFullEditor
             if (!this.ow.CreateTile32Tilemap())
             {
                 this.ow.Save32Tiles();
-                //ow.savemapstorom();
+                //this.ow.savemapstorom();
                 this.ow.SaveMap16Tiles();
 
                 return false;
@@ -608,50 +593,50 @@ namespace ZeldaFullEditor
             g.CompositingQuality = CompositingQuality.HighSpeed;
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
 
-            if (initialized)
+            if (this.initialized)
             {
-                if (lowEndMode)
+                if (this.lowEndMode)
                 {
-                    int x = ow.AllMaps[selectedMap].ParentID % 8;
-                    int y = ow.AllMaps[selectedMap].ParentID / 8;
+                    int x = this.ow.AllMaps[this.selectedMap].ParentID % 8;
+                    int y = this.ow.AllMaps[this.selectedMap].ParentID / 8;
 
-                    if (ow.AllMaps[ow.AllMaps[selectedMap].ParentID].LargeMap)
+                    if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
                     {
                         if (OverworldEditor.UseAreaSpecificBgColor)
                         {
-                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 1024, 1024));
+                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[this.selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 1024, 1024));
                         }
                         else
                         {
                             g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
                         }
 
-                        g.DrawImage(ow.AllMaps[ow.AllMaps[selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
-                        g.DrawImage(ow.AllMaps[ow.AllMaps[selectedMap].ParentID + 1].GFXBitmap, new PointF((x + 1) * 512, y * 512));
-                        g.DrawImage(ow.AllMaps[ow.AllMaps[selectedMap].ParentID + 8].GFXBitmap, new PointF((x) * 512, (y + 1) * 512));
-                        g.DrawImage(ow.AllMaps[ow.AllMaps[selectedMap].ParentID + 9].GFXBitmap, new PointF((x + 1) * 512, (y + 1) * 512));
+                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
+                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID + 1].GFXBitmap, new PointF((x + 1) * 512, y * 512));
+                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID + 8].GFXBitmap, new PointF(x * 512, (y + 1) * 512));
+                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID + 9].GFXBitmap, new PointF((x + 1) * 512, (y + 1) * 512));
                     }
                     else
                     {
                         if (OverworldEditor.UseAreaSpecificBgColor)
                         {
-                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[this.selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                         }
                         else
                         {
                             g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
                         }
 
-                        g.DrawImage(ow.AllMaps[ow.AllMaps[selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
+                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
                     }
                 }
                 else
                 {
-                    if (ow.WorldOffset == 64)
+                    if (this.ow.WorldOffset == 64)
                     {
                         g.Clear(Palettes.OverworldGrassPalettes[1]);
                     }
-                    else if (ow.WorldOffset == 128)
+                    else if (this.ow.WorldOffset == 128)
                     {
                         g.Clear(Palettes.OverworldGrassPalettes[2]);
                     }
@@ -660,60 +645,34 @@ namespace ZeldaFullEditor
                         g.Clear(Palettes.OverworldGrassPalettes[0]);
                     }
 
-                    // TODO make a single PointF and Rectangle variable to reuse
+                    // TODO: Make a single PointF and Rectangle variable to reuse.
                     int x = 0;
                     int y = 0;
-                    for (int i = (0 + ow.WorldOffset); i < 64 + (ow.WorldOffset); i++)
+                    for (int i = 0 + this.ow.WorldOffset; i < 64 + this.ow.WorldOffset; i++)
                     {
-                        if (i <= 159)
+                        if (i <= 0x9F)
                         {
-                            if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                            ushort subscreenOverlay = this.ow.AllMaps[i].SubscreenOverlay;
+
+                            g.CompositingMode = CompositingMode.SourceOver;
+
+                            // Draw the base image (either a BG color or tilemap like the pyramid BG).
+                            if (this.mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
                             {
-                                if (i == 0x03)
+                                // everything that is not these 3 should be drawn on top.
+                                // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
+                                if (subscreenOverlay == 0x95 || subscreenOverlay == 0x96 || subscreenOverlay == 0x9C)
                                 {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[149].GFXBitmap, new PointF(x * 512, y * 512));
-                                }
-                                else if (i == 0x04)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[149].GFXBitmap, new PointF(x * 512, y * 512));
-                                }
-                                else if (i == 0x05)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[149].GFXBitmap, new PointF(x * 512, y * 512));
-                                }
-                                else if (i == 0x06)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[149].GFXBitmap, new PointF(x * 512, y * 512));
-                                }
-                                else if (i == 0x07)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[149].GFXBitmap, new PointF(x * 512, y * 512));
-                                }
-                                else if (i == 91)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[150].GFXBitmap, new PointF(x * 512, y * 512));
-                                }
-                                else if (i == 92)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[150].GFXBitmap, new PointF(x * 512, y * 512));
+                                    g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new PointF(x * 512, y * 512));
                                 }
                             }
                             else
                             {
                                 if (i < 64)
                                 {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-
                                     if (OverworldEditor.UseAreaSpecificBgColor)
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                     else
                                     {
@@ -722,11 +681,9 @@ namespace ZeldaFullEditor
                                 }
                                 else if (i >= 64 && i < 128)
                                 {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-
                                     if (OverworldEditor.UseAreaSpecificBgColor)
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                     else
                                     {
@@ -735,11 +692,9 @@ namespace ZeldaFullEditor
                                 }
                                 else
                                 {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-
                                     if (OverworldEditor.UseAreaSpecificBgColor)
                                     {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                                     }
                                     else
                                     {
@@ -748,30 +703,18 @@ namespace ZeldaFullEditor
                                 }
                             }
 
-                            g.DrawImage(ow.AllMaps[i].GFXBitmap, new PointF(x * 512, y * 512));
+                            // Draw the actual tile maps.
+                            g.DrawImage(this.ow.AllMaps[i].GFXBitmap, new PointF(x * 512, y * 512));
 
-                            if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                            // Draw any subscreen overlays that go on top.
+                            if (this.mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
                             {
-                                if (i == 0)
+                                // everything that is not these 3 should be drawn on top.
+                                // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
+                                // 0x93 is the second triforce room, 0x94 is the second master sword/ bridge area, 0x97 is the first fog, 0x9D is the second fog, 0x9E is the tree canopy, 0x9F is the rain.
+                                if (subscreenOverlay != 0x95 && subscreenOverlay != 0x96 && subscreenOverlay != 0x9C && subscreenOverlay < 0xA0)
                                 {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[157].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-                                }
-                                else if (i == 1)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[157].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-                                }
-                                else if (i == 8)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[157].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-
-                                }
-                                else if (i == 9)
-                                {
-                                    g.CompositingMode = CompositingMode.SourceOver;
-                                    g.DrawImage(ow.AllMaps[157].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+                                    g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
                                 }
                             }
 
@@ -787,29 +730,29 @@ namespace ZeldaFullEditor
 
                 g.CompositingMode = CompositingMode.SourceOver;
 
-                if (selecting)
+                if (this.selecting)
                 {
-                    g.DrawRectangle(Pens.White, new Rectangle((globalmouseTileDownX * 16), (globalmouseTileDownY * 16), (((mouseX_Real / 16) - globalmouseTileDownX) * 16) + 16, (((mouseY_Real / 16) - globalmouseTileDownY) * 16) + 16));
+                    g.DrawRectangle(Pens.White, new Rectangle(this.globalmouseTileDownX * 16, this.globalmouseTileDownY * 16, (((this.mouseX_Real / 16) - this.globalmouseTileDownX) * 16) + 16, (((this.mouseY_Real / 16) - this.globalmouseTileDownY) * 16) + 16));
                 }
 
-                if (selectedMode == ObjectMode.OWDoor || selectedMode == ObjectMode.Tile)
+                if (this.selectedMode == ObjectMode.OWDoor || this.selectedMode == ObjectMode.Tile)
                 {
-                    g.DrawImage(tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16), 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                    g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
+                    g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                    g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
                 }
 
                 int offset = 0;
-                if (selectedMap >= 128)
+                if (this.selectedMap >= 128)
                 {
                     offset = 128;
                 }
 
-                if ((mapHover + offset) < ow.AllMaps.Length)
+                if ((this.mapHover + offset) < this.ow.AllMaps.Length)
                 {
-                    int my = (ow.AllMaps[mapHover + offset].ParentID - offset) / 8;
-                    int mx = (ow.AllMaps[mapHover + offset].ParentID - offset) - (my * 8);
+                    int my = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) / 8;
+                    int mx = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) - (my * 8);
 
-                    if (ow.AllMaps[mapHover + offset].LargeMap)
+                    if (this.ow.AllMaps[this.mapHover + offset].LargeMap)
                     {
                         g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
                     }
@@ -819,116 +762,132 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                if (showExits)
+                if (this.showExits)
                 {
-                    exitmode.Draw(g);
-                }
-                if (showEntrances)
-                {
-                    entranceMode.Draw(g);
-                }
-                if (showItems)
-                {
-                    itemMode.Draw(g);
+                    this.exitmode.Draw(g);
                 }
 
-                gravestoneMode.Draw(g);
+                if (this.showEntrances)
+                {
+                    this.entranceMode.Draw(g);
+                }
 
-                if (showSprites)
+                if (this.showItems)
                 {
-                    spriteMode.Draw(g);
+                    this.itemMode.Draw(g);
                 }
-                if (showFlute)
+
+                // TODO: Only draw the graves on the LW for now but this should be changed later.
+                if (this.ow.WorldOffset == 0)
                 {
-                    transportMode.Draw(g);
+                    this.gravestoneMode.Draw(g);
                 }
-                if (entrancePreview)
+
+                if (this.showSprites)
                 {
-                    if (entranceMode.selectedEntrance != null)
+                    this.spriteMode.Draw(g);
+                }
+
+                if (this.showFlute)
+                {
+                    this.transportMode.Draw(g);
+                }
+
+                if (this.entrancePreview)
+                {
+                    if (this.entranceMode.selectedEntrance != null)
                     {
-                        g.DrawImage(owForm.tmpPreviewBitmap, entranceMode.selectedEntrance.X + 16, entranceMode.selectedEntrance.Y + 16);
+                        g.DrawImage(this.owForm.tmpPreviewBitmap, this.entranceMode.selectedEntrance.X + 16, this.entranceMode.selectedEntrance.Y + 16);
                     }
-                    if (exitmode.selectedExit != null)
+
+                    if (this.exitmode.selectedExit != null)
                     {
-                        g.DrawImage(owForm.tmpPreviewBitmap, exitmode.selectedExit.PlayerX + 16, exitmode.selectedExit.PlayerY + 16);
+                        g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
                     }
                 }
 
-                if (selectedMode == ObjectMode.Overlay)
+                if (this.selectedMode == ObjectMode.Overlay)
                 {
-                    int mid = ow.AllMaps[selectedMap].ParentID;
-                    int msy = ((ow.AllMaps[selectedMap].ParentID - ow.WorldOffset) / 8);
-                    int msx = (ow.AllMaps[selectedMap].ParentID - ow.WorldOffset) - (msy * 8);
-                    drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString("X2"));
-                    drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.AllMaps[selectedMap].ParentID.ToString("X2"));
-                    drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
+                    int mid = this.ow.AllMaps[this.selectedMap].ParentID;
+                    int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
+                    int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
+                    this.drawText(g, 0 + 4, 0 + 64, "Selected Map : " + this.selectedMap.ToString("X2"));
+                    this.drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
+                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
 
-                    for (int i = 0; i < ow.AllOverlays[mid].TileDataList.Count; i++)
+                    for (int i = 0; i < this.ow.AllOverlays[mid].TileDataList.Count; i++)
                     {
-                        int xo = ow.AllOverlays[mid].TileDataList[i].x * 16;
-                        int yo = ow.AllOverlays[mid].TileDataList[i].y * 16;
-                        int to = ow.AllOverlays[mid].TileDataList[i].tileId;
+                        int xo = this.ow.AllOverlays[mid].TileDataList[i].x * 16;
+                        int yo = this.ow.AllOverlays[mid].TileDataList[i].y * 16;
+                        int to = this.ow.AllOverlays[mid].TileDataList[i].tileId;
                         int toy = (to / 8) * 16;
                         int tox = (to % 8) * 16;
                         g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
-                        //g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-                        byte detect = compareTilePos(ow.AllOverlays[mid].TileDataList[i], ow.AllOverlays[mid].TileDataList.ToArray());
+
+                        // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                        byte detect = this.compareTilePos(this.ow.AllOverlays[mid].TileDataList[i], this.ow.AllOverlays[mid].TileDataList.ToArray());
 
                         if (detect == 0)
                         {
                             g.DrawRectangle(Pens.White, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
                         }
+
                         if ((detect & 0x01) != 0x01)
                         {
                             g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
                         }
+
                         if ((detect & 0x02) != 0x02)
                         {
                             g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
                         }
+
                         if ((detect & 0x04) != 0x04)
                         {
                             g.DrawLine(Pens.White, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
                         }
+
                         if ((detect & 0x08) != 0x08)
                         {
                             g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
                         }
                     }
 
-                    g.DrawImage(tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16), 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                    g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
+                    g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                    g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
 
-                    drawText(g, 4, 24, globalmouseTileDownX.ToString());
-                    drawText(g, 4, 48, globalmouseTileDownY.ToString());
+                    this.drawText(g, 4, 24, this.globalmouseTileDownX.ToString());
+                    this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
                 }
 
-                if (owForm.gridDisplay != 0)
+                if (this.owForm.gridDisplay != 0)
                 {
                     int gridsize = 512;
-                    if (ow.AllMaps[ow.AllMaps[selectedMap].ParentID].LargeMap)
+                    if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
                     {
                         gridsize = 1024;
                     }
 
-                    int temp = selectedMap;
-                    temp = temp % 64;
+                    int temp = this.selectedMap;
+                    temp %= 64;
 
-                    int x = ow.AllMaps[temp].ParentID % 8;
-                    int y = ow.AllMaps[temp].ParentID / 8;
+                    int x = this.ow.AllMaps[temp].ParentID % 8;
+                    int y = this.ow.AllMaps[temp].ParentID / 8;
 
-                    for (int gx = 0; gx < (gridsize / owForm.gridDisplay); gx++)
+                    for (int gx = 0; gx < (gridsize / this.owForm.gridDisplay); gx++)
                     {
-                        g.DrawLine(Constants.ThirdWhitePen1,
-                            new Point((x * 512) + gx * owForm.gridDisplay, y * 512),
-                            new Point((x * 512) + gx * owForm.gridDisplay, (y * 512) + gridsize));
+                        g.DrawLine(
+                            Constants.ThirdWhitePen1,
+                            new Point((x * 512) + (gx * this.owForm.gridDisplay), y * 512),
+                            new Point((x * 512) + (gx * this.owForm.gridDisplay), (y * 512) + gridsize));
                     }
 
-                    for (int gy = 0; gy < (gridsize / owForm.gridDisplay); gy++)
+                    for (int gy = 0; gy < (gridsize / this.owForm.gridDisplay); gy++)
                     {
-                        g.DrawLine(Constants.ThirdWhitePen1,
-                            new Point((x * 512), (y * 512) + (gy * owForm.gridDisplay)),
-                            new Point((x * 512) + gridsize, (y * 512) + (gy * owForm.gridDisplay)));
+                        g.DrawLine(
+                            Constants.ThirdWhitePen1,
+                            new Point((x * 512), (y * 512) + (gy * this.owForm.gridDisplay)),
+                            new Point((x * 512) + gridsize, (y * 512) + (gy * this.owForm.gridDisplay)));
                     }
                 }
 
@@ -942,7 +901,6 @@ namespace ZeldaFullEditor
         // 2 = up
         // 4 = right
         // 8 = bottom
-
         public byte compareTilePos(TilePos tpc, TilePos[] tpa)
         {
             byte detected = 0;
@@ -987,43 +945,42 @@ namespace ZeldaFullEditor
 
         public void ReLoadPalettes()
         {
-            ow.AllMaps[selectedMap].LoadPalette();
+            this.ow.AllMaps[this.selectedMap].LoadPalette();
         }
 
         public override void deleteSelected()
         {
-            switch (selectedMode)
+            switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
-                    //tilemode.Delete();
+                    //this.tilemode.Delete();
                     break;
                 case ObjectMode.Overlay:
-                    //overlayMode.Delete();
+                    //this.overlayMode.Delete();
                     break;
                 case ObjectMode.Exits:
-                    exitmode.Delete();
+                    this.exitmode.Delete();
                     break;
                 case ObjectMode.OWDoor:
-                    //doorMode.Delete();
+                    //this.doorMode.Delete();
                     break;
                 case ObjectMode.Entrances:
-                    entranceMode.Delete();
+                    this.entranceMode.Delete();
                     break;
                 case ObjectMode.Itemmode:
-                    itemMode.Delete();
+                    this.itemMode.Delete();
                     break;
                 case ObjectMode.Spritemode:
-                    spriteMode.Delete();
+                    this.spriteMode.Delete();
                     break;
                 case ObjectMode.Flute:
-                    //transportMode.Delete();
+                    //this.transportMode.Delete();
                     break;
                 case ObjectMode.Gravestone:
-                    //gravestoneMode.Delete();
+                    //this.gravestoneMode.Delete();
                     break;
             }
         }
-
 
         public void drawGrid(Graphics graphics)
         {
@@ -1046,7 +1003,6 @@ namespace ZeldaFullEditor
             }
             */
         }
-
 
         public void SetPalettesTransparent()
         {
@@ -1107,17 +1063,17 @@ namespace ZeldaFullEditor
 
         private void onMouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (selectedMode == ObjectMode.Entrances)
+            if (this.selectedMode == ObjectMode.Entrances)
             {
-                entranceMode.onMouseDoubleClick(e);
+                this.entranceMode.onMouseDoubleClick(e);
             }
         }
 
         private void InitializeComponent()
         {
-            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+            ((ISupportInitialize)this).BeginInit();
             this.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
+            ((ISupportInitialize)this).EndInit();
             this.ResumeLayout(false);
         }
     }

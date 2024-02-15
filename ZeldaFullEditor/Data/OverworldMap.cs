@@ -47,15 +47,26 @@ namespace ZeldaFullEditor
         public byte[] SpriteGFX { get; set; } = new byte[3];
 
         /// <summary>
-        ///     Gets or sets the palette of the map.
+        ///     Gets or sets the Aux palette of the map.
         /// </summary>
-        public byte Palette { get; set; } = 0;
+        public byte AuxPalette { get; set; } = 0;
+
+        /// <summary>
+        ///     Gets or sets the Main palette of the map.
+        /// </summary>
+        public byte MainPalette { get; set; } = 0;
 
         /// <summary>
         ///     Gets or sets the sprite palette of the map.
-        ///     There is one palette for each game phase (rain, pre agah, post agah).
+        ///     There is one palette for each game phase (rain, pre Agah, post Agah).
         /// </summary>
         public byte[] SpritePalette { get; set; } = new byte[3];
+
+        /// <summary>
+        ///     Gets or sets the subscreen overlay of the map.
+        ///     This is things like the rain overlay, lost woods fog overly, death mountain sky background, and the pyramid background.
+        /// </summary>
+        public ushort SubscreenOverlay { get; set; } = 0;
 
         /// <summary>
         ///     Gets or sets the map music.
@@ -93,9 +104,14 @@ namespace ZeldaFullEditor
 
         /// <summary>
         ///     Gets the static GFX index.
-        ///     TODO: trees, houses and stuff? Needs to be verified.
+        ///     Essentially the GFX groups loaded from different tables and used to load all the gfx for each area.
         /// </summary>
         public byte[] StaticGFX { get; internal set; } = new byte[16];
+
+        /// <summary>
+        ///     Gets or sets the Animated GFX used to replace StaticGFX[7] with custom area specific animated GFX.
+        /// </summary>
+        public byte AnimatedGFX { get; set; }
 
         /// <summary>
         ///     Gets the used tiles.
@@ -137,16 +153,86 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (ROM.DATA[Constants.overworldCustomMosaicASM] == 0x00)
+            // If the custom overworld ASM has NOT already been applied, manually set the vanilla values.
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
             {
-                this.Mosaic = index == 0 || index == 64 || index == 128 || index == 129 || index == 136;
+                // Set the main palette values.
+                if (index < 0x40)
+                {
+                    this.MainPalette = 0;
+                }
+                else if (index >= 0x40 && index < 0x80)
+                {
+                    this.MainPalette = 1;
+                }
+                else if (index >= 0x80 && index < 0xA0)
+                {
+                    this.MainPalette = 0;
+                }
+
+                if (index == 0x03 || index == 0x05 || index == 0x07)
+                {
+                    this.MainPalette = 2;
+                }
+                else if (index == 0x43 || index == 0x45 || index == 0x47)
+                {
+                    this.MainPalette = 3;
+                }
+                else if (index == 0x88)
+                {
+                    this.MainPalette = 4;
+                }
+
+                // Set the mosaic values.
+                this.Mosaic = index == 0x00 || index == 0x40 || index == 0x80 || index == 0x81 || index == 0x88;
+
+                // Set the animated GFX values.
+                if (index == 0x03 || index == 0x05 || index == 0x07 || index == 0x43 || index == 0x45 || index == 0x47)
+                {
+                    this.AnimatedGFX = 0x59;
+                }
+                else
+                {
+                    this.AnimatedGFX = 0x5B;
+                }
+
+                // Set the subscreen overlay values.
+                this.SubscreenOverlay = 0x00FF;
+
+                if (index == 0x00 || index == 0x40) // Add fog 2 to the lost woods and skull woods.
+                {
+                    this.SubscreenOverlay = 0x009D;
+                }
+                else if (index == 0x03 || index == 0x05 || index == 0x07) // Add the sky BG to LW death mountain.
+                {
+                    this.SubscreenOverlay = 0x0095;
+                }
+                else if (index == 0x43 || index == 0x45 || index == 0x47) // Add the lava to DW death mountain.
+                {
+                    this.SubscreenOverlay = 0x009C;
+                }
+                else if (index == 0x5B) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
+                {
+                    this.SubscreenOverlay = 0x0096;
+                }
+                else if (index == 0x80) // Add fog 1 to the master sword area.
+                {
+                    this.SubscreenOverlay = 0x0097;
+                }
+                else if (index == 0x88) // Add the triforce room curtains to the triforce room.
+                {
+                    this.SubscreenOverlay = 0x0093;
+                }
             }
             else
             {
-                if (ROM.DATA[Constants.overworldCustomMosaicArray + index] != 0x00)
-                {
-                    this.Mosaic = true;
-                }
+                this.MainPalette = ROM.DATA[Constants.OverworldCustomMainPaletteArray + index];
+
+                this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
+
+                this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomAnimatedGFXArray + index];
+
+                this.SubscreenOverlay = ROM.DATA[Constants.OverworldCustomSubscreenOverlayArray + (index * 2)];
             }
 
             if (index < 64)
@@ -155,7 +241,7 @@ namespace ZeldaFullEditor
                 this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 64];
                 this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID];
                 this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 64];
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
@@ -170,7 +256,7 @@ namespace ZeldaFullEditor
                 this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
                 this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
                 this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
@@ -230,21 +316,21 @@ namespace ZeldaFullEditor
                 this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
 
-                this.Palette = ROM.DATA[Constants.overworldSpecialPALGroup + this.ParentID - 128];
+                this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + this.ParentID - 128];
                 if ((index >= 0x80 && index <= 0x8A && index != 0x88) || index == 0x94)
                 {
                     this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
-                    this.Palette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+                    this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
                 }
                 else if (index == 0x88)
                 {
                     this.GFX = 81;
-                    this.Palette = 0;
+                    this.AuxPalette = 0;
                 }
                 else // Pyramid bg use 0x5B map.
                 {
                     this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                    this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                    this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 }
             }
         }
@@ -270,17 +356,17 @@ namespace ZeldaFullEditor
                         if (this.Index >= 0x80 && this.Index <= 0x8A && this.Index != 0x88)
                         {
                             this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
-                            this.Palette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+                            this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
                         }
                         else if (this.Index == 0x88)
                         {
                             this.GFX = 81;
-                            this.Palette = 0;
+                            this.AuxPalette = 0;
                         }
                         else
                         {
                             this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                            this.Palette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                            this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                         }
 
                         this.FirstLoad = true;
@@ -372,16 +458,14 @@ namespace ZeldaFullEditor
                 previousSprPalId = ROM.DATA[Constants.overworldSpritePalette + this.ParentID - 1];
             }
 
-            if (this.Palette >= 0xA3)
+            if (this.AuxPalette >= 0xA3)
             {
-                this.Palette = 0xA3;
+                this.AuxPalette = 0xA3;
             }
 
-            byte pal0 = 0;
-
-            byte pal1 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.Palette * 4)]; // aux1
-            byte pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.Palette * 4) + 1]; // aux2
-            byte pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.Palette * 4) + 2]; // animated
+            byte pal1 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4)]; // aux1
+            byte pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4) + 1]; // aux2
+            byte pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4) + 2]; // animated
 
             byte pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (this.SpritePalette[this.overworld.GameState] * 2)]; // spr3
             byte pal5 = ROM.DATA[Constants.overworldSpritePaletteGroup + (this.SpritePalette[this.overworld.GameState] * 2) + 1]; // spr4
@@ -434,9 +518,6 @@ namespace ZeldaFullEditor
 
             if (this.ParentID < 0x40)
             {
-                // Default LW Palette.
-                pal0 = 0;
-
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
                     bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
@@ -445,29 +526,9 @@ namespace ZeldaFullEditor
                 {
                     bgr = Palettes.OverworldGrassPalettes[0];
                 }
-
-                // Hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
-                // Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later.
-                /*
-				if ((parent >= 0x03 && parent <= 0x07))
-				{
-					pal0 = 2;
-				}
-				else if (parent >= 0x0B && parent <= 0x0E)
-				{
-					pal0 = 2;
-				}
-				*/
-
-                if (this.ParentID == 0x03 || this.ParentID == 0x05 || this.ParentID == 0x07)
-                {
-                    pal0 = 2;
-                }
             }
             else if (this.ParentID >= 0x40 && this.ParentID < 0x80)
             {
-                // Default DW Palette.
-                pal0 = 1;
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
                     bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
@@ -476,30 +537,9 @@ namespace ZeldaFullEditor
                 {
                     bgr = Palettes.OverworldGrassPalettes[1];
                 }
-
-                // Hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
-                // Replaced in favor of just looking at 3, 5, 7, and their DW equivilants. May need to be changed later.
-                /*
-				if (parent >= 0x43 && parent <= 0x47)
-				{
-					pal0 = 3;
-				}
-				else if (parent >= 0x4B && parent <= 0x4E)
-				{
-					pal0 = 3;
-				}
-				*/
-
-                if (this.ParentID == 0x43 || this.ParentID == 0x45 || this.ParentID == 0x47)
-                {
-                    pal0 = 3;
-                }
             }
             else if (this.ParentID >= 128 && this.ParentID < Constants.NumberOfOWMaps)
             {
-                // Default SP Palette.
-                pal0 = 0;
-
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
                     bgr = Palettes.OverworldBackgroundPalette[this.ParentID];
@@ -510,22 +550,10 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (this.ParentID == 0x88)
+            int mainPalette = this.overworld.AllMaps[this.ParentID].MainPalette;
+            if (mainPalette >= 0 && mainPalette < Palettes.OverworldMainPalettes.Length)
             {
-                pal0 = 4;
-            }
-
-            /*
-            else if (parent >= 128) //special area like Zora's domain, etc...
-            {
-                bgr = Palettes.overworld_GrassPalettes[2];
-                pal0 = 4;
-            }
-            */
-
-            if (pal0 != 255)
-            {
-                main = Palettes.OverworldMainPalettes[pal0];
+                main = Palettes.OverworldMainPalettes[mainPalette];
             }
             else
             {
@@ -593,7 +621,7 @@ namespace ZeldaFullEditor
             }
             else if (this.ParentID == 0x88)
             {
-                indexWorld = 36;
+                indexWorld = 0x24;
             }
 
             // Sprites Blocksets
@@ -604,6 +632,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 4; i++)
             {
+
                 this.StaticGFX[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (this.SpriteGFX[this.overworld.GameState] * 4) + i] + 115);
             }
 
@@ -634,35 +663,8 @@ namespace ZeldaFullEditor
                 this.StaticGFX[6] = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3];
             }
 
-            // Hardcoded overworld GFX Values, for death mountain
-            // Commented out in favor of just checking for area's 3, 5, and 7 and their DW equivilants for the sake of consistency, but may need to be changed later. -Jared_Brian_
-            /*
-			if ((this.Parent >= 0x03 && this.Parent <= 0x07) || (this.Parent >= 0x0B && this.Parent <= 0x0E))
-			{
-				this.StaticGFX[7] = 89;
-			}
-			else if ((this.Parent >= 0x43 && this.Parent <= 0x47) || (this.Parent >= 0x4B && this.Parent <= 0x4E))
-			{
-				this.StaticGFX[7] = 89;
-			}
-			else
-			{
-				this.StaticGFX[7] = 91;
-			}
-			*/
-
-            if (this.ParentID == 0x03 || this.ParentID == 0x05 || this.ParentID == 0x07)
-            {
-                this.StaticGFX[7] = 89;
-            }
-            else if (this.ParentID == 0x43 || this.ParentID == 0x45 || this.ParentID == 0x47)
-            {
-                this.StaticGFX[7] = 89;
-            }
-            else
-            {
-                this.StaticGFX[7] = 91;
-            }
+            // Replace the animated tiles with the custom set ones.
+            this.StaticGFX[7] = this.overworld.AllMaps[this.ParentID].AnimatedGFX;
 
             /*
 			if (this.Parent >= 128 & this.Parent < 148)
@@ -674,9 +676,9 @@ namespace ZeldaFullEditor
 
             unsafe
             {
-                // NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
-                byte* currentmapgfx8Data = (byte*)ZeldaFullEditor.GFX.currentOWgfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point)
-                byte* allgfxData = (byte*)ZeldaFullEditor.GFX.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
+                // NEEDS TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
+                byte* currentmapgfx8Data = (byte*)ZeldaFullEditor.GFX.currentOWgfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point).
+                byte* allgfxData = (byte*)ZeldaFullEditor.GFX.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp).
                 for (int i = 0; i < 16; i++)
                 {
                     for (int j = 0; j < 2048; j++)
@@ -692,7 +694,7 @@ namespace ZeldaFullEditor
                                 break;
                         }
 
-                        currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
+                        currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data.
                     }
                 }
             }
