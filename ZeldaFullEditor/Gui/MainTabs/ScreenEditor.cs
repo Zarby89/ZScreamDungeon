@@ -1474,8 +1474,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			for (int i = 0; i < 1024; i++)
 			{
-				allData.Add((byte) (tilesBG1Buffer[i + 0] & 0xFF));
-				allData.Add((byte) ((tilesBG1Buffer[i] & 0xFF00) >> 8));
+				allData.Add((byte) tilesBG1Buffer[i + 0]);
+				allData.Add((byte) (tilesBG1Buffer[i] >> 8));
 			}
 
 			allData.Add(0x00);
@@ -1486,8 +1486,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			for (int i = 0; i < 1024; i++)
 			{
-				allData.Add((byte) (tilesBG2Buffer[i + 0] & 0xFF));
-				allData.Add((byte) ((tilesBG2Buffer[i] & 0xFF00) >> 8));
+				allData.Add((byte) tilesBG2Buffer[i + 0]);
+				allData.Add((byte) (tilesBG2Buffer[i] >> 8));
 			}
 
 			allData.Add(0xFF);
@@ -1709,15 +1709,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 						short px = (short) (allMapIcons[e][i].X << 4);
 						short py = (short) (allMapIcons[e][i].Y << 4);
 
-						// ROM.DATA[0x53763 + i] = (byte)(px & 0xFF);
-						// ROM.DATA[0x5376b + i] = (byte)((px>>8) & 0xFF);
-						ROM.Write(0x53763 + i, (byte) (px & 0xFF), WriteType.OverworldMapData);
-						ROM.Write(0x5376b + i, (byte) ((px >> 8) & 0xFF), WriteType.OverworldMapData);
+						ROM.Write(0x53763 + i, (byte) px, WriteType.OverworldMapData);
+						ROM.Write(0x5376b + i, (byte) (px >> 8), WriteType.OverworldMapData);
 
-						// ROM.DATA[0x53773 + i] = (byte)(py & 0xFF);
-						// ROM.DATA[0x5377b + i] = (byte)((py >> 8) & 0xFF);
-						ROM.Write(0x53773 + i, (byte) (py & 0xFF), WriteType.OverworldMapData);
-						ROM.Write(0x5377b + i, (byte) ((py >> 8) & 0xFF), WriteType.OverworldMapData);
+						ROM.Write(0x53773 + i, (byte) py, WriteType.OverworldMapData);
+						ROM.Write(0x5377b + i, (byte) (py >> 8), WriteType.OverworldMapData);
 					}
 				}
 			}
@@ -1804,8 +1800,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 					for (int j = 0; j < 25; j++) // for each room on the floor
 					{
-						// rdata[j] = 0x0F;
-						gdata[j] = 0xFF;
 						rdata[j] = ROM.DATA[pcPtr + j + (i * 25)]; // Set the rooms
 
 						if (rdata[j] == 0x0F)

@@ -10,7 +10,7 @@ namespace ZeldaFullEditor
 
 		public Subtype2_Multiple(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
 		{
-			byte oid = (byte) (id & 0xFF);
+			byte oid = (byte) id;
 
 			switch (oid)
 			{
@@ -356,7 +356,7 @@ namespace ZeldaFullEditor
 		{
 			base.Draw();
 
-			byte oid = (byte) (id & 0xFF);
+			byte oid = (byte) id;
 			if (oid == 0x3C)
 			{
 				// Collumn

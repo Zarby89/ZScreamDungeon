@@ -26,7 +26,7 @@ namespace ZeldaFullEditor
 		public static int GetBank(this int addr) => addr & 0xFF0000;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte GetBankAsByte(this int addr) => (byte) ((addr & 0xFF0000) >> 16);
+		public static byte GetBankAsByte(this int addr) => (byte) (addr >> 16);
 
 		public static Color ToColor(this ushort c)
 		{
@@ -59,8 +59,8 @@ namespace ZeldaFullEditor
 		public static int Get24LocalFromPC(int addr, bool pc = true)
 		{
 			int ret = (PcToSnes(addr) & 0xFF0000) |
-					   (ROM.DATA[addr + 1] << 8) |
-					   ROM.DATA[addr];
+						(ROM.DATA[addr + 1] << 8) |
+						ROM.DATA[addr];
 			if (pc)
 			{
 				return SnesToPc(ret);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,19 @@ namespace ZeldaFullEditor
 		public static int uniqueRoomObjectID = 0;
 		public static int uniqueGraveID = 0;
 		public static int spaceUsedOWSprites = 0;
+
+		// TODO remove all the Write2, etc and create a protected mode
+		/*
+		public static bool WriteToOther { get; set; } = false;
+		private static volatile byte[] realData;
+		private static volatile byte[] secondaryData;
+
+		public static volatile byte[] DATA => WriteToOther ? secondaryData : realData;
+		*/
+
+
+
+
 
 		public static void StartBlockLogWriting(string name, int addr)
 		{

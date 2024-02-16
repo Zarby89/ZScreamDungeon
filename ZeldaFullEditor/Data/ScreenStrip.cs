@@ -21,28 +21,28 @@ namespace ZeldaFullEditor
 			if (!fix)
 			{
 				d = new byte[4 + (data.Count * 2)];
-				d[0] = (byte) ((startAddr & 0xFF00) >> 8);
-				d[1] = (byte) ((startAddr & 0xFF));
+				d[0] = (byte) (startAddr >> 8);
+				d[1] = (byte) startAddr;
 
-				d[2] = (byte) ((((data.Count * 2) - 1) & 0xFF00) >> 8);
-				d[3] = (byte) ((((data.Count * 2) - 1) & 0xFF));
+				d[2] = (byte) (((data.Count * 2) - 1) >> 8);
+				d[3] = (byte) ((data.Count * 2) - 1);
 
 				for (int i = 0; i < data.Count; i++)
 				{
-					d[(i * 2) + 4] = (byte) (data[i] & 0xFF);
-					d[(i * 2) + 5] = (byte) ((data[i] & 0xFF00) >> 8);
+					d[(i * 2) + 4] = (byte) data[i];
+					d[(i * 2) + 5] = (byte) (data[i] >> 8);
 				}
 			}
 			else
 			{
 				d = new byte[6];
-				d[0] = (byte) ((startAddr & 0xFF00) >> 8);
-				d[1] = (byte) ((startAddr & 0xFF));
+				d[0] = (byte) (startAddr >> 8);
+				d[1] = (byte) startAddr;
 
 				d[2] = (byte) (((((data.Count * 2) - 1) & 0xFF00) >> 8) + 0x40);
-				d[3] = (byte) ((((data.Count * 2) - 1) & 0xFF));
-				d[4] = (byte) (data[0] & 0xFF);
-				d[5] = (byte) ((data[0] & 0xFF00) >> 8);
+				d[3] = (byte) ((data.Count * 2) - 1);
+				d[4] = (byte) data[0];
+				d[5] = (byte) (data[0] >> 8);
 			}
 
 			return d;

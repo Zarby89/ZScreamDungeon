@@ -110,8 +110,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				for (ushort y = 0; y < 16; y++)
 				{
-					file[t++] = (byte) ((this.scratchPadTiles[y, x] >> 8) & 0xFF);
-					file[t++] = (byte) (this.scratchPadTiles[y, x] & 0xFF);
+					file[t++] = (byte) (this.scratchPadTiles[y, x] >> 8);
+					file[t++] = (byte) this.scratchPadTiles[y, x];
 				}
 			}
 

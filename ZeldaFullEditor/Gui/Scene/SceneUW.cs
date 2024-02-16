@@ -2058,6 +2058,8 @@ namespace ZeldaFullEditor
 		}
 
 		private const int garbageobjdata = -999999;
+
+		// TODO KAN REFACTOR INTERFACES
 		public void updateSelectionObject(object o)
 		{
 			if (room.selectedObject.Count == 1)
@@ -2070,12 +2072,12 @@ namespace ZeldaFullEditor
 
 				if (o is Room_Object objR)
 				{
-					if (objR.nx >= 63)
+					if (objR.nx > 63)
 					{
 						objR.nx = 63;
 					}
 
-					if (objR.ny >= 63)
+					if (objR.ny > 63)
 					{
 						objR.ny = 63;
 					}
@@ -2110,9 +2112,9 @@ namespace ZeldaFullEditor
 					/*
                     if ((o.options & ObjectOption.Door) == ObjectOption.Door)
                     {
-                        byte door_pos = (byte)((o.id & 0xF0) >> 3);
-                        byte door_dir = (byte)((o.id & 0x03));
-                        byte door_type = (byte)((o.id >> 8) & 0xFF);
+                        byte door_pos = (byte) ((o.id & 0xF0) >> 3);
+                        byte door_dir = (byte) (o.id & 0x03);
+                        byte door_type = (byte) (o.id >> 8);
                         id = o.id.ToString("X4") + "\nDoor Type : " + door_type.ToString("X2");
                         id += "\nDoor Direction : " + door_dir.ToString("X2");
                         id += "\nDoor Position : " + door_pos.ToString("X2");
@@ -2127,11 +2129,11 @@ namespace ZeldaFullEditor
 				else if (o is object_door)
 				{
 					object_door dobj = (o as object_door);
-					if (dobj.nx >= 63)
+					if (dobj.nx > 63)
 					{
 						dobj.nx = 63;
 					}
-					if (dobj.ny >= 63)
+					if (dobj.ny > 63)
 					{
 						dobj.ny = 63;
 					}
@@ -2147,15 +2149,15 @@ namespace ZeldaFullEditor
 				else if (o is Sprite)
 				{
 					Sprite spr = (o as Sprite);
-					if (spr.nx >= 31)
+					if (spr.nx > 31)
 					{
 						spr.nx = 31;
 					}
-					if (spr.ny >= 31)
+					if (spr.ny > 31)
 					{
 						spr.ny = 31;
 					}
-					if (spr.layer >= 2)
+					if (spr.layer > 1)
 					{
 						spr.layer = 1;
 					}
@@ -2175,15 +2177,15 @@ namespace ZeldaFullEditor
 				else if (o is PotItem)
 				{
 					PotItem poti = (o as PotItem);
-					if (poti.nx >= 63)
+					if (poti.nx > 63)
 					{
 						poti.nx = 63;
 					}
-					if (poti.ny >= 63)
+					if (poti.ny > 63)
 					{
 						poti.ny = 63;
 					}
-					if (poti.layer >= 2) // NVM
+					if (poti.layer > 1) // NVM
 					{
 						poti.layer = 1;
 					}

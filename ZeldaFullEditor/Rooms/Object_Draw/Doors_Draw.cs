@@ -2,6 +2,7 @@
 
 namespace ZeldaFullEditor
 {
+	// TODO KAN REFACTOR A OT OF REDUNDANT CALCULATIONS HERE
 	/*
      ALL THESE ARRAYS CONTAINS LOCATION IN TILEMAP SNES FORMAT TO WHERE TO DRAW DOOR ON SCREEN
 
@@ -25,8 +26,8 @@ namespace ZeldaFullEditor
 		{
 			options |= ObjectOption.Door;
 			door_pos = (byte) ((id & 0xF0) >> 3); //*2
-			door_dir = (byte) ((id & 0x03));
-			door_type = (byte) ((id >> 8) & 0xFF);
+			door_dir = (byte) (id & 0x03);
+			door_type = (byte) (id >> 8);
 			name = "Door";
 		}
 

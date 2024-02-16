@@ -444,37 +444,37 @@ namespace ZeldaFullEditor
 				}
 
 				// Top Left.
-				ROM.Write(Constants.map32TilesTL + i, (byte) (this.UniqueTile32List[index].Tile0 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesTL + (i + 1), (byte) (this.UniqueTile32List[index + 1].Tile0 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesTL + (i + 2), (byte) (this.UniqueTile32List[index + 2].Tile0 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesTL + (i + 3), (byte) (this.UniqueTile32List[index + 3].Tile0 & 0xFF), WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTL + i, (byte) UniqueTile32List[index].Tile0, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTL + (i + 1), (byte) UniqueTile32List[index + 1].Tile0, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTL + (i + 2), (byte) UniqueTile32List[index + 2].Tile0, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTL + (i + 3), (byte) UniqueTile32List[index + 3].Tile0, WriteType.Tile32);
 
 				ROM.Write(Constants.map32TilesTL + (i + 4), (byte) (((this.UniqueTile32List[index].Tile0 >> 4) & 0xF0) + ((this.UniqueTile32List[index + 1].Tile0 >> 8) & 0x0F)), WriteType.Tile32);
 				ROM.Write(Constants.map32TilesTL + (i + 5), (byte) (((this.UniqueTile32List[index + 2].Tile0 >> 4) & 0xF0) + ((this.UniqueTile32List[index + 3].Tile0 >> 8) & 0x0F)), WriteType.Tile32);
 
 				// Top Right.
-				ROM.Write(Constants.map32TilesTR + i, (byte) (this.UniqueTile32List[index].Tile1 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesTR + (i + 1), (byte) (this.UniqueTile32List[index + 1].Tile1 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesTR + (i + 2), (byte) (this.UniqueTile32List[index + 2].Tile1 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesTR + (i + 3), (byte) (this.UniqueTile32List[index + 3].Tile1 & 0xFF), WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTR + i, (byte) UniqueTile32List[index].Tile1, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTR + (i + 1), (byte) UniqueTile32List[index + 1].Tile1, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTR + (i + 2), (byte) UniqueTile32List[index + 2].Tile1, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesTR + (i + 3), (byte) UniqueTile32List[index + 3].Tile1, WriteType.Tile32);
 
 				ROM.Write(Constants.map32TilesTR + (i + 4), (byte) (((this.UniqueTile32List[index].Tile1 >> 4) & 0xF0) | ((this.UniqueTile32List[index + 1].Tile1 >> 8) & 0x0F)), WriteType.Tile32);
 				ROM.Write(Constants.map32TilesTR + (i + 5), (byte) (((this.UniqueTile32List[index + 2].Tile1 >> 4) & 0xF0) | ((this.UniqueTile32List[index + 3].Tile1 >> 8) & 0x0F)), WriteType.Tile32);
 
 				// Bottom Left.
-				ROM.Write(Constants.map32TilesBL + i, (byte) (this.UniqueTile32List[index].Tile2 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesBL + (i + 1), (byte) (this.UniqueTile32List[index + 1].Tile2 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesBL + (i + 2), (byte) (this.UniqueTile32List[index + 2].Tile2 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesBL + (i + 3), (byte) (this.UniqueTile32List[index + 3].Tile2 & 0xFF), WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBL + i, (byte) UniqueTile32List[index].Tile2, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBL + (i + 1), (byte) UniqueTile32List[index + 1].Tile2, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBL + (i + 2), (byte) UniqueTile32List[index + 2].Tile2, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBL + (i + 3), (byte) UniqueTile32List[index + 3].Tile2, WriteType.Tile32);
 
 				ROM.Write(Constants.map32TilesBL + (i + 4), (byte) (((this.UniqueTile32List[index].Tile2 >> 4) & 0xF0) | ((this.UniqueTile32List[index + 1].Tile2 >> 8) & 0x0F)), WriteType.Tile32);
 				ROM.Write(Constants.map32TilesBL + (i + 5), (byte) (((this.UniqueTile32List[index + 2].Tile2 >> 4) & 0xF0) | ((this.UniqueTile32List[index + 3].Tile2 >> 8) & 0x0F)), WriteType.Tile32);
 
 				// Bottom Right.
-				ROM.Write(Constants.map32TilesBR + i, (byte) (this.UniqueTile32List[index].Tile3 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesBR + (i + 1), (byte) (this.UniqueTile32List[index + 1].Tile3 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesBR + (i + 2), (byte) (this.UniqueTile32List[index + 2].Tile3 & 0xFF), WriteType.Tile32);
-				ROM.Write(Constants.map32TilesBR + (i + 3), (byte) (this.UniqueTile32List[index + 3].Tile3 & 0xFF), WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBR + i, (byte) UniqueTile32List[index].Tile3, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBR + (i + 1), (byte) UniqueTile32List[index + 1].Tile3, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBR + (i + 2), (byte) UniqueTile32List[index + 2].Tile3, WriteType.Tile32);
+				ROM.Write(Constants.map32TilesBR + (i + 3), (byte) UniqueTile32List[index + 3].Tile3, WriteType.Tile32);
 
 				ROM.Write(Constants.map32TilesBR + (i + 4), (byte) (((this.UniqueTile32List[index].Tile3 >> 4) & 0xF0) | ((this.UniqueTile32List[index + 1].Tile3 >> 8) & 0x0F)), WriteType.Tile32);
 				ROM.Write(Constants.map32TilesBR + (i + 5), (byte) (((this.UniqueTile32List[index + 2].Tile3 >> 4) & 0xF0) | ((this.UniqueTile32List[index + 3].Tile3 >> 8) & 0x0F)), WriteType.Tile32);
