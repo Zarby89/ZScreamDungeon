@@ -221,8 +221,8 @@ namespace ZeldaFullEditor
 			return SpecialChars.FirstOrDefault(e => e.ID == value);
 		}
 
-        // TODO: Modify this routine to take the dictionary as argument and return the value rather than the position.
-        public int FindDictionaryEntry(byte value)
+		// TODO: Modify this routine to take the dictionary as argument and return the value rather than the position.
+		public int FindDictionaryEntry(byte value)
 		{
 			if (value < DictionaryBase || value == 0xFF)
 			{
@@ -810,7 +810,7 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				usedspace += cand.Key.Length; 
+				usedspace += cand.Key.Length;
 				tokencount++;
 
 				selectedCandidates.Add(cand);
@@ -829,7 +829,7 @@ namespace ZeldaFullEditor
 				$"You are about to replace the optimization dictionary with new data.\r\n" +
 				$"Your current message data is {originalParsedsize:D} bytes" +
 				$"or {originalCompressedsize:D} bytes with the existing dictionary" +
-				$"for a total savings of {originalParsedsize-originalCompressedsize:D} bytes\r\n" +
+				$"for a total savings of {originalParsedsize - originalCompressedsize:D} bytes\r\n" +
 				$"With the new dictionary, your savings will be {newCompressedSavings:D} bytes.\r\n" +
 				$"It may be possible to further optimize the message data if it is changed.\r\n\r\n" +
 				$"Do you wish to continue?",
@@ -1348,45 +1348,45 @@ namespace ZeldaFullEditor
 			ROM.Write(pos, 0xFF, true, "End of text");
 
 			// TODO test
-/*
-			// Save dictionary data
+			/*
+						// Save dictionary data
 
-			var dictSave = AllDictionaries.ToList(); // get a copy that we can sort
-			dictSave.Sort((a, b) => a.ID.CompareTo(b.ID)); // so that the original stays sorted by length
+						var dictSave = AllDictionaries.ToList(); // get a copy that we can sort
+						dictSave.Sort((a, b) => a.ID.CompareTo(b.ID)); // so that the original stays sorted by length
 
-			int dictPtr = Constants.pointers_dictionaries;
-			int dictAddr = dictPtr + 2 * NumberOfDictionaryEntries;
-			int dictCount = 0;
-			int dictSize = 0;
+						int dictPtr = Constants.pointers_dictionaries;
+						int dictAddr = dictPtr + 2 * NumberOfDictionaryEntries;
+						int dictCount = 0;
+						int dictSize = 0;
 
-			foreach (var d in AllDictionaries)
-			{
-				ROM.WriteShort(dictPtr, dictAddr.PcToSnes());
-				ROM.Write(dictAddr, d.Data);
-				dictPtr += 2;
-				dictAddr += d.Data.Length;
+						foreach (var d in AllDictionaries)
+						{
+							ROM.WriteShort(dictPtr, dictAddr.PcToSnes());
+							ROM.Write(dictAddr, d.Data);
+							dictPtr += 2;
+							dictAddr += d.Data.Length;
 
-				dictCount++;
-				dictSize += d.Data.Length;
-			}
+							dictCount++;
+							dictSize += d.Data.Length;
+						}
 
-			if (dictCount > NumberOfDictionaryEntries || dictSize > Dictionarysize)
-			{
-				ROM.DATA = (byte[]) backup.Clone();
-				UIText.CryAboutSaving("The dictionary is too big.");
-				return true;
-			}
+						if (dictCount > NumberOfDictionaryEntries || dictSize > Dictionarysize)
+						{
+							ROM.DATA = (byte[]) backup.Clone();
+							UIText.CryAboutSaving("The dictionary is too big.");
+							return true;
+						}
 
-			for (; dictCount <= NumberOfDictionaryEntries + 1; dictCount++) // add remaining end pointers
-			{
-				ROM.WriteShort(dictPtr, dictAddr.PcToSnes()); // add end pointer
-				dictPtr += 2;
-			}
+						for (; dictCount <= NumberOfDictionaryEntries + 1; dictCount++) // add remaining end pointers
+						{
+							ROM.WriteShort(dictPtr, dictAddr.PcToSnes()); // add end pointer
+							dictPtr += 2;
+						}
 
-			// TODO breakpoint with this to make sure everything is good
-			var gggg = ROM.DATA[Constants.pointers_dictionaries + 2 * NumberOfDictionaryEntries];
+						// TODO breakpoint with this to make sure everything is good
+						var gggg = ROM.DATA[Constants.pointers_dictionaries + 2 * NumberOfDictionaryEntries];
 
-*/
+			*/
 			return false;
 		}
 

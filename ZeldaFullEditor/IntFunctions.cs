@@ -9,9 +9,9 @@
 
 		public static bool BitsAllSet(this byte b, byte test) => (b & test) == test;
 
-        public static bool BitIsOn(this int b, int test) => (b & test) != 0;
+		public static bool BitIsOn(this int b, int test) => (b & test) != 0;
 
-        public static bool BitsAllSet(this int b, int test) => (b & test) == test;
+		public static bool BitsAllSet(this int b, int test) => (b & test) == test;
 
 		public static bool BitIsOn(this short b, short test) => (b & test) != 0;
 

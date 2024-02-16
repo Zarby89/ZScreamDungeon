@@ -1,9 +1,9 @@
 ﻿namespace ZeldaFullEditor
 {
-    internal class ColoringInfo
-    {
+	internal class ColoringInfo
+	{
 
 
 
-    }
+	}
 }

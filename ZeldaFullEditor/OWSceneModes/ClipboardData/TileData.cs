@@ -2,16 +2,16 @@
 
 namespace ZeldaFullEditor.OWSceneModes.ClipboardData
 {
-    [Serializable]
-    public class TileData
-    {
-        public ushort[] tiles;
-        public int length;
+	[Serializable]
+	public class TileData
+	{
+		public ushort[] tiles;
+		public int length;
 
-        public TileData(ushort[] tiles, int length)
-        {
-            this.tiles = tiles;
-            this.length = length;
-        }
-    }
+		public TileData(ushort[] tiles, int length)
+		{
+			this.tiles = tiles;
+			this.length = length;
+		}
+	}
 }

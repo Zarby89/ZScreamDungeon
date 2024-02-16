@@ -1,9 +1,9 @@
 ﻿namespace ZeldaFullEditor
 {
-    /*This class will contains all information about the project*/
+	/*This class will contains all information about the project*/
 
-    public static class Project
-    {
-        // TODO: Add something here?
-    }
+	public static class Project
+	{
+		// TODO: Add something here?
+	}
 }
