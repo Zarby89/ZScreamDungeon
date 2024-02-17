@@ -4061,7 +4061,7 @@
 			// 
 			this.uploadVanillaCopyToolStripMenuItem.Name = "uploadVanillaCopyToolStripMenuItem";
 			this.uploadVanillaCopyToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-			this.uploadVanillaCopyToolStripMenuItem.Text = "Upload Vanilla Copy";
+			this.uploadVanillaCopyToolStripMenuItem.Text = "Upload Vanilla Copy…";
 			this.uploadVanillaCopyToolStripMenuItem.Click += new System.EventHandler(this.uploadVanillaCopyToolStripMenuItem_Click);
 			// 
 			// customPanel3
