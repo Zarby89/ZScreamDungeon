@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor
@@ -92,6 +93,12 @@ namespace ZeldaFullEditor
 			}
 
 			return ret.ToString();
+		}
+
+
+		public static string SpaceOutString(this string s)
+		{
+			return string.Join(" ", Regex.Split(s.ToString(), @"(?=[A-Z]|\d+)", RegexOptions.None));
 		}
 
 		// ===========================================================================================

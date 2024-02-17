@@ -10,7 +10,7 @@ namespace ZeldaFullEditor
 {
 	internal class Save
 	{
-		// ROM.DATA is a base rom loaded to get basic information it can either be JP1.0 or US1.2.
+		// ROM.DATA is a base rom loaded to get basic information it can either be JP1.0 or US.
 		private Room[] AllRooms;
 
 		private int[] roomTilesPointers = new int[Constants.NumberOfRooms];
@@ -32,6 +32,15 @@ namespace ZeldaFullEditor
 			this.AllRooms = allRooms;
 			this.MainForm = mainForm;
 		}
+
+		public bool ApplyBasePatches()
+		{
+			return AttemptBasePatch("basepatches.asm", alwaysAllow: false);
+		}
+
+
+
+
 
 		public bool SaveEntrances(Entrance[] entrances, Entrance[] startingentrances)
 		{
@@ -73,7 +82,7 @@ namespace ZeldaFullEditor
 
 			ROM.EndBlockLogWriting();
 
-			ROM.StartBlockLogWriting("Rooms Messages", Constants.messages_id_dungeon);
+			ROM.StartBlockLogWriting("Rooms sign messages", Constants.messages_id_dungeon);
 
 			// ROM.SaveLogs();
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
@@ -97,7 +106,7 @@ namespace ZeldaFullEditor
 			int roomIndex = 0;
 			int pos = Utils.SnesToPc(ROM.ReadLong(region[roomIndex]));
 			int count = 0;
-			ROM.StartBlockLogWriting("Blocks Data", pos);
+			ROM.StartBlockLogWriting("Pushable block data", pos);
 
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
@@ -222,18 +231,7 @@ namespace ZeldaFullEditor
 			// TODO: Use this:
 			// string projectFilename = MainForm.projectFilename;
 
-			_ = Asar.init();
-
-			// TODO: handle differently in projects.
-			if (File.Exists("CustomCollision.asm"))
-			{
-				Console.WriteLine("Applying Custom Collision ASM");
-				_ = Asar.patch("CustomCollision.asm", ref ROM.DATA);
-			}
-			else
-			{
-				UIText.CryAboutSaving("Missing ASM file 'CustomCollision.asm'.\nSaving will continue but the ASM will not be applied.");
-			}
+			AttemptBasePatch("CustomCollision.asm");
 
 			return false;
 		}
@@ -332,18 +330,7 @@ namespace ZeldaFullEditor
 				ROM.WriteShort(Constants.OverworldCustomSubscreenOverlayArray + (i * 2), scene.ow.AllMaps[i].SubscreenOverlay);
 			}
 
-			_ = Asar.init();
-
-			// TODO: handle differently in projects.
-			if (File.Exists("ZSCustomOverworld.asm"))
-			{
-				_ = Asar.patch("ZSCustomOverworld.asm", ref ROM.DATA);
-			}
-			else
-			{
-				UIText.CryAboutSaving("Missing ASM file 'ZSCustomOverworld.asm'.\nSaving will continue but the ASM will not be applied.");
-			}
-
+			AttemptBasePatch("ZSCustomOverworld.asm");
 			return CheckAndLogAsarErrors();
 		}
 
@@ -2039,25 +2026,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			Asar.init();
-
-			// TODO: Handle differently in projects.
-			if (File.Exists("newgraves.asm"))
-			{
-				if (Asar.patch("newgraves.asm", ref ROM.DATA))
-				{
-					Console.WriteLine("Successfully applied Custom Grave ASM");
-				}
-				else
-				{
-					UIText.CryAboutSaving("Error applying ASM file 'newgraves.asm'.\r\nSaving will continue but the ASM will not be applied.");
-				}
-			}
-			else
-			{
-				UIText.CryAboutSaving("Missing ASM file 'newgraves.asm'.\r\nSaving will continue but the ASM will not be applied.");
-			}
-
+			AttemptBasePatch("newgraves.asm");
 			return CheckAndLogAsarErrors();
 		}
 
@@ -2636,6 +2605,36 @@ namespace ZeldaFullEditor
 
 			return false;
 		}
+
+		private bool AttemptBasePatch(string patchPath, bool alwaysAllow = true)
+		{
+			Asar.init();
+
+			const string allowedAnyways = "Saving will continue, but the patch will not be applied.";
+			const string notAllowed = "Saving has been aborted";
+
+			// TODO: Handle differently in projects.
+			if (File.Exists(patchPath))
+			{
+				if (Asar.patch(patchPath, ref ROM.DATA))
+				{
+					Console.WriteLine($"Successfully applied patch: {patchPath}");
+					return false;
+				}
+				else
+				{
+					UIText.CryAboutSaving($"Error patching file: {patchPath}.\r\n{(alwaysAllow ? allowedAnyways : notAllowed)}");
+				}
+			}
+			else
+			{
+				UIText.CryAboutSaving($"Missing patch file: {patchPath}.\r\n{(alwaysAllow ? allowedAnyways : notAllowed)}");
+
+			}
+
+			return true;
+		}
+
 
 		private bool CheckAndLogAsarErrors()
 		{

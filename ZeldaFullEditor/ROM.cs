@@ -90,7 +90,7 @@ namespace ZeldaFullEditor
 			{
 				var comA = $"{info} {addr:X6}/{addr.PcToSnes():X6} : ";
 				var theBytes = value.Select(b => $"{b:X2}");
-				var comB = string.Join(", ", theBytes.ToArray());
+				var comB = string.Join(", ", theBytes);
 				advancedLogData.Add(new LogInfos(addr, $"{comA}{comB} {info ?? ""}\r\n"));
 			}
 		}
