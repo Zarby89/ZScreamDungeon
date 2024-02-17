@@ -108,12 +108,21 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.bumpdamagemail3hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.bumpdamagemail2hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.bumpdamagemail1hexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.bumpDamagecombobox = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.damageClassControl1 = new ZeldaFullEditor.Gui.DamageClassControl();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.DamageSubclassGroupBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // spriteListbox
@@ -246,6 +255,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(198, 3);
+            this.groupBox1.MinimumSize = new System.Drawing.Size(0, 192);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(782, 192);
             this.groupBox1.TabIndex = 1;
@@ -734,6 +744,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.DamageSubclassGroupBox.Controls.Add(this.label10);
             this.DamageSubclassGroupBox.Controls.Add(this.label9);
             this.DamageSubclassGroupBox.Location = new System.Drawing.Point(198, 201);
+            this.DamageSubclassGroupBox.MinimumSize = new System.Drawing.Size(0, 120);
             this.DamageSubclassGroupBox.Name = "DamageSubclassGroupBox";
             this.DamageSubclassGroupBox.Size = new System.Drawing.Size(782, 120);
             this.DamageSubclassGroupBox.TabIndex = 6;
@@ -1144,14 +1155,137 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.damageClassControl1);
             this.groupBox3.Location = new System.Drawing.Point(198, 327);
+            this.groupBox3.MinimumSize = new System.Drawing.Size(0, 300);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(782, 301);
+            this.groupBox3.Size = new System.Drawing.Size(782, 300);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Global damage class table (shared by all sprites)";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label28);
+            this.groupBox2.Controls.Add(this.label27);
+            this.groupBox2.Controls.Add(this.label26);
+            this.groupBox2.Controls.Add(this.bumpdamagemail3hexbox);
+            this.groupBox2.Controls.Add(this.bumpdamagemail2hexbox);
+            this.groupBox2.Controls.Add(this.bumpdamagemail1hexbox);
+            this.groupBox2.Controls.Add(this.bumpDamagecombobox);
+            this.groupBox2.Location = new System.Drawing.Point(322, 19);
+            this.groupBox2.MinimumSize = new System.Drawing.Size(0, 99);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(205, 99);
+            this.groupBox2.TabIndex = 96;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Bump damage class groups";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(153, 57);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(40, 13);
+            this.label28.TabIndex = 101;
+            this.label28.Text = "Armor3";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(80, 57);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(40, 13);
+            this.label27.TabIndex = 100;
+            this.label27.Text = "Armor2";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(8, 57);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(40, 13);
+            this.label26.TabIndex = 99;
+            this.label26.Text = "Armor1";
+            // 
+            // bumpdamagemail3hexbox
+            // 
+            this.bumpdamagemail3hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.bumpdamagemail3hexbox.Decimal = false;
+            this.bumpdamagemail3hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.bumpdamagemail3hexbox.HexValue = 0;
+            this.bumpdamagemail3hexbox.Location = new System.Drawing.Point(156, 73);
+            this.bumpdamagemail3hexbox.MaxLength = 2;
+            this.bumpdamagemail3hexbox.MaxValue = 255;
+            this.bumpdamagemail3hexbox.MinValue = 0;
+            this.bumpdamagemail3hexbox.Name = "bumpdamagemail3hexbox";
+            this.bumpdamagemail3hexbox.Size = new System.Drawing.Size(36, 20);
+            this.bumpdamagemail3hexbox.TabIndex = 98;
+            this.bumpdamagemail3hexbox.Text = "0";
+            this.bumpdamagemail3hexbox.TextChanged += new System.EventHandler(this.bumpdamagemail1hexbox_TextChanged);
+            // 
+            // bumpdamagemail2hexbox
+            // 
+            this.bumpdamagemail2hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.bumpdamagemail2hexbox.Decimal = false;
+            this.bumpdamagemail2hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.bumpdamagemail2hexbox.HexValue = 0;
+            this.bumpdamagemail2hexbox.Location = new System.Drawing.Point(83, 73);
+            this.bumpdamagemail2hexbox.MaxLength = 2;
+            this.bumpdamagemail2hexbox.MaxValue = 255;
+            this.bumpdamagemail2hexbox.MinValue = 0;
+            this.bumpdamagemail2hexbox.Name = "bumpdamagemail2hexbox";
+            this.bumpdamagemail2hexbox.Size = new System.Drawing.Size(36, 20);
+            this.bumpdamagemail2hexbox.TabIndex = 97;
+            this.bumpdamagemail2hexbox.Text = "0";
+            this.bumpdamagemail2hexbox.TextChanged += new System.EventHandler(this.bumpdamagemail1hexbox_TextChanged);
+            // 
+            // bumpdamagemail1hexbox
+            // 
+            this.bumpdamagemail1hexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.bumpdamagemail1hexbox.Decimal = false;
+            this.bumpdamagemail1hexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.bumpdamagemail1hexbox.HexValue = 0;
+            this.bumpdamagemail1hexbox.Location = new System.Drawing.Point(11, 73);
+            this.bumpdamagemail1hexbox.MaxLength = 2;
+            this.bumpdamagemail1hexbox.MaxValue = 255;
+            this.bumpdamagemail1hexbox.MinValue = 0;
+            this.bumpdamagemail1hexbox.Name = "bumpdamagemail1hexbox";
+            this.bumpdamagemail1hexbox.Size = new System.Drawing.Size(36, 20);
+            this.bumpdamagemail1hexbox.TabIndex = 96;
+            this.bumpdamagemail1hexbox.Text = "0";
+            this.bumpdamagemail1hexbox.TextChanged += new System.EventHandler(this.bumpdamagemail1hexbox_TextChanged);
+            // 
+            // bumpDamagecombobox
+            // 
+            this.bumpDamagecombobox.FormattingEnabled = true;
+            this.bumpDamagecombobox.Items.AddRange(new object[] {
+            "Group 00",
+            "Group 01",
+            "Group 02",
+            "Group 03",
+            "Group 04",
+            "Group 05",
+            "Group 06",
+            "Group 07",
+            "Group 08",
+            "Group 09"});
+            this.bumpDamagecombobox.Location = new System.Drawing.Point(6, 19);
+            this.bumpDamagecombobox.Name = "bumpDamagecombobox";
+            this.bumpDamagecombobox.Size = new System.Drawing.Size(193, 21);
+            this.bumpDamagecombobox.TabIndex = 0;
+            this.bumpDamagecombobox.SelectedIndexChanged += new System.EventHandler(this.bumpDamagecombobox_SelectedIndexChanged);
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(317, 132);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(446, 164);
+            this.label8.TabIndex = 1;
+            this.label8.Text = resources.GetString("label8.Text");
             // 
             // damageClassControl1
             // 
@@ -1165,15 +1299,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.toolTip1.AutoPopDelay = 30000;
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 100;
-            // 
-            // label8
-            // 
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(322, 19);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(446, 266);
-            this.label8.TabIndex = 1;
-            this.label8.Text = resources.GetString("label8.Text");
             // 
             // SpriteEditor
             // 
@@ -1192,6 +1317,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.DamageSubclassGroupBox.ResumeLayout(false);
             this.DamageSubclassGroupBox.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1279,5 +1406,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private DamageClassControl damageClassControl1;
 		private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox bumpDamagecombobox;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label26;
+        private ExtraForms.Hexbox bumpdamagemail3hexbox;
+        private ExtraForms.Hexbox bumpdamagemail2hexbox;
+        private ExtraForms.Hexbox bumpdamagemail1hexbox;
     }
 }
