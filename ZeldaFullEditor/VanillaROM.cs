@@ -91,24 +91,21 @@ namespace ZeldaFullEditor
 			{
 				if (VerifyCurrentROM())
 				{
-					MessageBox.Show(
+
+					UIText.ShowNotice(
 						"You appear to already have a vanilla ROM uploaded.",
-						"Good ROM",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Information
+						"Good ROM"
 					);
 					return false;
 				}
 			}
 
-			MessageBox.Show(
+			UIText.ShowNotice(
 				"Please provide a vanilla copy of the US alttp ROM\r\n" +
 				"for ZScream to use for back up/reference.\r\n" +
 				"This should only need to be done once;\r\n" +
 				"your copy will be saved across sessions.",
-				"Give ROM",
-				MessageBoxButtons.OK,
-				MessageBoxIcon.Information
+				"Give ROM"
 			);
 
 			string fileName;
@@ -119,7 +116,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				MessageBox.Show("Operation cancelled", "Cancelled ROM", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				UIText.ShowNotice("Operation cancelled", "Cancelled ROM");
 				return false;
 			}
 
@@ -146,7 +143,7 @@ namespace ZeldaFullEditor
 			}
 			catch
 			{
-				MessageBox.Show("Something went wrong loading the ROM!", "UH OH!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				UIText.ShowError("Something went wrong loading the ROM!");
 				return false;
 			}
 
@@ -166,12 +163,12 @@ namespace ZeldaFullEditor
 			}
 			catch
 			{
-				MessageBox.Show("Something went wrong saving the ROM!", "UH OH!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				UIText.ShowError("Something went wrong saving the ROM!", "UH OH!");
 				return false;
 			}
 
 			// finalize rom
-			MessageBox.Show("Vanilla ROM successfully uploaded", "Good ROM!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			UIText.ShowNotice("Vanilla ROM successfully uploaded", "Good ROM!");
 
 			vanillaROM = rom;
 			Data = Array.AsReadOnly(rom);
@@ -184,7 +181,7 @@ namespace ZeldaFullEditor
 		/// </summary>
 		private static void BadROM()
 		{
-			MessageBox.Show("This is not a vanilla US ROM!", "Bad ROM", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			UIText.ShowError("This is not a vanilla US ROM!", "Bad ROM");
 		}
 
 		/// <summary>
@@ -196,14 +193,13 @@ namespace ZeldaFullEditor
 		{
 			if (!VerifyCurrentROM())
 			{
-				MessageBox.Show(
+				UIText.ShowNotice(
 					"This feature requires a vanilla ROM in ZS storage\r\n" +
 					"which you do not appear to have.\r\n" +
 					"Please upload one using the option in the File menu.",
-					"Vanilla required",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Information
+					"Vanilla required"
 				);
+
 				return false;
 			}
 

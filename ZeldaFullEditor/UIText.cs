@@ -132,5 +132,26 @@ namespace ZeldaFullEditor
 				"Bad Error",
 				MessageBoxButtons.OK);
 		}
+
+
+		public static void ShowNotice(string message, string title = "Information")
+		{
+			MessageBox.Show(
+				message,
+				title,
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Information
+			);
+		}
+
+		public static void ShowError(string message, string title = "Bad Error")
+		{
+			MessageBox.Show(
+				message,
+				title,
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Error
+			);
+		}
 	}
 }

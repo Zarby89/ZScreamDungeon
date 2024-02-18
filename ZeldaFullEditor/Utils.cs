@@ -19,7 +19,7 @@ namespace ZeldaFullEditor
 		/// Converts a binary file offset to a SNES system bus address for the lorom mapping.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static int PcToSnes(this int addr) => 0x800000 | (addr & 0x7FFF) | 0x8000 | ((addr & 0x7F8000) << 1);
+		public static int PcToSnes(this int addr) => 0x808000 | (addr & 0x7FFF) | ((addr & 0x7F8000) << 1);
 
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

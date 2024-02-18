@@ -6062,7 +6062,24 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-			FastRomifier.Fastify(ROM.DATA);
+			int count = FastRomifier.Fastify(ROM.DATA);
+
+			if (count == 0)
+			{
+				UIText.ShowNotice(
+					"No fastrom changes were performed.\r\n" +
+					"Perhaps your ROM has already been adjusted."
+				);
+			}
+			else
+			{
+
+				UIText.ShowNotice(
+					$"Successfully adjusted {count} known address{(count == 1 ? "" : "es")} for FastROM",
+					"Success"
+				);
+			}
+
 		}
 	}
 }
