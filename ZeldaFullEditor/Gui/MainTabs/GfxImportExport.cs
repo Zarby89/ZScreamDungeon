@@ -183,7 +183,7 @@ namespace ZeldaFullEditor.Gui
 						bpp2 = true;
 					}
 
-					if (ROM.DATA[gfxPointer1 + i] <= 0x20)
+					if ((ROM.DATA[gfxPointer1 + i] & 0x7F) <= 0x20)
 					{
 						int saddr = Utils.PcToSnes(pos);
 						ROM.Write(gfxPointer3 + i, (byte) saddr, WriteType.GFXPTR);
@@ -250,7 +250,7 @@ namespace ZeldaFullEditor.Gui
 				}
 				else
 				{
-					if (ROM.DATA[gfxPointer1 + i] <= 0x20)
+					if ((ROM.DATA[gfxPointer1 + i] & 0x7F) <= 0x20)
 					{
 						for (int j = 0; j < Constants.Uncompressed3BPPSize; j++)
 						{
