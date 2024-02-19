@@ -47,7 +47,7 @@ namespace ZeldaFullEditor.Data
 
 		internal bool Ignoredbykillrooms { get; set; } = false;
 
-		internal bool Persistoffscreenow { get; set; } = false;
+		internal bool StayActiveOffScreen { get; set; } = false;
 
 		internal bool Deflectarrows { get; set; } = false;
 
@@ -65,7 +65,7 @@ namespace ZeldaFullEditor.Data
 
 		internal bool AltDamageSound { get; set; } = false;
 
-		internal bool ActiveOffScreen { get; set; } = false;
+		internal bool RemainAliveOffScreenOnOverworld { get; set; } = false;
 
 		internal bool DieOffScreen { get; set; } = false;
 
@@ -120,7 +120,7 @@ namespace ZeldaFullEditor.Data
 			// $0F60
 			Singlelayercollision = addr0DB44C.BitIsOn(0x80);
 			Ignoredbykillrooms = addr0DB44C.BitIsOn(0x40);
-			Persistoffscreenow = addr0DB44C.BitIsOn(0x20);
+			StayActiveOffScreen = addr0DB44C.BitIsOn(0x20);
 			Hitbox = (byte) (addr0DB44C & 0x1F);
 
 			// $0B6B
@@ -138,7 +138,7 @@ namespace ZeldaFullEditor.Data
 			PrizePack = addr0DB632.GetLowNibble(); ;
 
 			// $0CAA
-			ActiveOffScreen = addr0DB725.BitIsOn(0x80);
+			RemainAliveOffScreenOnOverworld = addr0DB725.BitIsOn(0x80);
 			DieOffScreen = addr0DB725.BitIsOn(0x40);
 			HiddenProp = addr0DB725.BitIsOn(0x20);
 			HiddenUnused = addr0DB725.BitIsOn(0x10);
@@ -169,7 +169,7 @@ namespace ZeldaFullEditor.Data
 			byte addr0DB359 = (byte) (IntFunctions.MakeBitfield(bit7: CustomDeathAnimation, bit6: Invulnerable, bit5: SmallShadow, bit4: DrawShadow, bit0: GraphicsPage) | (Palette << 1));
 
 			// $0F60
-			byte addr0DB44C = (byte) (IntFunctions.MakeBitfield(bit7: Singlelayercollision, bit6: Ignoredbykillrooms, bit5: Persistoffscreenow) | Hitbox);
+			byte addr0DB44C = (byte) (IntFunctions.MakeBitfield(bit7: Singlelayercollision, bit6: Ignoredbykillrooms, bit5: StayActiveOffScreen) | Hitbox);
 
 			// $0B6B
 			byte addr0DB53F = (byte) ((TileHitBox << 4) | IntFunctions.MakeBitfield(bit3: Deflectarrows, bit2: ZeroDamageOverride, bit1: DieLikeABoss, bit0: Invertpitbehavior));
@@ -178,7 +178,7 @@ namespace ZeldaFullEditor.Data
 			byte addr0DB632 = (byte) (IntFunctions.MakeBitfield(bit7: IgnorePitConveyors, bit6: CheckForWater, bit5: BlockedByShield, bit4: AltDamageSound) | PrizePack);
 
 			// $0CAA
-			byte addr0DB725 = IntFunctions.MakeBitfield(bit7: ActiveOffScreen, bit6: DieOffScreen, bit5: HiddenProp, bit4: HiddenUnused, bit3: ProjectileLikeCollision, bit2: ImmuneToSwordHammer, bit1: Bonkitem, bit0: NoPermaDeathInDungeons);
+			byte addr0DB725 = IntFunctions.MakeBitfield(bit7: RemainAliveOffScreenOnOverworld, bit6: DieOffScreen, bit5: HiddenProp, bit4: HiddenUnused, bit3: ProjectileLikeCollision, bit2: ImmuneToSwordHammer, bit1: Bonkitem, bit0: NoPermaDeathInDungeons);
 
 			ROM.Write(Constants.Sprite_0DB080 + id, addr0DB080);
 			ROM.Write(Constants.Sprite_0DB266 + id, addr0DB266);

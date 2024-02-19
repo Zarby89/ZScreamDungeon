@@ -12,6 +12,9 @@ namespace ZeldaFullEditor
 	{
 		//List<SpriteName> stringtodraw = new List<SpriteName>();
 		public int index;
+
+		public short RoomID => (short) index;
+
 		int header_location;
 		public bool has_changed = false;
 		public string name;
@@ -104,6 +107,9 @@ namespace ZeldaFullEditor
 			get => _palette;
 			set => _palette = Utils.Clamp(value, 0, 71);
 		}
+
+		public Color RoomColor => GFX.LoadDungeonPalette(_palette)[4, 2];
+		public bool IsEmpty => tilesObjects.Count == 0;
 
 		public Background2 bg2
 		{
