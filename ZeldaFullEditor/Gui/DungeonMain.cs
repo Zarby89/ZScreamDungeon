@@ -19,6 +19,7 @@ using Microsoft.VisualBasic;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.ExtraForms;
+using ZeldaFullEditor.Gui.ExtraForms.ZSESettings;
 using ZeldaFullEditor.Gui.MainTabs;
 using ZeldaFullEditor.Properties;
 using static ZeldaFullEditor.Room_Object;
@@ -2627,6 +2628,13 @@ namespace ZeldaFullEditor
 				return;
 			}
 
+			if (this.tabControl2.TabPages.Count == 1)
+			{
+				MessageBox.Show("You cannot close all rooms, you must have at least one room opened");
+				return;
+			}
+
+
 			if ((this.tabControl2.TabPages[i].Tag as Room).has_changed)
 			{
 				switch (UIText.WarnAboutSaving(UIText.RoomWarning))
@@ -2672,7 +2680,7 @@ namespace ZeldaFullEditor
 					this.activeScene.Refresh();
 				}
 			}
-
+			mapPicturebox.Refresh();
 			this.tabControl2.Refresh();
 		}
 
@@ -2979,10 +2987,18 @@ namespace ZeldaFullEditor
 			chestEditorForm.ShowDialog();
 		}
 
-		private static readonly Pen SelectedRoomOutline = new Pen(Color.Lime, 2);
-		private static readonly Pen OpenedRoomOutline = new Pen(Color.LimeGreen, 2);
-		private static readonly Pen ExportedRoomOutline = new Pen(Color.DarkTurquoise, 2);
-		private static readonly Pen OpenedExportedRoomOutline = new Pen(Color.SeaGreen, 2);
+		private static Pen SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, 2);
+		private static Pen OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, 2);
+		private static Pen ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, 2);
+		private static Pen OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, 2);
+
+		private static void updatePensColors()
+		{
+            SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, 2);
+			OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, 2);
+			ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, 2);
+			OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, 2);
+		}
 
 		private void MapPicturebox_Paint(object sender, PaintEventArgs e)
 		{
@@ -3515,10 +3531,20 @@ namespace ZeldaFullEditor
 			if (e.Button == MouseButtons.Right)
 			{
 				rightClickingRoom = true;
-				RecalculateHoveredRoom(e);
-				RedrawPreviewRoom();
+                RecalculateHoveredRoom(e);
+                RedrawPreviewRoom();
 			}
-
+			else if (e.Button == MouseButtons.Middle)
+			{
+				for(int i = 0; i < tabControl2.TabPages.Count; i++)
+				{
+					if ((tabControl2.TabPages[i].Tag as Room).index == HoveredRoom) 
+					{
+						CloseTab(i);
+                        break; 
+					}
+				}
+            }
 			mapPicturebox.Refresh();
 		}
 
@@ -6108,5 +6134,13 @@ namespace ZeldaFullEditor
 			var viewerRoom = new RoomDataViewer(viewedRoom);
 			viewerRoom.ShowDialog();
 		}
-	}
+
+        private void zSEditorSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+			ZSEditorSettings settingsForm = new ZSEditorSettings();
+			settingsForm.ShowDialog();
+			updatePensColors();
+
+        }
+    }
 }
