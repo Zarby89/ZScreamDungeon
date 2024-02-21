@@ -102,6 +102,8 @@ namespace ZeldaFullEditor
 		private int lasttpHotTracked = -2;
 
 		public int lastRoomID = -1;
+		private int HoveredRoom = -1;
+		private bool rightClickingRoom = false;
 
 		private OverworldEditor oweditor2;
 
@@ -849,6 +851,8 @@ namespace ZeldaFullEditor
 			}
 
 			DungeonsData.GlobalDamages = ROM.ReadBlock(Constants.DamageClass, 0x80);
+
+			DungeonsData.BumpDamagesGroup = ROM.ReadBlock(Constants.BumpDamageGroups, 30);
 
 			// TODO: We should probably move this to a better spot and include all the save settings but this will work for now.
 			if (ROM.DATA[Constants.OverworldCustomAreaSpecificBGEnabled] != 0x00)
@@ -1905,12 +1909,10 @@ namespace ZeldaFullEditor
 
 				// ListView1
 				this.objectViewer1.items.AddRange(this.listoftilesobjects
-					.Where(x => x != null)
-					.Where(x => x.name.ToLower().Contains(searchText))
+					.Where(x => (x?.name ?? "").ToLower().Contains(searchText))
 					.Where(x => Settings.Default.favoriteObjects[x.id] == "true")
 					.OrderBy(x => x.id)
-					.Select(x => x) // ?
-					.ToArray());
+					);
 
 				this.panel1.VerticalScroll.Value = 0;
 				this.objectViewer1.Refresh();
@@ -1922,11 +1924,9 @@ namespace ZeldaFullEditor
 
 				// ListView1
 				this.objectViewer1.items.AddRange(this.listoftilesobjects
-					.Where(x => x != null)
-					.Where(x => x.name.ToLower().Contains(searchText))
+					.Where(x => (x?.name ?? "").ToLower().Contains(searchText))
 					.OrderBy(x => x.id)
-					.Select(x => x) // ?
-					.ToArray());
+					);
 				this.objectViewer1.updateSize();
 				this.panel1.VerticalScroll.Value = 0;
 				this.objectViewer1.Refresh();
@@ -1939,11 +1939,9 @@ namespace ZeldaFullEditor
 			string searchText = this.searchspriteTextbox.Text.ToLower();
 
 			this.spritesView1.items.AddRange(this.listofspritesobjects
-				.Where(x => x != null)
-				.Where(x => x.name.ToLower().Contains(searchText))
+				.Where(x => (x?.name ?? "").ToLower().Contains(searchText))
 				.OrderBy(x => x.id)
-				.Select(x => x) // ?
-				.ToArray());
+				);
 
 			this.customPanel1.VerticalScroll.Value = 0;
 
@@ -2147,56 +2145,30 @@ namespace ZeldaFullEditor
 
 		private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
 		{
-			if (e.Y >= 256 && e.Y <= 264)
+			if (HoveredRoom == -1)
 			{
 				return;
 			}
 
-			int yc = e.Y;
-
-			if (e.Y > 256)
-			{
-				yc -= 8;
-			}
-
-			int x = e.X / 16;
-			int y = yc / 16;
-			short roomId = (short) (x + (y * 16));
+			short roomId = (short) HoveredRoom;
 
 			if (ModifierKeys == Keys.Control)
 			{
-				// Check if map is already in.
-				short alreadyIn = -1;
-				foreach (short s in this.selectedMapPng)
+				if (selectedMapPng.Contains(roomId))
 				{
-					// If it was already in delete it.
-					if (s == roomId)
-					{
-						alreadyIn = s;
-					}
-				}
-
-				if (alreadyIn != -1)
-				{
-					this.selectedMapPng.Remove(alreadyIn);
+					selectedMapPng.Remove(roomId);
 				}
 				else
 				{
-					this.selectedMapPng.Add(roomId);
+					selectedMapPng.Add(roomId);
 				}
-
-				//loadRoomList(roomId);
 			}
 			else
 			{
-				if (roomId < Constants.NumberOfRooms)
-				{
-					this.AddRoomTab(roomId);
-					//loadRoomList(roomId);
-				}
+				AddRoomTab(roomId);
 			}
 
-			this.mapPicturebox.Refresh();
+			mapPicturebox.Refresh();
 		}
 
 		public void runtestButton_Click(object sender, EventArgs e)
@@ -3007,71 +2979,110 @@ namespace ZeldaFullEditor
 			chestEditorForm.ShowDialog();
 		}
 
-		// TODO KAN REFACTOR - alpha on unloaded rooms.
+		private static readonly Pen SelectedRoomOutline = new Pen(Color.Lime, 2);
+		private static readonly Pen OpenedRoomOutline = new Pen(Color.LimeGreen, 2);
+		private static readonly Pen ExportedRoomOutline = new Pen(Color.DarkTurquoise, 2);
+		private static readonly Pen OpenedExportedRoomOutline = new Pen(Color.SeaGreen, 2);
+
 		private void MapPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (!this.projectLoaded)
+			if (!projectLoaded)
 			{
 				return;
 			}
 
 			int xd = 0;
 			int yd = 0;
-			int yoff;
-			e.Graphics.Clear(Color.Black);
+			int yoff = 0;
+			e.Graphics.Clear(SystemColors.ScrollBar);
+
+			var selectedRoomID = (tabControl2.SelectedTab.Tag as Room)?.RoomID ?? -999;
+
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				yoff = (i >= 256) ? 8 : 0;
+				var room = DungeonsData.AllRooms[i];
 
-				if (DungeonsData.AllRooms[i].tilesObjects.Count > 0)
+				bool roomOpened = opened_rooms.Any(r => r.RoomID == room.RoomID);
+
+				int alpha = roomOpened ? 255 : (HoveredRoom == i) ? 210 : 140;
+
+				var boxColor = new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor));
+
+				e.Graphics.FillRectangle(boxColor, new Rectangle(xd, yd + yoff, 16, 16));
+				e.Graphics.DrawRectangle(Pens.LightSlateGray, new Rectangle(xd, yd + yoff, 16, 16));
+
+				Pen outline;
+
+				if (selectedRoomID == room.RoomID)
 				{
-					e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.AllRooms[i].palette)[4, 2]), new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
-
-					foreach (short s in this.selectedMapPng)
+					outline = SelectedRoomOutline;
+				}
+				else
+				{
+					bool roomSelected = selectedMapPng.Contains(room.RoomID);
+					if (roomOpened)
 					{
-						if (s == i)
+						if (roomSelected)
 						{
-							e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
+							outline = OpenedExportedRoomOutline;
 						}
+						else
+						{
+							outline = OpenedRoomOutline;
+						}
+					}
+					else if (roomSelected)
+					{
+						outline = ExportedRoomOutline;
+					}
+					else
+					{
+						outline = null;
 					}
 				}
 
-				xd++;
-				if (xd == 16)
+				if (outline != null)
 				{
-					yd++;
+					e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
+				}
+
+				xd += 16;
+				if (xd == 16 * 16)
+				{
+					yd += 16;
+					yoff = (yd > 15 * 16) ? 8 : 0;
 					xd = 0;
 				}
 			}
-
-			for (int i = 0; i < 16; i++)
-			{
-				e.Graphics.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
-				e.Graphics.DrawLine(Pens.White, i * 16, 0, i * 16, 256);
-
-				e.Graphics.DrawLine(Pens.White, i * 16, 264, i * 16, 312);
-			}
-
-			for (int i = 0; i < 3; i++)
-			{
-				e.Graphics.DrawLine(Pens.White, 0, 264 + (i * 16), 256, 264 + (i * 16));
-			}
-
-			for (int i = 0; i < Constants.NumberOfRooms; i++)
-			{
-				yoff = (i >= 256) ? 8 : 0;
-
-				foreach (TabPage tabPage in this.tabControl2.TabPages)
-				{
-					if ((tabPage.Tag as Room).index == (short) i)
-					{
-						e.Graphics.DrawRectangle(
-								new Pen((this.tabControl2.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
-								new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
-					}
-				}
-			}
 		}
+
+		//			for (int i = 0; i < 16; i++)
+		//			{
+		//				e.Graphics.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
+		//				e.Graphics.DrawLine(Pens.White, i * 16, 0, i * 16, 256);
+		//
+		//				e.Graphics.DrawLine(Pens.White, i * 16, 264, i * 16, 312);
+		//			}
+		//
+		//			for (int i = 0; i < 3; i++)
+		//			{
+		//				e.Graphics.DrawLine(Pens.White, 0, 264 + (i * 16), 256, 264 + (i * 16));
+		//			}
+		//
+		//			for (int i = 0; i < Constants.NumberOfRooms; i++)
+		//			{
+		//				yoff = (i >= 256) ? 8 : 0;
+		//
+		//				foreach (TabPage tabPage in this.tabControl2.TabPages)
+		//				{
+		//					if ((tabPage.Tag as Room).index == (short) i)
+		//					{
+		//						e.Graphics.DrawRectangle(
+		//								new Pen((this.tabControl2.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
+		//								new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
+		//					}
+		//				}
+		//			}
 
 		private void HideSpritesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
 		{
@@ -3503,45 +3514,20 @@ namespace ZeldaFullEditor
 		{
 			if (e.Button == MouseButtons.Right)
 			{
-				if (e.Y >= 256 && e.Y <= 264)
-				{
-					return;
-				}
-
-				this.thumbnailBox.Visible = true;
-				int yc = e.Y;
-				if (e.Y > 256)
-				{
-					yc -= 8;
-				}
-
-				int x = e.X / 16;
-				int y = yc / 16;
-				int roomId = x + (y * 16);
-				if (roomId > 295)
-				{
-					return;
-				}
-
-				this.previewRoom = DungeonsData.AllRooms[roomId];
-				this.previewRoom.reloadGfx();
-				GFX.loadedPalettes = GFX.LoadDungeonPalette(this.previewRoom.palette);
-				this.DrawRoom();
-				this.thumbnailBox.Refresh();
-
-				if (this.activeScene.room != null)
-				{
-					GFX.loadedPalettes = GFX.LoadDungeonPalette(this.activeScene.room.palette);
-					this.activeScene.room.reloadGfx();
-					this.activeScene.DrawRoom();
-				}
+				rightClickingRoom = true;
+				RecalculateHoveredRoom(e);
+				RedrawPreviewRoom();
 			}
+
+			mapPicturebox.Refresh();
 		}
 
 		public unsafe void ClearBgGfx()
 		{
 			byte* bg1data = (byte*) GFX.roomBg1Ptr.ToPointer();
 			byte* bg2data = (byte*) GFX.roomBg2Ptr.ToPointer();
+
+
 
 			for (int i = 0; i < 512 * 512; i++)
 			{
@@ -3710,58 +3696,90 @@ namespace ZeldaFullEditor
 
 		private void MapPicturebox_MouseUp(object sender, MouseEventArgs e)
 		{
-			this.thumbnailBox.Visible = false;
+			rightClickingRoom = false;
+			thumbnailBox.Visible = maphoverCheckbox.Checked;
 		}
 
-		private void MapPicturebox_MouseMove(object sender, MouseEventArgs e)
+		private void RecalculateHoveredRoom(MouseEventArgs e)
 		{
-			if (this.maphoverCheckbox.Checked)
+			HoveredRoom = -1;
+
+			int yc = e.Y;
+
+			if (yc >= 256 && e.Y <= 264)
 			{
-				if (e.Y >= 256 && e.Y <= 264)
+				if (yc <= 264)
 				{
-					this.thumbnailBox.Visible = false;
 					return;
 				}
 
-				this.thumbnailBox.Visible = true;
-				int yc = 0;
-				if (e.Y >= 256)
-				{
-					yc = 8;
-				}
+				yc -= 8;
+			}
 
-				int x = e.X / 16;
-				int y = (e.Y - yc) / 16;
-				int roomId = x + (y * 16);
-				if (roomId >= Constants.NumberOfRooms)
-				{
-					this.thumbnailBox.Visible = false;
-					return;
-				}
+			HoveredRoom = (e.X / 16) + (yc & ~0xF);
 
-				if (this.lastRoomID != roomId)
-				{
-					this.previewRoom = DungeonsData.AllRooms[roomId];
-					this.previewRoom.reloadGfx();
-					GFX.loadedPalettes = GFX.LoadDungeonPalette(this.previewRoom.palette);
-					this.DrawRoom();
-					this.thumbnailBox.Refresh();
-
-					if (this.activeScene.room != null)
-					{
-						GFX.loadedPalettes = GFX.LoadDungeonPalette(this.activeScene.room.palette);
-						this.activeScene.room.reloadGfx();
-						this.activeScene.DrawRoom();
-					}
-				}
-
-				this.lastRoomID = roomId;
+			if (HoveredRoom >= Constants.NumberOfRooms)
+			{
+				HoveredRoom = -1;
 			}
 		}
 
+
+		private void MapPicturebox_MouseMove(object sender, MouseEventArgs e)
+		{
+			RecalculateHoveredRoom(e);
+
+			if (HoveredRoom == -1)
+			{
+				thumbnailBox.Visible = false;
+				mapPicturebox.Refresh();
+				return;
+			}
+
+			if (lastRoomID != HoveredRoom)
+			{
+				RedrawPreviewRoom();
+			}
+
+			lastRoomID = HoveredRoom;
+
+			mapPicturebox.Refresh();
+		}
+
+		private void RedrawPreviewRoom()
+		{
+			if (HoveredRoom == -1)
+			{
+				thumbnailBox.Visible = false;
+				return;
+			}
+
+			if (!(thumbnailBox.Visible = maphoverCheckbox.Checked | rightClickingRoom))
+			{
+				return;
+			}
+
+			previewRoom = DungeonsData.AllRooms[HoveredRoom];
+			previewRoom.reloadGfx();
+			GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.palette);
+			DrawRoom();
+			thumbnailBox.Refresh();
+
+			if (activeScene.room != null)
+			{
+				GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+				activeScene.room.reloadGfx();
+				activeScene.DrawRoom();
+			}
+		}
+
+
 		private void MapPicturebox_MouseLeave(object sender, EventArgs e)
 		{
-			this.thumbnailBox.Visible = false;
+			HoveredRoom = -1;
+			thumbnailBox.Visible = false;
+			rightClickingRoom = false;
+			mapPicturebox.Refresh();
 		}
 
 		private void openRightRoomToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6060,7 +6078,35 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-			FastRomifier.Fastify(ROM.DATA);
+			int count = FastRomifier.Fastify(ROM.DATA);
+
+			if (count == 0)
+			{
+				UIText.ShowNotice(
+					"No fastrom changes were performed.\r\n" +
+					"Perhaps your ROM has already been adjusted."
+				);
+			}
+			else
+			{
+
+				UIText.ShowNotice(
+					$"Successfully adjusted {count} known address{(count == 1 ? "" : "es")} for FastROM",
+					"Success"
+				);
+			}
+
+		}
+
+		private void ViewRoomDataButton_Click(object sender, EventArgs e)
+		{
+			var viewedRoom = activeScene.room;
+			if (viewedRoom == null)
+			{
+				return;
+			}
+			var viewerRoom = new RoomDataViewer(viewedRoom);
+			viewerRoom.ShowDialog();
 		}
 	}
 }

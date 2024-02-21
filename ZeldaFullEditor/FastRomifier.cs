@@ -2,8 +2,10 @@
 {
 	public static partial class FastRomifier
 	{
-		public static void Fastify(byte[] rom)
+		public static int Fastify(byte[] rom)
 		{
+			int bytesChanged = 0;
+
 			foreach (var (address, fixType) in FixList)
 			{
 				int byteCount;
@@ -78,12 +80,17 @@
 			}
 
 			// dumb polyhedral bug fix
+			// TODO maybe move this to a patch file
 			if (CompareToVanilla(0x0CC376, 0x0CC37A))
 			{
 				// TODO see if this is really needed?
 				// Needed it for the rewrite, but that also optimized a lot of other stuff
 				rom[0x0CC377.SnesToPc()] = 0xA0;
 			}
+
+
+			return bytesChanged;
+
 
 			// local function to compare ranges
 			// arguments are SNES addresses
@@ -118,10 +125,11 @@
 					case 0x7E:
 						return;
 				}
-
+				bytesChanged++;
 				rom[offset] |= 0x80;
 			}
 		}
+
 		private enum Fix
 		{
 			None = 0,   // nothing

@@ -13,7 +13,7 @@ namespace ZeldaFullEditor
 		// META
 		// ===========================================================================================
 		public const string APPNAME = "ZScream";
-		public const string VERSION = "3.2.0";
+		public const string VERSION = "3.3.0";
 
 		public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
 		public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
@@ -131,6 +131,27 @@ namespace ZeldaFullEditor
 				$"Missing File: {message} Please make sure that:\n1. You have extracted all the files from the .zip\n2. You are running the ZScream.exe within the same folder as the other files that it came with.",
 				"Bad Error",
 				MessageBoxButtons.OK);
+		}
+
+
+		public static void ShowNotice(string message, string title = "Information")
+		{
+			MessageBox.Show(
+				message,
+				title,
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Information
+			);
+		}
+
+		public static void ShowError(string message, string title = "Bad Error")
+		{
+			MessageBox.Show(
+				message,
+				title,
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Error
+			);
 		}
 	}
 }

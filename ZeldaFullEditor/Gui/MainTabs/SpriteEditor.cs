@@ -16,6 +16,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		private void SpriteEditor_Load(object sender, EventArgs e)
 		{
 			spriteListbox.Items.AddRange(Sprites_Names.name);
+			bumpDamagecombobox.SelectedIndex = 0;
+			spriteListbox.SelectedIndex = 0;
 		}
 
 		private void spriteListbox_SelectedIndexChanged(object sender, EventArgs e)
@@ -55,7 +57,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			dielikeabossCheckbox.Checked = selectedProperty.DieLikeABoss;
 			overrideslashimmunityCheckbox.Checked = selectedProperty.ZeroDamageOverride;
 			deflectarrowsCheckbox.Checked = selectedProperty.Deflectarrows;
-			persistoffscreenowCheckbox.Checked = selectedProperty.Persistoffscreenow;
+			persistoffscreenowCheckbox.Checked = selectedProperty.RemainAliveOffScreenOnOverworld;
 			ignoredbykillroomsCheckbox.Checked = selectedProperty.Ignoredbykillrooms;
 			singlelayercollisionCheckbox.Checked = selectedProperty.Singlelayercollision;
 			graphicspageCheckbox.Checked = selectedProperty.GraphicsPage;
@@ -64,7 +66,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			immuneswordhammerCheckbox.Checked = selectedProperty.ImmuneToSwordHammer;
 			projectilelikecollisionCheckbox.Checked = selectedProperty.ProjectileLikeCollision;
 			dieoffscreenCheckbox.Checked = selectedProperty.DieOffScreen;
-			activeoffscreenCheckbox.Checked = selectedProperty.ActiveOffScreen;
+			activeoffscreenCheckbox.Checked = selectedProperty.StayActiveOffScreen;
 			bossdamagesoundCheckbox.Checked = selectedProperty.AltDamageSound;
 			blockedbyshieldCheckbox.Checked = selectedProperty.BlockedByShield;
 			checkforwaterCheckbox.Checked = selectedProperty.CheckForWater;
@@ -132,7 +134,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			selectedProperty.DieLikeABoss = dielikeabossCheckbox.Checked;
 			selectedProperty.ZeroDamageOverride = overrideslashimmunityCheckbox.Checked;
 			selectedProperty.Deflectarrows = deflectarrowsCheckbox.Checked;
-			selectedProperty.Persistoffscreenow = persistoffscreenowCheckbox.Checked;
+			selectedProperty.StayActiveOffScreen = persistoffscreenowCheckbox.Checked;
 			selectedProperty.Ignoredbykillrooms = ignoredbykillroomsCheckbox.Checked;
 			selectedProperty.Singlelayercollision = singlelayercollisionCheckbox.Checked;
 			selectedProperty.GraphicsPage = graphicspageCheckbox.Checked;
@@ -141,7 +143,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			selectedProperty.ImmuneToSwordHammer = immuneswordhammerCheckbox.Checked;
 			selectedProperty.ProjectileLikeCollision = projectilelikecollisionCheckbox.Checked;
 			selectedProperty.DieOffScreen = dieoffscreenCheckbox.Checked;
-			selectedProperty.ActiveOffScreen = activeoffscreenCheckbox.Checked;
+			selectedProperty.RemainAliveOffScreenOnOverworld = activeoffscreenCheckbox.Checked;
 			selectedProperty.AltDamageSound = bossdamagesoundCheckbox.Checked;
 			selectedProperty.BlockedByShield = blockedbyshieldCheckbox.Checked;
 			selectedProperty.CheckForWater = checkforwaterCheckbox.Checked;
@@ -171,6 +173,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			selectedProperty.DamagesTaken[13] = (byte) damage0DHexBox.HexValue;
 			selectedProperty.DamagesTaken[14] = (byte) damage0EHexBox.HexValue;
 			selectedProperty.DamagesTaken[15] = (byte) damage0FHexBox.HexValue;
+		}
+
+		private void bumpDamagecombobox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			fromUser = false;
+			bumpdamagemail1hexbox.HexValue = DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 0];
+			bumpdamagemail2hexbox.HexValue = DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 1];
+			bumpdamagemail3hexbox.HexValue = DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 2];
+			fromUser = true;
+		}
+
+		private void bumpdamagemail1hexbox_TextChanged(object sender, EventArgs e)
+		{
+			if (fromUser) 
+			{
+				DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 0] = (byte)bumpdamagemail1hexbox.HexValue;
+				DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 1] = (byte)bumpdamagemail2hexbox.HexValue;
+				DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 2] = (byte)bumpdamagemail3hexbox.HexValue;
+			}
 		}
 	}
 }

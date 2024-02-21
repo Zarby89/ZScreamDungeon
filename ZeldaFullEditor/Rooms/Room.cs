@@ -12,6 +12,9 @@ namespace ZeldaFullEditor
 	{
 		//List<SpriteName> stringtodraw = new List<SpriteName>();
 		public int index;
+
+		public short RoomID => (short) index;
+
 		int header_location;
 		public bool has_changed = false;
 		public string name;
@@ -104,6 +107,9 @@ namespace ZeldaFullEditor
 			get => _palette;
 			set => _palette = Utils.Clamp(value, 0, 71);
 		}
+
+		public Color RoomColor => GFX.LoadDungeonPalette(_palette)[4, 2];
+		public bool IsEmpty => tilesObjects.Count == 0;
 
 		public Background2 bg2
 		{
@@ -738,8 +744,8 @@ namespace ZeldaFullEditor
 							{
 								// xxxxxxii yyyyyyii 11111iii
 								byte b3 = (byte) (o.id >> 4);
-								byte b1 = (byte) ((o.X << 2) + (o.id & 0x03));
-								byte b2 = (byte) ((o.Y << 2) + ((o.id >> 2) & 0x03));
+								byte b1 = (byte) ((o.X << 2) | (o.id & 0x03));
+								byte b2 = (byte) ((o.Y << 2) | ((o.id >> 2) & 0x03));
 
 								objectsBytes.Add(b1);
 								objectsBytes.Add(b2);
@@ -748,9 +754,9 @@ namespace ZeldaFullEditor
 							else if ((tilesObjects[j].id & 0x100) == 0x100) // Type2
 							{
 								// 111111xx xxxxyyyy yyiiiiii
-								byte b1 = (byte) (0xFC + (((o.X & 0x30) >> 4)));
-								byte b2 = (byte) (((o.X & 0x0F) << 4) + ((o.Y & 0x3C) >> 2));
-								byte b3 = (byte) (((o.Y & 0x03) << 6) + ((o.id & 0x3F))); // wtf? 
+								byte b1 = (byte) (0xFC | (((o.X & 0x30) >> 4)));
+								byte b2 = (byte) (((o.X & 0x0F) << 4) | ((o.Y & 0x3C) >> 2));
+								byte b3 = (byte) (((o.Y & 0x03) << 6) | ((o.id & 0x3F))); // wtf? 
 
 								objectsBytes.Add(b1);
 								objectsBytes.Add(b2);
@@ -764,13 +770,12 @@ namespace ZeldaFullEditor
 									o.Size = 0;
 								}
 
-								byte b1 = (byte) ((o.X << 2) + ((o.Size >> 2) & 0x03));
-								byte b2 = (byte) ((o.Y << 2) + (o.Size & 0x03));
-								byte b3 = (byte) (o.id);
+								byte b1 = (byte) ((o.X << 2) | ((o.Size >> 2) & 0x03));
+								byte b2 = (byte) ((o.Y << 2) | (o.Size & 0x03));
 
 								objectsBytes.Add(b1);
 								objectsBytes.Add(b2);
-								objectsBytes.Add(b3);
+								objectsBytes.Add((byte) o.id);
 							}
 						}
 					}
