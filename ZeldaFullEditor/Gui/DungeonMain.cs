@@ -6097,5 +6097,16 @@ namespace ZeldaFullEditor
 			}
 
 		}
+
+		private void ViewRoomDataButton_Click(object sender, EventArgs e)
+		{
+			var viewedRoom = activeScene.room;
+			if (viewedRoom == null)
+			{
+				return;
+			}
+			var viewerRoom = new RoomDataViewer(viewedRoom);
+			viewerRoom.ShowDialog();
+		}
 	}
 }

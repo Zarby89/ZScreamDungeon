@@ -384,6 +384,12 @@
     <Compile Include="Gui\ExtraForms\OWMusicForm.Designer.cs">
       <DependentUpon>OWMusicForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\RoomDataViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\RoomDataViewer.Designer.cs">
+      <DependentUpon>RoomDataViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\SearchTilesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -727,6 +733,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\OWMusicForm.resx">
       <DependentUpon>OWMusicForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\RoomDataViewer.resx">
+      <DependentUpon>RoomDataViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
