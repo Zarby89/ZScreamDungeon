@@ -850,7 +850,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="ScratchPad.dat" />
+    <None Include="ScratchPad.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="ZScreamUML.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -860,7 +862,9 @@
     <Content Include="asar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="basepatches.asm" />
+    <Content Include="basepatches.asm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CustomCollision.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
