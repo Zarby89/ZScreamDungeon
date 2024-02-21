@@ -35,6 +35,7 @@
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.OptimizeDictionaryButton = new System.Windows.Forms.Button();
 			this.ParamsBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.BytesDDD = new System.Windows.Forms.Button();
@@ -133,6 +134,7 @@
 			// 
 			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel2.Controls.Add(this.OptimizeDictionaryButton);
 			this.panel2.Controls.Add(this.ParamsBox);
 			this.panel2.Controls.Add(this.fontGridBox);
 			this.panel2.Controls.Add(this.BytesDDD);
@@ -157,6 +159,16 @@
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(520, 715);
 			this.panel2.TabIndex = 23;
+			// 
+			// OptimizeDictionaryButton
+			// 
+			this.OptimizeDictionaryButton.Location = new System.Drawing.Point(423, 512);
+			this.OptimizeDictionaryButton.Name = "OptimizeDictionaryButton";
+			this.OptimizeDictionaryButton.Size = new System.Drawing.Size(75, 49);
+			this.OptimizeDictionaryButton.TabIndex = 36;
+			this.OptimizeDictionaryButton.Text = "Optimize Dictionary";
+			this.OptimizeDictionaryButton.UseVisualStyleBackColor = true;
+			this.OptimizeDictionaryButton.Click += new System.EventHandler(this.OptimizeDictionaryButton_Click);
 			// 
 			// ParamsBox
 			// 
@@ -535,5 +547,6 @@
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private System.Windows.Forms.CheckBox fontGridBox;
 		private Gui.ExtraForms.Hexbox ParamsBox;
+		private System.Windows.Forms.Button OptimizeDictionaryButton;
 	}
 }

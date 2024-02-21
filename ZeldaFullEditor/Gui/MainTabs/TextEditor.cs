@@ -735,12 +735,16 @@ namespace ZeldaFullEditor
 
 			// project the substrings with their counts into a sortable thing
 			// also, remove anything with only 1 entry, since it's useless
-			var sortableCandidates = newCandidates.Where(kv => kv.Value > 1).Select(kv => kv).ToList();
+			var sortableCandidates = newCandidates.Where(
+				kv => 
+					kv.Value > 1 && !Regex.IsMatch(kv.Key, " \\S+ ")
+
+				).Select(kv => kv).ToList();
 
 			SortSelectedCandidates(); // sorting should help with the scraping, but maybe not, depending on the algo
 
 			// TODO this number can be fine-tuned later for time
-			for (int passes = 0; passes < 5; passes++)
+			for (int passes = 0; passes < 0; passes++)
 			{
 				// remove candidates that are strict substrings of higher scoring entries
 				// TODO there's probably a better way to optimize this
@@ -827,8 +831,8 @@ namespace ZeldaFullEditor
 
 			var replaceDictionary = MessageBox.Show(
 				$"You are about to replace the optimization dictionary with new data.\r\n" +
-				$"Your current message data is {originalParsedsize:D} bytes" +
-				$"or {originalCompressedsize:D} bytes with the existing dictionary" +
+				$"Your current message data is {originalParsedsize:D} bytes " +
+				$"or {originalCompressedsize:D} bytes with the existing dictionary " +
 				$"for a total savings of {originalParsedsize - originalCompressedsize:D} bytes\r\n" +
 				$"With the new dictionary, your savings will be {newCompressedSavings:D} bytes.\r\n" +
 				$"It may be possible to further optimize the message data if it is changed.\r\n\r\n" +
@@ -1697,6 +1701,11 @@ namespace ZeldaFullEditor
 			textListbox.DataSource = null;
 			textListbox.DataSource = DisplayedMessages;
 			textListbox.EndUpdate();
+		}
+
+		private void OptimizeDictionaryButton_Click(object sender, EventArgs e)
+		{
+			ReoptimizeDictionary();
 		}
 	}
 }
