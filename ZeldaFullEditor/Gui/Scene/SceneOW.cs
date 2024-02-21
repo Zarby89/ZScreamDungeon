@@ -189,7 +189,6 @@ namespace ZeldaFullEditor
                 scrollingPoint = mainForm.PointToClient(Cursor.Position); // use mainform since it doesn't scroll!
                 startpanPoint = new Point(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value);
                 pan = true;
-				// do not prevent rest of the code from running
             }
 
             int tileX = e.X / 16;
@@ -262,7 +261,6 @@ namespace ZeldaFullEditor
             if (e.Button == MouseButtons.Middle)
             {
                 pan = false;
-				return; // prevent rest of the code from running :shrug:
             }
 
             this.owForm.objCombobox.Items.Clear();
