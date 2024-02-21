@@ -666,7 +666,7 @@ namespace ZeldaFullEditor
 					int localCameraX = mainForm.selectedEntrance.CameraTriggerX - 128;
 					int localCameraY = mainForm.selectedEntrance.CameraTriggerY - 116;
 
-					g.DrawRectangle(Pens.Orange, new Rectangle(localCameraX, localCameraY, 256, 224));
+					g.DrawRectangle(new Pen(new SolidBrush(Settings.Default.CameraColor),1), new Rectangle(localCameraX, localCameraY, 256, 224));
 					//Console.WriteLine(localCameraX + "," + localCameraY);
 				}
 			}
@@ -825,7 +825,7 @@ namespace ZeldaFullEditor
 				{
 					//for (int i = 0; i < 12; i++)
 					//{
-					g.DrawRectangles(Constants.ThirdGreenPen, doorArray);
+					g.DrawRectangles(new Pen(new SolidBrush(Settings.Default.ObjectSelectedColor), 1), doorArray);
 					//drawText(g,doorArray)
 					//}
 				}

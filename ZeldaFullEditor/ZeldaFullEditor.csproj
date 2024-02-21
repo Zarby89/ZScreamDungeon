@@ -402,12 +402,7 @@
     <Compile Include="Gui\ExtraForms\ZSESettings\ZSEditorSettings.Designer.cs">
       <DependentUpon>ZSEditorSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExtraForms\ZSESettings\ZSEDungeonEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ZSESettings\ZSEDungeonEditor.Designer.cs">
-      <DependentUpon>ZSEDungeonEditor.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Gui\ExtraForms\ZSESettings\ZSEDungeonSettings.cs" />
     <Compile Include="Gui\ExtraForms\ZSSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -754,9 +749,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ZSESettings\ZSEditorSettings.resx">
       <DependentUpon>ZSEditorSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ZSESettings\ZSEDungeonEditor.resx">
-      <DependentUpon>ZSEDungeonEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ZSSettings.resx">
       <DependentUpon>ZSSettings.cs</DependentUpon>

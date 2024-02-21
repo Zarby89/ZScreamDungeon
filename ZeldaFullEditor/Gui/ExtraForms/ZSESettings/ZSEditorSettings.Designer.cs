@@ -28,56 +28,75 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.sideviewPanel = new System.Windows.Forms.Panel();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.zseDungeon1 = new ZeldaFullEditor.Gui.ExtraForms.ZSESettings.ZSEDungeon();
-            this.sideviewPanel.SuspendLayout();
+            this.containerPanel = new System.Windows.Forms.Panel();
+            this.settingPropertygrid = new System.Windows.Forms.PropertyGrid();
+            this.button1 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.containerPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // sideviewPanel
+            // containerPanel
             // 
-            this.sideviewPanel.Controls.Add(this.treeView1);
-            this.sideviewPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.sideviewPanel.Location = new System.Drawing.Point(0, 0);
-            this.sideviewPanel.Name = "sideviewPanel";
-            this.sideviewPanel.Size = new System.Drawing.Size(237, 549);
-            this.sideviewPanel.TabIndex = 0;
+            this.containerPanel.Controls.Add(this.panel1);
+            this.containerPanel.Controls.Add(this.settingPropertygrid);
+            this.containerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.containerPanel.Location = new System.Drawing.Point(0, 0);
+            this.containerPanel.Name = "containerPanel";
+            this.containerPanel.Size = new System.Drawing.Size(824, 549);
+            this.containerPanel.TabIndex = 1;
             // 
-            // treeView1
+            // settingPropertygrid
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(237, 549);
-            this.treeView1.TabIndex = 1;
+            this.settingPropertygrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.settingPropertygrid.HelpVisible = false;
+            this.settingPropertygrid.Location = new System.Drawing.Point(0, 0);
+            this.settingPropertygrid.Name = "settingPropertygrid";
+            this.settingPropertygrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
+            this.settingPropertygrid.Size = new System.Drawing.Size(824, 549);
+            this.settingPropertygrid.TabIndex = 0;
+            this.settingPropertygrid.ToolbarVisible = false;
+            this.settingPropertygrid.Paint += new System.Windows.Forms.PaintEventHandler(this.propertyGrid1_Paint);
             // 
-            // zseDungeon1
+            // button1
             // 
-            this.zseDungeon1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.zseDungeon1.Location = new System.Drawing.Point(237, 0);
-            this.zseDungeon1.Name = "zseDungeon1";
-            this.zseDungeon1.Size = new System.Drawing.Size(587, 549);
-            this.zseDungeon1.TabIndex = 1;
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(651, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(170, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Reset selected property";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 449);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(824, 100);
+            this.panel1.TabIndex = 1;
             // 
             // ZSEditorSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(824, 549);
-            this.Controls.Add(this.zseDungeon1);
-            this.Controls.Add(this.sideviewPanel);
+            this.Controls.Add(this.containerPanel);
             this.Name = "ZSEditorSettings";
             this.Text = "ZSEditorSettings";
             this.Load += new System.EventHandler(this.ZSEditorSettings_Load);
-            this.sideviewPanel.ResumeLayout(false);
+            this.containerPanel.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel sideviewPanel;
-        private System.Windows.Forms.TreeView treeView1;
-        private ZSEDungeon zseDungeon1;
+        private System.Windows.Forms.Panel containerPanel;
+        private System.Windows.Forms.PropertyGrid settingPropertygrid;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
     }
 }

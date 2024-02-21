@@ -19,6 +19,18 @@ namespace ZeldaFullEditor.Gui.ExtraForms.ZSESettings
 
         private void ZSEditorSettings_Load(object sender, EventArgs e)
         {
+            ZSEDungeonSettings zSEDungeonSettings = new ZSEDungeonSettings();
+            settingPropertygrid.SelectedObject = zSEDungeonSettings;
+        }
+
+        private void propertyGrid1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            settingPropertygrid.ResetSelectedProperty();
 
         }
     }

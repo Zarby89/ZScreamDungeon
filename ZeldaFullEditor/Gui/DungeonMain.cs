@@ -2987,17 +2987,17 @@ namespace ZeldaFullEditor
 			chestEditorForm.ShowDialog();
 		}
 
-		private static Pen SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, 2);
-		private static Pen OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, 2);
-		private static Pen ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, 2);
-		private static Pen OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, 2);
+		private static Pen SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, Settings.Default.SelectedRoomOutlineSize);
+		private static Pen OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, Settings.Default.OpenedRoomOutlineSize);
+		private static Pen ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+		private static Pen OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
 
 		private static void updatePensColors()
 		{
-            SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, 2);
-			OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, 2);
-			ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, 2);
-			OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, 2);
+            SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, Settings.Default.SelectedRoomOutlineSize);
+			OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, Settings.Default.OpenedRoomOutlineSize);
+			ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+			OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, Settings.Default.OpenedExportedRoomOutlineSize);
 		}
 
 		private void MapPicturebox_Paint(object sender, PaintEventArgs e)

@@ -67,5 +67,32 @@
     <Setting Name="OpenedExportedRoomOutline" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">SeaGreen</Value>
     </Setting>
+    <Setting Name="SelectedRoomOutlineSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="OpenedRoomOutlineSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="ExportedRoomOutlineSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="OpenedExportedRoomOutlineSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="ObjectSelectedColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Lime</Value>
+    </Setting>
+    <Setting Name="ObjectLastSelectedColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">DarkGreen</Value>
+    </Setting>
+    <Setting Name="CameraColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Orange</Value>
+    </Setting>
+    <Setting Name="BG2MaskColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">DarkTurquoise</Value>
+    </Setting>
+    <Setting Name="SelectionBoxColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

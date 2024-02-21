@@ -276,5 +276,113 @@ namespace ZeldaFullEditor.Properties {
                 this["OpenedExportedRoomOutline"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int SelectedRoomOutlineSize {
+            get {
+                return ((int)(this["SelectedRoomOutlineSize"]));
+            }
+            set {
+                this["SelectedRoomOutlineSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int OpenedRoomOutlineSize {
+            get {
+                return ((int)(this["OpenedRoomOutlineSize"]));
+            }
+            set {
+                this["OpenedRoomOutlineSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int ExportedRoomOutlineSize {
+            get {
+                return ((int)(this["ExportedRoomOutlineSize"]));
+            }
+            set {
+                this["ExportedRoomOutlineSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int OpenedExportedRoomOutlineSize {
+            get {
+                return ((int)(this["OpenedExportedRoomOutlineSize"]));
+            }
+            set {
+                this["OpenedExportedRoomOutlineSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Lime")]
+        public global::System.Drawing.Color ObjectSelectedColor {
+            get {
+                return ((global::System.Drawing.Color)(this["ObjectSelectedColor"]));
+            }
+            set {
+                this["ObjectSelectedColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkGreen")]
+        public global::System.Drawing.Color ObjectLastSelectedColor {
+            get {
+                return ((global::System.Drawing.Color)(this["ObjectLastSelectedColor"]));
+            }
+            set {
+                this["ObjectLastSelectedColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Orange")]
+        public global::System.Drawing.Color CameraColor {
+            get {
+                return ((global::System.Drawing.Color)(this["CameraColor"]));
+            }
+            set {
+                this["CameraColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkTurquoise")]
+        public global::System.Drawing.Color BG2MaskColor {
+            get {
+                return ((global::System.Drawing.Color)(this["BG2MaskColor"]));
+            }
+            set {
+                this["BG2MaskColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color SelectionBoxColor {
+            get {
+                return ((global::System.Drawing.Color)(this["SelectionBoxColor"]));
+            }
+            set {
+                this["SelectionBoxColor"] = value;
+            }
+        }
     }
 }

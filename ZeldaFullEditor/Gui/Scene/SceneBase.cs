@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {
@@ -149,11 +150,11 @@ namespace ZeldaFullEditor
 			{
 				if (o is Sprite sb)
 				{
-					graphics.DrawRectangle(Pens.Green, sb.boundingbox);
+					graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.ObjectLastSelectedColor), 1), sb.boundingbox);
 				}
 				else if (o is PotItem pp)
 				{
-					graphics.DrawRectangle(Pens.Green, new Rectangle(pp.nx * 8, pp.ny * 8, 16, 16));
+					graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.ObjectLastSelectedColor), 1), new Rectangle(pp.nx * 8, pp.ny * 8, 16, 16));
 				}
 				else if (o is Room_Object obj)
 				{
@@ -162,7 +163,7 @@ namespace ZeldaFullEditor
 					{
 						yfix = -(6 + obj.Size);
 					}
-					graphics.DrawRectangle(Pens.Green, new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
+					graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.ObjectLastSelectedColor), 1), new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
 				}
 			}
 
@@ -181,7 +182,7 @@ namespace ZeldaFullEditor
 								yfix = -(6 + obj.Size);
 							}
 
-							graphics.DrawRectangle(Pens.DarkCyan,
+							graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.BG2MaskColor), 1),
 								new Rectangle((obj.nx + obj.offsetX) * 8,
 								(obj.ny + obj.offsetY + yfix) * 8,
 								obj.width, obj.height));
@@ -201,11 +202,11 @@ namespace ZeldaFullEditor
 				{
 					if (selectedMode == ObjectMode.Spritemode)
 					{
-						graphics.DrawRectangle(Constants.WhitePen, new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
+						graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.SelectionBoxColor), 1), new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
 					}
 					else
 					{
-						graphics.DrawRectangle(Constants.WhitePen, new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
+						graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.SelectionBoxColor), 1), new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
 					}
 				}
 
@@ -213,11 +214,11 @@ namespace ZeldaFullEditor
 				{
 					if (o is Sprite sb)
 					{
-						graphics.DrawRectangle(Pens.LimeGreen, sb.boundingbox);
+						graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.ObjectSelectedColor), 1), sb.boundingbox);
 					}
 					else if (o is PotItem pp)
 					{
-						graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(pp.nx * 8, pp.ny * 8, 16, 16));
+						graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.ObjectSelectedColor), 1), new Rectangle(pp.nx * 8, pp.ny * 8, 16, 16));
 					}
 					else if (o is Room_Object obj)
 					{
@@ -227,7 +228,7 @@ namespace ZeldaFullEditor
 							yfix = -(6 + obj.Size);
 						}
 
-						graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
+						graphics.DrawRectangle(new Pen(new SolidBrush(Settings.Default.ObjectSelectedColor), 1), new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
 					}
 				}
 			}
