@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -226,6 +226,54 @@ namespace ZeldaFullEditor.Properties {
             }
             set {
                 this["favoriteObjects"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Lime")]
+        public global::System.Drawing.Color SelectedRoomOutline {
+            get {
+                return ((global::System.Drawing.Color)(this["SelectedRoomOutline"]));
+            }
+            set {
+                this["SelectedRoomOutline"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LimeGreen")]
+        public global::System.Drawing.Color OpenedRoomOutline {
+            get {
+                return ((global::System.Drawing.Color)(this["OpenedRoomOutline"]));
+            }
+            set {
+                this["OpenedRoomOutline"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkTurquoise")]
+        public global::System.Drawing.Color ExportedRoomOutline {
+            get {
+                return ((global::System.Drawing.Color)(this["ExportedRoomOutline"]));
+            }
+            set {
+                this["ExportedRoomOutline"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SeaGreen")]
+        public global::System.Drawing.Color OpenedExportedRoomOutline {
+            get {
+                return ((global::System.Drawing.Color)(this["OpenedExportedRoomOutline"]));
+            }
+            set {
+                this["OpenedExportedRoomOutline"] = value;
             }
         }
     }

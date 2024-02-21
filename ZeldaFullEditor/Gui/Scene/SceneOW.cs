@@ -434,13 +434,13 @@ namespace ZeldaFullEditor
 
                 if (hScroll.Value >= 0 && hScroll.Value < hScroll.Maximum)
                 {
-                    int tempValue = startpanPoint.X - (panPoint.X * 2);
+                    int tempValue = startpanPoint.X - (panPoint.X);
                     tempValue = tempValue.Clamp(0, hScroll.Maximum);
                     hScroll.Value = tempValue;
                 }
                 if (vScroll.Value >= 0 && vScroll.Value < vScroll.Maximum)
                 {
-                    int tempValue = startpanPoint.Y - (panPoint.Y * 2);
+                    int tempValue = startpanPoint.Y - (panPoint.Y);
                     tempValue = tempValue.Clamp(0, vScroll.Maximum);
                     vScroll.Value = tempValue;
                 }
