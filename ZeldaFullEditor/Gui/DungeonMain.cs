@@ -3706,7 +3706,7 @@ namespace ZeldaFullEditor
 
 			int yc = e.Y;
 
-			if (yc >= 256 && e.Y <= 264)
+			if (yc >= 256)
 			{
 				if (yc <= 264)
 				{
