@@ -56,7 +56,7 @@
 			this.RoomObjectsBox.Name = "RoomObjectsBox";
 			this.RoomObjectsBox.ReadOnly = true;
 			this.RoomObjectsBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.RoomObjectsBox.Size = new System.Drawing.Size(165, 218);
+			this.RoomObjectsBox.Size = new System.Drawing.Size(165, 350);
 			this.RoomObjectsBox.TabIndex = 0;
 			// 
 			// label1
@@ -76,7 +76,7 @@
 			this.SpritesDataBox.Name = "SpritesDataBox";
 			this.SpritesDataBox.ReadOnly = true;
 			this.SpritesDataBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.SpritesDataBox.Size = new System.Drawing.Size(165, 218);
+			this.SpritesDataBox.Size = new System.Drawing.Size(165, 350);
 			this.SpritesDataBox.TabIndex = 2;
 			// 
 			// SecretsDataBox
@@ -87,7 +87,7 @@
 			this.SecretsDataBox.Name = "SecretsDataBox";
 			this.SecretsDataBox.ReadOnly = true;
 			this.SecretsDataBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.SecretsDataBox.Size = new System.Drawing.Size(165, 218);
+			this.SecretsDataBox.Size = new System.Drawing.Size(165, 350);
 			this.SecretsDataBox.TabIndex = 3;
 			// 
 			// label2
@@ -111,7 +111,7 @@
 			// TorchesBox
 			// 
 			this.TorchesBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TorchesBox.Location = new System.Drawing.Point(516, 27);
+			this.TorchesBox.Location = new System.Drawing.Point(516, 151);
 			this.TorchesBox.Multiline = true;
 			this.TorchesBox.Name = "TorchesBox";
 			this.TorchesBox.ReadOnly = true;
@@ -122,7 +122,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(516, 131);
+			this.label4.Location = new System.Drawing.Point(513, 263);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(85, 13);
 			this.label4.TabIndex = 9;
@@ -131,7 +131,7 @@
 			// PushBlockBox
 			// 
 			this.PushBlockBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.PushBlockBox.Location = new System.Drawing.Point(516, 147);
+			this.PushBlockBox.Location = new System.Drawing.Point(516, 279);
 			this.PushBlockBox.Multiline = true;
 			this.PushBlockBox.Name = "PushBlockBox";
 			this.PushBlockBox.ReadOnly = true;
@@ -142,7 +142,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(516, 9);
+			this.label5.Location = new System.Drawing.Point(513, 135);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(46, 13);
 			this.label5.TabIndex = 11;
@@ -151,7 +151,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(7, 253);
+			this.label6.Location = new System.Drawing.Point(12, 385);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(64, 13);
 			this.label6.TabIndex = 12;
@@ -160,25 +160,26 @@
 			// DoorOffsetBox
 			// 
 			this.DoorOffsetBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DoorOffsetBox.Location = new System.Drawing.Point(78, 251);
+			this.DoorOffsetBox.Location = new System.Drawing.Point(78, 383);
 			this.DoorOffsetBox.Name = "DoorOffsetBox";
 			this.DoorOffsetBox.ReadOnly = true;
 			this.DoorOffsetBox.Size = new System.Drawing.Size(90, 20);
 			this.DoorOffsetBox.TabIndex = 13;
+			this.DoorOffsetBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// textBox2
 			// 
 			this.textBox2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textBox2.Location = new System.Drawing.Point(78, 277);
+			this.textBox2.Location = new System.Drawing.Point(248, 383);
 			this.textBox2.Name = "textBox2";
 			this.textBox2.ReadOnly = true;
-			this.textBox2.Size = new System.Drawing.Size(432, 20);
+			this.textBox2.Size = new System.Drawing.Size(433, 20);
 			this.textBox2.TabIndex = 14;
 			// 
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(0, 279);
+			this.label7.Location = new System.Drawing.Point(171, 385);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(71, 13);
 			this.label7.TabIndex = 15;
@@ -186,9 +187,10 @@
 			// 
 			// ViewModeBox
 			// 
+			this.ViewModeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.ViewModeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ViewModeBox.FormattingEnabled = true;
-			this.ViewModeBox.Location = new System.Drawing.Point(72, 343);
+			this.ViewModeBox.Location = new System.Drawing.Point(77, 440);
 			this.ViewModeBox.Name = "ViewModeBox";
 			this.ViewModeBox.Size = new System.Drawing.Size(165, 21);
 			this.ViewModeBox.TabIndex = 16;
@@ -196,8 +198,9 @@
 			// 
 			// label8
 			// 
+			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(7, 346);
+			this.label8.Location = new System.Drawing.Point(12, 443);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(59, 13);
 			this.label8.TabIndex = 17;
@@ -206,7 +209,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(516, 253);
+			this.label9.Location = new System.Drawing.Point(513, 9);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(39, 13);
 			this.label9.TabIndex = 18;
@@ -215,7 +218,7 @@
 			// ChestsDataBox
 			// 
 			this.ChestsDataBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ChestsDataBox.Location = new System.Drawing.Point(516, 269);
+			this.ChestsDataBox.Location = new System.Drawing.Point(516, 27);
 			this.ChestsDataBox.Multiline = true;
 			this.ChestsDataBox.Name = "ChestsDataBox";
 			this.ChestsDataBox.ReadOnly = true;
@@ -227,7 +230,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(684, 450);
+			this.ClientSize = new System.Drawing.Size(684, 468);
 			this.Controls.Add(this.ChestsDataBox);
 			this.Controls.Add(this.label9);
 			this.Controls.Add(this.label8);

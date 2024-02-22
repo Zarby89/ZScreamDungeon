@@ -828,6 +828,66 @@ namespace ZeldaFullEditor
 			return objectsBytes.ToArray();
 		}
 
+		public byte[] GetSpritesData()
+		{
+			var ret = new List<byte>();
+
+			ret.Add((byte) (sortsprites ? 0x01 : 0x00));
+
+			foreach (var spr in sprites) // 3bytes
+			{
+				ret.Add((byte) ((spr.layer << 7) | ((spr.subtype & 0x18) << 2) | spr.y));
+				ret.Add((byte) (((spr.subtype & 0x07) << 5) | spr.x));
+				ret.Add(spr.id);
+
+				// If current sprite hold a key then save it before.
+				if (spr.keyDrop == 1)
+				{
+					ret.Add(0xFE);
+					ret.Add(0x00);
+					ret.Add(0xE4);
+				}
+				else if (spr.keyDrop == 2)
+				{
+					ret.Add(0xFD);
+					ret.Add(0x00);
+					ret.Add(0xE4);
+				}
+			}
+
+			ret.Add(0xFF);
+
+			return ret.ToArray();
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		public void drawPotsItems()
 		{
 			foreach (PotItem item in pot_items)

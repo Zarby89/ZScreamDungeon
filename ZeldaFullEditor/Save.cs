@@ -876,49 +876,30 @@ namespace ZeldaFullEditor
 			// Start of data = 0x252
 			try
 			{
-				int pos = 0x252;
+				int pos = 0x250;
+				int emptyPointer = spritePointer + pos;
 
 				// Set empty room.
-				sprites_buffer[0x250] = 0x00;
-				sprites_buffer[0x251] = 0xFF;
+				sprites_buffer[pos++] = 0x00;
+				sprites_buffer[pos++] = 0xFF;
 
-				for (int i = 0; i < Constants.NumberOfRooms; i++)
+
+
+				for (int i = 0; i < 320; i++)
 				{
-					if (i >= Constants.NumberOfRooms || this.AllRooms[i].sprites.Count <= 0)
+					if (i >= Constants.NumberOfRooms || AllRooms[i].sprites.Count <= 0)
 					{
-						sprites_buffer[i * 2] = (byte) Utils.SnesToPc(spritePointer + 0x250);
-						sprites_buffer[(i * 2) + 1] = (byte) (Utils.SnesToPc(spritePointer + 0x250) >> 8);
+						sprites_buffer[i * 2] = (byte) emptyPointer;
+						sprites_buffer[(i * 2) + 1] = (byte) (emptyPointer >> 8);
 					}
 					else
 					{
-						// Pointer:
-						sprites_buffer[i * 2] = (byte) Utils.SnesToPc(spritePointer + pos);
-						sprites_buffer[(i * 2) + 1] = (byte) ((Utils.SnesToPc(spritePointer + pos)) >> 8);
+						sprites_buffer[i * 2] = (byte) Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos));
+						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointer + pos) >> 8);
 
-						sprites_buffer[pos++] = (byte) (this.AllRooms[i].sortsprites ? 0x01 : 0x00);
-
-						foreach (Sprite spr in this.AllRooms[i].sprites) // 3bytes
-						{
-							sprites_buffer[pos++] = (byte) ((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
-							sprites_buffer[pos++] = (byte) (((spr.subtype & 0x07) << 5) + spr.x);
-							sprites_buffer[pos++] = spr.id;
-
-							// If current sprite hold a key then save it before.
-							if (spr.keyDrop == 1)
-							{
-								sprites_buffer[pos++] = 0xFE;
-								sprites_buffer[pos++] = 0x00;
-								sprites_buffer[pos++] = 0xE4;
-							}
-							else if (spr.keyDrop == 2)
-							{
-								sprites_buffer[pos++] = 0xFD;
-								sprites_buffer[pos++] = 0x00;
-								sprites_buffer[pos++] = 0xE4;
-							}
-						}
-
-						sprites_buffer[pos++] = 0xFF; // End of sprites.
+						var dat = AllRooms[i].GetSpritesData();
+						Array.Copy(dat, 0, sprites_buffer, pos, dat.Length);
+						pos += dat.Length;
 					}
 				}
 
@@ -2166,128 +2147,42 @@ namespace ZeldaFullEditor
 			// Start of data = 0x282.
 			try
 			{
-				int pos = 0x282;
+				int pos = 0x280;
+				int emptyPointer = spritePointer + pos;
 
 				// Set empty room.
-				sprites_buffer[0x280] = 0x00;
-				sprites_buffer[0x281] = 0xFF;
+				sprites_buffer[pos++] = 0x00;
+				sprites_buffer[pos++] = 0xFF;
+
+				
 
 				for (int i = 0; i < 320; i++)
 				{
+					Room thisRoom;
+
 					if (listofrooms.Contains((short) i))
 					{
-						if (i >= Constants.NumberOfRooms || this.AllRooms[i].sprites.Count <= 0)
-						{
-							sprites_buffer[i * 2] = (byte) (Utils.PcToSnes(Utils.SnesToPc(spritePointer + 0x280)) & 0xFF);
-							sprites_buffer[(i * 2) + 1] = (byte) ((Utils.SnesToPc(spritePointer + 0x280) >> 8) & 0xFF);
-						}
-						else
-						{
-							// Pointer:
-							sprites_buffer[i * 2] = (byte) (Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF);
-							sprites_buffer[(i * 2) + 1] = (byte) ((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) >> 8) & 0xFF);
-
-							sprites_buffer[pos] = (byte) (this.AllRooms[i].sortsprites ? 0x01 : 0x00); // Unknown byte??
-							pos++;
-							foreach (Sprite spr in this.AllRooms[i].sprites) // 3bytes
-							{
-								byte b1 = (byte) ((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
-								byte b2 = (byte) (((spr.subtype & 0x07) << 5) + spr.x);
-								byte b3 = spr.id;
-
-								sprites_buffer[pos++] = b1;
-								sprites_buffer[pos++] = b2;
-								sprites_buffer[pos++] = b3;
-
-								// If current sprite hold a key then save it before.
-								if (spr.keyDrop == 1)
-								{
-									byte bb1 = 0xFE;
-									byte bb2 = 0x00;
-									byte bb3 = 0xE4;
-
-									sprites_buffer[pos++] = bb1;
-									sprites_buffer[pos++] = bb2;
-									sprites_buffer[pos++] = bb3;
-								}
-								else if (spr.keyDrop == 2)
-								{
-									byte bb1 = 0xFD;
-									byte bb2 = 0x00;
-									byte bb3 = 0xE4;
-
-									sprites_buffer[pos++] = bb1;
-									sprites_buffer[pos++] = bb2;
-									sprites_buffer[pos++] = bb3;
-								}
-							}
-
-							sprites_buffer[pos] = 0xFF; // End of sprites.
-							pos++;
-						}
+						thisRoom = AllRooms[i];
 					}
 					else
 					{
-						if (i >= Constants.NumberOfRooms || DungeonsData.AllRoomsMoved[i].sprites.Count <= 0)
-						{
-							sprites_buffer[i * 2] = (byte) Utils.SnesToPc(spritePointer + 0x280);
-							sprites_buffer[(i * 2) + 1] = (byte) (Utils.SnesToPc(spritePointer + 0x280) >> 8);
-						}
-						else
-						{
-							// Pointer:
-							sprites_buffer[i * 2] = (byte) Utils.SnesToPc(spritePointer + pos);
-							sprites_buffer[(i * 2) + 1] = (byte) (Utils.SnesToPc(spritePointer + pos) >> 8);
+						thisRoom = DungeonsData.AllRoomsMoved[i];
+					}
 
-							sprites_buffer[pos] = (byte) (DungeonsData.AllRoomsMoved[i].sortsprites ? 0x01 : 0x00); // Unknown byte??
-							pos++;
+					if (i >= Constants.NumberOfRooms || thisRoom.sprites.Count <= 0)
+					{
+						sprites_buffer[i * 2] = (byte) emptyPointer;
+						sprites_buffer[(i * 2) + 1] = (byte) (emptyPointer >> 8);
+					}
+					else
+					{
+						
+						sprites_buffer[i * 2] = (byte) Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos));
+						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointer + pos) >> 8);
 
-							foreach (Sprite spr in DungeonsData.AllRoomsMoved[i].sprites) // 3bytes.
-							{
-								byte b1 = (byte) ((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
-								byte b2 = (byte) (((spr.subtype & 0x07) << 5) + spr.x);
-								byte b3 = spr.id;
-
-								sprites_buffer[pos] = b1;
-								pos++;
-								sprites_buffer[pos] = b2;
-								pos++;
-								sprites_buffer[pos] = b3;
-								pos++;
-
-								// If current sprite hold a key then save it before.
-								if (spr.keyDrop == 1)
-								{
-									byte bb1 = 0xFE;
-									byte bb2 = 0x00;
-									byte bb3 = 0xE4;
-
-									sprites_buffer[pos] = bb1;
-									pos++;
-									sprites_buffer[pos] = bb2;
-									pos++;
-									sprites_buffer[pos] = bb3;
-									pos++;
-								}
-
-								if (spr.keyDrop == 2)
-								{
-									byte bb1 = 0xFD;
-									byte bb2 = 0x00;
-									byte bb3 = 0xE4;
-
-									sprites_buffer[pos] = bb1;
-									pos++;
-									sprites_buffer[pos] = bb2;
-									pos++;
-									sprites_buffer[pos] = bb3;
-									pos++;
-								}
-							}
-
-							sprites_buffer[pos] = 0xFF; // End of sprites.
-							pos++;
-						}
+						var dat = thisRoom.GetSpritesData();
+						Array.Copy(dat, 0, sprites_buffer, pos, dat.Length);
+						pos += dat.Length;
 					}
 				}
 

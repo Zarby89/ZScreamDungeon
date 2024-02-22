@@ -7,18 +7,20 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 {
 	public partial class RoomDataViewer : Form
 	{
-
 		private byte[] objectData = null;
 		private byte[] layer1Data = null;
 		private byte[] layer2Data = null;
 		private byte[] layer3Data = null;
 		private byte[] doorsData = null;
+		private byte[] spritesData = null;
 
 		private ViewType viewingAs = ViewType.Raw;
 
 		public RoomDataViewer(Room room)
 		{
 			InitializeComponent();
+
+			Text = $"Room data for room {room.RoomID:X4}";
 
 			objectData = room.getTilesBytes();
 
@@ -66,25 +68,34 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			layer2Data = sb[1].ToArray();
 			layer3Data = sb[2].ToArray();
 			doorsData = curList.ToArray();
+			spritesData = room.GetSpritesData();
 
 			ViewModeBox.DataSource = new ViewType[]
 				{
-				ViewType.Raw,
-				ViewType.asm,
+					ViewType.Raw,
+					ViewType.Spaced,
+					ViewType.asm,
 				};
 
-			ViewModeBox.SelectedIndex = 1;
+			ViewModeBox.SelectedItem = ViewType.asm;
 		}
 
 		private void RefreshDataBoxes()
 		{
 			// Room objects
-			RoomObjectsBox.Clear();
-
 			if (viewingAs is ViewType.Raw)
 			{
 				RoomObjectsBox.Text = GetRawData(objectData);
+				SpritesDataBox.Text = GetRawData(spritesData);
 
+
+				return;
+			}
+			else if (viewingAs is ViewType.Spaced)
+			{
+
+				RoomObjectsBox.Text = GetSpacedData(objectData);
+				SpritesDataBox.Text = GetSpacedData(spritesData);
 
 				return;
 			}
@@ -121,6 +132,16 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 				sb.Add("db $FF, $FF");
 
 				RoomObjectsBox.Text = string.Join("\r\n", sb);
+
+				sb = new List<string>();
+
+				sb.Add($"db {spritesData[0]}");
+				for (int i = 1; i < (spritesData.Length - 1); i += 3)
+				{
+					sb.Add($"db ${spritesData[i]:X2}, ${spritesData[i + 1]:X2}, ${spritesData[i + 2]:X2}");
+				}
+				sb.Add("db $FF");
+				SpritesDataBox.Text = string.Join("\r\n", sb);
 			}
 		}
 
@@ -129,12 +150,15 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			return string.Concat(dat.Select(b => $"{b:X2}"));
 		}
 
-
-
+		private string GetSpacedData(byte[] dat)
+		{
+			return string.Join(" ", dat.Select(b => $"{b:X2}"));
+		}
 
 		private enum ViewType
 		{
 			Raw,
+			Spaced,
 			asm,
 		}
 
