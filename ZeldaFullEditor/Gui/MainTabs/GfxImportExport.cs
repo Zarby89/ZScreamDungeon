@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using ZeldaFullEditor.Gui.ExtraForms;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -324,21 +325,41 @@ namespace ZeldaFullEditor.Gui
 			palettePicturebox.Refresh();
 		}
 
-		private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
+        bool rightSide = false;
+
+        private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
 			selectedPal = e.Y / 16;
-
+            rightSide = false;
+            if (e.X>=128)
+			{
+				rightSide = true;
+			}
 			ColorPalette cp = GFX.allgfxBitmap.Palette;
 			for (int i = 0; i < 16; i++)
 			{
 				if (radioButton1.Checked)
 				{
-					cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[i + selectedPal * 16];
+					if (rightSide)
+					{
+						cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + selectedPal * 16)+8];
+					}
+					else
+					{
+                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + selectedPal * 16)];
+                    }
 				}
 				else
 				{
+                    if (rightSide)
+                    {
+                        cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + selectedPal * 16) + 8];
+                    }
+                    else
+                    {
+                        cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + selectedPal * 16)];
+                    }
 
-					cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[i + selectedPal * 16];
 				}
 			}
 
@@ -504,5 +525,49 @@ namespace ZeldaFullEditor.Gui
 		{
 
 		}
-	}
+
+        private void allgfxPicturebox_DoubleClick(object sender, EventArgs e)
+        {
+
+            byte[] sdata = new byte[Constants.UncompressedSheetSize * 2];
+			if (!GFX.isbpp3[selectedSheet])
+			{
+                sdata = new byte[Constants.UncompressedSheetSize * 4];
+            }
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                for (int i = 0; i < sdata.Length/2; i++)
+                {
+                    sdata[(i * 2)] = (byte)((gdata[(selectedSheet * Constants.UncompressedSheetSize) + i] & 0xF0) >>4);
+                    sdata[(i * 2)+1] = (byte)(gdata[(selectedSheet * Constants.UncompressedSheetSize) + i] & 0x0F);
+                }
+            }
+			Color[] pal = new Color[8];
+            for (int i = 0; i < 8; i++)
+            {
+				
+                pal[i] = GFX.allgfxBitmap.Palette.Entries[i];
+            }
+
+            GfxEditor gfxEditor = new GfxEditor();
+			gfxEditor.UpdateImage(sdata, pal);
+			gfxEditor.ShowDialog();
+
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                for (int i = 0; i < Constants.UncompressedSheetSize; i++)
+                {
+					gdata[(selectedSheet * Constants.UncompressedSheetSize) + i] = gfxEditor.imageData[i];
+                }
+            }
+
+            mainForm.activeScene.room.reloadGfx();
+            mainForm.activeScene.DrawRoom();
+            mainForm.activeScene.Refresh();
+            allgfxPicturebox.Refresh();
+
+        }
+    }
 }

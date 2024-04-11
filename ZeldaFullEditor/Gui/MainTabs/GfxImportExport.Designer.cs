@@ -71,6 +71,7 @@
             this.allgfxPicturebox.TabIndex = 0;
             this.allgfxPicturebox.TabStop = false;
             this.allgfxPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.allgfxPicturebox_Paint);
+            this.allgfxPicturebox.DoubleClick += new System.EventHandler(this.allgfxPicturebox_DoubleClick);
             this.allgfxPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.allgfxPicturebox_MouseDown);
             // 
             // groupBox1
