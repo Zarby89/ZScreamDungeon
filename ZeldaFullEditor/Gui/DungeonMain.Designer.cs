@@ -30,8 +30,8 @@
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -257,6 +257,7 @@
             this.ScreenEditor = new System.Windows.Forms.TabPage();
             this.MusicEditor = new System.Windows.Forms.TabPage();
             this.SpriteEditor = new System.Windows.Forms.TabPage();
+            this.PaletteEditor = new System.Windows.Forms.TabPage();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -413,6 +414,7 @@
             this.saveVRAMAsPngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveRoomsToOtherROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportImageMapMultipleROMsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zSEditorSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -431,7 +433,6 @@
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
-            this.zSEditorSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1882,13 +1883,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 289);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -3040,6 +3041,7 @@
             this.editorsTabControl.Controls.Add(this.ScreenEditor);
             this.editorsTabControl.Controls.Add(this.MusicEditor);
             this.editorsTabControl.Controls.Add(this.SpriteEditor);
+            this.editorsTabControl.Controls.Add(this.PaletteEditor);
             this.editorsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.editorsTabControl.Enabled = false;
             this.editorsTabControl.Location = new System.Drawing.Point(0, 739);
@@ -3113,6 +3115,15 @@
             this.SpriteEditor.TabIndex = 7;
             this.SpriteEditor.Text = "Sprite Properties";
             this.SpriteEditor.UseVisualStyleBackColor = true;
+            // 
+            // PaletteEditor
+            // 
+            this.PaletteEditor.Location = new System.Drawing.Point(4, 25);
+            this.PaletteEditor.Name = "PaletteEditor";
+            this.PaletteEditor.Size = new System.Drawing.Size(1169, 0);
+            this.PaletteEditor.TabIndex = 8;
+            this.PaletteEditor.Text = "Palette Editor";
+            this.PaletteEditor.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
@@ -4497,6 +4508,13 @@
             this.exportImageMapMultipleROMsToolStripMenuItem.Text = "Export Image Map (Multiple ROMs)";
             this.exportImageMapMultipleROMsToolStripMenuItem.Click += new System.EventHandler(this.ExportImageMapMultipleROMsToolStripMenuItem_Click);
             // 
+            // zSEditorSettingsToolStripMenuItem
+            // 
+            this.zSEditorSettingsToolStripMenuItem.Name = "zSEditorSettingsToolStripMenuItem";
+            this.zSEditorSettingsToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.zSEditorSettingsToolStripMenuItem.Text = "ZSEditor Settings";
+            this.zSEditorSettingsToolStripMenuItem.Click += new System.EventHandler(this.zSEditorSettingsToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -4673,13 +4691,6 @@
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
             // 
-            // zSEditorSettingsToolStripMenuItem
-            // 
-            this.zSEditorSettingsToolStripMenuItem.Name = "zSEditorSettingsToolStripMenuItem";
-            this.zSEditorSettingsToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
-            this.zSEditorSettingsToolStripMenuItem.Text = "ZSEditor Settings";
-            this.zSEditorSettingsToolStripMenuItem.Click += new System.EventHandler(this.zSEditorSettingsToolStripMenuItem_Click);
-            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4702,6 +4713,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);
             this.SizeChanged += new System.EventHandler(this.DungeonMain_SizeChanged);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DungeonMain_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.DungeonMain_DragEnter);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.nothingselectedcontextMenu.ResumeLayout(false);
@@ -5166,6 +5179,7 @@
 		private System.Windows.Forms.ToolStripMenuItem applyFastROMToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton ViewRoomDataButton;
         private System.Windows.Forms.ToolStripMenuItem zSEditorSettingsToolStripMenuItem;
+        private System.Windows.Forms.TabPage PaletteEditor;
     }
 }
 

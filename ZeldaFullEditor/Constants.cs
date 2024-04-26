@@ -397,7 +397,7 @@ namespace ZeldaFullEditor
 		//04D62E
 		public static int sprites_data = 0x4D880; // It use the unused pointers to have more space //Save purpose
 		public static int sprites_data_empty_room = 0x4D87E;
-		public static int sprites_end_data = 0x4EC9E;
+		public static int sprites_end_data = 0x107FFF;
 
 		public static int pit_pointer = 0x394AB;
 		public static int pit_count = 0x394A6;

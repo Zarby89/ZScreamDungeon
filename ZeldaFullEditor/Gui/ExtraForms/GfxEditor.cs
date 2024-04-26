@@ -31,7 +31,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-            e.Graphics.DrawImage(editingImage.bitmap, new Rectangle(0,0, 128 * zoom, 64 * zoom),new Rectangle(0,0,128,64),GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(editingImage.bitmap, new Rectangle(0,0, 128 * zoom, 32 * zoom),new Rectangle(0,0,128,32),GraphicsUnit.Pixel);
             Rectangle selectionRectZoom = new Rectangle(selectionRect.X*zoom, selectionRect.Y*zoom, selectionRect.Width*zoom, selectionRect.Height*zoom);
             e.Graphics.DrawRectangle(Pens.White, selectionRectZoom);
 
@@ -76,7 +76,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         private void zoomCombobox_SelectedIndexChanged(object sender, EventArgs e)
         {
             zoom = zooms[zoomCombobox.SelectedIndex];
-            mainPicturebox.Size = new Size(128*zoom,64*zoom);
+            mainPicturebox.Size = new Size(128*zoom,32*zoom);
             mainPicturebox.Invalidate();
         }
 
@@ -145,7 +145,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                         {
                             editingImage[p.X, p.Y] = selectedColor;
                         }
-                        
+
                         mainPicturebox.Invalidate();
                     }
 

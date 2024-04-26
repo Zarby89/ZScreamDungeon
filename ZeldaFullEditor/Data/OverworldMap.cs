@@ -567,7 +567,7 @@ namespace ZeldaFullEditor
 
 			animated = Palettes.OverworldAnimatedPalettes[pal3];
 
-			hud = Palettes.HudPalettes[0];
+			hud = Palettes.HudPalettes.palettes[0].colors;
 			if (pal4 == 255)
 			{
 				pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (previousSprPalId * 2)]; // spr3

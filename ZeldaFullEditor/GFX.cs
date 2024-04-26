@@ -548,7 +548,7 @@ namespace ZeldaFullEditor
 				{
 					// Hud Palette load from hud array instead of rom
 					//getColor((short)((ROM.DATA[0xDD660 + 1 + j] << 8) + (ROM.DATA[0xDD660 + j])));
-					palettes[x, y] = Palettes.HudPalettes[0][j++];
+					palettes[x, y] = Palettes.HudPalettes.palettes[0].colors[j++];
 				}
 			}
 

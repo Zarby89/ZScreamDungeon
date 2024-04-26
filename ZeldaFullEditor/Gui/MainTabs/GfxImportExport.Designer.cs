@@ -147,7 +147,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(735, 635);
+            this.button2.Location = new System.Drawing.Point(916, 635);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 5;
@@ -207,7 +207,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Location = new System.Drawing.Point(564, 6);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(271, 623);
+            this.panel2.Size = new System.Drawing.Size(452, 623);
             this.panel2.TabIndex = 10;
             // 
             // button1
@@ -258,7 +258,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
             this.Name = "GfxImportExport";
-            this.Size = new System.Drawing.Size(838, 661);
+            this.Size = new System.Drawing.Size(1019, 661);
             this.Load += new System.EventHandler(this.GfxImportExport_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.allgfxPicturebox)).EndInit();

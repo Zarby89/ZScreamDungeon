@@ -859,25 +859,21 @@ namespace ZeldaFullEditor
 		/// <returns> True if there was an error saving the sprites. </returns>
 		public bool SaveAllSprites()
 		{
-			//ROM.spaceUsedOWSprites
 
-			//Update the pointer
-			ROM.WriteShort(Constants.rooms_sprite_pointer, Utils.PcToSnes(ROM.spaceUsedOWSprites) & 0x00FFFF);
+            AttemptBasePatch("spritesmove.asm"); // move dungeon sprites to 0x100000 ($208000)
 
-			int spritePointer = 0x090000 | (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + ROM.DATA[Constants.rooms_sprite_pointer];
+			// TEMPORARY LOCATION
+			int spritePointerSNES = 0x208100;
 
-
-
-			int spritePointerPC = Utils.SnesToPc(spritePointer);
+            int spritePointerPC = Utils.SnesToPc(spritePointerSNES);
 			ROM.StartBlockLogWriting("Dungeon Sprites", spritePointerPC);
-			byte[] sprites_buffer = new byte[Constants.sprites_end_data - Utils.SnesToPc(spritePointer)];
-
+			byte[] sprites_buffer = new byte[Constants.sprites_end_data - spritePointerPC];
 			// Empty room data = 0x250
 			// Start of data = 0x252
 			try
 			{
 				int pos = 0x250;
-				int emptyPointer = spritePointer + pos;
+				int emptyPointer = spritePointerSNES + pos;
 
 				// Set empty room.
 				sprites_buffer[pos++] = 0x00;
@@ -885,19 +881,19 @@ namespace ZeldaFullEditor
 
 
 
-				for (int i = 0; i < 320; i++)
+				for (int i = 0; i < 296; i++)
 				{
 					if (i >= Constants.NumberOfRooms || AllRooms[i].sprites.Count <= 0)
 					{
 						sprites_buffer[i * 2] = (byte) emptyPointer;
 						sprites_buffer[(i * 2) + 1] = (byte) (emptyPointer >> 8);
-					}
+                    }
 					else
 					{
-						sprites_buffer[i * 2] = (byte) Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos));
-						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointer + pos) >> 8);
+						sprites_buffer[i * 2] = (byte)(spritePointerSNES + pos);
+						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointerSNES + pos) >> 8);
 
-						var dat = AllRooms[i].GetSpritesData();
+                        var dat = AllRooms[i].GetSpritesData();
 						Array.Copy(dat, 0, sprites_buffer, pos, dat.Length);
 						pos += dat.Length;
 					}
@@ -906,8 +902,9 @@ namespace ZeldaFullEditor
 				ROM.EndBlockLogWriting();
 				sprites_buffer.CopyTo(ROM.DATA, spritePointerPC);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				MessageBox.Show(e.Message);
 				return true;
 			}
 

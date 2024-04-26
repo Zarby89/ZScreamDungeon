@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using Lidgren.Network;
+using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
@@ -103,7 +105,9 @@ namespace ZeldaFullEditor.OWSceneModes
 			{
 				int tileX = (e.X / 16);
 				int tileY = (e.Y / 16);
-				int superX = (tileX / 32);
+                lastTileX = tileX;
+                lastTileY = tileY;
+                int superX = (tileX / 32);
 				int superY = (tileY / 32);
 				int mapId = (superY * 8) + superX;
 				scene.globalmouseTileDownX = tileX;
@@ -300,8 +304,9 @@ namespace ZeldaFullEditor.OWSceneModes
 			//scene.mainForm.pictureboxOWTiles.Refresh();
 			//scene.mainForm.pictureGroupTiles.Refresh();
 		}
-
-		public void OnMouseMove(MouseEventArgs e)
+		int lastTileX;
+		int lastTileY;
+        public void OnMouseMove(MouseEventArgs e)
 		{
 			if (scene.initialized)
 			{
@@ -309,6 +314,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				scene.mouseY_Real = e.Y;
 				int mouseTileX = e.X / 16;
 				int mouseTileY = e.Y / 16;
+
 				int mapX = (mouseTileX / 32);
 				int mapY = (mouseTileY / 32);
 
@@ -399,27 +405,35 @@ namespace ZeldaFullEditor.OWSceneModes
 								}
 							}
 							else
-							{
+                            {
 								if (scene.selectedTile.Length >= 1)
 								{
+									IEnumerable<Point> points = DrawLine.GetPointsOnLine(lastTileX, lastTileY, mouseTileX, mouseTileY);
 									ushort[] undotiles = new ushort[scene.selectedTile.Length];
 									int y = 0;
 									int x = 0;
 
 
-									SendTileDataMove(tileX, tileY);
 
+
+									//SendTileDataMove(p.X, p.Y);
 									for (int i = 0; i < scene.selectedTile.Length; i++)
 									{
-										superX = ((tileX + x) / 32);
-										superY = ((tileY + y) / 32);
-										mapId = (superY * 8) + superX + scene.ow.WorldOffset;
-
-										if (scene.globalmouseTileDownX + x < 256 && scene.globalmouseTileDownY + y < 256)
+										foreach (Point p in points)
 										{
-											undotiles[i] = scene.ow.AllMaps[mapId].TilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
-											scene.ow.AllMaps[mapId].TilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
-											scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
+											superX = ((p.X + x) / 32);
+											superY = ((p.Y + y) / 32);
+											mapId = (superY * 8) + superX + scene.ow.WorldOffset;
+
+
+											if (p.X + x < 256 && p.Y + y < 256 && p.X >= 0 && p.Y >= 0)
+											{
+
+												undotiles[i] = scene.ow.AllMaps[mapId].TilesUsed[p.X + x, p.Y + y];
+												scene.ow.AllMaps[mapId].TilesUsed[p.X + x, p.Y + y] = scene.selectedTile[i];
+
+												scene.ow.AllMaps[mapId].CopyTile8bpp16(((p.X + x) * 16) - (superX * 512), ((p.Y + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
+											}
 										}
 
 										x++;
@@ -429,9 +443,13 @@ namespace ZeldaFullEditor.OWSceneModes
 											x = 0;
 										}
 									}
+								
 
-									undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[]) scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));
-									redoList.Clear();
+									lastTileX = mouseTileX;
+									lastTileY = mouseTileY;
+
+									//undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[]) scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));
+									//redoList.Clear();
 
 									//scene.Invalidate(new Rectangle((scene.globalmouseTileDownX * 16), scene.globalmouseTileDownY * 16, scene.selectedTileSizeX * 16, y * 16));
 									// }
