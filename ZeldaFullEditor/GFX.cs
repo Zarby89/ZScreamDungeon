@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
 // TODO: Move all the magic numbers to the constants.cs file.
@@ -105,17 +106,21 @@ namespace ZeldaFullEditor
 
         public static Color[] palettes = new Color[256];
 
+        public static bool paletteWarning = true;
+        public static Random random = new Random();
+
         // Test code
         public static string[] objectsName = new string[0xFFF];
         public static bool[] objects = new bool[0xFFF];
 
         public static Color[,] editingPalettes; // Dynamic
         public static Color[,] loadedPalettes = new Color[1, 1];
-        public static short paletteid;
+        public static ushort paletteid;
 
         public static Color[,] loadedSprPalettes = new Color[1, 1];
 
         public static byte[] spriteFontSpacing = Utils.DeepCopyBytes(Constants.FontSpacings);
+
         public static unsafe void DrawBG1()
         {
             var alltilesData = (byte*)currentgfx16Ptr.ToPointer();
@@ -526,7 +531,8 @@ namespace ZeldaFullEditor
 
             // id = dungeon palette id
             byte dungeon_palette_ptr = GfxGroups.paletteGfx[id][0]; //id of the 1st group of 4
-            short palette_pos = (short)((ROM.DATA[0xDEC4B + dungeon_palette_ptr + 1] << 8) + ROM.DATA[0xDEC4B + dungeon_palette_ptr]);
+
+            ushort palette_pos = (ushort)((ROM.DATA[0xDEC4B + dungeon_palette_ptr + 1] << 8) + ROM.DATA[0xDEC4B + dungeon_palette_ptr]);
             int pId = (palette_pos / 180);
             paletteid = palette_pos;
 
@@ -562,9 +568,35 @@ namespace ZeldaFullEditor
                         continue;
                     }
 
+                    // In order to make it possible to use expanded data, I'm adding this check here to prevent ZS
+                    // rom crashing if a value above one of the valid palette values is found.
+                    if (pId >= 20 && paletteWarning)
+                    {
+                        DialogResult check = MessageBox.Show(
+                        "Error: Invalid value for Dungeon palette number 0x" + id.ToString("X2") + " detected.\n" +
+                        "Note, the palette will still save as this value however the palette will not draw correctly within ZScream.\n" +
+                        "Press OK to no longer see this error.",
+                        "Palette Error",
+                        MessageBoxButtons.OKCancel);
+
+                        if (check == DialogResult.OK)
+                        {
+                            paletteWarning = false;
+                        }
+                    }
+
                     // Dungeon Palette
-                    //palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
-                    palettes[x, y] = Palettes.DungeonsMainPalettes[pId][i];
+                    if (pId < 20)
+                    {
+                        //palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
+                        palettes[x, y] = Palettes.DungeonsMainPalettes[pId][i];
+                    }
+                    else
+                    {
+                        // Our palette is invlaid, so instead just make up a random color to show instead of throwing an error.
+                        palettes[x, y] = Color.FromArgb(255, random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
+                    }
+                    
                     if (x == 8)
                     {
                         palettes[x, y] = Color.Black;
@@ -577,7 +609,7 @@ namespace ZeldaFullEditor
             return palettes;
         }
 
-        // TODO clean up magic numbers
+        // TODO: clean up magic numbers
         public static Color[,] LoadSpritesPalette(byte id)
         {
             Color[,] palettes = new Color[16, 8];
@@ -585,10 +617,58 @@ namespace ZeldaFullEditor
             byte sprite2_palette_ptr = (byte)(ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 2] * 2); // ID of the 1st group of 4
             byte sprite3_palette_ptr = (byte)(ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 3] * 2); // ID of the 1st group of 4
                                                                                                                 // Console.WriteLine(sprite2_palette_ptr);
-            short palette_pos1 = (ROM.DATA[0xDEBC6 + sprite1_palette_ptr]); // /14
-            short palette_pos2 = (short)((ROM.DATA[0xDEBD6 + sprite2_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite2_palette_ptr]);// /14
-            short palette_pos3 = (short)((ROM.DATA[0xDEBD6 + sprite3_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite3_palette_ptr]);// /14
-                                                                                                                                       //short palette_pos4 = (short)(ROM.DATA[0xDEBC6 + 10]); // 140?
+            ushort palette_pos1 = (ROM.DATA[0xDEBC6 + sprite1_palette_ptr]); // /14
+            ushort palette_pos2 = (ushort)((ROM.DATA[0xDEBD6 + sprite2_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite2_palette_ptr]);// /14
+            ushort palette_pos3 = (ushort)((ROM.DATA[0xDEBD6 + sprite3_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite3_palette_ptr]);// /14
+                                                                                                                                         //short palette_pos4 = (short)(ROM.DATA[0xDEBC6 + 10]); // 140?
+
+            // In order to make it possible to use expanded data, I'm adding this check here to prevent ZS
+            // rom crashing if a value above one of the valid palette values is found.
+            if (paletteWarning)
+            {
+                if (palette_pos1 / 14 >= 12)
+                {
+                    DialogResult check = MessageBox.Show(
+                    "Error: Invalid value for sprite palette 1 number 0x" + id.ToString("X2") + " detected.\n" +
+                    "Note, the palette will still save as this value however the palette will not draw correctly within ZScream.\n" +
+                    "Press OK to no longer see this error.",
+                    "Palette Error",
+                    MessageBoxButtons.OKCancel);
+
+                    if (check == DialogResult.OK)
+                    {
+                        paletteWarning = false;
+                    }
+                }
+                else if (palette_pos2 / 14 >= 24)
+                {
+                    DialogResult check = MessageBox.Show(
+                    "Error: Invalid value for sprite palette 2 number 0x" + id.ToString("X2") + " detected.\n" +
+                    "Note, the palette will still save as this value however the palette will not draw correctly within ZScream.\n" +
+                    "Press OK to no longer see this error.",
+                    "Palette Error",
+                    MessageBoxButtons.OKCancel);
+
+                    if (check == DialogResult.OK)
+                    {
+                        paletteWarning = false;
+                    }
+                }
+                else if (palette_pos3 / 14 >= 24)
+                {
+                    DialogResult check = MessageBox.Show(
+                    "Error: Invalid value for sprite palette 3 number 0x" + id.ToString("X2") + " detected.\n" +
+                    "Note, the palette will still save as this value however the palette will not draw correctly within ZScream.\n" +
+                    "Press OK to no longer see this error.",
+                    "Palette Error",
+                    MessageBoxButtons.OKCancel);
+
+                    if (check == DialogResult.OK)
+                    {
+                        paletteWarning = false;
+                    }
+                }
+            }
 
             // ID = dungeon palette id
             palettes[9, 5] = Palettes.SwordsPalettes[0][0];
@@ -603,9 +683,35 @@ namespace ZeldaFullEditor
             {
                 if (x < 7)
                 {
-                    palettes[x + 1, 0] = Palettes.SpritesAux1Palettes[(palette_pos1 / 14)][x];
-                    palettes[x + 1, 5] = Palettes.SpritesAux3Palettes[(palette_pos2 / 14)][x];
-                    palettes[x + 1, 6] = Palettes.SpritesAux3Palettes[(palette_pos3 / 14)][x];
+                    if ((palette_pos1 / 14) < 12)
+                    {
+                        palettes[x + 1, 0] = Palettes.SpritesAux1Palettes[palette_pos1 / 14][x];
+                    }
+                    else
+                    {
+                        // Our palette is invlaid, so instead just make up a random color to show instead of throwing an error.
+                        palettes[x + 1, 0] = Color.FromArgb(255, random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
+                    }
+                    
+                    if ((palette_pos2 / 14) < 11)
+                    {
+                        palettes[x + 1, 5] = Palettes.SpritesAux3Palettes[palette_pos2 / 14][x];
+                    }
+                    else
+                    {
+                        // Our palette is invlaid, so instead just make up a random color to show instead of throwing an error.
+                        palettes[x + 1, 0] = Color.FromArgb(255, random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
+                    }
+
+                    if ((palette_pos3 / 14) < 24)
+                    {
+                        palettes[x + 1, 6] = Palettes.SpritesAux3Palettes[palette_pos3 / 14][x];
+                    }
+                    else
+                    {
+                        // Our palette is invlaid, so instead just make up a random color to show instead of throwing an error.
+                        palettes[x + 1, 0] = Color.FromArgb(255, random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
+                    }
                 }
                 else
                 {
@@ -617,24 +723,24 @@ namespace ZeldaFullEditor
                 }
 
                 // SP-1
-                //getColor((short)((ROM.DATA[0xDD218 + i + 1] << 8) + ROM.DATA[0xDD218 + i]));
+                //getColor((ushort)((ROM.DATA[0xDD218 + i + 1] << 8) + ROM.DATA[0xDD218 + i]));
                 palettes[x + 1, 1] = Palettes.GlobalSpritePalettes[0][x];
                 // SP-2
-                palettes[x + 1, 2] = Palettes.GlobalSpritePalettes[0][x + (15)];
+                palettes[x + 1, 2] = Palettes.GlobalSpritePalettes[0][x + 15];
                 // SP-3
-                palettes[x + 1, 3] = Palettes.GlobalSpritePalettes[0][x + (30)];
+                palettes[x + 1, 3] = Palettes.GlobalSpritePalettes[0][x + 30];
                 // SP-4
-                palettes[x + 1, 4] = Palettes.GlobalSpritePalettes[0][x + (45)];
+                palettes[x + 1, 4] = Palettes.GlobalSpritePalettes[0][x + 45];
 
                 //SP-6
                 /*
-                palettes[x + 1, 12] = getColor((short)((ROM.DATA[0xDD4E0 AUX3 + palette_pos3 + i + 1] << 8) + ROM.DATA[0xDD4E0 + palette_pos3 + i]));
-                palettes[x + 1, 13] = getColor((short)((ROM.DATA[0xDD446 AUX2 + palette_pos4 + i + 1] << 8) + ROM.DATA[0xDD446 + palette_pos4 + i])); //liftable objects
+                palettes[x + 1, 12] = getColor((ushort)((ROM.DATA[0xDD4E0 AUX3 + palette_pos3 + i + 1] << 8) + ROM.DATA[0xDD4E0 + palette_pos3 + i]));
+                palettes[x + 1, 13] = getColor((ushort)((ROM.DATA[0xDD446 AUX2 + palette_pos4 + i + 1] << 8) + ROM.DATA[0xDD446 + palette_pos4 + i])); //liftable objects
                 */
 
                 // IF GHOST PALETTE?
                 // SP-7 ???? WTF IT LINK PALETTE
-                //palettes[x + 1, 14] = getColor((short)((ROM.DATA[0xDD39E + palette_pos1 + i + 1] << 8) + ROM.DATA[0xDD39E + palette_pos1 + i]));
+                //palettes[x + 1, 14] = getColor((ushort)((ROM.DATA[0xDD39E + palette_pos1 + i + 1] << 8) + ROM.DATA[0xDD39E + palette_pos1 + i]));
             }
 
             return palettes;
