@@ -334,9 +334,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.activeoffscreenCheckbox.Name = "activeoffscreenCheckbox";
             this.activeoffscreenCheckbox.Size = new System.Drawing.Size(106, 17);
             this.activeoffscreenCheckbox.TabIndex = 60;
-            this.activeoffscreenCheckbox.Text = "Active off screen";
-            this.toolTip1.SetToolTip(this.activeoffscreenCheckbox, "Setting this flag will allow the sprite to continue running its AI even when off " +
-        "screen. When not set, off-screen sprites will halt.");
+            this.activeoffscreenCheckbox.Text = "Persist offscreen in OW";
+            this.toolTip1.SetToolTip(this.persistoffscreenowCheckbox, resources.GetString("activeoffscreenCheckbox.ToolTip"));
             this.activeoffscreenCheckbox.UseVisualStyleBackColor = true;
             this.activeoffscreenCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
             // 
@@ -437,8 +436,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
             this.persistoffscreenowCheckbox.Name = "persistoffscreenowCheckbox";
             this.persistoffscreenowCheckbox.Size = new System.Drawing.Size(137, 17);
             this.persistoffscreenowCheckbox.TabIndex = 52;
-            this.persistoffscreenowCheckbox.Text = "Persist offscreen in OW";
-            this.toolTip1.SetToolTip(this.persistoffscreenowCheckbox, resources.GetString("persistoffscreenowCheckbox.ToolTip"));
+            this.persistoffscreenowCheckbox.Text = "Active off screen";
+            this.toolTip1.SetToolTip(this.persistoffscreenowCheckbox, "Setting this flag will allow the sprite to continue running its AI even when off " +
+        "screen. When not set, off-screen sprites will halt.");
             this.persistoffscreenowCheckbox.UseVisualStyleBackColor = true;
             this.persistoffscreenowCheckbox.CheckedChanged += new System.EventHandler(this.properties_CheckedChanged);
             // 
