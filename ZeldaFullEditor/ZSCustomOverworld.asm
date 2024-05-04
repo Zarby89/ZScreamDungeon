@@ -26,17 +26,27 @@ org $00E556
     CopyFontToVram:
 
 
+org $028B0C
+    DeleteCertainAncillaeStopDashing:
+
 org $02ABBE
     Overworld_FinishTransGfx_firstHalf:
 
 org $02AF19 
     Overworld_LoadSubscreenAndSilenceSFX1:
 
+org $02C65F
+    Dungeon_LoadPalettes_cacheSettings:
+
 org $02FD0D
     LoadSubscreenOverlay:
 
 org $02FD8A
     LoadGearPalettes_bunny:
+
+
+org $07B107
+    Link_ItemReset_FromOverworldThings:
 
 
 org $099EFC
@@ -50,6 +60,10 @@ org $09C44E
 
 org $09C499
     Sprite_OverworldReloadAll:
+
+
+org $0BFE70
+    Overworld_SetFixedColorAndScroll:
 
 
 org $0ED5A8
@@ -529,8 +543,7 @@ ActivateSubScreen:
     .noRain
     
     ; Get the overlay value for this overworld area
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X : CMP.w #$00FF : BEQ .normal
+    JSL ReadOverlayArray : CMP.w #$00FF : BEQ .normal
         ; If not $FF, assume we want an overlay.
 
         .turnOn
@@ -561,8 +574,7 @@ org $00EEBB ; $006EBB
 Func00EEBB:
 {
     ; Check if we are warping to an area with the pyramid BG.
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BNE .notHyruleCastle
+    JSL ReadOverlayArray : CMP.w #$0096 : BNE .notHyruleCastle
         ; This is annoying but I just needed a little bit of extra space.
         JSL EraseBGColors
 
@@ -614,13 +626,12 @@ Func00FF7C:
         
         INC.b $B0
         
-        JSL $0BFE70 ; $05FE70 IN ROM
+        JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
 
         REP #$30 ; Set A, X, and Y in 16bit mode.
 
         ; Check if we are warping to an area with the pyramid BG.
-        LDA.b $8A : ASL : TAX
-        LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BEQ .dont_align_bgs
+        JSL ReadOverlayArray : CMP.w #$0096 : BEQ .dont_align_bgs
             LDA.b $E2 : STA.b $E0 : STA.w $0120 : STA.w $011E
             LDA.b $E8 : STA.b $E6 : STA.w $0122 : STA.w $0124
         
@@ -741,7 +752,7 @@ PreOverworld_LoadProperties_LoadMain:
         
     LDA.b $10 : CMP.b #$08 : BNE .specialArea2
         ; $01465F IN ROM; Copies $7EC300[0x200] to $7EC500[0x200]
-        JSR $C65F
+        JSR Dungeon_LoadPalettes_cacheSettings
         
         BRA .normalArea2
     
@@ -752,15 +763,16 @@ PreOverworld_LoadProperties_LoadMain:
     
     .normalArea2
     
-    JSL $0BFE70 ; $05FE70 IN ROM ; Sets fixed colors and scroll values
+    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM ; Sets fixed colors and scroll values
         
-    ; Something fixed color related
+    ; Set darkness level to zero for the overworld.
     LDA.b #$00 : STA.l $7EC017
         
     ; Sets up properties in the event a tagalong shows up
     JSL Tagalong_Init
         
-    ; TODO: investigate this.
+    ; TODO: Investigate this.
+    ; Set animated tiles for area 0x00 and 0x40
     LDA.b $8A : AND.b #$3F : BNE .notForestArea
         LDA.b #$1E
         
@@ -768,8 +780,8 @@ PreOverworld_LoadProperties_LoadMain:
     
     .notForestArea
     
+    ; Cache the overworld mode 0x09
     LDA.b #$09 : STA.w $010C
-        
     JSL Sprite_OverworldReloadAll ;09C499
         
     ; Are we in the dark world? If so, there's no warp vortex there.
@@ -786,12 +798,13 @@ PreOverworld_LoadProperties_LoadMain:
     
     .notBlindGirl
     
-    STZ.b $6C
-    STZ.b $3A
-    STZ.b $3C
-    STZ.b $50
-    STZ.b $5E
-    STZ.w $0351
+    ; Reset player variables
+    STZ.b $6C   ; In doorway flag
+    STZ.b $3A   ; BY Bitfield
+    STZ.b $3C   ; B Button timer 
+    STZ.b $50   ; Link strafe 
+    STZ.b $5E   ; Link speed handler
+    STZ.w $0351 ; Link feet gfx fx
         
     ; Reinitialize many of Link's gameplay variables.
     JSR $8B0C ; $010B0C IN ROM
@@ -811,16 +824,16 @@ PreOverworld_LoadProperties_LoadMain:
         
     LDA.b #$00 : STA.l $7EC005
         
-    STZ.w $046C
-    STZ.b $EE
-    STZ.w $0476
+    STZ.w $046C ; Collision BG1 flag
+    STZ.b $EE   ; Reset Link layer to BG2
+    STZ.w $0476 ; Another layer flag
         
-    INC.b $11
-    INC.b $16
+    INC.b $11   ; SCAWFUL We should verify what submodule this is moving to
+    INC.b $16   ; NMI HUD Update flag
         
     STZ.w $0402 : STZ.w $0403
 
-    ; Alternate entry point.
+    ; Vanilla alternate entry point. Called in 4 different locations all of which are overwritten above.
     .LoadMusicIfNeeded
 
     LDA.w $0136 : BEQ .no_music_load_needed
@@ -941,9 +954,9 @@ Func028632:
     
     JSL DecompOwAnimatedTiles ; $5394 IN ROM
         
-    LDA.b $11 : LSR A : TAX
+    LDA.b $11 : LSR A : TAX ; SCAWFUL Verify the submodule ID being manipulated here
         
-    LDA.l $0285E2, X : STA.w $0AA3
+    LDA.l $0285E2, X : STA.w $0AA3 ; SCAWFUL Spriteset1 $0AA3 is being modified, let's verify the table
         
     LDA.l $0285F3, X : PHA
         
@@ -967,8 +980,8 @@ Func028632:
     
     .BRANCH_4
     
-    JSR $C65F   ; $01465F IN ROM
-    JSL $0BFE70 ; $05FE70 IN ROM
+    JSR Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
+    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
         
     LDA.l $8A : CMP.b #$80 : BCC .BRANCH_5
         JSL Palette_SetOwBgColor_Long ; $075618 IN ROM
@@ -1017,11 +1030,8 @@ Func029AA6:
     LDY.w #$8C4C
         
     ; TODO: Wtf why is this 0x00?
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X
-
     ; Check for LW death mountain. 
-    CMP.w #$0095 : BEQ .mountain
+    JSL ReadOverlayArray : CMP.w #$0095 : BEQ .mountain
         LDX.w #$4A26 : LDY.w #$874A
         
         ; Check for DW death mountain. 
@@ -1063,7 +1073,7 @@ if !Func02AF58 = 1
 ; This also does not change the overlay for under the bridge because it shares
 ; an area with the master sword.
 org $02AF58 ; $012F58
-Func02AF58:
+CustomOverworld_LoadSubscreenOverlay_PostInit:
 {
     SEP #$20 ; Set A in 8bit mode
 
@@ -1094,8 +1104,7 @@ Func02AF58:
             LDA.b $A0 : CMP.w #$0180 : BNE .notMasterSwordArea
                 ; If the Master sword is retrieved, don't do the mist overlay.
                 LDA.l $7EF300 : AND.w #$0040 : BNE .masterSwordRecieved
-                    LDA.b $8A : ASL : TAX
-                    LDA.l Pool_OverlayTable, X : TAX
+                    JSL ReadOverlayArray : TAX
 
                     .loadOverlayShortcut
 
@@ -1127,9 +1136,9 @@ Func02AF58:
                         
                     SEP #$30 ; Set A, X, and Y in 8bit mode.
                         
-                    STZ.b $1D
+                    STZ.b $1D ; Clear TSQ PPU Register, to be handled in NMI.
                             
-                    INC.b $11
+                    INC.b $11 ; SCAWFUL Verify the submodule we are moving to
                             
                     RTS
         
@@ -1138,8 +1147,7 @@ Func02AF58:
 
     REP #$20 ; Set A in 16bit mode
 
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X : TAX
+    JSL ReadOverlayArray : TAX
     
     LDA.b $8A : BNE .notForest
         ; Check if we have the master sword.
@@ -1194,9 +1202,9 @@ Func02AF58:
     STY.b $84
         
     STX.b $8A : STX.b $8C
-        
+
+    ; Overworld map16 buffer manipulation during scrolling.
     LDA.b $84 : SEC : SBC.w #$0400 : AND.w #$0F80 : ASL A : XBA : STA.b $88
-        
     LDA.b $84 : SEC : SBC.w #$0010 : AND.w #$003E : LSR A : STA.b $86
         
     STZ.w $0418 : STZ.w $0410 : STZ.w $0416
@@ -1339,7 +1347,7 @@ Func02B2D4:
 
     ; In vanilla a check for the overlay is done here but we don't need
     ; it at all. It is handled in Func02B3A1 later on.
-    ;JSL EnableSubScreenCheck
+    ;JSL EnableSubScreenCheckForPyramid
 
     RTL
 }
@@ -1356,12 +1364,11 @@ db $1D, $6B
 endif
 
 pullpc
-EnableSubScreenCheck:
+EnableSubScreenCheckForPyramid:
 {
     REP #$20 ; Set A in 16bit mode
 
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X
+    JSL ReadOverlayArray
         
     CMP.w #$0096 : BNE .notPyramidOrCastle
         SEP #$20 ; Set A in 8bit mode
@@ -1383,7 +1390,7 @@ if !Func02B3A1 = 1
 org $02B3A1 ; $0133A1
 Func02B3A1:
 {
-    JSL EnableSubScreenCheck
+    JSL EnableSubScreenCheckForPyramid
     
     REP #$20 ; Set A in 16bit mode.
         
@@ -1405,8 +1412,7 @@ Func02B3A1:
     ; Also set the background color to white.
     STA.l $7EC500
 
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X
+    JSL ReadOverlayArray
         
     ; This sets the color to transparent so that we don't see an additional
     ; white layer on top of the pyramid bg.
@@ -1419,8 +1425,8 @@ Func02B3A1:
         
     JSL Sprite_ResetAll
     JSL Sprite_OverworldReloadAll
-    JSL $07B107 ; $03B107 IN ROM
-    JSR $8B0C   ; $010B0C IN ROM
+    JSL Link_ItemReset_FromOverworldThings ; $03B107 IN ROM
+    JSR DeleteCertainAncillaeStopDashing ; $010B0C IN ROM
         
     LDA.b #$14 : STA.b $5D
         
@@ -1565,9 +1571,7 @@ ReadOverlayArray2:
     ; A is already 16 bit here.
     REP #$10 ; Set X and Y in 16bit mode.
 
-    LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X
-    TAY
+    JSL ReadOverlayArray : TAY
 
     SEP #$10 ; Set X and Y in 8bit mode.
 
@@ -1598,16 +1602,17 @@ Overworld_LoadAreaPalettes:
     
     ; $0AB3 = 0 - LW 1 - DW, 2 - LW death mountain, 3 - DW death mountain, 4 - triforce room
     STA.w $0AB3
-        
+
+    ; Reset pal buffer high byte
     STZ.w $0AA9
         
-    JSL Palette_MainSpr ; $0DEC9E IN ROM; load SP1 through SP4.
-    JSL Palette_MiscSpr ; $0DED6E IN ROM; load SP0 (2nd half) and SP6 (2nd half).
-    JSL Palette_SpriteAux1 ; $0DECC5 IN ROM; load SP5 (1st half).
-    JSL Palette_SpriteAux2 ; $0DECE4 IN ROM; load SP6 (1st half).
-    JSL Palette_Sword ; $0DED03 IN ROM; load SP5 (2nd half, 1st 3 colors), which is the sword palette.
-    JSL Palette_Shield ; $0DED29 IN ROM; load SP5 (2nd half, next 4 colors), which is the shield.
-    JSL Palette_ArmorAndGloves ; $0DEDF9 IN ROM; load SP7 (full) Link's whole palette, including Armor.
+    JSL Palette_MainSpr        ; $0DEC9E IN ROM load SP1 through SP4.
+    JSL Palette_MiscSpr        ; $0DED6E IN ROM load SP0 (2nd half) and SP6 (2nd half).
+    JSL Palette_SpriteAux1     ; $0DECC5 IN ROM load SP5 (1st half).
+    JSL Palette_SpriteAux2     ; $0DECE4 IN ROM load SP6 (1st half).
+    JSL Palette_Sword          ; $0DED03 IN ROM load SP5 (2nd half, 1st 3 colors), which is the sword palette.
+    JSL Palette_Shield         ; $0DED29 IN ROM load SP5 (2nd half, next 4 colors), which is the shield.
+    JSL Palette_ArmorAndGloves ; $0DEDF9 IN ROM load SP7 (full) Link's whole palette, including Armor.
         
     LDX.b #$01
         
@@ -1618,10 +1623,11 @@ Overworld_LoadAreaPalettes:
     
     .lightWorld2
     
+    ; Reset pal buffer0
     STX.w $0AAC
         
-    JSL Palette_SpriteAux3 ; $0DEC77 IN ROM; load SP0 (first half) (or SP7 (first half)).
-    JSL Palette_Hud ; $0DEE52 IN ROM; load BP0 and BP1 (first halves).
+    JSL Palette_SpriteAux3      ; $0DEC77 IN ROM; load SP0 (first half) (or SP7 (first half)).
+    JSL Palette_Hud             ; $0DEE52 IN ROM; load BP0 and BP1 (first halves).
     JSL Palette_OverworldBgMain ; $0DEEC7 IN ROM; load BP2 through BP5 (first halves).
         
     RTS
@@ -2076,14 +2082,14 @@ Func0AB8F5:
     
     ; From this point on it is the vanilla function.
     JSL DecompOwAnimatedTiles ; $005394 IN ROM
-    JSL $0BFE70 ; $05FE70 IN ROM
+    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
         
     STZ.w $0AA9
     STZ.w $0AB2
         
     JSL InitTilesets
         
-    INC.w $0200
+    INC.w $0200 ; SCAWFUL Verify the interface submodule ID being used here. Provides context on where in the jump table we're at.
         
     STZ.b $B2
         
@@ -2225,10 +2231,8 @@ Overworld_LoadBGColorAndSubscreenOverlay:
     
     .BRANCH_11
     
-    LDA.b $8A : ASL : TAX
-
     ; Check for the pyramid BG.
-    LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BNE .subscreenOnAndReturn
+    JSL ReadOverlayArray : CMP.w #$0096 : BNE .subscreenOnAndReturn
         ; Synchronize Y scrolls on BG0 and BG1. Same for X scrolls
         LDA.b $E8 : STA.b $E6
         LDA.b $E2 : STA.b $E0
@@ -2322,6 +2326,7 @@ ReplaceBGColor:
     RTL
 }
 
+; TODO: Doccument this better and fiture out what it actually does.
 NeedSomeSpaceForWhateverThisIs:
 {
     LDA.b $E2 : SEC : SBC.w #$0778 : LSR A : TAY : AND.w #$4000 : BEQ .BRANCH_7
@@ -2428,8 +2433,7 @@ Func0ED8AE:
         LDY.w #$894F
         
         ; Lost woods and skull woods.
-        LDA.b $8A : ASL : TAX
-        LDA.l Pool_OverlayTable, X : CMP.w #$009D : BEQ .noSpecialColor
+        JSL ReadOverlayArray : CMP.w #$009D : BEQ .noSpecialColor
             CMP.w #$0040 : BEQ .noSpecialColor
                 ; Pyramid area.
                 CMP.w #$0096 : BEQ .specialColor
