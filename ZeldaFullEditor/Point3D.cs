@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     public class Point3D
     {
@@ -15,6 +9,16 @@ namespace ZeldaFullEditor
             this.x = x;
             this.y = y;
             this.z = z;
+        }
+
+        public class Face3D
+        {
+            public sbyte[] vertex;
+
+            public Face3D(sbyte[] vertex)
+            {
+                this.vertex = vertex;
+            }
         }
     }
 }

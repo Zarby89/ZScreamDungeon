@@ -1,53 +1,138 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     A data class containing all the info for oveworld entrances.
+    /// </summary>
     [Serializable]
-    public class EntranceOWEditor
+    public class EntranceOW
     {
-        public int x;
-        public int y;
-        public ushort mapPos;
-        public byte entranceId;
-        public short mapId;
-        public bool isHole = false;
-        public bool deleted = false;
+        /// <summary>
+        ///     Gets or sets the x position of the entrance.
+        /// </summary>
+        public int X { get; set; }
 
-        //mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
-        public EntranceOWEditor(int x, int y, byte entranceId, short mapId, ushort mapPos)
+        /// <summary>
+        ///     Gets or sets the y position of the entrance.
+        /// </summary>
+        public int Y { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the map position of the entrance.
+        /// </summary>
+        public ushort MapPos { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the entrance ID.
+        /// </summary>
+        public byte EntranceID { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the area x position of the entrance.
+        /// </summary>
+        public byte AreaX { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the area y position of the entrance.
+        /// </summary>
+        public byte AreaY { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the map ID the entrance is in.
+        /// </summary>
+        public short MapID { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether gets or sets whether the entrance is a hole or not.
+        /// </summary>
+        public bool IsHole { get; set; } = false;
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether gets or sets whether the entrance is deleted or not.
+        /// </summary>
+        public bool Deleted { get; set; } = false;
+
+        /// <summary>
+        ///     Gets or sets the unique ID of the entrance.
+        /// </summary>
+        public int UniqueID { get; set; } = 0;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EntranceOW"/> class.
+        ///     mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld.
+        /// </summary>
+        /// <param name="x"> The x position. </param>
+        /// <param name="y"> The y position. </param>
+        /// <param name="entranceId"> The entrance ID. </param>
+        /// <param name="mapId"> The map ID. </param>
+        /// <param name="mapPos"> The map position. </param>
+        /// <param name="hole"> Whether the entrance is a hole or not. </param>
+        public EntranceOW(int x, int y, byte entranceId, short mapId, ushort mapPos, bool hole)
         {
-            this.x = x;
-            this.y = y;
-            this.entranceId = entranceId;
-            this.mapId = mapId;
-            this.mapPos = mapPos;
+            this.X = x;
+            this.Y = y;
+            this.EntranceID = entranceId;
+            this.MapID = mapId;
+            this.MapPos = mapPos;
+
+            int mapX = mapId - ((mapId / 8) * 8);
+            int mapY = mapId / 8;
+
+            this.AreaX = (byte)(Math.Abs(x - (mapX * 512)) / 16);
+            this.AreaY = (byte)(Math.Abs(y - (mapY * 512)) / 16);
+
+            this.IsHole = hole;
+
+            this.UniqueID = ROM.uniqueEntranceID;
+            ROM.uniqueEntranceID += 1;
         }
 
-        public EntranceOWEditor Copy()
+        /// <summary>
+        ///     Creats a new copy of this entrance and returns it.
+        /// </summary>
+        /// <returns> A copy of this entrance. </returns>
+        public EntranceOW Copy()
         {
-            return new EntranceOWEditor(this.x,this.y,this.entranceId,this.mapId,this.mapPos);
+            return new EntranceOW(this.X, this.Y, this.EntranceID, this.MapID, this.MapPos, this.IsHole);
         }
 
-        public void updateMapStuff(short mapId)
+        /// <summary>
+        ///     Updates certain entrance properties based on the given area map ID.
+        /// </summary>
+        /// <param name="mapID"> The ID of the area map. </param>
+        public void UpdateMapStuff(short mapID)
         {
-            this.mapId = mapId;
+            this.MapID = mapID;
 
-            if (mapId >= 64)
+            if (mapID >= 64)
             {
-                mapId -= 64;
+                mapID -= 64;
             }
-            int mx = (mapId - ((mapId / 8) * 8));
-            int my = ((mapId / 8));
 
-            byte xx = (byte)((x - (mx * 512)) / 16);
-            byte yy = (byte)((y - (my * 512)) / 16);
+            int mapX = mapID - ((mapID / 8) * 8);
+            int mapY = mapID / 8;
 
-            mapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
-            //Console.WriteLine(xx + ", " +yy+ ", " +mapPos);
+            this.AreaX = (byte)(Math.Abs(this.X - (mapX * 512)) / 16);
+            this.AreaY = (byte)(Math.Abs(this.Y - (mapY * 512)) / 16);
+
+            this.MapPos = (ushort)(((this.AreaY << 6) | (this.AreaX & 0x3F)) << 1);
+            /*
+                int mx = mapId - ((mapId / 8) * 8);
+                int my = mapId / 8;
+                byte xx = (byte)((this.X - (mx * 512)) / 16);
+                byte yy = (byte)((this.Y - (my * 512)) / 16);
+                Console.WriteLine(xx + ", " + yy + ", " + mapPos);
+            */
+
+            if (this.IsHole)
+            {
+                Console.WriteLine("Hole:      " + this.EntranceID + " MapId: " + mapID.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
+            }
+            else
+            {
+                Console.WriteLine("Entrance:  " + this.EntranceID + " MapId: " + mapID.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
+            }
         }
     }
 }

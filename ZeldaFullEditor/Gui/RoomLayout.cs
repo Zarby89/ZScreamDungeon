@@ -18,10 +18,12 @@ namespace ZeldaFullEditor
         public RoomLayout(DungeonMain f)
         {
             InitializeComponent();
-            /*foreach (string s in Directory.EnumerateDirectories("Layout\\"))
+            /*
+            foreach (string s in Directory.EnumerateDirectories("Layout\\"))
             {
                 tabControl1.TabPages.Add(Path.GetFileName(s));
-            }*/
+            }
+            */
 
             scene = new SceneUW(f);
             Controls.Add(scene);
@@ -29,7 +31,7 @@ namespace ZeldaFullEditor
             scene.Location = new Point(176, 23);
             scene.Enabled = false;
         }
-        
+
         private void RoomLayout_Load(object sender, EventArgs e)
         {
             clearRoom();
@@ -58,7 +60,7 @@ namespace ZeldaFullEditor
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             clearRoom();
-            //add layout objects !
+            // Add layout objects !
             string f = (string)listBox1.Items[listBox1.SelectedIndex];
             BinaryReader br = new BinaryReader(new FileStream("Layout\\" + f, FileMode.Open, FileAccess.Read));
 
@@ -71,13 +73,13 @@ namespace ZeldaFullEditor
 
             foreach (SaveObject o in data)
             {
-                if (o.type == typeof(Room_Object))
+                if (o.Type == typeof(Room_Object))
                 {
-                    Room_Object ro = scene.room.addObject(o.tid, (byte)(o.x), (byte)(o.y), o.size, o.layer);
+                    Room_Object ro = scene.room.addObject(o.TileID, o.X, o.Y, o.Size, o.Layer);
                     if (ro != null)
                     {
                         ro.setRoom(scene.room);
-                        ro.options = o.options;
+                        ro.options = o.Options;
                         scene.room.tilesObjects.Add(ro);
                     }
                 }
@@ -91,7 +93,7 @@ namespace ZeldaFullEditor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
     }
 }

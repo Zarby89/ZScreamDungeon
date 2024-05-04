@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     Start program entry point.
+    /// </summary>
     static class Program
     {
-        //var to keep track whether to show the console or not
-        //0 = dont show
-        //5 = show
+        // var to keep track whether to show the console or not.
+        // 0 = dont show.
+        // 5 = show.
         private static int showConsole = 5;
 
         [DllImport("kernel32.dll")]
@@ -20,42 +21,66 @@ namespace ZeldaFullEditor
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+        // All the files required for ZS to function.
+        // The files "debug.asm", "spritesmove.asm" appear in the release but don't actually seem to be used anywhere in the solution.
+        private static string[] requiredFiles = new string[] {
+            "asar.dll",
+            "DefaultNames.txt",
+            "Lidgren.Network.dll",
+            "ScratchPad.dat",
+            "ZSCustomOverworld.asm",
+            "CustomCollision.asm",
+            "newgraves.asm",
+            "ZScream.exe.config"
+        };
+
         /// <summary>
-        /// The main entry point for the application.
+        ///		The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(String[] args)
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //look for Command Line Arguments
-            if(args != null)
+            // Look for Command Line Arguments.
+            if (args != null)
             {
-                //loop through them all
-                foreach (String arg in args)
+                // Loop through them all.
+                foreach (string arg in args)
                 {
-                    //look for hide console arg
-                    if(arg.Equals("-hideConsole"))
+                    // Look for hide console arg.
+                    if (arg.Equals("-hideConsole"))
                     {
                         showConsole = 0;
                     }
 
-                    //look for show console arg
+                    // Look for show console arg.
                     if (arg.Equals("-showConsole"))
                     {
                         showConsole = 5;
                     }
 
-                    //TODO: add other args
+                    // TODO: add other args.
                 }
             }
 
-            //Hide console
+            // Hide console.
             var handle = GetConsoleWindow();
             ShowWindow(handle, showConsole);
 
-            //run the app
+            // Make sure all the other needed files are here so the dummies who keep trying to move the .exe will learn.
+            foreach (string file in requiredFiles)
+            {
+                if (!System.IO.File.Exists(file))
+                {
+                    UIText.WarnAboutMissingFile(file);
+
+                    Environment.Exit(1);
+                }
+            }
+
+            // Run the app.
             Application.Run(new DungeonMain());
         }
     }

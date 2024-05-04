@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -25,10 +26,18 @@ namespace ZeldaFullEditor.Gui
         Color[][] SwordsPal = new Color[4][];
         Color[][] ArmorsPal = new Color[5][];
 
+        Color[] overworld_GrassPal = new Color[3];
+        Color[][] object3D_Pal = new Color[2][];
+        Color[][] overworld_Maps_Pal = new Color[2][];
+
         Color tempColor;
         int tempIndex = -1;
 
         ColorDialog cd = new ColorDialog();
+
+        DungeonMain mainForm;
+        Color[] selectedPalette = null;
+        int selectedX = 16;
 
         public PaletteEditor(DungeonMain mainForm)
         {
@@ -36,8 +45,8 @@ namespace ZeldaFullEditor.Gui
             this.mainForm = mainForm;
 
             CreateTempPalettes();
-            //Create temp of all palettes
-            for (int i = 0;i<2;i++)
+            // Create temp of all palettes
+            for (int i = 0; i < 2; i++)
             {
                 palettesTreeView.Nodes["HudPal"].Nodes.Add("Hud " + i.ToString("D2"));
             }
@@ -96,11 +105,18 @@ namespace ZeldaFullEditor.Gui
             {
                 palettesTreeView.Nodes["ArmorsPal"].Nodes.Add("Armors " + i.ToString("D2"));
             }
+
+            palettesTreeView.Nodes["OverworldGrassPal"].Nodes.Add("Overworld Grass");
+
+            palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Triforce");
+            palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Crystal");
+
+            for (int i = 0; i < 2; i++)
+            {
+                palettesTreeView.Nodes["OverworldMapsPal"].Nodes.Add("Overworld Maps  " + i.ToString("D2"));
+            }
         }
 
-        DungeonMain mainForm;
-        Color[] selectedPalette = null;
-        int selectedX = 16;
         private void PaletteEditor_VisibleChanged(object sender, EventArgs e)
         {
             this.BackColor = Color.FromKnownColor(KnownColor.Control);
@@ -109,18 +125,18 @@ namespace ZeldaFullEditor.Gui
         private void applyButton_Click(object sender, EventArgs e)
         {
             CreateTempPalettes();
-            
-            //Recreate temp of all palettes
+
+            // Recreate temp of all palettes
         }
 
         private void PaletteEditor_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void restoreallButton_Click(object sender, EventArgs e)
         {
-            //Restore temp of all palettes
+            // Restore temp of all palettes
             if (MessageBox.Show("Are you sure you want to restore all palettes " +
                 "to the last applied values?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -133,7 +149,7 @@ namespace ZeldaFullEditor.Gui
             restoreSelected();
             refreshallGfx();
 
-            //Restore the temp selected palette only
+            // Restore the temp selected palette only
         }
 
         private void refreshallGfx()
@@ -155,58 +171,73 @@ namespace ZeldaFullEditor.Gui
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
             {
-                selectedPalette = Palettes.overworld_MainPalettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.OverworldMainPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAuxPal"])
             {
-                selectedPalette = Palettes.overworld_AuxPalettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.OverworldAuxPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAnimatedPal"])
             {
-                selectedPalette = Palettes.overworld_AnimatedPalettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.OverworldAnimatedPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["DungeonMainPal"])
             {
-                selectedPalette = Palettes.dungeonsMain_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.DungeonsMainPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 15;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["GlobalSpritesPal"])
             {
-                selectedPalette = Palettes.globalSprite_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.GlobalSpritePalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 15;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux1Pal"])
             {
-                selectedPalette = Palettes.spritesAux1_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.SpritesAux1Palettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux2Pal"])
             {
-                selectedPalette = Palettes.spritesAux2_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.SpritesAux2Palettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux3Pal"])
             {
-                selectedPalette = Palettes.spritesAux3_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.SpritesAux3Palettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ShieldsPal"])
             {
-                selectedPalette = Palettes.shields_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.ShieldsPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 4;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SwordsPal"])
             {
-                selectedPalette = Palettes.swords_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.SwordsPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 3;
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ArmorsPal"])
             {
-                selectedPalette = Palettes.armors_Palettes[palettesTreeView.SelectedNode.Index];
+                selectedPalette = Palettes.ArmorPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 15;
+            }
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldGrassPal"])
+            {
+                selectedPalette = Palettes.OverworldGrassPalettes;
+                selectedX = 3;
+            }
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["Objects3DPal"])
+            {
+                selectedPalette = Palettes.Object3DPalettes[palettesTreeView.SelectedNode.Index];
+                selectedX = 8;
+            }
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMapsPal"])
+            {
+                selectedPalette = Palettes.OverworldMiniMapPalettes[palettesTreeView.SelectedNode.Index];
+                selectedX = 16;
             }
             else
             {
@@ -227,79 +258,93 @@ namespace ZeldaFullEditor.Gui
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
             {
-                for (int i = 0; i < Palettes.overworld_MainPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.OverworldMainPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.overworld_MainPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldMainPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.OverworldMainPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldMainPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAuxPal"])
             {
-                for (int i = 0; i < Palettes.overworld_AuxPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.OverworldAuxPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.overworld_AuxPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldAuxPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.OverworldAuxPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldAuxPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAnimatedPal"])
             {
-                for (int i = 0; i < Palettes.overworld_AnimatedPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.OverworldAnimatedPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.overworld_AnimatedPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldAnimatedPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.OverworldAnimatedPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldAnimatedPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["DungeonMainPal"])
             {
-                for (int i = 0; i < Palettes.dungeonsMain_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.DungeonsMainPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.dungeonsMain_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(DungeonMainPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.DungeonsMainPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(DungeonMainPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["GlobalSpritesPal"])
             {
-                for (int i = 0; i < Palettes.globalSprite_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.GlobalSpritePalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.globalSprite_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(GlobalSpritesPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.GlobalSpritePalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(GlobalSpritesPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux1Pal"])
             {
-                for (int i = 0; i < Palettes.spritesAux1_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.SpritesAux1Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.spritesAux1_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux1Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.SpritesAux1Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux1Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux2Pal"])
             {
-                for (int i = 0; i < Palettes.spritesAux2_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.SpritesAux2Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.spritesAux2_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux2Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.SpritesAux2Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux2Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux3Pal"])
             {
-                for (int i = 0; i < Palettes.spritesAux3_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.SpritesAux3Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.spritesAux3_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux3Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.SpritesAux3Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux3Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ShieldsPal"])
             {
-                for (int i = 0; i < Palettes.shields_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.ShieldsPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.shields_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(ShieldsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.ShieldsPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(ShieldsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SwordsPal"])
             {
-                for (int i = 0; i < Palettes.swords_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.SwordsPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.swords_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SwordsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.SwordsPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SwordsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ArmorsPal"])
             {
-                for (int i = 0; i < Palettes.armors_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                for (int i = 0; i < Palettes.ArmorPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
-                    Palettes.armors_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(ArmorsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                    Palettes.ArmorPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(ArmorsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                }
+            }
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["object3D_Pal"])
+            {
+                for (int i = 0; i < Palettes.Object3DPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                {
+                    Palettes.Object3DPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(object3D_Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+                }
+            }
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["overworld_Maps_Pal"])
+            {
+                for (int i = 0; i < Palettes.OverworldMiniMapPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
+                {
+                    Palettes.OverworldMiniMapPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(overworld_Maps_Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
 
@@ -331,105 +376,122 @@ namespace ZeldaFullEditor.Gui
                     HudPal[i][j] = Color.FromArgb(Palettes.HudPalettes[i][j].ToArgb());
                 }
             }
-            
+
             for (int i = 0; i < 6; i++)
             {
-                OverworldMainPal[i] = new Color[Palettes.overworld_MainPalettes[i].Length];
-                for (int j = 0; j < Palettes.overworld_MainPalettes[i].Length; j++)
+                OverworldMainPal[i] = new Color[Palettes.OverworldMainPalettes[i].Length];
+                for (int j = 0; j < Palettes.OverworldMainPalettes[i].Length; j++)
                 {
-                    OverworldMainPal[i][j] = Color.FromArgb(Palettes.overworld_MainPalettes[i][j].ToArgb());
+                    OverworldMainPal[i][j] = Color.FromArgb(Palettes.OverworldMainPalettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 20; i++)
             {
-                OverworldAuxPal[i] = new Color[Palettes.overworld_AuxPalettes[i].Length];
-                for (int j = 0; j < Palettes.overworld_AuxPalettes[i].Length; j++)
+                OverworldAuxPal[i] = new Color[Palettes.OverworldAuxPalettes[i].Length];
+                for (int j = 0; j < Palettes.OverworldAuxPalettes[i].Length; j++)
                 {
-                    OverworldAuxPal[i][j] = Color.FromArgb(Palettes.overworld_AuxPalettes[i][j].ToArgb());
+                    OverworldAuxPal[i][j] = Color.FromArgb(Palettes.OverworldAuxPalettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 14; i++)
             {
-                OverworldAnimatedPal[i] = new Color[Palettes.overworld_AnimatedPalettes[i].Length];
-                for (int j = 0; j < Palettes.overworld_AnimatedPalettes[i].Length; j++)
+                OverworldAnimatedPal[i] = new Color[Palettes.OverworldAnimatedPalettes[i].Length];
+                for (int j = 0; j < Palettes.OverworldAnimatedPalettes[i].Length; j++)
                 {
-                    OverworldAnimatedPal[i][j] = Color.FromArgb(Palettes.overworld_AnimatedPalettes[i][j].ToArgb());
+                    OverworldAnimatedPal[i][j] = Color.FromArgb(Palettes.OverworldAnimatedPalettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 20; i++)
             {
 
-                DungeonMainPal[i] = new Color[Palettes.dungeonsMain_Palettes[i].Length];
-                for (int j = 0; j < Palettes.dungeonsMain_Palettes[i].Length; j++)
+                DungeonMainPal[i] = new Color[Palettes.DungeonsMainPalettes[i].Length];
+                for (int j = 0; j < Palettes.DungeonsMainPalettes[i].Length; j++)
                 {
-                    DungeonMainPal[i][j] = Color.FromArgb(Palettes.dungeonsMain_Palettes[i][j].ToArgb());
+                    DungeonMainPal[i][j] = Color.FromArgb(Palettes.DungeonsMainPalettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 2; i++)
             {
-                GlobalSpritesPal[i] = new Color[Palettes.globalSprite_Palettes[i].Length];
-                for (int j = 0; j < Palettes.globalSprite_Palettes[i].Length; j++)
+                GlobalSpritesPal[i] = new Color[Palettes.GlobalSpritePalettes[i].Length];
+                for (int j = 0; j < Palettes.GlobalSpritePalettes[i].Length; j++)
                 {
-                    GlobalSpritesPal[i][j] = Color.FromArgb(Palettes.globalSprite_Palettes[i][j].ToArgb());
+                    GlobalSpritesPal[i][j] = Color.FromArgb(Palettes.GlobalSpritePalettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 12; i++)
             {
-                SpritesAux1Pal[i] = new Color[Palettes.spritesAux1_Palettes[i].Length];
-                for (int j = 0; j < Palettes.spritesAux1_Palettes[i].Length; j++)
+                SpritesAux1Pal[i] = new Color[Palettes.SpritesAux1Palettes[i].Length];
+                for (int j = 0; j < Palettes.SpritesAux1Palettes[i].Length; j++)
                 {
-                    SpritesAux1Pal[i][j] = Color.FromArgb(Palettes.spritesAux1_Palettes[i][j].ToArgb());
+                    SpritesAux1Pal[i][j] = Color.FromArgb(Palettes.SpritesAux1Palettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 11; i++)
             {
-                SpritesAux2Pal[i] = new Color[Palettes.spritesAux2_Palettes[i].Length];
-                for (int j = 0; j < Palettes.spritesAux2_Palettes[i].Length; j++)
+                SpritesAux2Pal[i] = new Color[Palettes.SpritesAux2Palettes[i].Length];
+                for (int j = 0; j < Palettes.SpritesAux2Palettes[i].Length; j++)
                 {
-                    SpritesAux2Pal[i][j] = Color.FromArgb(Palettes.spritesAux2_Palettes[i][j].ToArgb());
+                    SpritesAux2Pal[i][j] = Color.FromArgb(Palettes.SpritesAux2Palettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 24; i++)
             {
-                SpritesAux3Pal[i] = new Color[Palettes.spritesAux3_Palettes[i].Length];
-                for (int j = 0; j < Palettes.spritesAux3_Palettes[i].Length; j++)
+                SpritesAux3Pal[i] = new Color[Palettes.SpritesAux3Palettes[i].Length];
+                for (int j = 0; j < Palettes.SpritesAux3Palettes[i].Length; j++)
                 {
-                    SpritesAux3Pal[i][j] = Color.FromArgb(Palettes.spritesAux3_Palettes[i][j].ToArgb());
+                    SpritesAux3Pal[i][j] = Color.FromArgb(Palettes.SpritesAux3Palettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 3; i++)
             {
-
-                ShieldsPal[i] = new Color[Palettes.shields_Palettes[i].Length];
-                for (int j = 0; j < Palettes.shields_Palettes[i].Length; j++)
+                ShieldsPal[i] = new Color[Palettes.ShieldsPalettes[i].Length];
+                for (int j = 0; j < Palettes.ShieldsPalettes[i].Length; j++)
                 {
-                    ShieldsPal[i][j] = Color.FromArgb(Palettes.shields_Palettes[i][j].ToArgb());
+                    ShieldsPal[i][j] = Color.FromArgb(Palettes.ShieldsPalettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 4; i++)
             {
-                SwordsPal[i] = new Color[Palettes.swords_Palettes[i].Length];
-                for (int j = 0; j < Palettes.swords_Palettes[i].Length; j++)
+                SwordsPal[i] = new Color[Palettes.SwordsPalettes[i].Length];
+                for (int j = 0; j < Palettes.SwordsPalettes[i].Length; j++)
                 {
-                    SwordsPal[i][j] = Color.FromArgb(Palettes.swords_Palettes[i][j].ToArgb());
+                    SwordsPal[i][j] = Color.FromArgb(Palettes.SwordsPalettes[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 5; i++)
             {
-                ArmorsPal[i] = new Color[Palettes.armors_Palettes[i].Length];
-                for (int j = 0; j < Palettes.armors_Palettes[i].Length; j++)
+                ArmorsPal[i] = new Color[Palettes.ArmorPalettes[i].Length];
+                for (int j = 0; j < Palettes.ArmorPalettes[i].Length; j++)
                 {
-                    ArmorsPal[i][j] = Color.FromArgb(Palettes.armors_Palettes[i][j].ToArgb());
+                    ArmorsPal[i][j] = Color.FromArgb(Palettes.ArmorPalettes[i][j].ToArgb());
+                }
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                object3D_Pal[i] = new Color[Palettes.Object3DPalettes[i].Length];
+                for (int j = 0; j < Palettes.Object3DPalettes[i].Length; j++)
+                {
+                    object3D_Pal[i][j] = Color.FromArgb(Palettes.Object3DPalettes[i][j].ToArgb());
+                }
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                overworld_Maps_Pal[i] = new Color[Palettes.OverworldMiniMapPalettes[i].Length];
+                for (int j = 0; j < Palettes.OverworldMiniMapPalettes[i].Length; j++)
+                {
+                    overworld_Maps_Pal[i][j] = Color.FromArgb(Palettes.OverworldMiniMapPalettes[i][j].ToArgb());
                 }
             }
         }
@@ -446,100 +508,116 @@ namespace ZeldaFullEditor.Gui
 
             for (int i = 0; i < 6; i++)
             {
-                for (int j = 0; j < Palettes.overworld_MainPalettes[i].Length; j++)
+                for (int j = 0; j < Palettes.OverworldMainPalettes[i].Length; j++)
                 {
-                    Palettes.overworld_MainPalettes[i][j] = Color.FromArgb(OverworldMainPal[i][j].ToArgb());
+                    Palettes.OverworldMainPalettes[i][j] = Color.FromArgb(OverworldMainPal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j < Palettes.overworld_AuxPalettes[i].Length; j++)
+                for (int j = 0; j < Palettes.OverworldAuxPalettes[i].Length; j++)
                 {
-                    Palettes.overworld_AuxPalettes[i][j] = Color.FromArgb(OverworldAuxPal[i][j].ToArgb()); 
+                    Palettes.OverworldAuxPalettes[i][j] = Color.FromArgb(OverworldAuxPal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 14; i++)
             {
-                for (int j = 0; j < Palettes.overworld_AnimatedPalettes[i].Length; j++)
+                for (int j = 0; j < Palettes.OverworldAnimatedPalettes[i].Length; j++)
                 {
-                    Palettes.overworld_AnimatedPalettes[i][j] = Color.FromArgb(OverworldAnimatedPal[i][j].ToArgb());
+                    Palettes.OverworldAnimatedPalettes[i][j] = Color.FromArgb(OverworldAnimatedPal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j < Palettes.dungeonsMain_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.DungeonsMainPalettes[i].Length; j++)
                 {
-                    Palettes.dungeonsMain_Palettes[i][j] = Color.FromArgb(DungeonMainPal[i][j].ToArgb());
+                    Palettes.DungeonsMainPalettes[i][j] = Color.FromArgb(DungeonMainPal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 2; i++)
             {
-                for (int j = 0; j < Palettes.globalSprite_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.GlobalSpritePalettes[i].Length; j++)
                 {
-                    Palettes.globalSprite_Palettes[i][j] = Color.FromArgb(GlobalSpritesPal[i][j].ToArgb());
+                    Palettes.GlobalSpritePalettes[i][j] = Color.FromArgb(GlobalSpritesPal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 12; i++)
             {
-                for (int j = 0; j < Palettes.spritesAux1_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.SpritesAux1Palettes[i].Length; j++)
                 {
-                    Palettes.spritesAux1_Palettes[i][j] =  Color.FromArgb(SpritesAux1Pal[i][j].ToArgb());
+                    Palettes.SpritesAux1Palettes[i][j] = Color.FromArgb(SpritesAux1Pal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 11; i++)
             {
-                for (int j = 0; j < Palettes.spritesAux2_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.SpritesAux2Palettes[i].Length; j++)
                 {
-                    Palettes.spritesAux2_Palettes[i][j] = Color.FromArgb(SpritesAux2Pal[i][j].ToArgb());
+                    Palettes.SpritesAux2Palettes[i][j] = Color.FromArgb(SpritesAux2Pal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 24; i++)
             {
-                for (int j = 0; j < Palettes.spritesAux3_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.SpritesAux3Palettes[i].Length; j++)
                 {
-                    Palettes.spritesAux3_Palettes[i][j] = Color.FromArgb(SpritesAux3Pal[i][j].ToArgb());
+                    Palettes.SpritesAux3Palettes[i][j] = Color.FromArgb(SpritesAux3Pal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 3; i++)
             {
-                for (int j = 0; j < Palettes.shields_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.ShieldsPalettes[i].Length; j++)
                 {
-                    Palettes.shields_Palettes[i][j] = Color.FromArgb(ShieldsPal[i][j].ToArgb()); 
+                    Palettes.ShieldsPalettes[i][j] = Color.FromArgb(ShieldsPal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < Palettes.swords_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.SwordsPalettes[i].Length; j++)
                 {
-                    Palettes.swords_Palettes[i][j] = Color.FromArgb(SwordsPal[i][j].ToArgb()); 
+                    Palettes.SwordsPalettes[i][j] = Color.FromArgb(SwordsPal[i][j].ToArgb());
                 }
             }
 
             for (int i = 0; i < 5; i++)
             {
-                for (int j = 0; j < Palettes.armors_Palettes[i].Length; j++)
+                for (int j = 0; j < Palettes.ArmorPalettes[i].Length; j++)
                 {
-                    Palettes.armors_Palettes[i][j] = Color.FromArgb(ArmorsPal[i][j].ToArgb());
+                    Palettes.ArmorPalettes[i][j] = Color.FromArgb(ArmorsPal[i][j].ToArgb());
+                }
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < Palettes.Object3DPalettes[i].Length; j++)
+                {
+                    Palettes.Object3DPalettes[i][j] = Color.FromArgb(object3D_Pal[i][j].ToArgb());
+                }
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < Palettes.OverworldMiniMapPalettes[i].Length; j++)
+                {
+                    Palettes.OverworldMiniMapPalettes[i][j] = Color.FromArgb(overworld_Maps_Pal[i][j].ToArgb());
                 }
             }
 
             refreshallGfx();
         }
-        
+
         private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                if ((e.X / 16) < selectedX && ((e.Y/16)*selectedX) < selectedPalette.Length)
+                if ((e.X / 16) < selectedX && ((e.Y / 16) * selectedX) < selectedPalette.Length)
                 {
                     int cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
                     tempIndex = cindex;
@@ -548,8 +626,7 @@ namespace ZeldaFullEditor.Gui
 
                     for (int i = 0; i < 159; i++)
                     {
-                        mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
-
+                        mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
                     }
 
                     mainForm.overworldEditor.scene.Refresh();
@@ -565,8 +642,7 @@ namespace ZeldaFullEditor.Gui
                 selectedPalette[tempIndex] = tempColor;
                 for (int i = 0; i < 159; i++)
                 {
-                    mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
-
+                    mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
                 }
 
                 mainForm.overworldEditor.scene.Refresh();
@@ -574,7 +650,7 @@ namespace ZeldaFullEditor.Gui
                 tempIndex = -1;
             }
         }
-        
+
         private void palettePicturebox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int cindex = -1;
@@ -593,16 +669,417 @@ namespace ZeldaFullEditor.Gui
 
                 for (int i = 0; i < 159; i++)
                 {
-                    mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+                    mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
                 }
 
                 refreshallGfx();
             }
         }
 
-        private void palettePicturebox_Click(object sender, EventArgs e)
+        // Is called when the export palettes button is clicked, writes a .zpd file with all the palette colors.
+        private void exportAllPalettes(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3415 total colors * 4 for 4 bytes
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = UIText.ExportedPaletteDataType;
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+
+                    int count = 0;
+
+                    foreach (Color[] _palette in Palettes.HudPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.OverworldMainPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.OverworldAuxPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.OverworldAnimatedPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color _color in Palettes.OverworldGrassPalettes)
+                    {
+                        byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                        for (int i = buffer.Length - 1; i >= 0; i--)
+                        {
+                            colorArrayData[count] = buffer[i];
+                            count++;
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.GlobalSpritePalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.ArmorPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.SwordsPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.SpritesAux1Palettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.SpritesAux2Palettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.SpritesAux3Palettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.ShieldsPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.DungeonsMainPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.Object3DPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+                    foreach (Color[] _palette in Palettes.OverworldMiniMapPalettes)
+                    {
+                        foreach (Color _color in _palette)
+                        {
+                            byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+                            for (int i = buffer.Length - 1; i >= 0; i--)
+                            {
+                                colorArrayData[count] = buffer[i];
+                                count++;
+                            }
+                        }
+                    }
+
+                    Console.WriteLine("Total color count: " + count);
+
+                    fileStreamMap.Write(colorArrayData, 0, colorArrayData.Length);
+                    fileStreamMap.Close();
+                }
+            }
+        }
+
+        private void importAllPalettes(object sender, EventArgs e)
+        {
+
+            byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3415 total colors * 4 for 4 bytes
+            using (OpenFileDialog sfd = new OpenFileDialog())
+            {
+                sfd.Filter = UIText.ExportedPaletteDataType;
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+                    fileStreamMap.Read(colorArrayData, 0, colorArrayData.Length);
+
+                    int count = 0;
+
+                    for (int i = 0; i < Palettes.HudPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.HudPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.HudPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.OverworldMainPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.OverworldMainPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.OverworldMainPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.OverworldAuxPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.OverworldAuxPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.OverworldAuxPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.OverworldAnimatedPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.OverworldAnimatedPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.OverworldAnimatedPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.OverworldGrassPalettes.Length; i++)
+                    {
+                        byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                        Palettes.OverworldGrassPalettes[i] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                        count += 4;
+                    }
+                    for (int i = 0; i < Palettes.GlobalSpritePalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.GlobalSpritePalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.GlobalSpritePalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.ArmorPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.ArmorPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.ArmorPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.SwordsPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.SwordsPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.SwordsPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.SpritesAux1Palettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.SpritesAux1Palettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.SpritesAux1Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.SpritesAux2Palettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.SpritesAux2Palettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.SpritesAux2Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.SpritesAux3Palettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.SpritesAux3Palettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.SpritesAux3Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.ShieldsPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.ShieldsPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.ShieldsPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.DungeonsMainPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.DungeonsMainPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.DungeonsMainPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.Object3DPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.Object3DPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.Object3DPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+                    for (int i = 0; i < Palettes.OverworldMiniMapPalettes.Length; i++)
+                    {
+                        for (int j = 0; j < Palettes.OverworldMiniMapPalettes[i].Length; j++)
+                        {
+                            byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+                            Palettes.OverworldMiniMapPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            count += 4;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog fd = new SaveFileDialog();
+            byte[] selectedcolorbytes = new byte[selectedPalette.Length*3];
+            int i = 0;
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(fd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+                foreach(Color c in selectedPalette)
+                {
+                    selectedcolorbytes[i] = c.R;
+                    selectedcolorbytes[i+1] = c.G;
+                    selectedcolorbytes[i+2] = c.B;
+                    i += 3;
+                }
+                fs.Write(selectedcolorbytes,0, selectedcolorbytes.Length);
+                fs.Close();
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fd = new OpenFileDialog();
+            byte[] selectedcolorbytes = new byte[selectedPalette.Length * 3];
+            int i = 0;
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(fd.FileName, FileMode.Open, FileAccess.Read);
+                fs.Read(selectedcolorbytes, 0, selectedcolorbytes.Length);
+                foreach (Color c in selectedPalette)
+                {
+                    selectedPalette[i/3] = Color.FromArgb(selectedcolorbytes[i], selectedcolorbytes[i + 1], selectedcolorbytes[i + 2]);
+                    i += 3;
+                }
+                
+                fs.Close();
+                refreshallGfx();
+                
+            }
         }
     }
 }

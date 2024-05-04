@@ -16,7 +16,7 @@ namespace ZeldaFullEditor
         ColorPalette palettes = null;
         public bool showName = false;
 
-        public int selectedIndex = 0; //setted on 0 by default
+        public int selectedIndex = 0; // Setted on 0 by default
         public event EventHandler SelectedIndexChanged;
 
         public Chest selectedObject = null;
@@ -30,12 +30,12 @@ namespace ZeldaFullEditor
 
         private void Chestviewer_Load(object sender, EventArgs e)
         {
-            //TODO: add something here?
+            // TODO: add something here?
         }
 
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
-            //TODO: add something here?
+            // TODO: add something here?
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -48,14 +48,14 @@ namespace ZeldaFullEditor
 
             foreach (Chest o in items)
             {
-                e.Graphics.DrawImage(GFX.previewChestsBitmap[o.item], new Point((xpos * 64)+24, (ypos * 64)+8));
+                e.Graphics.DrawImage(GFX.previewChestsBitmap[o.item], new Point((xpos * 64) + 24, (ypos * 64) + 8));
                 if (selectedObject == o)
                 {
-                    e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64),64, 64));
+                    e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
                 }
 
-                e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64,64, 64));
-                if (showName == false)
+                e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
+                if (!showName)
                 {
                     e.Graphics.DrawString(ChestItems_Name.name[o.item], this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 32, 64, 32));
                 }
@@ -101,8 +101,7 @@ namespace ZeldaFullEditor
                 {
                     for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
                     {
-                        palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
-                        pindex++;
+                        palettes.Entries[pindex++] = GFX.loadedPalettes[x, y];
                     }
                 }
 
@@ -112,8 +111,7 @@ namespace ZeldaFullEditor
                     {
                         if (pindex < 256)
                         {
-                            palettes.Entries[pindex] = GFX.loadedSprPalettes[x, y];
-                            pindex++;
+                            palettes.Entries[pindex++] = GFX.loadedSprPalettes[x, y];
                         }
                     }
                 }
@@ -136,7 +134,7 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                o.ItemsDraw(o.item,0,0);
+                o.ItemsDraw(o.item, 0, 0);
                 if (palettes != null)
                 {
                     GFX.previewChestsBitmap[o.item].Palette = palettes;
@@ -146,7 +144,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)

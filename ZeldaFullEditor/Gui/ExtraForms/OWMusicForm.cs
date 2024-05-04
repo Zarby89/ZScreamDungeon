@@ -16,6 +16,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         public byte[] musics = new byte[4];
         bool fromForm = false;
 
+        // TODO move to DefaultEntities
         string[] musicNames = new string[]
         {
             "0x00 None",
@@ -77,7 +78,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         {
             InitializeComponent();
         }
-        
+
         private void OWMusicForm_Load(object sender, EventArgs e)
         {
             music1Box.Items.AddRange(musicNames);
@@ -130,7 +131,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         private void music1Box_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (fromForm == false)
+            if (!fromForm)
             {
                 musics[0] = (byte)((ambient1Box.SelectedIndex << 4) + music1Box.SelectedIndex);
                 musics[1] = (byte)((ambient2Box.SelectedIndex << 4) + music2Box.SelectedIndex);

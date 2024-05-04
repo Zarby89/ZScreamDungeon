@@ -1,0 +1,36 @@
+Expanded space used by ZScream as of 1/16/2024
+
+Addresses are PC unless stated otherwise.
+
+ZS reserves everything up to 1.5mb or up to 0x150000
+
+0x100000 - 0x107FFF:
+    Nothing?
+
+0x108000 - 0x10FFFF:
+    Title screen data
+    Dungeon map data
+
+0x110000 - 0x117FFF:
+    Default room header location
+
+0x118000 - 0x11FFFF:
+    Some sort of data but i can't figure out what.
+
+0x120000 - 0x127FFF:
+    Expanded overlay data
+
+0x128000 - 0x12FFFF:
+    Custom collision data
+
+0x130000 - 0x137FFF:
+    Overworld map data overflow
+
+0x138000 - 0x13FFFF:
+    Expanded Dungeon object data
+
+0x140000 - 0x147FFF:
+    Custom overworld data
+
+0x148000 - 0x14FFFF:
+    Expanded Dungeon object data

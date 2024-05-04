@@ -23,11 +23,11 @@ namespace ZCompressLibrary
         public static compression_piece merge_copy(compression_piece start)
         {
             compression_piece piece = start;
-            while(piece != null)
+            while (piece != null)
             {
-                if(piece.command == Common.D_CMD_COPY && piece.next != null && piece.next.command == Common.D_CMD_COPY)
+                if (piece.command == Common.D_CMD_COPY && piece.next != null && piece.next.command == Common.D_CMD_COPY)
                 {
-                    if(piece.length + piece.next.length < Common.D_MAX_LENGTH)
+                    if (piece.length + piece.next.length < Common.D_MAX_LENGTH)
                     {
                         int previous_length = piece.length;
                         piece.length += piece.next.length;

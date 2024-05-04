@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Rooms
+﻿namespace ZeldaFullEditor.Rooms
 {
     class RoomLayout : Room
     {
         public RoomLayout() : base(-1)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public void loadLayout(int layout)
@@ -43,7 +37,7 @@ namespace ZeldaFullEditor.Rooms
                 }
 
                 b3 = ROM.DATA[pos + 2];
-                pos += 3; //we jump to layer2
+                pos += 3; // We jump to layer2
 
                 if (b3 >= 0xF8)
                 {
@@ -52,7 +46,7 @@ namespace ZeldaFullEditor.Rooms
                     posY = (byte)((b2 & 0xFC) >> 2);
                     sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
                 }
-                else //subtype1
+                else // Subtype1
                 {
                     oid = b3;
                     posX = (byte)((b1 & 0xFC) >> 2);
@@ -62,7 +56,7 @@ namespace ZeldaFullEditor.Rooms
                     sizeXY = (byte)(((sizeX << 2) + sizeY));
                 }
 
-                if (b1 >= 0xFC) //subtype2 (not scalable? )
+                if (b1 >= 0xFC) // Subtype2 (not scalable? )
                 {
                     oid = (short)((b3 & 0x3F) + 0x100);
                     posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));

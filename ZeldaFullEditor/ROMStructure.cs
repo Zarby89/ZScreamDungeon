@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using Microsoft.VisualBasic;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 
 namespace ZeldaFullEditor
 {
@@ -15,23 +8,25 @@ namespace ZeldaFullEditor
         public static string ProjectName = "";
         public static string GameVersion = "us";
 
-        //This class will be used to create a project file from a ROM, since ROM Size can be dynamic
-        //the format data of the project will be first and the rom will be saved at the position 0x200000
+        // This class will be used to create a project file from a ROM, since ROM Size can be dynamic
+        // The format data of the project will be first and the rom will be saved at the position 0x200000
 
-        //ZScream Project <- static string to recognize the format
-        //Constant Version <- dynamic string
-        //Project Name - dynamic string
-        //Game Version used - 2byte string
-        /// NO SIZE - Default Size will be 4mb
-        //Dungeons Names - dynamic strings 17 dungeons?
-        //Dungeons Rooms - short (2byte) * 17 - 34bytes
-        //Rooms Names - 296 dynamic strings
+        // ZScream Project <- static string to recognize the format
+        // Constant Version <- dynamic string
+        // Project Name - dynamic string
+        // Game Version used - 2byte string
+        // NO SIZE - Default Size will be 4mb
+        // Dungeons Names - dynamic strings 17 dungeons?
+        // Dungeons Rooms - short (2byte) * 17 - 34bytes
+        // Rooms Names - 296 dynamic strings
+
         static public string[] dungeonsNames = new string[17];
         static public string[] roomsNames;
         static public string[] mapsNames;
         static public short[][] dungeonsRooms = new short[17][];
         static public List<DataRoom> dungeonsRoomList = new List<DataRoom>();
 
+        // TODO move to default entities
         static public void defaultDungeonNames()
         {
             dungeonsNames[0] = "Sewers";
@@ -55,12 +50,12 @@ namespace ZeldaFullEditor
 
         static public void defaultDungeonRooms()
         {
-            //29,30,31,32,33,34
-            dungeonsRooms[0] = new short[] { 2, 17, 18, 33, 34, 50, 65, 66 };//sewer
+            // 29,30,31,32,33,34
+            dungeonsRooms[0] = new short[] { 2, 17, 18, 33, 34, 50, 65, 66 }; // Sewer
             dungeonsRooms[1] = new short[] { 1, 80, 81, 82, 85, 96, 97, 98, 112, 113, 114, 128, 129, 130 };
             dungeonsRooms[2] = new short[] { 137, 153, 168, 169, 170, 184, 185, 186, 200, 201, 216, 217, 218 };
             dungeonsRooms[3] = new short[] { 51, 67, 83, 99, 115, 116, 117, 131, 132, 133 };
-            dungeonsRooms[4] = new short[] { 48, 32, 64, 176, 192, 208, 224 };//agah
+            dungeonsRooms[4] = new short[] { 48, 32, 64, 176, 192, 208, 224 }; // Agah
             dungeonsRooms[5] = new short[] { 6, 22, 38, 40, 52, 53, 54, 55, 56, 70, 84, 102, 118 };
             dungeonsRooms[6] = new short[] { 9, 10, 11, 25, 26, 27, 42, 43, 58, 59, 74, 75, 90, 106 };
             dungeonsRooms[7] = new short[] { 144, 145, 146, 147, 151, 152, 160, 161, 162, 163, 177, 178, 179, 193, 194, 195, 209, 210 };
@@ -77,7 +72,7 @@ namespace ZeldaFullEditor
                 244, 245, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 271, 272, 273, 280, 281, 282, 284, 285, 287, 5, 15, 37, 45, 71, 72, 105, 111, 120,
                 121, 122, 134, 136, 138, 143, 148, 154, 173, 189, 202, 205, 207, 211, 212, 215, 221, 233, 236, 246, 247, 252,289,290 };
 
-            for (int i = 0; i < 17; i++)//for all dungeons add rooms in list
+            for (int i = 0; i < 17; i++) // for all dungeons add rooms in list
             {
                 for (int j = 0; j < dungeonsRooms[i].Length; j++)
                 {
@@ -86,6 +81,7 @@ namespace ZeldaFullEditor
             }
         }
 
+        // TODO move to DefaultEntities
         static public void defaultRoomsNames()
         {
             roomsNames = new string[]{
@@ -174,15 +170,15 @@ namespace ZeldaFullEditor
                 "Archery Minigame","DW Church/Shop","Grave Cave","Fairy Fountain","Fairy Upgrade","Pyramid Fairy","Spike Cave",
                 "Chest Minigame","Blind Hut","Bonzai Cave","Circle of bush Cave","Big Bomb Shop, C-House","Blind Hut 2","Hype Cave",
                 "Shop","Ice Cave","Smith","Fortune Teller","MiniMoldorm Cave","Under Rock Caves","Smith","Cave","Mazeblock Cave",
-                "Smith Peg Cave"
+                "Smith Peg Cave",
             };
         }
 
         static public void defaultMapsNames()
         {
-            //DP = Duplicate
+            // DP = Duplicate
             mapsNames = new string[]{
-                //LW
+                // LW
                 "Lost Woods","DP","Lumberjack","DM Hera Tower","DP","DM Wall of Caves","DP","DM Turtle Rock",
                 "DP","DP","Death Mountain Entrance","DP","DP","DP","DP","Hidden Waterfall",
                 "Woods Entrance","Top of Kakariko","Whirlpool Lake","Sanctuary","Cemetery","River","Witch","Way to Zora",
@@ -192,7 +188,7 @@ namespace ZeldaFullEditor
                 "Desert","DP","Grove Ledge","North of Dam","South of Links House","Lake Hylia","DP","Shopping Mall",
                 "DP","DP","Purple Chest Guy","Dam","East of Dam","DP","DP","South East Hylia",
 
-                //DW
+                // DW
                 "Skulls Woods","DP","Lumberjack","DM Ganon Tower","DP","DM Wall of Caves","DP","DM Turtle Rock",
                 "DP","DP","Death Mountain Entrance","DP","DP","DP","DP","Catfish",
                 "Woods Entrance","Top of Village of Outcast","Lake","Sanctuary Cave","Cemetery","River","Witch","Way to Catfish",
@@ -202,13 +198,13 @@ namespace ZeldaFullEditor
                 "Misery Mire","DP","South of Grove","North of Swamp Palace","South of Link's House","Ice Palace","DP","Shopping Mall",
                 "DP","DP","Purple Chest Guy","Swamp","East of Swamp","DP","DP","South East Ice Palace",
 
-                //Specials
+                // Specials
                 "Master Sword/Under Bridge","Zora Domain","Unused","Unused","Unused","Unused","Unused","Unused",
                 "Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused",
 
-                //Backgrounds
+                // Backgrounds
                 "Triforce Room", "Master Sword/Under Bridge Mask", "Death Mountain BGR", "Pyramid BGR", "Forest BGR",
-                "Unused", "Unused", "Unused", "Unused", "???", "Cloud Overlay", "Tree Overlay", "Rain Overlay"
+                "Unused", "Unused", "Unused", "Unused", "???", "Cloud Overlay", "Tree Overlay", "Rain Overlay",
             };
         }
 

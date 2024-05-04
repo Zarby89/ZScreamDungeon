@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     public class SpriteOWEditor
     {
@@ -14,6 +8,7 @@ namespace ZeldaFullEditor
         public byte overlord;
         public string name;
         public ushort roomMapId;
+
         public SpriteOWEditor(byte id, int x, int y, ushort roomMapId, byte overlord, byte subtype)
         {
             this.id = id;
@@ -28,11 +23,12 @@ namespace ZeldaFullEditor
         public void updateMapStuff(short mapId)
         {
             this.roomMapId = (ushort)mapId;
-            int mx = (mapId - ((mapId / 8) * 8));
-            int my = ((mapId / 8));
+            int mx = mapId - ((mapId / 8) * 8);
+            int my = mapId / 8;
 
             gameX = (byte)((x - (mx * 512)) / 16);
             gameY = (byte)((y - (my * 512)) / 16);
+
             //Console.WriteLine("X:{0} Y:{1}", gameX, gameY);
         }
     }

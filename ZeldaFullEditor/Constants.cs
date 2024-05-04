@@ -1,29 +1,215 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
-namespace ZeldaFullEditor {
-    public static class Constants {
-        //===========================================================================================
-        //GFX Related Variables
-        //===========================================================================================
+namespace ZeldaFullEditor
+{
+    /// <summary>
+    ///     This is a class to hold all addresses, "magic numbers", and other constants used accross the editor.
+    /// </summary>
+    public static class Constants
+    {
+        // ===========================================================================================
+        // Magic numbers
+        // ===========================================================================================
+
+        /// <summary>
+        /// Bit set for object priority
+        /// </summary>
+        public const ushort TilePriorityBit = 0x2000;
+
+        /// <summary>
+        /// Bit set for object hflip
+        /// </summary>
+        public const ushort TileHFlipBit = 0x4000;
+
+        /// <summary>
+        /// Bit set for object vflip
+        /// </summary>
+        public const ushort TileVFlipBit = 0x8000;
+
+        /// <summary>
+        /// Bits used for tile name
+        /// </summary>
+        public const ushort TileNameMask = 0x03FF;
+
+        public const int Uncompressed3BPPSize = 0x0600;
+        public const int UncompressedSheetSize = 0x0800;
+
+        public const int NumberOfSheets = 223;
+        public const int LimitOfMap32 = 8864;
+        public const int NumberOfRooms = 296;
+
+        public const int NumberOfOWMaps = 160;
+        public const int Map32PerScreen = 256;
+        public const int NumberOfMap16 = 3752; // 4096
+        public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
+        public const int NumberOfOWSprites = 352;
+        public const int NumberOfColors = 3415; // 3143
+
+        // TODO zarby stop making magic numbers
+        public const int IDKZarby = 0x54727;
+
+        public static byte[] FontSpacings = new byte[]
+        {
+            4, 3, 5, 7, 5, 6, 5, 3,
+            4, 4, 5, 5, 3, 5, 3, 5,
+            5, 5, 5, 5, 5, 5, 5, 5,
+            5, 5, 3, 3, 5, 5, 5, 5,
+            5, 5, 5, 5, 5, 5, 5, 6,
+            5, 5, 6, 5, 5, 7, 6, 5,
+            5, 5, 5, 5, 5, 5, 5, 7,
+            5, 5, 5, 4, 5, 4, 6, 6,
+            6, 6,
+        };
+
+        // ===========================================================================================
+        // Geometry - shapes and points we don't need to constantly reinstantiate
+        // ===========================================================================================
+        public static readonly Point Point_0_0 = new Point(0, 0);
+        public static readonly Point Point_512_0 = new Point(512, 0);
+
+        // TODO these could probably use more descriptive names
+        public static readonly Rectangle Rect_0_0_24_24 = new Rectangle(0, 0, 24, 24);
+        public static readonly Rectangle Rect_0_0_64_64 = new Rectangle(0, 0, 64, 64);
+        public static readonly Rectangle Rect_0_0_64_128 = new Rectangle(0, 0, 64, 128);
+        public static readonly Rectangle Rect_0_0_128_128 = new Rectangle(0, 0, 128, 128);
+        public static readonly Rectangle Rect_0_0_128_512 = new Rectangle(0, 0, 128, 512);
+        public static readonly Rectangle Rect_0_0_128_4096 = new Rectangle(0, 0, 128, 4096);
+        public static readonly Rectangle Rect_0_0_256_192 = new Rectangle(0, 0, 256, 192);
+        public static readonly Rectangle Rect_0_0_256_256 = new Rectangle(0, 0, 256, 256);
+        public static readonly Rectangle Rect_0_0_256_1024 = new Rectangle(0, 0, 256, 1024);
+        public static readonly Rectangle Rect_0_0_1024_1024 = new Rectangle(0, 0, 1024, 1024);
+        public static readonly Rectangle Rect_0_0_512_384 = new Rectangle(0, 0, 512, 384);
+        public static readonly Rectangle Rect_0_0_512_512 = new Rectangle(0, 0, 512, 512);
+        public static readonly Rectangle Rect_0_0_128_40 = new Rectangle(0, 0, 128, 40);
+        public static readonly Rectangle Rect_0_0_256_14272 = new Rectangle(0, 0, 256, 14272);
+        public static readonly Rectangle Rect_0_0_128_7136 = new Rectangle(0, 0, 128, 7136);
+
+        public static readonly Rectangle Rect_128_0_128_4096 = new Rectangle(128, 0, 128, 4096);
+        public static readonly Rectangle Rect_0_4096_128_4096 = new Rectangle(0, 4096, 128, 4096);
+
+        public static readonly Rectangle Rect_0_0_340_102 = new Rectangle(0, 0, 170, 102);
+        public static readonly Rectangle Rect_0_0_170_51 = new Rectangle(0, 0, 170, 51);
+        public static readonly Rectangle Rect_336_0_4_102 = new Rectangle(336, 0, 4, 102);
+
+        public static readonly Rectangle Rect_1_1_182_182 = new Rectangle(1, 1, 182, 182);
+        public static readonly Rectangle Rect_3_3_178_178 = new Rectangle(3, 3, 178, 178);
+        public static readonly Rectangle Rect_0_0_24_240 = new Rectangle(0, 0, 24, 240);
+
+        public static readonly Size Size340x102 = new Size(340, 102);
+        public static readonly Size Size512x512 = new Size(512, 512);
+        public static readonly Size Size1024x1024 = new Size(1024, 1024);
+        public static readonly Size Size4096x4096 = new Size(4096, 4096);
+
+        // ===========================================================================================
+        // Fonts
+        // ===========================================================================================
+        public static readonly Font Arial7 = new Font("Arial", 7);
+
+        // ===========================================================================================
+        // Colors - colors we use for consistency and avoiding redundant instantiations
+        // ===========================================================================================
+        public static readonly Color HalfWhite = Color.FromArgb(128, 255, 255, 255);
+        public static readonly Pen HalfWhitePen = new Pen(HalfWhite);
+
+        public static readonly Color ThirdWhite = Color.FromArgb(85, 255, 255, 255);
+        public static readonly Pen ThirdWhitePen = new Pen(ThirdWhite);
+        public static readonly Pen ThirdWhitePen1 = new Pen(ThirdWhite, 1);
+
+        public static readonly Color White100 = Color.FromArgb(100, 255, 255, 255);
+        public static readonly Pen White100Pen = new Pen(White100);
+        public static readonly Pen White100Pen1 = new Pen(White100, 1);
+
+        public static readonly Color HalfRed = Color.FromArgb(128, 255, 0, 0);
+        public static readonly Pen HalfRedPen = new Pen(HalfRed);
+        public static readonly Brush HalfRedBrush = new SolidBrush(HalfRed);
+
+        public static readonly Color ThirdGreen = Color.FromArgb(100, 0, 200, 0);
+        public static readonly Pen ThirdGreenPen = new Pen(ThirdGreen);
+        public static readonly Brush ThirdGreenBrush = new SolidBrush(ThirdGreen);
+
+        public static readonly Color QuarterWhite = Color.FromArgb(60, 255, 255, 255);
+        public static readonly Pen QuarterWhitePen = new Pen(QuarterWhite);
+
+        public static readonly Color FifthBlue = Color.FromArgb(50, 0, 0, 255);
+        public static readonly Brush FifthBlueBrush = new SolidBrush(FifthBlue);
+
+        public static readonly Pen Orange220Pen1 = new Pen(Color.FromArgb(220, Color.Orange), 1);
+        public static readonly Pen Red220Pen1 = new Pen(Color.FromArgb(220, Color.Red), 1);
+
+        public static readonly Pen WhitePen = new Pen(Brushes.White);
+        public static readonly Pen LimeGreenPen2 = new Pen(Brushes.LimeGreen, 2);
+        public static readonly Pen AquaPen2 = new Pen(Brushes.Aqua, 2);
+        public static readonly Pen BlackPen2 = new Pen(Brushes.Black, 2);
+        public static readonly Pen AzurePen2 = new Pen(Color.Azure, 2);
+        public static readonly Pen RedPen4 = new Pen(Color.Red, 2);
+
+        public static readonly Color Black200 = Color.FromArgb(200, 0, 0, 0);
+        public static readonly Pen Black200Pen = new Pen(Black200);
+        public static readonly Brush Black200Brush = new SolidBrush(Black200);
+
+        public static readonly Color Scarlet200 = Color.FromArgb(200, 200, 0, 0);
+        public static readonly Pen Scarlet200Pen = new Pen(Scarlet200);
+        public static readonly Brush Scarlet200Brush = new SolidBrush(Scarlet200);
+
+        public static readonly Color Turquoise200 = Color.FromArgb(200, 0, 200, 200);
+        public static readonly Pen Turquoise200Pen = new Pen(Turquoise200);
+        public static readonly Brush Turquoise200Brush = new SolidBrush(Turquoise200);
+
+        public static readonly Color VibrantMagenta200 = Color.FromArgb(200, 255, 0, 255);
+        public static readonly Pen VibrantMagenta200Pen = new Pen(VibrantMagenta200);
+        public static readonly Brush VibrantMagenta200Brush = new SolidBrush(VibrantMagenta200);
+
+        public static readonly Color Magenta200 = Color.FromArgb(200, 222, 16, 145);
+        public static readonly Pen Magenta200Pen = new Pen(Magenta200);
+        public static readonly Brush Magenta200Brush = new SolidBrush(Magenta200);
+
+        public static readonly Color MediumGray200 = Color.FromArgb(200, 160, 160, 160);
+        public static readonly Pen MediumGray200Pen = new Pen(MediumGray200);
+        public static readonly Brush MediumGray200Brush = new SolidBrush(MediumGray200);
+
+        public static readonly Color LightGray200 = Color.FromArgb(200, 222, 222, 222);
+        public static readonly Pen LightGray200Pen = new Pen(LightGray200);
+        public static readonly Brush LightGray200Brush = new SolidBrush(LightGray200);
+
+        public static readonly Color DarkMint200 = Color.FromArgb(200, 48, 188, 142);
+        public static readonly Pen DarkMint200Pen = new Pen(DarkMint200);
+        public static readonly Brush DarkMint200Brush = new SolidBrush(DarkMint200);
+
+        public static readonly Color MediumMint200 = Color.FromArgb(200, 14, 224, 146);
+        public static readonly Pen MediumMint200Pen = new Pen(MediumMint200);
+        public static readonly Brush MediumMint200Brush = new SolidBrush(MediumMint200);
+
+        public static readonly Color Charcoal200 = Color.FromArgb(200, 32, 32, 32);
+        public static readonly Pen Charcoal200Pen = new Pen(Charcoal200);
+        public static readonly Brush Charcoal200Brush = new SolidBrush(Charcoal200);
+
+        public static readonly Color Goldenrod200 = Color.FromArgb(200, 255, 200, 16);
+        public static readonly Pen Goldenrod200Pen = new Pen(Goldenrod200);
+        public static readonly Brush Goldenrod200Brush = new SolidBrush(Goldenrod200);
+
+        public static readonly Color Azure200 = Color.FromArgb(200, 0, 55, 240);
+        public static readonly Pen Azure200Pen = new Pen(Azure200);
+        public static readonly Brush Azure200Brush = new SolidBrush(Azure200);
+
+        // ===========================================================================================
+        // GFX Related Variables
+        // ===========================================================================================
         public static int tile_address = 0x1B52; // JP = Same //i don't think that need a pointer
         public static int tile_address_floor = 0x1B5A; // JP = Same //i don't think that need a pointer
         public static int subtype1_tiles = 0x8000; // JP = Same //i don't think that need a pointer
         public static int subtype2_tiles = 0x83F0; // JP = Same //i don't think that need a pointer
         public static int subtype3_tiles = 0x84F0; // JP = Same //i don't think that need a pointer
-        public static int gfx_animated_pointer = 0x10275; //JP 0x10624 //long pointer
-        public static int overworldgfxGroups2 = 0x6073; //0x60B3
-        public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320  CF80  ; 004F80
-        public static int gfx_2_pointer = 0x6795; //D05F ; 00505F
-        public static int gfx_3_pointer = 0x679A; //D13E ; 00513E
+        public static int gfx_animated_pointer = 0x10275; // JP 0x10624 //long pointer
+        public static int overworldgfxGroups2 = 0x6073; // 0x60B3
+        public static int gfx_1_pointer = 0x6790; // 2byte pointer bank 00 pc -> 0x4320  CF80  ; 004F80
+        public static int gfx_2_pointer = 0x6795; // D05F ; 00505F
+        public static int gfx_3_pointer = 0x679A; // D13E ; 00513E
         public static int hud_palettes = 0xDD660;
-        public static int maxGfx = 0xC3FB5;
-        //===========================================================================================
-        //Overworld Related Variables
-        //===========================================================================================
+        public static int maxGfx = 0xC3FFF;
+
+        // ===========================================================================================
+        // Overworld Related Variables
+        // ===========================================================================================
         public static int compressedAllMap32PointersHigh = 0x1794D;
         public static int compressedAllMap32PointersLow = 0x17B2D;
         public static int overworldgfxGroups = 0x05D97;
@@ -32,6 +218,7 @@ namespace ZeldaFullEditor {
         public static int map32TilesTR = 0x1B400;
         public static int map32TilesBL = 0x20000;
         public static int map32TilesBR = 0x23400;
+        public static int Map32TilesCount = 0x33F0;
         public static int overworldPalGroup1 = 0xDE6C8;
         public static int overworldPalGroup2 = 0xDE86C;
         public static int overworldPalGroup3 = 0xDE604;
@@ -47,62 +234,92 @@ namespace ZeldaFullEditor {
         public static int overworldSpritesAgahnim = 0x4CA21;
         public static int overworldSpritesZelda = 0x4C901;
 
-        /*public static int overworldSpritesBeginingEditor = 0x108100;
+        /*
+        public static int overworldSpritesBeginingEditor = 0x108100;
         public static int overworldSpritesAgahnimEditor = 0x108180;
-        public static int overworldSpritesZeldaEditor = 0x1082A0;*/
+        public static int overworldSpritesZeldaEditor = 0x1082A0;
+        */
 
         public static int overworldItemsPointers = 0xDC2F9;
-        public static int overworldItemsAddress = 0xDC8B9; //1BC2F9
+        public static int overworldItemsAddress = 0xDC8B9; // 1BC2F9
         public static int overworldItemsBank = 0xDC8BF;
-        public static int overworldItemsEndData = 0xDC89C; //0DC89E
+        public static int overworldItemsEndData = 0xDC89C; // 0DC89E
 
         public static int mapGfx = 0x7C9C;
         public static int overlayPointers = 0x77664;
         public static int overlayPointersBank = 0x0E;
+        public static int overlayData1 = 0x77676;
+        public static int overlayData2 = 0x077677;
+
+        public static int ExpandedOverlaySpace = 0x120000;
 
         public static int overworldTilesType = 0x71459;
         public static int overworldMessages = 0x3F51D;
 
-        //TODO:
-        public static int overworldMusicBegining = 0x14303;
-        public static int overworldMusicZelda = 0x14303 + 0x40;
-        public static int overworldMusicMasterSword = 0x14303 + 0x80;
-        public static int overworldMusicAgahim = 0x14303 + 0xC0;
-        public static int overworldMusicDW = 0x14403;
+        // TODO:
+        public static int overworldMusicBegining = 0x14303; // 0x40
+        public static int overworldMusicZelda = 0x14303 + 0x40; // 0x40
+        public static int overworldMusicMasterSword = 0x14303 + 0x80; // 0x40
+        public static int overworldMusicAgahim = 0x14303 + 0xC0; // 0x40
+        public static int overworldMusicDW = 0x14403; // 0x60
 
         public static int overworldEntranceAllowedTilesLeft = 0xDB8C1;
         public static int overworldEntranceAllowedTilesRight = 0xDB917;
 
-        public static int overworldMapSize = 0x12844; //0x00 = small maps, 0x20 = large maps
-        public static int overworldMapSizeHighByte = 0x12884; //0x01 = small maps, 0x03 = large maps
+        public static int overworldMapSize = 0x12844; // 0x00 = small maps, 0x20 = large maps
+        public static int overworldMapSizeHighByte = 0x12884; // 0x01 = small maps, 0x03 = large maps
 
-        //relative to the WORLD + 0x200 per map
-        //large map that are not == parent id = same position as their parent!
-        //eg for X position small maps :
-        //0000, 0200, 0400, 0600, 0800, 0A00, 0C00, 0E00
+        // relative to the WORLD + 0x200 per map
+        // large map that are not == parent id = same position as their parent!
+        // eg for X position small maps :
+        // 0000, 0200, 0400, 0600, 0800, 0A00, 0C00, 0E00
 
-        //all Large map would be :
-        //0000, 0000, 0400, 0400, 0800, 0800, 0C00, 0C00
+        // all Large map would be :
+        // 0000, 0000, 0400, 0400, 0800, 0800, 0C00, 0C00
 
         public static int overworldMapParentId = 0x125EC;
 
-        public static int overworldTransitionPositionY = 0x128C4; 
+        public static int overworldTransitionPositionY = 0x128C4;
         public static int overworldTransitionPositionX = 0x12944;
 
         public static int overworldScreenSize = 0x1788D;
 
-        public static int OverworldScreenSizeForLoading = 0x4C635; 
-        public static int OverworldScreenTileMapChangeByScreen = 0x12634;
+        public static int OverworldScreenSizeForLoading = 0x4C635;
+        public static int OverworldScreenTileMapChangeByScreen1 = 0x12634;
+        public static int OverworldScreenTileMapChangeByScreen2 = 0x126B4;
+        public static int OverworldScreenTileMapChangeByScreen3 = 0x12734;
+        public static int OverworldScreenTileMapChangeByScreen4 = 0x127B4;
 
-        public static int transition_target_north = 0x13ee2;
-        public static int transition_target_west = 0x13f62;
+        public static int OverworldScreenTileMapChangeMask = 0x1262C;
 
-        //===========================================================================================
-        //Overworld Exits/Entrances Variables
-        //===========================================================================================
+        public static int OverworldMapDataOverflow = 0x130000;
+
+        public static int transition_target_north = 0x13EE2;
+        public static int transition_target_west = 0x13F62;
+
+        public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (0x140)
+        public static int OverworldCustomAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomMainPaletteArray = 0x140160; // 1 byte for each overworld area (0xA0)
+        public static int OverworldCustomMainPaletteEnabled = 0x140141; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomMosaicArray = 0x140200; // 1 byte for each overworld area (0xA0)
+        public static int OverworldCustomMosaicEnabled = 0x140142; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomAnimatedGFXArray = 0x1402A0; // 1 byte for each overworld area (0xA0)
+        public static int OverworldCustomAnimatedGFXEnabled = 0x140143; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomSubscreenOverlayArray = 0x140340; // 2 bytes for each overworld area (0x140)
+        public static int OverworldCustomSubscreenOverlayEnabled = 0x140144; // 1 byte, not 0 if enabled
+
+        // ===========================================================================================
+        // Overworld Exits/Entrances Variables
+        // ===========================================================================================
         public static int OWExitRoomId = 0x15D8A; // 0x15E07 Credits sequences
-        //105C2 Ending maps
-        //105E2 Sprite Group Table for Ending
+                                                  // 105C2 Ending maps
+                                                  // 105E2 Sprite Group Table for Ending
         public static int OWExitMapId = 0x15E28;
         public static int OWExitVram = 0x15E77;
         public static int OWExitYScroll = 0x15F15;
@@ -119,9 +336,9 @@ namespace ZeldaFullEditor {
         public static int OWEntranceMap = 0xDB96F;
         public static int OWEntrancePos = 0xDBA71;
         public static int OWEntranceEntranceId = 0xDBB73;
-        public static int OWHolePos = 0xDB800;//(0x13 entries, 2 bytes each) modified(less 0x400) map16 coordinates for each hole
-        public static int OWHoleArea = 0xDB826;//(0x13 entries, 2 bytes each) corresponding area numbers for each hole
-        public static int OWHoleEntrance = 0xDB84C;//(0x13 entries, 1 byte each)  corresponding entrance numbers
+        public static int OWHolePos = 0xDB800; // (0x13 entries, 2 bytes each) modified(less 0x400) map16 coordinates for each hole
+        public static int OWHoleArea = 0xDB826; // (0x13 entries, 2 bytes each) corresponding area numbers for each hole
+        public static int OWHoleEntrance = 0xDB84C; // (0x13 entries, 1 byte each)  corresponding entrance numbers
 
         public static int OWExitMapIdWhirlpool = 0x16AE5;  // JP = ;016849
         public static int OWExitVramWhirlpool = 0x16B07;   // JP = ;01686B
@@ -131,47 +348,53 @@ namespace ZeldaFullEditor {
         public static int OWExitXPlayerWhirlpool = 0x16B8F;// JP = ;016E2B
         public static int OWExitYCameraWhirlpool = 0x16BB1;// JP = ;016E4D
         public static int OWExitXCameraWhirlpool = 0x16BD3;// JP = ;016E6F
-        public static int OWExitUnk1Whirlpool = 0x16BF5;   // JP = ;016E91
-        public static int OWExitUnk2Whirlpool = 0x16C17;   // JP = ;016EB3
+        public static int OWExitScrollModYWhirlpool = 0x16BF5;   // JP = ;016E91
+        public static int OWExitScrollModXWhirlpool = 0x16C17;   // JP = ;016EB3
         public static int OWWhirlpoolPosition = 0x16CF8;   // JP = ;016F94
-        
-        //===========================================================================================
-        //Dungeon Related Variables
-        //===========================================================================================
-        //That could be turned into a pointer : 
-        public static int dungeons_palettes_groups = 0x75460; //JP 0x67DD0
-        public static int dungeons_main_bg_palette_pointers = 0xDEC4B; //JP Same
-        public static int dungeons_palettes = 0xDD734; //JP Same (where all dungeons palettes are) 
+        public static int OWWhirlpoolCount = 0x11;
 
-        //That could be turned into a pointer : 
-        public static int room_items_pointers = 0xDB69;//JP 0xDB67
+        // ===========================================================================================
+        // Dungeon Related Variables
+        // ===========================================================================================
+        // That could be turned into a pointer :
+        public static int dungeons_palettes_groups = 0x75460; // JP 0x67DD0
+        public static int dungeons_main_bg_palette_pointers = 0xDEC4B; // JP Same
+        public static int dungeons_palettes = 0xDD734; // JP Same (where all dungeons palettes are)
 
-        public static int rooms_sprite_pointer = 0x4C298; //JP Same //2byte bank 09D62E
-        public static int room_header_pointer = 0xB5DD; //LONG
-        public static int room_header_pointers_bank = 0xB5E7; //JP Same
+        // That could be turned into a pointer :
+        //public static int room_items_pointers = 0xDB69; // JP 0xDB67
+        public static int room_items_pointers_ptr = 0x00E6C2;
+
+
+        public static int rooms_sprite_pointer = 0x4C298; // JP Same //2byte bank 09D62E
+        public static int room_header_pointer = 0xB5DD; // LONG
+        public static int room_header_pointers_bank = 0xB5E7; // JP Same
+
+        public static int room_header_expanded_default = 0x110000;
 
         public static int gfx_groups_pointer = 0x6237;
         public static int room_object_layout_pointer = 0x882D;
 
-        public static int room_object_pointer = 0x874C; //Long pointer
+        public static int room_object_pointer = 0x874C; // Long pointer
 
         public static int chests_length_pointer = 0xEBF6;
         public static int chests_data_pointer1 = 0xEBFB;
-        //public static int chests_data_pointer2 = 0xEC0A; //Disabled for now could be used for expansion
-        //public static int chests_data_pointer3 = 0xEC10; //Disabled for now could be used for expansion
+        // public static int chests_data_pointer2 = 0xEC0A; // Disabled for now could be used for expansion
+        // public static int chests_data_pointer3 = 0xEC10; // Disabled for now could be used for expansion
 
-        public static int blocks_length = 0x8896; //word value 
+        public static int blocks_length = 0x8896; // Word value
         public static int blocks_pointer1 = 0x15AFA;
         public static int blocks_pointer2 = 0x15B01;
         public static int blocks_pointer3 = 0x15B08;
         public static int blocks_pointer4 = 0x15B0F;
 
-        public static int torch_data = 0x2736A; //JP 0x2704A
+        public static int torch_data = 0x2736A; // JP 0x2704A
         public static int torches_length_pointer = 0x88C1;
 
         public static int sprite_blockset_pointer = 0x5B57;
-        public static int sprites_data = 0x4D8B0;//It use the unused pointers to have more space //Save purpose
-        public static int sprites_data_empty_room = 0x4D8AE;
+        //04D62E
+        public static int sprites_data = 0x4D880; // It use the unused pointers to have more space //Save purpose
+        public static int sprites_data_empty_room = 0x4D87E;
         public static int sprites_end_data = 0x4EC9E;
 
         public static int pit_pointer = 0x394AB;
@@ -179,9 +402,8 @@ namespace ZeldaFullEditor {
 
         public static int doorPointers = 0xF83C0;
 
-        //doors
+        // doors
         public static int door_gfx_up = 0x4D9E;
-        //
         public static int door_gfx_down = 0x4E06;
         public static int door_gfx_cavexit_down = 0x4E06;
         public static int door_gfx_left = 0x4E66;
@@ -192,64 +414,107 @@ namespace ZeldaFullEditor {
         public static int door_pos_left = 0x19AE;
         public static int door_pos_right = 0x19C6;
 
-        //TEXT EDITOR RELATED CONSTANTS
-        public static int gfx_font = 0x70000; //2bpp format
+        // TEXT EDITOR RELATED CONSTANTS
+        public static int gfx_font = 0x70000; // 2bpp format
         public static int text_data = 0xE0000;
+        public static int text_data_end = 0xE7FFF;
         public static int text_data2 = 0x75F40;
+        public static int text_data2_end = 0x773FF;
         public static int pointers_dictionaries = 0x74703;
         public static int characters_width = 0x74ADF;
 
-        //===========================================================================================
-        //Dungeon Entrances Related Variables
-        //===========================================================================================
-        public static int entrance_room = 0x14813; //0x14577 //word value for each room
-        public static int entrance_scrolledge = 0x1491D; //0x14681 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-        public static int entrance_yscroll = 0x14D45; // 0x14AA9 //2bytes each room
-        public static int entrance_xscroll = 0x14E4F; // 0x14BB3 //2bytes
-        public static int entrance_yposition = 0x14F59; //0x14CBD 2bytes
+        public static int DungeonSection1Index = 0x50008; // 0x50000 to 0x5374F
+        public static int DungeonSection1EndIndex = 0x53730;
+
+        public static int DungeonSection2Index = 0xF878A; // 0xF878A to 0xFFFFF.
+        public static int DungeonSection2EndIndex = 0xFFFFF;
+
+        public static int DungeonSection3Index = 0x1EB90; // 0x1EB90 to 0x1FFFF.
+        public static int DungeonSection3EndIndex = 0x1FFFF;
+
+        public static int DungeonSection4Index = 0x138000; // 0x138000 to 0x13FFFF.
+        public static int DungeonSection4EndIndex = 0x13FFFF;
+
+        public static int DungeonSection5Index = 0x148000; // 0x148000 to 0x14FFFF.
+        public static int DungeonSection5EndIndex = 0x14FFFF;
+
+        // ===========================================================================================
+        // Dungeon Entrances Related Variables
+        // ===========================================================================================
+        public static int entrance_room = 0x14813; // 0x14577 // Word value for each room
+        public static int entrance_scrolledge = 0x1491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                                                         // TODO: Swap CameraX and CameraY position because X is stored first!!
+
+        public static int entrance_cameray = 0x14D45; // 0x14AA9 // 2bytes each room
+        public static int entrance_camerax = 0x14E4F; // 0x14BB3 // 2bytes
+        public static int entrance_yposition = 0x14F59; // 0x14CBD 2bytes
         public static int entrance_xposition = 0x15063;// 0x14DC7 2bytes
-        public static int entrance_camerayposition = 0x1516D;// 0x14ED1 2bytes
-        public static int entrance_cameraxposition = 0x15277;// 0x14FDB 2bytes
+        public static int entrance_cameraytrigger = 0x1516D;// 0x14ED1 2bytes
+        public static int entrance_cameraxtrigger = 0x15277;// 0x14FDB 2bytes
+
+        /// <summary>
+        /// 128 is the valid low X range where the camera can be placed.
+        /// Any less than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerXLow = 128;
+
+        /// <summary>
+        /// 383 is the valid high X range where the camera can be placed.
+        /// Any more than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerXHigh = 383;
+
+        /// <summary>
+        /// 112 is the valid low Y range where the camera can be placed.
+        /// Any less than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerYLow = 112;
+
+        /// <summary>
+        /// 392 is the valid high Y range where the camera can be placed.
+        /// Any more than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
+        /// </summary>
+        public static int CameraTriggerYHigh = 392;
 
         public static int entrance_gfx_group = 0x5D97;
-        public static int entrance_blockset = 0x15381; //0x150E5 1byte
+        public static int entrance_blockset = 0x15381; // 0x150E5 1byte
         public static int entrance_floor = 0x15406; // 0x1516A 1byte
         public static int entrance_dungeon = 0x1548B; // 0x151EF 1byte (dungeon id)
         public static int entrance_door = 0x15510; // 0x15274 1byte
-        public static int entrance_ladderbg = 0x15595; //0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
-        public static int entrance_scrolling = 0x1561A;//0x1537E //1byte --h- --v- 
-        public static int entrance_scrollquadrant = 0x1569F; //0x15403 1byte
-        public static int entrance_exit = 0x15724; //0x15488 //2byte word
-        public static int entrance_music = 0x1582E; //0x15592
+        public static int entrance_ladderbg = 0x15595; // 0x152F9 // 1byte, ---b ---a b = bg2, a = need to check -_-
+        public static int entrance_scrolling = 0x1561A; // 0x1537E // 1byte --h- --v-
+        public static int entrance_scrollquadrant = 0x1569F; // 0x15403 1byte
+        public static int entrance_exit = 0x15724; // 0x15488 // 2byte word
+        public static int entrance_music = 0x1582E; // 0x15592
 
-        public static int startingentrance_room = 0x15B6E; //0x158D2 //word value for each room
-        public static int startingentrance_scrolledge = 0x15B7C; //0x158E0 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-        public static int startingentrance_yscroll = 0x15BB4; // 0x14AA9 //2bytes each room
-        public static int startingentrance_xscroll = 0x15BC2; // 0x14BB3 //2bytes
-        public static int startingentrance_yposition = 0x15BD0; //0x14CBD 2bytes
-        public static int startingentrance_xposition = 0x15BDE;// 0x14DC7 2bytes
-        public static int startingentrance_camerayposition = 0x15BEC;// 0x14ED1 2bytes
-        public static int startingentrance_cameraxposition = 0x15BFA;// 0x14FDB 2bytes
+        public static int startingentrance_room = 0x15B6E; // 0x158D2 // Word value for each room
+        public static int startingentrance_scrolledge = 0x15B7C; // 0x158E0 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+        public static int startingentrance_cameray = 0x15BB4; // 0x14AA9 // 2bytes each room
+        public static int startingentrance_camerax = 0x15BC2; // 0x14BB3 // 2bytes
+        public static int startingentrance_yposition = 0x15BD0; // 0x14CBD 2bytes
+        public static int startingentrance_xposition = 0x15BDE; // 0x14DC7 2bytes
+        public static int startingentrance_cameraytrigger = 0x15BEC; // 0x14ED1 2bytes
+        public static int startingentrance_cameraxtrigger = 0x15BFA; // 0x14FDB 2bytes
 
-        public static int startingentrance_blockset = 0x15C08; //0x150E5 1byte
+        public static int startingentrance_blockset = 0x15C08; // 0x150E5 1byte
         public static int startingentrance_floor = 0x15C0F; // 0x1516A 1byte
         public static int startingentrance_dungeon = 0x15C16; // 0x151EF 1byte (dungeon id)
 
         public static int startingentrance_door = 0x15C2B; // 0x15274 1byte
 
-        public static int startingentrance_ladderbg = 0x15C1D; //0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
-        public static int startingentrance_scrolling = 0x15C24;//0x1537E //1byte --h- --v- 
-        public static int startingentrance_scrollquadrant = 0x15C2B; //0x15403 1byte
-        public static int startingentrance_exit = 0x15C32; //0x15488 //2byte word
-        public static int startingentrance_music = 0x15C4E; //0x15592
+        public static int startingentrance_ladderbg = 0x15C1D; // 0x152F9 // 1byte, ---b ---a b = bg2, a = need to check -_-
+        public static int startingentrance_scrolling = 0x15C24; // 0x1537E // 1byte --h- --v-
+        public static int startingentrance_scrollquadrant = 0x15C2B; // 0x15403 1byte
+        public static int startingentrance_exit = 0x15C32; // 0x15488 // 2byte word
+        public static int startingentrance_music = 0x15C4E; // 0x15592
         public static int startingentrance_entrance = 0x15C40;
 
-        public static int items_data_start = 0xDDE9; //save purpose
-        public static int items_data_end = 0xE6B2; //save purpose
+        //public static int items_data_start = 0xDDE9; // Save purpose
+        public static int items_data_end = 0xE6B2; // Save purpose
         public static int initial_equipement = 0x271A6;
         public static int messages_id_dungeon = 0x3F61D;
 
-        public static int chests_backupitems = 0x3B528; //item id you get instead if you already have that item
+        public static int chests_backupitems = 0x3B528; // Item id you get instead if you already have that item
         public static int chests_yoffset = 0x4836C;
         public static int chests_xoffset = 0x4836C + (76 * 1);
         public static int chests_itemsgfx = 0x4836C + (76 * 2);
@@ -261,88 +526,136 @@ namespace ZeldaFullEditor {
 
         public static int dungeons_startrooms = 0x7939;
         public static int dungeons_endrooms = 0x792D;
-        public static int dungeons_bossrooms = 0x10954;//short value
+        public static int dungeons_bossrooms = 0x10954; // Short value
 
-        //Bed Related Values (Starting location)
+        // Bed Related Values (Starting location)
+        public static int bedPositionX = 0x039A37; // Short value
+        public static int bedPositionY = 0x039A32; // Short value
 
-        public static int bedPositionX = 0x039A37; //short value
-        public static int bedPositionY = 0x039A32; //short value
+        public static int bedPositionResetXLow = 0x02DE53;  // Short value(on 2 different bytes)
+        public static int bedPositionResetXHigh = 0x02DE58; // ^^^^^^
 
-        public static int bedPositionResetXLow = 0x02DE53;  //short value(on 2 different bytes)
-        public static int bedPositionResetXHigh = 0x02DE58; //^^^^^^
+        public static int bedPositionResetYLow = 0x02DE5D; // Short value(on 2 different bytes)
+        public static int bedPositionResetYHigh = 0x02DE62;// ^^^^^^
 
-        public static int bedPositionResetYLow = 0x02DE5D; //short value(on 2 different bytes)
-        public static int bedPositionResetYHigh = 0x02DE62;//^^^^^^
+        public static int bedSheetPositionX = 0x0480BD; // Short value
+        public static int bedSheetPositionY = 0x0480B8; // Short value
 
-        public static int bedSheetPositionX = 0x0480BD; //short value
-        public static int bedSheetPositionY = 0x0480B8; //short value
+        // ===========================================================================================
+        // Gravestones related variables
+        // ===========================================================================================
+        public static int GravesYTilePos = 0x49968; // Short (0x0F entries)
+        public static int GravesXTilePos = 0x49986; // Short (0x0F entries)
+        public static int GravesTilemapPos = 0x499A4; // Short (0x0F entries)
+        public static int GravesGFX = 0x499C2; // Short (0x0F entries)
 
-        //===========================================================================================
-        //Gravestones related variables
-        //===========================================================================================
+        public static int GravesXPos = 0x4994A;  // Short (0x0F entries)
+        public static int GravesYLine = 0x4993A; // Short (0x08 entries)
+        public static int GravesCountOnY = 0x499E0; // Byte 0x09 entries
 
-        public static int GravesYTilePos = 0x49968; //short (0x0F entries)
-        public static int GravesXTilePos = 0x49986; //short (0x0F entries)
-        public static int GravesTilemapPos = 0x499A4; //short (0x0F entries)
-        public static int GravesGFX = 0x499C2; //short (0x0F entries)
+        public static int GraveLinkSpecialStairs = 0x46DD9; // Short
+        public static int GraveLinkSpecialHole = 0x46DE0; // Short
 
-        public static int GravesXPos = 0x4994A;  //short (0x0F entries)
-        public static int GravesYLine = 0x4993A; //short (0x08 entries)
-        public static int GravesCountOnY = 0x499E0; //Byte 0x09 entries
-
-        public static int GraveLinkSpecialHole = 0x46DD9; //short
-        public static int GraveLinkSpecialStairs = 0x46DE0; //short
-
-        //===========================================================================================
-        //Palettes Related Variables - This contain all the palettes of the game
-        //===========================================================================================
+        // ===========================================================================================
+        // Palettes Related Variables - This contain all the palettes of the game
+        // ===========================================================================================  asdfasdfasdfasfadf
         public static int overworldPaletteMain = 0xDE6C8;
         public static int overworldPaletteAuxialiary = 0xDE86C;
         public static int overworldPaletteAnimated = 0xDE604;
         public static int globalSpritePalettesLW = 0xDD218;
         public static int globalSpritePalettesDW = 0xDD290;
-        public static int armorPalettes = 0xDD308;//Green, Blue, Red, Bunny, Electrocuted (15 colors each)
-        public static int spritePalettesAux1 = 0xDD39E; //7 colors each
-        public static int spritePalettesAux2 = 0xDD446; //7 colors each
-        public static int spritePalettesAux3 = 0xDD4E0; //7 colors each
-        public static int swordPalettes = 0xDD630;//3 colors each - 4 entries
-        public static int shieldPalettes = 0xDD648;//4 colors each - 3 entries
+        public static int armorPalettes = 0xDD308; // Green, Blue, Red, Bunny, Electrocuted (15 colors each)
+        public static int spritePalettesAux1 = 0xDD39E; // 7 colors each
+        public static int spritePalettesAux2 = 0xDD446; // 7 colors each
+        public static int spritePalettesAux3 = 0xDD4E0; // 7 colors each
+        public static int swordPalettes = 0xDD630; // 3 colors each - 4 entries
+        public static int shieldPalettes = 0xDD648; // 4 colors each - 3 entries
         public static int hudPalettes = 0xDD660;
-        public static int dungeonMapPalettes = 0xDD70A; //21 colors
-        public static int dungeonMainPalettes = 0xDD734;//(15*6) colors each - 20 entries
-        public static int dungeonMapBgPalettes = 0xDE544; //16*6
-        public static int hardcodedGrassLW = 0x5FEA9;//Mirrored Value at 0x75645 : 0x75625
-        public static int hardcodedGrassDW = 0x05FEB3;//0x7564F;
+        public static int dungeonMapPalettes = 0xDD70A; // 21 colors
+        public static int dungeonMainPalettes = 0xDD734; // (15*6) colors each - 20 entries
+        public static int dungeonMapBgPalettes = 0xDE544; // 16*6
+        public static int hardcodedGrassLW1 = 0x05FEA9;
+        public static int hardcodedGrassLW2 = 0x075645;
+        public static int hardcodedGrassLW3 = 0x075625;
+        public static int hardcodedGrassDW1 = 0x05FEB3;
+        public static int hardcodedGrassDW2 = 0x07564F;
         public static int hardcodedGrassSpecial = 0x75640;
+        public static int overworldMiniMapPalettes = 0x55B27;
+        public static int triforcePalette = 0x64425;
+        public static int crystalPalette = 0xF4CD3;
 
-        //===========================================================================================
-        //Dungeon Map Related Variables
-        //===========================================================================================
-        public static int dungeonMap_rooms_ptr = 0x57605; //14 pointers of map data
-        public static int dungeonMap_floors = 0x575D9; //14 words values
+        // ===========================================================================================
+        // Dungeon Map Related Variables
+        // ===========================================================================================
+        public static int dungeonMap_rooms_ptr = 0x57605; // 14 pointers of map data
+        public static int dungeonMap_floors = 0x575D9; // 14 words values
 
-        public static int dungeonMap_gfx_ptr = 0x57BE4; //14 pointers of gfx data
-        public static int dungeonMap_datastart = 0x57039; //data start for floors/gfx MUST skip 575D9 to 57621 (pointers)
+        public static int dungeonMap_gfx_ptr = 0x57BE4; // 14 pointers of gfx data
+        public static int dungeonMap_datastart = 0x57039; // Data start for floors/gfx MUST skip 575D9 to 57621 (pointers)
 
-
-        public static int dungeonMap_expCheck = 0x56652; //IF Byte = 0xB9 dungeon maps are not expanded
+        public static int dungeonMap_expCheck = 0x56652; // IF Byte = 0xB9 dungeon maps are not expanded
         public static int dungeonMap_tile16 = 0x57009;
         public static int dungeonMap_tile16Exp = 0x109010;
-        public static int dungeonMap_bossrooms = 0x56807; //14 words values 0x000F = no boss
+        public static int dungeonMap_bossrooms = 0x56807; // 14 words values 0x000F = no boss
 
-        public static int triforceVertices = 0x04FFD2; //group of 3, X, Y ,Z
-        public static int TriforceFaces = 0x04FFE4; //group of 5
+        public static int crystalVerticesCount = 0x4FF8C;
+        public static int crystalFaceCount = 0x4FF8D;
 
-        public static int crystalVertices = 0x04FF98;
+        public static int crystalVerticesPointer = 0x4FF8E;
+        public static int crystalFacesPointer = 0x4FF90;
+        public static int crystalMaxSize = 0x3A;
 
-        public static bool Rando = false; //is it a rando rom?
+        public static int triforceVerticesCount = 0x4FF92;
+        public static int triforceFaceCount = 0x4FF93;
 
-        public static void Init_Jp(bool rando = false) {
+        public static int triforceVerticesPointer = 0x4FF94;
+        public static int triforceFacesPointer = 0x4FF96;
+        public static int triforceMaxSize = 0x2E;
+
+        // ===========================================================================================
+        // Title screen GFX group set
+        // ===========================================================================================
+        public static int titleScreenTilesGFX = 0x64207; // 1 Byte
+        public static int titleScreenSpritesGFX = 0x6420C; // 1 Byte
+        public static int titleScreenExtraTilesGFX = 0x64211; // 1 Byte
+        public static int titleScreenExtraSpritesGFX = 0x64216; // 1 Byte
+
+        public static int TitleScreenPosition = 0x108000;
+
+        // ===========================================================================================
+        // Custom Collision
+        // ===========================================================================================
+        public static int customCollisionRoomPointers = 0x128090; // Array 3 bytes per room
+        public static int customCollisionDataPosition = 0x128450; // A bunch of FFFF ended arrays
+
+        // ===========================================================================================
+        // Sprite Properties
+        // ===========================================================================================
+        public static int Sprite_0DB080 = 0x06B080;
+        public static int Sprite_Health = 0x06B173;
+        public static int Sprite_0DB266 = 0x06B266;
+        public static int Sprite_0DB359 = 0x06B359;
+        public static int Sprite_0DB44C = 0x06B44C;
+        public static int Sprite_0DB53F = 0x06B53F;
+        public static int Sprite_0DB632 = 0x06B632;
+        public static int Sprite_0DB725 = 0x06B725;
+        public static int Sprite_DamageTaken = 0x1E800;
+        public static int DamageClass = 0x06B8F1;
+        public static int BumpDamageGroups = 0x037427;
+
+        // ===========================================================================================
+        // End Main Addresses
+        // ===========================================================================================
+
+        public static bool Rando = false; // Is it a rando rom?
+
+        public static void Init_Jp(bool rando = false)
+        {
             pit_pointer = 0x394A2;
             pit_count = 0x3949D;
-            //04EF2F
+            // 04EF2F
             dungeons_palettes_groups = 0x67DD0;
-            room_items_pointers = 0xDB67;
+            //room_items_pointers = 0xDB67;
             torch_data = 0x2704A;
 
             entrance_gfx_group = 0x5DD7;
@@ -354,61 +667,61 @@ namespace ZeldaFullEditor {
             chests_length_pointer = 0xEBF4;
             chests_data_pointer1 = 0xEBF9;
             gfx_groups_pointer = 0x6277;
-            items_data_start = 0xDDE7;
-            items_data_end = 0xE6B0;
-            gfx_1_pointer = 0x67D0; //2byte pointer bank 00 -> pc 0x4FC0
-            gfx_2_pointer = 0x67D5; //509F
-            gfx_3_pointer = 0x67DA; //517E
+            //items_data_start = 0xDDE7;
+            //items_data_end = 0xE6B0;
+            gfx_1_pointer = 0x67D0; // 2byte pointer bank 00 -> pc 0x4FC0
+            gfx_2_pointer = 0x67D5; // 509F
+            gfx_3_pointer = 0x67DA; // 517E
             messages_id_dungeon = 0x3F5F7;
             gfx_animated_pointer = 0x10624;
             initial_equipement = 0x183000;
 
-            //Entrances
-            entrance_room = 0x14577; //word value for each room
-            entrance_scrolledge = 0x1491D; //0x14681 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            entrance_xscroll = 0x14AA9; //2bytes each room
-            entrance_yscroll = 0x14BB3; //2bytes
-            entrance_yposition = 0x14CBD;// 2bytes
-            entrance_xposition = 0x14DC7;// 2bytes
-            entrance_camerayposition = 0x14ED1;// 2bytes
-            entrance_cameraxposition = 0x14FDB;// 2bytes
-            entrance_blockset = 0x150E5;// 1byte
-            entrance_floor = 0x1516A;// 1byte
-            entrance_dungeon = 0x151EF;// 1byte (dungeon id)
-            entrance_door = 0x15274;// 1byte
-            entrance_ladderbg = 0x152F9; //1 byte, ---b ---a b = bg2, a = need to check -_-
-            entrance_scrolling = 0x1537E; //1byte --h- --v- 
-            entrance_scrollquadrant = 0x15403;// 1byte
-            entrance_exit = 0x15488; //2byte word
+            // Entrances
+            entrance_room = 0x14577; // Word value for each room
+            entrance_scrolledge = 0x1491D; // 0x14681 / /8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+            entrance_camerax = 0x14AA9; // 2bytes each room
+            entrance_cameray = 0x14BB3; // 2bytes
+            entrance_yposition = 0x14CBD; // 2bytes
+            entrance_xposition = 0x14DC7; // 2bytes
+            entrance_cameraytrigger = 0x14ED1; // 2bytes
+            entrance_cameraxtrigger = 0x14FDB; // 2bytes
+            entrance_blockset = 0x150E5; // 1byte
+            entrance_floor = 0x1516A; // 1byte
+            entrance_dungeon = 0x151EF; // 1byte (dungeon id)
+            entrance_door = 0x15274; // 1byte
+            entrance_ladderbg = 0x152F9; // 1 byte, ---b ---a b = bg2, a = need to check -_-
+            entrance_scrolling = 0x1537E; // 1byte --h- --v-
+            entrance_scrollquadrant = 0x15403; // 1byte
+            entrance_exit = 0x15488; // 2byte word
             entrance_music = 0x15592;
 
-            startingentrance_room -= 0x29C; //0x158D2 //word value for each room
-            startingentrance_scrolledge -= 0x29C; //0x158E0 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            startingentrance_yscroll -= 0x29C; // 0x14AA9 //2bytes each room
-            startingentrance_xscroll -= 0x29C; // 0x14BB3 //2bytes
-            startingentrance_yposition -= 0x29C; //0x14CBD 2bytes
-            startingentrance_xposition -= 0x29C;// 0x14DC7 2bytes
-            startingentrance_camerayposition -= 0x29C;// 0x14ED1 2bytes
-            startingentrance_cameraxposition -= 0x29C;// 0x14FDB 2bytes
+            startingentrance_room -= 0x29C; // 0x158D2 // word value for each room
+            startingentrance_scrolledge -= 0x29C; // 0x158E0 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+            startingentrance_cameray -= 0x29C; // 0x14AA9 // 2bytes each room
+            startingentrance_camerax -= 0x29C; // 0x14BB3 // 2bytes
+            startingentrance_yposition -= 0x29C; // 0x14CBD 2bytes
+            startingentrance_xposition -= 0x29C; // 0x14DC7 2bytes
+            startingentrance_cameraytrigger -= 0x29C; // 0x14ED1 2bytes
+            startingentrance_cameraxtrigger -= 0x29C; // 0x14FDB 2bytes
 
-            startingentrance_blockset -= 0x29C; //0x150E5 1byte
+            startingentrance_blockset -= 0x29C; // 0x150E5 1byte
             startingentrance_floor -= 0x29C; // 0x1516A 1byte
-            startingentrance_dungeon -= 0x29C;// 0x151EF 1byte (dungeon id)
+            startingentrance_dungeon -= 0x29C; // 0x151EF 1byte (dungeon id)
 
             startingentrance_door -= 0x29C; // 0x15274 1byte
 
-            startingentrance_ladderbg -= 0x29C; //0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
-            startingentrance_scrolling -= 0x29C;//0x1537E //1byte --h- --v- 
-            startingentrance_scrollquadrant -= 0x29C; //0x15403 1byte
-            startingentrance_exit -= 0x29C; //0x15488 //2byte word
-            startingentrance_music -= 0x29C; //0x15592
+            startingentrance_ladderbg -= 0x29C; // 0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
+            startingentrance_scrolling -= 0x29C; // 0x1537E //1byte --h- --v-
+            startingentrance_scrollquadrant -= 0x29C; // 0x15403 1byte
+            startingentrance_exit -= 0x29C; // 0x15488 // 2byte word
+            startingentrance_music -= 0x29C; // 0x15592
             startingentrance_entrance -= 0x29C;
 
-            //us = 0x05D97 / jp = 0x05DD7
+            // us = 0x05D97 / jp = 0x05DD7
             overworldgfxGroups = 0x05DD7;
-            hardcodedGrassLW = 0x67FE6;
-            hardcodedGrassDW = 0x67FF0;//map>40
-            hardcodedGrassSpecial = 0x67FE1;//map 183,182,180
+            hardcodedGrassLW1 = 0x67FE6;
+            hardcodedGrassDW1 = 0x67FF0; // map>40
+            hardcodedGrassSpecial = 0x67FE1; // map 183,182,180
 
             OWExitRoomId = 0x15D8A - 0x29C;
             OWExitMapId = 0x15E28 - 0x29C;
@@ -424,36 +737,98 @@ namespace ZeldaFullEditor {
             OWExitDoorType1 = 0x16367 - 0x29C;
             OWExitDoorType2 = 0x16405 - 0x29C;
 
-            overworldgfxGroups2 = 0x60B3; //
+            overworldgfxGroups2 = 0x60B3;
 
-            /* public static int map32TilesTL = 0x18000;
-             public static int map32TilesTR = 0x1B400;
-             public static int map32TilesBL = 0x20000;
-             public static int map32TilesBR = 0x23400;*/
+            /*
+            public static int map32TilesTL = 0x18000;
+            public static int map32TilesTR = 0x1B400;
+            public static int map32TilesBL = 0x20000;
+            public static int map32TilesBR = 0x23400;
+            */
 
             map32TilesTL = 0x18000;
             map32TilesTR = 0x1B3C0;
             map32TilesBL = 0x20000;
             map32TilesBR = 0x233C0;
-            compressedAllMap32PointersHigh = 0x176B1; //LONGPointers all tiles of maps[High] (mapid* 3)
-            compressedAllMap32PointersLow = 0x17891; //LONGPointers all tiles of maps[Low] (mapid* 3)
-            overworldMapPalette = 0x7D1C; //JP
+            compressedAllMap32PointersHigh = 0x176B1; // LONGPointers all tiles of maps[High] (mapid* 3)
+            compressedAllMap32PointersLow = 0x17891; // LONGPointers all tiles of maps[Low] (mapid* 3)
+            overworldMapPalette = 0x7D1C; // JP
             overworldMapPaletteGroup = 0x67E74;
-            overworldMapSize = 0x1273B; //JP
+            overworldMapSize = 0x1273B; // JP
             overlayPointers = 0x3FAF4;
             overlayPointersBank = 0x07;
             overworldTilesType = 0x7FD94;
             Rando = rando;
 
-            if (rando == true) {
-                //TODO: Add condition here?
+            if (rando)
+            {
+                // TODO: Add condition here?
             }
         }
 
-        //===========================================================================================
+        // ===========================================================================================
+        // Things
+        // ===========================================================================================
+        public class FloorNumber
+        {
+            private readonly string nom;
+
+            public string Name { get => nom; }
+
+            private readonly byte val;
+
+            public byte ByteValue { get => val; }
+
+            public FloorNumber(string n, byte v)
+            {
+                nom = n;
+                val = v;
+            }
+
+            public override string ToString()
+            {
+                return nom;
+            }
+
+            public static int FindFloorIndex(byte b)
+            {
+                for (int i = 0; i < floors.Length; i++)
+                {
+                    if (b == floors[i].ByteValue)
+                    {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+        }
+
+        public static FloorNumber[] floors = new FloorNumber[]
+        {
+            new FloorNumber("B8", 0xF8),
+            new FloorNumber("B7", 0xF9),
+            new FloorNumber("B6", 0xFA),
+            new FloorNumber("B5", 0xFB),
+            new FloorNumber("B4", 0xFC),
+            new FloorNumber("B3", 0xFD),
+            new FloorNumber("B2", 0xFE),
+            new FloorNumber("B1", 0xFF),
+            new FloorNumber("1F", 0x00),
+            new FloorNumber("2F", 0x01),
+            new FloorNumber("3F", 0x02),
+            new FloorNumber("4F", 0x03),
+            new FloorNumber("5F", 0x04),
+            new FloorNumber("6F", 0x05),
+            new FloorNumber("7F", 0x06),
+            new FloorNumber("8F", 0x07),
+        };
+
+        // ===========================================================================================
         // Names
-        //===========================================================================================
-        public static string[] RoomEffect = new string[]
+        // TODO moved to DefaultEntities.cs once we start working on projects
+        // ===========================================================================================
+        public static string[] RoomEffects = new string[]
         {
             "Nothing",
             "Nothing",
@@ -462,10 +837,10 @@ namespace ZeldaFullEditor {
             "Trinexx Shell",
             "Red Flashes",
             "Light Torch to See Floor",
-            "Ganon's Darkness"
+            "Ganon's Darkness",
         };
 
-        public static string[] RoomTag = new string[]
+        public static string[] RoomTags = new string[]
         {
             "Nothing",
 
@@ -535,7 +910,7 @@ namespace ZeldaFullEditor {
             "Push Block for Chest",
             "Clear Room for Triforce Door",
             "Light Torches for Chest",
-            "Kill Boss Again"
+            "Kill Boss Again",
         };
 
         public static string[] SecretItemNames = new string[]
@@ -564,14 +939,14 @@ namespace ZeldaFullEditor {
             "Heart",
             "Fairy",
             "Heart",
-            "Nothing ", //22
+            "Nothing ", // 22
 
             "Hole",
             "Warp",
             "Staircase",
             "Bombable",
-            "Switch"
-           };
+            "Switch",
+        };
 
         public static string[] Type1RoomObjectNames = new string[]
         {
@@ -1282,7 +1657,7 @@ namespace ZeldaFullEditor {
             "Door X top? (unused?)",
             "Door X top? (unused?)",
             "Door X top? (unused?)",
-            "Door X top? (unused?)"
+            "Door X top? (unused?)",
         };
     }
 }

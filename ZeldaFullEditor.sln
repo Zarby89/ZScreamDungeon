@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeldaFullEditor", "ZeldaFullEditor\ZeldaFullEditor.csproj", "{A634564E-5323-48FE-A54C-B42AF25C5315}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ZScreamSetup", "ZScreamSetup\ZScreamSetup.vdproj", "{F2C5F6E1-B12F-460A-918C-76349A970C31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{A634564E-5323-48FE-A54C-B42AF25C5315}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A634564E-5323-48FE-A54C-B42AF25C5315}.Release|x86.ActiveCfg = Release|x86
 		{A634564E-5323-48FE-A54C-B42AF25C5315}.Release|x86.Build.0 = Release|x86
-		{F2C5F6E1-B12F-460A-918C-76349A970C31}.Debug|Any CPU.ActiveCfg = Debug
-		{F2C5F6E1-B12F-460A-918C-76349A970C31}.Debug|x86.ActiveCfg = Debug
-		{F2C5F6E1-B12F-460A-918C-76349A970C31}.Release|Any CPU.ActiveCfg = Release
-		{F2C5F6E1-B12F-460A-918C-76349A970C31}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

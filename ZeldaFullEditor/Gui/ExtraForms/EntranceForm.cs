@@ -22,11 +22,11 @@ namespace ZeldaFullEditor.Gui
         public ushort mapPos;
         public byte entranceId;
         public short mapId;
-        public bool isHole = false;
+        public bool isHole;
 
         private void EntranceForm_Load(object sender, EventArgs e)
         {
-            textBox1.Text = entranceId.ToString();
+            textBox1.HexValue = entranceId;
             textBox2.Text = mapId.ToString();
             textBox3.Text = mapPos.ToString();
             textBox4.Text = x.ToString();
@@ -37,17 +37,10 @@ namespace ZeldaFullEditor.Gui
         private void button1_Click(object sender, EventArgs e)
         {
             int v = 0;
-            int.TryParse(textBox1.Text, out v); //Entrance ID
-            if (v > 132 || v < 0)
-            {
-                
-                MessageBox.Show("Entrance ID is out of range; max value is 132");
-                return;
-            }
 
-            entranceId = (byte)v;
+            entranceId = (byte)textBox1.HexValue;
 
-            int.TryParse(textBox2.Text, out v); //Map Id
+            int.TryParse(textBox2.Text, out v); // Map Id
 
             if (v > 128 || v < 0)
             {
@@ -56,9 +49,9 @@ namespace ZeldaFullEditor.Gui
             }
 
             mapId = (short)v;
-            int.TryParse(textBox3.Text, out v); //Map Pos (read only)
+            int.TryParse(textBox3.Text, out v); // Map Pos (read only)
 
-            int.TryParse(textBox4.Text, out v); //X
+            int.TryParse(textBox4.Text, out v); // X
             if (v > 4096 || v < 0)
             {
                 MessageBox.Show("X is out of range; max value is 4096");
@@ -66,10 +59,9 @@ namespace ZeldaFullEditor.Gui
             }
 
             x = (short)v;
-            int.TryParse(textBox5.Text, out v); //Y
+            int.TryParse(textBox5.Text, out v); // Y
             if (v > 4096 || v < 0)
             {
-                
                 MessageBox.Show("Y is out of range; max value is 4096");
                 return;
             }

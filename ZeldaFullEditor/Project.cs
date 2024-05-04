@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     /*This class will contains all information about the project*/
 
     public static class Project
     {
-        //TODO: Add something here?
+        // TODO: Add something here?
     }
 }

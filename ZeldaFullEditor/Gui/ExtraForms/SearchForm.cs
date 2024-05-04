@@ -19,7 +19,7 @@ namespace ZeldaFullEditor.Gui
             this.mainForm = mainForm;
             InitializeComponent();
         }
-        
+
         private void button2_Click(object sender, EventArgs e)
         {
             richTextBox1.Clear();
@@ -30,9 +30,9 @@ namespace ZeldaFullEditor.Gui
             comboBox1.Items.Clear();
             if (tileRadio.Checked)
             {
-                for(int i = 0;i< mainForm.listoftilesobjects.Count ; i++)
+                for (int i = 0; i < mainForm.listoftilesobjects.Count; i++)
                 {
-                    comboBox1.Items.Add(mainForm.listoftilesobjects[i].id.ToString("X4")+ " " +mainForm.listoftilesobjects[i].name);
+                    comboBox1.Items.Add(mainForm.listoftilesobjects[i].id.ToString("X4") + " " + mainForm.listoftilesobjects[i].name);
                 }
             }
             else if (spriteRadio.Checked)
@@ -53,9 +53,9 @@ namespace ZeldaFullEditor.Gui
         {
             if (tileRadio.Checked)
             {
-                for (int i = 0; i < 296; i++)
+                for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
-                    int l = DungeonsData.all_rooms[i].tilesObjects.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
+                    int l = DungeonsData.AllRooms[i].tilesObjects.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
                     if (l > 0)
                     {
                         richTextBox1.AppendText("Tile Object ID : " + mainForm.listoftilesobjects[comboBox1.SelectedIndex].id.ToString("X4") + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
@@ -64,9 +64,9 @@ namespace ZeldaFullEditor.Gui
             }
             else if (spriteRadio.Checked)
             {
-                for (int i = 0; i < 296; i++)
+                for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
-                    int l = DungeonsData.all_rooms[i].sprites.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
+                    int l = DungeonsData.AllRooms[i].sprites.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
                     if (l > 0)
                     {
                         richTextBox1.AppendText("Sprite ID : " + Sprites_Names.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
@@ -75,9 +75,9 @@ namespace ZeldaFullEditor.Gui
             }
             else if (itemRadio.Checked)
             {
-                for (int i = 0; i < 296; i++)
+                for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
-                    int l = DungeonsData.all_rooms[i].pot_items.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
+                    int l = DungeonsData.AllRooms[i].pot_items.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
                     if (l > 0)
                     {
                         richTextBox1.AppendText("Item ID : " + ItemsNames.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
@@ -86,9 +86,9 @@ namespace ZeldaFullEditor.Gui
             }
             else if (chestRadio.Checked)
             {
-                for (int i = 0; i < 296; i++)
+                for (int i = 0; i < Constants.NumberOfRooms; i++)
                 {
-                    int l = DungeonsData.all_rooms[i].chest_list.Where(o => o.item == comboBox1.SelectedIndex).ToArray().Length;
+                    int l = DungeonsData.AllRooms[i].chest_list.Where(o => o.item == comboBox1.SelectedIndex).ToArray().Length;
                     if (l > 0)
                     {
                         richTextBox1.AppendText("Chest Items : " + ChestItems_Name.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");

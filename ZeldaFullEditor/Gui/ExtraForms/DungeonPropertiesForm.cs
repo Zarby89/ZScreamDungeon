@@ -20,7 +20,8 @@ namespace ZeldaFullEditor.Gui
         {
             InitializeComponent();
         }
-        
+
+        // TODO move elsewhere for consistency
         private void DungeonPropertiesForm_Load(object sender, EventArgs e)
         {
             listBox1.Items.Add("Pendant 1 - Green (Eastern)");
@@ -29,24 +30,26 @@ namespace ZeldaFullEditor.Gui
             listBox1.Items.Add("Agahnim 1");
             listBox1.Items.Add("Crystal 2 (Swamp)");
             listBox1.Items.Add("Crystal 1 (Darkness)");
-            listBox1.Items.Add("Crystal 3 (Skullswood)");
+            listBox1.Items.Add("Crystal 3 (Skull)");
             listBox1.Items.Add("Crystal 6 (Mire)");
             listBox1.Items.Add("Crystal 5 (Ice)");
             listBox1.Items.Add("Crystal 7 (Turtle)");
             listBox1.Items.Add("Crystal 4 (Thieves)");
             listBox1.Items.Add("Agahnim 2");
 
-            for(int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
             {
-                properties[i] = new DungeonProperty(
-                ROM.DATA[Constants.dungeons_startrooms + i],
-                 ROM.DATA[Constants.dungeons_endrooms + i],
-                  (short)((ROM.DATA[Constants.dungeons_bossrooms + (i*2) +1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)]));
+                properties[i] = new DungeonProperty
+                (
+                    ROM.DATA[Constants.dungeons_startrooms + i],
+                    ROM.DATA[Constants.dungeons_endrooms + i],
+                    (short)((ROM.DATA[Constants.dungeons_bossrooms + (i * 2) + 1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)])
+                );
             }
 
             listBox1.SelectedIndex = 0;
         }
-        
+
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             changedFromForm = true;
@@ -58,10 +61,9 @@ namespace ZeldaFullEditor.Gui
 
         private void bossroomTextbox_TextChanged(object sender, EventArgs e)
         {
-            if (changedFromForm == false)
+            if (!changedFromForm)
             {
-                int r = 0;
-                if (int.TryParse(startroomTextbox.Text,out r))
+                if (int.TryParse(startroomTextbox.Text, out int r))
                 {
                     properties[listBox1.SelectedIndex].startroom = (byte)r;
                 }
@@ -80,9 +82,9 @@ namespace ZeldaFullEditor.Gui
         {
             for (int i = 0; i < 12; i++)
             {
-                ROM.Write(Constants.dungeons_startrooms + i,properties[i].startroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
-                ROM.Write(Constants.dungeons_endrooms + i,properties[i].endroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
-                ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
+                ROM.Write(Constants.dungeons_startrooms + i, properties[i].startroom, WriteType.DungeonPrize);
+                ROM.Write(Constants.dungeons_endrooms + i, properties[i].endroom, WriteType.DungeonPrize);
+                ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, WriteType.DungeonPrize);
             }
 
             this.Close();
@@ -100,7 +102,7 @@ namespace ZeldaFullEditor.Gui
         public byte endroom = 0;
         public short bossroom = 0;
 
-        public DungeonProperty(byte startroom,byte endroom,short bossroom)
+        public DungeonProperty(byte startroom, byte endroom, short bossroom)
         {
             this.startroom = startroom;
             this.endroom = endroom;

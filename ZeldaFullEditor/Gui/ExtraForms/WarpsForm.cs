@@ -19,7 +19,7 @@ namespace ZeldaFullEditor.Gui
 
         private void roomProperty_hole_TextChanged(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void button1_Click(object sender, EventArgs e)

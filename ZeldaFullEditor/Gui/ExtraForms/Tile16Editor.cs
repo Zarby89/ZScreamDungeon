@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lidgren.Network;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -17,9 +19,11 @@ namespace ZeldaFullEditor.Gui
         bool fromForm = false;
         byte[] tempTiletype = new byte[0x200];
 
-        Tile16[] allTiles = new Tile16[4096];
+        Tile16[] allTiles = new Tile16[Constants.NumberOfMap16];
 
         ushort searchedTile = 0xFFFF;
+
+        Tile16 copiedTile;
 
         public Tile16Editor(SceneOW scene)
         {
@@ -35,14 +39,11 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public unsafe void updateTiles()
         {
-            byte p;
-            ushort tValue = 0;
-            ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out tValue);
-            ushort tempTile = tValue;
+            ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out ushort tempTile);
 
-            tile8selected = tValue;
+            tile8selected = tempTile;
 
-            p = (byte)paletteUpDown.Value;
+            byte p = (byte)paletteUpDown.Value;
             byte* destPtr = (byte*)GFX.editort16Ptr.ToPointer();
             byte* srcPtr = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
             int xx = 0;
@@ -57,6 +58,7 @@ namespace ZeldaFullEditor.Gui
                         CopyTile(x, y, xx, yy, i, p, destPtr, srcPtr);
                     }
                 }
+
                 xx += 8;
                 if (xx >= 128)
                 {
@@ -65,7 +67,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+            GFX.editort16Bitmap.Palette = scene.ow.AllMaps[scene.selectedMap].GFXBitmap.Palette;
             pictureboxTile8.Refresh();
         }
 
@@ -75,12 +77,12 @@ namespace ZeldaFullEditor.Gui
             int my = y;
             byte r = 0;
 
-            if (tile.h != 0)
+            if (tile.H)
             {
                 mx = 3 - x;
                 r = 1;
             }
-            if (tile.v != 0)
+            if (tile.V)
             {
                 my = 7 - y;
             }
@@ -121,18 +123,18 @@ namespace ZeldaFullEditor.Gui
         {
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-            e.Graphics.DrawImage(GFX.editort16Bitmap, new Rectangle(0, 0, 256, 1024));
+            e.Graphics.DrawImage(GFX.editort16Bitmap, Constants.Rect_0_0_256_1024);
 
             if (gridcheckBox.Checked)
             {
                 for (int xs = 0; xs < 16; xs++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), xs * 16, 0, xs * 16, 1024);
+                    e.Graphics.DrawLine(Constants.ThirdWhitePen1, xs * 16, 0, xs * 16, 1024);
 
                 }
                 for (int ys = 0; ys < 256; ys++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, ys * 16, 256, ys * 16);
+                    e.Graphics.DrawLine(Constants.ThirdWhitePen1, 0, ys * 16, 256, ys * 16);
                 }
             }
 
@@ -144,7 +146,7 @@ namespace ZeldaFullEditor.Gui
 
         private void mirrorXCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (fromForm == false)
+            if (!fromForm)
             {
                 updateTiles();
             }
@@ -156,7 +158,7 @@ namespace ZeldaFullEditor.Gui
             else
             {
                 tileTypeBox.Enabled = true;
-                tileTypeBox.SelectedIndex = tempTiletype[tile8selected];
+                tileTypeBox.SelectedIndex = (int)tempTiletype[tile8selected];
             }
         }
 
@@ -165,19 +167,19 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,16000f),new RectangleF(0,0,128, 8000),GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f, 0f, 256.5f, 16000f), new RectangleF(0, 0, 128, 8000), GraphicsUnit.Pixel);
             //e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
 
             if (gridcheckBox.Checked)
             {
                 for (int x = 0; x < 16; x++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.FromArgb(100, Color.White), 1), x * 32, 0, x * 32, 16000);
+                    e.Graphics.DrawLine(Constants.White100Pen1, x * 32, 0, x * 32, 16000);
 
                 }
                 for (int y = 0; y < 512; y++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.FromArgb(100, Color.White), 1), 0, y * 32, 256, y * 32);
+                    e.Graphics.DrawLine(Constants.White100Pen1, 0, y * 32, 256, y * 32);
                 }
             }
 
@@ -188,16 +190,18 @@ namespace ZeldaFullEditor.Gui
             {
                 int xP2 = (searchedTile % 8) * 32;
                 int yP2 = ((searchedTile / 8)) * 32;
-                e.Graphics.DrawRectangle(new Pen(Color.FromArgb(220, Color.Orange), 1), new Rectangle(xP2, yP2, 32, 32));
+                e.Graphics.DrawRectangle(Constants.Orange220Pen1, new Rectangle(xP2, yP2, 32, 32));
             }
 
-            /*if (scene.selectedTile[0] >= 2000)
+            /*
+            if (scene.selectedTile[0] >= 2000)
             {
                 yP -= 8000;
                 xP += 256;
-            }*/
-            e.Graphics.DrawRectangle(new Pen(Color.FromArgb(220, Color.Red), 1), new Rectangle(xP, yP, 32, 32));
-            
+            }
+            */
+            e.Graphics.DrawRectangle(Constants.Red220Pen1, new Rectangle(xP, yP, 32, 32));
+
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
         }
@@ -209,9 +213,15 @@ namespace ZeldaFullEditor.Gui
         /// <param name="e"></param>
         private void pictureboxTile8_MouseDown(object sender, MouseEventArgs e)
         {
+            fromForm = true;
             int tid = (e.X / 16) + ((e.Y / 16) * 16);
             tileUpDown.Text = tid.ToString("X2");
+            if (tid < 512)
+            {
+                tileTypeBox.SelectedIndex = (int)tempTiletype[tid];
+            }
             pictureboxTile8.Refresh();
+            fromForm = false;
 
             updateTiles();
         }
@@ -223,66 +233,67 @@ namespace ZeldaFullEditor.Gui
         /// <param name="e"></param>
         private void pictureboxTile16_MouseDown(object sender, MouseEventArgs e)
         {
-            int offset = 0;
+            int offset = (e.X < 256) ? 0 : 1992;
             int yp = e.Y;
-            if (e.X < 256)
-            {
-                offset = 0;
-            }
-            else
-            {
-                offset = 1992;
-            }
 
             int t16 = offset + (e.X / 32) + ((e.Y / 32) * 8);
             int t8x = (e.X / 16) & 0x01;
             int t8y = (e.Y / 16) & 0x01;
             int t8i = 0;
 
-            //when left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
+            scene.selectedTile = new ushort[1] { (ushort)t16 };
+
+            tile16GroupBox.Text = "Selected tile 16: " + t16.ToString("X4");
+
+            // When left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
             if (e.Button == MouseButtons.Left)
             {
-                TileInfo t = new TileInfo(tile8selected, (byte)paletteUpDown.Value, (ushort)(mirrorYCheckbox.Checked ? 1 : 0), (ushort)(mirrorXCheckbox.Checked ? 1 : 0), (ushort)(inFrontCheckbox.Checked ? 1 : 0));
+                TileInfo t = new TileInfo(tile8selected,
+                    (byte)paletteUpDown.Value,
+                    inFrontCheckbox.Checked,
+                    mirrorXCheckbox.Checked,
+                    mirrorYCheckbox.Checked);
                 if (t8x == 0 && t8y == 0)
                 {
-                    allTiles[t16] = new Tile16(t, allTiles[t16].tile1, allTiles[t16].tile2, allTiles[t16].tile3);
+                    allTiles[t16] = new Tile16(t, allTiles[t16].Tile1, allTiles[t16].Tile2, allTiles[t16].Tile3);
                 }
                 else if (t8x == 1 && t8y == 0)
                 {
-                    allTiles[t16] = new Tile16(allTiles[t16].tile0, t, allTiles[t16].tile2, allTiles[t16].tile3);
+                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, t, allTiles[t16].Tile2, allTiles[t16].Tile3);
                 }
                 else if (t8x == 0 && t8y == 1)
                 {
-                    allTiles[t16] = new Tile16(allTiles[t16].tile0, allTiles[t16].tile1, t, allTiles[t16].tile3);
+                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, t, allTiles[t16].Tile3);
                 }
                 else if (t8x == 1 && t8y == 1)
                 {
-                    allTiles[t16] = new Tile16(allTiles[t16].tile0, allTiles[t16].tile1, allTiles[t16].tile2, t);
+                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, allTiles[t16].Tile2, t);
                 }
 
                 BuildTiles16Gfx();
-                pictureboxTile16.Refresh();
             }
-            //when right clicked, get the select the tile 8 from the corrisponding quadrant of the tile 16
+            // When right clicked, get the select the tile 8 from the corrisponding quadrant of the tile 16
             else
             {
                 if (t8x == 0 && t8y == 0)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile0);
+                    updateTileInfoFrom16(allTiles[t16].Tile0);
                 }
                 else if (t8x == 1 && t8y == 0)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile1);
+                    updateTileInfoFrom16(allTiles[t16].Tile1);
                 }
                 else if (t8x == 0 && t8y == 1)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile2);
+                    updateTileInfoFrom16(allTiles[t16].Tile2);
                 }
                 else if (t8x == 1 && t8y == 1)
                 {
-                    updateTileInfoFrom16(allTiles[t16].tile3);
+                    updateTileInfoFrom16(allTiles[t16].Tile3);
                 }
             }
+
+            pictureboxTile16.Refresh();
         }
 
         private void updateTileInfoFrom16(TileInfo t)
@@ -290,10 +301,10 @@ namespace ZeldaFullEditor.Gui
             fromForm = true;
             tileUpDown.Text = t.id.ToString("X2");
             paletteUpDown.Value = t.palette;
-            mirrorXCheckbox.Checked = (t.h == 1 ? true : false);
-            mirrorYCheckbox.Checked = (t.v == 1 ? true : false);
-            inFrontCheckbox.Checked = (t.o == 1 ? true : false);
-            tileTypeBox.SelectedIndex = tempTiletype[t.id];
+            mirrorXCheckbox.Checked = t.H;
+            mirrorYCheckbox.Checked = t.V;
+            inFrontCheckbox.Checked = t.O;
+            tileTypeBox.SelectedIndex = (int)tempTiletype[t.id];
             fromForm = false;
 
             updateTiles();
@@ -301,21 +312,21 @@ namespace ZeldaFullEditor.Gui
 
         private unsafe void BuildTiles16Gfx()
         {
-            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
-            var gfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
+            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
+            var gfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
             int[] offsets = { 0, 8, 1024, 1032 };
             var yy = 0;
             var xx = 0;
 
-            for (var i = 0; i < 4096; i++) //number of tiles16 3748?
+            for (var i = 0; i < Constants.NumberOfMap16; i++) // Number of tiles16 3748? // its 3752
             {
-                //8x8 tile draw
-                //gfx8 = 4bpp so everyting is /2
+                // 8x8 tile draw
+                // gfx8 = 4bpp so everyting is /2
                 var tiles = allTiles[i];
 
                 for (var tile = 0; tile < 4; tile++)
                 {
-                    TileInfo info = tiles.tilesinfos[tile];
+                    TileInfo info = tiles.TileInfoArray[tile];
                     int offset = offsets[tile];
 
                     for (var y = 0; y < 8; y++)
@@ -336,18 +347,18 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        private unsafe void CopyTile16(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer)//map,current
+        private unsafe void CopyTile16(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
         {
             int mx = x;
             int my = y;
             byte r = 0;
 
-            if (tile.h != 0)
+            if (tile.H)
             {
                 mx = 3 - x;
                 r = 1;
             }
-            if (tile.v != 0)
+            if (tile.V)
             {
                 my = 7 - y;
             }
@@ -362,30 +373,30 @@ namespace ZeldaFullEditor.Gui
 
         private void Tile16Editor_Load(object sender, EventArgs e)
         {
-            for(int i = 0;i<0xFF;i++)
+            for (int i = 0; i < 0xFF; i++)
             {
                 tilesTypesNames[i] = i.ToString("X2") + " - ????";
             }
 
             loadTilesNames();
 
-            for (int i = 0;i<0x200;i++)
+            for (int i = 0; i < 0x200; i++)
             {
-                tempTiletype[i] = scene.ow.allTilesTypes[i];
+                tempTiletype[i] = scene.ow.AllTileTypes[i];
             }
 
-            scene.ow.tiles16.CopyTo(allTiles);
+            scene.ow.Tile16List.CopyTo(allTiles);
 
             unsafe
             {
-                //update gfx to be on selected map
-                byte* currentmapgfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer();//loaded gfx for the current map (empty at this point)
-                byte* allgfxData = (byte*)GFX.allgfx16Ptr.ToPointer(); //all gfx of the game pack of 2048 bytes (4bpp)
+                // Update gfx to be on selected map
+                byte* currentmapgfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point)
+                byte* allgfxData = (byte*)GFX.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
                 for (int i = 0; i < 16; i++)
                 {
                     for (int j = 0; j < 2048; j++)
                     {
-                        byte mapByte = allgfxData[j + (scene.ow.allmaps[scene.selectedMap].staticgfx[i] * 2048)];
+                        byte mapByte = allgfxData[j + (scene.ow.AllMaps[scene.selectedMap].StaticGFX[i] * 2048)];
                         switch (i)
                         {
                             case 0:
@@ -393,10 +404,10 @@ namespace ZeldaFullEditor.Gui
                             case 4:
                             case 5:
                                 mapByte += 0x88;
-                            break;
+                                break;
                         }
 
-                        currentmapgfx8Data[(i * 2048) + j] = mapByte; //Upload used gfx data
+                        currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
                     }
                 }
             }
@@ -404,23 +415,56 @@ namespace ZeldaFullEditor.Gui
 
         private void button1_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 4096; i++)
+            List<ushort> zsnetTiles16ID = new List<ushort>();
+            List<Tile16> zsnetTiles16 = new List<Tile16>();
+            for (int i = 0; i < Constants.NumberOfMap16; i++)
             {
-                scene.ow.tiles16[i] = allTiles[i];
+                if (NetZS.connected)
+                {
+                    if (scene.ow.Tile16List[i].GetLongData() != allTiles[i].GetLongData())
+                    {
+                        zsnetTiles16.Add(allTiles[i]);
+                        zsnetTiles16ID.Add((ushort)i);
+                    }
+                }
+
+                // check all tiles that changed
+                scene.ow.Tile16List[i] = allTiles[i];
             }
 
-            for(int i = 0; i<0x200;i++)
+            if (NetZS.connected)
             {
-                scene.ow.allTilesTypes[i] = tempTiletype[i];
+                NetZSBuffer buffer = new NetZSBuffer((short)((zsnetTiles16ID.Count * 10) + 8));
+                buffer.Write((byte)18); // tile data cmd
+                buffer.Write(NetZS.userID); // user id
+                buffer.Write((short)zsnetTiles16ID.Count);  // numbers of tiles changed
+                for (int i = 0; i < zsnetTiles16ID.Count; i++)
+                {
+                    buffer.Write(zsnetTiles16ID[i]);
+                    buffer.Write((ushort)zsnetTiles16[i].Tile0.toShort());
+                    buffer.Write((ushort)zsnetTiles16[i].Tile1.toShort());
+                    buffer.Write((ushort)zsnetTiles16[i].Tile2.toShort());
+                    buffer.Write((ushort)zsnetTiles16[i].Tile3.toShort());
+                }
+
+                NetOutgoingMessage msg = NetZS.client.CreateMessage();
+                msg.Write(buffer.buffer);
+                NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+                NetZS.client.FlushSendQueue();
             }
 
-            for(int i = 0; i<159;i++)
+            for (int i = 0; i < 0x200; i++)
             {
-                scene.ow.allmaps[i].needRefresh = true;
+                scene.ow.AllTileTypes[i] = tempTiletype[i];
             }
 
-            scene.ow.allmaps[scene.selectedMap].BuildMap();
-            scene.ow.allmaps[scene.selectedMap].needRefresh = false;
+            for (int i = 0; i < 159; i++)
+            {
+                scene.ow.AllMaps[i].NeedRefresh = true;
+            }
+
+            scene.ow.AllMaps[scene.selectedMap].BuildMap();
+            scene.ow.AllMaps[scene.selectedMap].NeedRefresh = false;
 
             this.Close();
         }
@@ -432,12 +476,13 @@ namespace ZeldaFullEditor.Gui
 
         private void tileTypeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (fromForm == false)
+            if (!fromForm)
             {
                 tempTiletype[tile8selected] = (byte)tileTypeBox.SelectedIndex;
             }
         }
 
+        // TODO for kan ah fuck
         public void loadTilesNames()
         {
             tilesTypesNames[0x00] = "0x00 - Normal tile(no interaction)";
@@ -523,6 +568,7 @@ namespace ZeldaFullEditor.Gui
             tileTypeBox.Items.AddRange(tilesTypesNames);
         }
 
+        // TODO switch to entities.cs version, etc
         string[] tilesTypesNames = new string[0xFF];
 
         private void gridcheckBox_CheckedChanged(object sender, EventArgs e)
@@ -534,7 +580,7 @@ namespace ZeldaFullEditor.Gui
         private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             scene.mainForm.editorsTabControl.SelectedIndex = 2;
-            scene.mainForm.gfxEditor.selectedSheet = scene.ow.allmaps[scene.selectedMap].staticgfx[(e.Y/64)];
+            scene.mainForm.gfxEditor.selectedSheet = scene.ow.AllMaps[scene.selectedMap].StaticGFX[(e.Y / 64)];
             scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
             this.Close();
         }
@@ -547,11 +593,25 @@ namespace ZeldaFullEditor.Gui
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ushort tsearch = 0;
+            ushort tsearch;
             ushort.TryParse(tile16searchTextbox.Text, System.Globalization.NumberStyles.HexNumber, null, out tsearch);
             searchedTile = tsearch;
             panel1.VerticalScroll.Value = ((searchedTile / 8) * 32);
             panel1.PerformLayout();
+        }
+
+        private void Tile16CopyBtn_Click(object sender, EventArgs e)
+        {
+            copiedTileLabel.Text = "Copied Tile: " + scene.selectedTile[0].ToString("X4");
+            copiedTile = allTiles[scene.selectedTile[0]];
+        }
+
+        private void Tile16PasteBtn_Click(object sender, EventArgs e)
+        {
+            allTiles[scene.selectedTile[0]] = copiedTile;
+
+            BuildTiles16Gfx();
+            pictureboxTile16.Refresh();
         }
     }
 }

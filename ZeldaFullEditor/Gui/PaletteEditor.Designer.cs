@@ -40,11 +40,18 @@
             System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Shields");
             System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Swords");
             System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Armors");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Overworld Grass");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("3D Objects");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("OverworldMaps");
             this.palettesTreeView = new System.Windows.Forms.TreeView();
             this.applyButton = new System.Windows.Forms.Button();
             this.restoreallButton = new System.Windows.Forms.Button();
             this.restoreselButton = new System.Windows.Forms.Button();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,6 +84,12 @@
             treeNode11.Text = "Swords";
             treeNode12.Name = "ArmorsPal";
             treeNode12.Text = "Armors";
+            treeNode13.Name = "OverworldGrassPal";
+            treeNode13.Text = "Overworld Grass";
+            treeNode14.Name = "Objects3DPal";
+            treeNode14.Text = "3D Objects";
+            treeNode15.Name = "OverworldMapsPal";
+            treeNode15.Text = "OverworldMaps";
             this.palettesTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
@@ -89,8 +102,11 @@
             treeNode9,
             treeNode10,
             treeNode11,
-            treeNode12});
-            this.palettesTreeView.Size = new System.Drawing.Size(200, 294);
+            treeNode12,
+            treeNode13,
+            treeNode14,
+            treeNode15});
+            this.palettesTreeView.Size = new System.Drawing.Size(200, 360);
             this.palettesTreeView.TabIndex = 0;
             this.palettesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.palettesTreeView_AfterSelect);
             // 
@@ -131,24 +147,67 @@
             this.palettePicturebox.Size = new System.Drawing.Size(256, 256);
             this.palettePicturebox.TabIndex = 1;
             this.palettePicturebox.TabStop = false;
-            this.palettePicturebox.Click += new System.EventHandler(this.palettePicturebox_Click);
             this.palettePicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.palettePicturebox_Paint);
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
             this.palettePicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDown);
             this.palettePicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseUp);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(206, 293);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(94, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Export Palettes";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.exportAllPalettes);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(306, 293);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(94, 23);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Import Palettes";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.importAllPalettes);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(206, 322);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(94, 23);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "Export Selected";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(306, 322);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(94, 23);
+            this.button4.TabIndex = 8;
+            this.button4.Text = "Import Selected";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // PaletteEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.restoreselButton);
             this.Controls.Add(this.restoreallButton);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.palettePicturebox);
             this.Controls.Add(this.palettesTreeView);
             this.Name = "PaletteEditor";
-            this.Size = new System.Drawing.Size(468, 294);
+            this.Size = new System.Drawing.Size(468, 360);
             this.Load += new System.EventHandler(this.PaletteEditor_Load);
             this.VisibleChanged += new System.EventHandler(this.PaletteEditor_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
@@ -163,5 +222,9 @@
         private System.Windows.Forms.Button applyButton;
         private System.Windows.Forms.Button restoreallButton;
         private System.Windows.Forms.Button restoreselButton;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }

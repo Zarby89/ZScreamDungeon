@@ -14,7 +14,11 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>C:\Users\adamo\Desktop\ZScream 2.8.2\</PublishUrl>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <PublishUrl>C:\Users\adamo\Desktop\zscream\ZS3.2.1\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,9 +27,9 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>2</ApplicationRevision>
+    <MapFileExtensions>false</MapFileExtensions>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -41,21 +45,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release\Version3.2.1\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>true</Prefer32Bit>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>ZeldaFullEditor.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>screamlink.ico</ApplicationIcon>
@@ -89,7 +94,7 @@
     <ManifestKeyFile>ZeldaFullEditor_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -102,95 +107,22 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSScriptLibrary, Version=3.30.3.0, Culture=neutral, PublicKeyToken=70fcc3d18c749033, processorArchitecture=MSIL">
-      <HintPath>..\packages\CS-Script.bin.3.30.3\lib\net46\CSScriptLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.2.0.0\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.2.0.0\lib\netstandard1.3\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp.Scripting, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Scripting.2.0.0\lib\netstandard1.3\Microsoft.CodeAnalysis.CSharp.Scripting.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Scripting, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.Scripting.Common.2.0.0\lib\netstandard1.3\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Mono.CSharp, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\CS-Script.bin.3.30.3\lib\net46\Mono.CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Diagnostics.FileVersionInfo, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.FileVersionInfo.4.3.0\lib\net46\System.Diagnostics.FileVersionInfo.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.StackTrace.4.3.0\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=1.4.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reflection.Metadata.1.4.2\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.InteropServices, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.4.3.0\lib\net462\System.Runtime.InteropServices.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Encoding.CodePages, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encoding.CodePages.4.3.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Thread, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Thread.4.3.0\lib\net46\System.Threading.Thread.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -200,28 +132,38 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.XmlDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.XmlDocument.4.3.0\lib\net46\System.Xml.XmlDocument.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.XPath, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.XPath.4.3.0\lib\net46\System.Xml.XPath.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.XPath.XDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.XPath.XDocument.4.3.0\lib\net46\System.Xml.XPath.XDocument.dll</HintPath>
-    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
-    <Compile Include="Data\DoorData.cs" />
+    <Compile Include="ColoringInfo.cs" />
+    <Compile Include="Data\AsmPatch.cs" />
+    <Compile Include="Data\AsmPropertyType.cs" />
+    <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DungeonMap.cs" />
+    <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
+    <Compile Include="Data\MessageData.cs" />
     <Compile Include="Data\OAMTile.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
+    <Compile Include="Data\SongAddress.cs" />
+    <Compile Include="Data\SpriteProperty.cs" />
+    <Compile Include="Gui\AddDirectoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\AddDirectoryForm.Designer.cs">
+      <DependentUpon>AddDirectoryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\DamageClassControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\DamageClassControl.Designer.cs">
+      <DependentUpon>DamageClassControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\DataExtractor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -233,6 +175,12 @@
     </Compile>
     <Compile Include="Gui\ExpandedManagement.Designer.cs">
       <DependentUpon>ExpandedManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\AsmPlugin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\AsmPlugin.Designer.cs">
+      <DependentUpon>AsmPlugin.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\ExtraForms\ChestPicker.cs">
       <SubType>Form</SubType>
@@ -255,15 +203,26 @@
     <Compile Include="Gui\CustomTabControl.Designer.cs">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data\dataObject.cs" />
+    <Compile Include="Data\SelectedObject.cs" />
     <Compile Include="Data\DataRoom.cs" />
     <Compile Include="DoAction.cs" />
-    <Compile Include="Data\DragMode.cs" />
     <Compile Include="Data\DungeonsData.cs" />
     <Compile Include="Data\Entrance.cs" />
     <Compile Include="Data\EntranceOW.cs" />
     <Compile Include="Data\ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
+    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ExitEditorForm.Designer.cs">
+      <DependentUpon>ExitEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\EntranceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\EntranceForm.Designer.cs">
+      <DependentUpon>EntranceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\GlobalOptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -300,6 +259,21 @@
     <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.Designer.cs">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\HexBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\NetHost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\NetHost.Designer.cs">
+      <DependentUpon>NetHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\NetworkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\NetworkForm.Designer.cs">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\OWMusicForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -311,6 +285,18 @@
     </Compile>
     <Compile Include="Gui\ExtraForms\SearchTilesForm.Designer.cs">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZSSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZSSettings.Designer.cs">
+      <DependentUpon>ZSSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZSUWProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZSUWProperties.Designer.cs">
+      <DependentUpon>ZSUWProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\ImportFromRom.cs">
       <SubType>Form</SubType>
@@ -324,20 +310,12 @@
     <Compile Include="Gui\MainTabs\DungeonViewer.Designer.cs">
       <DependentUpon>DungeonViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExtraForms\EntranceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\EntranceForm.Designer.cs" />
     <Compile Include="Gui\ExtraForms\EntrancePropertyForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\ExtraForms\EntrancePropertyForm.Designer.cs">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ExitEditorForm.designer.cs" />
     <Compile Include="Gui\MainTabs\GfxEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -355,6 +333,12 @@
     </Compile>
     <Compile Include="Gui\MainTabs\GfxImportExport.Designer.cs">
       <DependentUpon>GfxImportExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\MainTabs\MusicEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\MusicEditor.Designer.cs">
+      <DependentUpon>MusicEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\MainTabs\ObjectDesigner.cs">
       <SubType>UserControl</SubType>
@@ -438,6 +422,7 @@
     <Compile Include="Data\OverlayData.cs" />
     <Compile Include="Data\Overworld.cs" />
     <Compile Include="Data\OverworldMap.cs" />
+    <Compile Include="IntFunctions.cs" />
     <Compile Include="LogInfos.cs" />
     <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
     <Compile Include="OWSceneModes\DoorMode.cs" />
@@ -456,6 +441,12 @@
     </Compile>
     <Compile Include="Gui\RoomMover.Designer.cs">
       <DependentUpon>RoomMover.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NetZS.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
@@ -524,9 +515,6 @@
     <Compile Include="Gui\Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Scripting.evaluator.cs" />
-    <Compile Include="Scripting.Extensions.cs" />
-    <Compile Include="Scripting.native.cs" />
     <Compile Include="SpriteOWEditor.cs" />
     <Compile Include="SpritesView.cs">
       <SubType>UserControl</SubType>
@@ -551,31 +539,51 @@
     <Compile Include="Data\TilePos.cs" />
     <Compile Include="Data\TileUndo.cs" />
     <Compile Include="Data\TransportOW.cs" />
+    <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Gui\WhirlpoolForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WhirlpoolForm.Designer.cs" />
+    <Compile Include="WriteType.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
     <Compile Include="ZCompressLibrary\compression_piece.cs" />
     <Compile Include="ZCompressLibrary\Decompress.cs" />
     <Compile Include="ZCompressLibrary\fake_mem.cs" />
     <Compile Include="ZSSerializer.cs" />
+    <EmbeddedResource Include="Gui\AddDirectoryForm.resx">
+      <DependentUpon>AddDirectoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\DamageClassControl.resx">
+      <DependentUpon>DamageClassControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\DataExtractor.resx">
       <DependentUpon>DataExtractor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExpandedManagement.resx">
       <DependentUpon>ExpandedManagement.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\AsmPlugin.resx">
+      <DependentUpon>AsmPlugin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ChestPicker.resx">
       <DependentUpon>ChestPicker.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Chestviewer.resx">
       <DependentUpon>Chestviewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx">
+      <DependentUpon>EntranceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ExitEditorForm.resx">
+      <DependentUpon>ExitEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\GlobalOptionForm.resx">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
@@ -586,12 +594,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\AddSprite.resx">
       <DependentUpon>AddSprite.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\AdvancedChestEditorForm.resx">
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\CGRamViewer.resx">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\DungeonPropertiesForm.resx">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
@@ -600,11 +611,26 @@
       <DependentUpon>DungeonMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\HexBox.resx">
+      <DependentUpon>HexBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\NetHost.resx">
+      <DependentUpon>NetHost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\NetworkForm.resx">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\OWMusicForm.resx">
       <DependentUpon>OWMusicForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ZSSettings.resx">
+      <DependentUpon>ZSSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ZSUWProperties.resx">
+      <DependentUpon>ZSUWProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ImportFromRom.resx">
       <DependentUpon>ImportFromRom.cs</DependentUpon>
@@ -612,11 +638,9 @@
     <EmbeddedResource Include="Gui\MainTabs\DungeonViewer.resx">
       <DependentUpon>DungeonViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx" />
     <EmbeddedResource Include="Gui\ExtraForms\EntrancePropertyForm.resx">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ExitEditorForm.resx" />
     <EmbeddedResource Include="Gui\MainTabs\GfxEditor.resx">
       <DependentUpon>GfxEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -632,11 +656,15 @@
       <DependentUpon>GotoRoom.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\MusicEditor.resx">
+      <DependentUpon>MusicEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\ObjectDesigner.resx">
       <DependentUpon>ObjectDesigner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\OverworldEditor.resx">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\ScreenEditor.resx">
       <DependentUpon>ScreenEditor.cs</DependentUpon>
@@ -655,6 +683,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
@@ -679,15 +708,10 @@
       <DependentUpon>ObjectViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Gui\RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
@@ -709,6 +733,7 @@
     <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -720,6 +745,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="ScratchPad.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ZScreamUML.cd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -728,13 +757,80 @@
     <Content Include="asar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="CustomCollision.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="debug.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DefaultNames.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="newgraves.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="PatchNotes.txt" />
+    <Content Include="Resources\damageclass.png" />
+    <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Items\AST Boots.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Big Bomb Requirements.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\IntroSkip.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\JP1.0 Glitches.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Link Bed Start Position.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\NoRocks.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Rainstate Skip.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\TorchTags.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\Weathervane.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Music\LostWoodsExitMusic.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Npcs\Bottle Vendor.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Crystalswitch Conveyor.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Elemental Trinexx.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Eye Lasers Active.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Khodstare Speeds.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Spike Damage.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Sprites\Spikes_Subtype.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Version.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZSCustomOverworld.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\xbutton.png" />
     <None Include="Resources\starn.bmp" />
     <None Include="Resources\starl.bmp" />
@@ -742,7 +838,7 @@
     <None Include="Resources\floorSelector.bmp" />
     <None Include="Resources\floorselector.png" />
     <Content Include="spritesmove.asm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Mblock.png" />
     <None Include="Resources\spriteFont.png" />
@@ -761,8 +857,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+    <Folder Include="ZS_Patches\UNPATCHED\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

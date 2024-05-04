@@ -1,423 +1,326 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace ZeldaFullEditor
 {
-    public class Entrance //can be used for starting entrance as well
+    /// <summary>
+    ///     A data class containing all the info for dungeon entrance properties. Can be used for starting entrances as well.
+    /// </summary>
+    public class Entrance
     {
-        short room;//word value for each room
+        // 8 bytes per room Q (quadrant) and F (full) for cardinal directions NSWE
 
-        public byte scrolledge_HU;//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-        public byte scrolledge_FU;
-        public byte scrolledge_HD;
-        public byte scrolledge_FD;
-        public byte scrolledge_HL;
-        public byte scrolledge_FL;
-        public byte scrolledge_HR;
-        public byte scrolledge_FR;
+        /// <summary>
+        ///     Gets or sets the north quadrant boundary.
+        /// </summary>
+        public byte CameraBoundaryQN { get; set; }
 
-        short yscroll;//2bytes each room
-        short xscroll; //2bytes
-        short yposition;//2bytes
-        short xposition;//2bytes
-        short ycamera;//2bytes
-        short xcamera;//2bytes
-        byte blockset; //1byte
-        byte floor; //1byte
-        byte dungeon; //1byte (dungeon id) //Same as music might use the project dungeon name instead
-        byte door; //1byte
-        byte ladderbg; ////1 byte, ---b ---a b = bg2, a = need to check -_-
-        byte scrolling;////1byte --h- --v- 
-        byte scrollquadrant; //1byte
-        short exit;//2byte word 
-        byte music; //1byte //Will need to be renamed and changed to add support to MSU1
+        /// <summary>
+        ///     Gets or sets the north full boundary.
+        /// </summary>
+        public byte CameraBoundaryFN { get; set; }
 
-        [DisplayName("Room Id"), Description("The room id the entrance is leading to"), Category("Entrance")]
-        public short Room
+        /// <summary>
+        ///     Gets or sets the south quadrant boundary.
+        /// </summary>
+        public byte CameraBoundaryQS { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the south full boundary.
+        /// </summary>
+        public byte CameraBoundaryFS { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the west quadrant boundary.
+        /// </summary>
+        public byte CameraBoundaryQW { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the west full boundary.
+        /// </summary>
+        public byte CameraBoundaryFW { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the east quadrant boundary.
+        /// </summary>
+        public byte CameraBoundaryQE { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the east full boundary.
+        /// </summary>
+        public byte CameraBoundaryFE { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the entrance room.
+        ///     Word value for each room.
+        /// </summary>
+        [DisplayName("Room ID")]
+        [Description("The room id the entrance is leading to.")]
+        [Category("Entrance")]
+        public short Room { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the CameraX value for the entrance.
+        ///     2bytes.
+        /// </summary>
+        [DisplayName("Background X scroll.")]
+        [Description("FILL ME")]
+        [Category("Entrance")]
+        public ushort CameraX { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the CameraY value for the entrance.
+        ///     2bytes each room.
+        /// </summary>
+        [DisplayName("Background Y scroll.")]
+        [Description("FILL ME")]
+        [Category("Entrance")]
+        public ushort CameraY { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the X position for the entrance.
+        ///     2bytes.
+        /// </summary>
+        [DisplayName("X Position")]
+        [Description("The X position the player will enter the room (0,0) origin.")]
+        [Category("Entrance")]
+        public ushort XPosition { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Y position for the entrance.
+        ///     2bytes.
+        /// </summary>
+        [DisplayName("Y Position")]
+        [Description("The Y position the player will enter the room (0,0) origin.")]
+        [Category("Entrance")]
+        public ushort YPosition { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the X camera trigger for the entrance.
+        ///     2bytes.
+        /// </summary>
+        [DisplayName("X camera trigger")]
+        [Description("Where the camera begins scrolling on the X-axis.")]
+        [Category("Entrance")]
+        public ushort CameraTriggerX { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Y camera trigger for the entrance.
+        ///     2bytes.
+        /// </summary>
+        [DisplayName("Y camera trigger")]
+        [Description("Where the camera begins scrolling on the X-axis.")]
+        [Category("Entrance")]
+        public ushort CameraTriggerY { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the blockset for the entrance.
+        ///     1byte.
+        /// </summary>
+        [DisplayName("Blockset")]
+        [Description("Used to determine the walls gfx of the dungeon.")]
+        [Category("Entrance")]
+        public byte Blockset { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the floor for the entrance.
+        ///     1byte.
+        /// </summary>
+        [DisplayName("Floor")]
+        [Description("The floor of the dungeon you enter into.")]
+        [Category("Entrance")]
+        public byte Floor { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Dungeon ID for the entrance.
+        ///     1byte.
+        ///     Same as music might use the project dungeon name instead.
+        /// </summary>
+        [DisplayName("Dungeon ID")]
+        [Description("Used to determine what dungeon we are in when entering from that entrance.")]
+        [Category("Entrance")]
+        public byte DungeonID { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the ladder BG for the entrance.
+        ///     1 byte, ---b ---a b = bg2, a = need to check -_-.
+        /// </summary>
+        [DisplayName("Ladder Bg")]
+        [Description("Used to determine the layer we will be on when entering.")]
+        [Category("Entrance")]
+        public byte LadderBG { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the scrolling byte for the entrance.
+        ///     1byte --h- --v-.
+        /// </summary>
+        [DisplayName("Scrolling")]
+        [Description("Used to determine if you can scroll or not the room you are entering.")]
+        [Category("Entrance")]
+        public byte Scrolling { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the scroll quadrant for the entrance.
+        ///     1byte.
+        /// </summary>
+        [DisplayName("Scroll Quadrant")]
+        [Description("Used to determine if you can scrollquadrant or not the room you are entering.")]
+        [Category("Entrance")]
+        public byte ScrollQuadrant { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the exit for the entrance.
+        ///     2byte word.
+        /// </summary>
+        [DisplayName("Exit")]
+        [Description("Used to determine where you will exit?")]
+        [Category("Entrance")]
+        public short Exit { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the music for the entrance.
+        ///     1byte.
+        ///     Will need to be renamed and changed to add support to MSU1.
+        /// </summary>
+        [DisplayName("Music")]
+        [Description("Determine the music playing when entering from that entrance.")]
+        [Category("Entrance")]
+        public byte Music { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the door bool for the entrance.
+        ///     1byte.
+        ///     TODO: The description needs to be verified, WTF is this for?.
+        /// </summary>
+        [DisplayName("Door")]
+        [Description("Determine the 'use door' boolean from that entrance.")]
+        [Category("Entrance")]
+        public byte Door { get; set; }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Entrance"/> class.
+        /// </summary>
+        /// <param name="entranceID"> The entrance ID. </param>
+        /// <param name="isSpawnPoint"> Whether the entrance is a spawn point or not. </param>
+        public Entrance(byte entranceID, bool isSpawnPoint = false)
         {
-            get
+            this.Room = (short)((ROM.DATA[Constants.entrance_room + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceID * 2)]);
+            this.YPosition = (ushort)((ROM.DATA[Constants.entrance_yposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_yposition + (entranceID * 2)]);
+            this.XPosition = (ushort)((ROM.DATA[Constants.entrance_xposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_xposition + (entranceID * 2)]);
+            this.CameraX = (ushort)((ROM.DATA[Constants.entrance_camerax + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_camerax + (entranceID * 2)]);
+            this.CameraY = (ushort)((ROM.DATA[Constants.entrance_cameray + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_cameray + (entranceID * 2)]);
+            this.CameraTriggerY = (ushort)((ROM.DATA[(Constants.entrance_cameraytrigger + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraytrigger + (entranceID * 2)]);
+            this.CameraTriggerX = (ushort)((ROM.DATA[(Constants.entrance_cameraxtrigger + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraxtrigger + (entranceID * 2)]);
+            this.Blockset = ROM.DATA[Constants.entrance_blockset + entranceID];
+            this.Music = ROM.DATA[Constants.entrance_music + entranceID];
+            this.DungeonID = ROM.DATA[Constants.entrance_dungeon + entranceID];
+            this.Floor = ROM.DATA[Constants.entrance_floor + entranceID];
+            this.Door = ROM.DATA[Constants.entrance_door + entranceID];
+            this.LadderBG = ROM.DATA[Constants.entrance_ladderbg + entranceID];
+            this.Scrolling = ROM.DATA[Constants.entrance_scrolling + entranceID];
+            this.ScrollQuadrant = ROM.DATA[Constants.entrance_scrollquadrant + entranceID];
+            this.Exit = (short)((ROM.DATA[Constants.entrance_exit + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_exit + (entranceID * 2)]);
+
+            this.CameraBoundaryQN = ROM.DATA[Constants.entrance_scrolledge + 0 + (entranceID * 8)];
+            this.CameraBoundaryFN = ROM.DATA[Constants.entrance_scrolledge + 1 + (entranceID * 8)];
+            this.CameraBoundaryQS = ROM.DATA[Constants.entrance_scrolledge + 2 + (entranceID * 8)];
+            this.CameraBoundaryFS = ROM.DATA[Constants.entrance_scrolledge + 3 + (entranceID * 8)];
+            this.CameraBoundaryQW = ROM.DATA[Constants.entrance_scrolledge + 4 + (entranceID * 8)];
+            this.CameraBoundaryFW = ROM.DATA[Constants.entrance_scrolledge + 5 + (entranceID * 8)];
+            this.CameraBoundaryQE = ROM.DATA[Constants.entrance_scrolledge + 6 + (entranceID * 8)];
+            this.CameraBoundaryFE = ROM.DATA[Constants.entrance_scrolledge + 7 + (entranceID * 8)];
+
+            if (isSpawnPoint)
             {
-                return room;
-            }
-            set
-            {
-                room = value;
+                this.Room = (short)((ROM.DATA[Constants.startingentrance_room + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_room + (entranceID * 2)]);
+                this.YPosition = (ushort)((ROM.DATA[Constants.startingentrance_yposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_yposition + (entranceID * 2)]);
+                this.XPosition = (ushort)((ROM.DATA[Constants.startingentrance_xposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_xposition + (entranceID * 2)]);
+                this.CameraX = (ushort)((ROM.DATA[Constants.startingentrance_camerax + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_camerax + (entranceID * 2)]);
+                this.CameraY = (ushort)((ROM.DATA[Constants.startingentrance_cameray + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_cameray + (entranceID * 2)]);
+                this.CameraTriggerY = (ushort)((ROM.DATA[Constants.startingentrance_cameraytrigger + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_cameraytrigger + (entranceID * 2)]);
+                this.CameraTriggerX = (ushort)((ROM.DATA[Constants.startingentrance_cameraxtrigger + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_cameraxtrigger + (entranceID * 2)]);
+                this.Blockset = ROM.DATA[Constants.startingentrance_blockset + entranceID];
+                this.Music = ROM.DATA[Constants.startingentrance_music + entranceID];
+                this.DungeonID = ROM.DATA[Constants.startingentrance_dungeon + entranceID];
+                this.Floor = ROM.DATA[Constants.startingentrance_floor + entranceID];
+                this.Door = ROM.DATA[Constants.startingentrance_door + entranceID];
+                this.LadderBG = ROM.DATA[Constants.startingentrance_ladderbg + entranceID];
+                this.Scrolling = ROM.DATA[Constants.startingentrance_scrolling + entranceID];
+                this.ScrollQuadrant = ROM.DATA[Constants.startingentrance_scrollquadrant + entranceID];
+                this.Exit = (short)(((ROM.DATA[Constants.startingentrance_exit + (entranceID * 2) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_exit + (entranceID * 2)]);
+                this.CameraBoundaryQN = ROM.DATA[Constants.startingentrance_scrolledge + 0 + (entranceID * 8)];
+                this.CameraBoundaryFN = ROM.DATA[Constants.startingentrance_scrolledge + 1 + (entranceID * 8)];
+                this.CameraBoundaryQS = ROM.DATA[Constants.startingentrance_scrolledge + 2 + (entranceID * 8)];
+                this.CameraBoundaryFS = ROM.DATA[Constants.startingentrance_scrolledge + 3 + (entranceID * 8)];
+                this.CameraBoundaryQW = ROM.DATA[Constants.startingentrance_scrolledge + 4 + (entranceID * 8)];
+                this.CameraBoundaryFW = ROM.DATA[Constants.startingentrance_scrolledge + 5 + (entranceID * 8)];
+                this.CameraBoundaryQE = ROM.DATA[Constants.startingentrance_scrolledge + 6 + (entranceID * 8)];
+                this.CameraBoundaryFE = ROM.DATA[Constants.startingentrance_scrolledge + 7 + (entranceID * 8)];
             }
         }
 
-        [DisplayName("X Scroll"), Description("FILL ME"), Category("Entrance")]
-        public short XScroll
+        /// <summary>
+        ///     Saves the entrance to the ROM.
+        /// </summary>
+        /// <param name="entranceID"> The entrance ID. </param>
+        /// <param name="isSpawnPoint"> Whether the entrance is a spawn point or not. </param>
+        public void Save(int entranceID, bool isSpawnPoint = false)
         {
-            get
+            if (!isSpawnPoint)
             {
-                return xscroll;
-            }
-            set
-            {
-                xscroll = value;
-            }
-        }
+                ROM.WriteShort(Constants.entrance_room + (entranceID * 2), this.Room, WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.entrance_yposition + (entranceID * 2), this.YPosition, WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.entrance_xposition + (entranceID * 2), this.XPosition, WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.entrance_cameray + (entranceID * 2), this.CameraY, WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.entrance_camerax + (entranceID * 2), this.CameraX, WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.entrance_cameraxtrigger + (entranceID * 2), this.CameraTriggerX, WriteType.EntranceProperties);
+                ROM.WriteShort(Constants.entrance_cameraytrigger + (entranceID * 2), this.CameraTriggerY, WriteType.EntranceProperties);
 
-        [DisplayName("Y Scroll"), Description("FILL ME"), Category("Entrance")]
-        public short YScroll
-        {
-            get
-            {
-                return yscroll;
-            }
-            set
-            {
-                yscroll = value;
-            }
-        }
+                ROM.WriteShort(Constants.entrance_exit + (entranceID * 2), this.Exit, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_blockset + entranceID, (byte)(this.Blockset & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_music + entranceID, (byte)(this.Music & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_dungeon + entranceID, (byte)(this.DungeonID & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_door + entranceID, (byte)(this.Door & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_floor + entranceID, (byte)(this.Floor & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_ladderbg + entranceID, (byte)(this.LadderBG & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolling + entranceID, (byte)(this.Scrolling & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrollquadrant + entranceID, (byte)(this.ScrollQuadrant & 0xFF), WriteType.EntranceProperties);
 
-        [DisplayName("X Position"), Description("The X position the player will enter the room (0,0) origin"), Category("Entrance")]
-        public short XPosition
-        {
-            get
-            {
-                return xposition;
-            }
-            set
-            {
-                xposition = value;
-            }
-        }
-
-        [DisplayName("Y Position"), Description("The Y position the player will enter the room (0,0) origin"), Category("Entrance")]
-        public short YPosition
-        {
-            get
-            {
-                return yposition;
-            }
-            set
-            {
-                yposition = value;
-            }
-        }
-
-        [DisplayName("X Camera"), Description("The X position of the camera when entering that room"), Category("Entrance")]
-        public short XCamera
-        {
-            get
-            {
-                return xcamera;
-            }
-            set
-            {
-                xcamera = value;
-            }
-        }
-
-        [DisplayName("Y Camera"), Description("The Y position of the camera when entering that room"), Category("Entrance")]
-        public short YCamera
-        {
-            get
-            {
-                return ycamera;
-            }
-            set
-            {
-                ycamera = value;
-            }
-        }
-
-        [DisplayName("Blockset"), Description("Used to determine the walls gfx of the dungeon"), Category("Entrance")]
-        public byte Blockset
-        {
-            get
-            {
-                return blockset;
-            }
-            set
-            {
-                blockset = value;
-            }
-        }
-
-        [DisplayName("Floor"), Description("FILL ME ?"), Category("Entrance")]
-        public byte Floor
-        {
-            get
-            {
-                return floor;
-            }
-            set
-            {
-                floor = value;
-                /*if (floor >= 2)
-                {
-                    floor = 1;
-                }*/
-            }
-        }
-
-        [DisplayName("Dungeon Id"), Description("Used to determine what dungeon we are in when entering from that entrance"), Category("Entrance")]
-        public byte Dungeon
-        {
-            get
-            {
-                return dungeon;
-            }
-            set
-            {
-                dungeon = value;
-            }
-        }
-
-        [DisplayName("Ladder Bg"), Description("Used to determine the layer we will be on when entering"), Category("Entrance")]
-        public byte Ladderbg
-        {
-            get
-            {
-                return ladderbg;
-            }
-            set
-            {
-                ladderbg = value;
-                /*if (ladderbg >= 2)
-                {
-                    ladderbg = 1;
-                }*/
-            }
-        }
-
-        [DisplayName("Scrolling"), Description("Used to determine if you can scroll or not the room you are entering"), Category("Entrance")]
-        public byte Scrolling
-        {
-            get
-            {
-                return scrolling;
-            }
-            set
-            {
-                scrolling = value;
-                /*if (scrolling >= 2)
-                {
-                    scrolling = 1;
-                }*/
-            }
-        }
-
-        [DisplayName("Scroll Quadrant"), Description("Used to determine if you can scrollquadrant or not the room you are entering"), Category("Entrance")]
-        public byte Scrollquadrant
-        {
-            get
-            {
-                return scrollquadrant;
-            }
-            set
-            {
-                scrollquadrant = value;
-                /*if (scrollquadrant >= 2)
-                {
-                    scrollquadrant = 1;
-                }*/
-            }
-        }
-
-        //why is that even a thing?
-        [DisplayName("Exit"), Description("Used to determine where you will exit ?"), Category("Entrance")]
-        public short Exit
-        {
-            get
-            {
-                return exit;
-            }
-            set
-            {
-                exit = value;
-            }
-        }
-
-        [DisplayName("Music"), Description("Determine the music playing when entering from that entrance"), Category("Entrance")]
-        public byte Music
-        {
-            get
-            {
-                return music;
-            }
-            set
-            {
-                music = value;
-            }
-        }
-
-        public Entrance(byte entranceId, bool startingEntrance = false)
-        {
-            room = (short)((ROM.DATA[(Constants.entrance_room + (entranceId * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceId * 2)]);
-            yposition = (short)(((ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_yposition + (entranceId * 2)]);
-            xposition = (short)(((ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_xposition + (entranceId * 2)]);
-            xscroll = (short)(((ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)]);
-            yscroll = (short)(((ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)]);
-            ycamera = (short)(((ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)]);
-            xcamera = (short)(((ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)]);
-            blockset = (byte)(ROM.DATA[(Constants.entrance_blockset + entranceId)]);
-            music = (byte)(ROM.DATA[(Constants.entrance_music + entranceId)]);
-            dungeon = (byte)(ROM.DATA[(Constants.entrance_dungeon + entranceId)]);
-            floor = (byte)(ROM.DATA[(Constants.entrance_floor + entranceId)]);
-            door = (byte)(ROM.DATA[(Constants.entrance_door + entranceId)]);
-            ladderbg = (byte)(ROM.DATA[(Constants.entrance_ladderbg + entranceId)]);
-            scrolling = (byte)(ROM.DATA[(Constants.entrance_scrolling + entranceId)]);
-            scrollquadrant = (byte)(ROM.DATA[(Constants.entrance_scrollquadrant + entranceId)]);
-            exit = (short)(((ROM.DATA[(Constants.entrance_exit + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_exit + (entranceId * 2)]);
-
-            scrolledge_HU = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            scrolledge_FU = (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]);
-            scrolledge_HD = (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]);
-            scrolledge_FD = (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]);
-            scrolledge_HL = (ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))]);
-            scrolledge_FL = (ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))]);
-            scrolledge_HR = (ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))]);
-            scrolledge_FR = (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]);
-
-
-            if (startingEntrance == true)
-            {
-                room = (short)((ROM.DATA[(Constants.startingentrance_room + ((entranceId) * 2)) + 1] << 8) + ROM.DATA[Constants.startingentrance_room + ((entranceId) * 2)]);
-                //yposition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yposition + ((entranceId) * 2)]);
-                //xposition = (short)(((ROM.DATA[(Constants.startingentrance_xposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xposition + ((entranceId) * 2)]);
-                //xscroll = (short)(((ROM.DATA[(Constants.startingentrance_xscroll + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xscroll + ((entranceId) * 2)]);
-                //yscroll = (short)(((ROM.DATA[(Constants.startingentrance_yscroll + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yscroll + ((entranceId) * 2)]);
-                //ycamera = (short)(((ROM.DATA[(Constants.startingentrance_camerayposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_camerayposition + ((entranceId) * 2)]);
-                //xcamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + ((entranceId) * 2)]);
-                yposition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_yposition + (entranceId * 2)]);
-                xposition = (short)(((ROM.DATA[(Constants.startingentrance_xposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_xposition + (entranceId * 2)]);
-                xscroll = (short)(((ROM.DATA[(Constants.startingentrance_xscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_xscroll + (entranceId * 2)]);
-                yscroll = (short)(((ROM.DATA[(Constants.startingentrance_yscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_yscroll + (entranceId * 2)]);
-                ycamera = (short)(((ROM.DATA[(Constants.startingentrance_camerayposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_camerayposition + (entranceId * 2)]);
-                xcamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + (entranceId * 2)]);
-                blockset = (byte)(ROM.DATA[(Constants.startingentrance_blockset + entranceId)]);
-                music = (byte)(ROM.DATA[(Constants.startingentrance_music + entranceId)]);
-                dungeon = (byte)(ROM.DATA[(Constants.startingentrance_dungeon + entranceId)]);
-                floor = (byte)(ROM.DATA[(Constants.startingentrance_floor + entranceId)]);
-                door = (byte)(ROM.DATA[(Constants.startingentrance_door + entranceId)]);
-                ladderbg = (byte)(ROM.DATA[(Constants.startingentrance_ladderbg + entranceId)]);
-                scrolling = (byte)(ROM.DATA[(Constants.startingentrance_scrolling + entranceId)]);
-                scrollquadrant = (byte)(ROM.DATA[(Constants.startingentrance_scrollquadrant + entranceId)]);
-                exit = (short)(((ROM.DATA[(Constants.startingentrance_exit + (entranceId * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)]);
-                scrolledge_HU = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                scrolledge_FU = (ROM.DATA[(Constants.startingentrance_scrolledge + 1 + (entranceId * 8))]);
-                scrolledge_HD = (ROM.DATA[(Constants.startingentrance_scrolledge + 2 + (entranceId * 8))]);
-                scrolledge_FD = (ROM.DATA[(Constants.startingentrance_scrolledge + 3 + (entranceId * 8))]);
-                scrolledge_HL = (ROM.DATA[(Constants.startingentrance_scrolledge + 4 + (entranceId * 8))]);
-                scrolledge_FL = (ROM.DATA[(Constants.startingentrance_scrolledge + 5 + (entranceId * 8))]);
-                scrolledge_HR = (ROM.DATA[(Constants.startingentrance_scrolledge + 6 + (entranceId * 8))]);
-                scrolledge_FR = (ROM.DATA[(Constants.startingentrance_scrolledge + 7 + (entranceId * 8))]);
-            }
-        }
-
-        public void save(int entranceId, bool startingentrance = false, bool jp = false)
-        {
-            //TODO: Change these save
-            if (startingentrance == false)
-            {
-                ROM.WriteShort(Constants.entrance_room + (entranceId * 2), room, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
-
-                ROM.WriteShort(Constants.entrance_yposition + (entranceId * 2), yposition, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
-
-                ROM.WriteShort(Constants.entrance_xposition + (entranceId * 2), xposition, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
-
-                ROM.WriteShort(Constants.entrance_yscroll + (entranceId * 2), yscroll, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
-
-                ROM.WriteShort(Constants.entrance_xscroll + (entranceId * 2), xscroll, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
-
-                ROM.WriteShort(Constants.entrance_cameraxposition + (entranceId * 2), xcamera, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
-
-                ROM.WriteShort(Constants.entrance_camerayposition + (entranceId * 2), ycamera, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
-
-                ROM.WriteShort(Constants.entrance_exit + (entranceId * 2), exit, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_exit + (entranceId * 2) + 1)] = (byte)((exit >> 8) & 0xFF);
-                //ROM.DATA[Constants.entrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);
-                ROM.Write(Constants.entrance_blockset + entranceId, (byte)(blockset & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_blockset + entranceId] = (byte)(blockset & 0xFF);
-                ROM.Write(Constants.entrance_music + entranceId, (byte)(music & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_music + entranceId] = (byte)(music & 0xFF);
-                ROM.Write(Constants.entrance_dungeon + entranceId, (byte)(dungeon & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
-                ROM.Write(Constants.entrance_door + entranceId, (byte)(door & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_door + entranceId] = (byte)(door & 0xFF);
-                ROM.Write(Constants.entrance_floor + entranceId, (byte)(floor & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_floor + entranceId] = (byte)(floor & 0xFF);
-                ROM.Write(Constants.entrance_ladderbg + entranceId, (byte)(ladderbg & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
-                ROM.Write(Constants.entrance_scrolling + entranceId, (byte)(scrolling & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
-                ROM.Write(Constants.entrance_scrollquadrant + entranceId, (byte)(scrollquadrant & 0xFF), true, "Entrance Related");
-                //ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-                ROM.Write((Constants.entrance_scrolledge + 0 + (entranceId * 8)), scrolledge_HU, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))] = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                ROM.Write((Constants.entrance_scrolledge + 1 + (entranceId * 8)), scrolledge_FU, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))] = scrolledge_FU;
-                ROM.Write((Constants.entrance_scrolledge + 2 + (entranceId * 8)), scrolledge_HD, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))] = scrolledge_HD;
-                ROM.Write((Constants.entrance_scrolledge + 3 + (entranceId * 8)), scrolledge_FD, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))] = scrolledge_FD;
-                ROM.Write((Constants.entrance_scrolledge + 4 + (entranceId * 8)), scrolledge_HL, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))] = scrolledge_HL;
-                ROM.Write((Constants.entrance_scrolledge + 5 + (entranceId * 8)), scrolledge_FL, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))] = scrolledge_FL;
-                ROM.Write((Constants.entrance_scrolledge + 6 + (entranceId * 8)), scrolledge_HR, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))] = scrolledge_HR;
-                ROM.Write((Constants.entrance_scrolledge + 7 + (entranceId * 8)), scrolledge_FR, true, "Entrance Related");
-                //ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
-
-
+                ROM.Write(Constants.entrance_scrolledge + 0 + (entranceID * 8), this.CameraBoundaryQN, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolledge + 1 + (entranceID * 8), this.CameraBoundaryFN, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolledge + 2 + (entranceID * 8), this.CameraBoundaryQS, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolledge + 3 + (entranceID * 8), this.CameraBoundaryFS, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolledge + 4 + (entranceID * 8), this.CameraBoundaryQW, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolledge + 5 + (entranceID * 8), this.CameraBoundaryFW, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolledge + 6 + (entranceID * 8), this.CameraBoundaryQE, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrolledge + 7 + (entranceID * 8), this.CameraBoundaryFE, WriteType.EntranceProperties);
             }
             else
             {
+                ROM.WriteShort(Constants.startingentrance_room + (entranceID * 2), this.Room, WriteType.SpawnProperties);
+                ROM.WriteShort(Constants.startingentrance_yposition + (entranceID * 2), this.YPosition, WriteType.SpawnProperties);
+                ROM.WriteShort(Constants.startingentrance_xposition + (entranceID * 2), this.XPosition, WriteType.SpawnProperties);
+                ROM.WriteShort(Constants.startingentrance_cameray + (entranceID * 2), this.CameraY, WriteType.SpawnProperties);
+                ROM.WriteShort(Constants.startingentrance_camerax + (entranceID * 2), this.CameraX, WriteType.SpawnProperties);
+                ROM.WriteShort(Constants.startingentrance_cameraxtrigger + (entranceID * 2), this.CameraTriggerX, WriteType.SpawnProperties);
+                ROM.WriteShort(Constants.startingentrance_cameraytrigger + (entranceID * 2), this.CameraTriggerY, WriteType.SpawnProperties);
+                ROM.WriteShort(Constants.startingentrance_exit + (entranceID * 2), this.Exit, WriteType.SpawnProperties);
 
-                ROM.WriteShort(Constants.startingentrance_room + (entranceId * 2), room, true, "Starting Entrance Related");
-
-                ROM.WriteShort(Constants.startingentrance_yposition + (entranceId * 2), yposition, true, "Starting Entrance Related");
-
-                ROM.WriteShort(Constants.startingentrance_xposition + (entranceId * 2), xposition, true, "Starting Entrance Related");
-
-                ROM.WriteShort(Constants.startingentrance_yscroll + (entranceId * 2), yscroll, true, "Starting Entrance Related");
-
-                ROM.WriteShort(Constants.startingentrance_xscroll + (entranceId * 2), xscroll, true, "Starting Entrance Related");
-
-                ROM.WriteShort(Constants.startingentrance_cameraxposition + (entranceId * 2), xcamera, true, "Starting Entrance Related");
-
-                ROM.WriteShort(Constants.startingentrance_camerayposition + (entranceId * 2), ycamera, true, "Starting Entrance Related");
-
-                ROM.WriteShort(Constants.startingentrance_exit + (entranceId * 2), exit, true, "Starting Entrance Related");
-
-                ROM.Write(Constants.startingentrance_blockset + entranceId,(byte)(blockset & 0xFF), true, "Starting Entrance Related");
-                ROM.Write(Constants.startingentrance_music + entranceId,(byte)(music & 0xFF), true, "Starting Entrance Related");
-                ROM.Write(Constants.startingentrance_dungeon + entranceId,(byte)(dungeon & 0xFF), true, "Starting Entrance Related");
-                ROM.Write(Constants.startingentrance_door + entranceId,(byte)(door & 0xFF), true, "Starting Entrance Related");
-                ROM.Write(Constants.startingentrance_floor + entranceId,(byte)(floor & 0xFF), true, "Starting Entrance Related");
-                ROM.Write(Constants.startingentrance_ladderbg + entranceId,(byte)(ladderbg & 0xFF), true, "Starting Entrance Related");
-                ROM.Write(Constants.startingentrance_scrolling + entranceId,(byte)(scrolling & 0xFF), true, "Starting Entrance Related");
-                ROM.Write(Constants.startingentrance_scrollquadrant + entranceId,(byte)(scrollquadrant & 0xFF), true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)),scrolledge_HU, true, "Starting Entrance Related"); //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                ROM.Write((Constants.startingentrance_scrolledge + 1 + (entranceId * 8)),scrolledge_FU, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 2 + (entranceId * 8)),scrolledge_HD, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 3 + (entranceId * 8)),scrolledge_FD, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 4 + (entranceId * 8)),scrolledge_HL, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 5 + (entranceId * 8)),scrolledge_FL, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 6 + (entranceId * 8)),scrolledge_HR, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 7 + (entranceId * 8)),scrolledge_FR, true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_blockset + entranceID, (byte)(this.Blockset & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_music + entranceID, (byte)(this.Music & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_dungeon + entranceID, (byte)(this.DungeonID & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_door + entranceID, (byte)(this.Door & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_floor + entranceID, (byte)(this.Floor & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_ladderbg + entranceID, (byte)(this.LadderBG & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolling + entranceID, (byte)(this.Scrolling & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrollquadrant + entranceID, (byte)(this.ScrollQuadrant & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 0 + (entranceID * 8), this.CameraBoundaryQN, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 1 + (entranceID * 8), this.CameraBoundaryFN, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 2 + (entranceID * 8), this.CameraBoundaryQS, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 3 + (entranceID * 8), this.CameraBoundaryFS, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 4 + (entranceID * 8), this.CameraBoundaryQW, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 5 + (entranceID * 8), this.CameraBoundaryFW, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 6 + (entranceID * 8), this.CameraBoundaryQE, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolledge + 7 + (entranceID * 8), this.CameraBoundaryFE, WriteType.SpawnProperties);
             }
         }
     }

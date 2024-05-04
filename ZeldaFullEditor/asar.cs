@@ -10,14 +10,14 @@ namespace AsarCLR
     /// </summary>
     public static unsafe class Asar
     {
-        const int expectedapiversion=302;
+        const int expectedapiversion = 302;
 
         [DllImport("asar", EntryPoint = "asar_init", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        [return:MarshalAs(UnmanagedType.I1)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool asar_init();
 
         [DllImport("asar", EntryPoint = "asar_close", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        [return:MarshalAs(UnmanagedType.I1)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool asar_close();
 
         [DllImport("asar", EntryPoint = "asar_version", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
@@ -27,17 +27,17 @@ namespace AsarCLR
         private static extern int asar_apiversion();
 
         [DllImport("asar", EntryPoint = "asar_reset", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        [return:MarshalAs(UnmanagedType.I1)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool asar_reset();
 
         [DllImport("asar", EntryPoint = "asar_patch", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        [return:MarshalAs(UnmanagedType.I1)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool asar_patch(string patchLocation, byte* romData, int bufLen, int* romLength);
-        
+
         [DllImport("asar", EntryPoint = "asar_patch_ex", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        [return:MarshalAs(UnmanagedType.I1)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool asar_patch_ex(ref Rawpatchparams parameters);
-        
+
         [DllImport("asar", EntryPoint = "asar_maxromsize", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern int asar_maxromsize();
 
@@ -73,7 +73,7 @@ namespace AsarCLR
 
         [DllImport("asar", EntryPoint = "asar_getmapper", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern MapperType asar_getmapper();
-        
+
         [DllImport("asar", EntryPoint = "asar_getsymbolsfile", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr asar_getsymbolsfile(string format);
 
@@ -83,8 +83,9 @@ namespace AsarCLR
         /// <returns>True if success</returns>
         public static bool init()
         {
-            try {
-                if (apiversion()<expectedapiversion || (apiversion()/100)>(expectedapiversion/100)) return false;
+            try
+            {
+                if (apiversion() < expectedapiversion || (apiversion() / 100) > (expectedapiversion / 100)) return false;
                 if (!asar_init()) return false;
                 return true;
             }
@@ -111,8 +112,8 @@ namespace AsarCLR
 
         /// <summary>
         /// Returns the API version, format major*100+minor. Minor is incremented on backwards compatible
-        ///  changes; major is incremented on incompatible changes. Does not have any correlation with the
-        ///  Asar version.
+        /// changes; major is incremented on incompatible changes. Does not have any correlation with the
+        /// Asar version.
         /// It's not very useful directly, since Asar.init() verifies this automatically.
         /// </summary>
         /// <returns>Asar API version</returns>
@@ -130,8 +131,8 @@ namespace AsarCLR
             return asar_reset();
         }
 
-        [StructLayout(LayoutKind.Sequential,CharSet = CharSet.Ansi)]
-        private unsafe struct Rawpatchparams 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+        private unsafe struct Rawpatchparams
         {
             public int structsize;
             public string patchloc;
@@ -147,7 +148,7 @@ namespace AsarCLR
             public string stdincludesfile;
             public string stddefinesfile;
         };
-        
+
         /// <summary>
         /// Applies a patch.
         /// </summary>
@@ -156,73 +157,75 @@ namespace AsarCLR
         /// <param name="includePaths">lists additional include paths</param>
         /// <param name="shouldReset">specifies whether asar should clear out all defines, labels,
         /// etc from the last inserted file. Setting it to False will make Asar act like the
-        //  currently patched file was directly appended to the previous one.</param>
+        /// currently patched file was directly appended to the previous one.</param>
         /// <param name="additionalDefines">specifies extra defines to give to the patch</param>
         /// <param name="stdIncludeFile">path to a file that specifes additional include paths</param>
         /// <param name="stdDefineFile">path to a file that specifes additional defines</param>
         /// <returns>True if no errors.</returns>
-        public static bool patch(string patchLocation, ref byte[] romData, string[] includePaths=null, bool shouldReset=true, Dictionary<string,string> additionalDefines=null, string stdIncludeFile=null, string stdDefineFile=null)
+        public static bool patch(string patchLocation, ref byte[] romData, string[] includePaths = null, bool shouldReset = true, Dictionary<string, string> additionalDefines = null, string stdIncludeFile = null, string stdDefineFile = null)
         {
-            if (includePaths==null) includePaths=new string[0];
-            if (additionalDefines==null) additionalDefines= new Dictionary<string,string>();
+            if (includePaths == null) includePaths = new string[0];
+            if (additionalDefines == null) additionalDefines = new Dictionary<string, string>();
 
             var includes = new byte*[includePaths.Length];
             var defines = new Rawasardefine[additionalDefines.Count];
 
-            try{
-                for(int i=0; i<includePaths.Length; i++)
+            try
+            {
+                for (int i = 0; i < includePaths.Length; i++)
                 {
                     includes[i] = (byte*)Marshal.StringToCoTaskMemAnsi(includePaths[i]);
                 }
-                var keys=additionalDefines.Keys.ToArray();
-                for(int i=0; i<additionalDefines.Count; i++)
+
+                var keys = additionalDefines.Keys.ToArray();
+                for (int i = 0; i < additionalDefines.Count; i++)
                 {
                     var name = keys[i];
                     var value = additionalDefines[name];
-                    defines[i].name=Marshal.StringToCoTaskMemAnsi(name);
+                    defines[i].name = Marshal.StringToCoTaskMemAnsi(name);
                     defines[i].contents = Marshal.StringToCoTaskMemAnsi(value);
                 }
-                
-                int newsize=maxromsize();
+
+                int newsize = maxromsize();
                 int length = romData.Length;
-                if (length<newsize) Array.Resize(ref romData, newsize);
+                if (length < newsize) Array.Resize(ref romData, newsize);
                 bool success;
-                
+
                 fixed (byte* ptr = romData)
                 fixed (byte** includepaths = includes)
                 fixed (Rawasardefine* additional_defines = defines)
                 {
-                    var param= new Rawpatchparams
+                    var param = new Rawpatchparams
                     {
-                        patchloc=patchLocation,
-                        romdata=ptr,
-                        buflen= newsize,
+                        patchloc = patchLocation,
+                        romdata = ptr,
+                        buflen = newsize,
                         romlen = &length,
-                        
-                        should_reset=shouldReset,
+
+                        should_reset = shouldReset,
                         includepaths = includepaths,
                         numincludepaths = includes.Length,
                         additional_defines = additional_defines,
                         additional_define_count = defines.Length,
-                        stddefinesfile=stdDefineFile,
-                        stdincludesfile=stdIncludeFile
+                        stddefinesfile = stdDefineFile,
+                        stdincludesfile = stdIncludeFile
                     };
-                    param.structsize=Marshal.SizeOf(param);
-                    
-                    success=asar_patch_ex(ref param);
+                    param.structsize = Marshal.SizeOf(param);
+
+                    success = asar_patch_ex(ref param);
                 }
 
-                if (length<newsize) Array.Resize(ref romData, length);
+                if (length < newsize) Array.Resize(ref romData, length);
 
                 return success;
             }
             finally
             {
-                for(int i=0;i<includes.Length;i++)
+                for (int i = 0; i < includes.Length; i++)
                 {
                     Marshal.FreeCoTaskMem((IntPtr)includes[i]);
                 }
-                foreach(var define in defines)
+                foreach (var define in defines)
                 {
                     Marshal.FreeCoTaskMem(define.name);
                     Marshal.FreeCoTaskMem(define.contents);
@@ -241,9 +244,10 @@ namespace AsarCLR
         {
             return asar_maxromsize();
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
-        private unsafe struct Rawasarerror {
+        private unsafe struct Rawasarerror
+        {
             public IntPtr fullerrdata;
             public IntPtr rawerrdata;
             public IntPtr block;
@@ -252,7 +256,7 @@ namespace AsarCLR
             public IntPtr callerfilename;
             public int callerline;
         };
-        
+
         private static Asarerror[] cleanerrors(Rawasarerror* ptr, int length)
         {
             Asarerror[] output = new Asarerror[length];
@@ -333,7 +337,7 @@ namespace AsarCLR
             Asarlabel[] output = new Asarlabel[length];
 
             // Better create a new array
-            // to avoid pointer erros, corruption and may other problems.
+            // To avoid pointer erros, corruption and may other problems.
             for (int i = 0; i < length; i++)
             {
                 output[i].Name = Marshal.PtrToStringAnsi(ptr[i].name);
@@ -362,7 +366,7 @@ namespace AsarCLR
         {
             return Marshal.PtrToStringAnsi(asar_getdefine(defineName));
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         private unsafe struct Rawasardefine
         {
@@ -380,7 +384,7 @@ namespace AsarCLR
             Asardefine[] output = new Asardefine[length];
 
             // Better create a new array
-            // to avoid pointer erros, corruption and may other problems.
+            // To avoid pointer erros, corruption and may other problems.
             for (int i = 0; i < length; i++)
             {
                 output[i].Name = Marshal.PtrToStringAnsi(ptr[i].name);
@@ -429,7 +433,7 @@ namespace AsarCLR
             Asarwrittenblock[] output = new Asarwrittenblock[length];
 
             // Better create a new array
-            // to avoid pointer erros, corruption and may other problems.
+            // To avoid pointer erros, corruption and may other problems.
             for (int i = 0; i < length; i++)
             {
                 output[i].Snesoffset = ptr[i].snesoffset;
@@ -460,13 +464,13 @@ namespace AsarCLR
             MapperType mapper = asar_getmapper();
             return mapper;
         }
-        
+
         /// <summary>
         /// Generates the contents of a symbols file for in a specific format.
         /// </summary>
         /// <param name="format">The symbol file format to generate</param>
         /// <returns>Returns the textual contents of the symbols file.</returns>
-        public static string getsymbolsfile(string format="wla")
+        public static string getsymbolsfile(string format = "wla")
         {
             return Marshal.PtrToStringAnsi(asar_getsymbolsfile(format));
         }

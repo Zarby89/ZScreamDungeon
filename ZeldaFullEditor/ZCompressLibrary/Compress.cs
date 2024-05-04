@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ZCompressLibrary
 {
@@ -10,20 +8,36 @@ namespace ZCompressLibrary
 
         public static byte[] ALTTPCompressGraphics(byte[] u_data, int start, int length)
         {
-            return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE2);
+            try
+            {
+                return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE2);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error compressing gfx: " + e.ToString());
+                return null;
+            }
         }
 
         public static byte[] ALTTPCompressOverworld(byte[] u_data, int start, int length)
         {
-            return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE1);
+            try
+            {
+                return std_nintendo_compress(u_data, start, length, Common.D_NINTENDO_C_MODE1);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error compressing overworld map gfx: " + e.ToString());
+                return null;
+            }
         }
 
         internal static byte[] std_nintendo_compress(byte[] u_data, int start, int length, byte mode)
         {
-            //throw new NotImplementedException();
-            // we will realloc later
-            int compressed_size = length *2;
-            byte[] compressed_data = new byte[length *2]; //(char*)malloc(length + 3); // Worse cas is a copy of the string with extended header (probably should abord if more)
+            // Throw new NotImplementedException();
+            // We will realloc later
+            int compressed_size = length * 2;
+            byte[] compressed_data = new byte[length * 2]; //(char*)malloc(length + 3); // Worse cas is a copy of the string with extended header (probably should abord if more)
             compression_piece compressed_chain = new compression_piece(1, 1, new byte[] { (byte)'a', (byte)'a' }, 2); //compression_piece* compressed_chain = new_compression_piece(1, 1, "aaa", 2);
             compression_piece compressed_chain_start = compressed_chain; //compression_piece* compressed_chain_start = compressed_chain;
 
@@ -40,14 +54,15 @@ namespace ZCompressLibrary
             {
                 fake_mem.memset(data_size_taken, 0, data_size_taken.Length); // memset(data_size_taken, 0, sizeof(data_size_taken));
                 fake_mem.memset(cmd_args, 0); // memset(cmd_args, 0, sizeof(cmd_args));
-                // s_debug("Testing every command\n");
+                                              //s_debug("Testing every command\n");
 
                 /* We test every command to see the gain with current position */
                 {
-                    //BYTE REPEAT
-                    // s_debug("Testing byte repeat\n");
+                    // BYTE REPEAT
+                    //s_debug("Testing byte repeat\n");
                     int pos = u_data_pos;
                     byte byte_to_repeat = u_data[pos];
+
                     while (pos <= last_pos && u_data[pos] == byte_to_repeat)
                     {
                         data_size_taken[Common.D_CMD_BYTE_REPEAT]++;
@@ -59,7 +74,7 @@ namespace ZCompressLibrary
 
                 {
                     // WORD REPEAT
-                    // s_debug("Testing word repeat\n");
+                    //s_debug("Testing word repeat\n");
                     if (u_data_pos + 2 <= last_pos && u_data[u_data_pos] != u_data[u_data_pos + 1])
                     {
                         int pos = u_data_pos;
@@ -78,6 +93,7 @@ namespace ZCompressLibrary
                             {
                                 break;
                             }
+
                             pos += 2;
                         }
 
@@ -88,7 +104,7 @@ namespace ZCompressLibrary
 
                 {
                     // INC BYTE
-                    // s_debug("Testing byte inc\n");
+                    //s_debug("Testing byte inc\n");
                     int pos = u_data_pos;
                     byte byte1 = u_data[pos];
                     pos++;
@@ -104,21 +120,24 @@ namespace ZCompressLibrary
 
                 {
                     // INTRA CPY
-                    // s_debug("Testing intra copy\n");
+                    //s_debug("Testing intra copy\n");
                     if (u_data_pos != start)
                     {
                         int searching_pos = start;
-                        ////unsigned int compressed_length = u_data_pos - start;
+                        //unsigned int compressed_length = u_data_pos - start;
                         int current_pos_u = u_data_pos;
                         int copied_size = 0;
                         int search_start = start;
 
-                        /* printf("Searching for : ");
+                        /* 
+                        printf("Searching for : ");
                         for (unsigned int i = 0; i < 8; i++)
                         {
                             printf("%02X ", (unsigned char) u_data[u_data_pos + i]);
                         }
-                        printf("\n");*/
+
+                        printf("\n");
+                        */
 
                         while (searching_pos < u_data_pos && current_pos_u <= last_pos)
                         {
@@ -138,7 +157,7 @@ namespace ZCompressLibrary
                             if (copied_size > data_size_taken[Common.D_CMD_COPY_EXISTING])
                             {
                                 search_start -= start;
-                                // s_debug("-Found repeat of %d at %d\n", copied_size, search_start);
+                                //s_debug("-Found repeat of %d at %d\n", copied_size, search_start);
                                 data_size_taken[Common.D_CMD_COPY_EXISTING] = copied_size;
                                 cmd_args[Common.D_CMD_COPY_EXISTING][0] = (byte)(search_start & 0xFF);
                                 cmd_args[Common.D_CMD_COPY_EXISTING][1] = (byte)(search_start >> 8);
@@ -150,7 +169,8 @@ namespace ZCompressLibrary
                     }
                 }
 
-                // s_debug("Finding the best gain\n");
+                //s_debug("Finding the best gain\n");
+
                 // We check if a command managed to pick up 2 or more bytes
                 // We don't want to be even with copy, since it's possible to merge copy
                 int max_win = 2;
@@ -160,12 +180,12 @@ namespace ZCompressLibrary
                     int cmd_size_taken = data_size_taken[cmd_i];
                     if (cmd_size_taken > max_win && cmd_size_taken > cmd_size[cmd_i]
                         && !(cmd_i == Common.D_CMD_COPY_EXISTING && cmd_size_taken == 3)
-                        // FIXME: Should probably be a
+                        // TODO: Should probably be a
                         // table that say what is even with copy
                         // but all other cmd are 2
                         )
                     {
-                        // s_debug("--C:%d / S:%d\n", cmd_i, cmd_size_taken);
+                        //s_debug("--C:%d / S:%d\n", cmd_i, cmd_size_taken);
                         cmd_with_max = cmd_i;
                         max_win = cmd_size_taken;
                     }
@@ -173,7 +193,7 @@ namespace ZCompressLibrary
 
                 if (cmd_with_max == Common.D_CMD_COPY) // This is the worse case
                 {
-                    // s_debug("- Best command is copy\n");
+                    //s_debug("- Best command is copy\n");
                     // We just move through the next byte and don't 'compress' yet, maybe something is better after.
                     u_data_pos++;
                     bytes_since_last_compression++;
@@ -190,7 +210,7 @@ namespace ZCompressLibrary
                 else
                 {
                     // Yay we get something better
-                    // s_debug("- Ok we get a gain from %d\n", cmd_with_max);
+                    //s_debug("- Ok we get a gain from %d\n", cmd_with_max);
                     byte[] buffer = new byte[2];
                     buffer[0] = cmd_args[cmd_with_max][0];
                     if (cmd_size[cmd_with_max] == 2)
@@ -250,15 +270,18 @@ namespace ZCompressLibrary
 
             // First is a dumb place holder
             compression_piece.merge_copy(compressed_chain_start.next);
-            //# ifdef MY_DEBUG
-            //compressed_chain = compressed_chain_start->next;
-            //while (compressed_chain != NULL)
-            //{
-            //  s_debug("--Piece--\n");
-            //  print_compression_piece(compressed_chain);
-            //  compressed_chain = compressed_chain->next;
-            //}
-            //#endif
+            /*
+            # ifdef MY_DEBUG
+            compressed_chain = compressed_chain_start->next;
+            while (compressed_chain != NULL)
+            {
+              s_debug("--Piece--\n");
+              print_compression_piece(compressed_chain);
+              compressed_chain = compressed_chain->next;
+            }
+
+            #endif
+            */
             compressed_size = create_compression_string(compressed_chain_start.next, compressed_data, mode); //* compressed_size = create_compression_string(compressed_chain_start->next, tmp, mode);
 
             //* compressed_size = create_compression_string(compressed_chain_start->next, compressed_data, mode);
@@ -284,13 +307,13 @@ namespace ZCompressLibrary
                 {
                     if (piece.length <= Common.D_MAX_LENGTH)
                     {
-                        output[pos++] = (byte)((7 << 5) | ((byte)piece.command << 2) | (((piece.length - 1) & 0xFF00) >> 8));
+                        output[pos++] = (byte)((7 << 5) | (piece.command << 2) | (((piece.length - 1) & 0xFF00) >> 8));
                         //s_debug("Building extended header : cmd: %d, length: %d -  %02X\n", piece->command, piece->length, (unsigned char) output[pos - 1]);
                         output[pos++] = (byte)((piece.length - 1) & 0x00FF);
                     }
                     else
                     {
-                        //We need to split the command
+                        // We need to split the command
                         int length_left = piece.length - Common.D_MAX_LENGTH;
                         piece.length = Common.D_MAX_LENGTH;
                         compression_piece new_piece = null;
@@ -298,27 +321,31 @@ namespace ZCompressLibrary
                         {
                             new_piece = new compression_piece(piece.command, length_left, piece.argument, piece.argument_length);
                         }
+
                         if (piece.command == Common.D_CMD_BYTE_INC)
                         {
                             new_piece = new compression_piece(piece.command, length_left, piece.argument, piece.argument_length);
                             new_piece.argument[0] = (byte)(piece.argument[0] + Common.D_MAX_LENGTH);
                         }
+
                         if (piece.command == Common.D_CMD_COPY)
                         {
                             piece.argument_length = Common.D_MAX_LENGTH;
                             new_piece = new compression_piece(piece.command, length_left, null, length_left);
                             fake_mem.memcpy(new_piece.argument, 0, piece.argument, Common.D_MAX_LENGTH, length_left); //memcpy(new_piece.argument, piece.argument + Common.D_MAX_LENGTH, length_left);
                         }
+
                         if (piece.command == Common.D_CMD_COPY_EXISTING)
                         {
                             piece.argument_length = Common.D_MAX_LENGTH;
-                            int offset = ((ushort)piece.argument[0] | ((ushort)piece.argument[1] << 8));
+                            int offset = (piece.argument[0] | (piece.argument[1] << 8));
                             new_piece = new compression_piece(piece.command, length_left, piece.argument, piece.argument_length);
                             if (mode == Common.D_NINTENDO_C_MODE2)
                             {
                                 new_piece.argument[0] = (byte)((offset + Common.D_MAX_LENGTH) & 0xFF);
                                 new_piece.argument[1] = (byte)((offset + Common.D_MAX_LENGTH) >> 8);
                             }
+
                             if (mode == Common.D_NINTENDO_C_MODE1)
                             {
                                 new_piece.argument[1] = (byte)((offset + Common.D_MAX_LENGTH) & 0xFF);
@@ -343,6 +370,7 @@ namespace ZCompressLibrary
                         tmp[0] = piece.argument[0];
                         tmp[1] = piece.argument[1];
                     }
+
                     if (mode == Common.D_NINTENDO_C_MODE1)
                     {
                         tmp[0] = piece.argument[1];
@@ -363,6 +391,5 @@ namespace ZCompressLibrary
             output[pos] = 0xFF;
             return pos + 1;
         }
-
     }
 }

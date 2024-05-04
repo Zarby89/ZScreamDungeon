@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ZeldaFullEditor
 {
+    /// <summary>
+    ///     A data class containing all of the info for overlay data.
+    /// </summary>
     public class OverlayData
     {
-        public List<TilePos> tilesData = new List<TilePos>();
-        public OverlayData()
-        {
-            //TODO: Add something here?
-        }
+        /// <summary>
+        ///     Gets or sets the list of TilePos for the overlay.
+        /// </summary>
+        public List<TilePos> TileDataList { get; set; } = new List<TilePos>();
     }
 }

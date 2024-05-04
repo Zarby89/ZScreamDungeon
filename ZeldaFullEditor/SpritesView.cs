@@ -25,10 +25,10 @@ namespace ZeldaFullEditor
         {
             InitializeComponent();
         }
-        
+
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.Clear(Color.FromArgb(48,48,48));
+            e.Graphics.Clear(Color.FromArgb(48, 48, 48));
             int w = (this.Size.Width / 68);
             int h = (((items.Count / w) + 1) * 68);
             int xpos = 0;
@@ -47,24 +47,24 @@ namespace ZeldaFullEditor
 
                 o.Draw();
 
-                e.Graphics.DrawImage(GFX.previewSpritesBitmap[o.id], new Point((xpos * 64)+(xpos*4), (ypos * 64)+(ypos * 4)));
+                e.Graphics.DrawImage(GFX.previewSpritesBitmap[o.id], new Point((xpos * 64) + (xpos * 4), (ypos * 64) + (ypos * 4)));
 
                 if (selectedObject == o)
                 {
-                    e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 64));
+                    e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 64));
                 }
 
                 e.Graphics.DrawRectangle(Pens.LightGray, new Rectangle(xpos * 64 + (xpos * 4), ypos * 64 + (ypos * 4), 64, 64));
                 if (o.subtype == 0)
                 {
-                    e.Graphics.DrawString(Sprites_Names.name[o.id], new Font("Arial",7), Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
+                    e.Graphics.DrawString(Sprites_Names.name[o.id], Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
                     //e.Graphics.DrawString(Sprites_Names.name[o.id].Substring(0, 2), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
 
                 }
                 else
                 {
-                    e.Graphics.DrawString((o.id-1).ToString("X2"), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
-                    e.Graphics.DrawString(Sprites_Names.overlordnames[o.id-1], new Font("Arial", 7), Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + 40 + (ypos * 4), 64, 24));
+                    e.Graphics.DrawString((o.id - 1).ToString("X2"), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
+                    e.Graphics.DrawString(Sprites_Names.overlordnames[o.id - 1], Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + 40 + (ypos * 4), 64, 24));
                 }
 
                 xpos++;
@@ -87,7 +87,7 @@ namespace ZeldaFullEditor
         {
             base.Refresh();
         }
-    
+
         private void ObjectViewer_SizeChanged(object sender, EventArgs e)
         {
             Refresh();
@@ -145,9 +145,9 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
-        
+
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
         {
             int w = (this.Size.Width / 64);
@@ -179,13 +179,13 @@ namespace ZeldaFullEditor
                     index++;
                 }
             }
-            
+
             Refresh();
         }
 
         private void SpritesView_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
     }
 }

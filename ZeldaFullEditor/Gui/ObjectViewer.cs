@@ -31,7 +31,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -57,11 +57,11 @@ namespace ZeldaFullEditor
 
                 if (selectedObject == o)
                 {
-                    e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64), 64, 64));
+                    e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
                 }
 
                 e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
-                if (showName == false)
+                if (!showName)
                 {
                     e.Graphics.DrawString(o.id.ToString("X3"), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 48, 64, 64));
                 }
@@ -77,7 +77,7 @@ namespace ZeldaFullEditor
                     ypos++;
                 }
             }
-            
+
             base.OnPaint(e);
         }
 
@@ -137,7 +137,7 @@ namespace ZeldaFullEditor
 
             foreach (Room_Object o in items)
             {
-                o.size = 5;
+                o.Size = 5;
                 unsafe
                 {
                     byte* ptr = (byte*)GFX.previewObjectsPtr[o.previewId].ToPointer();
@@ -157,13 +157,13 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
         {
             int w = (this.Size.Width / 64);
-            int h = (((items.Count / w)+1) * 64);
+            int h = (((items.Count / w) + 1) * 64);
             int xpos = 0;
             int ypos = 0;
             int index = 0;
@@ -173,14 +173,14 @@ namespace ZeldaFullEditor
                 if (index < items.Count)
                 {
                     Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
-                    Rectangle itemstarRect = new Rectangle((xpos * 64)+44, (ypos * 64)+44, 16, 16);
+                    Rectangle itemstarRect = new Rectangle((xpos * 64) + 44, (ypos * 64) + 44, 16, 16);
                     if (itemRect.Contains(new Point(e.X, e.Y)))
                     {
                         selectedIndex = index;
                         selectedObject = o;
                         if (itemstarRect.Contains((new Point(e.X, e.Y))))
                         {
-                            //Make Favourite or not
+                            // Make Favourite or not
                             if (Settings.Default.favoriteObjects[o.id] == "true")
                             {
                                 Settings.Default.favoriteObjects[o.id] = "false";

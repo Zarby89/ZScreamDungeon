@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.IO;
 namespace ZeldaFullEditor
 {
 
@@ -45,7 +39,8 @@ namespace ZeldaFullEditor
             }
         }
 
-        public static string[] room_name = new string[]{
+        public static string[] room_name = new string[]
+        {
             "Ganon","Hyrule Castle (North Corridor)","Behind Sanctuary (Switch)",
             "Houlihan","Turtle Rock (Crysta-Roller)",
             "Empty","Swamp Palace (Arrghus[Boss])",

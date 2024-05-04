@@ -19,10 +19,10 @@ namespace ZeldaFullEditor.Properties {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ZeldaFullEditor.Properties {
         ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ZeldaFullEditor.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace ZeldaFullEditor.Properties {
         ///   les recherches de ressources à l'aide de cette classe de ressource fortement typée.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,17 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap darkbg {
+        public static System.Drawing.Bitmap damageclass {
+            get {
+                object obj = ResourceManager.GetObject("damageclass", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap darkbg {
             get {
                 object obj = ResourceManager.GetObject("darkbg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +83,7 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap floorselector {
+        public static System.Drawing.Bitmap floorselector {
             get {
                 object obj = ResourceManager.GetObject("floorselector", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +93,7 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Mblock {
+        public static System.Drawing.Bitmap Mblock {
             get {
                 object obj = ResourceManager.GetObject("Mblock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +103,7 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap spriteFont {
+        public static System.Drawing.Bitmap spriteFont {
             get {
                 object obj = ResourceManager.GetObject("spriteFont", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +113,7 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap starl {
+        public static System.Drawing.Bitmap starl {
             get {
                 object obj = ResourceManager.GetObject("starl", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +123,7 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap starn {
+        public static System.Drawing.Bitmap starn {
             get {
                 object obj = ResourceManager.GetObject("starn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +133,7 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap xbutton {
+        public static System.Drawing.Bitmap xbutton {
             get {
                 object obj = ResourceManager.GetObject("xbutton", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

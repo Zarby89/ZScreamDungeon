@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
     public static class GfxGroups
     {
@@ -18,7 +12,7 @@ namespace ZeldaFullEditor
             int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
             gfxPointer = Utils.SnesToPc(gfxPointer);
 
-            for(int i = 0; i < 37;i++)
+            for (int i = 0; i < 37; i++)
             {
                 mainGfx[i] = new byte[8];
                 for (int j = 0; j < 8; j++)
@@ -64,7 +58,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    ROM.Write(gfxPointer + (i * 8) + j,mainGfx[i][j], true, "Gfx Groups");
+                    ROM.Write(gfxPointer + (i * 8) + j, mainGfx[i][j], true, "Gfx Groups");
                 }
             }
 
@@ -72,7 +66,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.Write(Constants.entrance_gfx_group + (i * 4) + j,roomGfx[i][j], true, "Gfx Groups");
+                    ROM.Write(Constants.entrance_gfx_group + (i * 4) + j, roomGfx[i][j], true, "Gfx Groups");
                 }
             }
 
@@ -80,7 +74,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.Write(Constants.sprite_blockset_pointer + (i * 4) + j,spriteGfx[i][j], true, "sprGfx Groups");
+                    ROM.Write(Constants.sprite_blockset_pointer + (i * 4) + j, spriteGfx[i][j], true, "sprGfx Groups");
                 }
             }
 
@@ -88,7 +82,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.Write(Constants.dungeons_palettes_groups + (i * 4) + j,paletteGfx[i][j], true, "palGfx Groups");
+                    ROM.Write(Constants.dungeons_palettes_groups + (i * 4) + j, paletteGfx[i][j], true, "palGfx Groups");
                 }
             }
 

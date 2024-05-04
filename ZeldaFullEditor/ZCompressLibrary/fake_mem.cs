@@ -28,7 +28,7 @@
 
         internal static void memset(int[] dest, int value, int length)
         {
-            for(int i=0; i< length; ++i)
+            for (int i = 0; i < length; ++i)
             {
                 dest[i] = value;
             }
@@ -36,9 +36,9 @@
 
         internal static void memset(byte[][] dest, byte value)
         {
-            for(int i=0; i<dest.GetLength(0); ++i)
+            for (int i = 0; i < dest.GetLength(0); ++i)
             {
-                for(int j=0; j<dest[i].Length; ++j)
+                for (int j = 0; j < dest[i].Length; ++j)
                 {
                     dest[i][j] = value;
                 }
@@ -48,9 +48,9 @@
         internal static bool memcmp(byte[] buf1, int buf1offset, byte[] buf2, int buf2offset, int size)
         {
             int i = 0;
-            while(i < size)
+            while (i < size)
             {
-                if(buf1[buf1offset + i] != buf2[buf2offset +i])
+                if (buf1[buf1offset + i] != buf2[buf2offset + i])
                 {
                     return false;
                 }

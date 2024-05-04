@@ -22,8 +22,8 @@ namespace ZeldaFullEditor
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
-            of.Filter = "Alttp US ROM .sfc|*.sfc;*.smc";
-            of.DefaultExt = ".sfc";
+            of.Filter = UIText.USROMType;
+            of.DefaultExt = UIText.ROMExtension;
             if (of.ShowDialog() == DialogResult.OK)
             {
                 filePath = of.FileName;
@@ -33,9 +33,9 @@ namespace ZeldaFullEditor
 
         private void RoomMover_Load(object sender, EventArgs e)
         {
-            for(int i =0; i<296;i++)
+            for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
-                checkedListBox1.Items.Add("Room " + i.ToString("X3") + " - " + Room_Name.room_name[i],true);
+                checkedListBox1.Items.Add("Room " + i.ToString("X3") + " - " + Room_Name.room_name[i], true);
             }
         }
 

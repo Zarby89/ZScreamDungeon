@@ -135,7 +135,7 @@
 84 Red eyegore / red mimic
 85 Yellow stalfos
 86 Kodongo
-87 Kondongo fire
+87 Kodongo fire
 88 Mothula
 89 Mothula beam
 8A Spike block
@@ -288,13 +288,13 @@ FF Falling tiles west to east
 (010) Palace of Darkness (Turtle)
 (011) Ganon's Tower (Entrance)
 (012) Ganon's Tower (Agahnim2 Boss)
-(013) Ice Palace (Entrance )
+(013) Ice Palace (Entrance)
 (014) Empty Clone
 (015) Ganon Evacuation Route
 (016) Hyrule Castle (Bombable Stock)
 (017) Sanctuary
 (018) Turtle Rock (Hokku-Bokku Key 2)
-(019) Turtle Rock (Big Key )
+(019) Turtle Rock (Big Key)
 (020) Turtle Rock
 (021) Swamp Palace (Swimming Treadmill)
 (022) Tower of Hera (Moldorm Fall)
@@ -307,14 +307,14 @@ FF Falling tiles west to east
 (029) Ice Palace (Bomb Floor / Bari)
 (030) Ice Palace (Pengator / Big Key)
 (031) Agahnim's Tower (Agahnim Boss)
-(032) Hyrule Castle (Key-rat )
+(032) Hyrule Castle (Key-rat)
 (033) Hyrule Castle (Sewer Text Trigger)
 (034) Turtle Rock (West Exit to Balcony)
 (035) Turtle Rock (Double Hokku-Bokku / Big chest)
 (036) Empty Clone 
 (037) Swamp Palace (Statue)
 (038) Tower of Hera (Big Chest)
-(039) Swamp Palace (Entrance )
+(039) Swamp Palace (Entrance)
 (040) Skull Woods (Mothula Boss)
 (041) Palace of Darkness (Big Hub)
 (042) Palace of Darkness (Map Chest / Fairy)
@@ -449,56 +449,56 @@ FF Falling tiles west to east
 (171) Thieves Town (Blind The Thief Boss)
 (172) Empty Clone 
 (173) Ice Palace
-(174) Ice Palace (Ice Bridge )
+(174) Ice Palace (Ice Bridge)
 (175) Agahnim's Tower (Circle of Pots)
-(176) Misery Mire (Hourglass )
-(177) Misery Mire (Slug )
-(178) Misery Mire (Spike Key Chest )
-(179) Turtle Rock (Pre-Trinexx )
+(176) Misery Mire (Hourglass)
+(177) Misery Mire (Slug)
+(178) Misery Mire (Spike Key Chest)
+(179) Turtle Rock (Pre-Trinexx)
 (180) Turtle Rock (Dark Maze)
-(181) Turtle Rock (Chain Chomps )
-(182) Turtle Rock (Map Chest / Key Chest / Roller )
-(183) Eastern Palace (Big Key )
-(184) Eastern Palace (Lobby Cannonballs )
-(185) Eastern Palace (Dark Antifairy / Key Pot )
+(181) Turtle Rock (Chain Chomps)
+(182) Turtle Rock (Map Chest / Key Chest / Roller)
+(183) Eastern Palace (Big Key)
+(184) Eastern Palace (Lobby Cannonballs)
+(185) Eastern Palace (Dark Antifairy / Key Pot)
 (186) Thieves Town (Hellway)
 (187) Thieves Town (Conveyor Toilet)
 (188) Empty Clone 
-(189) Ice Palace (Block Puzzle )
-(190) Ice Palace Clone (Switch )
-(191) Agahnim's Tower (Dark Bridge )
-(192) Misery Mire (Compass Chest / Tile )
-(193) Misery Mire (Big Hub )
-(194) Misery Mire (Big Chest )
-(195) Turtle Rock (Final Crystal Switch Puzzle )
+(189) Ice Palace (Block Puzzle)
+(190) Ice Palace Clone (Switch)
+(191) Agahnim's Tower (Dark Bridge)
+(192) Misery Mire (Compass Chest / Tile)
+(193) Misery Mire (Big Hub)
+(194) Misery Mire (Big Chest)
+(195) Turtle Rock (Final Crystal Switch Puzzle)
 (196) Turtle Rock (Laser Bridge)
 (197) Turtle Rock
 (198) Turtle Rock (Torch Puzzle)
 (199) Eastern Palace (Armos Knights Boss)
-(200) Eastern Palace (Entrance )
+(200) Eastern Palace (Entrance)
 (201) ??
-(202) Thieves Town (North West Entrance )
-(203) Thieves Town (North East Entrance )
+(202) Thieves Town (North West Entrance)
+(203) Thieves Town (North East Entrance)
 (204) Empty Clone 
-(205) Ice Palace (Hole to Kholdstare )
+(205) Ice Palace (Hole to Kholdstare)
 (206) Empty Clone 
 (207) Agahnim's Tower (Dark Maze)
-(208) Misery Mire (Conveyor Slug / Big Key )
-(209) Misery Mire (Mire02 / Wizzrobes )
+(208) Misery Mire (Conveyor Slug / Big Key)
+(209) Misery Mire (Mire02 / Wizzrobes)
 (210) Empty Clone 
 (211) Empty Clone 
-(212) Turtle Rock (Laser Key )
-(213) Turtle Rock (Entrance )
+(212) Turtle Rock (Laser Key)
+(213) Turtle Rock (Entrance)
 (214) Empty Clone 
-(215) Eastern Palace (Zeldagamer / Pre-Armos Knights )
+(215) Eastern Palace (Zeldagamer / Pre-Armos Knights)
 (216) Eastern Palace (Canonball 
 (217) Eastern Palace
-(218) Thieves Town (Main (South West) Entrance )
-(219) Thieves Town (South East Entrance )
+(218) Thieves Town (Main (South West) Entrance)
+(219) Thieves Town (South East Entrance)
 (220) Empty Clone 
 (221) Ice Palace (Kholdstare Boss)
 (222) Cave
-(223) Agahnim's Tower (Entrance )
+(223) Agahnim's Tower (Entrance)
 (224) Cave (Lost Woods HP)
 (225) Cave (Lumberjack's Tree HP)
 (226) Cave (1/2 Magic)
@@ -513,7 +513,7 @@ FF Falling tiles west to east
 (235) Empty Clone 
 (236) Cave
 (237) Cave (Spiral Cave)
-(238) Cave (Crystal Switch / 5 Chests )
+(238) Cave (Crystal Switch / 5 Chests)
 (239) Cave (Lost Old Man Starting Cave)
 (240) Cave (Lost Old Man Starting Cave)
 (241) House
