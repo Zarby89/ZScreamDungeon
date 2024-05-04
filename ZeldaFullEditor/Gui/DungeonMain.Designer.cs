@@ -889,78 +889,78 @@
             this.increaseZToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.bringToFrontToolStripMenuItem2,
             this.increaseZBy1ToolStripMenuItem});
-            this.increaseZToolStripMenuItem.Name = "increaseZToolStripMenuItem";
-            this.increaseZToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.increaseZToolStripMenuItem.Text = "Increase Significance";
-            // 
-            // bringToFrontToolStripMenuItem2
-            // 
-            this.bringToFrontToolStripMenuItem2.Name = "bringToFrontToolStripMenuItem2";
-            this.bringToFrontToolStripMenuItem2.Size = new System.Drawing.Size(209, 22);
-            this.bringToFrontToolStripMenuItem2.Text = "Send to Front";
-            this.bringToFrontToolStripMenuItem2.Click += new System.EventHandler(this.SendSelectedToFront);
-            // 
-            // increaseZBy1ToolStripMenuItem
-            // 
-            this.increaseZBy1ToolStripMenuItem.Enabled = false;
-            this.increaseZBy1ToolStripMenuItem.Name = "increaseZBy1ToolStripMenuItem";
-            this.increaseZBy1ToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.increaseZBy1ToolStripMenuItem.Text = "Increase Significance by 1";
-            // 
-            // decreaseZToolStripMenuItem
-            // 
-            this.decreaseZToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.increaseZToolStripMenuItem.Name = "increaseZToolStripMenuItem";
+			this.increaseZToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+			this.increaseZToolStripMenuItem.Text = "Increase Z";
+			// 
+			// bringToFrontToolStripMenuItem2
+			// 
+			this.bringToFrontToolStripMenuItem2.Name = "bringToFrontToolStripMenuItem2";
+			this.bringToFrontToolStripMenuItem2.Size = new System.Drawing.Size(209, 22);
+			this.bringToFrontToolStripMenuItem2.Text = "Send to Front";
+			this.bringToFrontToolStripMenuItem2.Click += new System.EventHandler(this.SendSelectedToFront);
+			// 
+			// increaseZBy1ToolStripMenuItem
+			// 
+			this.increaseZBy1ToolStripMenuItem.Enabled = false;
+			this.increaseZBy1ToolStripMenuItem.Name = "increaseZBy1ToolStripMenuItem";
+			this.increaseZBy1ToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+			this.increaseZBy1ToolStripMenuItem.Text = "Increase Z by 1";
+			// 
+			// decreaseZToolStripMenuItem
+			// 
+			this.decreaseZToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sendToBackToolStripMenuItem2,
             this.decreaseZBy1ToolStripMenuItem});
-            this.decreaseZToolStripMenuItem.Name = "decreaseZToolStripMenuItem";
-            this.decreaseZToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.decreaseZToolStripMenuItem.Text = "Decrease Significance";
-            // 
-            // sendToBackToolStripMenuItem2
-            // 
-            this.sendToBackToolStripMenuItem2.Name = "sendToBackToolStripMenuItem2";
-            this.sendToBackToolStripMenuItem2.Size = new System.Drawing.Size(213, 22);
-            this.sendToBackToolStripMenuItem2.Text = "Send to Back";
-            this.sendToBackToolStripMenuItem2.Click += new System.EventHandler(this.SendSelectedToBack);
-            // 
-            // decreaseZBy1ToolStripMenuItem
-            // 
-            this.decreaseZBy1ToolStripMenuItem.Enabled = false;
-            this.decreaseZBy1ToolStripMenuItem.Name = "decreaseZBy1ToolStripMenuItem";
-            this.decreaseZBy1ToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.decreaseZBy1ToolStripMenuItem.Text = "Decrease Significance by 1";
-            // 
-            // sendToBg1ToolStripMenuItem
-            // 
-            this.sendToBg1ToolStripMenuItem.Name = "sendToBg1ToolStripMenuItem";
-            this.sendToBg1ToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.sendToBg1ToolStripMenuItem.Text = "Send to Layer 1";
-            this.sendToBg1ToolStripMenuItem.Click += new System.EventHandler(this.sendToBg1ToolStripMenuItem_Click);
-            // 
-            // sendToBg1ToolStripMenuItem1
-            // 
-            this.sendToBg1ToolStripMenuItem1.Name = "sendToBg1ToolStripMenuItem1";
-            this.sendToBg1ToolStripMenuItem1.Size = new System.Drawing.Size(188, 22);
-            this.sendToBg1ToolStripMenuItem1.Text = "Send to Layer 2";
-            this.sendToBg1ToolStripMenuItem1.Click += new System.EventHandler(this.sendToBg1ToolStripMenuItem1_Click);
-            // 
-            // sendToBg1ToolStripMenuItem2
-            // 
-            this.sendToBg1ToolStripMenuItem2.Name = "sendToBg1ToolStripMenuItem2";
-            this.sendToBg1ToolStripMenuItem2.Size = new System.Drawing.Size(188, 22);
-            this.sendToBg1ToolStripMenuItem2.Text = "Send to Layer 3";
-            this.sendToBg1ToolStripMenuItem2.Click += new System.EventHandler(this.sendToBg1ToolStripMenuItem2_Click);
-            // 
-            // editGfxToolStripMenuItem
-            // 
-            this.editGfxToolStripMenuItem.Enabled = false;
-            this.editGfxToolStripMenuItem.Name = "editGfxToolStripMenuItem";
-            this.editGfxToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.editGfxToolStripMenuItem.Text = "Edit Graphics";
-            // 
-            // groupselectedcontextMenu
-            // 
-            this.groupselectedcontextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.decreaseZToolStripMenuItem.Name = "decreaseZToolStripMenuItem";
+			this.decreaseZToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+			this.decreaseZToolStripMenuItem.Text = "Decrease Z";
+			// 
+			// sendToBackToolStripMenuItem2
+			// 
+			this.sendToBackToolStripMenuItem2.Name = "sendToBackToolStripMenuItem2";
+			this.sendToBackToolStripMenuItem2.Size = new System.Drawing.Size(213, 22);
+			this.sendToBackToolStripMenuItem2.Text = "Send to Back";
+			this.sendToBackToolStripMenuItem2.Click += new System.EventHandler(this.SendSelectedToBack);
+			// 
+			// decreaseZBy1ToolStripMenuItem
+			// 
+			this.decreaseZBy1ToolStripMenuItem.Enabled = false;
+			this.decreaseZBy1ToolStripMenuItem.Name = "decreaseZBy1ToolStripMenuItem";
+			this.decreaseZBy1ToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.decreaseZBy1ToolStripMenuItem.Text = "Decrease Z by 1";
+			// 
+			// sendToBg1ToolStripMenuItem
+			// 
+			this.sendToBg1ToolStripMenuItem.Name = "sendToBg1ToolStripMenuItem";
+			this.sendToBg1ToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+			this.sendToBg1ToolStripMenuItem.Text = "Send to Layer 1";
+			this.sendToBg1ToolStripMenuItem.Click += new System.EventHandler(this.sendToBg1ToolStripMenuItem_Click);
+			// 
+			// sendToBg1ToolStripMenuItem1
+			// 
+			this.sendToBg1ToolStripMenuItem1.Name = "sendToBg1ToolStripMenuItem1";
+			this.sendToBg1ToolStripMenuItem1.Size = new System.Drawing.Size(188, 22);
+			this.sendToBg1ToolStripMenuItem1.Text = "Send to Layer 2";
+			this.sendToBg1ToolStripMenuItem1.Click += new System.EventHandler(this.sendToBg1ToolStripMenuItem1_Click);
+			// 
+			// sendToBg1ToolStripMenuItem2
+			// 
+			this.sendToBg1ToolStripMenuItem2.Name = "sendToBg1ToolStripMenuItem2";
+			this.sendToBg1ToolStripMenuItem2.Size = new System.Drawing.Size(188, 22);
+			this.sendToBg1ToolStripMenuItem2.Text = "Send to Layer 3";
+			this.sendToBg1ToolStripMenuItem2.Click += new System.EventHandler(this.sendToBg1ToolStripMenuItem2_Click);
+			// 
+			// editGfxToolStripMenuItem
+			// 
+			this.editGfxToolStripMenuItem.Enabled = false;
+			this.editGfxToolStripMenuItem.Name = "editGfxToolStripMenuItem";
+			this.editGfxToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+			this.editGfxToolStripMenuItem.Text = "Edit Graphics";
+			// 
+			// groupselectedcontextMenu
+			// 
+			this.groupselectedcontextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.insertToolStripMenuItem2,
             this.cutToolStripMenuItem2,
             this.copyToolStripMenuItem2,
