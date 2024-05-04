@@ -367,7 +367,7 @@ namespace ZeldaFullEditor.Gui
                 palettes[i] = Color.Black;
             }
 
-            if (paletteUpDown.Value <= 40)
+            if (paletteUpDown.Value <= 42)
             {
                 label9.Text = "Dungeon Main";
                 label10.Text = "Dungeon Sprite Pal1";
