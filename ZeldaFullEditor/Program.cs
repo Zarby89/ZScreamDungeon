@@ -31,7 +31,6 @@ namespace ZeldaFullEditor
             "ZSCustomOverworld.asm",
             "CustomCollision.asm",
             "newgraves.asm",
-            "tempPatch.asm",
             "ZScream.exe.config"
         };
 

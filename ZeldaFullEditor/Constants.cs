@@ -641,6 +641,7 @@ namespace ZeldaFullEditor
         public static int Sprite_0DB725 = 0x06B725;
         public static int Sprite_DamageTaken = 0x1E800;
         public static int DamageClass = 0x06B8F1;
+        public static int BumpDamageGroups = 0x037427;
 
         // ===========================================================================================
         // End Main Addresses

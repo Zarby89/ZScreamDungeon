@@ -891,7 +891,7 @@
             this.increaseZBy1ToolStripMenuItem});
 			this.increaseZToolStripMenuItem.Name = "increaseZToolStripMenuItem";
 			this.increaseZToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-			this.increaseZToolStripMenuItem.Text = "Increase Significance";
+			this.increaseZToolStripMenuItem.Text = "Increase Z";
 			// 
 			// bringToFrontToolStripMenuItem2
 			// 
@@ -905,7 +905,7 @@
 			this.increaseZBy1ToolStripMenuItem.Enabled = false;
 			this.increaseZBy1ToolStripMenuItem.Name = "increaseZBy1ToolStripMenuItem";
 			this.increaseZBy1ToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-			this.increaseZBy1ToolStripMenuItem.Text = "Increase Significance by 1";
+			this.increaseZBy1ToolStripMenuItem.Text = "Increase Z by 1";
 			// 
 			// decreaseZToolStripMenuItem
 			// 
@@ -914,7 +914,7 @@
             this.decreaseZBy1ToolStripMenuItem});
 			this.decreaseZToolStripMenuItem.Name = "decreaseZToolStripMenuItem";
 			this.decreaseZToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-			this.decreaseZToolStripMenuItem.Text = "Decrease Significance";
+			this.decreaseZToolStripMenuItem.Text = "Decrease Z";
 			// 
 			// sendToBackToolStripMenuItem2
 			// 
@@ -928,7 +928,7 @@
 			this.decreaseZBy1ToolStripMenuItem.Enabled = false;
 			this.decreaseZBy1ToolStripMenuItem.Name = "decreaseZBy1ToolStripMenuItem";
 			this.decreaseZBy1ToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-			this.decreaseZBy1ToolStripMenuItem.Text = "Decrease Significance by 1";
+			this.decreaseZBy1ToolStripMenuItem.Text = "Decrease Z by 1";
 			// 
 			// sendToBg1ToolStripMenuItem
 			// 

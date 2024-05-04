@@ -2755,6 +2755,8 @@ namespace ZeldaFullEditor
                 {
                     DungeonsData.SpriteProperties[i].SaveToROM((byte)i);
                 }
+
+                ROM.Write(Constants.BumpDamageGroups, DungeonsData.BumpDamagesGroup);
             }
             catch (Exception e)
             {

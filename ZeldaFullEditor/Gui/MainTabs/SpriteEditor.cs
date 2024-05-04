@@ -16,6 +16,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private void SpriteEditor_Load(object sender, EventArgs e)
         {
             spriteListbox.Items.AddRange(Sprites_Names.name);
+            bumpDamagecombobox.SelectedIndex = 0;
+            spriteListbox.SelectedIndex = 0;
         }
 
         private void spriteListbox_SelectedIndexChanged(object sender, EventArgs e)
@@ -171,6 +173,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
             selectedProperty.DamagesTaken[13] = (byte)damage0DHexBox.HexValue;
             selectedProperty.DamagesTaken[14] = (byte)damage0EHexBox.HexValue;
             selectedProperty.DamagesTaken[15] = (byte)damage0FHexBox.HexValue;
+        }
+
+        private void bumpDamagecombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fromUser = false;
+            bumpdamagemail1hexbox.HexValue = DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 0];
+            bumpdamagemail2hexbox.HexValue = DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 1];
+            bumpdamagemail3hexbox.HexValue = DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 2];
+            fromUser = true;
+        }
+
+        private void bumpdamagemail1hexbox_TextChanged(object sender, EventArgs e)
+        {
+            if (fromUser) 
+            {
+                DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 0] = (byte)bumpdamagemail1hexbox.HexValue;
+                DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 1] = (byte)bumpdamagemail2hexbox.HexValue;
+                DungeonsData.BumpDamagesGroup[(bumpDamagecombobox.SelectedIndex * 3) + 2] = (byte)bumpdamagemail3hexbox.HexValue;
+            }
         }
     }
 }
