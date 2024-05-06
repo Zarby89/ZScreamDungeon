@@ -35,9 +35,10 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
 
                 int gs = scene.ow.GameState;
+                
                 foreach (Sprite spr in scene.ow.AllSprites[gs]) // TODO : Check if that need to be changed to LINQ mapid == maphover
                 {
-                    if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16)
+                    if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16 && spr.mapid == scene.selectedMapParent)
                     {
                         selectedSprite = spr;
 
