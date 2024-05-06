@@ -6060,5 +6060,27 @@ namespace ZeldaFullEditor
         {
             tabControl2.Size = new Size(1, (tabControl2.RowCount * 20));
         }
+
+        private void exportOverlayAsASMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int i = overworldEditor.scene.selectedMap;
+            string s = "";
+            for (int t = 0; t < overworldEditor.scene.ow.AllOverlays[i].TileDataList.Count; t++)
+            {
+                ushort addr = (ushort)((overworldEditor.scene.ow.AllOverlays[i].TileDataList[t].x * 2) + (overworldEditor.scene.ow.AllOverlays[i].TileDataList[t].y * 128) + 0x2000);
+
+                // LDA TileID : STA $addr
+                // A9 (LDA #$)
+                // A2 (LDX #$)
+                // 8D (STA $xxxx)
+
+                // LDA :
+                s += "LDA.w #$" + overworldEditor.scene.ow.AllOverlays[i].TileDataList[t].tileId.ToString("X4") + "\r\n";
+                s += "STA.w $" + addr.ToString("X4") + "\r\n\r\n";
+
+                Clipboard.SetText(s);
+            }
+
+        }
     }
 }
