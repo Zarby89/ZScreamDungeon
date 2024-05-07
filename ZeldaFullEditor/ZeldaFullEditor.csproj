@@ -340,6 +340,18 @@
     <Compile Include="Gui\MainTabs\MusicEditor.Designer.cs">
       <DependentUpon>MusicEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\MainTabs\NamesEditorForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\NamesEditorForm.Designer.cs">
+      <DependentUpon>NamesEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\MainTabs\NamesEditorFormFile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\NamesEditorFormFile.Designer.cs">
+      <DependentUpon>NamesEditorFormFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\MainTabs\ObjectDesigner.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -448,6 +460,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Rooms\DungeonLimits.cs" />
     <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
@@ -496,6 +509,7 @@
     <Compile Include="ROM.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomLayout.cs" />
+    <Compile Include="Rooms\RoomWarning.cs" />
     <Compile Include="Rooms\Room_Name.cs" />
     <Compile Include="Rooms\Sprites\Sprites_Names.cs" />
     <Compile Include="Rooms\Object_Draw\Subtype1_Draw.cs" />
@@ -658,6 +672,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\MusicEditor.resx">
       <DependentUpon>MusicEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\NamesEditorForm.resx">
+      <DependentUpon>NamesEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\NamesEditorFormFile.resx">
+      <DependentUpon>NamesEditorFormFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\ObjectDesigner.resx">
       <DependentUpon>ObjectDesigner.cs</DependentUpon>

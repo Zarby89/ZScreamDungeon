@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -220,6 +220,7 @@
             this.ScreenEditor = new System.Windows.Forms.TabPage();
             this.MusicEditor = new System.Windows.Forms.TabPage();
             this.SpriteEditor = new System.Windows.Forms.TabPage();
+            this.NamingEditor = new System.Windows.Forms.TabPage();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -331,6 +332,7 @@
             this.clearHolesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearExitsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearOverlaysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportOverlayAsASMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showEntrancesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -380,6 +382,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.discordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.warningLabel = new System.Windows.Forms.Label();
             this.mapPicturebox = new System.Windows.Forms.PictureBox();
             this.maphoverCheckbox = new System.Windows.Forms.CheckBox();
             this.mapInfosLabel = new System.Windows.Forms.Label();
@@ -391,7 +394,6 @@
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
-            this.exportOverlayAsASMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
             this.RoomProperty_DestinationStair4 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.RoomProperty_DestinationStair3 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -1545,13 +1547,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode5.Name = "EntranceNode";
+            treeNode5.Text = "Entrances";
+            treeNode6.Name = "StartingEntranceNode";
+            treeNode6.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode5,
+            treeNode6});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 289);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -2450,6 +2452,7 @@
             this.editorsTabControl.Controls.Add(this.ScreenEditor);
             this.editorsTabControl.Controls.Add(this.MusicEditor);
             this.editorsTabControl.Controls.Add(this.SpriteEditor);
+            this.editorsTabControl.Controls.Add(this.NamingEditor);
             this.editorsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.editorsTabControl.Enabled = false;
             this.editorsTabControl.Location = new System.Drawing.Point(0, 739);
@@ -2523,6 +2526,15 @@
             this.SpriteEditor.TabIndex = 7;
             this.SpriteEditor.Text = "Sprite Properties";
             this.SpriteEditor.UseVisualStyleBackColor = true;
+            // 
+            // NamingEditor
+            // 
+            this.NamingEditor.Location = new System.Drawing.Point(4, 25);
+            this.NamingEditor.Name = "NamingEditor";
+            this.NamingEditor.Size = new System.Drawing.Size(1169, 0);
+            this.NamingEditor.TabIndex = 8;
+            this.NamingEditor.Text = "Names Editor";
+            this.NamingEditor.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
@@ -3313,7 +3325,7 @@
             this.zeldaSavedToolStripMenuItem,
             this.agahDeadToolStripMenuItem});
             this.clearSpritesToolStripMenuItem.Name = "clearSpritesToolStripMenuItem";
-            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.clearSpritesToolStripMenuItem.Text = "Clear All Sprites";
             // 
             // saveZeldaToolStripMenuItem
@@ -3340,63 +3352,63 @@
             // clearItemsToolStripMenuItem
             // 
             this.clearItemsToolStripMenuItem.Name = "clearItemsToolStripMenuItem";
-            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.clearItemsToolStripMenuItem.Text = "Clear All Items";
             this.clearItemsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWItemsToolStripMenuItem_Click);
             // 
             // clearEntrancesToolStripMenuItem
             // 
             this.clearEntrancesToolStripMenuItem.Name = "clearEntrancesToolStripMenuItem";
-            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.clearEntrancesToolStripMenuItem.Text = "Clear All Entrances";
             this.clearEntrancesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWEntrancesToolStripMenuItem_Click);
             // 
             // clearAllHolesToolStripMenuItem
             // 
             this.clearAllHolesToolStripMenuItem.Name = "clearAllHolesToolStripMenuItem";
-            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.clearAllHolesToolStripMenuItem.Text = "Clear All Holes";
             this.clearAllHolesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWHolesToolStripMenuItem_Click);
             // 
             // clearExitsToolStripMenuItem
             // 
             this.clearExitsToolStripMenuItem.Name = "clearExitsToolStripMenuItem";
-            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.clearExitsToolStripMenuItem.Text = "Clear All Exits";
             this.clearExitsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWExitsToolStripMenuItem_Click);
             // 
             // clearAllOverlaysToolStripMenuItem
             // 
             this.clearAllOverlaysToolStripMenuItem.Name = "clearAllOverlaysToolStripMenuItem";
-            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.clearAllOverlaysToolStripMenuItem.Text = "Clear All Overlays";
             this.clearAllOverlaysToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOverworldOverlaysToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(177, 22);
             this.toolStripMenuItem6.Text = "Export All Areas";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.ExportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 22);
             this.toolStripMenuItem5.Text = "Import All Areas";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.ImportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(177, 22);
             this.toolStripMenuItem9.Text = "Export All Tiles";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.ExportAllTilesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(177, 22);
             this.toolStripMenuItem10.Text = "Import All Tiles";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.ImportAllTilesToolStripMenuItem_Click);
             // 
@@ -3404,27 +3416,27 @@
             // 
             this.toolStripMenuItem7.Enabled = false;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(177, 22);
             this.toolStripMenuItem7.Text = "Import from ROM";
             // 
             // clearDWTilesToolStripMenuItem
             // 
             this.clearDWTilesToolStripMenuItem.Name = "clearDWTilesToolStripMenuItem";
-            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.clearDWTilesToolStripMenuItem.Text = "Clear DW Tiles";
             this.clearDWTilesToolStripMenuItem.Click += new System.EventHandler(this.ClearDWTilesToolStripMenuItem_Click);
             // 
             // copyLWToDWToolStripMenuItem
             // 
             this.copyLWToDWToolStripMenuItem.Name = "copyLWToDWToolStripMenuItem";
-            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.copyLWToDWToolStripMenuItem.Text = "Copy LW to DW";
             this.copyLWToDWToolStripMenuItem.Click += new System.EventHandler(this.CopyLWToDWToolStripMenuItem_Click);
             // 
             // showTiles32CountToolStripMenuItem
             // 
             this.showTiles32CountToolStripMenuItem.Name = "showTiles32CountToolStripMenuItem";
-            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.showTiles32CountToolStripMenuItem.Text = "Show Tiles32 Count";
             this.showTiles32CountToolStripMenuItem.Click += new System.EventHandler(this.ShowTiles32CountToolStripMenuItem_Click);
             // 
@@ -3509,6 +3521,13 @@
             this.clearOverlaysToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.clearOverlaysToolStripMenuItem.Text = "Clear Area Overlays";
             this.clearOverlaysToolStripMenuItem.Click += new System.EventHandler(this.ClearAllAreaOverlaysToolStripMenuItem_Click);
+            // 
+            // exportOverlayAsASMToolStripMenuItem
+            // 
+            this.exportOverlayAsASMToolStripMenuItem.Name = "exportOverlayAsASMToolStripMenuItem";
+            this.exportOverlayAsASMToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.exportOverlayAsASMToolStripMenuItem.Text = "Export overlay as ASM in clipboard";
+            this.exportOverlayAsASMToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAsASMToolStripMenuItem_Click);
             // 
             // overworldViewToolStripMenuItem
             // 
@@ -3932,6 +3951,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.Control;
+            this.panel3.Controls.Add(this.warningLabel);
             this.panel3.Controls.Add(this.mapPicturebox);
             this.panel3.Controls.Add(this.maphoverCheckbox);
             this.panel3.Controls.Add(this.mapInfosLabel);
@@ -3942,6 +3962,18 @@
             this.panel3.Size = new System.Drawing.Size(267, 543);
             this.panel3.TabIndex = 64;
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
+            // 
+            // warningLabel
+            // 
+            this.warningLabel.AutoSize = true;
+            this.warningLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.warningLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.warningLabel.ForeColor = System.Drawing.Color.OrangeRed;
+            this.warningLabel.Location = new System.Drawing.Point(0, 530);
+            this.warningLabel.MinimumSize = new System.Drawing.Size(280, 0);
+            this.warningLabel.Name = "warningLabel";
+            this.warningLabel.Size = new System.Drawing.Size(280, 13);
+            this.warningLabel.TabIndex = 64;
             // 
             // mapPicturebox
             // 
@@ -4057,13 +4089,6 @@
             // 
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
-            // 
-            // exportOverlayAsASMToolStripMenuItem
-            // 
-            this.exportOverlayAsASMToolStripMenuItem.Name = "exportOverlayAsASMToolStripMenuItem";
-            this.exportOverlayAsASMToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
-            this.exportOverlayAsASMToolStripMenuItem.Text = "Export overlay as ASM in clipboard";
-            this.exportOverlayAsASMToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAsASMToolStripMenuItem_Click);
             // 
             // customPanel3
             // 
@@ -4654,6 +4679,7 @@
             // 
             // DungeonMain
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
@@ -4676,6 +4702,8 @@
             this.SizeChanged += new System.EventHandler(this.DungeonMain_SizeChanged);
             this.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.DungeonMain_ControlAdded);
             this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.DungeonMain_ControlRemoved);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DungeonMain_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.DungeonMain_DragEnter);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.nothingselectedcontextMenu.ResumeLayout(false);
@@ -5137,6 +5165,8 @@
         private System.Windows.Forms.TabPage SpriteEditor;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportOverlayAsASMToolStripMenuItem;
+        private System.Windows.Forms.TabPage NamingEditor;
+        public System.Windows.Forms.Label warningLabel;
     }
 }
 

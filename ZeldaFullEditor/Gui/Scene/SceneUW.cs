@@ -1345,7 +1345,7 @@ namespace ZeldaFullEditor
             {
                 return;
             }
-
+            
             //Tile t = new Tile(0, false, false, 0, 0);
             //t.Draw(0, 0);
             ClearBgGfx(); // Technically not required
@@ -1424,7 +1424,7 @@ namespace ZeldaFullEditor
             {
                 room.drawPotsItems();
             }
-
+            ShowWarnings();
             mainForm.cgramViewer.Refresh();
         }
 
@@ -1547,12 +1547,42 @@ namespace ZeldaFullEditor
             GFX.roomBg2Bitmap.Palette = palettes;
             GFX.roomBgLayoutBitmap.Palette = palettes;
         }
-
+        private void ShowWarnings()
+        {
+            mainForm.warningLabel.Text = "";
+            room.GetObjectsWarning();
+            if (room.warnings != RoomWarning.None)
+            {
+                string warningString = "";
+                if ((room.warnings & RoomWarning.Sprites) == RoomWarning.Sprites)
+                {
+                    warningString += "Too many sprites (16 is the limit)\r\n";
+                }
+                if ((room.warnings & RoomWarning.GeneralManipulable) == RoomWarning.GeneralManipulable)
+                {
+                    warningString += "Too many liftable objects (16 is the limit)\r\n";
+                }
+                if ((room.warnings & RoomWarning.Chest) == RoomWarning.Chest)
+                {
+                    warningString += "Too many chest objects (6 is the limit)\r\n";
+                }
+                if ((room.warnings & RoomWarning.SpecialDoors) == RoomWarning.SpecialDoors)
+                {
+                    warningString += "Too many special doors (key, shutter) (4 is the limit)\r\n";
+                }
+                mainForm.warningLabel.Text = "Warnings : \r\n" + warningString;
+            }
+        }
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
             resizing = false;
             if (mouse_down)
             {
+                
+
+                ShowWarnings();
+
+
                 setMouseSizeMode(e);
 
                 mouse_down = false;
