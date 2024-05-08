@@ -191,7 +191,7 @@ namespace ZeldaFullEditor.Data
 
             for (int i = 0; i < 8; i ++)
             {
-                DungeonsData.SpriteDamageTaken[i + (id * 8)] = (byte)((DamagesTaken[(i * 2) +1 ]<<4) | (DamagesTaken[(i * 2)]));
+                DungeonsData.SpriteDamageTaken[i + (id * 8)] = (byte)((DamagesTaken[(i * 2)]<<4) | (DamagesTaken[(i * 2)+1]));
             }
         }
     }

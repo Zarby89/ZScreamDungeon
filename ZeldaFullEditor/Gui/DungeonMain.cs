@@ -533,17 +533,19 @@ namespace ZeldaFullEditor
                     break;
                 }
 
+                if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
+                {
+                    UIText.CryAboutSaving("problem saving sprites properties");
+                    return;
+                }
+
                 if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
                 {
                     UIText.CryAboutSaving("problem saving sprites damages");
                     return;
                 }
 
-                if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
-                {
-                    UIText.CryAboutSaving("problem saving sprites properties");
-                    return;
-                }
+
                     // The mosaic byte is hardcoded to true on purpose for now.
                     if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44]))
                 {
@@ -697,6 +699,7 @@ namespace ZeldaFullEditor
             {
                 defaultNames = Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt";
             }
+            this.nameEditor.defaultnamesTextbox.Text = File.ReadAllText(defaultNames);
             Room_Name.loadFromFile(defaultNames);
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
@@ -3864,6 +3867,7 @@ namespace ZeldaFullEditor
         }
 
         // TODO: :cry:
+        bool lastTabWasNaming = false;
         private void EditorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             // copyToolStripMenuItem
@@ -4056,13 +4060,18 @@ namespace ZeldaFullEditor
                 this.nameEditor.defaultnamesTextbox.Text = File.ReadAllText(defaultNames);
                 this.nameEditor.BringToFront();
                 this.nameEditor.Visible = true;
+                lastTabWasNaming = true;
             }
             else
             {
-                string defaultNames = Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt";
-                File.WriteAllText(defaultNames, this.nameEditor.defaultnamesTextbox.Text);
-                UpdateNamesFromFile(defaultNames);
+                if (lastTabWasNaming)
+                {
+                    string defaultNames = Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt";
+                    File.WriteAllText(defaultNames, this.nameEditor.defaultnamesTextbox.Text);
+                    UpdateNamesFromFile(defaultNames);
+                }
                 this.nameEditor.Visible = false;
+
             }
         }
 
