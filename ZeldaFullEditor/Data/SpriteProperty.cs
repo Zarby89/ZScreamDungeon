@@ -151,8 +151,8 @@ namespace ZeldaFullEditor.Data
             {
                 for (int i = 0; i < 8; i += 1)
                 {
-                    DamagesTaken[i * 2] = DungeonsData.SpriteDamageTaken[i + (id * 8)].GetLowNibble();
-                    DamagesTaken[(i * 2) + 1] = DungeonsData.SpriteDamageTaken[i + (id * 8)].GetHighNibble();
+                    DamagesTaken[(i * 2) + 1] = DungeonsData.SpriteDamageTaken[i + (id * 8)].GetLowNibble();
+                    DamagesTaken[(i * 2)] = DungeonsData.SpriteDamageTaken[i + (id * 8)].GetHighNibble();
                 }
             }
         }
@@ -189,21 +189,9 @@ namespace ZeldaFullEditor.Data
             ROM.Write(Constants.Sprite_0DB725 + id, addr0DB725);
             ROM.Write(Constants.Sprite_Health + id, Health);
 
-            if (id == 0)
+            for (int i = 0; i < 8; i ++)
             {
-                Console.WriteLine($"addr0DB080: {addr0DB080:X2}");
-                Console.WriteLine($"addr0DB266: {addr0DB266:X2}");
-                Console.WriteLine($"addr0DB359: {addr0DB359:X2}");
-                Console.WriteLine($"addr0DB44C: {addr0DB44C:X2}");
-                Console.WriteLine($"addr0DB53F: {addr0DB53F:X2}");
-                Console.WriteLine($"addr0DB632: {addr0DB632:X2}");
-                Console.WriteLine($"addr0DB725: {addr0DB725:X2}");
-                Console.WriteLine($"Health: {Health:X2}");
-            }
-
-            for (int i = 0; i < 8; i += 1)
-            {
-                DungeonsData.SpriteDamageTaken[i + (id * 8)] = (byte)(DamagesTaken[(i * 2)] | (DamagesTaken[(i * 2) + 1] << 4));
+                DungeonsData.SpriteDamageTaken[i + (id * 8)] = (byte)((DamagesTaken[(i * 2) +1 ]<<4) | (DamagesTaken[(i * 2)]));
             }
         }
     }

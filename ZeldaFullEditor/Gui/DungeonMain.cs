@@ -5838,6 +5838,11 @@ namespace ZeldaFullEditor
                             binaryWriter.Write(item.bigChest); // bool
                         }
 
+                        for(int i = 0; i< 0x1000; i++)
+                        {
+                            binaryWriter.Write(room.collisionMap[i]);
+                        }
+
                         binaryWriter.Write(room.damagepit);
                         binaryWriter.Write((byte)room.holewarp);
                         binaryWriter.Write(room.staircase1);
@@ -5923,6 +5928,11 @@ namespace ZeldaFullEditor
                             byte item = binaryReader.ReadByte(); // byte
                             bool bigchest = binaryReader.ReadBoolean();
                             DungeonsData.AllRooms[rIndex].chest_list.Add(new Chest(x, y, item, bigchest));
+                        }
+
+                        for (int k = 0; k < 0x1000; k++)
+                        {
+                            DungeonsData.AllRooms[rIndex].collisionMap[k] = binaryReader.ReadByte();
                         }
 
                         DungeonsData.AllRooms[rIndex].damagepit = binaryReader.ReadBoolean();

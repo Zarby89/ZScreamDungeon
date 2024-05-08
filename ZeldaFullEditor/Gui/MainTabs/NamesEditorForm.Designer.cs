@@ -33,24 +33,24 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.NamingMainPanel = new System.Windows.Forms.Panel();
+            this.ChestItemsMainPanel = new System.Windows.Forms.Panel();
+            this.ChestItemsSubPanel = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ItemsMainPanel = new System.Windows.Forms.Panel();
+            this.ItemsSubPanel = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.RoomMainPanel = new System.Windows.Forms.Panel();
             this.RoomSubPanel = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.SpriteMainPanel = new System.Windows.Forms.Panel();
             this.SpriteSubPanel = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.ItemsMainPanel = new System.Windows.Forms.Panel();
-            this.ItemsSubPanel = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.ChestItemsMainPanel = new System.Windows.Forms.Panel();
-            this.ChestItemsSubPanel = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.NamingMainPanel.SuspendLayout();
+            this.ChestItemsMainPanel.SuspendLayout();
+            this.ItemsMainPanel.SuspendLayout();
             this.RoomMainPanel.SuspendLayout();
             this.SpriteMainPanel.SuspendLayout();
-            this.ItemsMainPanel.SuspendLayout();
-            this.ChestItemsMainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -95,6 +95,66 @@
             this.NamingMainPanel.Name = "NamingMainPanel";
             this.NamingMainPanel.Size = new System.Drawing.Size(789, 609);
             this.NamingMainPanel.TabIndex = 3;
+            // 
+            // ChestItemsMainPanel
+            // 
+            this.ChestItemsMainPanel.AutoScroll = true;
+            this.ChestItemsMainPanel.Controls.Add(this.ChestItemsSubPanel);
+            this.ChestItemsMainPanel.Controls.Add(this.label5);
+            this.ChestItemsMainPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ChestItemsMainPanel.Location = new System.Drawing.Point(0, 749);
+            this.ChestItemsMainPanel.Name = "ChestItemsMainPanel";
+            this.ChestItemsMainPanel.Size = new System.Drawing.Size(772, 177);
+            this.ChestItemsMainPanel.TabIndex = 7;
+            // 
+            // ChestItemsSubPanel
+            // 
+            this.ChestItemsSubPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ChestItemsSubPanel.Location = new System.Drawing.Point(0, 15);
+            this.ChestItemsSubPanel.Name = "ChestItemsSubPanel";
+            this.ChestItemsSubPanel.Size = new System.Drawing.Size(772, 159);
+            this.ChestItemsSubPanel.TabIndex = 2;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(0, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(138, 15);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Chests Items Names";
+            // 
+            // ItemsMainPanel
+            // 
+            this.ItemsMainPanel.AutoScroll = true;
+            this.ItemsMainPanel.Controls.Add(this.ItemsSubPanel);
+            this.ItemsMainPanel.Controls.Add(this.label4);
+            this.ItemsMainPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ItemsMainPanel.Location = new System.Drawing.Point(0, 572);
+            this.ItemsMainPanel.Name = "ItemsMainPanel";
+            this.ItemsMainPanel.Size = new System.Drawing.Size(772, 177);
+            this.ItemsMainPanel.TabIndex = 6;
+            // 
+            // ItemsSubPanel
+            // 
+            this.ItemsSubPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ItemsSubPanel.Location = new System.Drawing.Point(0, 15);
+            this.ItemsSubPanel.Name = "ItemsSubPanel";
+            this.ItemsSubPanel.Size = new System.Drawing.Size(772, 159);
+            this.ItemsSubPanel.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(91, 15);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Items Names";
             // 
             // RoomMainPanel
             // 
@@ -156,66 +216,6 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Sprites Names";
             // 
-            // ItemsMainPanel
-            // 
-            this.ItemsMainPanel.AutoScroll = true;
-            this.ItemsMainPanel.Controls.Add(this.ItemsSubPanel);
-            this.ItemsMainPanel.Controls.Add(this.label4);
-            this.ItemsMainPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ItemsMainPanel.Location = new System.Drawing.Point(0, 572);
-            this.ItemsMainPanel.Name = "ItemsMainPanel";
-            this.ItemsMainPanel.Size = new System.Drawing.Size(772, 177);
-            this.ItemsMainPanel.TabIndex = 6;
-            // 
-            // ItemsSubPanel
-            // 
-            this.ItemsSubPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ItemsSubPanel.Location = new System.Drawing.Point(0, 15);
-            this.ItemsSubPanel.Name = "ItemsSubPanel";
-            this.ItemsSubPanel.Size = new System.Drawing.Size(772, 159);
-            this.ItemsSubPanel.TabIndex = 2;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(0, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(91, 15);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Items Names";
-            // 
-            // ChestItemsMainPanel
-            // 
-            this.ChestItemsMainPanel.AutoScroll = true;
-            this.ChestItemsMainPanel.Controls.Add(this.ChestItemsSubPanel);
-            this.ChestItemsMainPanel.Controls.Add(this.label5);
-            this.ChestItemsMainPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ChestItemsMainPanel.Location = new System.Drawing.Point(0, 749);
-            this.ChestItemsMainPanel.Name = "ChestItemsMainPanel";
-            this.ChestItemsMainPanel.Size = new System.Drawing.Size(772, 177);
-            this.ChestItemsMainPanel.TabIndex = 7;
-            // 
-            // ChestItemsSubPanel
-            // 
-            this.ChestItemsSubPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ChestItemsSubPanel.Location = new System.Drawing.Point(0, 15);
-            this.ChestItemsSubPanel.Name = "ChestItemsSubPanel";
-            this.ChestItemsSubPanel.Size = new System.Drawing.Size(772, 159);
-            this.ChestItemsSubPanel.TabIndex = 2;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(0, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(138, 15);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Chests Items Names";
-            // 
             // NamesEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,14 +228,14 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.NamingMainPanel.ResumeLayout(false);
+            this.ChestItemsMainPanel.ResumeLayout(false);
+            this.ChestItemsMainPanel.PerformLayout();
+            this.ItemsMainPanel.ResumeLayout(false);
+            this.ItemsMainPanel.PerformLayout();
             this.RoomMainPanel.ResumeLayout(false);
             this.RoomMainPanel.PerformLayout();
             this.SpriteMainPanel.ResumeLayout(false);
             this.SpriteMainPanel.PerformLayout();
-            this.ItemsMainPanel.ResumeLayout(false);
-            this.ItemsMainPanel.PerformLayout();
-            this.ChestItemsMainPanel.ResumeLayout(false);
-            this.ChestItemsMainPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
