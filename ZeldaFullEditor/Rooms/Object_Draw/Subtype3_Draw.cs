@@ -1105,6 +1105,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
             sort = Sorting.NonScalable;
             addTiles(16, pos); // ??
+            LimitClass = DungeonLimits.GeneralManipulable4x;
         }
 
         public override void Draw()
@@ -1329,6 +1330,7 @@ namespace ZeldaFullEditor
             // 0x0E92; for skulls
             addTiles(4, pos); // ??
             sort = Sorting.NonScalable | Sorting.Dungeons;
+            LimitClass = DungeonLimits.GeneralManipulable;
         }
 
         public override void Draw()
@@ -2005,6 +2007,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
             addTiles(16, pos); // ??
             sort = Sorting.NonScalable;
+            LimitClass = DungeonLimits.GeneralManipulable4x;
         }
 
         public override void Draw()

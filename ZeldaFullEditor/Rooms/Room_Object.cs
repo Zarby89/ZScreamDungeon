@@ -85,6 +85,8 @@ namespace ZeldaFullEditor
         public byte z = 0;
         public bool deleted = false;
 
+        public DungeonLimits LimitClass = DungeonLimits.None;
+
         public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
         {
             this.X = x;
@@ -114,6 +116,7 @@ namespace ZeldaFullEditor
             UpdateSize();
             Size = previousSize;
             collisionPoint.Clear();
+            
         }
 
         public void getBaseSize()
