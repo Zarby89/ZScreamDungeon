@@ -58,6 +58,10 @@ namespace ZeldaFullEditor
         public bool hideText = false;
         public OverworldEditor owForm;
         public bool entrancePreview = false;
+        private Point startingPoint = Point.Empty;
+        private Point scrollingPoint = Point.Empty;
+        private Point startpanPoint = Point.Empty;
+        bool pan = false;
         //int selectedMode = 0;
 
         public bool lowEndMode = false;
@@ -177,6 +181,16 @@ namespace ZeldaFullEditor
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+
+            if (e.Button == MouseButtons.Middle)
+            {
+                startingPoint = mainForm.PointToClient(Cursor.Position);
+                scrollingPoint = mainForm.PointToClient(Cursor.Position); // use mainform since it doesn't scroll!
+                startpanPoint = new Point(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value);
+                pan = true;
+            }
+
+
             int tileX = e.X / 16;
             int tileY = e.Y / 16;
             int superX = tileX / 32;
@@ -241,6 +255,13 @@ namespace ZeldaFullEditor
         // TODO switch statements
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
+
+            if (e.Button == MouseButtons.Middle)
+            {
+                pan = false;
+            }
+
+
             this.owForm.objCombobox.Items.Clear();
             this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedSprite;
             this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedItem;
@@ -398,6 +419,34 @@ namespace ZeldaFullEditor
 
         private void onMouseMove(object sender, MouseEventArgs e)
         {
+            if (pan)
+            {
+                scrollingPoint = mainForm.PointToClient(Cursor.Position); // use mainform since it doesn't scroll!
+
+                //calculate the difference between scrollingpoint and starting point here
+                Point panPoint = new Point((scrollingPoint.X - startingPoint.X), (scrollingPoint.Y - startingPoint.Y));
+                //startingPoint = scrollingPoint; // update it every frames because of scrollbar that value will increase expotentially
+                HScrollProperties hScroll = mainForm.overworldEditor.splitContainer1.Panel2.HorizontalScroll;
+                VScrollProperties vScroll = mainForm.overworldEditor.splitContainer1.Panel2.VerticalScroll;
+
+                if (hScroll.Value >= 0 && hScroll.Value < hScroll.Maximum)
+                {
+                    int tempValue = startpanPoint.X - (panPoint.X);
+                    tempValue = tempValue.Clamp(0, hScroll.Maximum);
+                    hScroll.Value = tempValue;
+                }
+                if (vScroll.Value >= 0 && vScroll.Value < vScroll.Maximum)
+                {
+                    int tempValue = startpanPoint.Y - (panPoint.Y);
+                    tempValue = tempValue.Clamp(0, vScroll.Maximum);
+                    vScroll.Value = tempValue;
+                }
+
+                //this.InvalidateHighEnd();
+                return; // prevent running extra code
+            }
+
+
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:

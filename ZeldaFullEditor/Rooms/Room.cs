@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using ZeldaFullEditor.Rooms;
 using static ZeldaFullEditor.Room_Object;
 
 namespace ZeldaFullEditor
@@ -27,6 +29,7 @@ namespace ZeldaFullEditor
         public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
         public bool objectInitialized = false;
         public bool onlyLayout = false;
+        public RoomWarning warnings = RoomWarning.None;
 
         public string fromExported = "";
 
@@ -59,7 +62,7 @@ namespace ZeldaFullEditor
 
         private byte[] staircase_plane = new byte[4];
 
-        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
+        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22, 0x24, 0x26 };
         byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
 
         short[] stairsObjects = new short[] { 0x139, 0x138, 0x13B, 0x12E, 0x12D };
@@ -601,10 +604,45 @@ namespace ZeldaFullEditor
             }
         }
 
+        public void GetObjectsWarning()
+        {
+            
+            warnings = RoomWarning.None;
+            int gen = tilesObjects.Count(x => x.LimitClass == DungeonLimits.GeneralManipulable) + (tilesObjects.Count(x => x.LimitClass == DungeonLimits.GeneralManipulable4x) * 4);
+            if (gen > 16)
+            {
+                warnings |= RoomWarning.GeneralManipulable;
+                // too many liftable objects warning
+            }
+            int che = tilesObjects.Count(x => x.id == 0xF99 || x.id == 0xFB1);
+            if (che > 6)
+            {
+                warnings |= RoomWarning.Chest;
+            }
+
+            if (sprites.Count > 16)
+            {
+                warnings |= RoomWarning.Sprites;
+            }
+
+            int specialDoors = tilesObjects.Count(x => x.options == ObjectOption.Door && (keysDoors.Contains((byte)(x.id>>8)) == true || shutterDoors.Contains((byte)(x.id >> 8)) == true));
+
+            if (specialDoors > 4)
+            {
+                warnings |= RoomWarning.SpecialDoors;
+            }
+
+            
+
+        }
         public void update()
         {
             if (!objectInitialized)
             {
+                
+
+
+
                 // TODO: Add condition?
             }
 

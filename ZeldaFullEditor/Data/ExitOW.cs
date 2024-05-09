@@ -242,12 +242,18 @@ namespace ZeldaFullEditor
 
                 this.XScroll = (ushort)(this.PlayerX - 120); // 134.
                 this.YScroll = (ushort)(this.PlayerY - 80); // 78.
-
+                if (this.XScroll > 0xFF80)
+                {
+                    XScroll = (ushort)mapx;
+                }
                 if (this.XScroll < mapx)
                 {
                     this.XScroll = (ushort)mapx;
                 }
-
+                if (this.YScroll > 0xFF80)
+                {
+                    YScroll = (ushort)mapy;
+                }
                 if (this.YScroll < mapy)
                 {
                     this.YScroll = (ushort)mapy;

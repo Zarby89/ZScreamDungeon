@@ -71,6 +71,7 @@ namespace ZeldaFullEditor
         public MusicEditor musicEditor = new MusicEditor();
         public SpriteEditor spriteEditor = new SpriteEditor();
         public string loadFromExported = string.Empty;
+        public NamesEditorFormFile nameEditor = new NamesEditorFormFile();
 
         public List<Room_Object> listoftilesobjects = new List<Room_Object>();
         public List<Sprite> listofspritesobjects = new List<Sprite>();
@@ -189,6 +190,7 @@ namespace ZeldaFullEditor
             this.screenEditor.Visible = false;
             this.musicEditor.Visible = false;
             this.spriteEditor.Visible = false;
+            this.nameEditor.Visible = false;
 
             this.objDesigner.Dock = DockStyle.Fill;
             this.overworldEditor.Dock = DockStyle.Fill;
@@ -198,6 +200,7 @@ namespace ZeldaFullEditor
             this.screenEditor.Dock = DockStyle.Fill;
             this.musicEditor.Dock = DockStyle.Fill;
             this.spriteEditor.Dock = DockStyle.Fill;
+            this.nameEditor.Dock = DockStyle.Fill;
 
             this.Controls.Add(this.overworldEditor);
             this.Controls.Add(this.textEditor);
@@ -207,6 +210,7 @@ namespace ZeldaFullEditor
             this.Controls.Add(this.screenEditor);
             this.Controls.Add(this.musicEditor);
             this.Controls.Add(this.spriteEditor);
+            this.Controls.Add(this.nameEditor);
 
             // If we are in the debug version, show the Experimental Features drop down menu.
 #if DEBUG
@@ -529,17 +533,19 @@ namespace ZeldaFullEditor
                     break;
                 }
 
+                if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
+                {
+                    UIText.CryAboutSaving("problem saving sprites properties");
+                    return;
+                }
+
                 if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
                 {
                     UIText.CryAboutSaving("problem saving sprites damages");
                     return;
                 }
 
-                if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
-                {
-                    UIText.CryAboutSaving("problem saving sprites properties");
-                    return;
-                }
+
                     // The mosaic byte is hardcoded to true on purpose for now.
                     if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44]))
                 {
@@ -596,7 +602,6 @@ namespace ZeldaFullEditor
 
             if (projectFile.ShowDialog() == DialogResult.OK)
             {
-                this.projectFilename = projectFile.FileName;
                 this.LoadProject(projectFile.FileName);
                 this.openToolStripMenuItem.Enabled = false;
                 this.openfileButton.Enabled = false;
@@ -621,6 +626,7 @@ namespace ZeldaFullEditor
 
         public void LoadProject(string filename, bool fromdata = false)
         {
+            this.projectFilename = filename;
             ROMStructure.loadDefaultProject();
 
             // TODO : Add Headered ROM.
@@ -688,6 +694,14 @@ namespace ZeldaFullEditor
             GfxGroups.LoadGfxGroups();
             GFX.CreateAllGfxData(ROM.DATA);
 
+            string defaultNames = "DefaultNames.txt";
+            if (File.Exists(Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt"))
+            {
+                defaultNames = Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt";
+            }
+            this.nameEditor.defaultnamesTextbox.Text = File.ReadAllText(defaultNames);
+            Room_Name.loadFromFile(defaultNames);
+
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
                 DungeonsData.AllRooms[i] = new Room(i, this.loadFromExported); // Create all rooms.
@@ -736,10 +750,10 @@ namespace ZeldaFullEditor
                 GFX.previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewChestsPtr[i]);
             }
 
-            Sprites_Names.loadFromFile();
-            Room_Name.loadFromFile();
-            ChestItems_Name.loadFromFile();
-            ItemsNames.loadFromFile();
+            Sprites_Names.loadFromFile(defaultNames);
+           
+            ChestItems_Name.loadFromFile(defaultNames);
+            ItemsNames.loadFromFile(defaultNames);
 
             this.InitObjectsList();
             this.spritesView1.items.Clear();
@@ -915,6 +929,14 @@ namespace ZeldaFullEditor
         // TODO: Copy and reconfiguring .
         public void InitEntrancesList()
         {
+            entrancetreeView.Nodes.Clear();
+            entrancetreeView.Nodes.Add("Entrances");
+            entrancetreeView.Nodes.Add("Spawn points");
+
+            for(int i = 0; i< 296;i++)
+            {
+                ROMStructure.dungeonsRoomList[i].Name = Room_Name.room_name[ROMStructure.dungeonsRoomList[i].ID];
+            }
             // Entrances 
             for (int i = 0; i < 0x07; i++)
             {
@@ -2408,6 +2430,8 @@ namespace ZeldaFullEditor
         {
             this.propertiesChangedFromForm = prevent;
 
+            this.headerGroupbox.Text = "Room header - " + room.index.ToString("X2") + "  " + Room_Name.room_name[room.index];
+
             this.roomProperty_bg2.SelectedIndex = (int)room.bg2;
             this.roomProperty_tag1.SelectedIndex = (int)room.tag1;
             this.roomProperty_tag2.SelectedIndex = (int)room.tag2;
@@ -3256,17 +3280,24 @@ namespace ZeldaFullEditor
                 openFile.Filter = "Default Names .txt|*.txt";
                 if (openFile.ShowDialog() == DialogResult.OK)
                 {
-                    Sprites_Names.loadFromFile(openFile.FileName);
-                    Room_Name.loadFromFile(openFile.FileName);
-                    ChestItems_Name.loadFromFile(openFile.FileName);
-                    ItemsNames.loadFromFile(openFile.FileName);
-                    this.selecteditemobjectCombobox.Items.Clear();
-
-                    for (int i = 0; i < ItemsNames.name.Length; i++)
-                    {
-                        _ = this.selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
-                    }
+                    UpdateNamesFromFile(openFile.FileName);
                 }
+            }
+        }
+
+        private void UpdateNamesFromFile(string file)
+        {
+            Sprites_Names.loadFromFile(file);
+            Room_Name.loadFromFile(file);
+            ChestItems_Name.loadFromFile(file);
+            ItemsNames.loadFromFile(file);
+            this.selecteditemobjectCombobox.Items.Clear();
+
+            InitEntrancesList();
+
+            for (int i = 0; i < ItemsNames.name.Length; i++)
+            {
+                _ = this.selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
             }
         }
 
@@ -3836,6 +3867,7 @@ namespace ZeldaFullEditor
         }
 
         // TODO: :cry:
+        bool lastTabWasNaming = false;
         private void EditorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             // copyToolStripMenuItem
@@ -4015,6 +4047,31 @@ namespace ZeldaFullEditor
             else
             {
                 this.spriteEditor.Visible = false;
+            }
+
+            if (this.editorsTabControl.SelectedTab.Name == "NamingEditor")
+            {
+                string defaultNames = "DefaultNames.txt";
+                if (File.Exists(Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt"))
+                {
+                    defaultNames = Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt";
+                }
+
+                this.nameEditor.defaultnamesTextbox.Text = File.ReadAllText(defaultNames);
+                this.nameEditor.BringToFront();
+                this.nameEditor.Visible = true;
+                lastTabWasNaming = true;
+            }
+            else
+            {
+                if (lastTabWasNaming)
+                {
+                    string defaultNames = Path.GetDirectoryName(projectFilename) + "\\DefaultNames.txt";
+                    File.WriteAllText(defaultNames, this.nameEditor.defaultnamesTextbox.Text);
+                    UpdateNamesFromFile(defaultNames);
+                }
+                this.nameEditor.Visible = false;
+
             }
         }
 
@@ -5790,6 +5847,11 @@ namespace ZeldaFullEditor
                             binaryWriter.Write(item.bigChest); // bool
                         }
 
+                        for(int i = 0; i< 0x1000; i++)
+                        {
+                            binaryWriter.Write(room.collisionMap[i]);
+                        }
+
                         binaryWriter.Write(room.damagepit);
                         binaryWriter.Write((byte)room.holewarp);
                         binaryWriter.Write(room.staircase1);
@@ -5875,6 +5937,11 @@ namespace ZeldaFullEditor
                             byte item = binaryReader.ReadByte(); // byte
                             bool bigchest = binaryReader.ReadBoolean();
                             DungeonsData.AllRooms[rIndex].chest_list.Add(new Chest(x, y, item, bigchest));
+                        }
+
+                        for (int k = 0; k < 0x1000; k++)
+                        {
+                            DungeonsData.AllRooms[rIndex].collisionMap[k] = binaryReader.ReadByte();
                         }
 
                         DungeonsData.AllRooms[rIndex].damagepit = binaryReader.ReadBoolean();
@@ -6034,6 +6101,44 @@ namespace ZeldaFullEditor
             zsPropForm.Properties = propertiesInfos;
 
             _ = zsPropForm.ShowDialog();
+        }
+
+        private void tabControl2_ControlAdded(object sender, ControlEventArgs e)
+        {
+            tabControl2.Size = new Size(1, (tabControl2.RowCount * 20));
+            
+        }
+
+        private void tabControl2_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            tabControl2.Size = new Size(1, (tabControl2.RowCount * 20));
+        }
+
+        private void exportOverlayAsASMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int i = overworldEditor.scene.selectedMap;
+            string s = "";
+            for (int t = 0; t < overworldEditor.scene.ow.AllOverlays[i].TileDataList.Count; t++)
+            {
+                ushort addr = (ushort)((overworldEditor.scene.ow.AllOverlays[i].TileDataList[t].x * 2) + (overworldEditor.scene.ow.AllOverlays[i].TileDataList[t].y * 128) + 0x2000);
+
+                s += "LDA.w #$" + overworldEditor.scene.ow.AllOverlays[i].TileDataList[t].tileId.ToString("X4") + "\r\n";
+                s += "STA.w $" + addr.ToString("X4") + "\r\n\r\n";
+
+                Clipboard.SetText(s);
+            }
+
+        }
+
+        private void DungeonMain_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        private void DungeonMain_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            LoadProject(files[0]);
         }
     }
 }

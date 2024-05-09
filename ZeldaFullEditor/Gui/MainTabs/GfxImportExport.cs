@@ -331,22 +331,41 @@ namespace ZeldaFullEditor.Gui
         {
             palettePicturebox.Refresh();
         }
-
+        bool rightSide = false;
         private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             selectedPal = e.Y / 16;
+            rightSide = false;
+            if (e.X >= 128)
+            {
+                rightSide = true;
+            }
 
             ColorPalette cp = GFX.allgfxBitmap.Palette;
             for (int i = 0; i < 16; i++)
             {
                 if (radioButton1.Checked)
                 {
-                    cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[i + selectedPal * 16];
+                    if (rightSide)
+                    {
+                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + selectedPal * 16) + 8];
+                    }
+                    else
+                    {
+                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + selectedPal * 16)];
+                    }
                 }
                 else
                 {
 
-                    cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[i + selectedPal * 16];
+                    if (rightSide)
+                    {
+                        cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + selectedPal * 16) + 8];
+                    }
+                    else
+                    {
+                        cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + selectedPal * 16)];
+                    }
                 }
             }
 
