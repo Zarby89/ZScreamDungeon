@@ -6103,20 +6103,6 @@ namespace ZeldaFullEditor
             _ = zsPropForm.ShowDialog();
         }
 
-        private void DungeonMain_ControlAdded(object sender, ControlEventArgs e)
-        {
-            
-
-            customPanel3.Location = new Point(customPanel3.Location.X, customPanel3.Location.Y + (20*tabControl2.RowCount));
-
-        }
-
-        private void DungeonMain_ControlRemoved(object sender, ControlEventArgs e)
-        {
-
-            customPanel3.Location = new Point(customPanel3.Location.X, customPanel3.Location.Y + (20 * tabControl2.RowCount));
-        }
-
         private void tabControl2_ControlAdded(object sender, ControlEventArgs e)
         {
             tabControl2.Size = new Size(1, (tabControl2.RowCount * 20));
