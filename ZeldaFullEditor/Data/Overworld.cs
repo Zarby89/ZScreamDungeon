@@ -155,6 +155,9 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Initializes a new instance of the <see cref="Overworld"/> class.
         /// </summary>
+
+        public OverlayAnimationData[] AllAnimationOverlays { get; set; } = new OverlayAnimationData[128];
+
         public Overworld()
         {
             for (int i = 0; i < 0x2B; i++)
@@ -173,6 +176,16 @@ namespace ZeldaFullEditor
             this.AllMapTile32SP = tilesSP;
 
             this.AllOverlays = this.LoadOverlays();
+            this.AllAnimationOverlays = new OverlayAnimationData[128]; // one for each map
+            for (int i = 0; i < 128; i++)
+            {
+                AllAnimationOverlays[i] = new OverlayAnimationData();
+                for (int j = 0; j < 255; j++)
+                {
+                    AllAnimationOverlays[i].FramesList[j] = new List<TilePos>();
+                }
+
+            }
             this.AllTileTypes = this.LoadTileTypes();
             this.AllGraves = this.LoadGraves();
 

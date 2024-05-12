@@ -70,8 +70,11 @@ namespace ZeldaFullEditor.Gui
             this.transportModeButton.Tag = ObjectMode.Flute;
             this.overlayButton.Tag = ObjectMode.Overlay;
             this.gravestoneButton.Tag = ObjectMode.Gravestone;
+            this.overlayAnimationButton.Tag = ObjectMode.OverlayAnimation;
             this.stateCombobox.SelectedIndex = 1;
             this.scratchPicturebox.Image = this.scratchPadBitmap;
+
+
 
             //setTilesGfx();
             bool fromFile = false;

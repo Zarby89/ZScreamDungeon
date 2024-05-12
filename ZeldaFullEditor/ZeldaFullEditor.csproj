@@ -51,7 +51,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\Version3.2.1\</OutputPath>
+    <OutputPath>bin\Release\Version3.2.3\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -140,6 +140,7 @@
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
     <Compile Include="ColoringInfo.cs" />
+    <Compile Include="Data\AnimationFrame.cs" />
     <Compile Include="Data\AsmPatch.cs" />
     <Compile Include="Data\AsmPropertyType.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
@@ -175,6 +176,12 @@
     </Compile>
     <Compile Include="Gui\ExpandedManagement.Designer.cs">
       <DependentUpon>ExpandedManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\AnimationSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\AnimationSetting.Designer.cs">
+      <DependentUpon>AnimationSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\ExtraForms\AsmPlugin.cs">
       <SubType>Form</SubType>
@@ -441,6 +448,7 @@
     <Compile Include="OWSceneModes\EntranceMode.cs" />
     <Compile Include="OWSceneModes\ExitMode.cs" />
     <Compile Include="OWSceneModes\ItemMode.cs" />
+    <Compile Include="OWSceneModes\OverlayAnimationMode.cs" />
     <Compile Include="OWSceneModes\SpriteMode.cs" />
     <Compile Include="OWSceneModes\OverlayMode.cs" />
     <Compile Include="OWSceneModes\TileMode.cs" />
@@ -578,6 +586,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExpandedManagement.resx">
       <DependentUpon>ExpandedManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\AnimationSetting.resx">
+      <DependentUpon>AnimationSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\AsmPlugin.resx">
       <DependentUpon>AsmPlugin.cs</DependentUpon>

@@ -14,6 +14,9 @@ namespace ZeldaFullEditor
         public static IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
         public static Bitmap allgfxBitmap;
 
+        public static IntPtr allgfx2bpp16Ptr = Marshal.AllocHGlobal((0x800 * 10));
+        public static Bitmap allgfx2bppBitmap;
+
         public static StringBuilder DEBUGSB = new StringBuilder();
 
         /*
@@ -344,10 +347,12 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    data = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(romData,
-                        GetPCGfxAddress(romData, (byte)i)
-                        , Constants.UncompressedSheetSize,
-                        ref compressedSize);
+
+                        data = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(romData,
+                            GetPCGfxAddress(romData, (byte)i)
+                            , Constants.UncompressedSheetSize,
+                            ref compressedSize);
+                        
                 }
 
                 for (int j = 0; j < data.Length; j++)

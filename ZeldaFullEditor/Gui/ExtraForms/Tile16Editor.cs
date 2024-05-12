@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -612,6 +613,68 @@ namespace ZeldaFullEditor.Gui
 
             BuildTiles16Gfx();
             pictureboxTile16.Refresh();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            
+            if (openFileDialog.ShowDialog() == DialogResult.OK) 
+            { 
+                BinaryReader br = new BinaryReader(new FileStream(openFileDialog.FileName,FileMode.Open,FileAccess.Read));
+                //br.ReadUInt16();
+                //allTiles[scene.selectedTile[0]].Tile0
+                int tstart = scene.selectedTile[0];
+                ushort[] tilemapdata = new ushort[(br.BaseStream.Length/2)];
+                int tilemapHeight = tilemapdata.Length / tilewidthimportHexbox.HexValue;
+                int tilemapWidth = tilewidthimportHexbox.HexValue;
+                for (int i = 0; i < tilemapdata.Length; i++)
+                { 
+                    tilemapdata[i] = br.ReadUInt16();
+                }
+                br.Close();
+
+
+                for (int h = 0; h < tilemapHeight/2; h++)
+                {
+
+                    for (int i = 0; i < tilemapWidth; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile0 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2))]);
+                        }
+                        else
+                        {
+                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile1 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2))]);
+                        }
+
+                        if (i % 2 == 0)
+                        {
+                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile2 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2)) + tilemapWidth]);
+                        }
+                        else
+                        {
+                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile3 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2)) + tilemapWidth]);
+                        }
+                    }
+                    
+
+                }
+                for (int j = 0; j < tilemapHeight / 2; j++)
+                {
+                    for (int i = 0; i < tilemapWidth / 2; i++)
+                    {
+                        scene.owForm.scratchPadTiles[i,j] = (ushort)(i + (j * 8));
+                    }
+                }
+
+                
+
+
+            }
+
+
         }
     }
 }

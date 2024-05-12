@@ -402,26 +402,54 @@ namespace ZeldaFullEditor.Gui
 
         private void copy24bpp_Click(object sender, EventArgs e)
         {
-            byte[] sdata = new byte[Constants.UncompressedSheetSize];
-            unsafe
+            if (GFX.isbpp3[selectedSheet])
             {
-                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                for (int i = 0; i < Constants.UncompressedSheetSize; i++)
+
+
+                byte[] sdata = new byte[Constants.UncompressedSheetSize];
+                unsafe
                 {
-                    sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
+                    byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                    for (int i = 0; i < Constants.UncompressedSheetSize; i++)
+                    {
+                        sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
+                    }
                 }
-            }
 
-            byte[] pdata = new byte[64];
-            for (int i = 0; i < 16; i++)
+                byte[] pdata = new byte[64];
+                for (int i = 0; i < 16; i++)
+                {
+                    pdata[(i * 4) + 0] = GFX.allgfxBitmap.Palette.Entries[i].B;
+                    pdata[(i * 4) + 1] = GFX.allgfxBitmap.Palette.Entries[i].G;
+                    pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
+                    pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
+                }
+
+                ImgClipboard.SetImageDataWithPal(sdata, pdata);
+            }
+            else
             {
-                pdata[(i * 4) + 0] = GFX.allgfxBitmap.Palette.Entries[i].B;
-                pdata[(i * 4) + 1] = GFX.allgfxBitmap.Palette.Entries[i].G;
-                pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
-                pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
-            }
+                byte[] sdata = new byte[0x1000];
+                unsafe
+                {
+                    byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                    for (int i = 0; i < 0x1000; i++)
+                    {
+                        sdata[i] = gdata[(selectedSheet * 0x800) + i];
+                    }
+                }
 
-            ImgClipboard.SetImageDataWithPal(sdata, pdata);
+                byte[] pdata = new byte[64];
+                for (int i = 0; i < 16; i++)
+                {
+                    pdata[(i * 4) + 0] = GFX.allgfxBitmap.Palette.Entries[i].B;
+                    pdata[(i * 4) + 1] = GFX.allgfxBitmap.Palette.Entries[i].G;
+                    pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
+                    pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
+                }
+
+                ImgClipboard.SetImageDataWithPal(sdata, pdata, true);
+            }
         }
 
         public void copy()
@@ -438,7 +466,24 @@ namespace ZeldaFullEditor.Gui
         {
             if (Clipboard.ContainsImage())
             {
+                bool is2bpp = false;
                 Bitmap b = (Bitmap)Clipboard.GetImage();
+                if (GFX.isbpp3[selectedSheet])
+                {
+                    if (b.Size.Width != 128 || (b.Size.Height != 40))
+                    {
+                        MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+                        return;
+                    }
+                }
+                else
+                {
+                    if (b.Size.Width != 128 || (b.Size.Height != 72))
+                    {
+                        MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+                        return;
+                    }
+                }
                 BitmapData bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
 
                 unsafe
