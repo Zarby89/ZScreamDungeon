@@ -514,7 +514,7 @@ namespace ZeldaFullEditor.Gui
                         byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
                         byte* data = (byte*)bd.Scan0.ToPointer();
                         // One line is 512 - palette (32 bytes per palettes)
-                        for (int i = 0; i < 4; i++)
+                        for (int i = 0; i < 8; i++)
                         {
                             palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
                             //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
