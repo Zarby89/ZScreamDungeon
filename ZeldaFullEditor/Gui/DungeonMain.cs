@@ -2270,7 +2270,6 @@ namespace ZeldaFullEditor
                         if (roomObject.options == ObjectOption.Door)
                         {
                             (roomObject as object_door).door_type = this.DoorIndex[this.comboBox2.SelectedIndex];
-                            (roomObject as object_door).updateId();
                             this.activeScene.room.has_changed = true;
                             this.activeScene.DrawRoom();
                             this.activeScene.Refresh();
