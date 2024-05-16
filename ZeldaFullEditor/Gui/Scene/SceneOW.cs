@@ -49,6 +49,7 @@ namespace ZeldaFullEditor
         public Sprite selectedFormSprite;
         public TransportMode transportMode;
         public OverlayMode overlayMode;
+        public OverlayAnimationMode overlayAnimationMode;
         public GravestoneMode gravestoneMode;
         public bool showEntrances = true;
         public bool showExits = true;
@@ -56,6 +57,7 @@ namespace ZeldaFullEditor
         public bool showItems = true;
         public bool showSprites = true;
         public bool hideText = false;
+        public bool showOverlayText = true;
         public OverworldEditor owForm;
         public bool entrancePreview = false;
         private Point startingPoint = Point.Empty;
@@ -88,6 +90,7 @@ namespace ZeldaFullEditor
             this.transportMode = new TransportMode(this);
             this.overlayMode = new OverlayMode(this);
             this.gravestoneMode = new GravestoneMode(this);
+            this.overlayAnimationMode = new OverlayAnimationMode(this);
 
             //this.Width = 8192;
             //this.Height = 8192;
@@ -103,6 +106,29 @@ namespace ZeldaFullEditor
 
         private void SceneOW_MouseWheel(object sender, MouseEventArgs e)
         {
+            if (selectedMode == ObjectMode.OverlayAnimation)
+            {
+                if (e.Delta < 0)
+                {
+                    if (overlayAnimationMode.selectedFrame > 0)
+                    {
+                        overlayAnimationMode.selectedFrame -= 1;
+                    }
+                }
+                else
+                {
+                    if (overlayAnimationMode.selectedFrame < 255)
+                    {
+                        overlayAnimationMode.selectedFrame += 1;
+                    }
+
+                }
+                this.InvalidateHighEnd();
+                ((HandledMouseEventArgs)e).Handled = true;
+                return;
+            }
+
+
             ((HandledMouseEventArgs)e).Handled = true;
             int xPos = this.owForm.splitContainer1.Panel2.HorizontalScroll.Value;
             int yPos = this.owForm.splitContainer1.Panel2.VerticalScroll.Value;
@@ -224,6 +250,9 @@ namespace ZeldaFullEditor
                 case ObjectMode.Overlay:
                     this.overlayMode.OnMouseDown(e);
                     break;
+                case ObjectMode.OverlayAnimation:
+                    this.overlayAnimationMode.OnMouseDown(e);
+                    break;
                 case ObjectMode.Exits:
                     this.exitmode.onMouseDown(e);
                     break;
@@ -274,6 +303,10 @@ namespace ZeldaFullEditor
             else if (this.selectedMode == ObjectMode.Overlay)
             {
                 this.overlayMode.OnMouseUp(e);
+            }
+            else if (this.selectedMode == ObjectMode.OverlayAnimation)
+            {
+                this.overlayAnimationMode.OnMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.Exits)
             {
@@ -454,6 +487,9 @@ namespace ZeldaFullEditor
                     break;
                 case ObjectMode.Overlay:
                     this.overlayMode.OnMouseMove(e);
+                    break;
+                case ObjectMode.OverlayAnimation:
+                    this.overlayAnimationMode.OnMouseMove(e);
                     break;
                 case ObjectMode.Exits:
                     this.exitmode.onMouseMove(e);
@@ -860,10 +896,12 @@ namespace ZeldaFullEditor
                     int mid = this.ow.AllMaps[this.selectedMap].ParentID;
                     int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
                     int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
-                    this.drawText(g, 0 + 4, 0 + 64, "Selected Map : " + this.selectedMap.ToString("X2"));
-                    this.drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
-                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
-
+                    if (showOverlayText)
+                    {
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 64, "Selected Map : " + this.selectedMap.ToString("X2"));
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
+                    }
                     for (int i = 0; i < this.ow.AllOverlays[mid].TileDataList.Count; i++)
                     {
                         int xo = this.ow.AllOverlays[mid].TileDataList[i].x * 16;
@@ -908,8 +946,129 @@ namespace ZeldaFullEditor
                     this.drawText(g, 4, 24, this.globalmouseTileDownX.ToString());
                     this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
                 }
+                else if (this.selectedMode == ObjectMode.OverlayAnimation)
+                {
+                    int mid = this.ow.AllMaps[this.selectedMap].ParentID;
+                    int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
+                    int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
+                    if (showOverlayText)
+                    {
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 96, "use mouse wheel to change frame");
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 32, "use shift key to display the whole animation");
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 64, "Selected Frame (dec) : " + this.overlayAnimationMode.selectedFrame);
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
+                    }
+                    Pen p2 = new Pen(new SolidBrush(Color.FromArgb(255, 0, 0, 255)));
+                    if (overlayAnimationMode.selectedFrame != 0 || ModifierKeys == Keys.Shift)
+                    {
+                        if (ModifierKeys == Keys.Shift)
+                        {
+                            for (int j = 0; j < 255; j++)
+                            {
+                                for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[j].Count; i++)
+                                {
+                                    int xo = this.ow.AllAnimationOverlays[mid].FramesList[j][i].x * 16;
+                                    int yo = this.ow.AllAnimationOverlays[mid].FramesList[j][i].y * 16;
+                                    int to = this.ow.AllAnimationOverlays[mid].FramesList[j][i].tileId;
+                                    int toy = (to / 8) * 16;
+                                    int tox = (to % 8) * 16;
+                                    g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), tox, toy, 16, 16, GraphicsUnit.Pixel, ia);
+                                }
+                            }
 
-                if (this.owForm.gridDisplay != 0)
+                        }
+                        else
+                        {
+
+                            Pen p = new Pen(new SolidBrush(Color.FromArgb(64, 0, 0, 255)));
+                            for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1].Count; i++)
+                            {
+                                int xo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].x * 16;
+                                int yo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].y * 16;
+                                int to = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].tileId;
+                                int toy = (to / 8) * 16;
+                                int tox = (to % 8) * 16;
+                                g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), tox, toy, 16, 16, GraphicsUnit.Pixel, ia);
+
+                                // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                                byte detect = this.compareTilePos(this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i], this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1].ToArray());
+
+                                if (detect == 0)
+                                {
+                                    g.DrawRectangle(p, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
+                                }
+
+                                if ((detect & 0x01) != 0x01)
+                                {
+                                    g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
+                                }
+
+                                if ((detect & 0x02) != 0x02)
+                                {
+                                    g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
+                                }
+
+                                if ((detect & 0x04) != 0x04)
+                                {
+                                    g.DrawLine(p, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                                }
+
+                                if ((detect & 0x08) != 0x08)
+                                {
+                                    g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                                }
+                            }
+                        }
+                    }
+                    for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame].Count; i++)
+                    {
+
+                        int xo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].x * 16;
+                        int yo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].y * 16;
+                        int to = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].tileId;
+                        int toy = (to / 8) * 16;
+                        int tox = (to % 8) * 16;
+                        g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
+
+                        // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                        byte detect = this.compareTilePos(this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i], this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame].ToArray());
+
+                        if (detect == 0)
+                        {
+                            g.DrawRectangle(p2, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
+                        }
+
+                        if ((detect & 0x01) != 0x01)
+                        {
+                            g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
+                        }
+
+                        if ((detect & 0x02) != 0x02)
+                        {
+                            g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
+                        }
+
+                        if ((detect & 0x04) != 0x04)
+                        {
+                            g.DrawLine(p2, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                        }
+
+                        if ((detect & 0x08) != 0x08)
+                        {
+                            g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                        }
+                    }
+ 
+
+                    g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                    g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
+
+                    this.drawText(g, 4, 24, this.globalmouseTileDownX.ToString());
+                    this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
+                }
+
+                    if (this.owForm.gridDisplay != 0)
                 {
                     int gridsize = 512;
                     if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)

@@ -117,23 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="invertpitbehaviorCheckbox.ToolTip" xml:space="preserve">
-    <value>Setting this flag will invert pit interactions in two separate and contrary ways:
-Thrown sprites will treat pits as empty floors, shattering upon landing.
-Other sprites will process pits as pits, instead of as solid collision.</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>Values above 0 correspond to an exact amount of damage dealt or to one of these effects:
-
-0xFF - Target is stunned for 0xFF frames.
-0xFE - Target becomes frozen.
-0xFD - Target is incinerated.
-0xFC - Target is stunned for 0x80 frames.
-0xFB - Target is stunned for 0x20 frames.
-0xFA - Target becomes a blob.
-0xF9 - Target becomes a fairy.</value>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Do not forget to save by using File menu, all changes on this form will be lost when closing ZScream
+the save file also contains the tiles on the screen when you close ZScream you lose all your Overlay Animations</value>
   </data>
 </root>
