@@ -369,6 +369,7 @@
             this.clearExitsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearOverlaysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportOverlayAsASMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showEntrancesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -384,6 +385,7 @@
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useAreaSpecificBGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showOverlayTextsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -3901,7 +3903,7 @@
             this.zeldaSavedToolStripMenuItem,
             this.agahDeadToolStripMenuItem});
             this.clearSpritesToolStripMenuItem.Name = "clearSpritesToolStripMenuItem";
-            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearSpritesToolStripMenuItem.Text = "Clear All Sprites";
             // 
             // saveZeldaToolStripMenuItem
@@ -3928,63 +3930,63 @@
             // clearItemsToolStripMenuItem
             // 
             this.clearItemsToolStripMenuItem.Name = "clearItemsToolStripMenuItem";
-            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearItemsToolStripMenuItem.Text = "Clear All Items";
             this.clearItemsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWItemsToolStripMenuItem_Click);
             // 
             // clearEntrancesToolStripMenuItem
             // 
             this.clearEntrancesToolStripMenuItem.Name = "clearEntrancesToolStripMenuItem";
-            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearEntrancesToolStripMenuItem.Text = "Clear All Entrances";
             this.clearEntrancesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWEntrancesToolStripMenuItem_Click);
             // 
             // clearAllHolesToolStripMenuItem
             // 
             this.clearAllHolesToolStripMenuItem.Name = "clearAllHolesToolStripMenuItem";
-            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearAllHolesToolStripMenuItem.Text = "Clear All Holes";
             this.clearAllHolesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWHolesToolStripMenuItem_Click);
             // 
             // clearExitsToolStripMenuItem
             // 
             this.clearExitsToolStripMenuItem.Name = "clearExitsToolStripMenuItem";
-            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearExitsToolStripMenuItem.Text = "Clear All Exits";
             this.clearExitsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWExitsToolStripMenuItem_Click);
             // 
             // clearAllOverlaysToolStripMenuItem
             // 
             this.clearAllOverlaysToolStripMenuItem.Name = "clearAllOverlaysToolStripMenuItem";
-            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearAllOverlaysToolStripMenuItem.Text = "Clear All Overlays";
             this.clearAllOverlaysToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOverworldOverlaysToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem6.Text = "Export All Areas";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.ExportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem5.Text = "Import All Areas";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.ImportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem9.Text = "Export All Tiles";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.ExportAllTilesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem10.Text = "Import All Tiles";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.ImportAllTilesToolStripMenuItem_Click);
             // 
@@ -3992,27 +3994,27 @@
             // 
             this.toolStripMenuItem7.Enabled = false;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem7.Text = "Import from ROM";
             // 
             // clearDWTilesToolStripMenuItem
             // 
             this.clearDWTilesToolStripMenuItem.Name = "clearDWTilesToolStripMenuItem";
-            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearDWTilesToolStripMenuItem.Text = "Clear DW Tiles";
             this.clearDWTilesToolStripMenuItem.Click += new System.EventHandler(this.ClearDWTilesToolStripMenuItem_Click);
             // 
             // copyLWToDWToolStripMenuItem
             // 
             this.copyLWToDWToolStripMenuItem.Name = "copyLWToDWToolStripMenuItem";
-            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyLWToDWToolStripMenuItem.Text = "Copy LW to DW";
             this.copyLWToDWToolStripMenuItem.Click += new System.EventHandler(this.CopyLWToDWToolStripMenuItem_Click);
             // 
             // showTiles32CountToolStripMenuItem
             // 
             this.showTiles32CountToolStripMenuItem.Name = "showTiles32CountToolStripMenuItem";
-            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showTiles32CountToolStripMenuItem.Text = "Show Tiles32 Count";
             this.showTiles32CountToolStripMenuItem.Click += new System.EventHandler(this.ShowTiles32CountToolStripMenuItem_Click);
             // 
@@ -4025,7 +4027,8 @@
             this.clearHolesToolStripMenuItem,
             this.clearExitsToolStripMenuItem1,
             this.clearOverlaysToolStripMenuItem,
-            this.exportOverlayAsASMToolStripMenuItem});
+            this.exportOverlayAsASMToolStripMenuItem,
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem});
             this.areaToolStripMenuItem.Enabled = false;
             this.areaToolStripMenuItem.Name = "areaToolStripMenuItem";
             this.areaToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
@@ -4105,6 +4108,13 @@
             this.exportOverlayAsASMToolStripMenuItem.Text = "Export overlay as ASM in clipboard";
             this.exportOverlayAsASMToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAsASMToolStripMenuItem_Click);
             // 
+            // exportOverlayAnimationAsASMInClipboardToolStripMenuItem
+            // 
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Name = "exportOverlayAnimationAsASMInClipboardToolStripMenuItem";
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Text = "Export overlay Animation";
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem_Click);
+            // 
             // overworldViewToolStripMenuItem
             // 
             this.overworldViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -4117,7 +4127,8 @@
             this.overworldOverlayVisibleToolStripMenuItem,
             this.showGridToolStripMenuItem1,
             this.useAreaSpecificBGColorToolStripMenuItem,
-            this.showScratchPadGridToolStripMenuItem});
+            this.showScratchPadGridToolStripMenuItem,
+            this.showOverlayTextsToolStripMenuItem});
             this.overworldViewToolStripMenuItem.Enabled = false;
             this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
             this.overworldViewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -4251,6 +4262,16 @@
             this.showScratchPadGridToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showScratchPadGridToolStripMenuItem.Text = "Show Scratch Pad Grid";
             this.showScratchPadGridToolStripMenuItem.Click += new System.EventHandler(this.ShowScratchPadGridToolStripMenuItem_Click);
+            // 
+            // showOverlayTextsToolStripMenuItem
+            // 
+            this.showOverlayTextsToolStripMenuItem.Checked = true;
+            this.showOverlayTextsToolStripMenuItem.CheckOnClick = true;
+            this.showOverlayTextsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showOverlayTextsToolStripMenuItem.Name = "showOverlayTextsToolStripMenuItem";
+            this.showOverlayTextsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showOverlayTextsToolStripMenuItem.Text = "Show Overlay Texts";
+            this.showOverlayTextsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
             // 
             // naviguateToolStripMenuItem
             // 
@@ -5165,6 +5186,8 @@
         private System.Windows.Forms.ToolStripMenuItem exportOverlayAsASMToolStripMenuItem;
         private System.Windows.Forms.TabPage NamingEditor;
         public System.Windows.Forms.Label warningLabel;
+        private System.Windows.Forms.ToolStripMenuItem exportOverlayAnimationAsASMInClipboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showOverlayTextsToolStripMenuItem;
     }
 }
 

@@ -7,104 +7,37 @@
 
 AnimatedTileGFXSet = $0FC0
 
-org $008913
-    Sound_LoadLightWorldSongBank:
-
-org $00D394
-    DecompOwAnimatedTiles:
-
-org $00D4DB
-    GetAnimatedSpriteTile:
-
-org $00D4ED
-    GetAnimatedSpriteTile_variable:
-
-org $00DF4F
-    Do3To4High16Bit:
-
-org $00E19B
-    InitTilesets:
-
-org $00E556
-    CopyFontToVram:
-
-
-org $028B0C
-    DeleteCertainAncillaeStopDashing:
-
-org $02ABBE
-    Overworld_FinishTransGfx_firstHalf:
-
-org $02AF19 
-    Overworld_LoadSubscreenAndSilenceSFX1:
-
-org $02C65F
-    Dungeon_LoadPalettes_cacheSettings:
-
-org $02FD0D
-    LoadSubscreenOverlay:
-
-
-org $07B107
-    Link_ItemReset_FromOverworldThings:
-
-
-org $099EFC
-    Tagalong_Init:
-
-org $09AF89
-    Sprite_ReinitWarpVortex:
-
-org $09C44E
-    Sprite_ResetAll:
-
-org $09C499
-    Sprite_OverworldReloadAll:
-
-
-org $0BFE70
-    Overworld_SetFixedColorAndScroll:
-
-
-org $0ED5A8
-    Overworld_LoadPalettes:
-
-org $0ED618
-    Palette_SetOwBgColor_Long:
-
-org $0ED6DD
-    LoadGearPalettes_bunny:
-
-
-org $1BEC77
-    Palette_SpriteAux3:
-
-org $1BEC9E
-    Palette_MainSpr:
-
-org $1BECC5
-    Palette_SpriteAux1:
-
-org $1BECE4
-    Palette_SpriteAux2:
-
-org $1BED03
-    Palette_Sword:
-
-org $1BED29
-    Palette_Shield:
-
-org $1BED6E
-    Palette_MiscSpr:
-
-org $1BEDF9
-    Palette_ArmorAndGloves:
-
-org $1BEE52
-    Palette_Hud:
-
-org $1BEEC7
-    Palette_OverworldBgMain:
+Sound_LoadLightWorldSongBank                      = $808913
+DecompOwAnimatedTiles                             = $80D394
+GetAnimatedSpriteTile                             = $80D4DB
+GetAnimatedSpriteTile_variable                    = $80D4ED
+Do3To4High16Bit                                   = $80DF4F
+InitTilesets                                      = $80E19B
+CopyFontToVram                                    = $80E556
+DeleteCertainAncillaeStopDashing                  = $828B0C
+Overworld_FinishTransGfx_firstHalf                = $82ABBE
+Overworld_LoadSubscreenAndSilenceSFX1             = $82AF19
+Dungeon_LoadPalettes_cacheSettings                = $82C65F
+LoadSubscreenOverlay                              = $82FD0D
+Link_ItemReset_FromOverworldThings                = $87B107
+Tagalong_Init                                     = $899EFC
+Sprite_ReinitWarpVortex                           = $89AF89
+Sprite_ResetAll                                   = $89C44E
+Sprite_OverworldReloadAll                         = $89C499
+Overworld_SetFixedColorAndScroll                  = $8BFE70
+Overworld_LoadPalettes                            = $8ED5A8
+Palette_SetOwBgColor_Long                         = $8ED618
+LoadGearPalettes_bunny                            = $8ED6DD
+Palette_SpriteAux3                                = $9BEC77
+Palette_MainSpr                                   = $9BEC9E
+Palette_SpriteAux1                                = $9BECC5
+Palette_SpriteAux2                                = $9BECE4
+Palette_Sword                                     = $9BED03
+Palette_Shield                                    = $9BED29
+Palette_MiscSpr                                   = $9BED6E
+Palette_ArmorAndGloves                            = $9BEDF9
+Palette_Hud                                       = $9BEE52
+Palette_OverworldBgMain                           = $9BEEC7
 
 ; ==============================================================================
 ; Fixing old hooks:
@@ -116,11 +49,11 @@ org $0BFEB6
 
 ; Main Palette loading routine.
 org $0ED5E7
-    JSL $1BEEA8 ; Palette_OverworldBgAux3
+    JSL $9BEEA8 ; Palette_OverworldBgAux3
 
 ; After leaving special areas like Zora's and the Master Sword area.
 org $02E94A
-    JSL $0ED5A8 ; Overworld_LoadPalettes
+    JSL $8ED5A8 ; Overworld_LoadPalettes
 
 ; ==============================================================================
 ; Expanded Space

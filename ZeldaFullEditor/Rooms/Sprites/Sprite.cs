@@ -27,6 +27,8 @@ namespace ZeldaFullEditor
         public bool deleted = false;
         public bool selected = false;
 
+        public bool IsOverlord => (subtype & 7) == 7;
+
         int lowerX = 32;
         int lowerY = 32;
         int higherX = 0;

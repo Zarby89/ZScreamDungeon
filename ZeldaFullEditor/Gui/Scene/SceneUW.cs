@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lidgren.Network;
@@ -524,7 +525,6 @@ namespace ZeldaFullEditor
                                 {
                                     dobj.door_pos = (byte)((i - (doordir * 12)) * 2);
                                     dobj.door_dir = (byte)doordir;
-                                    dobj.updateId();
                                     dobj.Draw();
                                     this.room.has_changed = true;
                                 }
@@ -706,6 +706,14 @@ namespace ZeldaFullEditor
                     else if (o.id == 0xFAA)
                     {
                         drawText(e.Graphics, o.X * 8, o.Y * 8, "Lamp");
+                    }
+                    else if (o.id == 0x32)
+                    {
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, "32\nT"+o.Size);
+                    }
+                    else if (o.id == 0x31)
+                    {
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, "31\nT" + o.Size);
                     }
                     else if (o.id == 0xAD)
                     {
@@ -1549,30 +1557,26 @@ namespace ZeldaFullEditor
         }
         private void ShowWarnings()
         {
-            mainForm.warningLabel.Text = "";
-            room.GetObjectsWarning();
-            if (room.warnings != RoomWarning.None)
-            {
-                string warningString = "";
-                if ((room.warnings & RoomWarning.Sprites) == RoomWarning.Sprites)
-                {
-                    warningString += "Too many sprites (16 is the limit)\r\n";
+            var counts = room.GetLimitedObjectCounts();
+
+            var warningString = new StringBuilder();
+            bool bad = false;
+            foreach (var entry in counts) {
+                int lmax = DungeonLimitsHelper.GetLimitOfObjects(entry.Key);
+
+				if (entry.Value > lmax) {
+                    warningString.AppendLine($"Too many {DungeonLimitsHelper.GetLimitName(entry.Key)} - {entry.Value} / {lmax}");
+                    bad = true;
                 }
-                if ((room.warnings & RoomWarning.GeneralManipulable) == RoomWarning.GeneralManipulable)
-                {
-                    warningString += "Too many liftable objects (16 is the limit)\r\n";
-                }
-                if ((room.warnings & RoomWarning.Chest) == RoomWarning.Chest)
-                {
-                    warningString += "Too many chest objects (6 is the limit)\r\n";
-                }
-                if ((room.warnings & RoomWarning.SpecialDoors) == RoomWarning.SpecialDoors)
-                {
-                    warningString += "Too many special doors (key, shutter) (4 is the limit)\r\n";
-                }
-                mainForm.warningLabel.Text = "Warnings : \r\n" + warningString;
             }
+
+            if (bad) {
+                mainForm.warningLabel.Text = $"Warnings:\r\n{warningString}";
+			} else {
+				mainForm.warningLabel.Text = string.Empty;
+			}
         }
+
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
             resizing = false;
