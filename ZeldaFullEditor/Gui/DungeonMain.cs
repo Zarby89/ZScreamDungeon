@@ -533,14 +533,16 @@ namespace ZeldaFullEditor
                     break;
                 }
 
+                //DO NOT MOVE need to be before 45
                 if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
                 {
                     UIText.CryAboutSaving("problem saving sprites properties");
                     return;
                 }
 
+                ROM.Write(Constants.DamageClass, DungeonsData.GlobalDamages);
                 if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
-                {
+                {    
                     UIText.CryAboutSaving("problem saving sprites damages");
                     return;
                 }

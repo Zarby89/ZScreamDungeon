@@ -503,7 +503,7 @@ namespace ZeldaFullEditor
                     allgfx16Data[i] = newData[i];
                 }
 
-                for (int i = 0; i < 0x10000; i++)
+                for (int i = 0; i < 0x0A000; i++)
                 {
                     allgfx2bpp16Data[i] = bpp2Data[i];
                 }
