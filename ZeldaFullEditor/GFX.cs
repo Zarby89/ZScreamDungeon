@@ -14,6 +14,9 @@ namespace ZeldaFullEditor
         public static IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
         public static Bitmap allgfxBitmap;
 
+        public static IntPtr allgfx2bpp16Ptr = Marshal.AllocHGlobal((0x1000 * 10));
+        public static Bitmap allgfx2bppBitmap;
+
         public static StringBuilder DEBUGSB = new StringBuilder();
 
         /*
@@ -120,6 +123,9 @@ namespace ZeldaFullEditor
         public static Color[,] loadedSprPalettes = new Color[1, 1];
 
         public static byte[] spriteFontSpacing = Utils.DeepCopyBytes(Constants.FontSpacings);
+        
+        public static byte[] bpp2SheetsIndex = new byte[] {0x71, 0x72, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE };
+
 
         public static unsafe void DrawBG1()
         {
@@ -206,6 +212,7 @@ namespace ZeldaFullEditor
             roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg1Ptr);
             roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
             allgfxBitmap = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
+            allgfx2bppBitmap = new Bitmap(128, 640, 64, PixelFormat.Format4bppIndexed, allgfx2bpp16Ptr);
             //allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
             currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
             currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
@@ -344,10 +351,12 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    data = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(romData,
-                        GetPCGfxAddress(romData, (byte)i)
-                        , Constants.UncompressedSheetSize,
-                        ref compressedSize);
+
+                        data = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(romData,
+                            GetPCGfxAddress(romData, (byte)i)
+                            , Constants.UncompressedSheetSize,
+                            ref compressedSize);
+                        
                 }
 
                 for (int j = 0; j < data.Length; j++)
@@ -384,9 +393,10 @@ namespace ZeldaFullEditor
         {
             byte[] data = CreateAllGfxDataRaw(romData);
             byte[] newData = new byte[0x6F800]; // NEED TO GET THE APPROPRIATE SIZE FOR THAT
+            byte[] bpp2Data = new byte[0x10000];
             byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
             int sheetPosition = 0;
-
+            int s2 = 0;
             // 8x8 tile
             for (int s = 0; s < Constants.NumberOfSheets; s++) // Per Sheet
             {
@@ -436,6 +446,7 @@ namespace ZeldaFullEditor
 
                                     newData[(y * 64) + (x) + (i * 4) + (j * 512) + (s * 2048)] = (byte)((pixdata << 4) | pixdata2);
                                 }
+                                
                             }
                         }
                     }
@@ -450,18 +461,51 @@ namespace ZeldaFullEditor
                     sheetPosition += Constants.UncompressedSheetSize;
                 }
             }
+            //public static byte[] bpp2SheetsIndex = new byte[] {0x71, 0x72, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE };
+            int[] sheetPos2bpp = new int[7] { 0x2A600, 0x2AE00, 0x52000, 0x52800, 0x53000, 0x53800, 0x54000 };
+            for (int s = 0; s < bpp2SheetsIndex.Length; s++) // Per Sheet
+            {
+                for (int j = 0; j < 8; j++) // Per Tile Line Y
+                {
+                    for (int i = 0; i < 16; i++) // Per Tile Line X
+                    {
+                        for (int y = 0; y < 8; y++) // Per Pixel Line
+                        {
+                            byte lineBits0 = data[(y * 2) + (i * 16) + (j * 256) + sheetPos2bpp[s]];
+                            byte lineBits1 = data[(y * 2) + (i * 16) + (j * 256) + 1 + sheetPos2bpp[s]];
 
-            unsafe
+                            for (int x = 0; x < 4; x++) // Per Pixel X
+                            {
+                                byte pixdata = 0;
+                                byte pixdata2 = 0;
+
+                                if ((lineBits0 & mask[(x * 2)]) == mask[(x * 2)]) { pixdata += 1; }
+                                if ((lineBits1 & mask[(x * 2)]) == mask[(x * 2)]) { pixdata += 2; }
+
+                                if ((lineBits0 & mask[(x * 2) + 1]) == mask[(x * 2) + 1]) { pixdata2 += 1; }
+                                if ((lineBits1 & mask[(x * 2) + 1]) == mask[(x * 2) + 1]) { pixdata2 += 2; }
+
+                                bpp2Data[(y * 64) + (x) + (i * 4) + (j * 512) + (s * 4096)] = (byte)((pixdata << 4) | pixdata2);
+                            }
+                        }
+                    }
+                }
+            }
+
+                unsafe
             {
                 byte* allgfx16Data = (byte*)allgfx16Ptr.ToPointer();
+                byte* allgfx2bpp16Data = (byte*)allgfx2bpp16Ptr.ToPointer();
                 //byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
 
                 for (int i = 0; i < 0x6F800; i++)
                 {
                     allgfx16Data[i] = newData[i];
+                }
 
-                    //allgfx16Data2[(i*2)+1] = (byte)(newData[i] & 0x0F);
-                    //allgfx16Data2[(i*2)] = (byte)((newData[i] & 0xF0) >> 4);
+                for (int i = 0; i < 0x0A000; i++)
+                {
+                    allgfx2bpp16Data[i] = bpp2Data[i];
                 }
             }
         }

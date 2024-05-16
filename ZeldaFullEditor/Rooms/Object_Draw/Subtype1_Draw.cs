@@ -1099,15 +1099,18 @@ namespace ZeldaFullEditor
         public object_31(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = Constants.Type1RoomObjectNames[0x31];
+            int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
+            addTiles(1, pos); // ??
         }
 
         public override void Draw()
         {
+
             base.Draw();
-            draw_tile(new Tile(0, 0, false, false, false), 0, 0);
-            draw_tile(new Tile(0, 0, false, false, false), 8, 0);
-            draw_tile(new Tile(0, 0, false, false, false), 8, 8);
-            draw_tile(new Tile(0, 0, false, false, false), 0, 8);
+            draw_tile(tiles[0], 0 * 8, 0 * 8);
+            draw_tile(tiles[0], 1 * 8, 0 * 8);
+            draw_tile(tiles[0], 0 * 8, 1 * 8);
+            draw_tile(tiles[0], 1 * 8, 1 * 8);
         }
     }
 
@@ -1117,15 +1120,18 @@ namespace ZeldaFullEditor
         public object_32(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = Constants.Type1RoomObjectNames[0x32];
+            int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
+            addTiles(1, pos); // ??
         }
 
         public override void Draw()
         {
+
             base.Draw();
-            draw_tile(new Tile(0, 0, false, false, false), 0, 0);
-            draw_tile(new Tile(0, 0, false, false, false), 8, 0);
-            draw_tile(new Tile(0, 0, false, false, false), 8, 8);
-            draw_tile(new Tile(0, 0, false, false, false), 0, 8);
+            draw_tile(tiles[0], 0 * 8, 0 * 8);
+            draw_tile(tiles[0], 1 * 8, 0 * 8);
+            draw_tile(tiles[0], 0 * 8, 1 * 8);
+            draw_tile(tiles[0], 1 * 8, 1 * 8);
         }
     }
 

@@ -48,9 +48,12 @@
             this.tile16searchTextbox = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.tile16GroupBox = new System.Windows.Forms.GroupBox();
-            this.Tile16CopyBtn = new System.Windows.Forms.Button();
-            this.Tile16PasteBtn = new System.Windows.Forms.Button();
             this.copiedTileLabel = new System.Windows.Forms.Label();
+            this.Tile16PasteBtn = new System.Windows.Forms.Button();
+            this.Tile16CopyBtn = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.tilewidthimportHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -268,22 +271,21 @@
             this.tile16GroupBox.Controls.Add(this.copiedTileLabel);
             this.tile16GroupBox.Controls.Add(this.Tile16PasteBtn);
             this.tile16GroupBox.Controls.Add(this.Tile16CopyBtn);
-            this.tile16GroupBox.Location = new System.Drawing.Point(549, 408);
+            this.tile16GroupBox.Location = new System.Drawing.Point(549, 374);
             this.tile16GroupBox.Name = "tile16GroupBox";
             this.tile16GroupBox.Size = new System.Drawing.Size(200, 85);
             this.tile16GroupBox.TabIndex = 12;
             this.tile16GroupBox.TabStop = false;
             this.tile16GroupBox.Text = "Selected tile 16: ";
             // 
-            // Tile16CopyBtn
+            // copiedTileLabel
             // 
-            this.Tile16CopyBtn.Location = new System.Drawing.Point(6, 19);
-            this.Tile16CopyBtn.Name = "Tile16CopyBtn";
-            this.Tile16CopyBtn.Size = new System.Drawing.Size(91, 27);
-            this.Tile16CopyBtn.TabIndex = 12;
-            this.Tile16CopyBtn.Text = "Copy";
-            this.Tile16CopyBtn.UseVisualStyleBackColor = true;
-            this.Tile16CopyBtn.Click += new System.EventHandler(this.Tile16CopyBtn_Click);
+            this.copiedTileLabel.AutoSize = true;
+            this.copiedTileLabel.Location = new System.Drawing.Point(12, 54);
+            this.copiedTileLabel.Name = "copiedTileLabel";
+            this.copiedTileLabel.Size = new System.Drawing.Size(66, 13);
+            this.copiedTileLabel.TabIndex = 14;
+            this.copiedTileLabel.Text = "Copied Tile: ";
             // 
             // Tile16PasteBtn
             // 
@@ -295,20 +297,59 @@
             this.Tile16PasteBtn.UseVisualStyleBackColor = true;
             this.Tile16PasteBtn.Click += new System.EventHandler(this.Tile16PasteBtn_Click);
             // 
-            // copiedTileLabel
+            // Tile16CopyBtn
             // 
-            this.copiedTileLabel.AutoSize = true;
-            this.copiedTileLabel.Location = new System.Drawing.Point(12, 54);
-            this.copiedTileLabel.Name = "copiedTileLabel";
-            this.copiedTileLabel.Size = new System.Drawing.Size(66, 13);
-            this.copiedTileLabel.TabIndex = 14;
-            this.copiedTileLabel.Text = "Copied Tile: ";
+            this.Tile16CopyBtn.Location = new System.Drawing.Point(6, 19);
+            this.Tile16CopyBtn.Name = "Tile16CopyBtn";
+            this.Tile16CopyBtn.Size = new System.Drawing.Size(91, 27);
+            this.Tile16CopyBtn.TabIndex = 12;
+            this.Tile16CopyBtn.Text = "Copy";
+            this.Tile16CopyBtn.UseVisualStyleBackColor = true;
+            this.Tile16CopyBtn.Click += new System.EventHandler(this.Tile16CopyBtn_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(549, 519);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(200, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "Import Tilemap (beta)";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // tilewidthimportHexbox
+            // 
+            this.tilewidthimportHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tilewidthimportHexbox.Decimal = true;
+            this.tilewidthimportHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.tilewidthimportHexbox.HexValue = 8;
+            this.tilewidthimportHexbox.Location = new System.Drawing.Point(549, 499);
+            this.tilewidthimportHexbox.MaxLength = 2;
+            this.tilewidthimportHexbox.MaxValue = 16;
+            this.tilewidthimportHexbox.MinValue = 0;
+            this.tilewidthimportHexbox.Name = "tilewidthimportHexbox";
+            this.tilewidthimportHexbox.Size = new System.Drawing.Size(200, 20);
+            this.tilewidthimportHexbox.TabIndex = 14;
+            this.tilewidthimportHexbox.Text = "8";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(552, 483);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(205, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Tilemap import width 8x8 (16 max decimal)";
             // 
             // Tile16Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(765, 578);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.tilewidthimportHexbox);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.tile16GroupBox);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.tile16searchTextbox);
@@ -361,5 +402,8 @@
 		private System.Windows.Forms.Label copiedTileLabel;
 		private System.Windows.Forms.Button Tile16PasteBtn;
 		private System.Windows.Forms.Button Tile16CopyBtn;
-	}
+        private System.Windows.Forms.Button button4;
+        private ExtraForms.Hexbox tilewidthimportHexbox;
+        private System.Windows.Forms.Label label4;
+    }
 }

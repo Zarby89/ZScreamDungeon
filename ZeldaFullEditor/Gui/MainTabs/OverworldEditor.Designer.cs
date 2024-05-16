@@ -50,6 +50,7 @@
             this.dwButton = new System.Windows.Forms.ToolStripButton();
             this.lwButton = new System.Windows.Forms.ToolStripButton();
             this.overlayButton = new System.Windows.Forms.ToolStripButton();
+            this.overlayAnimationButton = new System.Windows.Forms.ToolStripButton();
             this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
             this.exportPNGToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -156,6 +157,7 @@
             this.dwButton,
             this.lwButton,
             this.overlayButton,
+            this.overlayAnimationButton,
             this.gravestoneButton,
             this.searchtilesButton,
             this.exportPNGToolStripButton,
@@ -363,6 +365,17 @@
             this.overlayButton.Size = new System.Drawing.Size(23, 22);
             this.overlayButton.Text = "Overlay";
             this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // overlayAnimationButton
+            // 
+            this.overlayAnimationButton.CheckOnClick = true;
+            this.overlayAnimationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.overlayAnimationButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayAnimationButton.Image")));
+            this.overlayAnimationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.overlayAnimationButton.Name = "overlayAnimationButton";
+            this.overlayAnimationButton.Size = new System.Drawing.Size(23, 22);
+            this.overlayAnimationButton.Text = "Overlay Animation";
+            this.overlayAnimationButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // gravestoneButton
             // 
@@ -735,6 +748,7 @@
             // OWProperty_SubscreenOverlay
             // 
             this.OWProperty_SubscreenOverlay.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_SubscreenOverlay.Decimal = false;
             this.OWProperty_SubscreenOverlay.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_SubscreenOverlay.HexValue = 0;
             this.OWProperty_SubscreenOverlay.Location = new System.Drawing.Point(429, 37);
@@ -751,6 +765,7 @@
             // OWProperty_MainPalette
             // 
             this.OWProperty_MainPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_MainPalette.Decimal = false;
             this.OWProperty_MainPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_MainPalette.HexValue = 0;
             this.OWProperty_MainPalette.Location = new System.Drawing.Point(168, 37);
@@ -776,6 +791,7 @@
             // OWProperty_AniGFX
             // 
             this.OWProperty_AniGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_AniGFX.Decimal = false;
             this.OWProperty_AniGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_AniGFX.HexValue = 0;
             this.OWProperty_AniGFX.Location = new System.Drawing.Point(114, 37);
@@ -821,6 +837,7 @@
             // OWProperty_AuxPalette
             // 
             this.OWProperty_AuxPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_AuxPalette.Decimal = false;
             this.OWProperty_AuxPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_AuxPalette.HexValue = 0;
             this.OWProperty_AuxPalette.Location = new System.Drawing.Point(235, 37);
@@ -837,6 +854,7 @@
             // OWProperty_MessageID
             // 
             this.OWProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_MessageID.Decimal = false;
             this.OWProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.OWProperty_MessageID.HexValue = 0;
             this.OWProperty_MessageID.Location = new System.Drawing.Point(363, 37);
@@ -853,6 +871,7 @@
             // OWProperty_SPRPalette
             // 
             this.OWProperty_SPRPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_SPRPalette.Decimal = false;
             this.OWProperty_SPRPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_SPRPalette.HexValue = 0;
             this.OWProperty_SPRPalette.Location = new System.Drawing.Point(299, 37);
@@ -869,6 +888,7 @@
             // OWProperty_SPRGFX
             // 
             this.OWProperty_SPRGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_SPRGFX.Decimal = false;
             this.OWProperty_SPRGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_SPRGFX.HexValue = 0;
             this.OWProperty_SPRGFX.Location = new System.Drawing.Point(60, 37);
@@ -885,6 +905,7 @@
             // OWProperty_BGGFX
             // 
             this.OWProperty_BGGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_BGGFX.Decimal = false;
             this.OWProperty_BGGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_BGGFX.HexValue = 0;
             this.OWProperty_BGGFX.Location = new System.Drawing.Point(6, 37);
@@ -1164,5 +1185,6 @@
         private System.Windows.Forms.Label label12;
         private ExtraForms.Hexbox OWProperty_SubscreenOverlay;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ToolStripButton overlayAnimationButton;
     }
 }
