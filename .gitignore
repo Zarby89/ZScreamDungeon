@@ -337,3 +337,13 @@ ASALocalRun/
 
 ZeldaFullEditor/.editorconfig
 /.vs/ZeldaFullEditor/FileContentIndex
+
+
+*.7z
+*.zip
+*.rar
+*.sfc
+*.smc
+.vs/
+ZScreamSetup/
+ZeldaFullEditor/.vs/
