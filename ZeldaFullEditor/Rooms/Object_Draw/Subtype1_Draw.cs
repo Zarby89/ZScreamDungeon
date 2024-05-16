@@ -3640,7 +3640,9 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
             sort = Sorting.Vertical;
-        }
+            LimitClass = DungeonLimits.GeneralManipulableLengthy;
+
+		}
 
         public override void Draw()
         {
@@ -3663,7 +3665,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
             sort = Sorting.Vertical | Sorting.Dungeons;
-            LimitClass = DungeonLimits.GeneralManipulable;
+            LimitClass = DungeonLimits.GeneralManipulableLengthy;
         }
 
         public override void Draw()
@@ -4613,7 +4615,9 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
             sort = Sorting.Horizontal;
-        }
+            LimitClass = DungeonLimits.GeneralManipulableLengthy;
+
+		}
 
         public override void Draw()
         {
@@ -4636,7 +4640,9 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
             sort = Sorting.Horizontal;
-        }
+            LimitClass = DungeonLimits.GeneralManipulableLengthy;
+
+		}
 
         public override void Draw()
         {
@@ -5162,7 +5168,9 @@ namespace ZeldaFullEditor
             pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2)]);
             addTiles(4, pos);
             offsetX = -8;
-        }
+            LimitClass = DungeonLimits.MovingWalls;
+
+		}
 
         public override void Draw()
         {
@@ -5207,7 +5215,9 @@ namespace ZeldaFullEditor
                                // Ceiling tiles
             pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2)]);
             addTiles(4, pos);
-        }
+            LimitClass = DungeonLimits.MovingWalls;
+
+		}
 
         public override void Draw()
         {
@@ -6306,7 +6316,8 @@ namespace ZeldaFullEditor
             addTiles(4, pos);
             name = "Pushable Block"; // ID E00
             options = ObjectOption.Block;
-        }
+			LimitClass = DungeonLimits.GeneralManipulable;
+		}
 
         public override void Draw()
         {
