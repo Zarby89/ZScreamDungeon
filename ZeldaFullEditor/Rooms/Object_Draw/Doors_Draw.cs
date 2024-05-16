@@ -76,6 +76,7 @@ namespace ZeldaFullEditor
 				case 0x28:
 				case 0x32:
 				case 0x30:
+                case 0x20:
 				case 0x22:
 				case 0x24:
 					LimitClass = DungeonLimits.SpecialDoors;
