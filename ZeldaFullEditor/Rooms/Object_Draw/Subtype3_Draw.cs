@@ -1348,7 +1348,7 @@ namespace ZeldaFullEditor
             // 0x0E92; for skulls
             addTiles(4, pos); // ??
             sort = Sorting.NonScalable | Sorting.Dungeons;
-            LimitClass = DungeonLimits.GeneralManipulable4x;
+            LimitClass = DungeonLimits.GeneralManipulable;
         }
 
         public override void Draw()
