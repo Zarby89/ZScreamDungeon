@@ -707,6 +707,14 @@ namespace ZeldaFullEditor
                     {
                         drawText(e.Graphics, o.X * 8, o.Y * 8, "Lamp");
                     }
+                    else if (o.id == 0x32)
+                    {
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, "32\nT"+o.Size);
+                    }
+                    else if (o.id == 0x31)
+                    {
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, "31\nT" + o.Size);
+                    }
                     else if (o.id == 0xAD)
                     {
                         drawText(e.Graphics, o.X * 8, o.Y * 8, "AD ?");

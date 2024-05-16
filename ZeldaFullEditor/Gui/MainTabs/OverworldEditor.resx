@@ -303,6 +303,15 @@
         QmCC
 </value>
   </data>
+  <data name="overlayAnimationButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACcSURBVDhPrZAxCsMwDEV9kpBbdMnaqUPJlAN1yNxjlJ4u
+        Q+c03/QR2cZGhn54YEvoWThM12XvIeRR8fF8u/iLYJ5D5Dd+CogdsEGwfV6lQDmOEYVhatStYLiMkURg
+        X2XQbqM7gtt6TwV58mGlKeBFgoDQbwrsqjYM2z9IBKwqEHEG3V2CFlVBD4WAqKimh6qgh0JAVFTTQ1Xg
+        Z9y/7s0aU3QwjUAAAAAASUVORK5CYII=
+</value>
+  </data>
   <data name="gravestoneButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

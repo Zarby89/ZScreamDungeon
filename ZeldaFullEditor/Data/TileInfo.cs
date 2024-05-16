@@ -80,6 +80,15 @@
             this.O = o;
         }
 
+        public TileInfo(ushort wholetile)
+        {
+            this.id = (ushort)(wholetile & 0x3FF);
+            this.palette = (byte)((wholetile & 0x1C00) >> 10);
+            this.V = ((wholetile & 0x8000) == 0x8000);
+            this.H = ((wholetile & 0x4000) == 0x4000);
+            this.O = ((wholetile & 0x2000) == 0x2000);
+        }
+
         public ushort toShort()
         {
             ushort value = 0;
