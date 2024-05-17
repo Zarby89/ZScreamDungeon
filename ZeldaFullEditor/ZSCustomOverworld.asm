@@ -427,7 +427,7 @@ Func00DA63:
         
     LDA.b $00
         
-    JSR Do3To4High16Bit
+    JSR.w Do3To4High16Bit
     
     SEP #$30 ; Set A, X, and Y in 8bit mode.
         
@@ -612,7 +612,7 @@ if !Func0283EE = 1
 ; Replaces a bunch of calls to a shared function.
 ; Intro_SetupScreen:
 org $028027 ; $010027
-    JSR PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+    JSR.w PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
 
 warnpc $02802B
 
@@ -624,13 +624,13 @@ warnpc $029C0F
 
 ; Mirror_LoadMusic:
 org $029D1E ; $011D1E
-    JSR PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+    JSR.w PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
 
 warnpc $029D21
 
 ; GanonEmerges_LOadPyramidArea:
 org $029F82 ; $011F82
-    JSR PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+    JSR.w PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
 
 warnpc $029F85
 
@@ -689,7 +689,7 @@ PreOverworld_LoadProperties_LoadMain:
     JSL InitTilesets ; $619B IN ROM
 
     ; Load palettes for overworld.
-    JSR Overworld_LoadAreaPalettes ; $014692 IN ROM
+    JSR.w Overworld_LoadAreaPalettes ; $014692 IN ROM
         
     LDX.b $8A
         
@@ -705,14 +705,14 @@ PreOverworld_LoadProperties_LoadMain:
         
     LDA.b $10 : CMP.b #$08 : BNE .specialArea2
         ; Copies $7EC300[0x200] to $7EC500[0x200].
-        JSR Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
+        JSR.w Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
         
         BRA .normalArea2
     
     .specialArea2
     
     ; Apparently special overworld handles palettes a bit differently?
-    JSR $C6EB ; $0146EB IN ROM
+    JSR.w $C6EB ; $0146EB IN ROM
     
     .normalArea2
     
@@ -760,7 +760,7 @@ PreOverworld_LoadProperties_LoadMain:
     STZ.w $0351 ; Link feet gfx fx
         
     ; Reinitialize many of Link's gameplay variables.
-    JSR $8B0C ; $010B0C IN ROM
+    JSR.w $8B0C ; $010B0C IN ROM
         
     LDA.l $7EF357 : BNE .notBunny
     LDA.l $7EF3CA : BEQ .notBunny
@@ -920,7 +920,7 @@ Func028632:
 
     ; Load Palettes.
         
-    JSR Overworld_LoadAreaPalettes ; $014692 IN ROM
+    JSR.w Overworld_LoadAreaPalettes ; $014692 IN ROM
     PLA : STA.b $00
         
     LDX.b $8A
@@ -938,7 +938,7 @@ Func028632:
     
     .BRANCH_4
     
-    JSR Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
+    JSR.w Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
     JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
         
     LDA.l $8A : CMP.b #$80 : BCC .BRANCH_5
@@ -1217,7 +1217,7 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
     ; Apply the selected settings to CGADSUB's mirror ($9A).
     STA.b $9A
         
-    JSR LoadSubscreenOverlay
+    JSR.w LoadSubscreenOverlay
         
     ; This is the "under the bridge" area.
     LDA.b $8C : CMP.b #$94 : BNE .notUnderBridge
@@ -1310,7 +1310,7 @@ if !Func02B2D4 = 1
 org $02B2D4 ; $0132D4
 Func02B2D4:
 {
-    JSR Overworld_LoadSubscreenAndSilenceSFX1 ; $012F19 IN ROM
+    JSR.w Overworld_LoadSubscreenAndSilenceSFX1 ; $012F19 IN ROM
 
     ; In vanilla a check for the overlay is done here but we don't need
     ; it at all. It is handled in Func02B3A1 later on.
@@ -1394,7 +1394,7 @@ Func02B3A1:
     JSL Sprite_ResetAll
     JSL Sprite_OverworldReloadAll
     JSL Link_ItemReset_FromOverworldThings ; $03B107 IN ROM
-    JSR DeleteCertainAncillaeStopDashing ; $010B0C IN ROM
+    JSR.w DeleteCertainAncillaeStopDashing ; $010B0C IN ROM
         
     LDA.b #$14 : STA.b $5D
         
@@ -1560,7 +1560,7 @@ if !Func02C692 = 1
 ; to change the main color palette manually but we change it here so that it
 ; just uses the same table as everything else.
 org $02A07A ; $01207A
-    JSR Overworld_LoadAreaPalettes
+    JSR.w Overworld_LoadAreaPalettes
 
 warnpc $02A07D ; $01207D
 
@@ -1956,7 +1956,7 @@ Palette_OverworldBgMain2:
     LDX.w #$0006
     LDY.w #$0004
         
-    JSR Palette_MultiLoad2
+    JSR.w Palette_MultiLoad2
         
     SEP #$30
         
