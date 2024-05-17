@@ -2469,6 +2469,7 @@ namespace ZeldaFullEditor
                                         ro.options = o.Options;
                                         room.tilesObjects.Add(ro);
                                         room.selectedObject.Add(ro);
+                                        ro.getObjectSize();
                                     }
                                 }
                             }
