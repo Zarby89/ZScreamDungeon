@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
@@ -1021,6 +1022,7 @@ namespace ZeldaFullEditor
                     dragy = MY / 8;
                     found = false;
 
+
                     for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
                     {
                         Room_Object obj = room.tilesObjects[i];
@@ -1078,6 +1080,12 @@ namespace ZeldaFullEditor
                             //Console.WriteLine("we didnt find any object so clear all");
                             room.selectedObject.Clear();
                         }
+                    }
+
+                    if (ModifierKeys == Keys.Alt)
+                    {
+                        found = false;
+                        room.selectedObject.Clear();
                     }
                 }
                 else if (selectedMode == ObjectMode.Doormode)

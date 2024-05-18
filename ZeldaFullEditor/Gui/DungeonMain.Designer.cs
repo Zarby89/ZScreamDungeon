@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -97,6 +97,7 @@
             this.sendToBg1ToolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.roomProperty_sortsprite = new System.Windows.Forms.CheckBox();
+            this.EntranceProperties_Music = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.toolboxPanel = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.entrancetabPage = new System.Windows.Forms.TabPage();
@@ -104,7 +105,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.EntranceProperties_FloorSel = new System.Windows.Forms.ComboBox();
             this.EntranceProperties_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.EntranceProperties_Music = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_DungeonID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_Exit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_CameraTriggerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -1077,6 +1077,24 @@
             this.roomProperty_sortsprite.UseVisualStyleBackColor = true;
             this.roomProperty_sortsprite.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
             // 
+            // EntranceProperties_Music
+            // 
+            this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_Music.Decimal = false;
+            this.EntranceProperties_Music.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.EntranceProperties_Music.HexValue = 0;
+            this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
+            this.EntranceProperties_Music.MaxLength = 2;
+            this.EntranceProperties_Music.MaxValue = 255;
+            this.EntranceProperties_Music.MinValue = 0;
+            this.EntranceProperties_Music.Name = "EntranceProperties_Music";
+            this.EntranceProperties_Music.Size = new System.Drawing.Size(50, 20);
+            this.EntranceProperties_Music.TabIndex = 137;
+            this.EntranceProperties_Music.Text = "00";
+            this.EntranceProperties_Music.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.EntranceProperties_Music, "Music");
+            this.EntranceProperties_Music.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
             // toolboxPanel
             // 
             this.toolboxPanel.Controls.Add(this.tabControl1);
@@ -1207,24 +1225,6 @@
             this.EntranceProperties_Blockset.Text = "00";
             this.EntranceProperties_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.EntranceProperties_Blockset.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
-            // EntranceProperties_Music
-            // 
-            this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.EntranceProperties_Music.Decimal = false;
-            this.EntranceProperties_Music.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.EntranceProperties_Music.HexValue = 0;
-            this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
-            this.EntranceProperties_Music.MaxLength = 2;
-            this.EntranceProperties_Music.MaxValue = 255;
-            this.EntranceProperties_Music.MinValue = 0;
-            this.EntranceProperties_Music.Name = "EntranceProperties_Music";
-            this.EntranceProperties_Music.Size = new System.Drawing.Size(50, 20);
-            this.EntranceProperties_Music.TabIndex = 137;
-            this.EntranceProperties_Music.Text = "00";
-            this.EntranceProperties_Music.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.EntranceProperties_Music, "Music");
-            this.EntranceProperties_Music.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_DungeonID
             // 
@@ -1873,13 +1873,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode3.Name = "EntranceNode";
-            treeNode3.Text = "Entrances";
-            treeNode4.Name = "StartingEntranceNode";
-            treeNode4.Text = "Spawn points";
+            treeNode1.Name = "EntranceNode";
+            treeNode1.Text = "Entrances";
+            treeNode2.Name = "StartingEntranceNode";
+            treeNode2.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 289);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
