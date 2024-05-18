@@ -1659,5 +1659,45 @@ namespace ZeldaFullEditor
             "Door X top? (unused?)",
             "Door X top? (unused?)",
         };
+
+
+        public static string[] musicNames = new string[]
+            {
+                "00_No Music",
+                "01_TriforceIntro",
+                "02_LightWorldOverture",
+                "03_Rain",
+                "04_BunnyTheme",
+                "05_LostWoods",
+                "06_LegendsTheme_Attract",
+                "07_KakarikoVillage",
+                "08_MirrorWarp",
+                "09_DarkWorld",
+                "0A_PullingTheMasterSword",
+                "0B_FairyTheme",
+                "0C_Fugitive",
+                "0D_SkullWoodsMarch",
+                "0E_MinigameTheme",
+                "0F_IntroFanfare",
+                "10_HyruleCastle",
+                "11_PendantDungeon",
+                "12_Cave",
+                "13_Fanfare",
+                "14_Sanctuary",
+                "15_Boss",
+                "16_CrystalDungeon",
+                "17_Shop",
+                "12_Cavea",
+                "19_ZeldaRescue",
+                "1A_CrystalMaiden",
+                "1B_BigFairy",
+                "1C_Suspense",
+                "1D_AgahnimEscapes",
+                "1E_MeetingGanon",
+                "1F_KingOfThieves",
+                "20_TriforceRoom",
+                "21_EndingTheme",
+                "22_Credits"
+            };
     }
 }

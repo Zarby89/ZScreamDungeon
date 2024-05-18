@@ -2668,6 +2668,15 @@ namespace ZeldaFullEditor
 
                 this.anychange = true;
             }
+            if (this.EntranceProperties_Music.HexValue <= 0x22)
+            {
+                toolTip1.SetToolTip(this.EntranceProperties_Music, Constants.musicNames[this.EntranceProperties_Music.HexValue]);
+            }
+            else
+            {
+                toolTip1.SetToolTip(this.EntranceProperties_Music, "Unknown");
+            }
+
         }
 
         public void closeRoom(int index)
