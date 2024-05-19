@@ -24,7 +24,7 @@
             byte sizeX = 0;
             byte sizeY = 0;
             byte sizeXY = 0;
-            short oid = 0;
+            ushort oid = 0;
             int layer = 0;
 
             while (true)
@@ -41,7 +41,7 @@
 
                 if (b3 >= 0xF8)
                 {
-                    oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
+                    oid = (ushort)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
                     posX = (byte)((b1 & 0xFC) >> 2);
                     posY = (byte)((b2 & 0xFC) >> 2);
                     sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
@@ -58,7 +58,7 @@
 
                 if (b1 >= 0xFC) // Subtype2 (not scalable? )
                 {
-                    oid = (short)((b3 & 0x3F) + 0x100);
+                    oid = (ushort)((b3 & 0x3F) + 0x100);
                     posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
                     posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
                     sizeXY = 0;

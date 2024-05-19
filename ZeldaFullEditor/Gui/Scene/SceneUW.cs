@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
@@ -20,7 +19,7 @@ namespace ZeldaFullEditor
     public class SceneUW : Scene
     {
         public Bitmap tempBitmap = new Bitmap(512, 512);
-        public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
+        public ushort[] doorsObject = new ushort[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
         SceneResizing resizeType = SceneResizing.none;
 
@@ -30,6 +29,8 @@ namespace ZeldaFullEditor
 
         int rmx = 0;
         int rmy = 0;
+
+        private static readonly List<ushort> nothingObjects = new List<ushort> {0x31, 0x32, 0x54, 0x57, 0x58, 0x59, 0x5A, 0x6E, 0x6F, 0x72, 0x7E, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xAD, 0xAE, 0xAF, 0xBE, 0xBF, 0xCB, 0xCC, 0xCF, 0xD0, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7 };
 
         public SceneUW(DungeonMain f)
         {
@@ -708,25 +709,13 @@ namespace ZeldaFullEditor
                     {
                         drawText(e.Graphics, o.X * 8, o.Y * 8, "Lamp");
                     }
-                    else if (o.id == 0x32)
+                    else if (nothingObjects.Contains(o.id))
                     {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "32\nT"+o.Size);
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, o.id.ToString("X2") + "\nT" + o.Size);
                     }
-                    else if (o.id == 0x31)
+                    else if (o.name == "Nothing")
                     {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "31\nT" + o.Size);
-                    }
-                    else if (o.id == 0xAD)
-                    {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "AD ?");
-                    }
-                    else if (o.id == 0xAE)
-                    {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "AE ?");
-                    }
-                    else if (o.id == 0xAF)
-                    {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "AF ?");
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, o.id.ToString("X2") + "\nT" + o.Size);
                     }
                 }
                 // TODO copy

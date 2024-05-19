@@ -47,7 +47,7 @@ namespace ZeldaFullEditor
         }
 
 
-		public object_door(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_door(ushort id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             options |= ObjectOption.Door;
             dpos = (byte)((id & 0xF0) >> 3); //*2
@@ -62,7 +62,7 @@ namespace ZeldaFullEditor
         public void updateId()
         {
             byte b1 = (byte)((dpos << 3) + ddir);
-            id = (short)((dtype << 8) + b1);
+            id = (ushort)((dtype << 8) + b1);
 
 		}
 

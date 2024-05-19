@@ -9,7 +9,7 @@
         /// <summary>
         ///		Gets or sets the ID of the object.
         /// </summary>
-        public short ID { get; set; }
+        public ushort ID { get; set; }
 
         /// <summary>
         ///		Gets or sets the name of the object.
@@ -27,7 +27,7 @@
         /// <param name="id"> The ID. </param>
         /// <param name="name"> The Name. </param>
         /// <param name="option"> Aditional info. </param>
-		public SelectedObject(short id, string name, byte option = 0)
+		public SelectedObject(ushort id, string name, byte option = 0)
         {
             this.Name = name;
             this.ID = id;

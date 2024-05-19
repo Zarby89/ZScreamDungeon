@@ -2832,7 +2832,7 @@ namespace ZeldaFullEditor
             int index = 0;
             for (int i = 0; i < 0xF8; i++) // Type 1 objects
             {
-                Room_Object roomObject = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                Room_Object roomObject = activeScene.room.addObject((ushort)i, 0, 0, 0, 0);
                 roomObject.preview = true;
                 roomObject.previewId = index;
                 index++;
@@ -2847,7 +2847,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0x100; i < 0x140; i++) // Type 2 objects
             {
-                Room_Object roomObject = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                Room_Object roomObject = activeScene.room.addObject((ushort)i, 0, 0, 0, 0);
                 roomObject.preview = true;
                 roomObject.previewId = index;
                 index++;
@@ -2862,7 +2862,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0xF80; i < 0xFFF; i++) // Type 3 objects
             {
-                Room_Object roomObject = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                Room_Object roomObject = activeScene.room.addObject((ushort)i, 0, 0, 0, 0);
                 roomObject.preview = true;
                 roomObject.previewId = index;
                 index++;

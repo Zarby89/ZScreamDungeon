@@ -8,7 +8,7 @@ namespace ZeldaFullEditor
         public int tx = 0;
         public int ty = 0;
 
-        public Subtype2_Multiple(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+        public Subtype2_Multiple(ushort id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             byte oid = (byte)(id & 0xFF);
 

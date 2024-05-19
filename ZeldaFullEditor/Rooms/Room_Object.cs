@@ -60,7 +60,7 @@ namespace ZeldaFullEditor
         // ==========================================================================================
         public bool lit = false;
         public List<Tile> tiles = new List<Tile>();
-        public short id;
+        public ushort id;
         public int tileIndex = 0;
         public string name; // Name of the object will be shown on the form
         public byte nx, ny;
@@ -87,7 +87,7 @@ namespace ZeldaFullEditor
 
         public DungeonLimits LimitClass = DungeonLimits.None;
 
-        public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
+        public Room_Object(ushort id, byte x, byte y, byte size, byte layer = 0)
         {
             this.X = x;
             this.Y = y;
