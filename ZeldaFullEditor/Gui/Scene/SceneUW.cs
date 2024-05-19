@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lidgren.Network;
@@ -18,7 +19,7 @@ namespace ZeldaFullEditor
     public class SceneUW : Scene
     {
         public Bitmap tempBitmap = new Bitmap(512, 512);
-        public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
+        public ushort[] doorsObject = new ushort[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
         SceneResizing resizeType = SceneResizing.none;
 
@@ -28,6 +29,8 @@ namespace ZeldaFullEditor
 
         int rmx = 0;
         int rmy = 0;
+
+        private static readonly List<ushort> nothingObjects = new List<ushort> {0x31, 0x32, 0x54, 0x57, 0x58, 0x59, 0x5A, 0x6E, 0x6F, 0x72, 0x7E, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xAD, 0xAE, 0xAF, 0xBE, 0xBF, 0xCB, 0xCC, 0xCF, 0xD0, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7 };
 
         public SceneUW(DungeonMain f)
         {
@@ -524,7 +527,6 @@ namespace ZeldaFullEditor
                                 {
                                     dobj.door_pos = (byte)((i - (doordir * 12)) * 2);
                                     dobj.door_dir = (byte)doordir;
-                                    dobj.updateId();
                                     dobj.Draw();
                                     this.room.has_changed = true;
                                 }
@@ -707,17 +709,13 @@ namespace ZeldaFullEditor
                     {
                         drawText(e.Graphics, o.X * 8, o.Y * 8, "Lamp");
                     }
-                    else if (o.id == 0xAD)
+                    else if (nothingObjects.Contains(o.id))
                     {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "AD ?");
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, o.id.ToString("X2") + "\nT" + o.Size);
                     }
-                    else if (o.id == 0xAE)
+                    else if (o.name == "Nothing")
                     {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "AE ?");
-                    }
-                    else if (o.id == 0xAF)
-                    {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, "AF ?");
+                        drawText(e.Graphics, o.X * 8, o.Y * 8, o.id.ToString("X2") + "\nT" + o.Size);
                     }
                 }
                 // TODO copy
@@ -1013,6 +1011,7 @@ namespace ZeldaFullEditor
                     dragy = MY / 8;
                     found = false;
 
+
                     for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
                     {
                         Room_Object obj = room.tilesObjects[i];
@@ -1070,6 +1069,12 @@ namespace ZeldaFullEditor
                             //Console.WriteLine("we didnt find any object so clear all");
                             room.selectedObject.Clear();
                         }
+                    }
+
+                    if (ModifierKeys == Keys.Alt)
+                    {
+                        found = false;
+                        room.selectedObject.Clear();
                     }
                 }
                 else if (selectedMode == ObjectMode.Doormode)
@@ -1549,30 +1554,26 @@ namespace ZeldaFullEditor
         }
         private void ShowWarnings()
         {
-            mainForm.warningLabel.Text = "";
-            room.GetObjectsWarning();
-            if (room.warnings != RoomWarning.None)
-            {
-                string warningString = "";
-                if ((room.warnings & RoomWarning.Sprites) == RoomWarning.Sprites)
-                {
-                    warningString += "Too many sprites (16 is the limit)\r\n";
+            var counts = room.GetLimitedObjectCounts();
+
+            var warningString = new StringBuilder();
+            bool bad = false;
+            foreach (var entry in counts) {
+                int lmax = DungeonLimitsHelper.GetLimitOfObjects(entry.Key);
+
+				if (entry.Value > lmax) {
+                    warningString.AppendLine($"Too many {DungeonLimitsHelper.GetLimitName(entry.Key)} - {entry.Value} / {lmax}");
+                    bad = true;
                 }
-                if ((room.warnings & RoomWarning.GeneralManipulable) == RoomWarning.GeneralManipulable)
-                {
-                    warningString += "Too many liftable objects (16 is the limit)\r\n";
-                }
-                if ((room.warnings & RoomWarning.Chest) == RoomWarning.Chest)
-                {
-                    warningString += "Too many chest objects (6 is the limit)\r\n";
-                }
-                if ((room.warnings & RoomWarning.SpecialDoors) == RoomWarning.SpecialDoors)
-                {
-                    warningString += "Too many special doors (key, shutter) (4 is the limit)\r\n";
-                }
-                mainForm.warningLabel.Text = "Warnings : \r\n" + warningString;
             }
+
+            if (bad) {
+                mainForm.warningLabel.Text = $"Warnings:\r\n{warningString}";
+			} else {
+				mainForm.warningLabel.Text = string.Empty;
+			}
         }
+
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
             resizing = false;
@@ -2465,6 +2466,7 @@ namespace ZeldaFullEditor
                                         ro.options = o.Options;
                                         room.tilesObjects.Add(ro);
                                         room.selectedObject.Add(ro);
+                                        ro.getObjectSize();
                                     }
                                 }
                             }

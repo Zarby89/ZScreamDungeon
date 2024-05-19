@@ -97,6 +97,7 @@
             this.sendToBg1ToolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.roomProperty_sortsprite = new System.Windows.Forms.CheckBox();
+            this.EntranceProperties_Music = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.toolboxPanel = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.entrancetabPage = new System.Windows.Forms.TabPage();
@@ -104,7 +105,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.EntranceProperties_FloorSel = new System.Windows.Forms.ComboBox();
             this.EntranceProperties_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.EntranceProperties_Music = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_DungeonID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_Exit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_CameraTriggerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -369,6 +369,7 @@
             this.clearExitsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearOverlaysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportOverlayAsASMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showEntrancesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -384,6 +385,7 @@
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useAreaSpecificBGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showOverlayTextsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1075,6 +1077,24 @@
             this.roomProperty_sortsprite.UseVisualStyleBackColor = true;
             this.roomProperty_sortsprite.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
             // 
+            // EntranceProperties_Music
+            // 
+            this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.EntranceProperties_Music.Decimal = false;
+            this.EntranceProperties_Music.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.EntranceProperties_Music.HexValue = 0;
+            this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
+            this.EntranceProperties_Music.MaxLength = 2;
+            this.EntranceProperties_Music.MaxValue = 255;
+            this.EntranceProperties_Music.MinValue = 0;
+            this.EntranceProperties_Music.Name = "EntranceProperties_Music";
+            this.EntranceProperties_Music.Size = new System.Drawing.Size(50, 20);
+            this.EntranceProperties_Music.TabIndex = 137;
+            this.EntranceProperties_Music.Text = "00";
+            this.EntranceProperties_Music.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.EntranceProperties_Music, "Music");
+            this.EntranceProperties_Music.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
             // toolboxPanel
             // 
             this.toolboxPanel.Controls.Add(this.tabControl1);
@@ -1205,23 +1225,6 @@
             this.EntranceProperties_Blockset.Text = "00";
             this.EntranceProperties_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.EntranceProperties_Blockset.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
-            // EntranceProperties_Music
-            // 
-            this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.EntranceProperties_Music.Decimal = false;
-            this.EntranceProperties_Music.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.EntranceProperties_Music.HexValue = 0;
-            this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
-            this.EntranceProperties_Music.MaxLength = 2;
-            this.EntranceProperties_Music.MaxValue = 255;
-            this.EntranceProperties_Music.MinValue = 0;
-            this.EntranceProperties_Music.Name = "EntranceProperties_Music";
-            this.EntranceProperties_Music.Size = new System.Drawing.Size(50, 20);
-            this.EntranceProperties_Music.TabIndex = 137;
-            this.EntranceProperties_Music.Text = "00";
-            this.EntranceProperties_Music.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.EntranceProperties_Music.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_DungeonID
             // 
@@ -4025,7 +4028,8 @@
             this.clearHolesToolStripMenuItem,
             this.clearExitsToolStripMenuItem1,
             this.clearOverlaysToolStripMenuItem,
-            this.exportOverlayAsASMToolStripMenuItem});
+            this.exportOverlayAsASMToolStripMenuItem,
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem});
             this.areaToolStripMenuItem.Enabled = false;
             this.areaToolStripMenuItem.Name = "areaToolStripMenuItem";
             this.areaToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
@@ -4105,6 +4109,13 @@
             this.exportOverlayAsASMToolStripMenuItem.Text = "Export overlay as ASM in clipboard";
             this.exportOverlayAsASMToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAsASMToolStripMenuItem_Click);
             // 
+            // exportOverlayAnimationAsASMInClipboardToolStripMenuItem
+            // 
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Name = "exportOverlayAnimationAsASMInClipboardToolStripMenuItem";
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Text = "Export overlay Animation";
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem_Click);
+            // 
             // overworldViewToolStripMenuItem
             // 
             this.overworldViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -4117,7 +4128,8 @@
             this.overworldOverlayVisibleToolStripMenuItem,
             this.showGridToolStripMenuItem1,
             this.useAreaSpecificBGColorToolStripMenuItem,
-            this.showScratchPadGridToolStripMenuItem});
+            this.showScratchPadGridToolStripMenuItem,
+            this.showOverlayTextsToolStripMenuItem});
             this.overworldViewToolStripMenuItem.Enabled = false;
             this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
             this.overworldViewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -4251,6 +4263,16 @@
             this.showScratchPadGridToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showScratchPadGridToolStripMenuItem.Text = "Show Scratch Pad Grid";
             this.showScratchPadGridToolStripMenuItem.Click += new System.EventHandler(this.ShowScratchPadGridToolStripMenuItem_Click);
+            // 
+            // showOverlayTextsToolStripMenuItem
+            // 
+            this.showOverlayTextsToolStripMenuItem.Checked = true;
+            this.showOverlayTextsToolStripMenuItem.CheckOnClick = true;
+            this.showOverlayTextsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showOverlayTextsToolStripMenuItem.Name = "showOverlayTextsToolStripMenuItem";
+            this.showOverlayTextsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showOverlayTextsToolStripMenuItem.Text = "Show Overlay Texts";
+            this.showOverlayTextsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
             // 
             // naviguateToolStripMenuItem
             // 
@@ -5165,6 +5187,8 @@
         private System.Windows.Forms.ToolStripMenuItem exportOverlayAsASMToolStripMenuItem;
         private System.Windows.Forms.TabPage NamingEditor;
         public System.Windows.Forms.Label warningLabel;
+        private System.Windows.Forms.ToolStripMenuItem exportOverlayAnimationAsASMInClipboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showOverlayTextsToolStripMenuItem;
     }
 }
 

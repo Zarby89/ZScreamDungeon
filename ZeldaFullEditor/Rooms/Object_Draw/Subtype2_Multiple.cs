@@ -8,7 +8,7 @@ namespace ZeldaFullEditor
         public int tx = 0;
         public int ty = 0;
 
-        public Subtype2_Multiple(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+        public Subtype2_Multiple(ushort id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             byte oid = (byte)(id & 0xFF);
 
@@ -172,6 +172,7 @@ namespace ZeldaFullEditor
                 case 0x1F:
                     setdata(Constants.Type2RoomObjectNames[0x1F], 2, 2);
                     sort = Sorting.Dungeons | Sorting.NonScalable;
+                    LimitClass = DungeonLimits.StarTile;
                     break;
 
                 case 0x20:
@@ -242,37 +243,44 @@ namespace ZeldaFullEditor
                 case 0x2D:
                     setdata(Constants.Type2RoomObjectNames[0x2D], 4, 4);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsTransition;
+					break;
 
                 case 0x2E:
                     setdata(Constants.Type2RoomObjectNames[0x2E], 4, 4);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsTransition;
+					break;
 
                 case 0x2F:
                     setdata(Constants.Type2RoomObjectNames[0x2F], 4, 4);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsTransition;
+					break;
 
                 case 0x30:
                     setdata(Constants.Type2RoomObjectNames[0x30], 4, 4, true);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsNorth;
+					break;
 
                 case 0x31:
                     setdata(Constants.Type2RoomObjectNames[0x31], 4, 4, true);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsNorth;
+					break;
 
                 case 0x32:
                     setdata(Constants.Type2RoomObjectNames[0x32], 4, 4);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsNorth;
+					break;
 
                 case 0x33:
                     setdata(Constants.Type2RoomObjectNames[0x33], 4, 4);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsNorth;
+					break;
 
                 case 0x34:
                     setdata(Constants.Type2RoomObjectNames[0x34], 2, 2);
@@ -282,37 +290,44 @@ namespace ZeldaFullEditor
                 case 0x35:
                     setdata(Constants.Type2RoomObjectNames[0x35], 4, 2);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsNorth;
+					break;
 
                 case 0x36:
                     setdata(Constants.Type2RoomObjectNames[0x36], 4, 2, true);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsNorth;
+					break;
 
                 case 0x37:
                     setdata(Constants.Type2RoomObjectNames[0x37], 10, 4);
                     sort = Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.Watergate;
+					break;
 
                 case 0x38:
                     setdata(Constants.Type2RoomObjectNames[0x38], 4, 3);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsTransition;
+					break;
 
                 case 0x39:
                     setdata(Constants.Type2RoomObjectNames[0x39], 4, 3);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsTransition;
+					break;
 
                 case 0x3A:
                     setdata(Constants.Type2RoomObjectNames[0x3A], 4, 3);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsTransition;
+					break;
 
                 case 0x3B:
                     setdata(Constants.Type2RoomObjectNames[0x3B], 4, 3);
                     sort = Sorting.Stairs | Sorting.NonScalable;
-                    break;
+					LimitClass = DungeonLimits.StairsTransition;
+					break;
 
                 case 0x3C:
                     setdata(Constants.Type2RoomObjectNames[0x3C], 4, 6);
@@ -342,7 +357,8 @@ namespace ZeldaFullEditor
                     tiles.Add(new Tile(496, 3, false, true, false));
                     options |= ObjectOption.Torch;
                     this.name = "Torch";
-                    tx = 2;
+					LimitClass = DungeonLimits.GeneralManipulable;
+					tx = 2;
                     ty = 2;
                     break;
 

@@ -533,14 +533,16 @@ namespace ZeldaFullEditor
                     break;
                 }
 
+                //DO NOT MOVE need to be before 45
                 if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
                 {
                     UIText.CryAboutSaving("problem saving sprites properties");
                     return;
                 }
 
+                ROM.Write(Constants.DamageClass, DungeonsData.GlobalDamages);
                 if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
-                {
+                {    
                     UIText.CryAboutSaving("problem saving sprites damages");
                     return;
                 }
@@ -982,6 +984,44 @@ namespace ZeldaFullEditor
 
             this.entrancetreeView.SelectedNode = this.entrancetreeView.Nodes[0].Nodes[0];
             this.selectedEntrance = DungeonsData.Entrances[0];
+        }
+
+
+        public void RenameEntrancesList()
+        {
+
+            for (int i = 0; i < 296; i++)
+            {
+                ROMStructure.dungeonsRoomList[i].Name = Room_Name.room_name[ROMStructure.dungeonsRoomList[i].ID];
+            }
+            // Entrances 
+            for (int i = 0; i < 0x07; i++)
+            {
+                string tname = "[" + i.ToString("X2") + "] -> ";
+                foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
+                {
+                    if (dataRoom.ID == DungeonsData.StartingEntrances[i].Room)
+                    {
+                        tname += "[" + dataRoom.ID.ToString("X2") + "]" + dataRoom.Name;
+                        break;
+                    }
+                }
+                this.entrancetreeView.Nodes[1].Nodes[i].Text = tname;
+            }
+
+            for (int i = 0; i < 0x85; i++)
+            {
+                string tname = "[" + i.ToString("X2") + "] -> ";
+                foreach (DataRoom d in ROMStructure.dungeonsRoomList)
+                {
+                    if (d.ID == DungeonsData.Entrances[i].Room)
+                    {
+                        tname += "[" + d.ID.ToString("X2") + "]" + d.Name;
+                        break;
+                    }
+                }
+                this.entrancetreeView.Nodes[0].Nodes[i].Text = tname;
+            }
         }
 
         public void EnableProjectButtons()
@@ -2270,7 +2310,6 @@ namespace ZeldaFullEditor
                         if (roomObject.options == ObjectOption.Door)
                         {
                             (roomObject as object_door).door_type = this.DoorIndex[this.comboBox2.SelectedIndex];
-                            (roomObject as object_door).updateId();
                             this.activeScene.room.has_changed = true;
                             this.activeScene.DrawRoom();
                             this.activeScene.Refresh();
@@ -2629,6 +2668,15 @@ namespace ZeldaFullEditor
 
                 this.anychange = true;
             }
+            if (this.EntranceProperties_Music.HexValue <= 0x22)
+            {
+                toolTip1.SetToolTip(this.EntranceProperties_Music, Constants.musicNames[this.EntranceProperties_Music.HexValue]);
+            }
+            else
+            {
+                toolTip1.SetToolTip(this.EntranceProperties_Music, "Unknown");
+            }
+
         }
 
         public void closeRoom(int index)
@@ -2784,7 +2832,7 @@ namespace ZeldaFullEditor
             int index = 0;
             for (int i = 0; i < 0xF8; i++) // Type 1 objects
             {
-                Room_Object roomObject = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                Room_Object roomObject = activeScene.room.addObject((ushort)i, 0, 0, 0, 0);
                 roomObject.preview = true;
                 roomObject.previewId = index;
                 index++;
@@ -2799,7 +2847,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0x100; i < 0x140; i++) // Type 2 objects
             {
-                Room_Object roomObject = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                Room_Object roomObject = activeScene.room.addObject((ushort)i, 0, 0, 0, 0);
                 roomObject.preview = true;
                 roomObject.previewId = index;
                 index++;
@@ -2814,7 +2862,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0xF80; i < 0xFFF; i++) // Type 3 objects
             {
-                Room_Object roomObject = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                Room_Object roomObject = activeScene.room.addObject((ushort)i, 0, 0, 0, 0);
                 roomObject.preview = true;
                 roomObject.previewId = index;
                 index++;
@@ -3293,7 +3341,7 @@ namespace ZeldaFullEditor
             ItemsNames.loadFromFile(file);
             this.selecteditemobjectCombobox.Items.Clear();
 
-            InitEntrancesList();
+            RenameEntrancesList();
 
             for (int i = 0; i < ItemsNames.name.Length; i++)
             {
@@ -4915,6 +4963,7 @@ namespace ZeldaFullEditor
             this.overworldEditor.scene.showExits = this.showExitsToolStripMenuItem.Checked;
             this.overworldEditor.scene.showFlute = this.showTransportsToolStripMenuItem.Checked;
             this.overworldEditor.scene.showItems = this.showItemsToolStripMenuItem.Checked;
+            this.overworldEditor.scene.showOverlayText = this.showOverlayTextsToolStripMenuItem.Checked;
             this.overworldEditor.Refresh();
         }
 
@@ -6139,6 +6188,12 @@ namespace ZeldaFullEditor
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             LoadProject(files[0]);
+        }
+        AnimationSetting animSettingForm = new AnimationSetting();
+        private void exportOverlayAnimationAsASMInClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            animSettingForm.scene = overworldEditor.scene;
+            animSettingForm.ShowDialog();
         }
     }
 }

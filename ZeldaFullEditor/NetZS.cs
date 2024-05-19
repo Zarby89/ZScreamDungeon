@@ -414,7 +414,7 @@ namespace ZeldaFullEditor.Properties
                 if (ro.Length == 0)
                 {
                     Console.WriteLine("Oops object ID " + uID + " Is not found! Creating it !");
-                    short id = buffer.ReadShort();
+                    ushort id = buffer.ReadUShort();
                     byte x = buffer.ReadByte();
                     byte y = buffer.ReadByte();
                     byte ox = buffer.ReadByte();
@@ -435,7 +435,7 @@ namespace ZeldaFullEditor.Properties
                 else
                 {
                     o = ro[0];
-                    o.id = buffer.ReadShort();
+                    o.id = buffer.ReadUShort();
                     o.X = buffer.ReadByte();
                     o.Y = buffer.ReadByte();
                     o.nx = o.X;

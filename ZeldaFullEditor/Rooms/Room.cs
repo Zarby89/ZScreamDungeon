@@ -29,7 +29,6 @@ namespace ZeldaFullEditor
         public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
         public bool objectInitialized = false;
         public bool onlyLayout = false;
-        public RoomWarning warnings = RoomWarning.None;
 
         public string fromExported = "";
 
@@ -61,9 +60,6 @@ namespace ZeldaFullEditor
         public byte[] staircase_rooms = new byte[4];
 
         private byte[] staircase_plane = new byte[4];
-
-        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22, 0x24, 0x26 };
-        byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
 
         short[] stairsObjects = new short[] { 0x139, 0x138, 0x13B, 0x12E, 0x12D };
         public List<StaircaseRoom> staircaseRooms = new List<StaircaseRoom>();
@@ -604,37 +600,65 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void GetObjectsWarning()
+        public Dictionary<DungeonLimits, int> GetLimitedObjectCounts()
         {
-            
-            warnings = RoomWarning.None;
-            int gen = tilesObjects.Count(x => x.LimitClass == DungeonLimits.GeneralManipulable) + (tilesObjects.Count(x => x.LimitClass == DungeonLimits.GeneralManipulable4x) * 4);
-            if (gen > 16)
-            {
-                warnings |= RoomWarning.GeneralManipulable;
-                // too many liftable objects warning
+            var limList = DungeonLimitsHelper.CreateCounter();
+
+            foreach (var obj in tilesObjects) {
+                DungeonLimits dl = obj.LimitClass;
+
+                switch (dl) {
+					case DungeonLimits.Chest:
+					case DungeonLimits.StarTile:
+					case DungeonLimits.StairsNorth:
+					case DungeonLimits.StairsSouth:
+					case DungeonLimits.StairsTransition:
+					case DungeonLimits.SomariaLine:
+					case DungeonLimits.Watergate:
+					case DungeonLimits.WaterVomit:
+						limList[dl]++;
+						break;
+
+					case DungeonLimits.GeneralManipulable:
+						limList[DungeonLimits.GeneralManipulable]++;
+						break;
+
+					case DungeonLimits.GeneralManipulable4x:
+						limList[DungeonLimits.GeneralManipulable] += 4;
+						break;
+
+					case DungeonLimits.GeneralManipulableLengthy:
+						limList[DungeonLimits.GeneralManipulable] += obj.Size + 1;
+						break;
+
+					case DungeonLimits.Doors:
+						limList[DungeonLimits.Doors]++;
+                        break;
+
+					case DungeonLimits.SpecialDoors:
+						limList[DungeonLimits.SpecialDoors]++;
+						limList[DungeonLimits.Doors]++;
+                        break;
+
+					case DungeonLimits.ExitMods:
+						limList[DungeonLimits.ExitMods]++;
+						limList[DungeonLimits.Doors]++;
+                        break;
+				}
             }
-            int che = tilesObjects.Count(x => x.id == 0xF99 || x.id == 0xFB1);
-            if (che > 6)
-            {
-                warnings |= RoomWarning.Chest;
-            }
 
-            if (sprites.Count > 16)
-            {
-                warnings |= RoomWarning.Sprites;
-            }
 
-            int specialDoors = tilesObjects.Count(x => x.options == ObjectOption.Door && (keysDoors.Contains((byte)(x.id>>8)) == true || shutterDoors.Contains((byte)(x.id >> 8)) == true));
+            foreach (var sp in sprites) {
+                if (sp.IsOverlord) {
+					limList[DungeonLimits.Overlords]++;
+				} else {
+					limList[DungeonLimits.Sprites]++;
+				}
+			}
 
-            if (specialDoors > 4)
-            {
-                warnings |= RoomWarning.SpecialDoors;
-            }
-
-            
-
+            return limList;
         }
+
         public void update()
         {
             if (!objectInitialized)
@@ -1148,7 +1172,7 @@ namespace ZeldaFullEditor
             byte sizeX = 0;
             byte sizeY = 0;
             byte sizeXY = 0;
-            short oid = 0;
+            ushort oid = 0;
             int layer = 0;
             bool door = false;
             bool endRead = false;
@@ -1194,7 +1218,7 @@ namespace ZeldaFullEditor
                 {
                     if (b3 >= 0xF8)
                     {
-                        oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
+                        oid = (ushort)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
                         posX = (byte)((b1 & 0xFC) >> 2);
                         posY = (byte)((b2 & 0xFC) >> 2);
                         sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
@@ -1211,7 +1235,7 @@ namespace ZeldaFullEditor
 
                     if (b1 >= 0xFC) // Subtype2 (not scalable? )
                     {
-                        oid = (short)((b3 & 0x3F) + 0x100);
+                        oid = (ushort)((b3 & 0x3F) + 0x100);
                         posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
                         posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
                         sizeXY = 0;
@@ -1273,7 +1297,7 @@ namespace ZeldaFullEditor
                 {
                     //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
                     //byte door_type = b2;
-                    tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
+                    tilesObjects.Add(new object_door((ushort)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
                     continue;
                 }
             }
@@ -1303,7 +1327,7 @@ namespace ZeldaFullEditor
             byte sizeX = 0;
             byte sizeY = 0;
             byte sizeXY = 0;
-            short oid = 0;
+            ushort oid = 0;
             int layer = 0;
             bool door = false;
             bool endRead = false;
@@ -1348,7 +1372,7 @@ namespace ZeldaFullEditor
                 {
                     if (b3 >= 0xF8) // Subtype3
                     {
-                        oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
+                        oid = (ushort)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
                         posX = (byte)((b1 & 0xFC) >> 2);
                         posY = (byte)((b2 & 0xFC) >> 2);
                         sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
@@ -1365,7 +1389,7 @@ namespace ZeldaFullEditor
 
                     if (b1 >= 0xFC) // Subtype2 (not scalable? )
                     {
-                        oid = (short)((b3 & 0x3F) + 0x100);
+                        oid = (ushort)((b3 & 0x3F) + 0x100);
                         posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
                         posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
                         sizeXY = 0;
@@ -1419,7 +1443,7 @@ namespace ZeldaFullEditor
                 {
                     //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
                     //byte door_type = b2;
-                    tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
+                    tilesObjects.Add(new object_door((ushort)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
                     continue;
                 }
             }
@@ -1442,7 +1466,7 @@ namespace ZeldaFullEditor
             byte sizeX = 0;
             byte sizeY = 0;
             byte sizeXY = 0;
-            short oid = 0;
+            ushort oid = 0;
             int layer = 0;
 
             while (true)
@@ -1460,7 +1484,7 @@ namespace ZeldaFullEditor
 
                 if (b3 >= 0xF8)
                 {
-                    oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
+                    oid = (ushort)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
                     posX = (byte)((b1 & 0xFC) >> 2);
                     posY = (byte)((b2 & 0xFC) >> 2);
                     sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
@@ -1476,7 +1500,7 @@ namespace ZeldaFullEditor
                 }
                 if (b1 >= 0xFC) // Subtype2 (not scalable?)
                 {
-                    oid = (short)((b3 & 0x3F) + 0x100);
+                    oid = (ushort)((b3 & 0x3F) + 0x100);
                     posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
                     posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
                     sizeXY = 0;
@@ -1491,7 +1515,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public Room_Object addObject(short oid, byte x, byte y, byte size, byte layer)
+        public Room_Object addObject(ushort oid, byte x, byte y, byte size, byte layer)
         {
             if (oid == 0xE00) // Block
             {

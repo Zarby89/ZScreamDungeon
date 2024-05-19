@@ -15,26 +15,90 @@ namespace ZeldaFullEditor
     */
 
     [Serializable]
-    public class object_door : Room_Object
-    {
-        public byte door_pos = 0;
-        public byte door_dir = 0;
-        public byte door_type = 0;
+    public class object_door : Room_Object {
 
-        public object_door(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		private byte dpos = 0;
+		public byte door_pos {
+			get => dpos;
+			set {
+				dpos = value;
+				updateId();
+			}
+		}
+
+		private byte ddir = 0;
+		public byte door_dir {
+			get => ddir;
+			set {
+				ddir = value;
+				updateId();
+			}
+		}
+
+		private byte dtype = 0;
+
+        public byte door_type {
+            get => dtype;
+            set {
+                dtype = value;
+				updateId();
+				FixLimitClass();
+			}
+        }
+
+
+		public object_door(ushort id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             options |= ObjectOption.Door;
-            door_pos = (byte)((id & 0xF0) >> 3); //*2
-            door_dir = (byte)((id & 0x03));
-            door_type = (byte)((id >> 8) & 0xFF);
+            dpos = (byte)((id & 0xF0) >> 3); //*2
+            ddir = (byte)((id & 0x03));
+            dtype = (byte)((id >> 8) & 0xFF);
             name = "Door";
-        }
+            updateId();
+			FixLimitClass();
+
+		}
 
         public void updateId()
         {
-            byte b1 = (byte)((door_pos << 3) + door_dir);
-            byte b2 = door_type;
-            id = (short)((b2 << 8) + b1);
+            byte b1 = (byte)((dpos << 3) + ddir);
+            id = (ushort)((dtype << 8) + b1);
+
+		}
+
+        private void FixLimitClass() {
+
+            switch (door_type) {
+				case 0x1C: // key doors
+				case 0x26:
+				case 0x1E:
+				case 0x2E:
+				case 0x28:
+				case 0x32:
+				case 0x30:
+                case 0x20:
+				case 0x22:
+				case 0x24:
+					LimitClass = DungeonLimits.SpecialDoors;
+					break;
+
+				case 0x44: // shutter doors
+				case 0x18:
+				case 0x36:
+				case 0x38:
+				case 0x48:
+				case 0x4A:
+					LimitClass = DungeonLimits.SpecialDoors;
+					break;
+
+                case 0x12: // exit mod
+					LimitClass = DungeonLimits.ExitMods;
+                    break;
+
+                default:
+					LimitClass = DungeonLimits.Doors;
+                    break;
+			}
         }
 
         /* 
@@ -83,27 +147,30 @@ namespace ZeldaFullEditor
             {
                 w = 4;
                 h = 3;
-            }
-            if (door_dir == 1) // If direction is down y+=1 ? why
-            {
-                Y += 1;
-            }
+
+				if (door_dir == 1) // If direction is down y+=1 ? why
+                {
+					Y += 1;
+				}
+			}
+
             else if (door_dir == 2 || door_dir == 3) // left / right
             {
                 h = 4;
                 w = 3;
-            }
-            if (door_dir == 3)
-            {
-                X += 1;
-            }
+
+				if (door_dir == 3)
+                {
+					X += 1;
+				}
+			}
 
             // 0x26,0x40,0x46,0x0C
-            if ((((id >> 8) & 0xFF) == 0x26) || (((id >> 8) & 0xFF) == 0x40) || (((id >> 8) & 0xFF) == 0x46) || (((id >> 8) & 0xFF) == 0x0C))
+            if (dtype == 0x26 || dtype == 0x40 || dtype == 0x46 || dtype == 0x0C)
             {
                 Layer = LayerType.BG2;
             }
-            if ((((id >> 8) & 0xFF) == 22) || (((id >> 8) & 0xFF) == 18))
+            else if (dtype == 22 || dtype == 18)
             {
 
                 //tiles.Clear();
@@ -116,7 +183,7 @@ namespace ZeldaFullEditor
                 oy = Y;
                 return;
             }
-            if ((((id >> 8) & 0xFF) == 0x0E))
+            else if (dtype == 0x0E)
             {
                 tiles.Clear();
                 addTiles(16, Constants.tile_address + 0x26F6);
@@ -126,7 +193,7 @@ namespace ZeldaFullEditor
             }
             int tid = 0;
 
-            if ((((id >> 8) & 0xFF) == 0x0A))
+            if (dtype == 0x0A)
             {
                 tiles.Clear();
                 addTiles(80, Constants.tile_address + 0x2656);
@@ -149,19 +216,19 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if ((((id >> 8) & 0xFF) == 0x30)) // Hole in wall
+            if (dtype == 0x30) // Hole in wall
             {
                 if (door_pos == 0)
                 {
                     X = 5;
                     Y = 33;
                 }
-                if (door_pos == 2)
+                else if (door_pos == 2)
                 {
                     X = 21;
                     Y = 33;
                 }
-                if (door_pos == 4)
+                else if (door_pos == 4)
                 {
                     X = 37;
                     Y = 33;
@@ -184,14 +251,14 @@ namespace ZeldaFullEditor
                 {
                     tiles[tid].VFlip = false;
                     tiles[tid].HFlip = false;
-                    draw_tile(tiles[tid], (0) * 8, (yy) * 8);
+                    draw_tile(tiles[tid], 0 * 8, yy * 8);
                     tid++;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
                     tiles[tid].VFlip = false;
                     tiles[tid].HFlip = false;
-                    draw_tile(tiles[tid], (1) * 8, (yy) * 8);
+                    draw_tile(tiles[tid], 1 * 8, yy * 8);
                     tid++;
                 }
 
@@ -202,14 +269,14 @@ namespace ZeldaFullEditor
                 {
                     tiles[tid].VFlip = false;
                     tiles[tid].HFlip = true;
-                    draw_tile(tiles[tid], (21) * 8, (yy) * 8);
+                    draw_tile(tiles[tid], 21 * 8, yy * 8);
                     tid++;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
                     tiles[tid].VFlip = false;
                     tiles[tid].HFlip = true;
-                    draw_tile(tiles[tid], (20) * 8, (yy) * 8);
+                    draw_tile(tiles[tid], 20 * 8, yy * 8);
                     tid++;
                 }
 
@@ -220,14 +287,14 @@ namespace ZeldaFullEditor
                 {
                     tiles[tid].VFlip = true;
                     tiles[tid].HFlip = false;
-                    draw_tile(tiles[tid], (1) * 8, (yy - 6) * 8);
+                    draw_tile(tiles[tid], 1 * 8, (yy - 6) * 8);
                     tid--;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
                     tiles[tid].VFlip = true;
                     tiles[tid].HFlip = false;
-                    draw_tile(tiles[tid], (0) * 8, (yy - 6) * 8);
+                    draw_tile(tiles[tid], 0 * 8, (yy - 6) * 8);
                     tid--;
                 }
                 tid = 11;
@@ -235,14 +302,14 @@ namespace ZeldaFullEditor
                 {
                     tiles[tid].VFlip = false;
                     tiles[tid].HFlip = true;
-                    draw_tile(tiles[tid], (20) * 8, (yy - 6) * 8);
+                    draw_tile(tiles[tid], 20 * 8, (yy - 6) * 8);
                     tid--;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
                     tiles[tid].VFlip = false;
                     tiles[tid].HFlip = true;
-                    draw_tile(tiles[tid], (21) * 8, (yy - 6) * 8);
+                    draw_tile(tiles[tid], 21 * 8, (yy - 6) * 8);
                     tid--;
                 }
 
@@ -262,7 +329,7 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if ((((id >> 8) & 0xFF) == 0x32))
+            if (dtype == 0x32)
             {
                 tiles.Clear();
                 addTiles(16, Constants.tile_address + 0x078A);
@@ -273,7 +340,7 @@ namespace ZeldaFullEditor
                 h = 4;
                 w = 4;
             }
-            if ((((id >> 8) & 0xFF) == 0x09))
+            if (dtype == 0x09)
             {
                 return;
             }
@@ -350,12 +417,12 @@ namespace ZeldaFullEditor
             {
                 X += 1;
             }
-            if ((((id >> 8) & 0xFF) == 22) || (((id >> 8) & 0xFF) == 18))
+            if (dtype == 22 || dtype == 18)
             {
                 tiles.Clear();
                 addTiles(12, 0); // ??
             }
-            if ((((id >> 8) & 0xFF) == 0x0E))
+            if (dtype == 0x0E)
             {
                 tiles.Clear();
                 addTiles(16, Constants.tile_address + 0x26F6);
@@ -365,7 +432,7 @@ namespace ZeldaFullEditor
             }
 
             int tid = 0;
-            if ((((id >> 8) & 0xFF) == 0x0A))
+            if (dtype == 0x0A)
             {
                 tiles.Clear();
                 addTiles(80, Constants.tile_address + 0x2656);
@@ -390,7 +457,7 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if ((((id >> 8) & 0xFF) == 0x30)) // Hole in wall
+            if (dtype == 0x30) // Hole in wall
             {
                 if (tempPos == 0)
                 {
@@ -502,7 +569,7 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if ((((id >> 8) & 0xFF) == 0x32))
+            if (dtype == 0x32)
             {
                 tiles.Clear();
                 addTiles(16, Constants.tile_address + 0x078A);
@@ -513,7 +580,7 @@ namespace ZeldaFullEditor
                 h = 4;
                 w = 4;
             }
-            if ((((id >> 8) & 0xFF) == 0x09))
+            if (dtype == 0x09)
             {
                 return;
             }

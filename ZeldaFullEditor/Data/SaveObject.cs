@@ -42,7 +42,7 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Gets or sets the tile ID of the room object or pot item.
         /// </summary>
-        public short TileID { get; set; }
+        public ushort TileID { get; set; }
 
         /// <summary>
         ///     Gets or sets the size of the room object.
@@ -108,7 +108,7 @@ namespace ZeldaFullEditor
         /// <param name="type"> The type of object. </param>
         public SaveObject(BinaryReader br, Type type) // From file
         {
-            this.TileID = br.ReadInt16();
+            this.TileID = (ushort)br.ReadInt16();
             this.X = br.ReadByte();
             this.Y = br.ReadByte();
             this.Layer = br.ReadByte();
@@ -193,7 +193,7 @@ namespace ZeldaFullEditor
 
             if (s[0] == 'O')
             {
-                short tempId = (short)((byte)s[2] << 8);
+                ushort tempId = (ushort)((byte)s[2] << 8);
                 tempId += (byte)s[1];
                 this.TileID = tempId;
                 this.X = (byte)s[3];
