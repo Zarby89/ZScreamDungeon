@@ -876,16 +876,16 @@ namespace ZeldaFullEditor
 			// Start of data = 0x252
 			try
 			{
-				int pos = 0x250;
+				int maxRoomSave = Constants.NumberOfRooms;
+
+				int pos = maxRoomSave * 2; ;
 				int emptyPointer = spritePointer + pos;
 
 				// Set empty room.
 				sprites_buffer[pos++] = 0x00;
 				sprites_buffer[pos++] = 0xFF;
 
-
-
-				for (int i = 0; i < 320; i++)
+				for (int i = 0; i < maxRoomSave; i++)
 				{
 					if (i >= Constants.NumberOfRooms || AllRooms[i].sprites.Count <= 0)
 					{
@@ -894,7 +894,7 @@ namespace ZeldaFullEditor
 					}
 					else
 					{
-						sprites_buffer[i * 2] = (byte) Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos));
+						sprites_buffer[i * 2] = (byte) (spritePointer + pos);
 						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointer + pos) >> 8);
 
 						var dat = AllRooms[i].GetSpritesData();
