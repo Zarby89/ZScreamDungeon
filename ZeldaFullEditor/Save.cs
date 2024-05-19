@@ -859,33 +859,28 @@ namespace ZeldaFullEditor
 		/// <returns> True if there was an error saving the sprites. </returns>
 		public bool SaveAllSprites()
 		{
-			//ROM.spaceUsedOWSprites
+			AttemptBasePatch("spritesmove.asm"); // move dungeon sprites to 0x100000 ($208000)
 
-			//Update the pointer
-			ROM.WriteShort(Constants.rooms_sprite_pointer, Utils.PcToSnes(ROM.spaceUsedOWSprites) & 0x00FFFF);
+			// TEMPORARY LOCATION
+			// TODO ZARBY MAKE THIS A CONSTANT OR MOVEABLE
+			int spritePointerSNES = 0x208100;
 
-			int spritePointer = 0x090000 | (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + ROM.DATA[Constants.rooms_sprite_pointer];
-
-
-
-			int spritePointerPC = Utils.SnesToPc(spritePointer);
+			int spritePointerPC = Utils.SnesToPc(spritePointerSNES);
 			ROM.StartBlockLogWriting("Dungeon Sprites", spritePointerPC);
-			byte[] sprites_buffer = new byte[Constants.sprites_end_data - Utils.SnesToPc(spritePointer)];
-
+			byte[] sprites_buffer = new byte[Constants.sprites_end_data - spritePointerPC];
 			// Empty room data = 0x250
 			// Start of data = 0x252
 			try
 			{
-				int maxRoomSave = Constants.NumberOfRooms;
-
-				int pos = maxRoomSave * 2; ;
-				int emptyPointer = spritePointer + pos;
+				int maxSavedRoom = Constants.NumberOfRooms;
+				int pos = maxSavedRoom * 2;
+				int emptyPointer = spritePointerSNES + pos;
 
 				// Set empty room.
 				sprites_buffer[pos++] = 0x00;
 				sprites_buffer[pos++] = 0xFF;
 
-				for (int i = 0; i < maxRoomSave; i++)
+				for (int i = 0; i < maxSavedRoom; i++)
 				{
 					if (i >= Constants.NumberOfRooms || AllRooms[i].sprites.Count <= 0)
 					{
@@ -894,8 +889,8 @@ namespace ZeldaFullEditor
 					}
 					else
 					{
-						sprites_buffer[i * 2] = (byte) (spritePointer + pos);
-						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointer + pos) >> 8);
+						sprites_buffer[i * 2] = (byte) (spritePointerSNES + pos);
+						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointerSNES + pos) >> 8);
 
 						var dat = AllRooms[i].GetSpritesData();
 						Array.Copy(dat, 0, sprites_buffer, pos, dat.Length);
@@ -906,8 +901,9 @@ namespace ZeldaFullEditor
 				ROM.EndBlockLogWriting();
 				sprites_buffer.CopyTo(ROM.DATA, spritePointerPC);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				MessageBox.Show(e.Message);
 				return true;
 			}
 
@@ -1415,7 +1411,7 @@ namespace ZeldaFullEditor
 		{
 			ROM.StartBlockLogWriting("Overworld Musics IDs", Constants.overworldMusicBegining);
 
-			for (int i = 0, ow = 0x40 ; i < 0x40; i++, ow++)
+			for (int i = 0, ow = 0x40; i < 0x40; i++, ow++)
 			{
 				ROM.Write(Constants.overworldMusicBegining + i, scene.ow.AllMaps[i].Music[0], true, $"Music track for overworld {i:X2}");
 				ROM.Write(Constants.overworldMusicZelda + i, scene.ow.AllMaps[i].Music[1], true, $"Music track for overworld {i:X2}");
@@ -2154,7 +2150,7 @@ namespace ZeldaFullEditor
 				sprites_buffer[pos++] = 0x00;
 				sprites_buffer[pos++] = 0xFF;
 
-				
+
 
 				for (int i = 0; i < 320; i++)
 				{
@@ -2176,7 +2172,7 @@ namespace ZeldaFullEditor
 					}
 					else
 					{
-						
+
 						sprites_buffer[i * 2] = (byte) Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos));
 						sprites_buffer[(i * 2) + 1] = (byte) ((spritePointer + pos) >> 8);
 

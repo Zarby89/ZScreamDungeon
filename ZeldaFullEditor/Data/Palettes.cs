@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Text;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -13,7 +14,9 @@ namespace ZeldaFullEditor
 		///     Gets or sets a 2 dimentional array containing the HUD palettes.
 		///     32 (0,0)
 		/// </summary>
-		public static Color[][] HudPalettes { get; set; } = new Color[2][];
+		//public static Color[][] HudPalettes { get; set; } = new Color[2][];
+		public static PaletteGroupInfo HudPalettes { get; set; }
+
 
 		/// <summary>
 		///      Gets or sets a 2 dimentional array containing the main overworld palettes.
@@ -129,11 +132,11 @@ namespace ZeldaFullEditor
 				OverworldAnimatedPalettes[i] = ReadPalette(romData, Constants.overworldPaletteAnimated + (i * (7 * 2)), 7);
 			}
 
-			// 32 colors each 16x2 (0,0 on grid).
-			for (int i = 0; i < 2; i++)
+			HudPalettes = new PaletteGroupInfo("Hud", new PaletteInfo[]
 			{
-				HudPalettes[i] = ReadPalette(romData, Constants.hudPalettes + (i * 64), 32);
-			}
+				new PaletteInfo("Hud 00", ReadPalette(romData, Constants.hudPalettes + 0, 32), 16),
+				new PaletteInfo("Hud 01", ReadPalette(romData, Constants.hudPalettes + 64, 32), 16)
+			});
 
 			/*
             public static Color[][] globalSprite_Palettes = new Color[2][]; // 32 (1,9)
@@ -263,12 +266,29 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		/// <summary>
-		///     Writes all palette data to the given ROM.
-		/// </summary>
-		/// <param name="romData"> The ROM to write to. </param>
-		/// <returns> True if failed to write to ROM. </returns>
-		public static bool SavePalettesToROM(byte[] romData)
+        public static void WritePalette(byte[] romData, int romPosition, PaletteInfo palInfo, int max = -1)
+        {
+            if (max == -1)
+            {
+                max = palInfo.colors.Length;
+            }
+
+            int colorPos = 0;
+            while (colorPos < max)
+            {
+                short color = (short)(((palInfo.colors[colorPos].B / 8) << 10) | ((palInfo.colors[colorPos].G / 8) << 5) | (palInfo.colors[colorPos].R / 8));
+                romData[romPosition++] = (byte)color;
+                romData[romPosition++] = (byte)(color >> 8);
+                colorPos++;
+            }
+        }
+
+        /// <summary>
+        ///     Writes all palette data to the given ROM.
+        /// </summary>
+        /// <param name="romData"> The ROM to write to. </param>
+        /// <returns> True if failed to write to ROM. </returns>
+        public static bool SavePalettesToROM(byte[] romData)
 		{
 			WriteSinglePalette(romData, Constants.hardcodedGrassLW1, OverworldGrassPalettes[0]);
 			WriteSinglePalette(romData, Constants.hardcodedGrassLW2, OverworldGrassPalettes[0]);
@@ -296,9 +316,9 @@ namespace ZeldaFullEditor
 			}
 
 			// 32 colors each 16x2 (0,0 on grid).
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < HudPalettes.palettes.Length ; i++)
 			{
-				WritePalette(romData, Constants.hudPalettes + (i * 64), HudPalettes[i]);
+				WritePalette(romData, Constants.hudPalettes + (i * 64), HudPalettes.palettes[i]);
 			}
 
 			WritePalette(romData, Constants.globalSpritePalettesLW, GlobalSpritePalettes[0]);
@@ -440,7 +460,7 @@ namespace ZeldaFullEditor
 			// 32 colors each 16x2 (0,0 on grid).
 			for (int i = 0; i < 2; i++)
 			{
-				WritePaletteAsm(HudPalettes[i], 16, $"Hud Palettes {i:X2}", Constants.hudPalettes + (i * 64));
+                WritePaletteAsmPInfos(HudPalettes.palettes[i], 16, $"Hud Palettes {i:X2}", Constants.hudPalettes + (i * 64));
 			}
 
 			WritePaletteAsm(GlobalSpritePalettes[0], 15, "LW Global Sprite Palettes ", Constants.globalSpritePalettesLW);
@@ -511,7 +531,24 @@ namespace ZeldaFullEditor
 					colS.RemoveRange(0, width);
 				}
 			}
-		}
+
+            void WritePaletteAsmPInfos(PaletteInfo palette, int width, string comment, int romPosition)
+            {
+                asmString.AppendLine();
+                asmString.AppendLine();
+                asmString.AppendLine($"; {comment}");
+                asmString.AppendLine($"org ${romPosition.PcToSnes():X6}");
+
+                var colS = palette.colors.Select(c => $"${c.ToSNESColor():X4}").ToList();
+
+                while (colS.Count > 0)
+                {
+                    asmString.AppendLine($"\tdw {string.Join(", ", colS.Take(width))}");
+
+                    colS.RemoveRange(0, width);
+                }
+            }
+        }
 
 		#endregion
 	}

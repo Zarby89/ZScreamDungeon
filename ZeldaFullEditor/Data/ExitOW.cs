@@ -240,15 +240,24 @@ namespace ZeldaFullEditor
 				completly centered is -120 and -80.
 				*/
 
-				this.XScroll = (ushort) (this.PlayerX - 120); // 134.
-				this.YScroll = (ushort) (this.PlayerY - 80); // 78.
+				XScroll = (ushort) (this.PlayerX - 120); // 134.
+				YScroll = (ushort) (this.PlayerY - 80); // 78.
+				if (YScroll > 65000)
+				{
+					this.YScroll = 1;
+				}
 
-				if (this.XScroll < mapx)
+                if (XScroll > 65000)
+                {
+                    this.XScroll = 1;
+                }
+
+                if (this.XScroll < mapx)
 				{
 					this.XScroll = (ushort) mapx;
 				}
 
-				if (this.YScroll < mapy)
+			    if (this.YScroll < mapy)
 				{
 					this.YScroll = (ushort) mapy;
 				}

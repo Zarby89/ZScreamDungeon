@@ -195,7 +195,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				Palettes.OverworldAnimatedPalettes[0],
 				Palettes.OverworldAuxPalettes[3],
 				Palettes.OverworldAuxPalettes[3],
-				Palettes.HudPalettes[0],
+				Palettes.HudPalettes.palettes[0].colors,
 				Color.FromArgb(0, 0, 0, 0),
 				Palettes.SpritesAux1Palettes[1],
 				Palettes.SpritesAux1Palettes[1]);
@@ -367,7 +367,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				Palettes.OverworldAnimatedPalettes[0],
 				Palettes.OverworldAuxPalettes[3],
 				Palettes.OverworldAuxPalettes[3],
-				Palettes.HudPalettes[0],
+				Palettes.HudPalettes.palettes[0].colors,
 				Color.FromArgb(0, 0, 0, 0),
 				Palettes.SpritesAux1Palettes[1],
 				Palettes.SpritesAux1Palettes[1]);

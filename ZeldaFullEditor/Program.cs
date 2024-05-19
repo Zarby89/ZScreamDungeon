@@ -31,7 +31,6 @@ namespace ZeldaFullEditor
 			"basepatches.asm",
 			"CustomCollision.asm",
 			"newgraves.asm",
-			"tempPatch.asm",
 			"ZSCustomOverworld.asm",
 		};
 

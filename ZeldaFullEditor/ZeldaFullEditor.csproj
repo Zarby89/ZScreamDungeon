@@ -149,6 +149,8 @@
     <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\MessageData.cs" />
     <Compile Include="Data\OAMTile.cs" />
+    <Compile Include="Data\PaletteGroupInfo.cs" />
+    <Compile Include="Data\PaletteInfo.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Data\SongAddress.cs" />
     <Compile Include="Data\SpriteProperty.cs" />
@@ -366,6 +368,12 @@
     </Compile>
     <Compile Include="Gui\MainTabs\OverworldEditor.Designer.cs">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\MainTabs\PaletteEditorTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\PaletteEditorTab.Designer.cs">
+      <DependentUpon>PaletteEditorTab.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\MainTabs\ScreenEditor.cs">
       <SubType>UserControl</SubType>
@@ -687,6 +695,9 @@
     <EmbeddedResource Include="Gui\MainTabs\OverworldEditor.resx">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\PaletteEditorTab.resx">
+      <DependentUpon>PaletteEditorTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\ScreenEditor.resx">
       <DependentUpon>ScreenEditor.cs</DependentUpon>

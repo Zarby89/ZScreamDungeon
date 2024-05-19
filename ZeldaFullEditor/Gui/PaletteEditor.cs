@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -160,7 +161,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["HudPal"])
 			{
-				selectedPalette = Palettes.HudPalettes[palettesTreeView.SelectedNode.Index];
+				selectedPalette = Palettes.HudPalettes.palettes[palettesTreeView.SelectedNode.Index].colors;
 				selectedX = 16;
 			}
 			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
@@ -245,9 +246,9 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["HudPal"])
 			{
-				for (int i = 0; i < Palettes.HudPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
+				for (int i = 0; i < Palettes.HudPalettes.palettes[palettesTreeView.SelectedNode.Index].colors.Length; i++)
 				{
-					Palettes.HudPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(HudPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+					Palettes.HudPalettes.palettes[palettesTreeView.SelectedNode.Index].colors[i] = Color.FromArgb(HudPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
 				}
 			}
 			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
@@ -364,10 +365,10 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 2; i++)
 			{
-				HudPal[i] = new Color[Palettes.HudPalettes[i].Length];
-				for (int j = 0; j < Palettes.HudPalettes[i].Length; j++)
+				HudPal[i] = new Color[Palettes.HudPalettes.palettes[i].colors.Length];
+				for (int j = 0; j < Palettes.HudPalettes.palettes[i].colors.Length; j++)
 				{
-					HudPal[i][j] = Color.FromArgb(Palettes.HudPalettes[i][j].ToArgb());
+					HudPal[i][j] = Color.FromArgb(Palettes.HudPalettes.palettes[i].colors[j].ToArgb());
 				}
 			}
 
@@ -494,9 +495,9 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 2; i++)
 			{
-				for (int j = 0; j < Palettes.HudPalettes[i].Length; j++)
+				for (int j = 0; j < Palettes.HudPalettes.palettes[i].colors.Length; j++)
 				{
-					Palettes.HudPalettes[i][j] = Color.FromArgb(HudPal[i][j].ToArgb());
+					Palettes.HudPalettes.palettes[i].colors[j] = Color.FromArgb(HudPal[i][j].ToArgb());
 				}
 			}
 
@@ -683,9 +684,9 @@ namespace ZeldaFullEditor.Gui
 
 					int count = 0;
 
-					foreach (Color[] _palette in Palettes.HudPalettes)
+					foreach (PaletteInfo _palette in Palettes.HudPalettes.palettes)
 					{
-						foreach (Color _color in _palette)
+						foreach (Color _color in _palette.colors)
 						{
 							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
 							for (int i = buffer.Length - 1; i >= 0; i--)
@@ -883,12 +884,13 @@ namespace ZeldaFullEditor.Gui
 
 					int count = 0;
 
-					for (int i = 0; i < Palettes.HudPalettes.Length; i++)
+					for (int i = 0; i < Palettes.HudPalettes.palettes.Length; i++)
 					{
-						for (int j = 0; j < Palettes.HudPalettes[i].Length; j++)
+						for (int j = 0; j < Palettes.HudPalettes.palettes[i].colors.Length ; j++)
 						{
 							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
-							Palettes.HudPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+                            Palettes.HudPalettes.palettes[i].colors[j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
 
 							count += 4;
 						}

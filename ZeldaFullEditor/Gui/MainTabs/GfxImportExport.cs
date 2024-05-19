@@ -537,11 +537,12 @@ namespace ZeldaFullEditor.Gui
             unsafe
             {
                 byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                for (int i = 0; i < sdata.Length/2; i++)
+                for (int i = 0; i < (sdata.Length/2) ; i++)
                 {
-                    sdata[(i * 2)] = (byte)((gdata[(selectedSheet * Constants.UncompressedSheetSize) + i] & 0xF0) >>4);
+                    sdata[(i * 2)] = (byte)((gdata[(selectedSheet * Constants.UncompressedSheetSize) + i] & 0xF0) >> 4);
                     sdata[(i * 2)+1] = (byte)(gdata[(selectedSheet * Constants.UncompressedSheetSize) + i] & 0x0F);
                 }
+
             }
 			Color[] pal = new Color[8];
             for (int i = 0; i < 8; i++)

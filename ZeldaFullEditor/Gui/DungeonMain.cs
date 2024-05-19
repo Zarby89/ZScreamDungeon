@@ -71,6 +71,7 @@ namespace ZeldaFullEditor
 		public ScreenEditor screenEditor = new ScreenEditor();
 		public MusicEditor musicEditor = new MusicEditor();
 		public SpriteEditor spriteEditor = new SpriteEditor();
+		public PaletteEditorTab paletteEditorTab = new PaletteEditorTab();
 		public string loadFromExported = string.Empty;
 
 		public List<Room_Object> listoftilesobjects = new List<Room_Object>();
@@ -146,7 +147,8 @@ namespace ZeldaFullEditor
 
 			this.tileTypeCombobox.Items.AddRange(Utils.CreateIndexedList(Constants.TileTypeNames));
 			this.EntranceProperties_FloorSel.Items.AddRange(Constants.floors);
-		}
+            this.AllowDrop = true;
+        }
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
@@ -4072,7 +4074,18 @@ namespace ZeldaFullEditor
 			{
 				this.spriteEditor.Visible = false;
 			}
-		}
+
+
+            if (this.editorsTabControl.SelectedTab.Name == "PaletteEditor")
+            {
+                this.paletteEditorTab.BringToFront();
+                this.paletteEditorTab.Visible = true;
+            }
+            else
+            {
+                this.paletteEditorTab.Visible = false;
+            }
+        }
 
 		private void SaveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -5871,6 +5884,8 @@ namespace ZeldaFullEditor
 						binaryWriter.Write(room.light);
 						binaryWriter.Write(room.blockset);
 						binaryWriter.Write(room.layout);
+
+						binaryWriter.Write(room.collisionMap);
 					}
 
 					binaryWriter.Close();
@@ -5958,6 +5973,12 @@ namespace ZeldaFullEditor
 						DungeonsData.AllRooms[rIndex].light = binaryReader.ReadBoolean();
 						DungeonsData.AllRooms[rIndex].blockset = binaryReader.ReadByte();
 						DungeonsData.AllRooms[rIndex].layout = binaryReader.ReadByte();
+
+
+						for(int j = 0; j<4096;j++)
+						{
+							DungeonsData.AllRooms[rIndex].collisionMap[j] = binaryReader.ReadByte();
+						}
 					}
 
 					binaryReader.Close();
@@ -6141,6 +6162,21 @@ namespace ZeldaFullEditor
 			settingsForm.ShowDialog();
 			updatePensColors();
 
+        }
+
+        private void DungeonMain_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+		private void DungeonMain_DragDrop(object sender, DragEventArgs e)
+		{
+			string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
+			this.projectFilename = file[0];
+			this.LoadProject(file[0]);
+            this.openToolStripMenuItem.Enabled = false;
+            this.openfileButton.Enabled = false;
+            this.recentROMToolStripMenuItem.Enabled = false;
         }
     }
 }
