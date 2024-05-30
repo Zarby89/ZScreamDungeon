@@ -297,7 +297,8 @@ namespace ZeldaFullEditor
         public static int transition_target_north = 0x013EE2;
         public static int transition_target_west = 0x013F62;
 
-        public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, not 0 if enabled
+        public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, corresponds to the version number. 0 if not applied at all.
+        public static byte OverworldCustomASMVersionNumber = 0x01;
 
         public static int OverworldCustomAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (0x140)
         public static int OverworldCustomAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
@@ -313,8 +314,6 @@ namespace ZeldaFullEditor
 
         public static int OverworldCustomSubscreenOverlayArray = 0x140340; // 2 bytes for each overworld area (0x140)
         public static int OverworldCustomSubscreenOverlayEnabled = 0x140144; // 1 byte, not 0 if enabled
-
-        public static int OverworldCustomAnimatedArray = 0x1402A0; // 1 byte, not 0 if old. TODO: This should eventually be removed.
 
         // ===========================================================================================
         // Overworld Exits/Entrances Variables

@@ -305,7 +305,7 @@ namespace ZeldaFullEditor
             }
 
             // Write a byte indicating that we have applied this ASM that way ZS knows to look for those values on restart.
-            ROM.Write(Constants.OverworldCustomASMHasBeenApplied, 0xFF, true, "Enabled applied ASM byte");
+            ROM.Write(Constants.OverworldCustomASMHasBeenApplied, Constants.OverworldCustomASMVersionNumber, true, "Enabled applied ASM byte");
 
             // Write the main palette table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)

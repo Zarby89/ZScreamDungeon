@@ -410,8 +410,8 @@ namespace ZeldaFullEditor
 
                 this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
 
-                // TODO: Eventualy remove the else. This is just to load the GFX groups for ROMs that have an older version of the Overworld ASM already applied.
-                if (Constants.OverworldCustomAnimatedArray != 0)
+                // This is just to load the GFX groups for ROMs that have an older version of the Overworld ASM already applied.
+                if (Constants.OverworldCustomASMHasBeenApplied < 0x01 || Constants.OverworldCustomASMHasBeenApplied == 0xFF)
                 {
                     this.TileGFX0 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 0];
                     this.TileGFX1 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 1];
