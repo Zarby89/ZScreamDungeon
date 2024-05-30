@@ -410,14 +410,75 @@ namespace ZeldaFullEditor
 
                 this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
 
-                this.TileGFX0 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 0];
-                this.TileGFX1 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 1];
-                this.TileGFX2 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 2];
-                this.TileGFX3 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 3];
-                this.TileGFX4 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 4];
-                this.TileGFX5 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 5];
-                this.TileGFX6 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 6];
-                this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 7];
+                // TODO: Eventualy remove the else. This is just to load the GFX groups for ROMs that have an older version of the Overworld ASM already applied.
+                if (Constants.OverworldCustomAnimatedArray != 0)
+                {
+                    this.TileGFX0 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 0];
+                    this.TileGFX1 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 1];
+                    this.TileGFX2 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 2];
+                    this.TileGFX3 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 3];
+                    this.TileGFX4 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 4];
+                    this.TileGFX5 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 5];
+                    this.TileGFX6 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 6];
+                    this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 7];
+                }
+                else
+                {
+                    int indexWorld = 0x20;
+
+                    if (this.ParentID >= 0x40 && this.ParentID < 0x80) // DW
+                    {
+                        indexWorld = 0x21;
+                    }
+                    else if (this.ParentID == 0x88) // Triforce room
+                    {
+                        indexWorld = 0x24;
+                    }
+
+                    // Main Blocksets
+                    this.TileGFX0 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 0];
+                    this.TileGFX1 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 1];
+                    this.TileGFX2 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 2];
+                    this.TileGFX3 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 3];
+                    this.TileGFX4 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 4];
+                    this.TileGFX5 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 5];
+                    this.TileGFX6 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 6];
+
+                    // Replace the variable tiles with the variable ones.
+                    byte temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4)];
+                    if (temp != 0)
+                    {
+                        this.TileGFX3 = temp;
+                    }
+
+                    temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 1];
+                    if (temp != 0)
+                    {
+                        this.TileGFX4 = temp;
+                    }
+
+                    temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 2];
+                    if (temp != 0)
+                    {
+                        this.TileGFX5 = temp;
+                    }
+
+                    temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3];
+                    if (temp != 0)
+                    {
+                        this.TileGFX6 = temp;
+                    }
+
+                    // Set the animated GFX values.
+                    if (index == 0x03 || index == 0x05 || index == 0x07 || index == 0x43 || index == 0x45 || index == 0x47)
+                    {
+                        this.AnimatedGFX = 0x59;
+                    }
+                    else
+                    {
+                        this.AnimatedGFX = 0x5B;
+                    }
+                }
 
                 this.SubscreenOverlay = ROM.DATA[Constants.OverworldCustomSubscreenOverlayArray + (index * 2)];
             }

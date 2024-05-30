@@ -1259,6 +1259,7 @@
             this.OWProperty_BGGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.OWProperty_BGGFX.Decimal = false;
             this.OWProperty_BGGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_BGGFX.Enabled = false;
             this.OWProperty_BGGFX.HexValue = 0;
             this.OWProperty_BGGFX.Location = new System.Drawing.Point(6, 32);
             this.OWProperty_BGGFX.MaxLength = 2;
