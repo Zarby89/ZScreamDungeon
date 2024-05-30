@@ -329,17 +329,14 @@ namespace ZeldaFullEditor
             // Write the animated tiles table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)
             {
-                for (int j = 0; j < 8; j++)
-                {
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX0);
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX1);
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX2);
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX3);
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX4);
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX5);
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX6);
-                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].AnimatedGFX);
-                }
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 0, scene.ow.AllMaps[i].TileGFX0);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 1, scene.ow.AllMaps[i].TileGFX1);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 2, scene.ow.AllMaps[i].TileGFX2);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 3, scene.ow.AllMaps[i].TileGFX3);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 4, scene.ow.AllMaps[i].TileGFX4);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 5, scene.ow.AllMaps[i].TileGFX5);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 6, scene.ow.AllMaps[i].TileGFX6);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 7, scene.ow.AllMaps[i].AnimatedGFX);
             }
 
             // Write the subscreen overlay table.

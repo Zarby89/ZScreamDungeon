@@ -411,16 +411,16 @@ namespace ZeldaFullEditor
                 this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
 
                 // This is just to load the GFX groups for ROMs that have an older version of the Overworld ASM already applied.
-                if (Constants.OverworldCustomASMHasBeenApplied < 0x01 || Constants.OverworldCustomASMHasBeenApplied == 0xFF)
+                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] >= 0x01 || ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] != 0xFF)
                 {
-                    this.TileGFX0 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 0];
-                    this.TileGFX1 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 1];
-                    this.TileGFX2 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 2];
-                    this.TileGFX3 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 3];
-                    this.TileGFX4 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 4];
-                    this.TileGFX5 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 5];
-                    this.TileGFX6 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 6];
-                    this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 7];
+                    this.TileGFX0 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 0];
+                    this.TileGFX1 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 1];
+                    this.TileGFX2 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 2];
+                    this.TileGFX3 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 3];
+                    this.TileGFX4 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 4];
+                    this.TileGFX5 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 5];
+                    this.TileGFX6 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 6];
+                    this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 7];
                 }
                 else
                 {
