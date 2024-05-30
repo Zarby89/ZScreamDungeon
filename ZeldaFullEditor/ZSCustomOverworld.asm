@@ -130,8 +130,10 @@ Pool:
     .EnableMosaic ; 0x01 Unused for now.
     db $01
 
+    ; When non 0 this will make the game reload all gfx in between OW
+    ; transitions. Default is $FF.
     org $288143 ; $140143
-    .EnableAnimated ; 0x01
+    .EnableTransitionGFXGroupLoad ; 0x01
     db $01
     
     org $288144 ; $140144
@@ -156,12 +158,12 @@ Pool:
     org $288147 ; $140147
     .EnableRainMireEvent ; 0x01
     db $FF
-    
-    ; When non 0 this will make the game reload all gfx in between OW
-    ; transitions. Default is $FF.
-    org $288148 ; $140147
-    .EnableTransitionGFXGroupLoad ; 0x01
-    db $FF
+
+    ; Used to keep track of which version of the ASM has already been applied
+    ; to the ROM.
+    org $288148 ; $140148
+    .ASMVersionNumber ; 0x01
+    db $01
     
     ; The rest of these are extra bytes that can be used for anything else
     ; later on.
@@ -2170,7 +2172,7 @@ CheckForChangeGraphicsTransitionLoad:
             ; Are we leaving a special area?
             CMP.b #$26 : BEQ .mosaic
                 ; Just a normal transition, Not a mosaic.
-                LDA.l Pool_EnableAnimated : BEQ .dontUpdateAnimated1
+                LDA.l Pool_EnableTransitionGFXGroupLoad : BEQ .dontUpdateAnimated1
                     ; Check to see if we need to update the animated tiles
                     ; by checking what was previously loaded.
                     JSL ReadAnimatedTable : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated1
@@ -2943,7 +2945,7 @@ org $00D673 ; $005673
 
 warnpc $00D677 ; $005677
 
-org $008C8A ; 000C8A
+org $008C8A ; $000C8A
 dw NMI_UpdateChr_Bg2HalfAndAnimated
 
 warnpc $00D677 ; $005677
@@ -2998,6 +3000,11 @@ else
 org $00D673 ; $005673
 db $A9, $60, $85, $01
 
+org $008C8A ; $000C8A
+db $4B, $8E
+
+; This is the old 0AA1 table. Will eventually be unused so I'll leave this here
+; for future use.
 org $00E073 ; $006073
 db $00, $01, $10, $06, $0E, $1F, $18, $0F
 db $00, $01, $10, $08, $0E, $22, $1B, $0F
@@ -3036,6 +3043,17 @@ db $42, $43, $44, $45, $20, $2B, $3F, $59
 db $00, $72, $71, $72, $20, $2B, $5D, $0F
 db $16, $39, $1D, $17, $40, $41, $39, $1E
 db $00, $46, $39, $72, $40, $41, $39, $0F
+
+org $00D585 ; $005585
+db $A0, $08, $00, $84, $0E, $85, $00, $18
+db $69, $10, $00, $85, $03, $A0, $07, $00
+db $A7, $00, $9F, $00, $90, $7E, $E6, $00
+db $E6, $00, $A7, $03, $29, $FF, $00, $9F
+db $10, $90, $7E, $E6, $03, $E8, $E8, $88
+db $10, $E6, $8A, $18, $69, $10, $00, $AA
+db $A5, $03, $29, $78, $00, $D0, $08, $A5
+db $03, $18, $69, $80, $01, $85, $03, $A5
+db $03, $C6, $0E, $D0, $C0, $60
 
 endif
 
@@ -3130,7 +3148,7 @@ NewLoadTransAuxGFX:
     LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
     REP #$10
 
-    STZ TransGFXModuleIndex
+    STZ.w TransGFXModuleIndex
 
     PLB
 
