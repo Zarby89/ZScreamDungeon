@@ -328,9 +328,9 @@
             this.checkBox44.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox44.Location = new System.Drawing.Point(198, 65);
             this.checkBox44.Name = "checkBox44";
-            this.checkBox44.Size = new System.Drawing.Size(191, 17);
+            this.checkBox44.Size = new System.Drawing.Size(238, 17);
             this.checkBox44.TabIndex = 22;
-            this.checkBox44.Text = "Ani. GFX apply on default transition";
+            this.checkBox44.Text = "Main and Ani. GFX apply on default transition";
             this.checkBox44.UseVisualStyleBackColor = true;
             // 
             // checkBox43
