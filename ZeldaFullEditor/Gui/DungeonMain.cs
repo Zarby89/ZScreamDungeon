@@ -865,7 +865,7 @@ namespace ZeldaFullEditor
                 this.saveSettingsArr[42] = true;
             }
 
-            if (ROM.DATA[Constants.OverworldCustomAnimatedGFXEnabled] != 0x00)
+            if (ROM.DATA[Constants.OverworldCustomTileGFXGroupEnabled] != 0x00)
             {
                 this.saveSettingsArr[43] = true;
             }

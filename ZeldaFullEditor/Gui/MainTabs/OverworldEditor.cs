@@ -137,6 +137,13 @@ namespace ZeldaFullEditor.Gui
             this.OWProperty_AuxPalette.HexValue = map.AuxPalette;
             this.OWProperty_SPRGFX.HexValue = map.SpriteGFX[gamestate];
             this.OWProperty_SPRPalette.HexValue = map.SpritePalette[gamestate];
+            this.OWProperty_TileGFX0.HexValue = map.TileGFX0;
+            this.OWProperty_TileGFX1.HexValue = map.TileGFX1;
+            this.OWProperty_TileGFX2.HexValue = map.TileGFX2;
+            this.OWProperty_TileGFX3.HexValue = map.TileGFX3;
+            this.OWProperty_TileGFX4.HexValue = map.TileGFX4;
+            this.OWProperty_TileGFX5.HexValue = map.TileGFX5;
+            this.OWProperty_TileGFX6.HexValue = map.TileGFX6;
             this.OWProperty_AniGFX.HexValue = map.AnimatedGFX;
             this.OWProperty_MainPalette.HexValue = map.MainPalette;
             this.OWProperty_SubscreenOverlay.HexValue = map.SubscreenOverlay;
@@ -208,6 +215,13 @@ namespace ZeldaFullEditor.Gui
 
             mapParent.MainPalette = (byte)this.OWProperty_MainPalette.HexValue;
 
+            mapParent.TileGFX0 = (byte)this.OWProperty_TileGFX0.HexValue;
+            mapParent.TileGFX1 = (byte)this.OWProperty_TileGFX1.HexValue;
+            mapParent.TileGFX2 = (byte)this.OWProperty_TileGFX2.HexValue;
+            mapParent.TileGFX3 = (byte)this.OWProperty_TileGFX3.HexValue;
+            mapParent.TileGFX4 = (byte)this.OWProperty_TileGFX4.HexValue;
+            mapParent.TileGFX5 = (byte)this.OWProperty_TileGFX5.HexValue;
+            mapParent.TileGFX6 = (byte)this.OWProperty_TileGFX6.HexValue;
             mapParent.AnimatedGFX = (byte)this.OWProperty_AniGFX.HexValue;
 
             mapParent.SubscreenOverlay = (ushort)this.OWProperty_SubscreenOverlay.HexValue;

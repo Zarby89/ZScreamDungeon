@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
@@ -114,6 +115,41 @@ namespace ZeldaFullEditor
         public byte AnimatedGFX { get; set; }
 
         /// <summary>
+        ///     Gets or sets the Tile GFX 0 used to replace StaticGFX[0] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX0 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Tile GFX 1 used to replace StaticGFX[1] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX1 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Tile GFX 2 used to replace StaticGFX[2] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX2 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Tile GFX 3 used to replace StaticGFX[3] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX3 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Tile GFX 4 used to replace StaticGFX[4] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX4 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Tile GFX 5 used to replace StaticGFX[5] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX5 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Tile GFX 6 used to replace StaticGFX[6] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX6 { get; set; }
+
+        /// <summary>
         ///     Gets the used tiles.
         ///     TODO: Verify what this is used for.
         /// </summary>
@@ -151,88 +187,6 @@ namespace ZeldaFullEditor
                 {
                     this.LargeMap = index == 129 || index == 130 || index == 137 || index == 138;
                 }
-            }
-
-            // If the custom overworld ASM has NOT already been applied, manually set the vanilla values.
-            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
-            {
-                // Set the main palette values.
-                if (index < 0x40)
-                {
-                    this.MainPalette = 0;
-                }
-                else if (index >= 0x40 && index < 0x80)
-                {
-                    this.MainPalette = 1;
-                }
-                else if (index >= 0x80 && index < 0xA0)
-                {
-                    this.MainPalette = 0;
-                }
-
-                if (index == 0x03 || index == 0x05 || index == 0x07)
-                {
-                    this.MainPalette = 2;
-                }
-                else if (index == 0x43 || index == 0x45 || index == 0x47)
-                {
-                    this.MainPalette = 3;
-                }
-                else if (index == 0x88)
-                {
-                    this.MainPalette = 4;
-                }
-
-                // Set the mosaic values.
-                this.Mosaic = index == 0x00 || index == 0x40 || index == 0x80 || index == 0x81 || index == 0x88;
-
-                // Set the animated GFX values.
-                if (index == 0x03 || index == 0x05 || index == 0x07 || index == 0x43 || index == 0x45 || index == 0x47)
-                {
-                    this.AnimatedGFX = 0x59;
-                }
-                else
-                {
-                    this.AnimatedGFX = 0x5B;
-                }
-
-                // Set the subscreen overlay values.
-                this.SubscreenOverlay = 0x00FF;
-
-                if (index == 0x00 || index == 0x40) // Add fog 2 to the lost woods and skull woods.
-                {
-                    this.SubscreenOverlay = 0x009D;
-                }
-                else if (index == 0x03 || index == 0x05 || index == 0x07) // Add the sky BG to LW death mountain.
-                {
-                    this.SubscreenOverlay = 0x0095;
-                }
-                else if (index == 0x43 || index == 0x45 || index == 0x47) // Add the lava to DW death mountain.
-                {
-                    this.SubscreenOverlay = 0x009C;
-                }
-                else if (index == 0x5B) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
-                {
-                    this.SubscreenOverlay = 0x0096;
-                }
-                else if (index == 0x80) // Add fog 1 to the master sword area.
-                {
-                    this.SubscreenOverlay = 0x0097;
-                }
-                else if (index == 0x88) // Add the triforce room curtains to the triforce room.
-                {
-                    this.SubscreenOverlay = 0x0093;
-                }
-            }
-            else
-            {
-                this.MainPalette = ROM.DATA[Constants.OverworldCustomMainPaletteArray + index];
-
-                this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
-
-                this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomAnimatedGFXArray + index];
-
-                this.SubscreenOverlay = ROM.DATA[Constants.OverworldCustomSubscreenOverlayArray + (index * 2)];
             }
 
             if (index < 64)
@@ -332,6 +286,140 @@ namespace ZeldaFullEditor
                     this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
                     this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 }
+            }
+
+            // If the custom overworld ASM has NOT already been applied, manually set the vanilla values.
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
+            {
+                // Set the main palette values.
+                if (index < 0x40)
+                {
+                    this.MainPalette = 0;
+                }
+                else if (index >= 0x40 && index < 0x80)
+                {
+                    this.MainPalette = 1;
+                }
+                else if (index >= 0x80 && index < 0xA0)
+                {
+                    this.MainPalette = 0;
+                }
+
+                if (index == 0x03 || index == 0x05 || index == 0x07)
+                {
+                    this.MainPalette = 2;
+                }
+                else if (index == 0x43 || index == 0x45 || index == 0x47)
+                {
+                    this.MainPalette = 3;
+                }
+                else if (index == 0x88)
+                {
+                    this.MainPalette = 4;
+                }
+
+                // Set the mosaic values.
+                this.Mosaic = index == 0x00 || index == 0x40 || index == 0x80 || index == 0x81 || index == 0x88;
+
+                int indexWorld = 0x20;
+
+                if (this.ParentID >= 0x40 && this.ParentID < 0x80) // DW
+                {
+                    indexWorld = 0x21;
+                }
+                else if (this.ParentID == 0x88) // Triforce room
+                {
+                    indexWorld = 0x24;
+                }
+
+                // Main Blocksets
+                this.TileGFX0 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 0];
+                this.TileGFX1 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 1];
+                this.TileGFX2 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 2];
+                this.TileGFX3 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 3];
+                this.TileGFX4 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 4];
+                this.TileGFX5 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 5];
+                this.TileGFX6 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 6];
+
+                // Replace the variable tiles with the variable ones.
+                byte temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4)];
+                if (temp != 0)
+                {
+                    this.TileGFX3 = temp;
+                }
+
+                temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 1];
+                if (temp != 0)
+                {
+                    this.TileGFX4 = temp;
+                }
+
+                temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 2];
+                if (temp != 0)
+                {
+                    this.TileGFX5 = temp;
+                }
+
+                temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3];
+                if (temp != 0)
+                {
+                    this.TileGFX6 = temp;
+                }
+
+                // Set the animated GFX values.
+                if (index == 0x03 || index == 0x05 || index == 0x07 || index == 0x43 || index == 0x45 || index == 0x47)
+                {
+                    this.AnimatedGFX = 0x59;
+                }
+                else
+                {
+                    this.AnimatedGFX = 0x5B;
+                }
+
+                // Set the subscreen overlay values.
+                this.SubscreenOverlay = 0x00FF;
+
+                if (index == 0x00 || index == 0x40) // Add fog 2 to the lost woods and skull woods.
+                {
+                    this.SubscreenOverlay = 0x009D;
+                }
+                else if (index == 0x03 || index == 0x05 || index == 0x07) // Add the sky BG to LW death mountain.
+                {
+                    this.SubscreenOverlay = 0x0095;
+                }
+                else if (index == 0x43 || index == 0x45 || index == 0x47) // Add the lava to DW death mountain.
+                {
+                    this.SubscreenOverlay = 0x009C;
+                }
+                else if (index == 0x5B) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
+                {
+                    this.SubscreenOverlay = 0x0096;
+                }
+                else if (index == 0x80) // Add fog 1 to the master sword area.
+                {
+                    this.SubscreenOverlay = 0x0097;
+                }
+                else if (index == 0x88) // Add the triforce room curtains to the triforce room.
+                {
+                    this.SubscreenOverlay = 0x0093;
+                }
+            }
+            else
+            {
+                this.MainPalette = ROM.DATA[Constants.OverworldCustomMainPaletteArray + index];
+
+                this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
+
+                this.TileGFX0 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 0];
+                this.TileGFX1 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 1];
+                this.TileGFX2 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 2];
+                this.TileGFX3 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 3];
+                this.TileGFX4 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 4];
+                this.TileGFX5 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 5];
+                this.TileGFX6 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 6];
+                this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + index + 7];
+
+                this.SubscreenOverlay = ROM.DATA[Constants.OverworldCustomSubscreenOverlayArray + (index * 2)];
             }
         }
 
@@ -610,19 +698,16 @@ namespace ZeldaFullEditor
         /// </summary>
         public void Buildtileset()
         {
-            int indexWorld = 0x20;
-            if (this.ParentID < 0x40)
-            {
-                indexWorld = 0x20;
-            }
-            else if (this.ParentID >= 0x40 && this.ParentID < 0x80)
-            {
-                indexWorld = 0x21;
-            }
-            else if (this.ParentID == 0x88)
-            {
-                indexWorld = 0x24;
-            }
+            this.StaticGFX[0] = this.TileGFX0;
+            this.StaticGFX[1] = this.TileGFX1;
+            this.StaticGFX[2] = this.TileGFX2;
+            this.StaticGFX[3] = this.TileGFX3;
+            this.StaticGFX[4] = this.TileGFX4;
+            this.StaticGFX[5] = this.TileGFX5;
+            this.StaticGFX[6] = this.TileGFX6;
+
+            // Replace the animated tiles with the custom set ones.
+            this.StaticGFX[7] = this.overworld.AllMaps[this.ParentID].AnimatedGFX;
 
             // Sprites Blocksets
             this.StaticGFX[8] = 115 + 0;
@@ -632,39 +717,8 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 4; i++)
             {
-
                 this.StaticGFX[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (this.SpriteGFX[this.overworld.GameState] * 4) + i] + 115);
             }
-
-            // Main Blocksets
-            for (int i = 0; i < 8; i++)
-            {
-                byte temp = ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + i];
-                this.StaticGFX[i] = temp;
-            }
-
-            if (ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4)] != 0)
-            {
-                this.StaticGFX[3] = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4)];
-            }
-
-            if (ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 1] != 0)
-            {
-                this.StaticGFX[4] = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 1];
-            }
-
-            if (ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 2] != 0)
-            {
-                this.StaticGFX[5] = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 2];
-            }
-
-            if (ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3] != 0)
-            {
-                this.StaticGFX[6] = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3];
-            }
-
-            // Replace the animated tiles with the custom set ones.
-            this.StaticGFX[7] = this.overworld.AllMaps[this.ParentID].AnimatedGFX;
 
             /*
 			if (this.Parent >= 128 & this.Parent < 148)

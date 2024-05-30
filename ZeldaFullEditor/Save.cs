@@ -251,10 +251,10 @@ namespace ZeldaFullEditor
         /// <param name="enableBGColor"> Whether or not to write the enableBGColor byte. </param>
         /// <param name="enableMainPalette"> Whether or not to write the enableMainPalette byte. </param>
         /// <param name="enableMosaic"> Whether or not to write the enableMosaic byte. </param>
-        /// <param name="enableAnimated"> Whether or not to write the enableAnimated byte. </param>
+        /// <param name="enableGFXGroups"> Whether or not to write the enableAnimated byte. </param>
         /// <param name="enableSubscreenOverlay"> Whether or not to write the enableSubscreenOverlay byte. </param>
         /// <returns> True if there was an error saving. </returns>
-        public bool SaveCustomOverworldASM(SceneOW scene, bool enableBGColor, bool enableMainPalette, bool enableMosaic, bool enableAnimated, bool enableSubscreenOverlay)
+        public bool SaveCustomOverworldASM(SceneOW scene, bool enableBGColor, bool enableMainPalette, bool enableMosaic, bool enableGFXGroups, bool enableSubscreenOverlay)
         {
             Console.WriteLine("Saving Custom Overworld ASM");
 
@@ -286,13 +286,13 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.OverworldCustomMosaicEnabled, 0x00, true, "Disabled overworld mosaic");
             }
 
-            if (enableAnimated)
+            if (enableGFXGroups)
             {
-                ROM.Write(Constants.OverworldCustomAnimatedGFXEnabled, 0xFF, true, "Enabled overworld animated tiles GFX");
+                ROM.Write(Constants.OverworldCustomTileGFXGroupEnabled, 0xFF, true, "Enabled overworld animated tiles GFX");
             }
             else
             {
-                ROM.Write(Constants.OverworldCustomAnimatedGFXEnabled, 0x00, true, "Disabled overworld animated tiles GFX");
+                ROM.Write(Constants.OverworldCustomTileGFXGroupEnabled, 0x00, true, "Disabled overworld animated tiles GFX");
             }
 
             if (enableSubscreenOverlay)
@@ -329,7 +329,17 @@ namespace ZeldaFullEditor
             // Write the animated tiles table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)
             {
-                ROM.Write(Constants.OverworldCustomAnimatedGFXArray + i, scene.ow.AllMaps[i].AnimatedGFX);
+                for (int j = 0; j < 8; j++)
+                {
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX0);
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX1);
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX2);
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX3);
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX4);
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX5);
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].TileGFX6);
+                    ROM.Write(Constants.OverworldCustomTileGFXGroupArray + i + j, scene.ow.AllMaps[i].AnimatedGFX);
+                }
             }
 
             // Write the subscreen overlay table.
