@@ -229,16 +229,43 @@ namespace ZeldaFullEditor.Gui
             if (mapParent.LargeMap)
             {
                 this.scene.ow.AllMaps[mapParent.Index + 1].GFX = mapParent.GFX;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX0 = mapParent.TileGFX0;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX1 = mapParent.TileGFX1;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX2 = mapParent.TileGFX2;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX3 = mapParent.TileGFX3;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX4 = mapParent.TileGFX4;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX5 = mapParent.TileGFX5;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX6 = mapParent.TileGFX6;
+                this.scene.ow.AllMaps[mapParent.Index + 1].AnimatedGFX = mapParent.AnimatedGFX;
+                this.scene.ow.AllMaps[mapParent.Index + 1].SubscreenOverlay = mapParent.SubscreenOverlay;
                 this.scene.ow.AllMaps[mapParent.Index + 1].SpriteGFX = mapParent.SpriteGFX;
                 this.scene.ow.AllMaps[mapParent.Index + 1].AuxPalette = mapParent.AuxPalette;
                 this.scene.ow.AllMaps[mapParent.Index + 1].SpritePalette = mapParent.SpritePalette;
 
                 this.scene.ow.AllMaps[mapParent.Index + 8].GFX = mapParent.GFX;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX0 = mapParent.TileGFX0;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX1 = mapParent.TileGFX1;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX2 = mapParent.TileGFX2;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX3 = mapParent.TileGFX3;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX4 = mapParent.TileGFX4;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX5 = mapParent.TileGFX5;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX6 = mapParent.TileGFX6;
+                this.scene.ow.AllMaps[mapParent.Index + 8].AnimatedGFX = mapParent.AnimatedGFX;
+                this.scene.ow.AllMaps[mapParent.Index + 8].SubscreenOverlay = mapParent.SubscreenOverlay;
                 this.scene.ow.AllMaps[mapParent.Index + 8].SpriteGFX = mapParent.SpriteGFX;
                 this.scene.ow.AllMaps[mapParent.Index + 8].AuxPalette = mapParent.AuxPalette;
                 this.scene.ow.AllMaps[mapParent.Index + 8].SpritePalette = mapParent.SpritePalette;
 
                 this.scene.ow.AllMaps[mapParent.Index + 9].GFX = mapParent.GFX;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX0 = mapParent.TileGFX0;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX1 = mapParent.TileGFX1;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX2 = mapParent.TileGFX2;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX3 = mapParent.TileGFX3;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX4 = mapParent.TileGFX4;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX5 = mapParent.TileGFX5;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX6 = mapParent.TileGFX6;
+                this.scene.ow.AllMaps[mapParent.Index + 9].AnimatedGFX = mapParent.AnimatedGFX;
+                this.scene.ow.AllMaps[mapParent.Index + 9].SubscreenOverlay = mapParent.SubscreenOverlay;
                 this.scene.ow.AllMaps[mapParent.Index + 9].SpriteGFX = mapParent.SpriteGFX;
                 this.scene.ow.AllMaps[mapParent.Index + 9].AuxPalette = mapParent.AuxPalette;
                 this.scene.ow.AllMaps[mapParent.Index + 9].SpritePalette = mapParent.SpritePalette;
