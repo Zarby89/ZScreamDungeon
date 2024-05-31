@@ -289,7 +289,8 @@ namespace ZeldaFullEditor
             }
 
             // If the custom overworld ASM has NOT already been applied, manually set the vanilla values.
-            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
+            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+            if (asmVersion == 0x00)
             {
                 // Set the main palette values.
                 if (index < 0x40)
@@ -411,7 +412,7 @@ namespace ZeldaFullEditor
                 this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
 
                 // This is just to load the GFX groups for ROMs that have an older version of the Overworld ASM already applied.
-                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] >= 0x01 || ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] != 0xFF)
+                if (asmVersion >= 0x01 && asmVersion != 0xFF)
                 {
                     this.TileGFX0 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 0];
                     this.TileGFX1 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 1];
