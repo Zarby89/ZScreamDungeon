@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection.Emit;
 
 namespace ZeldaFullEditor
 {
@@ -314,6 +315,10 @@ namespace ZeldaFullEditor
 
         public static int OverworldCustomSubscreenOverlayArray = 0x140340; // 2 bytes for each overworld area (0x140)
         public static int OverworldCustomSubscreenOverlayEnabled = 0x140144; // 1 byte, not 0 if enabled
+
+        public static int[] OverworldCustomDefualtTileGFX = { 0x3A, 0x3B, 0x3C, 0x3D, 0x53, 0x4D, 0x3E, 0x5B,   // LW
+                                                              0x42, 0x43, 0x44, 0x45, 0x2F, 0x30, 0x3F, 0x5B,   // DW
+                                                              0x3A, 0x3B, 0x3C, 0x3D, 0x47, 0x48, 0x3E, 0x5B }; // SW
 
         // ===========================================================================================
         // Overworld Exits/Entrances Variables

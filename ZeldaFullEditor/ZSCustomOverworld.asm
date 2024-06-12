@@ -142,10 +142,10 @@ Pool:
 
     ; This is a reserved value that ZS will write to when it has applied the
     ; ASM. That way the next time ZS loads the ROM it knows to read the custom
-    ; values instead of using the default ones.
+    ; values instead of using the default ones. The current version is 02.
     org $288145 ; $140145
     .ZSAppliedASM ; 0x01
-    ;db $FF
+    ;db $02
 
     ; When non 0 this will cause rain to appear on all areas in the beginning
     ; phase. Default is $FF.
@@ -159,17 +159,11 @@ Pool:
     .EnableRainMireEvent ; 0x01
     db $FF
 
-    ; Used to keep track of which version of the ASM has already been applied
-    ; to the ROM.
-    org $288148 ; $140148
-    .ASMVersionNumber ; 0x01
-    db $01
-    
     ; The rest of these are extra bytes that can be used for anything else
     ; later on.
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00
+    ;db $00, $00, $00, $00, $00, $00, $00, $00
     warnpc $288160
 
     org $288160 ; $140160
@@ -316,36 +310,42 @@ Pool:
 
     org $288480 ; $140480
     .OWGFXGroupTable ; 0x500 (0xA0 * 0x08)
+
+    ; 0xFF is used instead of 0x00 as the "don't change the sheet" value. That
+    ; way, we can actually use sheet 00 if we want. Just in case 0xFF is used
+    ; and there is no sheet to load when warping using the bird, unloading the
+    ; map, or exiting a dungeon, the DefaultGFXGroups values are used.
+
     ; LW
-    ; $140480
+    org $288480 ; $140480
     .OWGFXGroupTable_sheet0
     ;db $3A ; 0x00 sheet 0
 
-    ; $140481
+    org $288481 ; $140481
     .OWGFXGroupTable_sheet1
     ;db $3B ; 0x00 sheet 1
 
-    ; $140482
+    org $288482 ; $140482
     .OWGFXGroupTable_sheet2
     ;db $3C ; 0x00 sheet 2
 
-    ; $140483
+    org $288483 ; $140483
     .OWGFXGroupTable_sheet3
     ;db $3D ; 0x00 sheet 3
 
-    ; $140484
+    org $288484 ; $140484
     .OWGFXGroupTable_sheet4
     ;db $57 ; 0x00 sheet 4
 
-    ; $140485
+    org $288485 ; $140485
     .OWGFXGroupTable_sheet5
     ;db $4C ; 0x00 sheet 5
 
-    ; $140486
+    org $288486 ; $140486
     .OWGFXGroupTable_sheet6
     ;db $3E ; 0x00 sheet 6
 
-    ; $140487
+    org $288487 ; $140487
     .OWGFXGroupTable_sheet7
     ;db $5B ; 0x00 sheet 7
 
@@ -397,8 +397,8 @@ Pool:
     ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x29
     ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x2A
     ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2B
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x2C ; $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x2D ; $38, $38, $38, $38, $38, $38, $38, $38
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2C
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x2D
     ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2E
     ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x2F
 
@@ -470,8 +470,8 @@ Pool:
     ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x69
     ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6A
     ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6B
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x6C ; $42, $43, $44, $45, $20, $2B, $3F, $5B
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6D ; $42, $43, $44, $45, $20, $2B, $3F, $5B
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6C
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6D
     ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6E
     ;db $42, $43, $44, $45, $2B, $2C, $3F, $5B ; 0x6F
 
@@ -531,10 +531,50 @@ Pool:
     ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x9F
     warnpc $288980
 
+    ; TODO: Add a way to edit these within ZS? Unsure.
     org $288980 ; $140980
-    .DungeonGFXGroupTable ; 0x0938 (0x0127 * 0x08)
+    .DefaultGFXGroups
 
-    warnpc $2892B7
+    ; LW
+    org $288980 ; $140980
+    .DefaultGFXGroups_sheet0
+    db $3A ; Sheet 0
+
+    org $288981 ; $140981
+    .DefaultGFXGroups_sheet1
+    db $3B ; Sheet 1
+
+    org $288982 ; $140982
+    .DefaultGFXGroups_sheet2
+    db $3C ; Sheet 2
+
+    org $288983 ; $140983
+    .DefaultGFXGroups_sheet3
+    db $3D ; Sheet 3
+
+    org $288984 ; $140984
+    .DefaultGFXGroups_sheet4
+    db $53 ; Sheet 4
+
+    org $288985 ; $140985
+    .DefaultGFXGroups_sheet5
+    db $4D ; Sheet 5
+
+    org $288986 ; $140986
+    .DefaultGFXGroups_sheet6
+    db $3E ; Sheet 6
+
+    org $288987 ; $140987
+    .DefaultGFXGroups_sheet7
+    db $5B ; Sheet 7
+
+    ; DW
+    db $42, $43, $44, $45, $2F, $30, $3F, $5B
+
+    ; SW
+    db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B
+
+    warnpc $288998 ; $140998
 }
 
 ; Debug addresses:
@@ -612,15 +652,8 @@ AnimateMirrorWarp_DecompressAnimatedTiles:
 {
     PHX
 
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    JSL ReadAnimatedTable : CMP.b #$00 : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
     ; The decompression function increases it by 1 so subtract 1 here.
-    DEC : TAY
+    JSL ReadAnimatedTable : DEC : TAY
 
     PLX
 
@@ -647,11 +680,23 @@ ReadAnimatedTable:
     PHB : PHK : PLB
 
     REP #$30 ; Set A, X, and Y in 16bit mode.
-    ; Load the animated tiles the area needs.
     LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20 ; Set A in 8bit mode.
 
-    LDA.l Pool_OWGFXGroupTable_sheet7, X
+    ; 00 crashes the game so just double check that.
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : BNE .not007
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+
+        BRA .notFF7
+
+    .not007
+
+    ; Load the default sheet if the value is FF.
+    CMP.b #$FF : BNE .notFF7
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+
+    .notFF7
 
     SEP #$10 ; Set X and Y in 8bit mode.
 
@@ -745,7 +790,7 @@ ActivateSubScreen:
     .notForest
 
     ; Check if we need to disable the rain in the misery mire.
-    LDA.l Pool_EnableRainMireEvent : BEQ .notMire
+    LDA.w Pool_EnableRainMireEvent : BEQ .notMire
         LDA.b $8A : CMP.w #$0070 : BNE .notMire
             ; Has Misery Mire been triggered yet?
             LDA.l $7EF2F0 : AND.w #$0020 : BNE .notMire
@@ -944,15 +989,8 @@ PreOverworld_LoadProperties_LoadMain:
     ;LDX.b $8A
     ;LDA.l $7F5B00, X : LSR #4 : STA.w $012D
     
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    JSL ReadAnimatedTable : CMP.b #$00 : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
     ; The decompression function increases it by 1 so subtract 1 here.
-    DEC : TAY
+    JSL ReadAnimatedTable : DEC : TAY
 
     JSL DecompOwAnimatedTiles ; $5394 IN ROM
 
@@ -1164,15 +1202,8 @@ if !Func028632 = 1
 org $028632 ; $010632
 Func028632:
 {
-    ; Do a 00 check just in case the data isn't present we don't get at crash.
-    JSL ReadAnimatedTable : CMP.b #$00 : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
     ; The decompression function increases it by 1 so subtract 1 here.
-    DEC : TAY
+    JSL ReadAnimatedTable : DEC : TAY
     
     JSL DecompOwAnimatedTiles ; $5394 IN ROM
         
@@ -1187,7 +1218,6 @@ Func028632:
     JSL InitTilesets ; $619B IN ROM
 
     ; Load Palettes.
-        
     JSR.w Overworld_LoadAreaPalettes ; $014692 IN ROM
     PLA : STA.b $00
         
@@ -1730,8 +1760,12 @@ endif
 pullpc
 ReadOverlayArray:
 {
+    PHB : PHK : PLB
+
     LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X
+    LDA.w Pool_OverlayTable, X
+
+    PLB
 
     RTL
 }
@@ -2033,7 +2067,7 @@ MosaicAreaCheck:
 
     ; Check if the area we are in needs a mosaic.
     TAX
-    LDA.l Pool_MosaicTable, X
+    LDA.w Pool_MosaicTable, X
 
     BEQ .noMosaic1
         PLB
@@ -2043,7 +2077,7 @@ MosaicAreaCheck:
 
     ; Check if the area we are going to needs a mosaic.
     LDX.b $8A
-    LDA.l Pool_MosaicTable, X
+    LDA.w Pool_MosaicTable, X
 
     BEQ .noMosaic2
         PLB
@@ -2078,9 +2112,8 @@ db $85, $17, $8D, $10, $07, $E6, $11
 
 endif
 
-; Loads the animated tiles after most of the transition gfx changes take place.
 pullpc
-
+; Loads the animated tiles after most of the transition gfx changes take place.
 NewOverworld_FinishTransGfx:
 {
     PHB : PHK : PLB
@@ -2127,7 +2160,7 @@ NewOverworld_FinishTransGfx:
         LDA.w Pool_EnableTransitionGFXGroupLoad : BEQ .moveOn
             ; Prep the new static gfx tile sets.
             JSR LoadTransMainGFX
-            JSR NewPrepTransAuxGfx
+            JSR NewPrepTransAuxGFX
 
             ; Trigger NMI module: NMI_UpdateChr_Bg0.
             LDA.b #$0E
@@ -2172,7 +2205,7 @@ CheckForChangeGraphicsTransitionLoad:
             ; Are we leaving a special area?
             CMP.b #$26 : BEQ .mosaic
                 ; Just a normal transition, Not a mosaic.
-                LDA.l Pool_EnableTransitionGFXGroupLoad : BEQ .dontUpdateAnimated1
+                LDA.w Pool_EnableTransitionGFXGroupLoad : BEQ .dontUpdateAnimated1
                     ; Check to see if we need to update the animated tiles
                     ; by checking what was previously loaded.
                     JSL ReadAnimatedTable : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated1
@@ -2184,11 +2217,11 @@ CheckForChangeGraphicsTransitionLoad:
 
                 .dontUpdateAnimated1
 
-                LDA.l Pool_EnableMainPalette : BEQ .dontUpdateMain1
+                LDA.w Pool_EnableMainPalette : BEQ .dontUpdateMain1
                     ; Check to see if we need to update the main palette by
                     ; checking what was previously loaded.
                     LDX.b $8A
-                    LDA.l Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
+                    LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
                         STA.w $0AB3
 
                         ; Run the modified routine that loads the buffer
@@ -2197,13 +2230,13 @@ CheckForChangeGraphicsTransitionLoad:
 
                 .dontUpdateMain1
 
-                LDA.l Pool_EnableBGColor : BEQ .dontUpdateBGColor1
+                LDA.w Pool_EnableBGColor : BEQ .dontUpdateBGColor1
                     REP #$30 ; Set A, X, and Y in 16bit mode.
 
                     LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
 
                     ; Where ZS saves the array of palettes
-                    LDA.l Pool_BGColorTable, X
+                    LDA.w Pool_BGColorTable, X
                     STA.l $7EC300 : STA.l $7EC500
                     STA.l $7EC540 : STA.l $7EC340
 
@@ -2223,14 +2256,6 @@ CheckForChangeGraphicsTransitionLoad:
     ; Check to see if we need to update the animated tiles by checking what
     ; was previously loaded.
     JSL ReadAnimatedTable : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated2
-        ; Do a 00 check just in case the data isn't present we don't get at
-        ; crash.
-        CMP.b #$00 : BNE .notZero
-            ; $5B is the defualt flower/water animated tiles value.
-            LDA.b #$5B
-
-        .notZero
-
         STA.w AnimatedTileGFXSet : DEC : TAY
 
         ; This forces the game to update the animated tiles when going
@@ -2242,7 +2267,7 @@ CheckForChangeGraphicsTransitionLoad:
     ; Check to see if we need to update the main palette by checking
     ; what was previously loaded.
     LDX.b $8A
-    LDA.l Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain2
+    LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain2
         STA.w $0AB3
 
         ; Run the vanilla routine that only loads the buffer.
@@ -2254,7 +2279,7 @@ CheckForChangeGraphicsTransitionLoad:
 
     LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
 
-    LDA.l Pool_BGColorTable, X ; Where ZS saves the array of palettes.
+    LDA.w Pool_BGColorTable, X ; Where ZS saves the array of palettes.
 
     ; Set transparent color. only set the buffer so it fades in right
     ; during mosaic transition.
@@ -2363,10 +2388,14 @@ Palette_MultiLoad2:
 
 LoadTransMainGFX:
 {
+    ; HERE
+    ; TODO: Something is causing either this function or the NewLoadTransAuxGFX
+    ; function to load the incorrect GFX. Figure out what.
+    
     ; Setup the decompression buffer address.
     ; $00[3] = $7E6000
     STZ.b $00
-    LDA.b #$60 : STA.b $01
+    LDA.b #$40 : STA.b $01
     LDA.b #$7E : STA.b $02
 
     REP #$30
@@ -2376,7 +2405,7 @@ LoadTransMainGFX:
 
     ; Sheet 0 (static 0)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet0, X : BEQ .noBgGfxChange0
+    LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BEQ .noBgGfxChange0
         SEP #$10
         
         TAY
@@ -2392,7 +2421,7 @@ LoadTransMainGFX:
     
     ; Sheet 1 (static 1)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet1, X : BEQ .noBgGfxChange1 
+    LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BEQ .noBgGfxChange1 
         SEP #$10
         
         TAY
@@ -2408,7 +2437,7 @@ LoadTransMainGFX:
 
     ; Sheet 2 (static 2)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet2, X : BEQ .noBgGfxChange2
+    LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BEQ .noBgGfxChange2
         SEP #$10
         
         TAY
@@ -2424,7 +2453,7 @@ LoadTransMainGFX:
 
     ; Sheet 7 (animated)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet7, X : BEQ .noBgGfxChange3
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BEQ .noBgGfxChange3
         SEP #$10
         
         TAY
@@ -2436,7 +2465,7 @@ LoadTransMainGFX:
     RTS
 }
 
-NewPrepTransAuxGfx:
+NewPrepTransAuxGFX:
 {
     ; Prepares the transition graphics to be transferred to VRAM during NMI.
     ; This could occur either during this frame or any subsequent frame.
@@ -2450,7 +2479,7 @@ NewPrepTransAuxGfx:
     ; base address is $7F0000.
     LDX.w #$0000
     LDY.w #$0040
-    LDA.w #$6000
+    LDA.w #$4000
     
     ; The first graphics pack always uses the higher 8 palette values.
     JSL Do3To4High16BitLONG
@@ -2493,14 +2522,7 @@ CheckForChangeGraphicsNormalLoad:
 
     JSL InitTilesets ; Replaced code.
 
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    JSL ReadAnimatedTable : CMP.b #$00 : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
-    STA.w AnimatedTileGFXSet : DEC : TAY
+    JSL ReadAnimatedTable : STA.w AnimatedTileGFXSet : DEC : TAY
 
     ; This function is not needed here and is handled somewhere else. This
     ; forces the game to update the animated tiles when going from one area to
@@ -2524,14 +2546,7 @@ if !Func0AB8F5 = 1
 org $0AB8F5 ; $0538F5
 Func0AB8F5:
 {
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    JSL ReadAnimatedTable : CMP.b #$00 : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
-    STA.w AnimatedTileGFXSet : DEC : TAY
+    JSL ReadAnimatedTable : STA.w AnimatedTileGFXSet : DEC : TAY
     
     ; From this point on it is the vanilla function.
     JSL DecompOwAnimatedTiles
@@ -2592,17 +2607,21 @@ endif
 pullpc
 LoadAmbientSound:
 {
+    PHB : PHK : PLB
+
     ; Reset the ambient sound effect to what it was.
     LDX.b $8A : LDA.l $7F5B00, X : LSR #4 : STA.w $012D
 
     ; Check if we need to stop the rain sound in the misery mire.
-    LDA.l Pool_EnableRainMireEvent : BEQ .disableRainSound
+    LDA.w Pool_EnableRainMireEvent : BEQ .disableRainSound
         LDA.b $8A : CMP.b #$70 : BNE .disableRainSound
             ; Has Misery Mire been triggered yet?
             LDA.l $7EF2F0 : AND.b #$20 : BNE .disableRainSound
                 LDA.b #$01 : STA.w $012D
         
     .disableRainSound
+
+    PLB
 
     RTL
 }
@@ -2758,7 +2777,7 @@ ReplaceBGColor:
     ; custom color. If not, then chceck if its enabled or not.
     ;SEP #$20 ; Set A in 8bit mode.
 
-    ;LDA.l Pool_EnableBGColor : BNE .custom
+    ;LDA.w Pool_EnableBGColor : BNE .custom
         ;REP #$20 ; Set A in 16bit mode.
 
         ;PLB
@@ -2770,7 +2789,7 @@ ReplaceBGColor:
     ;REP #$20 ; Set A in 16bit mode.
 
     LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
-    LDA.l Pool_BGColorTable, X ; Get the color.
+    LDA.w Pool_BGColorTable, X ; Get the color.
 
     ;STA.l $7EC300 : STA.l $7EC340 ; Set the BG color.
     STA.l $7EC500 : STA.l $7EC540
@@ -2849,7 +2868,7 @@ InitColorLoad2:
     ; $0181 is the exit room number used for getting into the under the bridge
     ; area.
     LDA.b $A0 : CMP.w #$0181 : BNE .notBridge
-        LDA.l Pool_BGColorTable_Bridge
+        LDA.w Pool_BGColorTable_Bridge
 
         BRA .storeColor
 
@@ -3061,6 +3080,7 @@ pullpc
 
 NewLoadTransAuxGFX:
 {
+    print pc
     PHB : PHK : PLB
 
     LDA.w Pool_EnableTransitionGFXGroupLoad : BNE .notNormalLoad
@@ -3086,7 +3106,7 @@ NewLoadTransAuxGFX:
 
     ; Sheet 3 (variable 0)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet3, X : BEQ .noBgGfxChange3
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BEQ .noBgGfxChange3
         SEP #$10
         
         TAY
@@ -3102,7 +3122,7 @@ NewLoadTransAuxGFX:
 
     ; Sheet 4 (variable 1)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet4, X : BEQ .noBgGfxChange4
+    LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BEQ .noBgGfxChange4
         SEP #$10
         
         TAY
@@ -3118,7 +3138,7 @@ NewLoadTransAuxGFX:
 
     ; Sheet 5 (variable 2)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet5, X : BEQ .noBgGfxChange5
+    LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BEQ .noBgGfxChange5
         SEP #$10
         
         TAY
@@ -3134,7 +3154,7 @@ NewLoadTransAuxGFX:
 
     ; Sheet 6 (variable 3)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet6, X : BEQ .noBgGfxChange6
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BEQ .noBgGfxChange6
         SEP #$10
         
         TAY
@@ -3279,18 +3299,64 @@ InitTilesetsLongCalls:
 
     REP #$30
     LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20
     
-    LDA.l Pool_OWGFXGroupTable_sheet0, X : STA.b $0D
-    LDA.l Pool_OWGFXGroupTable_sheet1, X : STA.b $0C
-    LDA.l Pool_OWGFXGroupTable_sheet2, X : STA.b $0B
+    LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BNE .notFF0
+        LDA.w Pool_DefaultGFXGroups_sheet0, Y
+
+    .notFF0
     
-    LDA.l Pool_OWGFXGroupTable_sheet3, X : STA.l $7EC2F8 : STA.b $0A
-    LDA.l Pool_OWGFXGroupTable_sheet4, X : STA.l $7EC2F9 : STA.b $09
-    LDA.l Pool_OWGFXGroupTable_sheet5, X : STA.l $7EC2FA : STA.b $08
-    LDA.l Pool_OWGFXGroupTable_sheet6, X : STA.l $7EC2FB : STA.b $07
+    STA.b $0D
+
+    LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BNE .notFF1
+        LDA.w Pool_DefaultGFXGroups_sheet1, Y
+
+    .notFF1
     
-    LDA.l Pool_OWGFXGroupTable_sheet7, X : STA.b $06
+    STA.b $0C
+
+    LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BNE .notFF2
+        LDA.w Pool_DefaultGFXGroups_sheet2, Y
+
+    .notFF2
+
+    STA.b $0B
+    
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
+        LDA.w Pool_DefaultGFXGroups_sheet3, Y
+
+    .notFF3
+    
+    STA.l $7EC2F8 : STA.b $0A
+
+    LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BNE .notFF4
+        LDA.w Pool_DefaultGFXGroups_sheet4, Y
+
+    .notFF4
+    
+    STA.l $7EC2F9 : STA.b $09
+
+    LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BNE .notFF5
+        LDA.w Pool_DefaultGFXGroups_sheet5, Y
+
+    .notFF5
+    
+    STA.l $7EC2FA : STA.b $08
+
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
+        LDA.w Pool_DefaultGFXGroups_sheet6, Y
+
+    .notFF6
+    
+    STA.l $7EC2FB : STA.b $07
+    
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BNE .notFF7
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+
+    .notFF7
+    
+    STA.b $06
 
     PLB
 
@@ -3302,12 +3368,36 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls:
     PHB : PHK : PLB
 
     LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20
 
-    LDA.l Pool_OWGFXGroupTable_sheet3, X : STA.l $7EC2F8
-    LDA.l Pool_OWGFXGroupTable_sheet4, X : STA.l $7EC2F9
-    LDA.l Pool_OWGFXGroupTable_sheet5, X : STA.l $7EC2FA
-    LDA.l Pool_OWGFXGroupTable_sheet6, X : STA.l $7EC2FB
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
+        LDA.w Pool_DefaultGFXGroups_sheet3, Y
+
+    .notFF3
+
+    STA.l $7EC2F8
+
+    LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BNE .notFF4
+        LDA.w Pool_DefaultGFXGroups_sheet4, Y
+
+    .notFF4
+
+    STA.l $7EC2F9
+
+    LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BNE .notFF5
+        LDA.w Pool_DefaultGFXGroups_sheet5, Y
+
+    .notFF5
+
+    STA.l $7EC2FA
+
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
+        LDA.w Pool_DefaultGFXGroups_sheet6, Y
+
+    .notFF6
+
+    STA.l $7EC2FB
 
     PLB
 
@@ -3320,10 +3410,22 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls2:
 
     REP #$30
     LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20
 
-    LDA.l Pool_OWGFXGroupTable_sheet1, X : STA.b $08
-    LDA.l Pool_OWGFXGroupTable_sheet0, X : TAY
+    LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BNE .notFF1
+        LDA.w Pool_DefaultGFXGroups_sheet1, Y
+
+    .notFF1
+
+    STA.b $08
+
+    LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BNE .notFF0
+        LDA.w Pool_DefaultGFXGroups_sheet0, Y
+
+    .notFF0
+
+    TAY
 
     SEP #$10
 
@@ -3340,8 +3442,19 @@ AnimateMirrorWarp_DecompressBackgroundsALongCalls:
     LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
     SEP #$20
 
-    LDA.l Pool_OWGFXGroupTable_sheet3, X : STA.b $08
-    LDA.l Pool_OWGFXGroupTable_sheet2, X : TAY
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
+        LDA.w Pool_DefaultGFXGroups_sheet3, Y
+
+    .notFF3
+    
+    STA.b $08
+
+    LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BNE .notFF2
+        LDA.w Pool_DefaultGFXGroups_sheet2, Y
+
+    .notFF2
+    
+    TAY
 
     SEP #$10
 
@@ -3356,10 +3469,23 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
 
     REP #$30
     LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20
 
-    LDA.l Pool_OWGFXGroupTable_sheet7, X : STA.b $08
-    LDA.l Pool_OWGFXGroupTable_sheet6, X : TAY
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BNE .notFF7
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+    
+    .notFF7
+
+    STA.b $08
+
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
+        LDA.w Pool_DefaultGFXGroups_sheet6, Y
+
+    .notFF6
+
+    TAY
+
     STA AnimatedTileGFXSet
 
     SEP #$10

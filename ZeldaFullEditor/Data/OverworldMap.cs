@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
@@ -348,11 +347,19 @@ namespace ZeldaFullEditor
                 {
                     this.TileGFX3 = temp;
                 }
+                else
+                {
+                    this.TileGFX3 = 0xFF;
+                }
 
                 temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 1];
                 if (temp != 0)
                 {
                     this.TileGFX4 = temp;
+                }
+                else
+                {
+                    this.TileGFX4 = 0xFF;
                 }
 
                 temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 2];
@@ -360,11 +367,19 @@ namespace ZeldaFullEditor
                 {
                     this.TileGFX5 = temp;
                 }
+                else
+                {
+                    this.TileGFX5 = 0xFF;
+                }
 
                 temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3];
                 if (temp != 0)
                 {
                     this.TileGFX6 = temp;
+                }
+                else
+                {
+                    this.TileGFX6 = 0xFF;
                 }
 
                 // Set the animated GFX values.
@@ -446,28 +461,45 @@ namespace ZeldaFullEditor
                     this.TileGFX6 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 6];
 
                     // Replace the variable tiles with the variable ones.
+                    // If the variable is 00 set it to 0xFF which is the new "don't load anything" value.
                     byte temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4)];
-                    if (temp != 0)
+                    if (temp != 0x00)
                     {
                         this.TileGFX3 = temp;
                     }
+                    else
+                    {
+                        this.TileGFX3 = 0xFF;
+                    }
 
                     temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 1];
-                    if (temp != 0)
+                    if (temp != 0x00)
                     {
                         this.TileGFX4 = temp;
                     }
+                    else
+                    {
+                        this.TileGFX4 = 0xFF;
+                    }
 
                     temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 2];
-                    if (temp != 0)
+                    if (temp != 0x00)
                     {
                         this.TileGFX5 = temp;
                     }
+                    else
+                    {
+                        this.TileGFX5 = 0xFF;
+                    }
 
                     temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4) + 3];
-                    if (temp != 0)
+                    if (temp != 0x00)
                     {
                         this.TileGFX6 = temp;
+                    }
+                    else
+                    {
+                        this.TileGFX6 = 0xFF;
                     }
 
                     // Set the animated GFX values.
@@ -760,16 +792,34 @@ namespace ZeldaFullEditor
         /// </summary>
         public void Buildtileset()
         {
-            this.StaticGFX[0] = this.TileGFX0;
-            this.StaticGFX[1] = this.TileGFX1;
-            this.StaticGFX[2] = this.TileGFX2;
-            this.StaticGFX[3] = this.TileGFX3;
-            this.StaticGFX[4] = this.TileGFX4;
-            this.StaticGFX[5] = this.TileGFX5;
-            this.StaticGFX[6] = this.TileGFX6;
-
             // Replace the animated tiles with the custom set ones.
+            this.StaticGFX[0] = this.overworld.AllMaps[this.ParentID].TileGFX0;
+            this.StaticGFX[1] = this.overworld.AllMaps[this.ParentID].TileGFX1;
+            this.StaticGFX[2] = this.overworld.AllMaps[this.ParentID].TileGFX2;
+            this.StaticGFX[3] = this.overworld.AllMaps[this.ParentID].TileGFX3;
+            this.StaticGFX[4] = this.overworld.AllMaps[this.ParentID].TileGFX4;
+            this.StaticGFX[5] = this.overworld.AllMaps[this.ParentID].TileGFX5;
+            this.StaticGFX[6] = this.overworld.AllMaps[this.ParentID].TileGFX6;
             this.StaticGFX[7] = this.overworld.AllMaps[this.ParentID].AnimatedGFX;
+
+            // If the GFX are 0xFF they need to show the defualt GFX instead.
+            int world = 0;
+            if (this.ParentID >= 0x40)
+            {
+                world = 8;
+            }
+            else if (this.ParentID >= 0x80)
+            {
+                world = 16;
+            }
+
+            for (int i = 0; i <  8; i++)
+            {
+                if (this.StaticGFX[i] == 0xFF)
+                {
+                    this.StaticGFX[i] = (byte)Constants.OverworldCustomDefualtTileGFX[i + world];
+                }
+            }
 
             // Sprites Blocksets
             this.StaticGFX[8] = 115 + 0;
