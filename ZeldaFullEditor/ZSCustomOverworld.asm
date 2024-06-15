@@ -106,12 +106,6 @@ Pool:
     ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
     warnpc $288140
 
-    ; ZS is weird with SW areas, so we are marking the bridge one specifically
-    ; so we can find it later.
-    org $288128
-    .BGColorTable_Bridge
-
-
     org $288140 ; $140140
     .EnableTable ; 0x20
     ; Valid values:
@@ -159,11 +153,17 @@ Pool:
     .EnableRainMireEvent ; 0x01
     db $FF
 
+    ; The bridge color is different from the Master Sword area so we are going to
+    ; hard code it here for now.
+    org $288148 ; $140148
+    .BGColorTable_Bridge
+    dw $2669 ; Defualt vanilla LW green.
+
     ; The rest of these are extra bytes that can be used for anything else
     ; later on.
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    ;db $00, $00, $00, $00, $00, $00
     warnpc $288160
 
     org $288160 ; $140160
@@ -2277,9 +2277,20 @@ CheckForChangeGraphicsTransitionLoad:
 
     REP #$30 ; Set A, X, and Y in 16bit mode.
 
+    ; $0181 is the exit room number used for getting into the under the bridge
+    ; area.
+    LDA.b $A0 : CMP.w #$0181 : BNE .notBridge
+        LDA.w Pool_BGColorTable_Bridge
+
+        BRA .storeColor
+
+    .notBridge
+
     LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
 
     LDA.w Pool_BGColorTable, X ; Where ZS saves the array of palettes.
+
+    .storeColor
 
     ; Set transparent color. only set the buffer so it fades in right
     ; during mosaic transition.
@@ -3080,7 +3091,6 @@ pullpc
 
 NewLoadTransAuxGFX:
 {
-    print pc
     PHB : PHK : PLB
 
     LDA.w Pool_EnableTransitionGFXGroupLoad : BNE .notNormalLoad
