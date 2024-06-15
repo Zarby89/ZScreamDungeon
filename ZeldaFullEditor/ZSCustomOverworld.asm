@@ -2296,6 +2296,37 @@ CheckForChangeGraphicsTransitionLoad:
     ; during mosaic transition.
     STA.l $7EC300 : STA.l $7EC340
 
+    LDX.w #$4020 : STX.b $9C
+    LDX.w #$8040 : STX.b $9D
+        
+    LDX.w #$4F33
+    LDY.w #$894F
+        
+    ; Change the fixed color depending on our sub screen overlay.
+    ; Lost woods and skull woods.
+    JSL ReadOverlayArray : CMP.w #$009D : BEQ .noSpecialColor
+        CMP.w #$0040 : BEQ .noSpecialColor
+            ; Pyramid area.
+            CMP.w #$0096 : BEQ .specialColor
+                LDX.w #$4C26
+                LDY.w #$8C4C
+                    
+                ; LW death mountain.
+                CMP.w #$0095 : BEQ .specialColor
+                    LDX.w #$4A26
+                    LDY.w #$874A
+                        
+                    ; DW death mountain.
+                    CMP.w #$009C : BEQ .specialColor
+                        BRA .noSpecialColor
+                
+            .specialColor
+
+            STX.b $9C
+            STY.b $9D
+        
+    .noSpecialColor
+    
     SEP #$30 ; Set A, X, and Y in 8bit mode.
 
     ; Don't update the CRAM until later when the overlays are loaded so
