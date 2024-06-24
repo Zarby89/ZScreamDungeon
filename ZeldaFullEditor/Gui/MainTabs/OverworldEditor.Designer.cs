@@ -123,6 +123,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.OWProperty_TileGFX7 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -721,6 +723,8 @@
             // 
             // mapGroupbox
             // 
+            this.mapGroupbox.Controls.Add(this.label21);
+            this.mapGroupbox.Controls.Add(this.OWProperty_TileGFX7);
             this.mapGroupbox.Controls.Add(this.label20);
             this.mapGroupbox.Controls.Add(this.OWProperty_TileGFX6);
             this.mapGroupbox.Controls.Add(this.label19);
@@ -926,7 +930,7 @@
             this.OWProperty_AniGFX.Decimal = false;
             this.OWProperty_AniGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_AniGFX.HexValue = 0;
-            this.OWProperty_AniGFX.Location = new System.Drawing.Point(413, 71);
+            this.OWProperty_AniGFX.Location = new System.Drawing.Point(476, 71);
             this.OWProperty_AniGFX.MaxLength = 2;
             this.OWProperty_AniGFX.MaxValue = 255;
             this.OWProperty_AniGFX.MinValue = 0;
@@ -1009,7 +1013,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(410, 55);
+            this.label11.Location = new System.Drawing.Point(473, 55);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(49, 13);
             this.label11.TabIndex = 30;
@@ -1163,7 +1167,7 @@
             // button1
             // 
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(486, 26);
+            this.button1.Location = new System.Drawing.Point(486, 21);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(23, 23);
             this.button1.TabIndex = 13;
@@ -1173,7 +1177,7 @@
             // 
             // musicButton
             // 
-            this.musicButton.Location = new System.Drawing.Point(515, 26);
+            this.musicButton.Location = new System.Drawing.Point(515, 22);
             this.musicButton.Name = "musicButton";
             this.musicButton.Size = new System.Drawing.Size(61, 22);
             this.musicButton.TabIndex = 12;
@@ -1271,6 +1275,31 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(410, 55);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(57, 13);
+            this.label21.TabIndex = 56;
+            this.label21.Text = "Tile GFX 7";
+            // 
+            // OWProperty_TileGFX7
+            // 
+            this.OWProperty_TileGFX7.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX7.Decimal = false;
+            this.OWProperty_TileGFX7.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX7.HexValue = 0;
+            this.OWProperty_TileGFX7.Location = new System.Drawing.Point(413, 71);
+            this.OWProperty_TileGFX7.MaxLength = 2;
+            this.OWProperty_TileGFX7.MaxValue = 255;
+            this.OWProperty_TileGFX7.MinValue = 0;
+            this.OWProperty_TileGFX7.Name = "OWProperty_TileGFX7";
+            this.OWProperty_TileGFX7.Size = new System.Drawing.Size(52, 20);
+            this.OWProperty_TileGFX7.TabIndex = 55;
+            this.OWProperty_TileGFX7.Text = "00";
+            this.OWProperty_TileGFX7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // OverworldEditor
             // 
@@ -1411,5 +1440,7 @@
         public ExtraForms.Hexbox OWProperty_TileGFX2;
         private System.Windows.Forms.Label label15;
         public ExtraForms.Hexbox OWProperty_TileGFX1;
+        private System.Windows.Forms.Label label21;
+        public ExtraForms.Hexbox OWProperty_TileGFX7;
     }
 }

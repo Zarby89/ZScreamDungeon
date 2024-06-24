@@ -106,7 +106,7 @@ namespace ZeldaFullEditor
         ///     Gets the static GFX index.
         ///     Essentially the GFX groups loaded from different tables and used to load all the gfx for each area.
         /// </summary>
-        public byte[] StaticGFX { get; internal set; } = new byte[16];
+        public byte[] StaticGFX { get; internal set; } = new byte[17];
 
         /// <summary>
         ///     Gets or sets the Animated GFX used to replace StaticGFX[7] with custom area specific animated GFX.
@@ -147,6 +147,11 @@ namespace ZeldaFullEditor
         ///     Gets or sets the Tile GFX 6 used to replace StaticGFX[6] with custom area specific GFX.
         /// </summary>
         public byte TileGFX6 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Tile GFX 7 used to replace StaticGFX[7] with custom area specific GFX.
+        /// </summary>
+        public byte TileGFX7 { get; set; }
 
         /// <summary>
         ///     Gets the used tiles.
@@ -340,6 +345,7 @@ namespace ZeldaFullEditor
                 this.TileGFX4 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 4];
                 this.TileGFX5 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 5];
                 this.TileGFX6 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 6];
+                this.TileGFX7 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 7];
 
                 // Replace the variable tiles with the variable ones.
                 byte temp = ROM.DATA[Constants.overworldgfxGroups + (this.GFX * 4)];
@@ -436,7 +442,9 @@ namespace ZeldaFullEditor
                     this.TileGFX4 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 4];
                     this.TileGFX5 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 5];
                     this.TileGFX6 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 6];
-                    this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 7];
+                    this.TileGFX7 = ROM.DATA[Constants.OverworldCustomTileGFXGroupArray + (index * 8) + 7];
+
+                    this.AnimatedGFX = ROM.DATA[Constants.OverworldCustomAnimatedGFXArray + index];
                 }
                 else
                 {
@@ -459,6 +467,7 @@ namespace ZeldaFullEditor
                     this.TileGFX4 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 4];
                     this.TileGFX5 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 5];
                     this.TileGFX6 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 6];
+                    this.TileGFX7 = (byte)ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + 7];
 
                     // Replace the variable tiles with the variable ones.
                     // If the variable is 00 set it to 0xFF which is the new "don't load anything" value.
@@ -800,7 +809,9 @@ namespace ZeldaFullEditor
             this.StaticGFX[4] = this.overworld.AllMaps[this.ParentID].TileGFX4;
             this.StaticGFX[5] = this.overworld.AllMaps[this.ParentID].TileGFX5;
             this.StaticGFX[6] = this.overworld.AllMaps[this.ParentID].TileGFX6;
-            this.StaticGFX[7] = this.overworld.AllMaps[this.ParentID].AnimatedGFX;
+            this.StaticGFX[7] = this.overworld.AllMaps[this.ParentID].TileGFX7;
+
+            this.StaticGFX[16] = this.overworld.AllMaps[this.ParentID].AnimatedGFX;
 
             // If the GFX are 0xFF they need to show the defualt GFX instead.
             int world = 0;
@@ -857,6 +868,15 @@ namespace ZeldaFullEditor
                             case 4:
                             case 5:
                                 mapByte += 0x88;
+                                break;
+
+                            // The first half of sheet 7 needs to load from the animated sheet.
+                            case 7:
+                                if (j < 1024)
+                                {
+                                    mapByte = allgfxData[j + (this.StaticGFX[16] * 2048)];
+                                }
+
                                 break;
                         }
 

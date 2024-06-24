@@ -10,46 +10,46 @@ pushpc
 AnimatedTileGFXSet = $0FC0
 TransGFXModuleIndex = $0CF3
 
-Sound_LoadLightWorldSongBank                      = $808913
-DecompOwAnimatedTiles                             = $80D394
-GetAnimatedSpriteTile                             = $80D4DB
-GetAnimatedSpriteTile_variable                    = $80D4ED
-LoadTransAuxGFX_sprite_continue                   = $00D706
-Do3To4High16Bit                                   = $80DF4F
-Do3To4Low16Bit                                    = $00DFB8
-InitTilesets                                      = $80E19B
-CopyFontToVram                                    = $80E556
-Decomp_bg_variable                                = $00E78F
+Sound_LoadLightWorldSongBank              = $808913
+DecompOwAnimatedTiles                     = $80D394
+GetAnimatedSpriteTile                     = $80D4DB
+GetAnimatedSpriteTile_variable            = $80D4ED
+LoadTransAuxGFX_sprite_continue           = $00D706
+Do3To4High16Bit                           = $80DF4F
+Do3To4Low16Bit                            = $00DFB8
+InitTilesets                              = $80E19B
+CopyFontToVram                            = $80E556
+Decomp_bg_variable                        = $00E78F
 
-DeleteCertainAncillaeStopDashing                  = $828B0C
-Overworld_FinishTransGfx_firstHalf_Retrun         = $02ABC5
-Overworld_LoadSubscreenAndSilenceSFX1             = $82AF19
-Dungeon_LoadPalettes_cacheSettings                = $82C65F
-LoadSubscreenOverlay                              = $82FD0D
+DeleteCertainAncillaeStopDashing          = $828B0C
+Overworld_FinishTransGfx_firstHalf_Retrun = $02ABC5
+Overworld_LoadSubscreenAndSilenceSFX1     = $82AF19
+Dungeon_LoadPalettes_cacheSettings        = $82C65F
+LoadSubscreenOverlay                      = $82FD0D
 
-Link_ItemReset_FromOverworldThings                = $87B107
+Link_ItemReset_FromOverworldThings        = $87B107
 
-Tagalong_Init                                     = $899EFC
-Sprite_ReinitWarpVortex                           = $89AF89
-Sprite_ResetAll                                   = $89C44E
-Sprite_OverworldReloadAll                         = $89C499
+Tagalong_Init                             = $899EFC
+Sprite_ReinitWarpVortex                   = $89AF89
+Sprite_ResetAll                           = $89C44E
+Sprite_OverworldReloadAll                 = $89C499
 
-Overworld_SetFixedColorAndScroll                  = $8BFE70
+Overworld_SetFixedColorAndScroll          = $8BFE70
 
-Overworld_LoadPalettes                            = $8ED5A8
-Palette_SetOwBgColor_Long                         = $8ED618
-LoadGearPalettes_bunny                            = $8ED6DD
+Overworld_LoadPalettes                    = $8ED5A8
+Palette_SetOwBgColor_Long                 = $8ED618
+LoadGearPalettes_bunny                    = $8ED6DD
 
-Palette_SpriteAux3                                = $9BEC77
-Palette_MainSpr                                   = $9BEC9E
-Palette_SpriteAux1                                = $9BECC5
-Palette_SpriteAux2                                = $9BECE4
-Palette_Sword                                     = $9BED03
-Palette_Shield                                    = $9BED29
-Palette_MiscSpr                                   = $9BED6E
-Palette_ArmorAndGloves                            = $9BEDF9
-Palette_Hud                                       = $9BEE52
-Palette_OverworldBgMain                           = $9BEEC7
+Palette_SpriteAux3                        = $9BEC77
+Palette_MainSpr                           = $9BEC9E
+Palette_SpriteAux1                        = $9BECC5
+Palette_SpriteAux2                        = $9BECE4
+Palette_Sword                             = $9BED03
+Palette_Shield                            = $9BED29
+Palette_MiscSpr                           = $9BED6E
+Palette_ArmorAndGloves                    = $9BEDF9
+Palette_Hud                               = $9BEE52
+Palette_OverworldBgMain                   = $9BEEC7
 
 ; ==============================================================================
 ; Fixing old hooks:
@@ -124,12 +124,14 @@ Pool:
     .EnableMosaic ; 0x01 Unused for now.
     db $01
 
-    ; When non 0 this will make the game reload all gfx in between OW
+    ; When non 0 this will allow animated tiles to be updated between OW
     ; transitions. Default is $FF.
     org $288143 ; $140143
-    .EnableTransitionGFXGroupLoad ; 0x01
+    .EnableAnimated ; 0x01
     db $01
     
+    ; When non 0 this will allow Subscreen Overlays to be updated between OW
+    ; transitions. Default is $FF.
     org $288144 ; $140144
     .EnableSubScreenOverlay ; 0x01
     db $01
@@ -139,7 +141,7 @@ Pool:
     ; values instead of using the default ones. The current version is 02.
     org $288145 ; $140145
     .ZSAppliedASM ; 0x01
-    ;db $02
+    db $02
 
     ; When non 0 this will cause rain to appear on all areas in the beginning
     ; phase. Default is $FF.
@@ -153,17 +155,23 @@ Pool:
     .EnableRainMireEvent ; 0x01
     db $FF
 
+    ; When non 0 this will make the game reload all gfx in between OW
+    ; transitions. Default is $FF.
+    org $288148 ; $140143
+    .EnableTransitionGFXGroupLoad ; 0x01
+    db $01
+
     ; The bridge color is different from the Master Sword area so we are going to
     ; hard code it here for now.
-    org $288148 ; $140148
-    .BGColorTable_Bridge
+    org $288149 ; $140149
+    .BGColorTable_Bridge ; 0x02
     dw $2669 ; Defualt vanilla LW green.
 
     ; The rest of these are extra bytes that can be used for anything else
     ; later on.
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00
+    ;db $00, $00, $00, $00, $00
     warnpc $288160
 
     org $288160 ; $140160
@@ -232,13 +240,19 @@ Pool:
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     warnpc $2882A0
 
-    ; Unused in favor of the OWGFXGroupTable_sheet7. We can use this space for
-    ; something else in the future.
+    ; Not the same as OWGFXGroupTable_sheet7. The game uses a combination of $59
+    ; and $5B to create the sheet in sheet #7. This is done by first transfering
+    ; all the gfx that is needed for the bottom half of the sheet (the door
+    ; frames for example) which is different depending on whether we are in the
+    ; LW or DW. It then loads the actual animated tile frames into a buffer
+    ; where it can transfer over from durring NMI based on whether we are on
+    ; Death Mountain or not (LW or DW). This table is to control the latter.
     org $2882A0 ; $1402A0
     .AnimatedTable ; 0xA0
     ; Valid values:
     ; GFX index $00 to $FF.
-    ; In vanilla, $59 are the clouds and $5B are the regular water tiles.
+    ; In vanilla, $59 are the DW door frames and clouds and $5B are the Lw door
+    ; frames and the regular water tiles.
 
     ; LW
     ;db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
@@ -351,19 +365,19 @@ Pool:
 
     ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x01
     ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x02
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x03
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x04
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x05
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x06
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x07
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x03
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x04
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x05
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x06
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x07
 
     ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x08
     ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x09
     ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x0A
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x0B
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x0C
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x0D
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $59 ; 0x0E
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0B
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0C
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0D
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0E
     ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x0F
 
     ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x10
@@ -421,77 +435,77 @@ Pool:
     ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3F
 
     ; DW
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $5B ; 0x40
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $5B ; 0x41
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $5B ; 0x42
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x40
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x41
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x42
     ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x43
-    ;db $42, $43, $44, $45, $33, $34, $3F, $5B ; 0x44
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x44
     ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x45
-    ;db $42, $43, $44, $45, $33, $34, $3F, $5B ; 0x46
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x46
     ;db $42, $43, $44, $45, $60, $34, $3F, $59 ; 0x47
 
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $5B ; 0x48
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $5B ; 0x49
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $5B ; 0x4A
-    ;db $42, $43, $44, $45, $33, $34, $3F, $5B ; 0x4B
-    ;db $42, $43, $44, $45, $33, $34, $3F, $5B ; 0x4C
-    ;db $42, $43, $44, $45, $33, $34, $3F, $5B ; 0x4D
-    ;db $42, $43, $44, $45, $33, $34, $3F, $5B ; 0x4E
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x4F
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x48
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x49
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x4A
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4B
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4C
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4D
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4E
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x4F
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x50
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x51
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x52
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x53
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x54
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x55
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x56
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x57
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x50
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x51
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x52
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x53
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x54
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x55
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x56
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x57
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x58
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x59
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x5A
-    ;db $42, $43, $44, $45, $35, $36, $3F, $5B ; 0x5B
-    ;db $42, $43, $44, $45, $35, $36, $3F, $5B ; 0x5C
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x5D
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $5B ; 0x5E
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $5B ; 0x5F
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x58
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x59
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x5A
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5B
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5C
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x5D
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5E
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5F
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x60
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x61
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x62
-    ;db $42, $43, $44, $45, $35, $36, $3F, $5B ; 0x63
-    ;db $42, $43, $44, $45, $35, $36, $3F, $5B ; 0x64
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x65
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $5B ; 0x66
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $5B ; 0x67
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x60
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x61
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x62
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x63
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x64
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x65
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x66
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x67
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x68
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $5B ; 0x69
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6A
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6B
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6C
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6D
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x6E
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $5B ; 0x6F
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x68
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x69
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6A
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6B
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6C
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6D
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6E
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x6F
 
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x70
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x71
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x72
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x73
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x74
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x75
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x76
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x77
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x70
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x71
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x72
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x73
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x74
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x75
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x76
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x77
 
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x78
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x79
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x7A
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x7B
-    ;db $42, $43, $44, $45, $37, $38, $3F, $5B ; 0x7C
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x7D
-    ;db $42, $43, $44, $45, $31, $32, $3F, $5B ; 0x7E
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $5B ; 0x7F
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x78
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x79
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7A
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7B
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7C
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7D
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7E
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7F
 
     ; SW
     ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x80
@@ -569,7 +583,7 @@ Pool:
     db $5B ; Sheet 7
 
     ; DW
-    db $42, $43, $44, $45, $2F, $30, $3F, $5B
+    db $42, $43, $44, $45, $2F, $30, $3F, $59
 
     ; SW
     db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B
@@ -680,12 +694,12 @@ ReadAnimatedTable:
     PHB : PHK : PLB
 
     REP #$30 ; Set A, X, and Y in 16bit mode.
-    LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
-    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
+    LDA.b $8A : TAX
+    AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20 ; Set A in 8bit mode.
 
-    ; 00 crashes the game so just double check that.
-    LDA.w Pool_OWGFXGroupTable_sheet7, X : BNE .not007
+    ; $00 crashes the game so just double check that.
+    LDA.w Pool_AnimatedTable, X : BNE .not007
         LDA.w Pool_DefaultGFXGroups_sheet7, Y
 
         BRA .notFF7
@@ -732,8 +746,7 @@ AnimateMirrorWarp_LoadSubscreen:
     ; Get the pointer for one of the 2 Global sprite #2 sheets.
     LDA.w $D1B1, Y : STA.b $00
     LDA.w $D0D2, Y : STA.b $01
-    LDA.w $CFF3, Y : STA.b $02
-    STA.b $05
+    LDA.w $CFF3, Y : STA.b $02 : STA.b $05
         
     PLB
         
@@ -889,7 +902,7 @@ Func00FF7C:
         
         INC.b $B0
         
-        JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
+        JSL Overworld_SetFixedColorAndScroll
 
         REP #$30 ; Set A, X, and Y in 16bit mode.
 
@@ -992,13 +1005,13 @@ PreOverworld_LoadProperties_LoadMain:
     ; The decompression function increases it by 1 so subtract 1 here.
     JSL ReadAnimatedTable : DEC : TAY
 
-    JSL DecompOwAnimatedTiles ; $5394 IN ROM
+    JSL DecompOwAnimatedTiles
 
     ; Decompress all other graphics.
-    JSL InitTilesets ; $619B IN ROM
+    JSL InitTilesets
 
     ; Load palettes for overworld.
-    JSR.w Overworld_LoadAreaPalettes ; $014692 IN ROM
+    JSR.w Overworld_LoadAreaPalettes
         
     LDX.b $8A
         
@@ -1007,14 +1020,14 @@ PreOverworld_LoadProperties_LoadMain:
     LDA.l $00FD1C, X
         
     ; Load some other palettes.
-    JSL Overworld_LoadPalettes ; $0755A8 IN ROM
+    JSL Overworld_LoadPalettes
 
     ; Sets the background color (changes depending on area).
-    JSL Palette_SetOwBgColor_Long ; $075618 IN ROM
+    JSL Palette_SetOwBgColor_Long
         
     LDA.b $10 : CMP.b #$08 : BNE .specialArea2
         ; Copies $7EC300[0x200] to $7EC500[0x200].
-        JSR.w Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
+        JSR.w Dungeon_LoadPalettes_cacheSettings
         
         BRA .normalArea2
     
@@ -1026,7 +1039,7 @@ PreOverworld_LoadProperties_LoadMain:
     .normalArea2
     
     ; Sets fixed colors and scroll values.
-    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
+    JSL Overworld_SetFixedColorAndScroll
         
     ; Set darkness level to zero for the overworld.
     LDA.b #$00 : STA.l $7EC017
@@ -1048,7 +1061,7 @@ PreOverworld_LoadProperties_LoadMain:
         
     ; Are we in the dark world? If so, there's no warp vortex there.
     LDA.b $8A : AND.b #$40 : BNE .noWarpVortex
-        JSL Sprite_ReinitWarpVortex ; $04AF89 IN ROM
+        JSL Sprite_ReinitWarpVortex
     
     .noWarpVortex
         
@@ -1193,7 +1206,6 @@ db $8D, $00, $42, $60
 
 endif
 
-
 ; ==============================================================================
 
 if !Func028632 = 1
@@ -1205,7 +1217,7 @@ Func028632:
     ; The decompression function increases it by 1 so subtract 1 here.
     JSL ReadAnimatedTable : DEC : TAY
     
-    JSL DecompOwAnimatedTiles ; $5394 IN ROM
+    JSL DecompOwAnimatedTiles
         
     ; SCAWFUL: Verify the submodule ID being manipulated here.
     LDA.b $11 : LSR A : TAX
@@ -1215,32 +1227,32 @@ Func028632:
         
     LDA.l $0285F3, X : PHA
         
-    JSL InitTilesets ; $619B IN ROM
+    JSL InitTilesets
 
     ; Load Palettes.
-    JSR.w Overworld_LoadAreaPalettes ; $014692 IN ROM
+    JSR.w Overworld_LoadAreaPalettes
     PLA : STA.b $00
         
     LDX.b $8A
         
     LDA.l $00FD1C, X
         
-    JSL Overworld_LoadPalettes ; $0755A8 IN ROM
+    JSL Overworld_LoadPalettes
         
     LDA.b #$01 : STA.w $0AB2
         
-    JSL Palette_Hud ; $0DEE52 IN ROM
+    JSL Palette_Hud
         
     LDA.l $11 : BNE .BRANCH_4
-        JSL CopyFontToVram  ; $006556 IN ROM
+        JSL CopyFontToVram
     
     .BRANCH_4
     
-    JSR.w Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
-    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
+    JSR.w Dungeon_LoadPalettes_cacheSettings
+    JSL Overworld_SetFixedColorAndScroll
         
     LDA.l $8A : CMP.b #$80 : BCC .BRANCH_5
-        JSL Palette_SetOwBgColor_Long ; $075618 IN ROM
+        JSL Palette_SetOwBgColor_Long
     
     .BRANCH_5
     
@@ -1608,7 +1620,7 @@ if !Func02B2D4 = 1
 org $02B2D4 ; $0132D4
 Func02B2D4:
 {
-    JSR.w Overworld_LoadSubscreenAndSilenceSFX1 ; $012F19 IN ROM
+    JSR.w Overworld_LoadSubscreenAndSilenceSFX1
 
     ; In vanilla a check for the overlay is done here but we don't need
     ; it at all. It is handled in Func02B3A1 later on.
@@ -1691,8 +1703,8 @@ Func02B3A1:
         
     JSL Sprite_ResetAll
     JSL Sprite_OverworldReloadAll
-    JSL Link_ItemReset_FromOverworldThings ; $03B107 IN ROM
-    JSR.w DeleteCertainAncillaeStopDashing ; $010B0C IN ROM
+    JSL Link_ItemReset_FromOverworldThings
+    JSR.w DeleteCertainAncillaeStopDashing
         
     LDA.b #$14 : STA.b $5D
         
@@ -1822,6 +1834,13 @@ Func02C02D:
         ; line up the mountain with the tower in the distance at the appropriate
         ; location when coming into the pyramid area from the right.
         STA.b $E0, X 
+
+        ; NOTE: There is currently a bug in vanilla where if you exit a dungeon
+        ; into the LW death mountain the sky background will become miss-aligned
+        ; and this movement will cause the sky to flicker or jump when moving to
+        ; another area. In order to fix this you would have to find the
+        ; alignment exit code and change how the game aligns BG2 when exiting.
+        ; Possibly when using the bird too.
     
     .dontMoveBg1
 }
@@ -1886,25 +1905,25 @@ Overworld_LoadAreaPalettes:
     STZ.w $0AA9
         
     ; Load SP1 through SP4.
-    JSL Palette_MainSpr ; $0DEC9E IN ROM
+    JSL Palette_MainSpr
 
     ; Load SP0 (2nd half) and SP6 (2nd half).
-    JSL Palette_MiscSpr ; $0DED6E IN ROM
+    JSL Palette_MiscSpr
 
     ; Load SP5 (1st half).
-    JSL Palette_SpriteAux1 ; $0DECC5 IN ROM
+    JSL Palette_SpriteAux1
 
     ; Load SP6 (1st half).
-    JSL Palette_SpriteAux2 ; $0DECE4 IN ROM
+    JSL Palette_SpriteAux2
 
     ; Load SP5 (2nd half, 1st 3 colors), which is the sword palette.
-    JSL Palette_Sword ; $0DED03 IN ROM
+    JSL Palette_Sword
     
     ; Load SP5 (2nd half, next 4 colors), which is the shield.
-    JSL Palette_Shield ; $0DED29 IN ROM
+    JSL Palette_Shield
 
     ; Load SP7 (full) Link's whole palette, including Armor.
-    JSL Palette_ArmorAndGloves ; $0DEDF9 IN ROM
+    JSL Palette_ArmorAndGloves
         
     LDX.b #$01
         
@@ -1919,13 +1938,13 @@ Overworld_LoadAreaPalettes:
     STX.w $0AAC
         
     ; Load SP0 (first half) (or SP7 (first half)).
-    JSL Palette_SpriteAux3 ; $0DEC77 IN ROM
+    JSL Palette_SpriteAux3
 
     ; Load BP0 and BP1 (first halves).
-    JSL Palette_Hud ; $0DEE52 IN ROM
+    JSL Palette_Hud
 
     ; Load BP2 through BP5 (first halves).
-    JSL Palette_OverworldBgMain ; $0DEEC7 IN ROM
+    JSL Palette_OverworldBgMain
         
     RTS
 }
@@ -2205,7 +2224,7 @@ CheckForChangeGraphicsTransitionLoad:
             ; Are we leaving a special area?
             CMP.b #$26 : BEQ .mosaic
                 ; Just a normal transition, Not a mosaic.
-                LDA.w Pool_EnableTransitionGFXGroupLoad : BEQ .dontUpdateAnimated1
+                LDA.l Pool_EnableAnimated : BEQ .dontUpdateAnimated1
                     ; Check to see if we need to update the animated tiles
                     ; by checking what was previously loaded.
                     JSL ReadAnimatedTable : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated1
@@ -2430,10 +2449,6 @@ Palette_MultiLoad2:
 
 LoadTransMainGFX:
 {
-    ; HERE
-    ; TODO: Something is causing either this function or the NewLoadTransAuxGFX
-    ; function to load the incorrect GFX. Figure out what.
-    
     ; Setup the decompression buffer address.
     ; $00[3] = $7E6000
     STZ.b $00
@@ -2495,14 +2510,14 @@ LoadTransMainGFX:
 
     ; Sheet 7 (animated)
     LDX.b $0E
-    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BEQ .noBgGfxChange3
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BEQ .noBgGfxChange7
         SEP #$10
         
         TAY
         
         JSL Decomp_bg_variableLONG
 
-    .noBgGfxChange3
+    .noBgGfxChange7
 
     RTS
 }
@@ -2702,6 +2717,7 @@ Overworld_LoadBGColorAndSubscreenOverlay:
     
     .notRain
     
+    ; Change the fixed color depending on our sub screen overlay.
     ; Check for lost woods?, skull woods, and pyramid area.
     CMP.w #$009D : BEQ .noCustomFixedColor
     CMP.w #$0096 : BEQ .noCustomFixedColor
@@ -2928,7 +2944,7 @@ InitColorLoad2:
 
     PLB
 
-    JML InitColorLoad2_Return ; $0ED652
+    JML InitColorLoad2_Return
 }
 pushpc
 
@@ -2949,6 +2965,7 @@ Func0ED8AE:
         LDX.w #$4F33
         LDY.w #$894F
         
+        ; Change the fixed color depending on our sub screen overlay.
         ; Lost woods and skull woods.
         JSL ReadOverlayArray : CMP.w #$009D : BEQ .noSpecialColor
             CMP.w #$0040 : BEQ .noSpecialColor
@@ -3244,7 +3261,7 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
 
     ; Sheet 2
     ; Set VRAM target to $3000 (word).
-    LDA.w #$3C00 : STA.w $2116
+    LDA.w #$3E00 : STA.w $2116
     
     ; Increment on writes to $2119.
     LDY.b #$80 : STY.w $2115
@@ -3252,12 +3269,12 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
     ; Target is $2118, write two registers once ($2118 / $2119).
     LDA.w #$1801 : STA.w $4300
     
-    ; Source address is $7F1000.
-    LDA.w #$1800 : STA.w $4302
+    ; Source address is $7F1C00.
+    LDA.w #$1C00 : STA.w $4302
     LDY.b #$7F : STY.w $4304
     
-    ; Write 0x0800 bytes.
-    LDA.w #$0800 : STA.w $4305
+    ; Write 0x08400 bytes.
+    LDA.w #$0400 : STA.w $4305
     
     ; Transfer data on channel 1.
     LDY.b #$01 : STY.w $420B
@@ -3481,6 +3498,7 @@ AnimateMirrorWarp_DecompressBackgroundsALongCalls:
 
     REP #$30
     LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20
 
     LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
@@ -3515,19 +3533,17 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
 
     LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BNE .notFF7
         LDA.w Pool_DefaultGFXGroups_sheet7, Y
-    
+
     .notFF7
 
-    STA.b $08
+    STA.b $08 : STA AnimatedTileGFXSet
 
     LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
 
     .notFF6
-
+    
     TAY
-
-    STA AnimatedTileGFXSet
 
     SEP #$10
 

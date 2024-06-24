@@ -124,13 +124,13 @@ namespace ZeldaFullEditor
         int romID = 00;
 
         // TODO: Save this in a config file and load the values into this array on startup.
-        public bool[] saveSettingsArr = new bool[47]
+        public bool[] saveSettingsArr = new bool[48]
         {
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
         };
 
 		/// <summary>
@@ -547,9 +547,8 @@ namespace ZeldaFullEditor
                     return;
                 }
 
-
-                    // The mosaic byte is hardcoded to true on purpose for now.
-                    if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44]))
+                // The mosaic byte is hardcoded to true on purpose for now.
+                if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44], this.saveSettingsArr[47]))
                 {
                     UIText.CryAboutSaving("problem saving ZS Custom Overworld ASM");
                     break;

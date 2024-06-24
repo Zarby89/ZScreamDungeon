@@ -144,6 +144,7 @@ namespace ZeldaFullEditor.Gui
             this.OWProperty_TileGFX4.HexValue = map.TileGFX4;
             this.OWProperty_TileGFX5.HexValue = map.TileGFX5;
             this.OWProperty_TileGFX6.HexValue = map.TileGFX6;
+            this.OWProperty_TileGFX7.HexValue = map.TileGFX7;
             this.OWProperty_AniGFX.HexValue = map.AnimatedGFX;
             this.OWProperty_MainPalette.HexValue = map.MainPalette;
             this.OWProperty_SubscreenOverlay.HexValue = map.SubscreenOverlay;
@@ -222,6 +223,7 @@ namespace ZeldaFullEditor.Gui
             mapParent.TileGFX4 = (byte)this.OWProperty_TileGFX4.HexValue;
             mapParent.TileGFX5 = (byte)this.OWProperty_TileGFX5.HexValue;
             mapParent.TileGFX6 = (byte)this.OWProperty_TileGFX6.HexValue;
+            mapParent.TileGFX7 = (byte)this.OWProperty_TileGFX7.HexValue;
             mapParent.AnimatedGFX = (byte)this.OWProperty_AniGFX.HexValue;
 
             mapParent.SubscreenOverlay = (ushort)this.OWProperty_SubscreenOverlay.HexValue;
@@ -236,6 +238,7 @@ namespace ZeldaFullEditor.Gui
                 this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX4 = mapParent.TileGFX4;
                 this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX5 = mapParent.TileGFX5;
                 this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX6 = mapParent.TileGFX6;
+                this.scene.ow.AllMaps[mapParent.Index + 1].TileGFX7 = mapParent.TileGFX7;
                 this.scene.ow.AllMaps[mapParent.Index + 1].AnimatedGFX = mapParent.AnimatedGFX;
                 this.scene.ow.AllMaps[mapParent.Index + 1].SubscreenOverlay = mapParent.SubscreenOverlay;
                 this.scene.ow.AllMaps[mapParent.Index + 1].SpriteGFX = mapParent.SpriteGFX;
@@ -250,6 +253,7 @@ namespace ZeldaFullEditor.Gui
                 this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX4 = mapParent.TileGFX4;
                 this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX5 = mapParent.TileGFX5;
                 this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX6 = mapParent.TileGFX6;
+                this.scene.ow.AllMaps[mapParent.Index + 8].TileGFX7 = mapParent.TileGFX7;
                 this.scene.ow.AllMaps[mapParent.Index + 8].AnimatedGFX = mapParent.AnimatedGFX;
                 this.scene.ow.AllMaps[mapParent.Index + 8].SubscreenOverlay = mapParent.SubscreenOverlay;
                 this.scene.ow.AllMaps[mapParent.Index + 8].SpriteGFX = mapParent.SpriteGFX;
@@ -264,6 +268,7 @@ namespace ZeldaFullEditor.Gui
                 this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX4 = mapParent.TileGFX4;
                 this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX5 = mapParent.TileGFX5;
                 this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX6 = mapParent.TileGFX6;
+                this.scene.ow.AllMaps[mapParent.Index + 9].TileGFX7 = mapParent.TileGFX7;
                 this.scene.ow.AllMaps[mapParent.Index + 9].AnimatedGFX = mapParent.AnimatedGFX;
                 this.scene.ow.AllMaps[mapParent.Index + 9].SubscreenOverlay = mapParent.SubscreenOverlay;
                 this.scene.ow.AllMaps[mapParent.Index + 9].SpriteGFX = mapParent.SpriteGFX;

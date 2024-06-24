@@ -299,7 +299,6 @@ namespace ZeldaFullEditor
         public static int transition_target_west = 0x013F62;
 
         public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, corresponds to the version number. 0 if not applied at all.
-        public static byte OverworldCustomASMVersionNumber = 0x01;
 
         public static int OverworldCustomAreaSpecificBGPalette = 0x140000; // 2 bytes for each overworld area (0x140)
         public static int OverworldCustomAreaSpecificBGEnabled = 0x140140; // 1 byte, not 0 if enabled
@@ -311,10 +310,13 @@ namespace ZeldaFullEditor
         public static int OverworldCustomMosaicEnabled = 0x140142; // 1 byte, not 0 if enabled
 
         public static int OverworldCustomTileGFXGroupArray = 0x140480; // 8 bytes for each overworld area (0x500)
-        public static int OverworldCustomTileGFXGroupEnabled = 0x140143; // 1 byte, not 0 if enabled
+        public static int OverworldCustomTileGFXGroupEnabled = 0x140148; // 1 byte, not 0 if enabled
 
         public static int OverworldCustomSubscreenOverlayArray = 0x140340; // 2 bytes for each overworld area (0x140)
         public static int OverworldCustomSubscreenOverlayEnabled = 0x140144; // 1 byte, not 0 if enabled
+
+        public static int OverworldCustomAnimatedGFXArray = 0x1402A0; // 1 byte for each overworld area (0xA0)
+        public static int OverworldCustomAnimatedGFXEnabled = 0x140143; // 1 byte, not 0 if enabled
 
         public static int[] OverworldCustomDefualtTileGFX = { 0x3A, 0x3B, 0x3C, 0x3D, 0x53, 0x4D, 0x3E, 0x5B,   // LW
                                                               0x42, 0x43, 0x44, 0x45, 0x2F, 0x30, 0x3F, 0x5B,   // DW
