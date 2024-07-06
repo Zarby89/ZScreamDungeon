@@ -1780,13 +1780,16 @@ namespace ZeldaFullEditor
             Entrance entrance = this.selectedEntrance;
             if (e?.Node.Tag != null)
             {
-                entrance = DungeonsData.Entrances[(int)e.Node.Tag];
-                if (e.Node.Parent?.Name == "StartingEntranceNode")
+                
+                if (e.Node.Parent?.Index == 1)
                 {
                     entrance = DungeonsData.StartingEntrances[(int)e.Node.Tag];
                 }
+                else
+                {
+                    entrance = DungeonsData.Entrances[(int)e.Node.Tag];
+                }
             }
-
             this.setEntranceProperties(entrance, entrance.CameraTriggerX, entrance.CameraTriggerY);
         }
 
