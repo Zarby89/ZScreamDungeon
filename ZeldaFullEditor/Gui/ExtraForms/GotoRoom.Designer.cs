@@ -32,8 +32,8 @@
             this.btnGo = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkParseAsHex = new System.Windows.Forms.CheckBox();
-            this.tbxRoomNumber = new System.Windows.Forms.TextBox();
             this.gbxRoomNumber = new System.Windows.Forms.GroupBox();
+            this.tbxRoomNumber = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.gbxRoomNumber.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,6 +43,7 @@
             this.btnGo.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnGo.Name = "btnGo";
             this.btnGo.UseVisualStyleBackColor = true;
+            this.btnGo.Click += new System.EventHandler(this.btnGo_Click);
             // 
             // btnCancel
             // 
@@ -54,15 +55,11 @@
             // chkParseAsHex
             // 
             resources.ApplyResources(this.chkParseAsHex, "chkParseAsHex");
+            this.chkParseAsHex.Checked = true;
+            this.chkParseAsHex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkParseAsHex.Name = "chkParseAsHex";
             this.chkParseAsHex.UseVisualStyleBackColor = true;
             this.chkParseAsHex.CheckedChanged += new System.EventHandler(this.ParseAsHex_CheckedChanged);
-            // 
-            // tbxRoomNumber
-            // 
-            resources.ApplyResources(this.tbxRoomNumber, "tbxRoomNumber");
-            this.tbxRoomNumber.Name = "tbxRoomNumber";
-            this.tbxRoomNumber.TextChanged += new System.EventHandler(this.RoomNumber_TextChanged);
             // 
             // gbxRoomNumber
             // 
@@ -71,6 +68,17 @@
             this.gbxRoomNumber.Controls.Add(this.chkParseAsHex);
             this.gbxRoomNumber.Name = "gbxRoomNumber";
             this.gbxRoomNumber.TabStop = false;
+            // 
+            // tbxRoomNumber
+            // 
+            this.tbxRoomNumber.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tbxRoomNumber.Decimal = false;
+            this.tbxRoomNumber.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
+            this.tbxRoomNumber.HexValue = 0;
+            resources.ApplyResources(this.tbxRoomNumber, "tbxRoomNumber");
+            this.tbxRoomNumber.MaxValue = 320;
+            this.tbxRoomNumber.MinValue = 0;
+            this.tbxRoomNumber.Name = "tbxRoomNumber";
             // 
             // GotoRoom
             // 
@@ -98,7 +106,7 @@
         private System.Windows.Forms.Button btnGo;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.CheckBox chkParseAsHex;
-        private System.Windows.Forms.TextBox tbxRoomNumber;
         private System.Windows.Forms.GroupBox gbxRoomNumber;
+        private Gui.ExtraForms.Hexbox tbxRoomNumber;
     }
 }

@@ -76,31 +76,24 @@ namespace ZeldaFullEditor
 
         private void RoomNumber_TextChanged(object sender, EventArgs e)
         {
-            if (TryGetValue(out var value) || value < 0)
-            {
-                SelectedRoom = value;
-                btnGo.Enabled = true;
-            }
-            else
-            {
-                btnGo.Enabled = false;
-            }
 
-            bool TryGetValue(out int result)
-            {
-                return Int32.TryParse
-                (
-                    tbxRoomNumber.Text,
-                    NumberStyle,
-                    CultureInfo.CurrentCulture,
-                    out result
-                );
-            }
         }
 
         private void ParseAsHex_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateText();
+            if (chkParseAsHex.Checked)
+            {
+                tbxRoomNumber.Decimal = false;
+            }
+            else
+            {
+                tbxRoomNumber.Decimal = true;
+            }
+        }
+
+        private void btnGo_Click(object sender, EventArgs e)
+        {
+            _selectedRoom = tbxRoomNumber.HexValue;
         }
     }
 }
