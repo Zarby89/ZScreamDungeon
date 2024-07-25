@@ -746,7 +746,7 @@ namespace ZeldaFullEditor
 
                 if (mainForm.showStairIDs && doorsObject.Contains(o.id))
                 {
-                    drawText(g, o.nx * 8, o.ny * 8, "to : " + room.staircase_rooms[stairCount].ToString());
+                    drawText(g, o.nx * 8, o.ny * 8, "to : " + room.staircase_rooms[stairCount].ToString("X2"));
                     stairCount++;
                 }
             }
