@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui.TextEditorExtra;
 
@@ -1564,13 +1565,14 @@ namespace ZeldaFullEditor
 
 		public void Delete()
 		{
+			/*
 			// Determine if any text is selected in the TextBox control.
 			if (textBox1.SelectionLength == 0)
 			{
 				// Clear all of the text in the textbox.
 				textBox1.Clear();
-			}
-		}
+			}*/
+        }
 
 		public void SelectAll()
 		{
@@ -1611,6 +1613,7 @@ namespace ZeldaFullEditor
 			{
 				// Copy the selected text to the Clipboard.
 				textBox1.Copy();
+				
 			}
 		}
 

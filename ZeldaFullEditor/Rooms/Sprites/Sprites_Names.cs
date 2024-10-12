@@ -303,32 +303,32 @@ namespace ZeldaFullEditor
 
         public static string[] overlordnames =
         {
-            "Overlord_SpritePositionTarget",
-            "Overlord_AllDirectionMetalBallFactory",
-            "Overlord_CascadeMetalBallFactory",
-            "Overlord_StalfosFactory",
-            "Overlord_StalfosTrap" ,
-            "Overlord_SnakeTrap",
-            "Overlord_MovingFloor" ,
-            "Overlord_ZolFactory",
-            "Overlord_WallMasterFactory" ,
-            "Overlord_CrumbleTilePath 1",
-            "Overlord_CrumbleTilePath 2" ,
-            "Overlord_CrumbleTilePath 3",
-            "Overlord_CrumbleTilePath 4" ,
-            "Overlord_CrumbleTilePath 5",
-            "Overlord_CrumbleTilePath 6",
-            "Overlord_PirogusuFactory 1",
-            "Overlord_PirogusuFactory 2",
-            "Overlord_PirogusuFactory 3",
-            "Overlord_PirogusuFactory 4",
-            "Overlord_FlyingTileFactory",
-            "Overlord_WizzrobeFactory",
-            "Overlord_ZoroFactory",
-            "Overlord_StalfosTrapTriggerWindow",
-            "Overlord_RedStalfosTrap",
-            "Overlord_ArmosCoordinator",
-            "Overlord_BombTrap",
+            "Overlord_SpritePositionTarget", // 0x00
+            "Overlord_AllDirectionMetalBallFactory", // 0x01
+            "Overlord_CascadeMetalBallFactory", // 0x02
+            "Overlord_StalfosFactory", // 0x03
+            "Overlord_StalfosTrap" , // 0x04
+            "Overlord_SnakeTrap", // 0x05
+            "Overlord_MovingFloor" , // 0x06
+            "Overlord_ZolFactory", // 0x07
+            "Overlord_WallMasterFactory" , // 0x08
+            "Overlord_CrumbleTilePath 1", // 0x09
+            "Overlord_CrumbleTilePath 2" , // 0x0A
+            "Overlord_CrumbleTilePath 3", // 0x0B
+            "Overlord_CrumbleTilePath 4" , // 0x0C
+            "Overlord_CrumbleTilePath 5", // 0x0D
+            "Overlord_CrumbleTilePath 6", // 0x0E
+            "Overlord_PirogusuFactory 1", // 0x0F
+            "Overlord_PirogusuFactory 2", // 0x10
+            "Overlord_PirogusuFactory 3", // 0x11
+            "Overlord_PirogusuFactory 4", // 0x12
+            "Overlord_FlyingTileFactory", // 0x13
+            "Overlord_WizzrobeFactory", // 0x14
+            "Overlord_ZoroFactory", // 0x15
+            "Overlord_StalfosTrapTriggerWindow", // 0x16
+            "Overlord_RedStalfosTrap", // 0x17
+            "Overlord_ArmosCoordinator", // 0x18
+            "Overlord_BombTrap", // 0x19
         };
     }
 }

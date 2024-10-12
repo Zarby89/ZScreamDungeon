@@ -806,13 +806,13 @@ namespace ZeldaFullEditor
             }
 
             // @scawful: Test for collision layout code 
-            Task.Factory.StartNew(() =>
+            /*Task.Factory.StartNew(() =>
             {
                 if (Console.ReadKey().Key == ConsoleKey.UpArrow)
                 {
                     room.loadCollisionLayout(true);
                 }
-            });
+            });*/
         }
 
         public void drawDoorsPosition(Graphics g)

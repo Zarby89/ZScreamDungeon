@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
@@ -26,6 +27,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private byte[] mapdata = new byte[64 * 64];
         private byte[] dwmapdata = new byte[64 * 64];
         private int swordX = 0;
+
+        public OverworldEditor oweditor;
 
         public IntPtr dungmaptiles8Ptr = Marshal.AllocHGlobal(0x8000);
         public Bitmap dungmaptiles8Bitmap;
@@ -115,8 +118,31 @@ namespace ZeldaFullEditor.Gui.MainTabs
             overworldCombobox.SelectedIndex = 0;
         }
 
+        public void CreateTempOWBitmap()
+        {
+            tempOW = new Bitmap(4096, 4096);
+            Graphics g = Graphics.FromImage(tempOW);
+            for (int i = 0; i < 64; i++)
+            {
+                int x = (i % 8) * 512;
+                int y = (i / 8) * 512;
+
+                int k = this.oweditor.scene.ow.AllMaps[i].ParentID;
+                g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k]), new Rectangle(x, y, 512, 512));
+            }
+
+            for (int i = 0; i < 64; i++)
+            {
+                int x = (i % 8) * 512;
+                int y = (i / 8) * 512;
+
+                g.DrawImage(this.oweditor.scene.ow.AllMaps[i].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+            }
+        }
+
         public void Init()
         {
+            
             triforceVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
             crystalVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
 
@@ -2637,8 +2663,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         myClick = 256;
                     }
 
+
+                  
+
+
                     selectedMapIcon.X = (short)(mxClick - mxDist);
                     selectedMapIcon.Y = (short)(myClick - myDist);
+                    if (selectedMapIcon.X < 0) { selectedMapIcon.X = 0; }
+                    if (selectedMapIcon.Y < 0) { selectedMapIcon.Y = 0; }
+                    overworldpreviewPicturebox.Refresh();
                     mapPicturebox.Refresh();
                 }
             }
@@ -3183,6 +3216,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         private void tabPage1_Click(object sender, EventArgs e)
         {
+        }
+
+        private void mapPicturebox_Click(object sender, EventArgs e)
+        {
+
+        }
+        Bitmap tempOW;
+        private void overworldpreviewPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            if (selectedMapIcon != null)
+            {
+                int screenxpos = selectedMapIcon.X-8;
+                int screenypos = selectedMapIcon.Y-8;
+                screenxpos.Clamp(0, 4096);
+                screenypos.Clamp(0, 4096);
+
+                e.Graphics.DrawImage(tempOW, new Rectangle(0, 0, 256, 256), new Rectangle(screenxpos*16, screenypos*16, 256, 256), GraphicsUnit.Pixel);
+                e.Graphics.FillRectangle(Brushes.Red, new Rectangle(128 - 4, 128 - 4, 8, 8));
+            }
         }
     }
 }
