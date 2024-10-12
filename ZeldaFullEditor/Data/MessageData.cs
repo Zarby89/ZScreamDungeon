@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Controls;
 
 namespace ZeldaFullEditor.Data
 {
@@ -39,6 +42,8 @@ namespace ZeldaFullEditor.Data
         /// </summary>
         public int Address { get; internal set; }
 
+        public int Height { get; internal set; }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="MessageData"/> class.
         /// </summary>
@@ -56,6 +61,7 @@ namespace ZeldaFullEditor.Data
             this.DataParsed = parsedData;
             this.RawString = rawString;
             this.ContentsParsed = parsedString;
+            this.Height = ((Regex.Matches(rawString, @"\[1\]|\[2\]|\[3\]|\[V\]").Count) * 13)+14;
         }
 
         /// <summary>
@@ -68,6 +74,7 @@ namespace ZeldaFullEditor.Data
             this.ContentsParsed = messageString;
             this.RawString = this.OptimizeMessageForDictionary(messageString);
             this.RecalculateData();
+            this.Height = ((Regex.Matches(RawString, @"\[1\]|\[2\]|\[3\]|\[V\]").Count) * 13) + 14;
         }
 
 		/// <summary>

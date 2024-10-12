@@ -65,6 +65,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.textwrapButton = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -93,6 +94,7 @@
             // textListbox
             // 
             this.textListbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textListbox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.textListbox.FormattingEnabled = true;
             this.textListbox.Location = new System.Drawing.Point(0, 46);
             this.textListbox.Name = "textListbox";
@@ -443,7 +445,8 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
-            this.toolStripButton2});
+            this.toolStripButton2,
+            this.textwrapButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(981, 25);
@@ -470,6 +473,19 @@
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "Import text";
             this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click);
+            // 
+            // textwrapButton
+            // 
+            this.textwrapButton.Checked = true;
+            this.textwrapButton.CheckOnClick = true;
+            this.textwrapButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.textwrapButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.textwrapButton.Image = ((System.Drawing.Image)(resources.GetObject("textwrapButton.Image")));
+            this.textwrapButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.textwrapButton.Name = "textwrapButton";
+            this.textwrapButton.Size = new System.Drawing.Size(23, 22);
+            this.textwrapButton.Text = "Show multiple lines list";
+            this.textwrapButton.CheckStateChanged += new System.EventHandler(this.textwrapButton_CheckStateChanged);
             // 
             // TextEditor
             // 
@@ -535,5 +551,6 @@
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private System.Windows.Forms.CheckBox fontGridBox;
 		private Gui.ExtraForms.Hexbox ParamsBox;
-	}
+        private System.Windows.Forms.ToolStripButton textwrapButton;
+    }
 }
