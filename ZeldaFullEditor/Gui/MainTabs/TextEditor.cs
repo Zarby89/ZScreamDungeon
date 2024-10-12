@@ -27,6 +27,7 @@ namespace ZeldaFullEditor
 		public const byte MessageTerminator = 0x7F;
 		public const byte NumberOfCharacters = 100;
 		private bool CustomDraw = false;
+		private bool NeedRefresh = false;
 
 		readonly byte[] widthArray = new byte[NumberOfCharacters];
 		static readonly int defaultColor = 6;
@@ -59,6 +60,8 @@ namespace ZeldaFullEditor
 			pictureBox1.MouseWheel += new MouseEventHandler(PictureBox1_MouseWheel);
             textListbox.DrawItem += TextListbox_DrawItem;
 			textListbox.MeasureItem += TextListbox_MeasureItem;
+
+
         }
 
 		public class TextElement
@@ -972,9 +975,11 @@ namespace ZeldaFullEditor
 		SolidBrush bg1 = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
         SolidBrush bg2 = new SolidBrush(Color.FromArgb(255, 240, 240, 255));
         SolidBrush bg3 = new SolidBrush(Color.FromArgb(255, 40, 40, 255));
+
+
         private void TextListbox_DrawItem(object sender, DrawItemEventArgs e)
         {
-
+			
             string s = textListbox.Items[e.Index].ToString();
 
             s = Regex.Replace(s, @"\[1\]|\[2\]|\[3\]|\[V\]", "\r\n");
@@ -983,13 +988,13 @@ namespace ZeldaFullEditor
 
 				if ((e.Index & 0x01) == 0x01)
 				{
-					e.DrawBackground();
-					e.Graphics.FillRectangle(bg1, new Rectangle(e.Bounds.X, e.Bounds.Y, textListbox.Width, e.Bounds.Height));
+					//e.DrawBackground();
+					e.Graphics.FillRectangle(bg1, e.Bounds);
 				}
 				else
 				{
-					e.DrawBackground();
-					e.Graphics.FillRectangle(bg2, new Rectangle(e.Bounds.X, e.Bounds.Y, textListbox.Width, e.Bounds.Height));
+					//e.DrawBackground();
+					e.Graphics.FillRectangle(bg2, e.Bounds);
                 }
 			}
 			else
@@ -997,7 +1002,7 @@ namespace ZeldaFullEditor
 				e.DrawBackground();
 			}
             e.Graphics.DrawString(s, e.Font, new SolidBrush(e.ForeColor), e.Bounds);
-
+            
         }
 
         private void TextListbox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1480,6 +1485,7 @@ namespace ZeldaFullEditor
 			//if (!fromForm) 
 			//{
 			UpdateTextBox();
+			NeedRefresh = true;
 			//}
 		}
 
@@ -1738,10 +1744,15 @@ namespace ZeldaFullEditor
 
 		private void TextBox1_Leave(object sender, EventArgs e)
 		{
+			if (!NeedRefresh)
+			{
+				return;
+			}
 			textListbox.BeginUpdate();
 			textListbox.DataSource = null;
 			textListbox.DataSource = DisplayedMessages;
 			textListbox.EndUpdate();
+			NeedRefresh = false;
 		}
 
         private void textwrapButton_CheckStateChanged(object sender, EventArgs e)
