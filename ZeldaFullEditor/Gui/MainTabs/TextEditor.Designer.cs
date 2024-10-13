@@ -88,7 +88,7 @@
             this.panel1.Enabled = false;
             this.panel1.Location = new System.Drawing.Point(3, 29);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(433, 714);
+            this.panel1.Size = new System.Drawing.Size(620, 676);
             this.panel1.TabIndex = 22;
             // 
             // textListbox
@@ -98,7 +98,7 @@
             this.textListbox.FormattingEnabled = true;
             this.textListbox.Location = new System.Drawing.Point(0, 46);
             this.textListbox.Name = "textListbox";
-            this.textListbox.Size = new System.Drawing.Size(433, 668);
+            this.textListbox.Size = new System.Drawing.Size(620, 630);
             this.textListbox.TabIndex = 1;
             this.textListbox.SelectedIndexChanged += new System.EventHandler(this.TextListbox_SelectedIndexChanged);
             // 
@@ -108,16 +108,16 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Location = new System.Drawing.Point(0, 33);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 13);
+            this.label1.Size = new System.Drawing.Size(85, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Available messages";
+            this.label1.Text = "List of messages";
             // 
             // searchTextbox
             // 
             this.searchTextbox.Dock = System.Windows.Forms.DockStyle.Top;
             this.searchTextbox.Location = new System.Drawing.Point(0, 13);
             this.searchTextbox.Name = "searchTextbox";
-            this.searchTextbox.Size = new System.Drawing.Size(433, 20);
+            this.searchTextbox.Size = new System.Drawing.Size(620, 20);
             this.searchTextbox.TabIndex = 9;
             this.searchTextbox.TextChanged += new System.EventHandler(this.SearchTextbox_TextChanged);
             // 
@@ -155,9 +155,9 @@
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.pictureBox2);
             this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Location = new System.Drawing.Point(442, 28);
+            this.panel2.Location = new System.Drawing.Point(629, 28);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(520, 715);
+            this.panel2.Size = new System.Drawing.Size(520, 677);
             this.panel2.TabIndex = 23;
             // 
             // ParamsBox
@@ -178,6 +178,7 @@
             // 
             // fontGridBox
             // 
+            this.fontGridBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.fontGridBox.AutoSize = true;
             this.fontGridBox.Location = new System.Drawing.Point(411, 596);
             this.fontGridBox.Name = "fontGridBox";
@@ -189,6 +190,7 @@
             // 
             // BytesDDD
             // 
+            this.BytesDDD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BytesDDD.Location = new System.Drawing.Point(408, 413);
             this.BytesDDD.Name = "BytesDDD";
             this.BytesDDD.Size = new System.Drawing.Size(105, 28);
@@ -266,6 +268,7 @@
             // 
             // button5
             // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.Location = new System.Drawing.Point(411, 648);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(104, 23);
@@ -276,6 +279,7 @@
             // 
             // button6
             // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.Location = new System.Drawing.Point(411, 619);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(104, 23);
@@ -294,6 +298,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.pictureBox3);
             this.groupBox1.Controls.Add(this.SelectedTileASCII);
             this.groupBox1.Controls.Add(this.SelectedTileID);
@@ -381,6 +386,7 @@
             // 
             // button4
             // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(408, 447);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(105, 28);
@@ -391,6 +397,7 @@
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Location = new System.Drawing.Point(265, 619);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(140, 23);
@@ -401,6 +408,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(265, 648);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(140, 23);
@@ -411,6 +419,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 397);
             this.label5.Name = "label5";
@@ -420,6 +429,7 @@
             // 
             // pictureBox2
             // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox2.Location = new System.Drawing.Point(6, 413);
             this.pictureBox2.MinimumSize = new System.Drawing.Size(256, 244);
             this.pictureBox2.Name = "pictureBox2";
@@ -449,7 +459,7 @@
             this.textwrapButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(981, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1168, 25);
             this.toolStrip1.TabIndex = 24;
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStrip1_ItemClicked);
@@ -495,7 +505,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Name = "TextEditor";
-            this.Size = new System.Drawing.Size(981, 758);
+            this.Size = new System.Drawing.Size(1168, 720);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
