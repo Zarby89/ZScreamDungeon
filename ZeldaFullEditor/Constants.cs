@@ -318,7 +318,7 @@ namespace ZeldaFullEditor
         public static int OverworldCustomAnimatedGFXArray = 0x1402A0; // 1 byte for each overworld area (0xA0)
         public static int OverworldCustomAnimatedGFXEnabled = 0x140143; // 1 byte, not 0 if enabled
 
-        public static int[] OverworldCustomDefualtTileGFX = { 0x3A, 0x3B, 0x3C, 0x3D, 0x53, 0x4D, 0x3E, 0x5B,   // LW
+        public static int[] OverworldCustomDefaultTileGFX = { 0x3A, 0x3B, 0x3C, 0x3D, 0x53, 0x4D, 0x3E, 0x5B,   // LW
                                                               0x42, 0x43, 0x44, 0x45, 0x2F, 0x30, 0x3F, 0x5B,   // DW
                                                               0x3A, 0x3B, 0x3C, 0x3D, 0x47, 0x48, 0x3E, 0x5B }; // SW
 

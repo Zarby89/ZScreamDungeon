@@ -828,7 +828,7 @@ namespace ZeldaFullEditor
             {
                 if (this.StaticGFX[i] == 0xFF)
                 {
-                    this.StaticGFX[i] = (byte)Constants.OverworldCustomDefualtTileGFX[i + world];
+                    this.StaticGFX[i] = (byte)Constants.OverworldCustomDefaultTileGFX[i + world];
                 }
             }
 
