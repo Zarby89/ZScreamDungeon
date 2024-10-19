@@ -142,7 +142,8 @@ namespace ZeldaFullEditor.Gui
             int y = (tile8selected / 16);
             int x = tile8selected - (y * 16);
 
-            e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * 16, y * 16, 16, 16));
+            
+            e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * 16, y * 16, tiledrawsizeHexbox.HexValue*16, tiledrawsizeHexbox.HexValue * 16));
         }
 
         private void mirrorXCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -249,30 +250,108 @@ namespace ZeldaFullEditor.Gui
             // When left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
             if (e.Button == MouseButtons.Left)
             {
-                TileInfo t = new TileInfo(tile8selected,
+                if (tiledrawsizeHexbox.HexValue == 1)
+                {
+                    TileInfo t = new TileInfo(tile8selected,
+                        (byte)paletteUpDown.Value,
+                        inFrontCheckbox.Checked,
+                        mirrorXCheckbox.Checked,
+                        mirrorYCheckbox.Checked);
+                    if (t8x == 0 && t8y == 0)
+                    {
+                        allTiles[t16] = new Tile16(t, allTiles[t16].Tile1, allTiles[t16].Tile2, allTiles[t16].Tile3);
+                    }
+                    else if (t8x == 1 && t8y == 0)
+                    {
+                        allTiles[t16] = new Tile16(allTiles[t16].Tile0, t, allTiles[t16].Tile2, allTiles[t16].Tile3);
+                    }
+                    else if (t8x == 0 && t8y == 1)
+                    {
+                        allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, t, allTiles[t16].Tile3);
+                    }
+                    else if (t8x == 1 && t8y == 1)
+                    {
+                        allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, allTiles[t16].Tile2, t);
+                    }
+
+                    BuildTiles16Gfx();
+                }
+                else if (tiledrawsizeHexbox.HexValue == 2)
+                {
+                    TileInfo t = new TileInfo(tile8selected,
                     (byte)paletteUpDown.Value,
                     inFrontCheckbox.Checked,
                     mirrorXCheckbox.Checked,
                     mirrorYCheckbox.Checked);
-                if (t8x == 0 && t8y == 0)
-                {
-                    allTiles[t16] = new Tile16(t, allTiles[t16].Tile1, allTiles[t16].Tile2, allTiles[t16].Tile3);
-                }
-                else if (t8x == 1 && t8y == 0)
-                {
-                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, t, allTiles[t16].Tile2, allTiles[t16].Tile3);
-                }
-                else if (t8x == 0 && t8y == 1)
-                {
-                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, t, allTiles[t16].Tile3);
-                }
-                else if (t8x == 1 && t8y == 1)
-                {
-                    allTiles[t16] = new Tile16(allTiles[t16].Tile0, allTiles[t16].Tile1, allTiles[t16].Tile2, t);
-                }
+                    TileInfo t2 = new TileInfo((ushort)(tile8selected + 1),
+                    (byte)paletteUpDown.Value,
+                    inFrontCheckbox.Checked,
+                    mirrorXCheckbox.Checked,
+                    mirrorYCheckbox.Checked);
+                    TileInfo t3 = new TileInfo((ushort)(tile8selected + 16),
+                    (byte)paletteUpDown.Value,
+                    inFrontCheckbox.Checked,
+                    mirrorXCheckbox.Checked,
+                    mirrorYCheckbox.Checked);
+                    TileInfo t4 = new TileInfo((ushort)(tile8selected + 17),
+                    (byte)paletteUpDown.Value,
+                    inFrontCheckbox.Checked,
+                    mirrorXCheckbox.Checked,
+                    mirrorYCheckbox.Checked);
 
-                BuildTiles16Gfx();
+                    allTiles[t16] = new Tile16(t, t2, t3, t4);
+
+                    if (mirrorXCheckbox.Checked) // invert tiles
+                    {
+                        allTiles[t16] = new Tile16(t2, t, t4, t3);
+                    }
+
+                    if (mirrorYCheckbox.Checked) // invert tiles
+                    {
+                        allTiles[t16] = new Tile16(t3, t4, t, t2);
+                    }
+
+                    if (mirrorXCheckbox.Checked && mirrorYCheckbox.Checked)
+                    {
+                        allTiles[t16] = new Tile16(t4, t3, t2, t);
+                    }
+
+                        BuildTiles16Gfx();
+                }
+                else if (tiledrawsizeHexbox.HexValue == 4)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int j = 0; j < 2; j++)
+                        {
+                            TileInfo t = new TileInfo((ushort)(tile8selected + (i * 2) + (j * 32)),
+                        (byte)paletteUpDown.Value,
+                        inFrontCheckbox.Checked,
+                        mirrorXCheckbox.Checked,
+                        mirrorYCheckbox.Checked);
+                            TileInfo t2 = new TileInfo((ushort)(tile8selected + 1 + (i *2) + (j * 32)),
+                            (byte)paletteUpDown.Value,
+                            inFrontCheckbox.Checked,
+                            mirrorXCheckbox.Checked,
+                            mirrorYCheckbox.Checked);
+                            TileInfo t3 = new TileInfo((ushort)(tile8selected + 16 + (i * 2) + (j * 32)),
+                            (byte)paletteUpDown.Value,
+                            inFrontCheckbox.Checked,
+                            mirrorXCheckbox.Checked,
+                            mirrorYCheckbox.Checked);
+                            TileInfo t4 = new TileInfo((ushort)(tile8selected + 17 + (i * 2) + (j * 32)),
+                            (byte)paletteUpDown.Value,
+                            inFrontCheckbox.Checked,
+                            mirrorXCheckbox.Checked,
+                            mirrorYCheckbox.Checked);
+
+                            allTiles[t16 + i + (j*8)] = new Tile16(t, t2, t3, t4);
+                        }
+                    }
+                    BuildTiles16Gfx();
+                }
             }
+
             // When right clicked, get the select the tile 8 from the corrisponding quadrant of the tile 16
             else
             {
@@ -684,6 +763,11 @@ namespace ZeldaFullEditor.Gui
             }
 
 
+        }
+
+        private void tiledrawsizeHexbox_TextChanged(object sender, EventArgs e)
+        {
+            pictureboxTile8.Refresh();
         }
     }
 }

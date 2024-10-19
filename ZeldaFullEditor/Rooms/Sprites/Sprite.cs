@@ -51,7 +51,7 @@ namespace ZeldaFullEditor
             ROM.uniqueSpriteID += 1;
             if ((subtype & 0x07) == 0x07)
             {
-                if (id > 0 && id <= 0x19)
+                if (id > 0 && id <= 0x1A)
                 {
                     this.name = Sprites_Names.overlordnames[id - 1];
                 }

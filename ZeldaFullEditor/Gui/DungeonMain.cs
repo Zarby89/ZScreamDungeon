@@ -212,6 +212,8 @@ namespace ZeldaFullEditor
             this.Controls.Add(this.spriteEditor);
             this.Controls.Add(this.nameEditor);
 
+            
+
             // If we are in the debug version, show the Experimental Features drop down menu.
 #if DEBUG
             this.ExperimentalToolStripMenuItem1.Visible = true;
@@ -728,8 +730,8 @@ namespace ZeldaFullEditor
             // Initialize the map draw.
             GFX.previewObjectsPtr = new IntPtr[600];
             GFX.previewObjectsBitmap = new Bitmap[600];
-            GFX.previewSpritesPtr = new IntPtr[256];
-            GFX.previewSpritesBitmap = new Bitmap[256];
+            GFX.previewSpritesPtr = new IntPtr[266];
+            GFX.previewSpritesBitmap = new Bitmap[266];
             GFX.previewChestsPtr = new IntPtr[76];
             GFX.previewChestsBitmap = new Bitmap[76];
 
@@ -739,7 +741,7 @@ namespace ZeldaFullEditor
                 GFX.previewObjectsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewObjectsPtr[i]);
             }
 
-            for (int i = 0; i < 256; i++)
+            for (int i = 0; i < 266; i++)
             {
                 GFX.previewSpritesPtr[i] = Marshal.AllocHGlobal(64 * 64);
                 GFX.previewSpritesBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewSpritesPtr[i]);
@@ -833,6 +835,7 @@ namespace ZeldaFullEditor
             };
             this.RefreshRecentsFiles();
             this.overworldEditor.InitOpen(this);
+            screenEditor.oweditor = overworldEditor;
             this.textEditor.InitializeOnOpen();
             this.screenEditor.Init();
             // InitDungeonViewer();
@@ -1779,13 +1782,16 @@ namespace ZeldaFullEditor
             Entrance entrance = this.selectedEntrance;
             if (e?.Node.Tag != null)
             {
-                entrance = DungeonsData.Entrances[(int)e.Node.Tag];
-                if (e.Node.Parent?.Name == "StartingEntranceNode")
+                
+                if (e.Node.Parent?.Index == 1)
                 {
                     entrance = DungeonsData.StartingEntrances[(int)e.Node.Tag];
                 }
+                else
+                {
+                    entrance = DungeonsData.Entrances[(int)e.Node.Tag];
+                }
             }
-
             this.setEntranceProperties(entrance, entrance.CameraTriggerX, entrance.CameraTriggerY);
         }
 
@@ -1991,7 +1997,6 @@ namespace ZeldaFullEditor
                 .Where(x => x != null)
                 .Where(x => x.name.ToLower().Contains(searchText))
                 .OrderBy(x => x.id)
-                .Select(x => x) // ?
                 .ToArray());
 
             this.customPanel1.VerticalScroll.Value = 0;
@@ -2005,7 +2010,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            this.spritesView1.Refresh();
+            this.spritesView1.updateSize(); // will call refresh
         }
 
         private void searchTextbox_TextChanged(object sender, EventArgs e)
@@ -3917,14 +3922,17 @@ namespace ZeldaFullEditor
         bool lastTabWasNaming = false;
         private void EditorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             // copyToolStripMenuItem
             if (this.editorsTabControl.SelectedTab.Name == "textPage")
             {
+                deleteToolStripMenuItem.Enabled = false;
                 this.textEditor.BringToFront();
                 this.textEditor.Visible = true;
             }
             else
             {
+                deleteToolStripMenuItem.Enabled = true;
                 this.textEditor.Visible = false;
             }
 
@@ -4069,6 +4077,7 @@ namespace ZeldaFullEditor
                 this.screenEditor.BringToFront();
                 this.screenEditor.Buildtileset();
                 this.screenEditor.updateGFXGroup();
+                this.screenEditor.CreateTempOWBitmap();
                 this.screenEditor.Visible = true;
             }
             else

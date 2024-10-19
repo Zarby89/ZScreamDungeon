@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui.TextEditorExtra;
 
@@ -25,6 +26,8 @@ namespace ZeldaFullEditor
 		private const int DictionarySize = 0xEC8D9 - 0xEC7C7;
 		public const byte MessageTerminator = 0x7F;
 		public const byte NumberOfCharacters = 100;
+		private bool CustomDraw = false;
+		private bool NeedRefresh = false;
 
 		readonly byte[] widthArray = new byte[NumberOfCharacters];
 		static readonly int defaultColor = 6;
@@ -50,11 +53,16 @@ namespace ZeldaFullEditor
 
 		public TextEditor()
 		{
+			
 			InitializeComponent();
 			TextCommandList.Items.AddRange(TextCommands);
 			SpecialsList.Items.AddRange(SpecialChars);
 			pictureBox1.MouseWheel += new MouseEventHandler(PictureBox1_MouseWheel);
-		}
+            textListbox.DrawItem += TextListbox_DrawItem;
+			textListbox.MeasureItem += TextListbox_MeasureItem;
+
+
+        }
 
 		public class TextElement
 		{
@@ -944,7 +952,9 @@ namespace ZeldaFullEditor
 			textListbox.EndUpdate();
 
 			textListbox.DisplayMember = "Text";
-			pictureBox2.Refresh();
+            
+
+            pictureBox2.Refresh();
 
 			SelectedTileID.Text = $"{selectedTile:X2}";
 			SelectedTileASCII.Text = ParseTextDataByte((byte) selectedTile);
@@ -952,12 +962,50 @@ namespace ZeldaFullEditor
 			GFX.CreateFontGfxData(ROM.DATA);
 		}
 
+		private void TextListbox_MeasureItem(object sender, MeasureItemEventArgs e)
+		{
+			e.ItemHeight = DisplayedMessages[e.Index].Height;
+		}
+
 		public static string AddNewLinesToCommands(string str)
 		{
 			return Regex.Replace(str, @"\[[123V]\]", "\r\n$0");
 		}
 
-		private void TextListbox_SelectedIndexChanged(object sender, EventArgs e)
+		SolidBrush bg1 = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
+        SolidBrush bg2 = new SolidBrush(Color.FromArgb(255, 240, 240, 255));
+        SolidBrush bg3 = new SolidBrush(Color.FromArgb(255, 40, 40, 255));
+
+
+        private void TextListbox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+			
+            string s = textListbox.Items[e.Index].ToString();
+
+            s = Regex.Replace(s, @"\[1\]|\[2\]|\[3\]|\[V\]", "\r\n");
+			if (textListbox.SelectedIndex != e.Index)
+			{
+
+				if ((e.Index & 0x01) == 0x01)
+				{
+					//e.DrawBackground();
+					e.Graphics.FillRectangle(bg1, e.Bounds);
+				}
+				else
+				{
+					//e.DrawBackground();
+					e.Graphics.FillRectangle(bg2, e.Bounds);
+                }
+			}
+			else
+			{
+				e.DrawBackground();
+			}
+            e.Graphics.DrawString(s, e.Font, new SolidBrush(e.ForeColor), e.Bounds);
+            
+        }
+
+        private void TextListbox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (textListbox.SelectedIndex == -1)
 			{
@@ -1437,6 +1485,7 @@ namespace ZeldaFullEditor
 			//if (!fromForm) 
 			//{
 			UpdateTextBox();
+			NeedRefresh = true;
 			//}
 		}
 
@@ -1564,13 +1613,14 @@ namespace ZeldaFullEditor
 
 		public void Delete()
 		{
+			/*
 			// Determine if any text is selected in the TextBox control.
 			if (textBox1.SelectionLength == 0)
 			{
 				// Clear all of the text in the textbox.
 				textBox1.Clear();
-			}
-		}
+			}*/
+        }
 
 		public void SelectAll()
 		{
@@ -1611,6 +1661,7 @@ namespace ZeldaFullEditor
 			{
 				// Copy the selected text to the Clipboard.
 				textBox1.Copy();
+				
 			}
 		}
 
@@ -1693,10 +1744,34 @@ namespace ZeldaFullEditor
 
 		private void TextBox1_Leave(object sender, EventArgs e)
 		{
+			if (!NeedRefresh)
+			{
+				return;
+			}
 			textListbox.BeginUpdate();
 			textListbox.DataSource = null;
 			textListbox.DataSource = DisplayedMessages;
 			textListbox.EndUpdate();
+			NeedRefresh = false;
 		}
-	}
+
+        private void textwrapButton_CheckStateChanged(object sender, EventArgs e)
+        {
+			if (textwrapButton.Checked == true)
+			{
+				CustomDraw = true;
+                textListbox.DrawItem += TextListbox_DrawItem;
+                textListbox.MeasureItem += TextListbox_MeasureItem;
+				textListbox.DrawMode = DrawMode.OwnerDrawVariable;
+            }
+			else
+			{
+				CustomDraw = false;
+                textListbox.DrawItem -= TextListbox_DrawItem;
+                textListbox.MeasureItem -= TextListbox_MeasureItem;
+				textListbox.DrawMode = DrawMode.Normal;
+            }
+			textListbox.Refresh();
+        }
+    }
 }

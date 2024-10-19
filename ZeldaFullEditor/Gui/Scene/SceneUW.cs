@@ -746,7 +746,7 @@ namespace ZeldaFullEditor
 
                 if (mainForm.showStairIDs && doorsObject.Contains(o.id))
                 {
-                    drawText(g, o.nx * 8, o.ny * 8, "to : " + room.staircase_rooms[stairCount].ToString());
+                    drawText(g, o.nx * 8, o.ny * 8, "to : " + room.staircase_rooms[stairCount].ToString("X2"));
                     stairCount++;
                 }
             }
@@ -806,13 +806,13 @@ namespace ZeldaFullEditor
             }
 
             // @scawful: Test for collision layout code 
-            Task.Factory.StartNew(() =>
+            /*Task.Factory.StartNew(() =>
             {
                 if (Console.ReadKey().Key == ConsoleKey.UpArrow)
                 {
                     room.loadCollisionLayout(true);
                 }
-            });
+            });*/
         }
 
         public void drawDoorsPosition(Graphics g)

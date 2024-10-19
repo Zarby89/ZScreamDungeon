@@ -63,7 +63,7 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    e.Graphics.DrawString((o.id - 1).ToString("X2"), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
+                    e.Graphics.DrawString((o.id).ToString("X2"), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
                     e.Graphics.DrawString(Sprites_Names.overlordnames[o.id - 1], Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + 40 + (ypos * 4), 64, 24));
                 }
 
@@ -95,8 +95,8 @@ namespace ZeldaFullEditor
 
         public void updateSize()
         {
-            int w = (this.Size.Width / 64);
-            int h = (((items.Count / w) + 1) * 64);
+            int w = (this.Size.Width / 68);
+            int h = (((items.Count / w) + 1) * 68);
             this.Size = new Size(this.Size.Width, h);
 
             if (items.Count > 0)
@@ -150,8 +150,8 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
         {
-            int w = (this.Size.Width / 64);
-            int h = (((items.Count / w) + 1) * 64);
+            int w = (this.Size.Width / 68);
+            int h = (((items.Count / w) + 1) * 68);
             int xpos = 0;
             int ypos = 0;
             int index = 0;
