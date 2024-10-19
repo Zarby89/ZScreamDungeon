@@ -7,6 +7,8 @@
 
 pushpc
 
+incsrc HardwareRegisters.asm
+
 AnimatedTileGFXSet = $0FC0
 TransGFXModuleIndex = $0CF3
 

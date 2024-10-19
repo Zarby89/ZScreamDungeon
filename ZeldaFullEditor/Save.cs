@@ -363,7 +363,14 @@ namespace ZeldaFullEditor
             }
             else
             {
-                UIText.CryAboutSaving("Missing ASM file 'ZSCustomOverworld.asm'.\nSaving will continue but the ASM will not be applied.");
+                if (!File.Exists("HardwareRegisters.asm"))
+                {
+                    UIText.CryAboutSaving("Missing ASM file 'HardwareRegisters.asm'.\nSaving will continue but the ASM and 'ZSCustomOverworld.asm' will not be applied.");
+                }
+                else
+                {
+                    UIText.CryAboutSaving("Missing ASM file 'ZSCustomOverworld.asm'.\nSaving will continue but the ASM will not be applied.");
+                }
             }
 
             foreach (Asarerror error in Asar.geterrors())
