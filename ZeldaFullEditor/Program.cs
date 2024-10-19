@@ -29,6 +29,7 @@ namespace ZeldaFullEditor
             "Lidgren.Network.dll",
             "ScratchPad.dat",
             "ZSCustomOverworld.asm",
+            "HardwareRegisters.asm",
             "CustomCollision.asm",
             "newgraves.asm",
             "ZScream.exe.config"

@@ -5,39 +5,56 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
-AnimatedTileGFXSet = $0FC0
+pushpc
 
-Sound_LoadLightWorldSongBank                      = $808913
-DecompOwAnimatedTiles                             = $80D394
-GetAnimatedSpriteTile                             = $80D4DB
-GetAnimatedSpriteTile_variable                    = $80D4ED
-Do3To4High16Bit                                   = $80DF4F
-InitTilesets                                      = $80E19B
-CopyFontToVram                                    = $80E556
-DeleteCertainAncillaeStopDashing                  = $828B0C
-Overworld_FinishTransGfx_firstHalf                = $82ABBE
-Overworld_LoadSubscreenAndSilenceSFX1             = $82AF19
-Dungeon_LoadPalettes_cacheSettings                = $82C65F
-LoadSubscreenOverlay                              = $82FD0D
-Link_ItemReset_FromOverworldThings                = $87B107
-Tagalong_Init                                     = $899EFC
-Sprite_ReinitWarpVortex                           = $89AF89
-Sprite_ResetAll                                   = $89C44E
-Sprite_OverworldReloadAll                         = $89C499
-Overworld_SetFixedColorAndScroll                  = $8BFE70
-Overworld_LoadPalettes                            = $8ED5A8
-Palette_SetOwBgColor_Long                         = $8ED618
-LoadGearPalettes_bunny                            = $8ED6DD
-Palette_SpriteAux3                                = $9BEC77
-Palette_MainSpr                                   = $9BEC9E
-Palette_SpriteAux1                                = $9BECC5
-Palette_SpriteAux2                                = $9BECE4
-Palette_Sword                                     = $9BED03
-Palette_Shield                                    = $9BED29
-Palette_MiscSpr                                   = $9BED6E
-Palette_ArmorAndGloves                            = $9BEDF9
-Palette_Hud                                       = $9BEE52
-Palette_OverworldBgMain                           = $9BEEC7
+incsrc HardwareRegisters.asm
+
+AnimatedTileGFXSet = $0FC0
+TransGFXModuleIndex = $0CF3
+
+Sound_LoadLightWorldSongBank              = $808913
+GFXSheetPointers_sprite_bank              = $00CF80
+GFXSheetPointers_sprite_high              = $00D0D2
+GFXSheetPointers_sprite_low               = $00D1B1
+DecompOwAnimatedTiles                     = $80D394
+GetAnimatedSpriteTile                     = $80D4DB
+GetAnimatedSpriteTile_variable            = $80D4ED
+LoadTransAuxGFX_sprite_continue           = $00D706
+Do3To4High16Bit                           = $80DF4F
+Do3To4Low16Bit                            = $00DFB8
+InitTilesets                              = $80E19B
+CopyFontToVram                            = $80E556
+Decomp_bg_variable                        = $00E78F
+
+DeleteCertainAncillaeStopDashing          = $828B0C
+Overworld_FinishTransGfx_firstHalf_Retrun = $02ABC5
+Overworld_LoadSubscreenAndSilenceSFX1     = $82AF19
+Dungeon_LoadPalettes_cacheSettings        = $82C65F
+LoadSubscreenOverlay                      = $82FD0D
+
+Link_ItemReset_FromOverworldThings        = $87B107
+
+Tagalong_Init                             = $899EFC
+Sprite_ReinitWarpVortex                   = $89AF89
+Sprite_ResetAll                           = $89C44E
+Sprite_OverworldReloadAll                 = $89C499
+
+Overworld_SetFixedColorAndScroll          = $8BFE70
+
+Overworld_LoadPalettes                    = $8ED5A8
+Palette_SetOwBgColor_Long                 = $8ED618
+LoadGearPalettes_bunny                    = $8ED6DD
+
+Palette_SpriteAux3                        = $9BEC77
+Palette_MainSpr                           = $9BEC9E
+Palette_SpriteAux1                        = $9BECC5
+Palette_SpriteAux2                        = $9BECE4
+Palette_Sword                             = $9BED03
+Palette_Shield                            = $9BED29
+Palette_MiscSpr                           = $9BED6E
+Palette_ArmorAndGloves                    = $9BEDF9
+Palette_Hud                               = $9BEE52
+Palette_OverworldBgMain                   = $9BEEC7
 
 ; ==============================================================================
 ; Fixing old hooks:
@@ -49,11 +66,11 @@ org $0BFEB6
 
 ; Main Palette loading routine.
 org $0ED5E7
-    JSL $9BEEA8 ; Palette_OverworldBgAux3
+    JSL.l $9BEEA8 ; Palette_OverworldBgAux3
 
 ; After leaving special areas like Zora's and the Master Sword area.
 org $02E94A
-    JSL $8ED5A8 ; Overworld_LoadPalettes
+    JSL.l $8ED5A8 ; Overworld_LoadPalettes
 
 ; ==============================================================================
 ; Expanded Space
@@ -94,12 +111,6 @@ Pool:
     ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
     warnpc $288140
 
-    ; ZS is weird with SW areas, so we are marking the bridge one specifically
-    ; so we can find it later.
-    org $288128
-    .BGColorTable_Bridge
-
-
     org $288140 ; $140140
     .EnableTable ; 0x20
     ; Valid values:
@@ -107,49 +118,65 @@ Pool:
     ; $FF - Enabled
 
     org $288140 ; $140140
-    .EnableBGColor
+    .EnableBGColor ; 0x01
     db $01
 
     org $288141 ; $140141
-    .EnableMainPalette 
+    .EnableMainPalette ; 0x01
     db $01
     
     org $288142 ; $140142
-    .EnableMosaic ; Unused for now.
+    .EnableMosaic ; 0x01 Unused for now.
     db $01
 
+    ; When non 0 this will allow animated tiles to be updated between OW
+    ; transitions. Default is $FF.
     org $288143 ; $140143
-    .EnableAnimated
+    .EnableAnimated ; 0x01
     db $01
     
+    ; When non 0 this will allow Subscreen Overlays to be updated between OW
+    ; transitions. Default is $FF.
     org $288144 ; $140144
-    .EnableSubScreenOverlay
+    .EnableSubScreenOverlay ; 0x01
     db $01
 
     ; This is a reserved value that ZS will write to when it has applied the
     ; ASM. That way the next time ZS loads the ROM it knows to read the custom
-    ; values instead of using the default ones.
+    ; values instead of using the default ones. The current version is 02.
     org $288145 ; $140145
-    .ZSAppliedASM
-    ;db $FF
+    .ZSAppliedASM ; 0x01
+    db $02
 
     ; When non 0 this will cause rain to appear on all areas in the beginning
     ; phase. Default is $FF.
     org $288146 ; $140146
-    .EnableBeginningRain
+    .EnableBeginningRain ; 0x01
     db $FF
 
     ; When non 0 this will disable the ambiant sound that plays in the mire
     ; area after the event is triggered. Default is $FF.
     org $288147 ; $140147
-    .EnableRainMireEvent
+    .EnableRainMireEvent ; 0x01
     db $FF
-    
+
+    ; When non 0 this will make the game reload all gfx in between OW
+    ; transitions. Default is $FF.
+    org $288148 ; $140143
+    .EnableTransitionGFXGroupLoad ; 0x01
+    db $01
+
+    ; The bridge color is different from the Master Sword area so we are going to
+    ; hard code it here for now.
+    org $288149 ; $140149
+    .BGColorTable_Bridge ; 0x02
+    dw $2669 ; Defualt vanilla LW green.
+
     ; The rest of these are extra bytes that can be used for anything else
     ; later on.
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    ;db $00, $00, $00, $00, $00
     warnpc $288160
 
     org $288160 ; $140160
@@ -218,11 +245,19 @@ Pool:
     ;db $00, $00, $00, $00, $00, $00, $00, $00
     warnpc $2882A0
 
+    ; Not the same as OWGFXGroupTable_sheet7. The game uses a combination of $59
+    ; and $5B to create the sheet in sheet #7. This is done by first transfering
+    ; all the gfx that is needed for the bottom half of the sheet (the door
+    ; frames for example) which is different depending on whether we are in the
+    ; LW or DW. It then loads the actual animated tile frames into a buffer
+    ; where it can transfer over from durring NMI based on whether we are on
+    ; Death Mountain or not (LW or DW). This table is to control the latter.
     org $2882A0 ; $1402A0
     .AnimatedTable ; 0xA0
     ; Valid values:
     ; GFX index $00 to $FF.
-    ; In vanilla, $59 are the clouds and $5B are the regular water tiles.
+    ; In vanilla, $59 are the DW door frames and clouds and $5B are the Lw door
+    ; frames and the regular water tiles.
 
     ; LW
     ;db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
@@ -291,6 +326,274 @@ Pool:
     ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
     ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
     warnpc $288480
+
+    org $288480 ; $140480
+    .OWGFXGroupTable ; 0x500 (0xA0 * 0x08)
+
+    ; 0xFF is used instead of 0x00 as the "don't change the sheet" value. That
+    ; way, we can actually use sheet 00 if we want. Just in case 0xFF is used
+    ; and there is no sheet to load when warping using the bird, unloading the
+    ; map, or exiting a dungeon, the DefaultGFXGroups values are used.
+
+    ; LW
+    org $288480 ; $140480
+    .OWGFXGroupTable_sheet0
+    ;db $3A ; 0x00 sheet 0
+
+    org $288481 ; $140481
+    .OWGFXGroupTable_sheet1
+    ;db $3B ; 0x00 sheet 1
+
+    org $288482 ; $140482
+    .OWGFXGroupTable_sheet2
+    ;db $3C ; 0x00 sheet 2
+
+    org $288483 ; $140483
+    .OWGFXGroupTable_sheet3
+    ;db $3D ; 0x00 sheet 3
+
+    org $288484 ; $140484
+    .OWGFXGroupTable_sheet4
+    ;db $57 ; 0x00 sheet 4
+
+    org $288485 ; $140485
+    .OWGFXGroupTable_sheet5
+    ;db $4C ; 0x00 sheet 5
+
+    org $288486 ; $140486
+    .OWGFXGroupTable_sheet6
+    ;db $3E ; 0x00 sheet 6
+
+    org $288487 ; $140487
+    .OWGFXGroupTable_sheet7
+    ;db $5B ; 0x00 sheet 7
+
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x01
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x02
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x03
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x04
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x05
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x06
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x07
+
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x08
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x09
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x0A
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0B
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0C
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0D
+    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0E
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x0F
+
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x10
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x11
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x12
+    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x13
+    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x14
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x15
+    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x16
+    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x17
+
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x18
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x19
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x1A
+    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x1B
+    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x1C
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x1D
+    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x1E
+    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x1F
+
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x20
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x21
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x22
+    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x23
+    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x24
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x25
+    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x26
+    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x27
+
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x28
+    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x29
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x2A
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2B
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2C
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x2D
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2E
+    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x2F
+
+    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x30
+    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x31
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x32
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x33
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x34
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x35
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x36
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x37
+
+    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x38
+    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x39
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x3A
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3B
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3C
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3D
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3E
+    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3F
+
+    ; DW
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x40
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x41
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x42
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x43
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x44
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x45
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x46
+    ;db $42, $43, $44, $45, $60, $34, $3F, $59 ; 0x47
+
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x48
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x49
+    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x4A
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4B
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4C
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4D
+    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4E
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x4F
+
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x50
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x51
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x52
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x53
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x54
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x55
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x56
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x57
+
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x58
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x59
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x5A
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5B
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5C
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x5D
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5E
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5F
+
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x60
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x61
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x62
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x63
+    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x64
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x65
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x66
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x67
+
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x68
+    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x69
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6A
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6B
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6C
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6D
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6E
+    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x6F
+
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x70
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x71
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x72
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x73
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x74
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x75
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x76
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x77
+
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x78
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x79
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7A
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7B
+    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7C
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7D
+    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7E
+    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7F
+
+    ; SW
+    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x80
+    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x81
+    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x82
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x83
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x84
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x85
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x86
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x87
+
+    ;db $3A, $3B, $3C, $17, $40, $41, $39, $5B ; 0x88
+    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x89
+    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x8A
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8B
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8C
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8D
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8E
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8F
+
+    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x90
+    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x91
+    ;db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x92
+    ;db $3A, $3B, $3C, $08, $53, $22, $1B, $5B ; 0x93
+    ;db $3A, $3B, $3C, $3D, $53, $47, $48, $5B ; 0x94
+    ;db $3A, $3B, $3C, $3D, $53, $56, $4F, $5B ; 0x95
+    ;db $3A, $3B, $3C, $3D, $35, $36, $3E, $5B ; 0x96
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x97
+
+    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x98
+    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x99
+    ;db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x9A
+    ;db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x9B
+    ;db $3A, $3B, $3C, $3D, $53, $33, $34, $5B ; 0x9C
+    ;db $3A, $3B, $3C, $3D, $53, $57, $4C, $5B ; 0x9D
+    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x9E
+    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x9F
+    warnpc $288980
+
+    ; TODO: Add a way to edit these within ZS? Unsure.
+    org $288980 ; $140980
+    .DefaultGFXGroups
+
+    ; LW
+    org $288980 ; $140980
+    .DefaultGFXGroups_sheet0
+    db $3A ; Sheet 0
+
+    org $288981 ; $140981
+    .DefaultGFXGroups_sheet1
+    db $3B ; Sheet 1
+
+    org $288982 ; $140982
+    .DefaultGFXGroups_sheet2
+    db $3C ; Sheet 2
+
+    org $288983 ; $140983
+    .DefaultGFXGroups_sheet3
+    db $3D ; Sheet 3
+
+    org $288984 ; $140984
+    .DefaultGFXGroups_sheet4
+    db $53 ; Sheet 4
+
+    org $288985 ; $140985
+    .DefaultGFXGroups_sheet5
+    db $4D ; Sheet 5
+
+    org $288986 ; $140986
+    .DefaultGFXGroups_sheet6
+    db $3E ; Sheet 6
+
+    org $288987 ; $140987
+    .DefaultGFXGroups_sheet7
+    db $5B ; Sheet 7
+
+    ; DW
+    db $42, $43, $44, $45, $2F, $30, $3F, $59
+
+    ; SW
+    db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B
+
+    warnpc $288998 ; $140998
 }
 
 ; Debug addresses:
@@ -298,6 +601,11 @@ Pool:
 !Func00D8D5 = $01
 ; $00DA63 ; W8 Enable/Disable subscreen.
 !Func00DA63 = $01
+; $00E133 ; T2.5 (probably) ; Makes the game decompress the 3 static OW tile
+; sheets on transition.
+!Func00E133 = $01
+; $006221 ; Changes the InitTilesets function to call from the long tables.
+!Func00E221 = $01
 ; $00EEBB ; Zeros out the BG color when mirror warping to the pyramid area.
 !Func00EEBB = $01
 ; $00FF7C ; W9 BG scrolling for HC and the pyramid area.
@@ -335,8 +643,8 @@ Pool:
 !Func02A4CD = $01
 ; $02AADB ; T1 Mosaic.
 !Func02AADB = $01
-; $02ABB8 ; T3 transition animated and main palette.
-!Func02ABB8 = $01
+; $02ABBE ; T3 transition animated and main palette.
+!Func02ABBE = $01
 ; $0ABC5A ; Loads the animated tiles after the overworld map is closed.
 !Func0ABC5A = $01
 ; $0AB8F5 ; Loads different animated tiles when returning from bird travel.
@@ -349,36 +657,26 @@ Pool:
 !Func0ED8AE = $01
 
 ; Start of expanded space.
-org $288480 ; $140480
+org $2892B8 ; $1412B8
 pushpc
 
 ; ==============================================================================
 
-if !Func00D8D5 = 1
+if !Func00D8D5 == 1
 
 ; Replaces a function that decompresses animated tiles in certain mirror warp
 ; conditions.
 org $00D8D5 ; $0058D5
-Func00D8D5:
+AnimateMirrorWarp_DecompressAnimatedTiles:
 {
     PHX
 
-    ; Load the animated tiles the area needs.
-    LDX.b $8A
-
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    LDA.l Pool_AnimatedTable, X : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
     ; The decompression function increases it by 1 so subtract 1 here.
-    DEC : TAY
+    JSL.l ReadAnimatedTable : DEC : TAY
 
     PLX
 
-    JSL DecompOwAnimatedTiles
+    JSL.l DecompOwAnimatedTiles
             
     RTL
 }
@@ -395,28 +693,66 @@ db $6B
 
 endif
 
+pullpc
+ReadAnimatedTable:
+{
+    PHB : PHK : PLB
+
+    REP #$30 ; Set A, X, and Y in 16bit mode.
+    LDA.b $8A : TAX
+    AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
+    SEP #$20 ; Set A in 8bit mode.
+
+    ; $00 crashes the game so just double check that.
+    LDA.w Pool_AnimatedTable, X : BNE .not007
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+
+        BRA .notFF7
+
+    .not007
+
+    ; Load the default sheet if the value is FF.
+    CMP.b #$FF : BNE .notFF7
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+
+    .notFF7
+
+    SEP #$10 ; Set X and Y in 8bit mode.
+
+    PLB
+
+    RTL
+}
+pushpc
+
 ; ==============================================================================
 
-if !Func00DA63 = 1
+if !Func00DA63 == 1
 
-; Sets the $1D Sub Screen Designation to either enable or disable BG for
-; screens with special overlays.
+org $00D8F4 ; $0058F4
+    SheetsTable_0AA4:
+
+; The first half of this function enables or disables BG1 for subscreen overlay
+; use depending on the area. The second half reloads global sprite #2 sheet
+; (rock vs skulls, different bush gfx, fish vs bone fish, etc.) based on what
+; world we are in.
 org $00DA63 ; $005A63
-Func00DA63:
+AnimateMirrorWarp_LoadSubscreen:
 {
-    JSL ActivateSubScreen
+    JSL.l ActivateSubScreen
 
     ; From this point on it is the vanilla function.
     PHB : PHK : PLB
         
-    LDA.l $00D8F4, X : TAY
+    ; TODO: Eventually un-hardcode this.
+    ; X = 0 for LW, 8 for DW
+    LDA.l SheetsTable_0AA4, X : TAY
         
-    LDA.w $D1B1, Y : STA.b $00
-    LDA.w $D0D2, Y : STA.b $01
-    LDA.w $CFF3, Y : STA.b $02
+    ; Get the pointer for one of the 2 Global sprite #2 sheets.
+    LDA.w GFXSheetPointers_sprite_low, Y  : STA.b $00
+    LDA.w GFXSheetPointers_sprite_high, Y : STA.b $01
+    LDA.w GFXSheetPointers_sprite_bank, Y : STA.b $02
     STA.b $05
-        
-    PLB
         
     REP #$31 ; Set A, X, and Y in 16bit mode. +1 no idea.
         
@@ -471,7 +807,7 @@ ActivateSubScreen:
     .notForest
 
     ; Check if we need to disable the rain in the misery mire.
-    LDA.l Pool_EnableRainMireEvent : BEQ .notMire
+    LDA.w Pool_EnableRainMireEvent : BEQ .notMire
         LDA.b $8A : CMP.w #$0070 : BNE .notMire
             ; Has Misery Mire been triggered yet?
             LDA.l $7EF2F0 : AND.w #$0020 : BNE .notMire
@@ -487,7 +823,7 @@ ActivateSubScreen:
     .noRain
     
     ; Get the overlay value for this overworld area.
-    JSL ReadOverlayArray : CMP.w #$00FF : BEQ .normal
+    JSL.l ReadOverlayArray : CMP.w #$00FF : BEQ .normal
         ; If not $FF, assume we want an overlay.
 
         .turnOn
@@ -508,7 +844,7 @@ pushpc
 
 ; ==============================================================================
 
-if !Func00EEBB = 1
+if !Func00EEBB == 1
 
 ; Zeros out the BG color when mirror warping to the pyramid area.
 ; TODO: This is done in the vanilla I think as just a precaution at the apex of
@@ -518,9 +854,9 @@ org $00EEBB ; $006EBB
 Func00EEBB:
 {
     ; Check if we are warping to an area with the pyramid BG.
-    JSL ReadOverlayArray : CMP.w #$0096 : BNE .notHyruleCastle
+    JSL.l ReadOverlayArray : CMP.w #$0096 : BNE .notHyruleCastle
         ; This is annoying but I just needed a little bit of extra space.
-        JSL EraseBGColors
+        JSL.l EraseBGColors
 
     .notHyruleCastle
 
@@ -557,7 +893,7 @@ pushpc
 
 ; ==============================================================================
 
-if !Func00FF7C = 1
+if !Func00FF7C == 1
 
 ; Controls the BG scrolling for HC and the pyramid area.
 org $00FF7C ; $007F7C
@@ -570,12 +906,12 @@ Func00FF7C:
         
         INC.b $B0
         
-        JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
+        JSL.l Overworld_SetFixedColorAndScroll
 
         REP #$30 ; Set A, X, and Y in 16bit mode.
 
         ; Check if we are warping to an area with the pyramid BG.
-        JSL ReadOverlayArray : CMP.w #$0096 : BEQ .dont_align_bgs
+        JSL.l ReadOverlayArray : CMP.w #$0096 : BEQ .dont_align_bgs
             LDA.b $E2 : STA.b $E0 : STA.w $0120 : STA.w $011E
             LDA.b $E8 : STA.b $E6 : STA.w $0122 : STA.w $0124
         
@@ -607,7 +943,7 @@ endif
 
 ; ==============================================================================
 
-if !Func0283EE = 1
+if !Func0283EE == 1
 
 ; Replaces a bunch of calls to a shared function.
 ; Intro_SetupScreen:
@@ -670,26 +1006,16 @@ PreOverworld_LoadProperties_LoadMain:
     ;LDX.b $8A
     ;LDA.l $7F5B00, X : LSR #4 : STA.w $012D
     
-    ; Load the animated tiles the area needs.
-    LDX.b $8A
-
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    LDA.l Pool_AnimatedTable, X : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
     ; The decompression function increases it by 1 so subtract 1 here.
-    DEC : TAY
+    JSL.l ReadAnimatedTable : DEC : TAY
 
-    JSL DecompOwAnimatedTiles ; $5394 IN ROM
+    JSL.l DecompOwAnimatedTiles
 
     ; Decompress all other graphics.
-    JSL InitTilesets ; $619B IN ROM
+    JSL.l InitTilesets
 
     ; Load palettes for overworld.
-    JSR.w Overworld_LoadAreaPalettes ; $014692 IN ROM
+    JSR.w Overworld_LoadAreaPalettes
         
     LDX.b $8A
         
@@ -698,14 +1024,14 @@ PreOverworld_LoadProperties_LoadMain:
     LDA.l $00FD1C, X
         
     ; Load some other palettes.
-    JSL Overworld_LoadPalettes ; $0755A8 IN ROM
+    JSL.l Overworld_LoadPalettes
 
     ; Sets the background color (changes depending on area).
-    JSL Palette_SetOwBgColor_Long ; $075618 IN ROM
+    JSL.l Palette_SetOwBgColor_Long
         
     LDA.b $10 : CMP.b #$08 : BNE .specialArea2
         ; Copies $7EC300[0x200] to $7EC500[0x200].
-        JSR.w Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
+        JSR.w Dungeon_LoadPalettes_cacheSettings
         
         BRA .normalArea2
     
@@ -717,29 +1043,29 @@ PreOverworld_LoadProperties_LoadMain:
     .normalArea2
     
     ; Sets fixed colors and scroll values.
-    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
+    JSL.l Overworld_SetFixedColorAndScroll
         
     ; Set darkness level to zero for the overworld.
     LDA.b #$00 : STA.l $7EC017
         
     ; Sets up properties in the event a tagalong shows up.
-    JSL Tagalong_Init
+    JSL.l Tagalong_Init
         
     ; Set animated sprite gfx for area 0x00 and 0x40.
     LDA.b $8A : AND.b #$3F : BNE .notForestArea
         LDA.b #$1E
         
-        JSL GetAnimatedSpriteTile_variable
+        JSL.l GetAnimatedSpriteTile_variable
     
     .notForestArea
     
     ; Cache the overworld mode 0x09.
     LDA.b #$09 : STA.w $010C
-    JSL Sprite_OverworldReloadAll ; $09C499
+    JSL.l Sprite_OverworldReloadAll
         
     ; Are we in the dark world? If so, there's no warp vortex there.
     LDA.b $8A : AND.b #$40 : BNE .noWarpVortex
-        JSL Sprite_ReinitWarpVortex ; $04AF89 IN ROM
+        JSL.l Sprite_ReinitWarpVortex
     
     .noWarpVortex
         
@@ -768,7 +1094,7 @@ PreOverworld_LoadProperties_LoadMain:
         
         LDA.b #$17 : STA.b $5D
         
-        JSL LoadGearPalettes_bunny
+        JSL.l LoadGearPalettes_bunny
     
     .notBunny
     
@@ -794,24 +1120,24 @@ PreOverworld_LoadProperties_LoadMain:
         SEI
         
         ; Shut down NMI until music loads.
-        STZ.w $4200
+        STZ.w SNES.NMIVHCountJoypadEnable
         
         ; Stop all HDMA.
-        STZ.w $420C
+        STZ.w SNES.HDMAChannelEnable
         
         STZ.w $0136
         
-        LDA.b #$FF : STA.w $2140
+        LDA.b #$FF : STA.w SNES.APUIOPort0
         
-        JSL Sound_LoadLightWorldSongBank
+        JSL.l Sound_LoadLightWorldSongBank
         
         ; Re-enable NMI and joypad.
-        LDA.b #$81 : STA.w $4200
+        LDA.b #$81 : STA.w SNES.NMIVHCountJoypadEnable
     
     .no_music_load_needed
 
     ; PLACE CUSTOM GFX LOAD HERE!
-    ;JSL CheckForChangeGraphicsNormalLoadCastle
+    ;JSL.l CheckForChangeGraphicsNormalLoadCastle
     
     RTS
 }
@@ -884,29 +1210,18 @@ db $8D, $00, $42, $60
 
 endif
 
-
 ; ==============================================================================
 
-if !Func028632 = 1
+if !Func028632 == 1
 
 ; Changes a function that loads animated tiles under certain conditions.
 org $028632 ; $010632
 Func028632:
 {
-    ; Load the animated tiles the area needs.
-    LDX.b $8A
-
-    ; Do a 00 check just in case the data isn't present we don't get at crash.
-    LDA.l Pool_AnimatedTable, X : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
     ; The decompression function increases it by 1 so subtract 1 here.
-    DEC : TAY
+    JSL.l ReadAnimatedTable : DEC : TAY
     
-    JSL DecompOwAnimatedTiles ; $5394 IN ROM
+    JSL.l DecompOwAnimatedTiles
         
     ; SCAWFUL: Verify the submodule ID being manipulated here.
     LDA.b $11 : LSR A : TAX
@@ -916,33 +1231,32 @@ Func028632:
         
     LDA.l $0285F3, X : PHA
         
-    JSL InitTilesets ; $619B IN ROM
+    JSL.l InitTilesets
 
     ; Load Palettes.
-        
-    JSR.w Overworld_LoadAreaPalettes ; $014692 IN ROM
+    JSR.w Overworld_LoadAreaPalettes
     PLA : STA.b $00
         
     LDX.b $8A
         
     LDA.l $00FD1C, X
         
-    JSL Overworld_LoadPalettes ; $0755A8 IN ROM
+    JSL.l Overworld_LoadPalettes
         
     LDA.b #$01 : STA.w $0AB2
         
-    JSL Palette_Hud ; $0DEE52 IN ROM
+    JSL.l Palette_Hud
         
     LDA.l $11 : BNE .BRANCH_4
-        JSL CopyFontToVram  ; $006556 IN ROM
+        JSL.l CopyFontToVram
     
     .BRANCH_4
     
-    JSR.w Dungeon_LoadPalettes_cacheSettings ; $01465F IN ROM
-    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
+    JSR.w Dungeon_LoadPalettes_cacheSettings
+    JSL.l Overworld_SetFixedColorAndScroll
         
     LDA.l $8A : CMP.b #$80 : BCC .BRANCH_5
-        JSL Palette_SetOwBgColor_Long ; $075618 IN ROM
+        JSL.l Palette_SetOwBgColor_Long
     
     .BRANCH_5
     
@@ -976,7 +1290,7 @@ endif
 
 ; ==============================================================================
 
-if !Func029AA6 = 1
+if !Func029AA6 == 1
 
 ; Changes part of a function that changes the sub mask color when leaving
 ; dungeons.
@@ -989,7 +1303,7 @@ Func029AA6:
         
     ; TODO: Wtf why is this 0x00?
     ; Check for LW death mountain.
-    JSL ReadOverlayArray : CMP.w #$0095 : BEQ .mountain
+    JSL.l ReadOverlayArray : CMP.w #$0095 : BEQ .mountain
         LDX.w #$4A26 : LDY.w #$874A
         
         ; Check for DW death mountain.
@@ -1023,7 +1337,7 @@ endif
 
 ; ==============================================================================
 
-if !Func02AF58 = 1
+if !Func02AF58 == 1
 
 ; Main subscreen overlay loading function. Changed so that they will load
 ; from a table. This does not change the event overlays like the lost woods 
@@ -1064,7 +1378,7 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
             LDA.b $A0 : CMP.w #$0180 : BNE .notMasterSwordArea
                 ; If the Master sword is retrieved, don't do the mist overlay.
                 LDA.l $7EF300 : AND.w #$0040 : BNE .masterSwordRecieved
-                    JSL ReadOverlayArray : TAX
+                    JSL.l ReadOverlayArray : TAX
 
                     .loadOverlayShortcut
 
@@ -1109,7 +1423,7 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
 
     REP #$20 ; Set A in 16bit mode.
 
-    JSL ReadOverlayArray : TAX
+    JSL.l ReadOverlayArray : TAX
     
     LDA.b $8A : BNE .notForest
         ; Check if we have the master sword.
@@ -1161,8 +1475,9 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
 
     .notFF
     
-    ; $01300B ALTERNATE ENTRY POINT ; TODO: Verify this. If it is an alternate
-    ; entry I can't find where it is referenced anywhere.
+    ; TODO: Verify this. If it is an alternate entry I can't find where it is
+    ; referenced anywhere.
+    ; $01300B ALTERNATE ENTRY POINT
     .loadSubScreenOverlay
     STY.b $84
         
@@ -1188,7 +1503,7 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
     ; Pull the 16 bit overlay from earlier and just discard the high byte.
     PLX : PLA
         
-    ; One possible configuration for $2131 (CGADSUB).
+    ; One possible configuration for SNES.AddSubtractSelectAndEnable (CGADSUB).
     LDA.b #$72
         
     ; Comparing different screen types.
@@ -1304,17 +1619,17 @@ endif
 
 ; ==============================================================================
 
-if !Func02B2D4 = 1
+if !Func02B2D4 == 1
 
 ; Turns on the subscreen if the pyramid is loaded.
 org $02B2D4 ; $0132D4
 Func02B2D4:
 {
-    JSR.w Overworld_LoadSubscreenAndSilenceSFX1 ; $012F19 IN ROM
+    JSR.w Overworld_LoadSubscreenAndSilenceSFX1
 
     ; In vanilla a check for the overlay is done here but we don't need
     ; it at all. It is handled in Func02B3A1 later on.
-    ;JSL EnableSubScreenCheckForPyramid
+    ;JSL.l EnableSubScreenCheckForPyramid
 
     RTL
 }
@@ -1335,7 +1650,7 @@ EnableSubScreenCheckForPyramid:
 {
     REP #$20 ; Set A in 16bit mode.
 
-    JSL ReadOverlayArray
+    JSL.l ReadOverlayArray
         
     CMP.w #$0096 : BNE .notPyramidOrCastle
         SEP #$20 ; Set A in 8bit mode.
@@ -1351,14 +1666,14 @@ pushpc
 
 ; ==============================================================================
 
-if !Func02B3A1 = 1
+if !Func02B3A1 == 1
 
 ; Handles activating the subscreen and special BG color when warping to an area
 ; with the pyramid BG.
 org $02B3A1 ; $0133A1
 Func02B3A1:
 {
-    JSL EnableSubScreenCheckForPyramid
+    JSL.l EnableSubScreenCheckForPyramid
     
     REP #$20 ; Set A in 16bit mode.
         
@@ -1380,7 +1695,7 @@ Func02B3A1:
     ; Also set the background color to white.
     STA.l $7EC500
 
-    JSL ReadOverlayArray
+    JSL.l ReadOverlayArray
         
     ; This sets the color to transparent so that we don't see an additional
     ; white layer on top of the pyramid bg.
@@ -1391,15 +1706,15 @@ Func02B3A1:
     
     SEP #$20 ; Set A in 8bit mode.
         
-    JSL Sprite_ResetAll
-    JSL Sprite_OverworldReloadAll
-    JSL Link_ItemReset_FromOverworldThings ; $03B107 IN ROM
-    JSR.w DeleteCertainAncillaeStopDashing ; $010B0C IN ROM
+    JSL.l Sprite_ResetAll
+    JSL.l Sprite_OverworldReloadAll
+    JSL.l Link_ItemReset_FromOverworldThings
+    JSR.w DeleteCertainAncillaeStopDashing
         
     LDA.b #$14 : STA.b $5D
         
     LDA.b $8A : AND.b #$40 : BNE .darkWorld
-        JSL Sprite_ReinitWarpVortex
+        JSL.l Sprite_ReinitWarpVortex
     
     .darkWorld
     
@@ -1430,15 +1745,15 @@ endif
 
 ; ==============================================================================
 
-if !Func02BC44 = 1
+if !Func02BC44 == 1
 
 ; Controls overworld vertical subscreen movement for the pyramid BG.
 org $02BC44 ; $013C44
 Func02BC44:
 {
     ; Check for the pyramid BG.
-    JSL ReadOverlayArray : CMP.w #$0096 : BNE .BRANCH_IOTA
-        JSL BGControl
+    JSL.l ReadOverlayArray : CMP.w #$0096 : BNE .BRANCH_IOTA
+        JSL.l BGControl
         BRA .BRANCH_IOTA
     
     warnpc $02BC60 ; $013C60
@@ -1462,8 +1777,12 @@ endif
 pullpc
 ReadOverlayArray:
 {
+    PHB : PHK : PLB
+
     LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverlayTable, X
+    LDA.w Pool_OverlayTable, X
+
+    PLB
 
     RTL
 }
@@ -1504,14 +1823,14 @@ pushpc
 
 ; ==============================================================================
 
-if !Func02C02D = 1
+if !Func02C02D == 1
 
 ; Changes how the pyramid BG scrolls durring transition.
 org $02C02D ; $01402D
 Func02C02D:
 {
     PHA
-    JSL ReadOverlayArray2
+    JSL.l ReadOverlayArray2
     PLA
     
     ; Check for the pyramid BG.
@@ -1520,6 +1839,13 @@ Func02C02D:
         ; line up the mountain with the tower in the distance at the appropriate
         ; location when coming into the pyramid area from the right.
         STA.b $E0, X 
+
+        ; NOTE: There is currently a bug in vanilla where if you exit a dungeon
+        ; into the LW death mountain the sky background will become miss-aligned
+        ; and this movement will cause the sky to flicker or jump when moving to
+        ; another area. In order to fix this you would have to find the
+        ; alignment exit code and change how the game aligns BG2 when exiting.
+        ; Possibly when using the bird too.
     
     .dontMoveBg1
 }
@@ -1542,7 +1868,7 @@ ReadOverlayArray2:
     ; A is already 16 bit here.
     REP #$10 ; Set X and Y in 16bit mode.
 
-    JSL ReadOverlayArray : TAY
+    JSL.l ReadOverlayArray : TAY
 
     SEP #$10 ; Set X and Y in 8bit mode.
 
@@ -1554,7 +1880,7 @@ pushpc
 
 ; ==============================================================================
 
-if !Func02C692 = 1
+if !Func02C692 == 1
 
 ; Replaces a call to a shared function. Normally this is goes to .lightworld
 ; to change the main color palette manually but we change it here so that it
@@ -1584,25 +1910,25 @@ Overworld_LoadAreaPalettes:
     STZ.w $0AA9
         
     ; Load SP1 through SP4.
-    JSL Palette_MainSpr ; $0DEC9E IN ROM
+    JSL.l Palette_MainSpr
 
     ; Load SP0 (2nd half) and SP6 (2nd half).
-    JSL Palette_MiscSpr ; $0DED6E IN ROM
+    JSL.l Palette_MiscSpr
 
     ; Load SP5 (1st half).
-    JSL Palette_SpriteAux1 ; $0DECC5 IN ROM
+    JSL.l Palette_SpriteAux1
 
     ; Load SP6 (1st half).
-    JSL Palette_SpriteAux2 ; $0DECE4 IN ROM
+    JSL.l Palette_SpriteAux2
 
     ; Load SP5 (2nd half, 1st 3 colors), which is the sword palette.
-    JSL Palette_Sword ; $0DED03 IN ROM
+    JSL.l Palette_Sword
     
     ; Load SP5 (2nd half, next 4 colors), which is the shield.
-    JSL Palette_Shield ; $0DED29 IN ROM
+    JSL.l Palette_Shield
 
     ; Load SP7 (full) Link's whole palette, including Armor.
-    JSL Palette_ArmorAndGloves ; $0DEDF9 IN ROM
+    JSL.l Palette_ArmorAndGloves
         
     LDX.b #$01
         
@@ -1617,13 +1943,13 @@ Overworld_LoadAreaPalettes:
     STX.w $0AAC
         
     ; Load SP0 (first half) (or SP7 (first half)).
-    JSL Palette_SpriteAux3 ; $0DEC77 IN ROM
+    JSL.l Palette_SpriteAux3
 
     ; Load BP0 and BP1 (first halves).
-    JSL Palette_Hud ; $0DEE52 IN ROM
+    JSL.l Palette_Hud
 
     ; Load BP2 through BP5 (first halves).
-    JSL Palette_OverworldBgMain ; $0DEEC7 IN ROM
+    JSL.l Palette_OverworldBgMain
         
     RTS
 }
@@ -1653,7 +1979,7 @@ endif
 
 ; ==============================================================================
 
-if !Func02A4CD = 1
+if !Func02A4CD == 1
 
 ; Rain animation code. Just replaces a single check that checks for the
 ; misery mire to instead check the current overlay to see if it's rain.
@@ -1741,7 +2067,7 @@ endif
 
 ; ==============================================================================
 
-if !Func02AADB = 1
+if !Func02AADB == 1
 
 ; Main Mosaic Hook. Changes it to use a table instead of hardcoded to the woods
 ; areas.
@@ -1765,7 +2091,7 @@ MosaicAreaCheck:
 
     ; Check if the area we are in needs a mosaic.
     TAX
-    LDA.l Pool_MosaicTable, X
+    LDA.w Pool_MosaicTable, X
 
     BEQ .noMosaic1
         PLB
@@ -1775,7 +2101,7 @@ MosaicAreaCheck:
 
     ; Check if the area we are going to needs a mosaic.
     LDX.b $8A
-    LDA.l Pool_MosaicTable, X
+    LDA.w Pool_MosaicTable, X
 
     BEQ .noMosaic2
         PLB
@@ -1790,27 +2116,112 @@ pushpc
 
 ; ==============================================================================
 
-if !Func02ABB8 = 1
-
+; Repairs an old ZS call.
 org $02ABB8 ; $012BB8
-    JML CheckForChangeGraphicsTransitionLoad
+db $A9, $09, $80, $02
 
-warnpc $02ABBC ; $012BBC
+if !Func02ABBE == 1
+
+org $02ABBE ; $012BBE
+    JSL.l NewOverworld_FinishTransGfx
+    NOP : NOP : NOP
+
+warnpc $02ABC5 ; $012BC5
 
 else
 
 ; Undo the function above:
-org $02ABB8 ; $012BB8
-db $A9, $09, $80, $02
+org $02ABBE ; $012BBE
+db $85, $17, $8D, $10, $07, $E6, $11
 
 endif
 
-; Loads the animated tiles after most of the transition gfx changes take place.
 pullpc
-CheckForChangeGraphicsTransitionLoad:
+; Loads the animated tiles after most of the transition gfx changes take place.
+NewOverworld_FinishTransGfx:
 {
     PHB : PHK : PLB
+    
+    ; First frame
+    LDA.w TransGFXModuleIndex : BNE .notLoad
+        JSR CheckForChangeGraphicsTransitionLoad
 
+        ; Trigger NMI module: NMI_UpdateBgChrSlots_3_to_4.
+        LDA.b #$09
+
+        ; Signal for a graphics transfer in the NMI routine later.
+        STA.b $17 : STA.w $0710
+
+        ; Move on to next submodule.
+        INC.b $11
+
+        ; Move on to next subsubmodule.
+        INC.w TransGFXModuleIndex
+
+        BRA .return
+
+    .notLoad
+
+    ; Second frame
+    CMP.b #$01 : BNE .notFinish
+        ; Trigger NMI module: NMI_UpdateBgChrSlots_5_to_6.
+        LDA.b #$0A
+
+        ; Signal for a graphics transfer in the NMI routine later.
+        STA.b $17 : STA.w $0710
+
+        ; Don't move on to the next submodule yet.
+
+        ; Move on to next subsubmodule.
+        INC.w TransGFXModuleIndex
+
+        BRA .return
+
+    .notFinish
+
+    ; Third frame
+    CMP.b #$02 : BNE .notMain1
+        LDA.w Pool_EnableTransitionGFXGroupLoad : BEQ .moveOn
+            ; Prep the new static gfx tile sets.
+            JSR LoadTransMainGFX
+            JSR NewPrepTransAuxGFX
+
+            ; Trigger NMI module: NMI_UpdateChr_Bg0.
+            LDA.b #$0E
+
+            ; Signal for a graphics transfer in the NMI routine later.
+            STA.b $17 : STA.w $0710
+
+            ; Move on to next subsubmodule.
+            INC.w TransGFXModuleIndex
+
+            BRA .return
+
+    .notMain1
+
+    ; Fourth frame
+    LDA.w Pool_EnableTransitionGFXGroupLoad : BEQ .moveOn
+        ; Trigger NMI module: NMI_DoNothing which we replaced with
+        ; NMI_UpdateChr_Bg2HalfAndAnimated down below.
+        LDA.b #$06
+
+        ; Signal for a graphics transfer in the NMI routine later.
+        STA.b $17 : STA.w $0710
+
+    .moveOn
+
+    ; Move on to next submodule.
+    INC.b $11
+
+    .return
+
+    PLB
+
+    RTL
+}
+
+CheckForChangeGraphicsTransitionLoad:
+{
     ; Are we currently in a mosaic?
     LDA.b $11 : CMP.b #$0F : BEQ .mosaic
         ; Are we entering a special area?
@@ -1821,36 +2232,35 @@ CheckForChangeGraphicsTransitionLoad:
                 LDA.l Pool_EnableAnimated : BEQ .dontUpdateAnimated1
                     ; Check to see if we need to update the animated tiles
                     ; by checking what was previously loaded.
-                    LDX.b $8A
-                    LDA.l Pool_AnimatedTable, X : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated1
+                    JSL.l ReadAnimatedTable : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated1
                         STA.w AnimatedTileGFXSet : DEC : TAY
 
                         ; This forces the game toupdate the animated tiles
                         ; when going from one area to another.
-                        JSL DecompOwAnimatedTiles
+                        JSL.l DecompOwAnimatedTiles
 
                 .dontUpdateAnimated1
 
-                LDA.l Pool_EnableMainPalette : BEQ .dontUpdateMain1
+                LDA.w Pool_EnableMainPalette : BEQ .dontUpdateMain1
                     ; Check to see if we need to update the main palette by
                     ; checking what was previously loaded.
                     LDX.b $8A
-                    LDA.l Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
+                    LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
                         STA.w $0AB3
 
                         ; Run the modified routine that loads the buffer
                         ; and normal color ram.
-                        JSL Palette_OverworldBgMain2
+                        JSL.l Palette_OverworldBgMain2
 
                 .dontUpdateMain1
 
-                LDA.l Pool_EnableBGColor : BEQ .dontUpdateBGColor1
+                LDA.w Pool_EnableBGColor : BEQ .dontUpdateBGColor1
                     REP #$30 ; Set A, X, and Y in 16bit mode.
 
                     LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
 
                     ; Where ZS saves the array of palettes
-                    LDA.l Pool_BGColorTable, X
+                    LDA.w Pool_BGColorTable, X
                     STA.l $7EC300 : STA.l $7EC500
                     STA.l $7EC540 : STA.l $7EC340
 
@@ -1863,77 +2273,102 @@ CheckForChangeGraphicsTransitionLoad:
                 
                 .dontUpdateBGColor1
 
-                LDA.b #$09 ; Replaced code.
-
-                PLB
-                    
-                JML Overworld_FinishTransGfx_firstHalf
+                RTS
 
     .mosaic
 
     ; Check to see if we need to update the animated tiles by checking what
     ; was previously loaded.
-    LDX.b $8A
-    LDA.l Pool_AnimatedTable, X : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated2
-        ; Do a 00 check just in case the data isn't present we don't get at
-        ; crash.
-        CMP.b #$00 : BNE .notZero
-            ; $5B is the defualt flower/water animated tiles value.
-            LDA.b #$5B
-
-        .notZero
-
+    JSL.l ReadAnimatedTable : CMP.w AnimatedTileGFXSet : BEQ .dontUpdateAnimated2
         STA.w AnimatedTileGFXSet : DEC : TAY
 
         ; This forces the game to update the animated tiles when going
         ; from one area to another.
-        JSL DecompOwAnimatedTiles
+        JSL.l DecompOwAnimatedTiles
 
     .dontUpdateAnimated2
 
     ; Check to see if we need to update the main palette by checking
     ; what was previously loaded.
     LDX.b $8A
-    LDA.l Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain2
+    LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain2
         STA.w $0AB3
 
         ; Run the vanilla routine that only loads the buffer.
-        JSL Palette_OverworldBgMain
+        JSL.l Palette_OverworldBgMain
 
     .dontUpdateMain2
 
     REP #$30 ; Set A, X, and Y in 16bit mode.
 
-    LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
+    ; $0181 is the exit room number used for getting into the under the bridge
+    ; area.
+    LDA.b $A0 : CMP.w #$0181 : BNE .notBridge
+        LDA.w Pool_BGColorTable_Bridge
 
-    LDA.l Pool_BGColorTable, X ; Where ZS saves the array of palettes.
+        BRA .storeColor
+
+    .notBridge
+
+    LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
+    LDA.w Pool_BGColorTable, X ; Where ZS saves the array of palettes.
+
+    .storeColor
 
     ; Set transparent color. only set the buffer so it fades in right
     ; during mosaic transition.
     STA.l $7EC300 : STA.l $7EC340
 
+    LDX.w #$4020 : STX.b $9C
+    LDX.w #$8040 : STX.b $9D
+        
+    LDX.w #$4F33
+    LDY.w #$894F
+        
+    ; Change the fixed color depending on our sub screen overlay.
+    ; Lost woods and skull woods.
+    JSL.l ReadOverlayArray : CMP.w #$009D : BEQ .noSpecialColor
+        CMP.w #$0040 : BEQ .noSpecialColor
+            ; Pyramid area.
+            CMP.w #$0096 : BEQ .specialColor
+                LDX.w #$4C26
+                LDY.w #$8C4C
+                    
+                ; LW death mountain.
+                CMP.w #$0095 : BEQ .specialColor
+                    LDX.w #$4A26
+                    LDY.w #$874A
+                        
+                    ; DW death mountain.
+                    CMP.w #$009C : BEQ .specialColor
+                        BRA .noSpecialColor
+                
+            .specialColor
+
+            STX.b $9C
+            STY.b $9D
+        
+    .noSpecialColor
+    
     SEP #$30 ; Set A, X, and Y in 8bit mode.
 
     ; Don't update the CRAM until later when the overlays are loaded so
     ; that way the BG overlays have a chance to hide the cracks.
     ;INC.b $15
 
-    LDA.b #$09 ; Replaced code.
-
     ; PLACE CUSTOM GFX LOAD HERE!
     ;JML CheckForChangeGraphicsTransitionLoadCastle
 
     CheckForChangeGraphicsTransitionLoadRetrun:
 
-    PLB
-        
-    JML Overworld_FinishTransGfx_firstHalf
+    RTS
 
     SkipOverworld_FinishTransGfx_firstHalf:
 
-    PLB
+    ; Move on to next submodule.
+    INC.b $11
 
-    JML $02ABC3 ; $012BC3 skips Overworld_FinishTransGfx_firstHalf
+    RTS
 }
 
 ; The following 2 functions are copied from the palettes.asm but they only
@@ -1963,18 +2398,17 @@ Palette_OverworldBgMain2:
     RTL
 }
 
+; Description: Generally used to load multiple palettes for BGs.
+; Upon close inspection, one sees that this algorithm is almost the same as
+; the last subroutine.
+; Name = Palette_MultiLoad(A, X, Y).
+        
+; Parameters: X = (number of colors in the palette - 1).
+;             A = offset to add to $7EC300, in other words, where to write
+;                 in palette memory.
+;             Y = (number of palettes to load - 1).
 Palette_MultiLoad2:
 {
-    ; Description: Generally used to load multiple palettes for BGs.
-    ; Upon close inspection, one sees that this algorithm is almost the same as
-    ; the last subroutine.
-    ; Name = Palette_MultiLoad(A, X, Y).
-        
-    ; Parameters: X = (number of colors in the palette - 1).
-    ;             A = offset to add to $7EC300, in other words, where to write
-    ;                 in palette memory.
-    ;             Y = (number of palettes to load - 1).
-        
     STA.b $04 ; Save the values for future reference.
     STX.b $06
     STY.b $08
@@ -2016,14 +2450,119 @@ Palette_MultiLoad2:
     RTS
 }
 
+LoadTransMainGFX:
+{
+    ; Setup the decompression buffer address.
+    ; $00[3] = $7E6000
+    STZ.b $00
+    LDA.b #$40 : STA.b $01
+    LDA.b #$7E : STA.b $02
+
+    REP #$30
+    ; $0E = $8A * 8 
+    LDA.b $8A : AND.w #$00FF : ASL #3 : STA.b $0E
+    SEP #$20
+
+    ; Sheet 0 (static 0)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BEQ .noBgGfxChange0
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange0
+
+    SEP #$10
+    ; Increment buffer address by 0x0600.
+    LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
+    REP #$10
+    
+    ; Sheet 1 (static 1)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BEQ .noBgGfxChange1 
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange1
+
+    SEP #$10
+    ; Increment buffer address by 0x0600.
+    LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
+    REP #$10
+
+    ; Sheet 2 (static 2)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BEQ .noBgGfxChange2
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange2
+
+    SEP #$10
+    ; Increment buffer address by 0x0600.
+    LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
+    REP #$10
+
+    ; Sheet 7 (animated)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BEQ .noBgGfxChange7
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange7
+
+    RTS
+}
+
+NewPrepTransAuxGFX:
+{
+    ; Prepares the transition graphics to be transferred to VRAM during NMI.
+    ; This could occur either during this frame or any subsequent frame.
+    
+    ; Set bank for source address.
+    LDA.b #$7E : STA.b $02 : STA.b $05
+    
+    REP #$31
+    
+    ; Source address is $7E6000, number of tiles is 0x40,
+    ; base address is $7F0000.
+    LDX.w #$0000
+    LDY.w #$0040
+    LDA.w #$4000
+    
+    ; The first graphics pack always uses the higher 8 palette values.
+    JSL.l Do3To4High16BitLONG
+
+    ; Number of tiles for next set is 0xC0.
+    LDY.w #$00C0
+
+    LDA.b $03
+    
+    JSL.l Do3To4Low16BitLONG
+
+    SEP #$30
+
+    RTS
+}
 pushpc
 
 ; ==============================================================================
 
-if !Func0ABC5A = 1
+if !Func0ABC5A == 1
 
 org $0ABC5A ; $053C5A
-    JSL CheckForChangeGraphicsNormalLoad
+    JSL.l CheckForChangeGraphicsNormalLoad
 
 warnpc $0ABC5E ; $053C5E
 
@@ -2041,26 +2580,17 @@ CheckForChangeGraphicsNormalLoad:
 {
     PHB : PHK : PLB
 
-    JSL InitTilesets ; Replaced code.
+    JSL.l InitTilesets ; Replaced code.
 
-    LDX.b $8A
-
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    LDA.l Pool_AnimatedTable, X : CMP.b #$00 : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
-    STA.w AnimatedTileGFXSet : DEC : TAY
+    JSL.l ReadAnimatedTable : STA.w AnimatedTileGFXSet : DEC : TAY
 
     ; This function is not needed here and is handled somewhere else. This
     ; forces the game to update the animated tiles when going from one area to
     ; another.
-    ;JSL DecompOwAnimatedTiles 
+    ;JSL.l DecompOwAnimatedTiles 
 
     ; PLACE CUSTOM GFX LOAD HERE!
-    ;JSL CheckForChangeGraphicsNormalLoadCastle
+    ;JSL.l CheckForChangeGraphicsNormalLoadCastle
         
     PLB
 
@@ -2070,43 +2600,35 @@ pushpc
 
 ; ==============================================================================
 
-if !Func0AB8F5 = 1
+if !Func0AB8F5 == 1
 
 ; Loads different animated tiles when returning from bird travel.
 org $0AB8F5 ; $0538F5
 Func0AB8F5:
 {
-    ; Get the animated tiles value for this overworld area.
-    LDX.b $8A
-
-    ; Do a 0x00 check just in case the data isn't present we don't get at crash.
-    LDA.l Pool_AnimatedTable, X : CMP.b #$00 : BNE .notZero
-        ; $5B is the defualt flower/water animated tiles value.
-        LDA.b #$5B
-
-    .notZero
-
-    STA.w AnimatedTileGFXSet : DEC : TAY
+    JSL.l ReadAnimatedTable : STA.w AnimatedTileGFXSet : DEC : TAY
     
     ; From this point on it is the vanilla function.
-    JSL DecompOwAnimatedTiles ; $005394 IN ROM
-    JSL Overworld_SetFixedColorAndScroll ; $05FE70 IN ROM
+    JSL.l DecompOwAnimatedTiles
+    JSL.l Overworld_SetFixedColorAndScroll
         
     STZ.w $0AA9
     STZ.w $0AB2
         
-    JSL InitTilesets
+    JSL.l InitTilesets
         
-    INC.w $0200 ; SCAWFUL: Verify the interface submodule ID being used here. Provides context on where in the jump table we're at.
+    ; SCAWFUL: Verify the interface submodule ID being used here.
+    ; Provides context on where in the jump table we're at.
+    INC.w $0200
         
     STZ.b $B2
         
-    JSL $02B1F4 ; $0131F4 IN ROM
+    JSL.l $02B1F4
         
     ; Play sound effect indicating we're coming out of map mode.
     LDA.b #$10 : STA.w $012F
 
-    JSL LoadAmbientSound
+    JSL.l LoadAmbientSound
         
     ; If it's a different music track than was playing where we came from,
     ; simply change to it (as opposed to setting volume back to full).
@@ -2119,7 +2641,7 @@ Func0AB8F5:
     STX.w $012C
 
     ; PLACE CUSTOM GFX LOAD HERE!
-    ;JSL CheckForChangeGraphicsNormalLoadCastle
+    ;JSL.l CheckForChangeGraphicsNormalLoadCastle
         
     RTL
 }
@@ -2146,11 +2668,13 @@ endif
 pullpc
 LoadAmbientSound:
 {
+    PHB : PHK : PLB
+
     ; Reset the ambient sound effect to what it was.
     LDX.b $8A : LDA.l $7F5B00, X : LSR #4 : STA.w $012D
 
     ; Check if we need to stop the rain sound in the misery mire.
-    LDA.l Pool_EnableRainMireEvent : BEQ .disableRainSound
+    LDA.w Pool_EnableRainMireEvent : BEQ .disableRainSound
         LDA.b $8A : CMP.b #$70 : BNE .disableRainSound
             ; Has Misery Mire been triggered yet?
             LDA.l $7EF2F0 : AND.b #$20 : BNE .disableRainSound
@@ -2158,13 +2682,15 @@ LoadAmbientSound:
         
     .disableRainSound
 
+    PLB
+
     RTL
 }
 pushpc
 
 ; ==============================================================================
 
-if !Func0BFEC6 = 1
+if !Func0BFEC6 == 1
 
 ; Loads different special transparent colors and overlay speeds based on the
 ; overlay duringtransition and under other certain cases. Exact cases need to be
@@ -2172,7 +2698,7 @@ if !Func0BFEC6 = 1
 org $0BFEC6 ; $05FEC6
 Overworld_LoadBGColorAndSubscreenOverlay:
 {
-    JSL ReplaceBGColor
+    JSL.l ReplaceBGColor
 
     ; Set fixed color to neutral.
     LDA.w #$4020 : STA.b $9C
@@ -2187,7 +2713,7 @@ Overworld_LoadBGColorAndSubscreenOverlay:
         
     .notMire
 
-    JSL ReadOverlayArray
+    JSL.l ReadOverlayArray
 
     ; Check for misery mire.
     CMP.w #$009F : BNE .notRain
@@ -2195,6 +2721,7 @@ Overworld_LoadBGColorAndSubscreenOverlay:
     
     .notRain
     
+    ; Change the fixed color depending on our sub screen overlay.
     ; Check for lost woods?, skull woods, and pyramid area.
     CMP.w #$009D : BEQ .noCustomFixedColor
     CMP.w #$0096 : BEQ .noCustomFixedColor
@@ -2229,18 +2756,18 @@ Overworld_LoadBGColorAndSubscreenOverlay:
         LDA.b $E2 : STA.b $E0
             
         ; Just because I need a bit more space.
-        JSL ReadOverlayArray
+        JSL.l ReadOverlayArray
             
         ; Are we at Hyrule Castle or Pyramid of Power?
         CMP.w #$0096 : BNE .subscreenOnAndReturn
-            JSL NeedSomeSpaceForWhateverThisIs
+            JSL.l NeedSomeSpaceForWhateverThisIs
                 
             BRA .subscreenOnAndReturn
     
     .BRANCH_11
     
     ; Check for the pyramid BG.
-    JSL ReadOverlayArray : CMP.w #$0096 : BNE .subscreenOnAndReturn
+    JSL.l ReadOverlayArray : CMP.w #$0096 : BNE .subscreenOnAndReturn
         ; Synchronize Y scrolls on BG0 and BG1. Same for X scrolls.
         LDA.b $E8 : STA.b $E6
         LDA.b $E2 : STA.b $E0
@@ -2312,7 +2839,7 @@ ReplaceBGColor:
     ; custom color. If not, then chceck if its enabled or not.
     ;SEP #$20 ; Set A in 8bit mode.
 
-    ;LDA.l Pool_EnableBGColor : BNE .custom
+    ;LDA.w Pool_EnableBGColor : BNE .custom
         ;REP #$20 ; Set A in 16bit mode.
 
         ;PLB
@@ -2324,7 +2851,7 @@ ReplaceBGColor:
     ;REP #$20 ; Set A in 16bit mode.
 
     LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
-    LDA.l Pool_BGColorTable, X ; Get the color.
+    LDA.w Pool_BGColorTable, X ; Get the color.
 
     ;STA.l $7EC300 : STA.l $7EC340 ; Set the BG color.
     STA.l $7EC500 : STA.l $7EC540
@@ -2373,10 +2900,10 @@ pushpc
 
 ; ==============================================================================
 
-if !Func0ED627 = 1
+if !Func0ED627 == 1
 
-; Loads the transparent color under some load conditions such as the mirror\
-; warp.
+; Loads the transparent color under some load conditions such as the
+; mirror\warp.
 ; TODO: Investigate the other conditions. Exiting dungeons.
 org $0ED627 ; $075627
     JML InitColorLoad2
@@ -2403,7 +2930,7 @@ InitColorLoad2:
     ; $0181 is the exit room number used for getting into the under the bridge
     ; area.
     LDA.b $A0 : CMP.w #$0181 : BNE .notBridge
-        LDA.l Pool_BGColorTable_Bridge
+        LDA.w Pool_BGColorTable_Bridge
 
         BRA .storeColor
 
@@ -2421,13 +2948,13 @@ InitColorLoad2:
 
     PLB
 
-    JML InitColorLoad2_Return ; $0ED652
+    JML InitColorLoad2_Return
 }
 pushpc
 
 ; ==============================================================================
 
-if !Func0ED8AE = 1
+if !Func0ED8AE == 1
 
 ; Resets the area special color after the screen flashes.
 org $0ED8AE ; $0758AE
@@ -2442,8 +2969,9 @@ Func0ED8AE:
         LDX.w #$4F33
         LDY.w #$894F
         
+        ; Change the fixed color depending on our sub screen overlay.
         ; Lost woods and skull woods.
-        JSL ReadOverlayArray : CMP.w #$009D : BEQ .noSpecialColor
+        JSL.l ReadOverlayArray : CMP.w #$009D : BEQ .noSpecialColor
             CMP.w #$0040 : BEQ .noSpecialColor
                 ; Pyramid area.
                 CMP.w #$0096 : BEQ .specialColor
@@ -2491,4 +3019,551 @@ endif
 
 ; ==============================================================================
 
+if !Func00E133 == 1
+
+; Interupts the vanilla LoadTransAuxGFX function
+org $00D673 ; $005673
+    JML NewLoadTransAuxGFX
+
+warnpc $00D677 ; $005677
+
+org $008C8A ; $000C8A
+dw NMI_UpdateChr_Bg2HalfAndAnimated
+
+warnpc $00D677 ; $005677
+
+; Replaces the UNREACHABLE_00D585 which is unused.
+org $00D585 ; $005585
+Decomp_bg_variableLONG:
+{
+    PHB : PHK : PLB
+
+    JSR Decomp_bg_variable
+
+    PLB
+
+    RTL
+}
+
+Do3To4Low16BitLONG:
+{
+    PHB : PHK : PLB
+
+    JSR.w Do3To4Low16Bit
+
+    PLB
+
+    RTL
+}
+
+Do3To4High16BitLONG:
+{
+    PHB : PHK : PLB
+
+    JSR.w Do3To4High16Bit
+
+    PLB
+
+    RTL
+}
+
+NMI_UpdateChr_Bg2HalfAndAnimated:
+{
+    JSL.l NMI_UpdateChr_Bg2HalfAndAnimatedLONG
+    
+    RTS
+}
+
+warnpc $00D5CB ; $0055CB
+
+else
+
+; Undo the functions above:
+org $00D673 ; $005673
+db $A9, $60, $85, $01
+
+org $008C8A ; $000C8A
+db $4B, $8E
+
+; This is the old 0AA1 table. Will eventually be unused so I'll leave this here
+; for future use.
+org $00E073 ; $006073
+db $00, $01, $10, $06, $0E, $1F, $18, $0F
+db $00, $01, $10, $08, $0E, $22, $1B, $0F
+db $00, $01, $10, $06, $0E, $1F, $18, $0F
+db $00, $01, $13, $07, $0E, $23, $1C, $0F
+db $00, $01, $10, $07, $0E, $21, $18, $0F
+db $00, $01, $10, $09, $0E, $20, $19, $0F
+db $02, $03, $12, $0B, $0E, $21, $1A, $0F
+db $00, $01, $11, $0C, $0E, $24, $1B, $0F
+db $00, $01, $11, $08, $0E, $22, $1B, $0F
+db $00, $01, $11, $0C, $0E, $25, $1A, $0F
+db $00, $01, $11, $0C, $0E, $26, $1B, $0F
+db $00, $01, $14, $0A, $0E, $27, $1D, $0F
+db $00, $01, $11, $0A, $0E, $28, $1E, $0F
+db $02, $03, $12, $0B, $0E, $29, $16, $0F
+db $00, $01, $15, $0D, $0E, $2A, $18, $0F
+db $00, $01, $10, $07, $0E, $23, $1C, $0F
+db $00, $01, $13, $07, $0E, $04, $05, $0F
+db $00, $01, $13, $07, $0E, $04, $05, $0F
+db $00, $01, $10, $09, $0E, $20, $1B, $0F
+db $00, $01, $10, $09, $0E, $2A, $17, $0F
+db $02, $03, $12, $0B, $0E, $21, $1C, $0F
+db $00, $08, $11, $1B, $22, $2E, $5D, $5B
+db $00, $08, $10, $18, $20, $2B, $5D, $5B
+db $00, $08, $10, $18, $20, $2B, $5D, $5B
+db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B
+db $42, $43, $44, $45, $20, $2B, $3F, $5D
+db $00, $08, $10, $18, $20, $2B, $5D, $5B
+db $00, $08, $10, $18, $20, $2B, $5D, $5B
+db $00, $08, $10, $18, $20, $2B, $5D, $5B
+db $00, $08, $10, $18, $20, $2B, $5D, $5B
+db $00, $08, $10, $18, $20, $2B, $5D, $5B
+db $71, $72, $71, $72, $20, $2B, $5D, $5B
+db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B
+db $42, $43, $44, $45, $20, $2B, $3F, $59
+db $00, $72, $71, $72, $20, $2B, $5D, $0F
+db $16, $39, $1D, $17, $40, $41, $39, $1E
+db $00, $46, $39, $72, $40, $41, $39, $0F
+
+org $00D585 ; $005585
+db $A0, $08, $00, $84, $0E, $85, $00, $18
+db $69, $10, $00, $85, $03, $A0, $07, $00
+db $A7, $00, $9F, $00, $90, $7E, $E6, $00
+db $E6, $00, $A7, $03, $29, $FF, $00, $9F
+db $10, $90, $7E, $E6, $03, $E8, $E8, $88
+db $10, $E6, $8A, $18, $69, $10, $00, $AA
+db $A5, $03, $29, $78, $00, $D0, $08, $A5
+db $03, $18, $69, $80, $01, $85, $03, $A5
+db $03, $C6, $0E, $D0, $C0, $60
+
+endif
+
+pullpc
+
+NewLoadTransAuxGFX:
+{
+    PHB : PHK : PLB
+
+    LDA.w Pool_EnableTransitionGFXGroupLoad : BNE .notNormalLoad
+        ; Replaced code:
+        LDA.b #$60 : STA.b $01
+
+        PLB
+
+        JML $00D677 ; $005677 Return to regular code.
+
+    .notNormalLoad
+
+    ; Setup the decompression buffer address.
+    ; $00[3] = $7E6000
+    STZ.b $00
+    LDA.b #$60 : STA.b $01
+    LDA.b #$7E : STA.b $02
+
+    REP #$30
+    ; $0E = $8A * 8 
+    LDA.b $8A : AND.w #$00FF : ASL #3 : STA.b $0E
+    SEP #$20
+
+    ; Sheet 3 (variable 0)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BEQ .noBgGfxChange3
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange3
+
+    SEP #$10
+    ; Increment buffer address by 0x0600.
+    LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
+    REP #$10
+
+    ; Sheet 4 (variable 1)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BEQ .noBgGfxChange4
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange4
+
+    SEP #$10
+    ; Increment buffer address by 0x0600.
+    LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
+    REP #$10
+
+    ; Sheet 5 (variable 2)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BEQ .noBgGfxChange5
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange5
+
+    SEP #$10
+    ; Increment buffer address by 0x0600.
+    LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
+    REP #$10
+
+    ; Sheet 6 (variable 3)
+    LDX.b $0E
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BEQ .noBgGfxChange6
+        SEP #$10
+        
+        TAY
+        
+        JSL.l Decomp_bg_variableLONG
+
+    .noBgGfxChange6
+
+    SEP #$10
+    ; Increment buffer address by 0x0600.
+    LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
+    REP #$10
+
+    STZ.w TransGFXModuleIndex
+
+    PLB
+
+    JML LoadTransAuxGFX_sprite_continue ; $005706 Return to regular code.
+}
+
+NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
+{
+    PHB : PHK : PLB
+
+    REP #$20
+    
+    ; Sheet 1
+    ; Set VRAM target to $3000 (word).
+    LDA.w #$2800 : STA.w SNES.VRAMAddrReadWriteLow
+    
+    ; Increment on writes to SNES.VRAMDataWriteHigh.
+    LDY.b #$80 : STY.w SNES.VRAMAddrIncrementVal
+    
+    ; Target is SNES.VRAMDataWriteLow, write two registers once
+    ; (SNES.VRAMDataWriteLow / SNES.VRAMDataWriteHigh).
+    LDA.w #$1801 : STA.w DMA.0_TransferParameters
+    
+    ; Source address is $7F1000.
+    LDA.w #$1000 : STA.w DMA.0_SourceAddrOffsetLow
+    LDY.b #$7F   : STY.w DMA.0_SourceAddrBank
+    
+    ; Write 0x0800 bytes.
+    LDA.w #$0800 : STA.w DMA.0_TransferSizeLow
+    
+    ; Transfer data on channel 1.
+    LDY.b #$01 : STY.w SNES.DMAChannelEnable
+
+    ; Sheet 2
+    ; Set VRAM target to $3000 (word).
+    LDA.w #$3E00 : STA.w SNES.VRAMAddrReadWriteLow
+    
+    ; Increment on writes to SNES.VRAMDataWriteHigh.
+    LDY.b #$80 : STY.w SNES.VRAMAddrIncrementVal
+    
+    ; Target is SNES.VRAMDataWriteLow, write two registers once
+    ; (SNES.VRAMDataWriteLow / SNES.VRAMDataWriteHigh).
+    LDA.w #$1801 : STA.w DMA.0_TransferParameters
+    
+    ; Only copy the latter half of the sheet to prevent the animated tiles from
+    ; flickering on transition.
+    ; Source address is $7F1C00.
+    LDA.w #$1C00 : STA.w DMA.0_SourceAddrOffsetLow
+    LDY.b #$7F   : STY.w DMA.0_SourceAddrBank
+    
+    ; Write 0x08400 bytes.
+    LDA.w #$0400 : STA.w DMA.0_TransferSizeLow
+    
+    ; Transfer data on channel 1.
+    LDY.b #$01 : STY.w SNES.DMAChannelEnable
+    
+    SEP #$20
+    
+    STZ.w $0710
+
+    PLB
+
+    RTL
+}
+pushpc
+
+; ==============================================================================
+
+if !Func00E221 == 1
+
+org $00E221 ; $006221
+    JML InitTilesetsLongCalls
+
+warnpc $00E225 ; $006225
+
+org $00D904 ; $005904
+    JML AnimateMirrorWarp_DecompressNewTileSetsLongCalls
+
+warnpc $00D908 ; $005908
+
+org $00D97D ; $00597D
+    JML AnimateMirrorWarp_DecompressNewTileSetsLongCalls2
+
+warnpc $00D981 ; $005981
+
+org $00D9BC ; $0059BC
+    JML AnimateMirrorWarp_DecompressBackgroundsALongCalls
+
+warnpc $00D9C1 ; $0059C1
+
+org $00DA2F ; $005A2F
+    JML AnimateMirrorWarp_DecompressBackgroundsCLongCalls
+
+else
+
+; Undo the functions above:
+org $00E221 ; $006221
+db $AD, $A1, $0A, $29
+
+org $00D904 ; $005904
+db $AD, $A1, $0A, $29
+
+org $00D97D ; $00597D
+db $BF, $EF, $D8, $00
+
+org $00D9BC ; $0059BC
+db $BF, $F1, $D8, $00
+
+org $00DA2F ; $005A2F
+db $BF, $F3, $D8, $00
+
+endif
+
+pullpc
+InitTilesetsLongCalls:
+{
+    PHB : PHK : PLB
+
+    SEP #$20
+    ; TODO: This will eventually be changed when changing the dungeon GFX.
+    ; Only trigger the new code when in the:
+    LDA.b $10 : CMP.b #$08 : BEQ .outdoors ; Pre-overworld main module
+                CMP.b #$0E : BEQ .outdoors ; Text Mode/Item Screen/Map module
+        REP #$30
+        LDA.w $0AA1 : AND.w #$00FF ; Replaced code.
+
+        PLB
+
+        JML $00E227 ; $006227 Return to normal code.
+
+    .outdoors
+
+    REP #$30
+    LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
+    SEP #$20
+    
+    LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BNE .notFF0
+        LDA.w Pool_DefaultGFXGroups_sheet0, Y
+
+    .notFF0
+    
+    STA.b $0D
+
+    LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BNE .notFF1
+        LDA.w Pool_DefaultGFXGroups_sheet1, Y
+
+    .notFF1
+    
+    STA.b $0C
+
+    LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BNE .notFF2
+        LDA.w Pool_DefaultGFXGroups_sheet2, Y
+
+    .notFF2
+
+    STA.b $0B
+    
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
+        LDA.w Pool_DefaultGFXGroups_sheet3, Y
+
+    .notFF3
+    
+    STA.l $7EC2F8 : STA.b $0A
+
+    LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BNE .notFF4
+        LDA.w Pool_DefaultGFXGroups_sheet4, Y
+
+    .notFF4
+    
+    STA.l $7EC2F9 : STA.b $09
+
+    LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BNE .notFF5
+        LDA.w Pool_DefaultGFXGroups_sheet5, Y
+
+    .notFF5
+    
+    STA.l $7EC2FA : STA.b $08
+
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
+        LDA.w Pool_DefaultGFXGroups_sheet6, Y
+
+    .notFF6
+    
+    STA.l $7EC2FB : STA.b $07
+    
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BNE .notFF7
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+
+    .notFF7
+    
+    STA.b $06
+
+    PLB
+
+    JML $00E282 ; $006282 Skip normal sheet load.
+}
+
+AnimateMirrorWarp_DecompressNewTileSetsLongCalls:
+{
+    PHB : PHK : PLB
+
+    LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
+    SEP #$20
+
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
+        LDA.w Pool_DefaultGFXGroups_sheet3, Y
+
+    .notFF3
+
+    STA.l $7EC2F8
+
+    LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BNE .notFF4
+        LDA.w Pool_DefaultGFXGroups_sheet4, Y
+
+    .notFF4
+
+    STA.l $7EC2F9
+
+    LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BNE .notFF5
+        LDA.w Pool_DefaultGFXGroups_sheet5, Y
+
+    .notFF5
+
+    STA.l $7EC2FA
+
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
+        LDA.w Pool_DefaultGFXGroups_sheet6, Y
+
+    .notFF6
+
+    STA.l $7EC2FB
+
+    PLB
+
+    JML $00D949 ; $005949 Skip normal sheet load.
+}
+
+AnimateMirrorWarp_DecompressNewTileSetsLongCalls2:
+{
+    PHB : PHK : PLB
+
+    REP #$30
+    LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
+    SEP #$20
+
+    LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BNE .notFF1
+        LDA.w Pool_DefaultGFXGroups_sheet1, Y
+
+    .notFF1
+
+    STA.b $08
+
+    LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BNE .notFF0
+        LDA.w Pool_DefaultGFXGroups_sheet0, Y
+
+    .notFF0
+
+    TAY
+
+    SEP #$10
+
+    PLB
+
+    JML $00D988 ; $005988 Skip normal sheet load.
+}
+
+AnimateMirrorWarp_DecompressBackgroundsALongCalls:
+{
+    PHB : PHK : PLB
+
+    REP #$30
+    LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
+    SEP #$20
+
+    LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
+        LDA.w Pool_DefaultGFXGroups_sheet3, Y
+
+    .notFF3
+    
+    STA.b $08
+
+    LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BNE .notFF2
+        LDA.w Pool_DefaultGFXGroups_sheet2, Y
+
+    .notFF2
+    
+    TAY
+
+    SEP #$10
+
+    PLB
+
+    JML $00D9C7 ; $0059C7 Skip normal sheet load.
+}
+
+AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
+{
+    PHB : PHK : PLB
+
+    REP #$30
+    LDA.b $8A : AND.w #$00FF : ASL #3 : TAX
+    LDA.b $8A : AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
+    SEP #$20
+
+    LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BNE .notFF7
+        LDA.w Pool_DefaultGFXGroups_sheet7, Y
+
+    .notFF7
+
+    STA.b $08 : STA AnimatedTileGFXSet
+
+    LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
+        LDA.w Pool_DefaultGFXGroups_sheet6, Y
+
+    .notFF6
+    
+    TAY
+
+    SEP #$10
+
+    PLB
+
+    JML $00DA3A ; $005A3A Skip normal sheet load.
+}
+pushpc
+
+; ==============================================================================
+
+; A second pullpc is needed here just in case someone incorperates this ASM into
+; their own code base.
+pullpc
 pullpc
