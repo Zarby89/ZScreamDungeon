@@ -85,6 +85,7 @@
             this.checkBox23 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.checkBox48 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -285,6 +286,7 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.checkBox48);
             this.groupBox4.Controls.Add(this.checkBox45);
             this.groupBox4.Controls.Add(this.checkBox44);
             this.groupBox4.Controls.Add(this.checkBox43);
@@ -314,7 +316,7 @@
             this.checkBox45.AutoSize = true;
             this.checkBox45.Checked = true;
             this.checkBox45.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox45.Location = new System.Drawing.Point(198, 88);
+            this.checkBox45.Location = new System.Drawing.Point(198, 111);
             this.checkBox45.Name = "checkBox45";
             this.checkBox45.Size = new System.Drawing.Size(237, 17);
             this.checkBox45.TabIndex = 23;
@@ -328,9 +330,9 @@
             this.checkBox44.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox44.Location = new System.Drawing.Point(198, 65);
             this.checkBox44.Name = "checkBox44";
-            this.checkBox44.Size = new System.Drawing.Size(191, 17);
+            this.checkBox44.Size = new System.Drawing.Size(196, 17);
             this.checkBox44.TabIndex = 22;
-            this.checkBox44.Text = "Ani. GFX apply on default transition";
+            this.checkBox44.Text = "Main GFX apply on default transition";
             this.checkBox44.UseVisualStyleBackColor = true;
             // 
             // checkBox43
@@ -802,6 +804,18 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.DeselectAllButtonClick);
             // 
+            // checkBox48
+            // 
+            this.checkBox48.AutoSize = true;
+            this.checkBox48.Checked = true;
+            this.checkBox48.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox48.Location = new System.Drawing.Point(198, 88);
+            this.checkBox48.Name = "checkBox48";
+            this.checkBox48.Size = new System.Drawing.Size(191, 17);
+            this.checkBox48.TabIndex = 24;
+            this.checkBox48.Text = "Ani. GFX apply on default transition";
+            this.checkBox48.UseVisualStyleBackColor = true;
+            // 
             // SaveSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -886,5 +900,6 @@
         private System.Windows.Forms.CheckBox checkBox43;
         private System.Windows.Forms.CheckBox checkBox46;
         private System.Windows.Forms.CheckBox checkBox47;
+        private System.Windows.Forms.CheckBox checkBox48;
     }
 }

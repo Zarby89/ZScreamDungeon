@@ -251,10 +251,11 @@ namespace ZeldaFullEditor
         /// <param name="enableBGColor"> Whether or not to write the enableBGColor byte. </param>
         /// <param name="enableMainPalette"> Whether or not to write the enableMainPalette byte. </param>
         /// <param name="enableMosaic"> Whether or not to write the enableMosaic byte. </param>
-        /// <param name="enableAnimated"> Whether or not to write the enableAnimated byte. </param>
+        /// <param name="enableGFXGroups"> Whether or not to write the enableAnimated byte. </param>
         /// <param name="enableSubscreenOverlay"> Whether or not to write the enableSubscreenOverlay byte. </param>
+        /// <param name="enableAnimated"> Whether or not to write the enableAnimated byte. </param>
         /// <returns> True if there was an error saving. </returns>
-        public bool SaveCustomOverworldASM(SceneOW scene, bool enableBGColor, bool enableMainPalette, bool enableMosaic, bool enableAnimated, bool enableSubscreenOverlay)
+        public bool SaveCustomOverworldASM(SceneOW scene, bool enableBGColor, bool enableMainPalette, bool enableMosaic, bool enableGFXGroups, bool enableSubscreenOverlay, bool enableAnimated)
         {
             Console.WriteLine("Saving Custom Overworld ASM");
 
@@ -286,6 +287,15 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.OverworldCustomMosaicEnabled, 0x00, true, "Disabled overworld mosaic");
             }
 
+            if (enableGFXGroups)
+            {
+                ROM.Write(Constants.OverworldCustomTileGFXGroupEnabled, 0xFF, true, "Enabled custom overworld tiles GFX");
+            }
+            else
+            {
+                ROM.Write(Constants.OverworldCustomTileGFXGroupEnabled, 0x00, true, "Disabled custom overworld tiles GFX");
+            }
+
             if (enableAnimated)
             {
                 ROM.Write(Constants.OverworldCustomAnimatedGFXEnabled, 0xFF, true, "Enabled overworld animated tiles GFX");
@@ -303,9 +313,6 @@ namespace ZeldaFullEditor
             {
                 ROM.Write(Constants.OverworldCustomSubscreenOverlayEnabled, 0x00, true, "Disabled subscreen overlay");
             }
-
-            // Write a byte indicating that we have applied this ASM that way ZS knows to look for those values on restart.
-            ROM.Write(Constants.OverworldCustomASMHasBeenApplied, 0xFF, true, "Enabled applied ASM byte");
 
             // Write the main palette table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)
@@ -326,10 +333,19 @@ namespace ZeldaFullEditor
                 }
             }
 
-            // Write the animated tiles table.
+            // Write the main and animated gfx tiles table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)
             {
-                ROM.Write(Constants.OverworldCustomAnimatedGFXArray + i, scene.ow.AllMaps[i].AnimatedGFX);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 0, scene.ow.AllMaps[i].TileGFX0);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 1, scene.ow.AllMaps[i].TileGFX1);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 2, scene.ow.AllMaps[i].TileGFX2);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 3, scene.ow.AllMaps[i].TileGFX3);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 4, scene.ow.AllMaps[i].TileGFX4);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 5, scene.ow.AllMaps[i].TileGFX5);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 6, scene.ow.AllMaps[i].TileGFX6);
+                ROM.Write((Constants.OverworldCustomTileGFXGroupArray + (i * 8)) + 7, scene.ow.AllMaps[i].TileGFX7);
+
+                ROM.Write((Constants.OverworldCustomAnimatedGFXArray + i), scene.ow.AllMaps[i].AnimatedGFX);
             }
 
             // Write the subscreen overlay table.
@@ -347,7 +363,14 @@ namespace ZeldaFullEditor
             }
             else
             {
-                UIText.CryAboutSaving("Missing ASM file 'ZSCustomOverworld.asm'.\nSaving will continue but the ASM will not be applied.");
+                if (!File.Exists("HardwareRegisters.asm"))
+                {
+                    UIText.CryAboutSaving("Missing ASM file 'HardwareRegisters.asm'.\nSaving will continue but the ASM and 'ZSCustomOverworld.asm' will not be applied.");
+                }
+                else
+                {
+                    UIText.CryAboutSaving("Missing ASM file 'ZSCustomOverworld.asm'.\nSaving will continue but the ASM will not be applied.");
+                }
             }
 
             foreach (Asarerror error in Asar.geterrors())

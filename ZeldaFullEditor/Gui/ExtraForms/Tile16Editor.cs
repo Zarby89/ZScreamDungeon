@@ -485,6 +485,15 @@ namespace ZeldaFullEditor.Gui
                             case 5:
                                 mapByte += 0x88;
                                 break;
+
+                            // The first half of sheet 7 needs to load from the animated sheet.
+                            case 7:
+                                if (j < 1024)
+                                {
+                                    mapByte = allgfxData[j + (scene.ow.AllMaps[scene.selectedMap].StaticGFX[16] * 2048)];
+                                }
+
+                                break;
                         }
 
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
