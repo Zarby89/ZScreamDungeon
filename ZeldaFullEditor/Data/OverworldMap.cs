@@ -925,7 +925,7 @@ namespace ZeldaFullEditor
             var yy = 0;
             var xx = 0;
 
-            for (var i = 0; i < this.overworld.Tile16List.Count; i++) // Number of tiles16 3748?
+            for (var i = 0; i < Constants.NumberOfMap16Ex; i++) // Number of tiles16 3748?
             {
                 // 8x8 tile draw
                 // gfx8 = 4bpp so everyting is /2

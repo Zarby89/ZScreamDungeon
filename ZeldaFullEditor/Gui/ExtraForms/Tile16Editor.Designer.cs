@@ -69,7 +69,7 @@
             // 
             this.pictureboxTile16.Location = new System.Drawing.Point(1, 1);
             this.pictureboxTile16.Name = "pictureboxTile16";
-            this.pictureboxTile16.Size = new System.Drawing.Size(256, 15008);
+            this.pictureboxTile16.Size = new System.Drawing.Size(256, 16384);
             this.pictureboxTile16.TabIndex = 0;
             this.pictureboxTile16.TabStop = false;
             this.pictureboxTile16.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureboxTile16_Paint);
@@ -355,6 +355,7 @@
             // 
             // tiledrawsizeHexbox
             // 
+            this.tiledrawsizeHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.tiledrawsizeHexbox.Decimal = true;
             this.tiledrawsizeHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
             this.tiledrawsizeHexbox.HexValue = 1;

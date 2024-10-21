@@ -289,52 +289,36 @@ namespace ZeldaFullEditor.Gui
             this.scene.Invalidate();
             // scene.Refresh();
         }
-
+        Pen selectionPen = new Pen(Color.LimeGreen, 2);
         private void tilePictureBox_Paint(object sender, PaintEventArgs e)
         {
             if (GFX.mapblockset16Bitmap != null)
             {
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                e.Graphics.CompositingMode = CompositingMode.SourceOver;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+                e.Graphics.CompositingMode = CompositingMode.SourceCopy; // why was it over that's much slower than copy
                 e.Graphics.DrawImage(
                     GFX.mapblockset16Bitmap,
-                    Constants.Rect_0_0_128_4096,
-                    Constants.Rect_0_0_128_4096,
-                    GraphicsUnit.Pixel);
-                e.Graphics.DrawImage(
-                    GFX.mapblockset16Bitmap,
-                    Constants.Rect_128_0_128_4096,
-                    Constants.Rect_0_4096_128_4096,
+                    new Rectangle(0, 0, 256, 16384),
+                    new Rectangle(0, 0, 128, 8192),
                     GraphicsUnit.Pixel);
 
                 if (this.scene.selectedTile.Length > 0)
                 {
-                    int x = (this.scene.selectedTile[0] % 8) * 16;
-                    int y = (this.scene.selectedTile[0] / 8) * 16;
+                    int x = (this.scene.selectedTile[0] % 8) * 32;
+                    int y = (this.scene.selectedTile[0] / 8) * 32;
 
-                    if (this.scene.selectedTile[0] >= 2048)
-                    {
-                        y -= 4096;
-                        x += 128;
-                    }
-
-                    // TODO copy
-                    e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, 16, 16));
-                    selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}";
+                    e.Graphics.DrawRectangle(selectionPen, new Rectangle(x, y, 32, 32));
+                    //selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}"; // do not put set label in paint wtf
                 }
 
-                e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
+                //e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
             }
         }
 
         public void AdjustTile16BoxScrollBar()
         {
-            int y = (this.scene.selectedTile[0] / 8) * 16;
-
-            if (this.scene.selectedTile[0] >= 2048)
-            {
-                y -= 4096;
-            }
+            int y = (this.scene.selectedTile[0] / 8) * 32;
 
             if (y + this.tabPage1.Size.Height > this.tilePictureBox.Size.Height)
             {
@@ -354,18 +338,7 @@ namespace ZeldaFullEditor.Gui
         private void tilePictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             this.scene.selectedTileSizeX = 1;
-            if (e.X > 128)
-            {
-                this.scene.selectedTile = new ushort[1] { (ushort)(((e.X - 128) / 16) + ((e.Y / 16) * 8) + 2048) };
-                if (this.scene.selectedTile[0] > 3751)
-                {
-                    this.scene.selectedTile[0] = 3751;
-                }
-            }
-            else
-            {
-                this.scene.selectedTile = new ushort[1] { (ushort)((e.X / 16) + ((e.Y / 16) * 8)) };
-            }
+            this.scene.selectedTile = new ushort[1] { (ushort)((e.X / 32) + ((e.Y / 32) * 8)) };
 
             this.tilePictureBox.Refresh();
         }

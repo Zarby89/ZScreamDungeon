@@ -20,7 +20,7 @@ namespace ZeldaFullEditor.Gui
         bool fromForm = false;
         byte[] tempTiletype = new byte[0x200];
 
-        Tile16[] allTiles = new Tile16[Constants.NumberOfMap16];
+        Tile16[] allTiles = new Tile16[Constants.NumberOfMap16Ex];
 
         ushort searchedTile = 0xFFFF;
 
@@ -167,16 +167,18 @@ namespace ZeldaFullEditor.Gui
         private void pictureboxTile16_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
+            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.Default;
+            e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f, 0f, 256.5f, 16000f), new RectangleF(0, 0, 128, 8000), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f, 0f, 256.5f, 16384), new RectangleF(0, 0, 128, 8192), GraphicsUnit.Pixel);
             //e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
 
             if (gridcheckBox.Checked)
             {
                 for (int x = 0; x < 16; x++)
                 {
-                    e.Graphics.DrawLine(Constants.White100Pen1, x * 32, 0, x * 32, 16000);
+                    e.Graphics.DrawLine(Constants.White100Pen1, x * 32, 0, x * 32, 16384);
 
                 }
                 for (int y = 0; y < 512; y++)
@@ -398,7 +400,7 @@ namespace ZeldaFullEditor.Gui
             var yy = 0;
             var xx = 0;
 
-            for (var i = 0; i < Constants.NumberOfMap16; i++) // Number of tiles16 3748? // its 3752
+            for (var i = 0; i < Constants.NumberOfMap16Ex; i++) // Number of tiles16 3748? // its 3752
             {
                 // 8x8 tile draw
                 // gfx8 = 4bpp so everyting is /2
@@ -506,7 +508,7 @@ namespace ZeldaFullEditor.Gui
         {
             List<ushort> zsnetTiles16ID = new List<ushort>();
             List<Tile16> zsnetTiles16 = new List<Tile16>();
-            for (int i = 0; i < Constants.NumberOfMap16; i++)
+            for (int i = 0; i < Constants.NumberOfMap16Ex; i++)
             {
                 if (NetZS.connected)
                 {

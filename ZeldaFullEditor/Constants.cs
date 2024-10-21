@@ -42,6 +42,7 @@ namespace ZeldaFullEditor
         public const int NumberOfOWMaps = 160;
         public const int Map32PerScreen = 256;
         public const int NumberOfMap16 = 3752; // 4096
+        public const int NumberOfMap16Ex = 4096; // 4096
         public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
         public const int NumberOfOWSprites = 352;
         public const int NumberOfColors = 3415; // 3143
@@ -215,6 +216,8 @@ namespace ZeldaFullEditor
         public static int compressedAllMap32PointersHigh = 0x01794D;
         public static int compressedAllMap32PointersLow = 0x017B2D;
         public static int map16Tiles = 0x078000;
+        public static int map16TilesEx = 0x1E8000;
+
         public static int map32TilesTL = 0x018000;
         public static int map32TilesTR = 0x01B400;
         public static int map32TilesBL = 0x020000;

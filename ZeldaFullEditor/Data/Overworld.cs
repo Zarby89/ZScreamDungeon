@@ -222,8 +222,54 @@ namespace ZeldaFullEditor
         /// </summary>
         public void SaveMap16Tiles()
         {
-            int tpos = Constants.map16Tiles;
-            for (int i = 0; i < Constants.NumberOfMap16; i += 1) // 3760
+
+            // Write all new pointers (all in snes address)
+
+            ROM.WriteLong(Utils.SnesToPc(0x008865), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x0EDE4F), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x0EDEE9), Utils.PcToSnes(Constants.map16TilesEx));
+
+            ROM.WriteLong(Utils.SnesToPc(0x1BBC2D), Utils.PcToSnes(Constants.map16TilesEx+2));
+            ROM.WriteLong(Utils.SnesToPc(0x1BBC4C), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x1BBCC2), Utils.PcToSnes(Constants.map16TilesEx+4));
+            ROM.WriteLong(Utils.SnesToPc(0x1BBCCB), Utils.PcToSnes(Constants.map16TilesEx+6));
+
+            ROM.WriteLong(Utils.SnesToPc(0x1BBEF6), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x1BBF23), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x1BC041), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x1BC9B3), Utils.PcToSnes(Constants.map16TilesEx));
+
+            ROM.WriteLong(Utils.SnesToPc(0x1BC9BA), Utils.PcToSnes(Constants.map16TilesEx+2));
+            ROM.WriteLong(Utils.SnesToPc(0x1BC9C1), Utils.PcToSnes(Constants.map16TilesEx+4));
+            ROM.WriteLong(Utils.SnesToPc(0x1BC9C8), Utils.PcToSnes(Constants.map16TilesEx+6));
+
+            ROM.WriteLong(Utils.SnesToPc(0x1BCA40), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x1BCA47), Utils.PcToSnes(Constants.map16TilesEx +2));
+            ROM.WriteLong(Utils.SnesToPc(0x1BCA4E), Utils.PcToSnes(Constants.map16TilesEx+4));
+            ROM.WriteLong(Utils.SnesToPc(0x1BCA55), Utils.PcToSnes(Constants.map16TilesEx+6));
+
+            ROM.WriteLong(Utils.SnesToPc(0x02F457), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x02F45E), Utils.PcToSnes(Constants.map16TilesEx+2));
+            ROM.WriteLong(Utils.SnesToPc(0x02F467), Utils.PcToSnes(Constants.map16TilesEx+4));
+            ROM.WriteLong(Utils.SnesToPc(0x02F46E), Utils.PcToSnes(Constants.map16TilesEx+6));
+            ROM.WriteLong(Utils.SnesToPc(0x02F51F), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x02F526), Utils.PcToSnes(Constants.map16TilesEx+4));
+            ROM.WriteLong(Utils.SnesToPc(0x02F52F), Utils.PcToSnes(Constants.map16TilesEx+2));
+            ROM.WriteLong(Utils.SnesToPc(0x02F536), Utils.PcToSnes(Constants.map16TilesEx+6));
+            ROM.WriteLong(Utils.SnesToPc(0x02FE1C), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteLong(Utils.SnesToPc(0x02FE23), Utils.PcToSnes(Constants.map16TilesEx+4));
+            ROM.WriteLong(Utils.SnesToPc(0x02FE2C), Utils.PcToSnes(Constants.map16TilesEx+2));
+            ROM.WriteLong(Utils.SnesToPc(0x02FE33), Utils.PcToSnes(Constants.map16TilesEx+6));
+
+
+
+            ROM.Write(Utils.SnesToPc(0x02FD28), (byte)(Utils.PcToSnes(Constants.map16TilesEx)>>16));
+            ROM.Write(Utils.SnesToPc(0x02FD39), (byte)(Utils.PcToSnes(Constants.map16TilesEx)>>16));
+
+
+
+            int tpos = Constants.map16TilesEx;
+            for (int i = 0; i < Constants.NumberOfMap16Ex; i += 1) // 4096
             {
                 ROM.WriteShort(tpos, this.Tile16List[i].Tile0.toShort(), WriteType.Tile16);
                 tpos += 2;
@@ -590,19 +636,51 @@ namespace ZeldaFullEditor
         {
             var tile16List = new List<Tile16>();
             int tpos = Constants.map16Tiles;
-            for (int i = 0; i < Constants.NumberOfMap16; i += 1)
-            {
-                TileInfo t0 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
-                tpos += 2;
-                TileInfo t1 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
-                tpos += 2;
-                TileInfo t2 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
-                tpos += 2;
-                TileInfo t3 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
-                tpos += 2;
 
-                tile16List.Add(new Tile16(t0, t1, t2, t3));
+            if (ROM.DATA[Utils.SnesToPc(0x02FD28)] == 0x0F)
+            {
+
+                for (int i = 0; i < Constants.NumberOfMap16; i += 1)
+                {
+                    TileInfo t0 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+                    TileInfo t1 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+                    TileInfo t2 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+                    TileInfo t3 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+
+                    tile16List.Add(new Tile16(t0, t1, t2, t3));
+                }
+                TileInfo tempty = new TileInfo(0xAA, 2, false,false, false);
+                // fill the rest with empty tiles
+                while (tile16List.Count < 4096)
+                {
+                    tile16List.Add(new Tile16(tempty, tempty, tempty, tempty));
+                }
+
             }
+            else
+            {
+                tpos = Constants.map16TilesEx;
+                for (int i = 0; i < Constants.NumberOfMap16Ex; i += 1)
+                {
+                    TileInfo t0 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+                    TileInfo t1 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+                    TileInfo t2 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+                    TileInfo t3 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, tpos));
+                    tpos += 2;
+
+                    tile16List.Add(new Tile16(t0, t1, t2, t3));
+                }
+            }
+
+
+
 
             return tile16List;
         }
