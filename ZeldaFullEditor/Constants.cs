@@ -219,7 +219,14 @@ namespace ZeldaFullEditor
         public static int map32TilesTR = 0x01B400;
         public static int map32TilesBL = 0x020000;
         public static int map32TilesBR = 0x023400;
+
+        public static int map32TilesTREx = 0x020000;
+        public static int map32TilesBLEx = 0x1F0000;
+        public static int map32TilesBREx = 0x1F8000;
+
         public static int Map32TilesCount = 0x0033F0;
+        public static int Map32TilesCountEx = 0x0067E0;
+
         public static int overworldPalGroup1 = 0x0DE6C8;
         public static int overworldPalGroup2 = 0x0DE86C;
         public static int overworldPalGroup3 = 0x0DE604;
