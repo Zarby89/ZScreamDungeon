@@ -63,6 +63,7 @@ namespace ZeldaFullEditor
         private Point startingPoint = Point.Empty;
         private Point scrollingPoint = Point.Empty;
         private Point startpanPoint = Point.Empty;
+        public bool showLinkCamera = false;
         bool pan = false;
         //int selectedMode = 0;
 
@@ -79,6 +80,7 @@ namespace ZeldaFullEditor
             this.MouseMove += new MouseEventHandler(this.onMouseMove);
             this.MouseDoubleClick += new MouseEventHandler(this.onMouseDoubleClick);
             this.MouseWheel += SceneOW_MouseWheel;
+            
             this.tilesgfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, this.temptilesgfxPtr);
             this.tilemode = new TileMode(this);
             this.exitmode = new ExitMode(this);
@@ -92,11 +94,8 @@ namespace ZeldaFullEditor
             this.gravestoneMode = new GravestoneMode(this);
             this.overlayAnimationMode = new OverlayAnimationMode(this);
 
-            //this.Width = 8192;
-            //this.Height = 8192;
-            //this.Size = new Size(8192, 8192);
-            //this.Refresh();
         }
+
 
         public void CreateScene()
         {
@@ -663,6 +662,7 @@ namespace ZeldaFullEditor
             }
         }
 
+        Pen camPen = new Pen(Color.Red, 2);
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -677,139 +677,58 @@ namespace ZeldaFullEditor
             g.CompositingMode = CompositingMode.SourceCopy;
             g.CompositingQuality = CompositingQuality.HighSpeed;
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
+            g.PixelOffsetMode = PixelOffsetMode.Half;
 
             if (this.initialized)
             {
-                if (this.lowEndMode)
+                int x = 0;
+                int y = 0;
+
+
+                for (int i = ow.WorldOffset; i < 64 + ow.WorldOffset; i++)
                 {
-                    int x = this.ow.AllMaps[this.selectedMap].ParentID % 8;
-                    int y = this.ow.AllMaps[this.selectedMap].ParentID / 8;
-
-                    if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
+                    
+                    if (i <= 0x9F)
                     {
-                        if (OverworldEditor.UseAreaSpecificBgColor)
+                        ushort subscreenOverlay = ow.AllMaps[i].SubscreenOverlay;
+
+                        g.CompositingMode = CompositingMode.SourceCopy; // Why over?
+
+                        // Draw the base image (either a BG color or tilemap like the pyramid BG).
+                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
                         {
-                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[this.selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 1024, 1024));
-                        }
-                        else
-                        {
-                            g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
-                        }
-
-                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
-                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID + 1].GFXBitmap, new PointF((x + 1) * 512, y * 512));
-                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID + 8].GFXBitmap, new PointF(x * 512, (y + 1) * 512));
-                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID + 9].GFXBitmap, new PointF((x + 1) * 512, (y + 1) * 512));
-                    }
-                    else
-                    {
-                        if (OverworldEditor.UseAreaSpecificBgColor)
-                        {
-                            g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[this.selectedMap].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
-                        }
-                        else
-                        {
-                            g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
-                        }
-
-                        g.DrawImage(this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].GFXBitmap, new PointF(x * 512, y * 512));
-                    }
-                }
-                else
-                {
-                    if (this.ow.WorldOffset == 64)
-                    {
-                        g.Clear(Palettes.OverworldGrassPalettes[1]);
-                    }
-                    else if (this.ow.WorldOffset == 128)
-                    {
-                        g.Clear(Palettes.OverworldGrassPalettes[2]);
-                    }
-                    else
-                    {
-                        g.Clear(Palettes.OverworldGrassPalettes[0]);
-                    }
-
-                    // TODO: Make a single PointF and Rectangle variable to reuse.
-                    int x = 0;
-                    int y = 0;
-                    for (int i = 0 + this.ow.WorldOffset; i < 64 + this.ow.WorldOffset; i++)
-                    {
-                        if (i <= 0x9F)
-                        {
-                            ushort subscreenOverlay = this.ow.AllMaps[i].SubscreenOverlay;
-
-                            g.CompositingMode = CompositingMode.SourceOver;
-
-                            // Draw the base image (either a BG color or tilemap like the pyramid BG).
-                            if (this.mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                            // everything that is not these 3 should be drawn on top.
+                            // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
+                            if (subscreenOverlay == 0x95 || subscreenOverlay == 0x96 || subscreenOverlay == 0x9C)
                             {
-                                // everything that is not these 3 should be drawn on top.
-                                // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
-                                if (subscreenOverlay == 0x95 || subscreenOverlay == 0x96 || subscreenOverlay == 0x9C)
-                                {
-                                    g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new PointF(x * 512, y * 512));
-                                }
-                            }
-                            else
-                            {
-                                if (i < 64)
-                                {
-                                    if (OverworldEditor.UseAreaSpecificBgColor)
-                                    {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
-                                    }
-                                    else
-                                    {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
-                                    }
-                                }
-                                else if (i >= 64 && i < 128)
-                                {
-                                    if (OverworldEditor.UseAreaSpecificBgColor)
-                                    {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
-                                    }
-                                    else
-                                    {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[1]), new RectangleF(x * 512, y * 512, 512, 512));
-                                    }
-                                }
-                                else
-                                {
-                                    if (OverworldEditor.UseAreaSpecificBgColor)
-                                    {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[this.ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
-                                    }
-                                    else
-                                    {
-                                        g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[2]), new RectangleF(x * 512, y * 512, 512, 512));
-                                    }
-                                }
-                            }
-
-                            // Draw the actual tile maps.
-                            g.DrawImage(this.ow.AllMaps[i].GFXBitmap, new PointF(x * 512, y * 512));
-
-                            // Draw any subscreen overlays that go on top.
-                            if (this.mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
-                            {
-                                // everything that is not these 3 should be drawn on top.
-                                // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
-                                // 0x93 is the second triforce room, 0x94 is the second master sword/ bridge area, 0x97 is the first fog, 0x9D is the second fog, 0x9E is the tree canopy, 0x9F is the rain.
-                                if (subscreenOverlay != 0x95 && subscreenOverlay != 0x96 && subscreenOverlay != 0x9C && subscreenOverlay < 0xA0)
-                                {
-                                    g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-                                }
-                            }
-
-                            x++;
-                            if (x >= 8)
-                            {
-                                x = 0;
-                                y++;
+                                g.DrawImage(ow.AllMaps[subscreenOverlay].GFXBitmap, new PointF(x * 512, y * 512));
                             }
                         }
+
+                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+                        g.CompositingMode = CompositingMode.SourceOver;
+                        // Draw the actual tile maps.
+                        g.DrawImage(ow.AllMaps[i].GFXBitmap, new PointF(x * 512, y * 512));
+
+                        // Draw any subscreen overlays that go on top.
+                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                        {
+                            // everything that is not these 3 should be drawn on top.
+                            // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
+                            // 0x93 is the second triforce room, 0x94 is the second master sword/ bridge area, 0x97 is the first fog, 0x9D is the second fog, 0x9E is the tree canopy, 0x9F is the rain.
+                            if (subscreenOverlay != 0x95 && subscreenOverlay != 0x96 && subscreenOverlay != 0x9C && subscreenOverlay < 0xA0)
+                            {
+                                g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+                            }
+                        }
+
+
+                    }
+                    x++;
+                    if (x >= 8)
+                    {
+                        x = 0;
+                        y++;
                     }
                 }
 
@@ -825,6 +744,63 @@ namespace ZeldaFullEditor
                     g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
                     g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
                 }
+
+                
+                if (showLinkCamera)
+                {
+                    if (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].LargeMap)
+                    {
+                        int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
+                        int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
+                        int camX = mouseX_Real = mouseX_Real - (mx*512) - 120;
+                        int camY = mouseY_Real = mouseY_Real - (my*512) - 104;
+                        if ((camX + 256) >= 1024)
+                        {
+                            camX = (1024 - 256);
+                        }
+                        if ((camX) < 0)
+                        {
+                            camX = 0;
+                        }
+
+                        if ((camY + 224) >= 1024)
+                        {
+                            camY = (1024 - 224);
+                        }
+                        if ((camY) < 0)
+                        {
+                            camY = 0;
+                        }
+                        g.DrawRectangle(camPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
+                    }
+                    else
+                    {
+                        int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
+                        int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
+                        int camX = (mouseX_Real % 512) - 120;
+                        int camY = (mouseY_Real % 512) - 104;
+                        if ((camX + 256) >= 512)
+                        {
+                            camX = (512 - 256);
+                        }
+                        if ((camX) < 0)
+                        {
+                            camX = 0;
+                        }
+
+                        if ((camY + 224) >= 512)
+                        {
+                            camY = (512 - 224);
+                        }
+                        if ((camY) < 0)
+                        {
+                            camY = 0;
+                        }
+                        g.DrawRectangle(camPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
+                    }
+                    
+                }
+
 
                 int offset = 0;
                 if (this.selectedMap >= 128)
@@ -1079,8 +1055,8 @@ namespace ZeldaFullEditor
                     int temp = this.selectedMap;
                     temp %= 64;
 
-                    int x = this.ow.AllMaps[temp].ParentID % 8;
-                    int y = this.ow.AllMaps[temp].ParentID / 8;
+                    x = this.ow.AllMaps[temp].ParentID % 8;
+                    y = this.ow.AllMaps[temp].ParentID / 8;
 
                     for (int gx = 0; gx < (gridsize / this.owForm.gridDisplay); gx++)
                     {
