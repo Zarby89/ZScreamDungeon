@@ -256,16 +256,18 @@ namespace ZeldaFullEditor
             ROM.WriteLong(Utils.SnesToPc(0x02F526), Utils.PcToSnes(Constants.map16TilesEx+4));
             ROM.WriteLong(Utils.SnesToPc(0x02F52F), Utils.PcToSnes(Constants.map16TilesEx+2));
             ROM.WriteLong(Utils.SnesToPc(0x02F536), Utils.PcToSnes(Constants.map16TilesEx+6));
-            ROM.WriteLong(Utils.SnesToPc(0x02FE1C), Utils.PcToSnes(Constants.map16TilesEx));
-            ROM.WriteLong(Utils.SnesToPc(0x02FE23), Utils.PcToSnes(Constants.map16TilesEx+4));
-            ROM.WriteLong(Utils.SnesToPc(0x02FE2C), Utils.PcToSnes(Constants.map16TilesEx+2));
-            ROM.WriteLong(Utils.SnesToPc(0x02FE33), Utils.PcToSnes(Constants.map16TilesEx+6));
+
+
+            ROM.WriteShort(Utils.SnesToPc(0x02FE1C), Utils.PcToSnes(Constants.map16TilesEx));
+            ROM.WriteShort(Utils.SnesToPc(0x02FE23), Utils.PcToSnes(Constants.map16TilesEx+4));
+            ROM.WriteShort(Utils.SnesToPc(0x02FE2C), Utils.PcToSnes(Constants.map16TilesEx+2));
+            ROM.WriteShort(Utils.SnesToPc(0x02FE33), Utils.PcToSnes(Constants.map16TilesEx+6));
 
 
 
             ROM.Write(Utils.SnesToPc(0x02FD28), (byte)(Utils.PcToSnes(Constants.map16TilesEx)>>16));
             ROM.Write(Utils.SnesToPc(0x02FD39), (byte)(Utils.PcToSnes(Constants.map16TilesEx)>>16));
-
+            
 
 
             int tpos = Constants.map16TilesEx;

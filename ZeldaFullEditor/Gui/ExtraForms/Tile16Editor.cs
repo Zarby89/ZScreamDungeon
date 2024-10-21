@@ -386,7 +386,8 @@ namespace ZeldaFullEditor.Gui
             mirrorXCheckbox.Checked = t.H;
             mirrorYCheckbox.Checked = t.V;
             inFrontCheckbox.Checked = t.O;
-            tileTypeBox.SelectedIndex = (int)tempTiletype[t.id];
+            
+            tileTypeBox.SelectedIndex = (int)tempTiletype[t.id%512];
             fromForm = false;
 
             updateTiles();

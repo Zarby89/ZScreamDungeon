@@ -339,7 +339,7 @@ namespace ZeldaFullEditor.Gui
         {
             this.scene.selectedTileSizeX = 1;
             this.scene.selectedTile = new ushort[1] { (ushort)((e.X / 32) + ((e.Y / 32) * 8)) };
-
+            selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}";
             this.tilePictureBox.Refresh();
         }
 
