@@ -13,6 +13,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
@@ -2933,6 +2934,7 @@ namespace ZeldaFullEditor
         private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.activeScene.selectedDragSprite = new SelectedObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.subtype);
+            this.overworldEditor.scene.selectedDragSprite = new SelectedObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.subtype);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -3938,6 +3940,8 @@ namespace ZeldaFullEditor
 
             if (this.editorsTabControl.SelectedTab.Name == "dungeonPage")
             {
+                customPanel1.Parent = tabPage4;
+
                 this.toolStrip1.Visible = true;
                 this.panel1.Visible = true;
                 this.toolboxPanel.Visible = true;
@@ -4036,7 +4040,15 @@ namespace ZeldaFullEditor
                     {
                         this.editorsTabControl.SelectedIndex = 0;
                     }
+
+                    if (overworldEditor.tabControl1.TabPages.Contains(overworldEditor.Tiles8))
+                    {
+                        overworldEditor.tabControl1.TabPages.Remove(overworldEditor.Tiles8);
+                    }
                 }
+                customPanel1.Parent = overworldEditor.owspritePanel;
+
+
             }
             else
             {

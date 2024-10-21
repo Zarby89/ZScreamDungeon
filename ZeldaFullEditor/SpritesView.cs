@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.FromArgb(48, 48, 48));
-            int w = (this.Size.Width / 68);
+            int w = (this.Size.Width / 62);
             int h = (((items.Count / w) + 1) * 68);
             int xpos = 0;
             int ypos = 0;
@@ -95,7 +95,7 @@ namespace ZeldaFullEditor
 
         public void updateSize()
         {
-            int w = (this.Size.Width / 68);
+            int w = (this.Size.Width / 62);
             int h = (((items.Count / w) + 1) * 68);
             this.Size = new Size(this.Size.Width, h);
 
@@ -150,7 +150,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
         {
-            int w = (this.Size.Width / 68);
+            int w = (this.Size.Width / 62);
             int h = (((items.Count / w) + 1) * 68);
             int xpos = 0;
             int ypos = 0;

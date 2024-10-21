@@ -2,7 +2,9 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Windows.Markup;
 using Lidgren.Network;
 using ZeldaFullEditor.Properties;
 
@@ -25,6 +27,20 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void onMouseDown(MouseEventArgs e)
         {
+            if (scene.selectedDragSprite != null)
+            {
+                int gs = scene.ow.GameState;
+
+                scene.selectedFormSprite = new Sprite(0, (byte)scene.selectedDragSprite.ID, 0, 0, 0, 0);
+                scene.ow.AllSprites[gs].Add(scene.selectedFormSprite);
+                selectedSprite = scene.ow.AllSprites[gs].Last();
+                scene.selectedDragSprite = null;
+                scene.mouse_down = true;
+                isLeftPress = true;
+                return;
+            }
+
+
             isLeftPress = e.Button == MouseButtons.Left;
 
             for (int i = scene.ow.WorldOffset; i < 64 + scene.ow.WorldOffset; i++)
