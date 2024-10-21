@@ -297,6 +297,7 @@ namespace ZeldaFullEditor
 
             if (this.selectedMode == ObjectMode.Tile)
             {
+                text = "Selected Tile " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
                 this.tilemode.OnMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.Overlay)

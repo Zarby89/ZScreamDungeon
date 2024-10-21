@@ -104,6 +104,18 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             fromForm = false;
             groupBox1.Text = "Map ID : " + mapIndex.ToString("D3");
 
+
+            fromForm = true;
+            music1Box.SelectedIndex = musics[0] & 0x0F;
+            music2Box.SelectedIndex = musics[1] & 0x0F;
+            music3Box.SelectedIndex = musics[2] & 0x0F;
+            music4Box.SelectedIndex = musics[3] & 0x0F;
+
+            ambient1Box.SelectedIndex = ((musics[0] & 0xF0) >> 4);
+            ambient2Box.SelectedIndex = ((musics[1] & 0xF0) >> 4);
+            ambient3Box.SelectedIndex = ((musics[2] & 0xF0) >> 4);
+            ambient4Box.SelectedIndex = ((musics[3] & 0xF0) >> 4);
+            fromForm = false;
             if (mapIndex >= 0x40)
             {
                 music2Box.Enabled = false;

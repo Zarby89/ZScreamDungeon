@@ -9,9 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using Lidgren.Network;
 using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Properties;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -25,7 +27,6 @@ namespace ZeldaFullEditor.Gui
         public Bitmap scratchPadBitmap = new Bitmap(256, 3600);
         public ushort[,] scratchPadTiles = new ushort[16, 225];
         public byte gridDisplay = 0;
-
         private bool mouse_down = false;
 
         private bool selecting = false;
@@ -43,6 +44,8 @@ namespace ZeldaFullEditor.Gui
 
         public static bool UseAreaSpecificBgColor = true;
         public static bool scratchPadGrid = false;
+
+        bool fromForm = false;
 
         public OverworldEditor()
         {
@@ -73,6 +76,19 @@ namespace ZeldaFullEditor.Gui
             this.overlayAnimationButton.Tag = ObjectMode.OverlayAnimation;
             this.stateCombobox.SelectedIndex = 1;
             this.scratchPicturebox.Image = this.scratchPadBitmap;
+
+
+            music1Box.Items.AddRange(Constants.musicNamesOW);
+            music2Box.Items.AddRange(Constants.musicNamesOW);
+            music3Box.Items.AddRange(Constants.musicNamesOW);
+            music4Box.Items.AddRange(Constants.musicNamesOW);
+
+            ambient1Box.Items.AddRange(Constants.ambientNamesOW);
+            ambient2Box.Items.AddRange(Constants.ambientNamesOW);
+            ambient3Box.Items.AddRange(Constants.ambientNamesOW);
+            ambient4Box.Items.AddRange(Constants.ambientNamesOW);
+
+
 
 
 
@@ -152,6 +168,33 @@ namespace ZeldaFullEditor.Gui
             this.largemapCheckbox.Checked = map.LargeMap;
             this.mosaicCheckBox.Checked = map.Mosaic;
             this.propertiesChangedFromForm = false;
+
+
+            fromForm = true;
+            music1Box.SelectedIndex = scene.ow.AllMaps[this.scene.selectedMapParent].Music[0] & 0x0F;
+            music2Box.SelectedIndex = scene.ow.AllMaps[this.scene.selectedMapParent].Music[1] & 0x0F;
+            music3Box.SelectedIndex = scene.ow.AllMaps[this.scene.selectedMapParent].Music[2] & 0x0F;
+            music4Box.SelectedIndex = scene.ow.AllMaps[this.scene.selectedMapParent].Music[3] & 0x0F;
+
+            ambient1Box.SelectedIndex = ((scene.ow.AllMaps[this.scene.selectedMapParent].Music[0] & 0xF0) >> 4);
+            ambient2Box.SelectedIndex = ((scene.ow.AllMaps[this.scene.selectedMapParent].Music[1] & 0xF0) >> 4);
+            ambient3Box.SelectedIndex = ((scene.ow.AllMaps[this.scene.selectedMapParent].Music[2] & 0xF0) >> 4);
+            ambient4Box.SelectedIndex = ((scene.ow.AllMaps[this.scene.selectedMapParent].Music[3] & 0xF0) >> 4);
+            fromForm = false;
+
+            if (scene.selectedMap >= 0x40)
+            {
+                music2Box.Enabled = false;
+                music3Box.Enabled = false;
+                music4Box.Enabled = false;
+                ambient2Box.Enabled = false;
+                ambient3Box.Enabled = false;
+                ambient4Box.Enabled = false;
+            }
+
+
+
+
         }
 
         private void ModeButton_Click(object sender, EventArgs e)
@@ -185,6 +228,22 @@ namespace ZeldaFullEditor.Gui
                 OverworldMap mapParent = this.scene.ow.AllMaps[this.scene.ow.AllMaps[this.scene.selectedMap].ParentID];
                 this.UpdateMapProperties(mapParent);
                 this.SendMapProperties(mapParent);
+                if (ispalPreview)
+                {
+                    OWProperty_MainPalette_MouseEnter(sender, null);
+                    return;
+                }
+
+                if (sender == OWProperty_SPRGFX)
+                {
+                    OWProperty_SPRGFX_MouseEnter(sender, null);
+                }
+                else
+                {
+                    OWProperty_TileGFX0_MouseEnter(sender, null);
+                }
+
+
             }
         }
 
@@ -339,7 +398,10 @@ namespace ZeldaFullEditor.Gui
         {
             this.scene.selectedTileSizeX = 1;
             this.scene.selectedTile = new ushort[1] { (ushort)((e.X / 32) + ((e.Y / 32) * 8)) };
-            selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}";
+            if (scene.selectedMode == ObjectMode.Tile)
+            {
+                objectGroupbox.Text = "Selected Tile " + scene.selectedTile[0].ToString("X4") + "   Selected Map " + scene.ow.AllMaps[scene.selectedMap].ParentID.ToString("X2");
+            }
             this.tilePictureBox.Refresh();
         }
 
@@ -2399,6 +2461,125 @@ namespace ZeldaFullEditor.Gui
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
+        }
+
+        private void music1Box_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!fromForm)
+            {
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[0] = (byte)((ambient1Box.SelectedIndex << 4) + music1Box.SelectedIndex);
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[1] = (byte)((ambient2Box.SelectedIndex << 4) + music2Box.SelectedIndex);
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[2] = (byte)((ambient3Box.SelectedIndex << 4) + music3Box.SelectedIndex);
+                this.scene.ow.AllMaps[this.scene.selectedMapParent].Music[3] = (byte)((ambient4Box.SelectedIndex << 4) + music4Box.SelectedIndex);
+            }
+        }
+
+        byte[] previewSheets = new byte[1];
+        byte globalPalPreview = 8;
+        bool ispalPreview = false;
+
+        private void OWProperty_SPRGFX_MouseEnter(object sender, EventArgs e)
+        {
+            ispalPreview = false;
+            previewsheetPicturebox.Location = new Point(0, (sender as Hexbox).Location.Y + 48);
+
+            previewSheets = new byte[4];
+            for(int i = 0; i< 4; i++)
+            {
+                previewSheets[i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (OWProperty_SPRGFX.HexValue * 4) + i] + 115);
+            }
+
+            previewsheetPicturebox.Height = (64 * 4);
+            previewsheetPicturebox.Visible = true;
+            previewsheetPicturebox.Refresh();
+        }
+
+        private void OWProperty_SPRGFX_MouseLeave(object sender, EventArgs e)
+        {
+            previewsheetPicturebox.Visible = false;
+        }
+
+        private void previewsheetPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            if (ispalPreview)
+            {
+                for(int i = 0; i<256;i++)
+                {
+                    e.Graphics.FillRectangle(new SolidBrush(scene.ow.AllMaps[scene.selectedMapParent].GFXBitmap.Palette.Entries[i]), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
+                }
+
+            }
+            else
+            {
+                ColorPalette cp = GFX.allgfxBitmap.Palette;
+                byte paloffset = 0;
+                if (previewSheets.Length > 1)
+                {
+                    paloffset = 8;
+                }
+                for (int i = 0; i < 16; i++)
+                {
+
+                    cp.Entries[i] = scene.ow.AllMaps[scene.selectedMapParent].GFXBitmap.Palette.Entries[i + ((globalPalPreview + paloffset) * 16)];
+                }
+                GFX.allgfxBitmap.Palette = cp;
+
+                e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                for (int i = 0; i < previewSheets.Length; i++)
+                {
+                    e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0, i * 64, 256, 64), new Rectangle(0, previewSheets[i] * 32, 128, 32), GraphicsUnit.Pixel);
+
+
+                }
+            }
+        }
+
+        private void paletteCyclingTimer_Tick(object sender, EventArgs e)
+        {
+
+            globalPalPreview++;
+            if (globalPalPreview >= 8)
+            {
+                globalPalPreview = 0;
+
+            }
+            previewsheetPicturebox.Refresh();
+        }
+
+        private void OWProperty_TileGFX0_MouseLeave(object sender, EventArgs e)
+        {
+            previewsheetPicturebox.Visible = false;
+        }
+
+        private void OWProperty_TileGFX0_MouseEnter(object sender, EventArgs e)
+        {
+            ispalPreview = false;
+            previewsheetPicturebox.Location = new Point(0, (sender as Hexbox).Location.Y + 48);
+            //if ((sender as Hexbox).HexValue )
+            previewSheets = new byte[1];
+            previewSheets[0] = (byte)((sender as Hexbox).HexValue);
+
+            previewsheetPicturebox.Height = 64;
+            previewsheetPicturebox.Visible = true;
+            previewsheetPicturebox.Refresh();
+        }
+
+        private void OWProperty_MainPalette_MouseEnter(object sender, EventArgs e)
+        {
+            ispalPreview = true;
+
+            previewsheetPicturebox.Location = new Point(0, (sender as Hexbox).Location.Y + 48);
+            previewsheetPicturebox.Visible = true;
+            previewsheetPicturebox.Height = 256;
+            previewsheetPicturebox.Refresh();
+        }
+
+        private void OWProperty_MainPalette_MouseLeave(object sender, EventArgs e)
+        {
+            ispalPreview = false;
+            previewsheetPicturebox.Visible = false;
         }
     }
 }

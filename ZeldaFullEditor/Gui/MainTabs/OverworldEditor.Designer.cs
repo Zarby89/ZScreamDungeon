@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OverworldEditor));
             this.owToolStrip = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -71,6 +72,50 @@
             this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
             this.palette8Box = new System.Windows.Forms.PictureBox();
             this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
+            this.owspriteTab = new System.Windows.Forms.TabPage();
+            this.owspritePanel = new System.Windows.Forms.Panel();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.mapGroupbox = new System.Windows.Forms.GroupBox();
+            this.ambient4Box = new System.Windows.Forms.ComboBox();
+            this.ambient3Box = new System.Windows.Forms.ComboBox();
+            this.ambient2Box = new System.Windows.Forms.ComboBox();
+            this.ambient1Box = new System.Windows.Forms.ComboBox();
+            this.music4Box = new System.Windows.Forms.ComboBox();
+            this.music3Box = new System.Windows.Forms.ComboBox();
+            this.music2Box = new System.Windows.Forms.ComboBox();
+            this.music1Box = new System.Windows.Forms.ComboBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.mosaicGroupbox = new System.Windows.Forms.GroupBox();
+            this.bottommosaicCheckbox = new System.Windows.Forms.CheckBox();
+            this.topmosaicCheckbox = new System.Windows.Forms.CheckBox();
+            this.rightmosaicCheckbox = new System.Windows.Forms.CheckBox();
+            this.leftmosaicCheckbox = new System.Windows.Forms.CheckBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.mosaicCheckBox = new System.Windows.Forms.CheckBox();
+            this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.largemapCheckbox = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.musicButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.selectedTileLabel = new System.Windows.Forms.Label();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
             this.objectGroupbox = new System.Windows.Forms.GroupBox();
@@ -81,52 +126,27 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.objCombobox = new System.Windows.Forms.ComboBox();
-            this.mapGroupbox = new System.Windows.Forms.GroupBox();
-            this.label21 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.stateCombobox = new System.Windows.Forms.ComboBox();
+            this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
+            this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
             this.OWProperty_TileGFX7 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label20 = new System.Windows.Forms.Label();
             this.OWProperty_TileGFX6 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label19 = new System.Windows.Forms.Label();
             this.OWProperty_TileGFX5 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label18 = new System.Windows.Forms.Label();
             this.OWProperty_TileGFX4 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label17 = new System.Windows.Forms.Label();
             this.OWProperty_TileGFX3 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label16 = new System.Windows.Forms.Label();
             this.OWProperty_TileGFX2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label15 = new System.Windows.Forms.Label();
             this.OWProperty_TileGFX1 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_AniGFX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label14 = new System.Windows.Forms.Label();
             this.OWProperty_TileGFX0 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label13 = new System.Windows.Forms.Label();
             this.OWProperty_SubscreenOverlay = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_MainPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.mosaicCheckBox = new System.Windows.Forms.CheckBox();
             this.OWProperty_AuxPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_SPRPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_SPRGFX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_BGGFX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.largemapCheckbox = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.musicButton = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.selectedTileLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.stateCombobox = new System.Windows.Forms.ComboBox();
-            this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.owspriteTab = new System.Windows.Forms.TabPage();
-            this.owspritePanel = new System.Windows.Forms.Panel();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -143,14 +163,17 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
+            this.owspriteTab.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.mapGroupbox.SuspendLayout();
+            this.mosaicGroupbox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
-            this.mapGroupbox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
-            this.owspriteTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -453,7 +476,7 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 130);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 68);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -464,8 +487,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
+            this.splitContainer1.Panel2.Controls.Add(this.selectedTileLabel);
             this.splitContainer1.Panel2.Controls.Add(this.thumbnailBox);
-            this.splitContainer1.Size = new System.Drawing.Size(1184, 589);
+            this.splitContainer1.Size = new System.Drawing.Size(1184, 651);
             this.splitContainer1.SplitterDistance = 282;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -475,11 +499,12 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.Tiles8);
             this.tabControl1.Controls.Add(this.owspriteTab);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(282, 589);
+            this.tabControl1.Size = new System.Drawing.Size(282, 651);
             this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -490,7 +515,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(274, 563);
+            this.tabPage1.Size = new System.Drawing.Size(274, 625);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tile 16";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -514,9 +539,9 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(274, 563);
+            this.tabPage2.Size = new System.Drawing.Size(274, 625);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Tile 16 ScratchPad";
+            this.tabPage2.Text = "ScratchPad";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // scratchPicturebox
@@ -537,7 +562,7 @@
             this.Tiles8.Controls.Add(this.panel1);
             this.Tiles8.Location = new System.Drawing.Point(4, 22);
             this.Tiles8.Name = "Tiles8";
-            this.Tiles8.Size = new System.Drawing.Size(274, 563);
+            this.Tiles8.Size = new System.Drawing.Size(274, 625);
             this.Tiles8.TabIndex = 2;
             this.Tiles8.Text = "Tile 8";
             this.Tiles8.UseVisualStyleBackColor = true;
@@ -549,7 +574,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 217);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(274, 346);
+            this.panel2.Size = new System.Drawing.Size(274, 408);
             this.panel2.TabIndex = 3;
             // 
             // pictureBox1
@@ -627,106 +652,54 @@
             this.mirrorXCheckbox.UseVisualStyleBackColor = true;
             this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
-            // thumbnailBox
+            // owspriteTab
             // 
-            this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
-            this.thumbnailBox.Name = "thumbnailBox";
-            this.thumbnailBox.Size = new System.Drawing.Size(24, 24);
-            this.thumbnailBox.TabIndex = 22;
-            this.thumbnailBox.TabStop = false;
-            this.thumbnailBox.Visible = false;
+            this.owspriteTab.AutoScroll = true;
+            this.owspriteTab.Controls.Add(this.owspritePanel);
+            this.owspriteTab.Location = new System.Drawing.Point(4, 22);
+            this.owspriteTab.Name = "owspriteTab";
+            this.owspriteTab.Size = new System.Drawing.Size(274, 625);
+            this.owspriteTab.TabIndex = 3;
+            this.owspriteTab.Text = "Sprites";
+            this.owspriteTab.UseVisualStyleBackColor = true;
             // 
-            // owPropertyPanel
+            // owspritePanel
             // 
-            this.owPropertyPanel.Controls.Add(this.objectGroupbox);
-            this.owPropertyPanel.Controls.Add(this.mapGroupbox);
-            this.owPropertyPanel.Controls.Add(this.groupBox1);
-            this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.owPropertyPanel.Location = new System.Drawing.Point(0, 25);
-            this.owPropertyPanel.Name = "owPropertyPanel";
-            this.owPropertyPanel.Size = new System.Drawing.Size(1184, 105);
-            this.owPropertyPanel.TabIndex = 0;
+            this.owspritePanel.AutoScroll = true;
+            this.owspritePanel.AutoSize = true;
+            this.owspritePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.owspritePanel.Location = new System.Drawing.Point(0, 0);
+            this.owspritePanel.Name = "owspritePanel";
+            this.owspritePanel.Size = new System.Drawing.Size(274, 625);
+            this.owspritePanel.TabIndex = 23;
             // 
-            // objectGroupbox
+            // tabPage3
             // 
-            this.objectGroupbox.Controls.Add(this.SelectedObjectY);
-            this.objectGroupbox.Controls.Add(this.SelectedObjectX);
-            this.objectGroupbox.Controls.Add(this.SelectedObjectID);
-            this.objectGroupbox.Controls.Add(this.label10);
-            this.objectGroupbox.Controls.Add(this.label9);
-            this.objectGroupbox.Controls.Add(this.label8);
-            this.objectGroupbox.Controls.Add(this.objCombobox);
-            this.objectGroupbox.Location = new System.Drawing.Point(894, 3);
-            this.objectGroupbox.Name = "objectGroupbox";
-            this.objectGroupbox.Size = new System.Drawing.Size(273, 99);
-            this.objectGroupbox.TabIndex = 10;
-            this.objectGroupbox.TabStop = false;
-            this.objectGroupbox.Text = "Selected object";
-            // 
-            // SelectedObjectY
-            // 
-            this.SelectedObjectY.AutoSize = true;
-            this.SelectedObjectY.Location = new System.Drawing.Point(33, 44);
-            this.SelectedObjectY.Name = "SelectedObjectY";
-            this.SelectedObjectY.Size = new System.Drawing.Size(10, 13);
-            this.SelectedObjectY.TabIndex = 7;
-            this.SelectedObjectY.Text = "-";
-            // 
-            // SelectedObjectX
-            // 
-            this.SelectedObjectX.AutoSize = true;
-            this.SelectedObjectX.Location = new System.Drawing.Point(33, 31);
-            this.SelectedObjectX.Name = "SelectedObjectX";
-            this.SelectedObjectX.Size = new System.Drawing.Size(10, 13);
-            this.SelectedObjectX.TabIndex = 6;
-            this.SelectedObjectX.Text = "-";
-            // 
-            // SelectedObjectID
-            // 
-            this.SelectedObjectID.AutoSize = true;
-            this.SelectedObjectID.Location = new System.Drawing.Point(33, 16);
-            this.SelectedObjectID.Name = "SelectedObjectID";
-            this.SelectedObjectID.Size = new System.Drawing.Size(10, 13);
-            this.SelectedObjectID.TabIndex = 5;
-            this.SelectedObjectID.Text = "-";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(10, 44);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(17, 13);
-            this.label10.TabIndex = 4;
-            this.label10.Text = "Y:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(10, 31);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 13);
-            this.label9.TabIndex = 3;
-            this.label9.Text = "X:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 16);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(21, 13);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "ID:";
-            // 
-            // objCombobox
-            // 
-            this.objCombobox.FormattingEnabled = true;
-            this.objCombobox.Location = new System.Drawing.Point(111, 13);
-            this.objCombobox.Name = "objCombobox";
-            this.objCombobox.Size = new System.Drawing.Size(156, 21);
-            this.objCombobox.TabIndex = 1;
+            this.tabPage3.AutoScroll = true;
+            this.tabPage3.Controls.Add(this.mapGroupbox);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(274, 625);
+            this.tabPage3.TabIndex = 4;
+            this.tabPage3.Text = "Properties";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // mapGroupbox
             // 
+            this.mapGroupbox.Controls.Add(this.previewsheetPicturebox);
+            this.mapGroupbox.Controls.Add(this.ambient4Box);
+            this.mapGroupbox.Controls.Add(this.ambient3Box);
+            this.mapGroupbox.Controls.Add(this.ambient2Box);
+            this.mapGroupbox.Controls.Add(this.ambient1Box);
+            this.mapGroupbox.Controls.Add(this.music4Box);
+            this.mapGroupbox.Controls.Add(this.music3Box);
+            this.mapGroupbox.Controls.Add(this.music2Box);
+            this.mapGroupbox.Controls.Add(this.music1Box);
+            this.mapGroupbox.Controls.Add(this.label24);
+            this.mapGroupbox.Controls.Add(this.label25);
+            this.mapGroupbox.Controls.Add(this.label26);
+            this.mapGroupbox.Controls.Add(this.label27);
+            this.mapGroupbox.Controls.Add(this.mosaicGroupbox);
             this.mapGroupbox.Controls.Add(this.label21);
             this.mapGroupbox.Controls.Add(this.OWProperty_TileGFX7);
             this.mapGroupbox.Controls.Add(this.label20);
@@ -765,284 +738,271 @@
             this.mapGroupbox.Controls.Add(this.label5);
             this.mapGroupbox.Controls.Add(this.label3);
             this.mapGroupbox.Controls.Add(this.label2);
-            this.mapGroupbox.Location = new System.Drawing.Point(160, 3);
+            this.mapGroupbox.Location = new System.Drawing.Point(3, 3);
             this.mapGroupbox.Name = "mapGroupbox";
-            this.mapGroupbox.Size = new System.Drawing.Size(728, 99);
+            this.mapGroupbox.Size = new System.Drawing.Size(268, 557);
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
             // 
+            // ambient4Box
+            // 
+            this.ambient4Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ambient4Box.FormattingEnabled = true;
+            this.ambient4Box.Location = new System.Drawing.Point(130, 477);
+            this.ambient4Box.Name = "ambient4Box";
+            this.ambient4Box.Size = new System.Drawing.Size(121, 21);
+            this.ambient4Box.TabIndex = 70;
+            this.ambient4Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // ambient3Box
+            // 
+            this.ambient3Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ambient3Box.FormattingEnabled = true;
+            this.ambient3Box.Location = new System.Drawing.Point(130, 438);
+            this.ambient3Box.Name = "ambient3Box";
+            this.ambient3Box.Size = new System.Drawing.Size(121, 21);
+            this.ambient3Box.TabIndex = 69;
+            this.ambient3Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // ambient2Box
+            // 
+            this.ambient2Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ambient2Box.FormattingEnabled = true;
+            this.ambient2Box.Location = new System.Drawing.Point(130, 398);
+            this.ambient2Box.Name = "ambient2Box";
+            this.ambient2Box.Size = new System.Drawing.Size(121, 21);
+            this.ambient2Box.TabIndex = 68;
+            this.ambient2Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // ambient1Box
+            // 
+            this.ambient1Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ambient1Box.FormattingEnabled = true;
+            this.ambient1Box.Location = new System.Drawing.Point(130, 358);
+            this.ambient1Box.Name = "ambient1Box";
+            this.ambient1Box.Size = new System.Drawing.Size(121, 21);
+            this.ambient1Box.TabIndex = 67;
+            this.ambient1Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // music4Box
+            // 
+            this.music4Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.music4Box.FormattingEnabled = true;
+            this.music4Box.Location = new System.Drawing.Point(3, 478);
+            this.music4Box.Name = "music4Box";
+            this.music4Box.Size = new System.Drawing.Size(121, 21);
+            this.music4Box.TabIndex = 66;
+            this.music4Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // music3Box
+            // 
+            this.music3Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.music3Box.FormattingEnabled = true;
+            this.music3Box.Location = new System.Drawing.Point(3, 438);
+            this.music3Box.Name = "music3Box";
+            this.music3Box.Size = new System.Drawing.Size(121, 21);
+            this.music3Box.TabIndex = 65;
+            this.music3Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // music2Box
+            // 
+            this.music2Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.music2Box.FormattingEnabled = true;
+            this.music2Box.Location = new System.Drawing.Point(3, 398);
+            this.music2Box.Name = "music2Box";
+            this.music2Box.Size = new System.Drawing.Size(121, 21);
+            this.music2Box.TabIndex = 64;
+            this.music2Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // music1Box
+            // 
+            this.music1Box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.music1Box.FormattingEnabled = true;
+            this.music1Box.Location = new System.Drawing.Point(3, 358);
+            this.music1Box.Name = "music1Box";
+            this.music1Box.Size = new System.Drawing.Size(121, 21);
+            this.music1Box.TabIndex = 63;
+            this.music1Box.SelectedIndexChanged += new System.EventHandler(this.music1Box_SelectedIndexChanged);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(3, 462);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(93, 13);
+            this.label24.TabIndex = 62;
+            this.label24.Text = "Agahnim defeated";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(3, 422);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(114, 13);
+            this.label25.TabIndex = 61;
+            this.label25.Text = "Master sword obtained";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(3, 382);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(75, 13);
+            this.label26.TabIndex = 60;
+            this.label26.Text = "Zelda rescued";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(3, 342);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(54, 13);
+            this.label27.TabIndex = 59;
+            this.label27.Text = "Beginning";
+            // 
+            // mosaicGroupbox
+            // 
+            this.mosaicGroupbox.Controls.Add(this.bottommosaicCheckbox);
+            this.mosaicGroupbox.Controls.Add(this.topmosaicCheckbox);
+            this.mosaicGroupbox.Controls.Add(this.rightmosaicCheckbox);
+            this.mosaicGroupbox.Controls.Add(this.leftmosaicCheckbox);
+            this.mosaicGroupbox.Location = new System.Drawing.Point(3, 264);
+            this.mosaicGroupbox.Name = "mosaicGroupbox";
+            this.mosaicGroupbox.Size = new System.Drawing.Size(161, 75);
+            this.mosaicGroupbox.TabIndex = 58;
+            this.mosaicGroupbox.TabStop = false;
+            this.mosaicGroupbox.Text = "Mosaics";
+            // 
+            // bottommosaicCheckbox
+            // 
+            this.bottommosaicCheckbox.AutoSize = true;
+            this.bottommosaicCheckbox.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.bottommosaicCheckbox.Location = new System.Drawing.Point(63, 42);
+            this.bottommosaicCheckbox.Name = "bottommosaicCheckbox";
+            this.bottommosaicCheckbox.Size = new System.Drawing.Size(59, 17);
+            this.bottommosaicCheckbox.TabIndex = 27;
+            this.bottommosaicCheckbox.Text = "Bottom";
+            this.bottommosaicCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // topmosaicCheckbox
+            // 
+            this.topmosaicCheckbox.AutoSize = true;
+            this.topmosaicCheckbox.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.topmosaicCheckbox.Location = new System.Drawing.Point(62, 19);
+            this.topmosaicCheckbox.Name = "topmosaicCheckbox";
+            this.topmosaicCheckbox.Size = new System.Drawing.Size(45, 17);
+            this.topmosaicCheckbox.TabIndex = 26;
+            this.topmosaicCheckbox.Text = "Top";
+            this.topmosaicCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // rightmosaicCheckbox
+            // 
+            this.rightmosaicCheckbox.AutoSize = true;
+            this.rightmosaicCheckbox.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.rightmosaicCheckbox.Location = new System.Drawing.Point(6, 42);
+            this.rightmosaicCheckbox.Name = "rightmosaicCheckbox";
+            this.rightmosaicCheckbox.Size = new System.Drawing.Size(51, 17);
+            this.rightmosaicCheckbox.TabIndex = 25;
+            this.rightmosaicCheckbox.Text = "Right";
+            this.rightmosaicCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // leftmosaicCheckbox
+            // 
+            this.leftmosaicCheckbox.AutoSize = true;
+            this.leftmosaicCheckbox.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.leftmosaicCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.leftmosaicCheckbox.Name = "leftmosaicCheckbox";
+            this.leftmosaicCheckbox.Size = new System.Drawing.Size(44, 17);
+            this.leftmosaicCheckbox.TabIndex = 24;
+            this.leftmosaicCheckbox.Text = "Left";
+            this.leftmosaicCheckbox.UseVisualStyleBackColor = true;
+            // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(410, 55);
+            this.label21.Location = new System.Drawing.Point(172, 96);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(57, 13);
+            this.label21.Size = new System.Drawing.Size(37, 13);
             this.label21.TabIndex = 56;
-            this.label21.Text = "Tile GFX 7";
-            // 
-            // OWProperty_TileGFX7
-            // 
-            this.OWProperty_TileGFX7.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX7.Decimal = false;
-            this.OWProperty_TileGFX7.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX7.HexValue = 0;
-            this.OWProperty_TileGFX7.Location = new System.Drawing.Point(413, 71);
-            this.OWProperty_TileGFX7.MaxLength = 2;
-            this.OWProperty_TileGFX7.MaxValue = 255;
-            this.OWProperty_TileGFX7.MinValue = 0;
-            this.OWProperty_TileGFX7.Name = "OWProperty_TileGFX7";
-            this.OWProperty_TileGFX7.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX7.TabIndex = 55;
-            this.OWProperty_TileGFX7.Text = "00";
-            this.OWProperty_TileGFX7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.label21.Text = "GFX 7";
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(352, 55);
+            this.label20.Location = new System.Drawing.Point(115, 96);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(57, 13);
+            this.label20.Size = new System.Drawing.Size(37, 13);
             this.label20.TabIndex = 54;
-            this.label20.Text = "Tile GFX 6";
-            // 
-            // OWProperty_TileGFX6
-            // 
-            this.OWProperty_TileGFX6.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX6.Decimal = false;
-            this.OWProperty_TileGFX6.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX6.HexValue = 0;
-            this.OWProperty_TileGFX6.Location = new System.Drawing.Point(355, 71);
-            this.OWProperty_TileGFX6.MaxLength = 2;
-            this.OWProperty_TileGFX6.MaxValue = 255;
-            this.OWProperty_TileGFX6.MinValue = 0;
-            this.OWProperty_TileGFX6.Name = "OWProperty_TileGFX6";
-            this.OWProperty_TileGFX6.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX6.TabIndex = 53;
-            this.OWProperty_TileGFX6.Text = "00";
-            this.OWProperty_TileGFX6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_TileGFX6.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label20.Text = "GFX 6";
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(294, 55);
+            this.label19.Location = new System.Drawing.Point(59, 96);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(57, 13);
+            this.label19.Size = new System.Drawing.Size(37, 13);
             this.label19.TabIndex = 52;
-            this.label19.Text = "Tile GFX 5";
-            // 
-            // OWProperty_TileGFX5
-            // 
-            this.OWProperty_TileGFX5.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX5.Decimal = false;
-            this.OWProperty_TileGFX5.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX5.HexValue = 0;
-            this.OWProperty_TileGFX5.Location = new System.Drawing.Point(297, 71);
-            this.OWProperty_TileGFX5.MaxLength = 2;
-            this.OWProperty_TileGFX5.MaxValue = 255;
-            this.OWProperty_TileGFX5.MinValue = 0;
-            this.OWProperty_TileGFX5.Name = "OWProperty_TileGFX5";
-            this.OWProperty_TileGFX5.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX5.TabIndex = 51;
-            this.OWProperty_TileGFX5.Text = "00";
-            this.OWProperty_TileGFX5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_TileGFX5.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label19.Text = "GFX 5";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(236, 55);
+            this.label18.Location = new System.Drawing.Point(3, 96);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(57, 13);
+            this.label18.Size = new System.Drawing.Size(37, 13);
             this.label18.TabIndex = 50;
-            this.label18.Text = "Tile GFX 4";
-            // 
-            // OWProperty_TileGFX4
-            // 
-            this.OWProperty_TileGFX4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX4.Decimal = false;
-            this.OWProperty_TileGFX4.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX4.HexValue = 0;
-            this.OWProperty_TileGFX4.Location = new System.Drawing.Point(239, 71);
-            this.OWProperty_TileGFX4.MaxLength = 2;
-            this.OWProperty_TileGFX4.MaxValue = 255;
-            this.OWProperty_TileGFX4.MinValue = 0;
-            this.OWProperty_TileGFX4.Name = "OWProperty_TileGFX4";
-            this.OWProperty_TileGFX4.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX4.TabIndex = 49;
-            this.OWProperty_TileGFX4.Text = "00";
-            this.OWProperty_TileGFX4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_TileGFX4.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label18.Text = "GFX 4";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(178, 55);
+            this.label17.Location = new System.Drawing.Point(172, 56);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(57, 13);
+            this.label17.Size = new System.Drawing.Size(37, 13);
             this.label17.TabIndex = 48;
-            this.label17.Text = "Tile GFX 3";
-            // 
-            // OWProperty_TileGFX3
-            // 
-            this.OWProperty_TileGFX3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX3.Decimal = false;
-            this.OWProperty_TileGFX3.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX3.HexValue = 0;
-            this.OWProperty_TileGFX3.Location = new System.Drawing.Point(181, 71);
-            this.OWProperty_TileGFX3.MaxLength = 2;
-            this.OWProperty_TileGFX3.MaxValue = 255;
-            this.OWProperty_TileGFX3.MinValue = 0;
-            this.OWProperty_TileGFX3.Name = "OWProperty_TileGFX3";
-            this.OWProperty_TileGFX3.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX3.TabIndex = 47;
-            this.OWProperty_TileGFX3.Text = "00";
-            this.OWProperty_TileGFX3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_TileGFX3.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label17.Text = "GFX 3";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(120, 55);
+            this.label16.Location = new System.Drawing.Point(115, 56);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(57, 13);
+            this.label16.Size = new System.Drawing.Size(37, 13);
             this.label16.TabIndex = 46;
-            this.label16.Text = "Tile GFX 2";
-            // 
-            // OWProperty_TileGFX2
-            // 
-            this.OWProperty_TileGFX2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX2.Decimal = false;
-            this.OWProperty_TileGFX2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX2.HexValue = 0;
-            this.OWProperty_TileGFX2.Location = new System.Drawing.Point(123, 71);
-            this.OWProperty_TileGFX2.MaxLength = 2;
-            this.OWProperty_TileGFX2.MaxValue = 255;
-            this.OWProperty_TileGFX2.MinValue = 0;
-            this.OWProperty_TileGFX2.Name = "OWProperty_TileGFX2";
-            this.OWProperty_TileGFX2.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX2.TabIndex = 45;
-            this.OWProperty_TileGFX2.Text = "00";
-            this.OWProperty_TileGFX2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_TileGFX2.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label16.Text = "GFX 2";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(62, 55);
+            this.label15.Location = new System.Drawing.Point(59, 56);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(57, 13);
+            this.label15.Size = new System.Drawing.Size(37, 13);
             this.label15.TabIndex = 44;
-            this.label15.Text = "Tile GFX 1";
-            // 
-            // OWProperty_TileGFX1
-            // 
-            this.OWProperty_TileGFX1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX1.Decimal = false;
-            this.OWProperty_TileGFX1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX1.HexValue = 0;
-            this.OWProperty_TileGFX1.Location = new System.Drawing.Point(65, 71);
-            this.OWProperty_TileGFX1.MaxLength = 2;
-            this.OWProperty_TileGFX1.MaxValue = 255;
-            this.OWProperty_TileGFX1.MinValue = 0;
-            this.OWProperty_TileGFX1.Name = "OWProperty_TileGFX1";
-            this.OWProperty_TileGFX1.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX1.TabIndex = 43;
-            this.OWProperty_TileGFX1.Text = "00";
-            this.OWProperty_TileGFX1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_TileGFX1.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
-            // 
-            // OWProperty_AniGFX
-            // 
-            this.OWProperty_AniGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_AniGFX.Decimal = false;
-            this.OWProperty_AniGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_AniGFX.HexValue = 0;
-            this.OWProperty_AniGFX.Location = new System.Drawing.Point(476, 71);
-            this.OWProperty_AniGFX.MaxLength = 2;
-            this.OWProperty_AniGFX.MaxValue = 255;
-            this.OWProperty_AniGFX.MinValue = 0;
-            this.OWProperty_AniGFX.Name = "OWProperty_AniGFX";
-            this.OWProperty_AniGFX.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_AniGFX.TabIndex = 29;
-            this.OWProperty_AniGFX.Text = "00";
-            this.OWProperty_AniGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_AniGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label15.Text = "GFX 1";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(5, 55);
+            this.label14.Location = new System.Drawing.Point(3, 56);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(57, 13);
+            this.label14.Size = new System.Drawing.Size(37, 13);
             this.label14.TabIndex = 42;
-            this.label14.Text = "Tile GFX 0";
-            // 
-            // OWProperty_TileGFX0
-            // 
-            this.OWProperty_TileGFX0.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_TileGFX0.Decimal = false;
-            this.OWProperty_TileGFX0.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_TileGFX0.HexValue = 0;
-            this.OWProperty_TileGFX0.Location = new System.Drawing.Point(7, 71);
-            this.OWProperty_TileGFX0.MaxLength = 2;
-            this.OWProperty_TileGFX0.MaxValue = 255;
-            this.OWProperty_TileGFX0.MinValue = 0;
-            this.OWProperty_TileGFX0.Name = "OWProperty_TileGFX0";
-            this.OWProperty_TileGFX0.Size = new System.Drawing.Size(52, 20);
-            this.OWProperty_TileGFX0.TabIndex = 35;
-            this.OWProperty_TileGFX0.Text = "00";
-            this.OWProperty_TileGFX0.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_TileGFX0.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label14.Text = "GFX 0";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(306, 16);
+            this.label13.Location = new System.Drawing.Point(3, 175);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(97, 13);
+            this.label13.Size = new System.Drawing.Size(61, 13);
             this.label13.TabIndex = 34;
-            this.label13.Text = "Subscreen Overlay";
-            // 
-            // OWProperty_SubscreenOverlay
-            // 
-            this.OWProperty_SubscreenOverlay.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_SubscreenOverlay.Decimal = false;
-            this.OWProperty_SubscreenOverlay.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_SubscreenOverlay.HexValue = 0;
-            this.OWProperty_SubscreenOverlay.Location = new System.Drawing.Point(309, 33);
-            this.OWProperty_SubscreenOverlay.MaxLength = 2;
-            this.OWProperty_SubscreenOverlay.MaxValue = 255;
-            this.OWProperty_SubscreenOverlay.MinValue = 0;
-            this.OWProperty_SubscreenOverlay.Name = "OWProperty_SubscreenOverlay";
-            this.OWProperty_SubscreenOverlay.Size = new System.Drawing.Size(94, 20);
-            this.OWProperty_SubscreenOverlay.TabIndex = 33;
-            this.OWProperty_SubscreenOverlay.Text = "00";
-            this.OWProperty_SubscreenOverlay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_SubscreenOverlay.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
-            // 
-            // OWProperty_MainPalette
-            // 
-            this.OWProperty_MainPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_MainPalette.Decimal = false;
-            this.OWProperty_MainPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_MainPalette.HexValue = 0;
-            this.OWProperty_MainPalette.Location = new System.Drawing.Point(114, 33);
-            this.OWProperty_MainPalette.MaxLength = 2;
-            this.OWProperty_MainPalette.MaxValue = 5;
-            this.OWProperty_MainPalette.MinValue = 0;
-            this.OWProperty_MainPalette.Name = "OWProperty_MainPalette";
-            this.OWProperty_MainPalette.Size = new System.Drawing.Size(60, 20);
-            this.OWProperty_MainPalette.TabIndex = 32;
-            this.OWProperty_MainPalette.Text = "00";
-            this.OWProperty_MainPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_MainPalette.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.label13.Text = "BG Overlay";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(473, 55);
+            this.label11.Location = new System.Drawing.Point(115, 16);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(49, 13);
             this.label11.TabIndex = 30;
@@ -1051,25 +1011,26 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(109, 16);
+            this.label12.Location = new System.Drawing.Point(3, 136);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(66, 13);
+            this.label12.Size = new System.Drawing.Size(51, 13);
             this.label12.TabIndex = 31;
-            this.label12.Text = "Main Palette";
+            this.label12.Text = "Main Pal.";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(178, 16);
+            this.label4.Location = new System.Drawing.Point(59, 136);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(64, 13);
+            this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Aux. Palette";
+            this.label4.Text = "Aux. Pal.";
             // 
             // mosaicCheckBox
             // 
             this.mosaicCheckBox.AutoSize = true;
-            this.mosaicCheckBox.Location = new System.Drawing.Point(595, 40);
+            this.mosaicCheckBox.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.mosaicCheckBox.Location = new System.Drawing.Point(141, 241);
             this.mosaicCheckBox.Name = "mosaicCheckBox";
             this.mosaicCheckBox.Size = new System.Drawing.Size(60, 17);
             this.mosaicCheckBox.TabIndex = 23;
@@ -1077,95 +1038,9 @@
             this.mosaicCheckBox.UseVisualStyleBackColor = true;
             this.mosaicCheckBox.Click += new System.EventHandler(this.mosaicCheckBox_Click);
             // 
-            // OWProperty_AuxPalette
-            // 
-            this.OWProperty_AuxPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_AuxPalette.Decimal = false;
-            this.OWProperty_AuxPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_AuxPalette.HexValue = 0;
-            this.OWProperty_AuxPalette.Location = new System.Drawing.Point(181, 33);
-            this.OWProperty_AuxPalette.MaxLength = 2;
-            this.OWProperty_AuxPalette.MaxValue = 255;
-            this.OWProperty_AuxPalette.MinValue = 0;
-            this.OWProperty_AuxPalette.Name = "OWProperty_AuxPalette";
-            this.OWProperty_AuxPalette.Size = new System.Drawing.Size(58, 20);
-            this.OWProperty_AuxPalette.TabIndex = 25;
-            this.OWProperty_AuxPalette.Text = "00";
-            this.OWProperty_AuxPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_AuxPalette.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
-            // 
-            // OWProperty_MessageID
-            // 
-            this.OWProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_MessageID.Decimal = false;
-            this.OWProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
-            this.OWProperty_MessageID.HexValue = 0;
-            this.OWProperty_MessageID.Location = new System.Drawing.Point(409, 33);
-            this.OWProperty_MessageID.MaxLength = 4;
-            this.OWProperty_MessageID.MaxValue = 4095;
-            this.OWProperty_MessageID.MinValue = 0;
-            this.OWProperty_MessageID.Name = "OWProperty_MessageID";
-            this.OWProperty_MessageID.Size = new System.Drawing.Size(60, 20);
-            this.OWProperty_MessageID.TabIndex = 28;
-            this.OWProperty_MessageID.Text = "0000";
-            this.OWProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_MessageID.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
-            // 
-            // OWProperty_SPRPalette
-            // 
-            this.OWProperty_SPRPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_SPRPalette.Decimal = false;
-            this.OWProperty_SPRPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_SPRPalette.HexValue = 0;
-            this.OWProperty_SPRPalette.Location = new System.Drawing.Point(245, 33);
-            this.OWProperty_SPRPalette.MaxLength = 2;
-            this.OWProperty_SPRPalette.MaxValue = 255;
-            this.OWProperty_SPRPalette.MinValue = 0;
-            this.OWProperty_SPRPalette.Name = "OWProperty_SPRPalette";
-            this.OWProperty_SPRPalette.Size = new System.Drawing.Size(58, 20);
-            this.OWProperty_SPRPalette.TabIndex = 27;
-            this.OWProperty_SPRPalette.Text = "00";
-            this.OWProperty_SPRPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_SPRPalette.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
-            // 
-            // OWProperty_SPRGFX
-            // 
-            this.OWProperty_SPRGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_SPRGFX.Decimal = false;
-            this.OWProperty_SPRGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_SPRGFX.HexValue = 0;
-            this.OWProperty_SPRGFX.Location = new System.Drawing.Point(60, 32);
-            this.OWProperty_SPRGFX.MaxLength = 2;
-            this.OWProperty_SPRGFX.MaxValue = 255;
-            this.OWProperty_SPRGFX.MinValue = 0;
-            this.OWProperty_SPRGFX.Name = "OWProperty_SPRGFX";
-            this.OWProperty_SPRGFX.Size = new System.Drawing.Size(48, 20);
-            this.OWProperty_SPRGFX.TabIndex = 26;
-            this.OWProperty_SPRGFX.Text = "00";
-            this.OWProperty_SPRGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_SPRGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
-            // 
-            // OWProperty_BGGFX
-            // 
-            this.OWProperty_BGGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.OWProperty_BGGFX.Decimal = false;
-            this.OWProperty_BGGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.OWProperty_BGGFX.Enabled = false;
-            this.OWProperty_BGGFX.HexValue = 0;
-            this.OWProperty_BGGFX.Location = new System.Drawing.Point(6, 32);
-            this.OWProperty_BGGFX.MaxLength = 2;
-            this.OWProperty_BGGFX.MaxValue = 255;
-            this.OWProperty_BGGFX.MinValue = 0;
-            this.OWProperty_BGGFX.Name = "OWProperty_BGGFX";
-            this.OWProperty_BGGFX.Size = new System.Drawing.Size(48, 20);
-            this.OWProperty_BGGFX.TabIndex = 24;
-            this.OWProperty_BGGFX.Text = "00";
-            this.OWProperty_BGGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OWProperty_BGGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
-            // 
             // areaBGColorPictureBox
             // 
-            this.areaBGColorPictureBox.Location = new System.Drawing.Point(686, 33);
+            this.areaBGColorPictureBox.Location = new System.Drawing.Point(12, 234);
             this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
             this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
             this.areaBGColorPictureBox.TabIndex = 23;
@@ -1176,7 +1051,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(677, 13);
+            this.label7.Location = new System.Drawing.Point(3, 214);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(48, 13);
             this.label7.TabIndex = 15;
@@ -1185,7 +1060,7 @@
             // largemapCheckbox
             // 
             this.largemapCheckbox.AutoSize = true;
-            this.largemapCheckbox.Location = new System.Drawing.Point(595, 16);
+            this.largemapCheckbox.Location = new System.Drawing.Point(59, 241);
             this.largemapCheckbox.Name = "largemapCheckbox";
             this.largemapCheckbox.Size = new System.Drawing.Size(76, 17);
             this.largemapCheckbox.TabIndex = 14;
@@ -1196,7 +1071,7 @@
             // button1
             // 
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(486, 21);
+            this.button1.Location = new System.Drawing.Point(163, 190);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(23, 23);
             this.button1.TabIndex = 13;
@@ -1206,18 +1081,20 @@
             // 
             // musicButton
             // 
-            this.musicButton.Location = new System.Drawing.Point(515, 22);
+            this.musicButton.Enabled = false;
+            this.musicButton.Location = new System.Drawing.Point(170, 317);
             this.musicButton.Name = "musicButton";
             this.musicButton.Size = new System.Drawing.Size(61, 22);
             this.musicButton.TabIndex = 12;
             this.musicButton.Text = "Music";
             this.musicButton.UseVisualStyleBackColor = true;
+            this.musicButton.Visible = false;
             this.musicButton.Click += new System.EventHandler(this.musicButton_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(406, 16);
+            this.label6.Location = new System.Drawing.Point(112, 175);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 11;
@@ -1226,16 +1103,16 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(241, 16);
+            this.label5.Location = new System.Drawing.Point(115, 136);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(62, 13);
+            this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Spr. Palette";
+            this.label5.Text = "Spr. Pal.";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(57, 16);
+            this.label3.Location = new System.Drawing.Point(59, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(50, 13);
             this.label3.TabIndex = 4;
@@ -1250,35 +1127,123 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "GFX";
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.selectedTileLabel);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.stateCombobox);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(151, 99);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Global settings";
-            // 
             // selectedTileLabel
             // 
             this.selectedTileLabel.AutoSize = true;
-            this.selectedTileLabel.Location = new System.Drawing.Point(3, 78);
+            this.selectedTileLabel.Location = new System.Drawing.Point(300, 100);
             this.selectedTileLabel.Name = "selectedTileLabel";
             this.selectedTileLabel.Size = new System.Drawing.Size(65, 13);
             this.selectedTileLabel.TabIndex = 2;
             this.selectedTileLabel.Text = "Selected tile";
             // 
-            // label1
+            // thumbnailBox
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Game state";
+            this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
+            this.thumbnailBox.Name = "thumbnailBox";
+            this.thumbnailBox.Size = new System.Drawing.Size(24, 24);
+            this.thumbnailBox.TabIndex = 22;
+            this.thumbnailBox.TabStop = false;
+            this.thumbnailBox.Visible = false;
+            // 
+            // owPropertyPanel
+            // 
+            this.owPropertyPanel.Controls.Add(this.objectGroupbox);
+            this.owPropertyPanel.Controls.Add(this.groupBox1);
+            this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.owPropertyPanel.Location = new System.Drawing.Point(0, 25);
+            this.owPropertyPanel.Name = "owPropertyPanel";
+            this.owPropertyPanel.Size = new System.Drawing.Size(1184, 43);
+            this.owPropertyPanel.TabIndex = 0;
+            // 
+            // objectGroupbox
+            // 
+            this.objectGroupbox.Controls.Add(this.SelectedObjectY);
+            this.objectGroupbox.Controls.Add(this.SelectedObjectX);
+            this.objectGroupbox.Controls.Add(this.SelectedObjectID);
+            this.objectGroupbox.Controls.Add(this.label10);
+            this.objectGroupbox.Controls.Add(this.label9);
+            this.objectGroupbox.Controls.Add(this.label8);
+            this.objectGroupbox.Controls.Add(this.objCombobox);
+            this.objectGroupbox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.objectGroupbox.Location = new System.Drawing.Point(0, 0);
+            this.objectGroupbox.Name = "objectGroupbox";
+            this.objectGroupbox.Size = new System.Drawing.Size(421, 43);
+            this.objectGroupbox.TabIndex = 10;
+            this.objectGroupbox.TabStop = false;
+            this.objectGroupbox.Text = "Selected object";
+            // 
+            // SelectedObjectY
+            // 
+            this.SelectedObjectY.AutoSize = true;
+            this.SelectedObjectY.Location = new System.Drawing.Point(319, 17);
+            this.SelectedObjectY.Name = "SelectedObjectY";
+            this.SelectedObjectY.Size = new System.Drawing.Size(10, 13);
+            this.SelectedObjectY.TabIndex = 7;
+            this.SelectedObjectY.Text = "-";
+            // 
+            // SelectedObjectX
+            // 
+            this.SelectedObjectX.AutoSize = true;
+            this.SelectedObjectX.Location = new System.Drawing.Point(252, 17);
+            this.SelectedObjectX.Name = "SelectedObjectX";
+            this.SelectedObjectX.Size = new System.Drawing.Size(10, 13);
+            this.SelectedObjectX.TabIndex = 6;
+            this.SelectedObjectX.Text = "-";
+            // 
+            // SelectedObjectID
+            // 
+            this.SelectedObjectID.AutoSize = true;
+            this.SelectedObjectID.Location = new System.Drawing.Point(33, 16);
+            this.SelectedObjectID.Name = "SelectedObjectID";
+            this.SelectedObjectID.Size = new System.Drawing.Size(10, 13);
+            this.SelectedObjectID.TabIndex = 5;
+            this.SelectedObjectID.Text = "-";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(296, 17);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(17, 13);
+            this.label10.TabIndex = 4;
+            this.label10.Text = "Y:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(229, 17);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(17, 13);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "X:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 16);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(21, 13);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "ID:";
+            // 
+            // objCombobox
+            // 
+            this.objCombobox.FormattingEnabled = true;
+            this.objCombobox.Location = new System.Drawing.Point(67, 14);
+            this.objCombobox.Name = "objCombobox";
+            this.objCombobox.Size = new System.Drawing.Size(156, 21);
+            this.objCombobox.TabIndex = 1;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.stateCombobox);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.groupBox1.Location = new System.Drawing.Point(1028, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(156, 43);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Game State";
             // 
             // stateCombobox
             // 
@@ -1287,7 +1252,7 @@
             "0,1 Rescue Zelda",
             "2 Zelda rescued",
             "3 Agahnim defeated"});
-            this.stateCombobox.Location = new System.Drawing.Point(6, 31);
+            this.stateCombobox.Location = new System.Drawing.Point(6, 14);
             this.stateCombobox.Name = "stateCombobox";
             this.stateCombobox.Size = new System.Drawing.Size(138, 21);
             this.stateCombobox.TabIndex = 1;
@@ -1305,26 +1270,316 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
-            // owspriteTab
+            // previewsheetPicturebox
             // 
-            this.owspriteTab.AutoScroll = true;
-            this.owspriteTab.Controls.Add(this.owspritePanel);
-            this.owspriteTab.Location = new System.Drawing.Point(4, 22);
-            this.owspriteTab.Name = "owspriteTab";
-            this.owspriteTab.Size = new System.Drawing.Size(274, 563);
-            this.owspriteTab.TabIndex = 3;
-            this.owspriteTab.Text = "Sprites";
-            this.owspriteTab.UseVisualStyleBackColor = true;
+            this.previewsheetPicturebox.Location = new System.Drawing.Point(0, 504);
+            this.previewsheetPicturebox.Name = "previewsheetPicturebox";
+            this.previewsheetPicturebox.Size = new System.Drawing.Size(256, 64);
+            this.previewsheetPicturebox.TabIndex = 23;
+            this.previewsheetPicturebox.TabStop = false;
+            this.previewsheetPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewsheetPicturebox_Paint);
             // 
-            // owspritePanel
+            // paletteCyclingTimer
             // 
-            this.owspritePanel.AutoScroll = true;
-            this.owspritePanel.AutoSize = true;
-            this.owspritePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.owspritePanel.Location = new System.Drawing.Point(0, 0);
-            this.owspritePanel.Name = "owspritePanel";
-            this.owspritePanel.Size = new System.Drawing.Size(274, 563);
-            this.owspritePanel.TabIndex = 23;
+            this.paletteCyclingTimer.Enabled = true;
+            this.paletteCyclingTimer.Interval = 1000;
+            this.paletteCyclingTimer.Tick += new System.EventHandler(this.paletteCyclingTimer_Tick);
+            // 
+            // OWProperty_TileGFX7
+            // 
+            this.OWProperty_TileGFX7.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX7.Decimal = false;
+            this.OWProperty_TileGFX7.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX7.HexValue = 0;
+            this.OWProperty_TileGFX7.Location = new System.Drawing.Point(172, 112);
+            this.OWProperty_TileGFX7.MaxLength = 2;
+            this.OWProperty_TileGFX7.MaxValue = 255;
+            this.OWProperty_TileGFX7.MinValue = 0;
+            this.OWProperty_TileGFX7.Name = "OWProperty_TileGFX7";
+            this.OWProperty_TileGFX7.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX7.TabIndex = 55;
+            this.OWProperty_TileGFX7.Text = "00";
+            this.OWProperty_TileGFX7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX7.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX7.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_TileGFX6
+            // 
+            this.OWProperty_TileGFX6.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX6.Decimal = false;
+            this.OWProperty_TileGFX6.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX6.HexValue = 0;
+            this.OWProperty_TileGFX6.Location = new System.Drawing.Point(115, 112);
+            this.OWProperty_TileGFX6.MaxLength = 2;
+            this.OWProperty_TileGFX6.MaxValue = 255;
+            this.OWProperty_TileGFX6.MinValue = 0;
+            this.OWProperty_TileGFX6.Name = "OWProperty_TileGFX6";
+            this.OWProperty_TileGFX6.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX6.TabIndex = 53;
+            this.OWProperty_TileGFX6.Text = "00";
+            this.OWProperty_TileGFX6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX6.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_TileGFX6.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX6.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_TileGFX5
+            // 
+            this.OWProperty_TileGFX5.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX5.Decimal = false;
+            this.OWProperty_TileGFX5.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX5.HexValue = 0;
+            this.OWProperty_TileGFX5.Location = new System.Drawing.Point(59, 112);
+            this.OWProperty_TileGFX5.MaxLength = 2;
+            this.OWProperty_TileGFX5.MaxValue = 255;
+            this.OWProperty_TileGFX5.MinValue = 0;
+            this.OWProperty_TileGFX5.Name = "OWProperty_TileGFX5";
+            this.OWProperty_TileGFX5.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX5.TabIndex = 51;
+            this.OWProperty_TileGFX5.Text = "00";
+            this.OWProperty_TileGFX5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX5.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_TileGFX5.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX5.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_TileGFX4
+            // 
+            this.OWProperty_TileGFX4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX4.Decimal = false;
+            this.OWProperty_TileGFX4.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX4.HexValue = 0;
+            this.OWProperty_TileGFX4.Location = new System.Drawing.Point(3, 112);
+            this.OWProperty_TileGFX4.MaxLength = 2;
+            this.OWProperty_TileGFX4.MaxValue = 255;
+            this.OWProperty_TileGFX4.MinValue = 0;
+            this.OWProperty_TileGFX4.Name = "OWProperty_TileGFX4";
+            this.OWProperty_TileGFX4.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX4.TabIndex = 49;
+            this.OWProperty_TileGFX4.Text = "00";
+            this.OWProperty_TileGFX4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX4.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_TileGFX4.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX4.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_TileGFX3
+            // 
+            this.OWProperty_TileGFX3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX3.Decimal = false;
+            this.OWProperty_TileGFX3.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX3.HexValue = 0;
+            this.OWProperty_TileGFX3.Location = new System.Drawing.Point(172, 72);
+            this.OWProperty_TileGFX3.MaxLength = 2;
+            this.OWProperty_TileGFX3.MaxValue = 255;
+            this.OWProperty_TileGFX3.MinValue = 0;
+            this.OWProperty_TileGFX3.Name = "OWProperty_TileGFX3";
+            this.OWProperty_TileGFX3.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX3.TabIndex = 47;
+            this.OWProperty_TileGFX3.Text = "00";
+            this.OWProperty_TileGFX3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX3.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_TileGFX3.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX3.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_TileGFX2
+            // 
+            this.OWProperty_TileGFX2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX2.Decimal = false;
+            this.OWProperty_TileGFX2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX2.HexValue = 0;
+            this.OWProperty_TileGFX2.Location = new System.Drawing.Point(115, 72);
+            this.OWProperty_TileGFX2.MaxLength = 2;
+            this.OWProperty_TileGFX2.MaxValue = 255;
+            this.OWProperty_TileGFX2.MinValue = 0;
+            this.OWProperty_TileGFX2.Name = "OWProperty_TileGFX2";
+            this.OWProperty_TileGFX2.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX2.TabIndex = 45;
+            this.OWProperty_TileGFX2.Text = "00";
+            this.OWProperty_TileGFX2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX2.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_TileGFX2.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX2.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_TileGFX1
+            // 
+            this.OWProperty_TileGFX1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX1.Decimal = false;
+            this.OWProperty_TileGFX1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX1.HexValue = 0;
+            this.OWProperty_TileGFX1.Location = new System.Drawing.Point(59, 72);
+            this.OWProperty_TileGFX1.MaxLength = 2;
+            this.OWProperty_TileGFX1.MaxValue = 255;
+            this.OWProperty_TileGFX1.MinValue = 0;
+            this.OWProperty_TileGFX1.Name = "OWProperty_TileGFX1";
+            this.OWProperty_TileGFX1.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX1.TabIndex = 43;
+            this.OWProperty_TileGFX1.Text = "00";
+            this.OWProperty_TileGFX1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX1.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_TileGFX1.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX1.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_AniGFX
+            // 
+            this.OWProperty_AniGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_AniGFX.Decimal = false;
+            this.OWProperty_AniGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_AniGFX.HexValue = 0;
+            this.OWProperty_AniGFX.Location = new System.Drawing.Point(115, 32);
+            this.OWProperty_AniGFX.MaxLength = 2;
+            this.OWProperty_AniGFX.MaxValue = 255;
+            this.OWProperty_AniGFX.MinValue = 0;
+            this.OWProperty_AniGFX.Name = "OWProperty_AniGFX";
+            this.OWProperty_AniGFX.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_AniGFX.TabIndex = 29;
+            this.OWProperty_AniGFX.Text = "00";
+            this.OWProperty_AniGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_AniGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            // 
+            // OWProperty_TileGFX0
+            // 
+            this.OWProperty_TileGFX0.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_TileGFX0.Decimal = false;
+            this.OWProperty_TileGFX0.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_TileGFX0.HexValue = 0;
+            this.OWProperty_TileGFX0.Location = new System.Drawing.Point(3, 72);
+            this.OWProperty_TileGFX0.MaxLength = 2;
+            this.OWProperty_TileGFX0.MaxValue = 255;
+            this.OWProperty_TileGFX0.MinValue = 0;
+            this.OWProperty_TileGFX0.Name = "OWProperty_TileGFX0";
+            this.OWProperty_TileGFX0.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_TileGFX0.TabIndex = 35;
+            this.OWProperty_TileGFX0.Text = "00";
+            this.OWProperty_TileGFX0.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX0.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_TileGFX0.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_TileGFX0.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
+            // 
+            // OWProperty_SubscreenOverlay
+            // 
+            this.OWProperty_SubscreenOverlay.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_SubscreenOverlay.Decimal = false;
+            this.OWProperty_SubscreenOverlay.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_SubscreenOverlay.HexValue = 0;
+            this.OWProperty_SubscreenOverlay.Location = new System.Drawing.Point(3, 191);
+            this.OWProperty_SubscreenOverlay.MaxLength = 2;
+            this.OWProperty_SubscreenOverlay.MaxValue = 255;
+            this.OWProperty_SubscreenOverlay.MinValue = 0;
+            this.OWProperty_SubscreenOverlay.Name = "OWProperty_SubscreenOverlay";
+            this.OWProperty_SubscreenOverlay.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_SubscreenOverlay.TabIndex = 33;
+            this.OWProperty_SubscreenOverlay.Text = "00";
+            this.OWProperty_SubscreenOverlay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_SubscreenOverlay.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            // 
+            // OWProperty_MainPalette
+            // 
+            this.OWProperty_MainPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_MainPalette.Decimal = false;
+            this.OWProperty_MainPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_MainPalette.HexValue = 0;
+            this.OWProperty_MainPalette.Location = new System.Drawing.Point(3, 152);
+            this.OWProperty_MainPalette.MaxLength = 2;
+            this.OWProperty_MainPalette.MaxValue = 5;
+            this.OWProperty_MainPalette.MinValue = 0;
+            this.OWProperty_MainPalette.Name = "OWProperty_MainPalette";
+            this.OWProperty_MainPalette.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_MainPalette.TabIndex = 32;
+            this.OWProperty_MainPalette.Text = "00";
+            this.OWProperty_MainPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_MainPalette.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_MainPalette.MouseEnter += new System.EventHandler(this.OWProperty_MainPalette_MouseEnter);
+            this.OWProperty_MainPalette.MouseLeave += new System.EventHandler(this.OWProperty_MainPalette_MouseLeave);
+            // 
+            // OWProperty_AuxPalette
+            // 
+            this.OWProperty_AuxPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_AuxPalette.Decimal = false;
+            this.OWProperty_AuxPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_AuxPalette.HexValue = 0;
+            this.OWProperty_AuxPalette.Location = new System.Drawing.Point(59, 152);
+            this.OWProperty_AuxPalette.MaxLength = 2;
+            this.OWProperty_AuxPalette.MaxValue = 255;
+            this.OWProperty_AuxPalette.MinValue = 0;
+            this.OWProperty_AuxPalette.Name = "OWProperty_AuxPalette";
+            this.OWProperty_AuxPalette.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_AuxPalette.TabIndex = 25;
+            this.OWProperty_AuxPalette.Text = "00";
+            this.OWProperty_AuxPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_AuxPalette.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_AuxPalette.MouseEnter += new System.EventHandler(this.OWProperty_MainPalette_MouseEnter);
+            this.OWProperty_AuxPalette.MouseLeave += new System.EventHandler(this.OWProperty_MainPalette_MouseLeave);
+            // 
+            // OWProperty_MessageID
+            // 
+            this.OWProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_MessageID.Decimal = false;
+            this.OWProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.OWProperty_MessageID.HexValue = 0;
+            this.OWProperty_MessageID.Location = new System.Drawing.Point(115, 192);
+            this.OWProperty_MessageID.MaxLength = 4;
+            this.OWProperty_MessageID.MaxValue = 4095;
+            this.OWProperty_MessageID.MinValue = 0;
+            this.OWProperty_MessageID.Name = "OWProperty_MessageID";
+            this.OWProperty_MessageID.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_MessageID.TabIndex = 28;
+            this.OWProperty_MessageID.Text = "0000";
+            this.OWProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_MessageID.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            // 
+            // OWProperty_SPRPalette
+            // 
+            this.OWProperty_SPRPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_SPRPalette.Decimal = false;
+            this.OWProperty_SPRPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_SPRPalette.HexValue = 0;
+            this.OWProperty_SPRPalette.Location = new System.Drawing.Point(115, 152);
+            this.OWProperty_SPRPalette.MaxLength = 2;
+            this.OWProperty_SPRPalette.MaxValue = 255;
+            this.OWProperty_SPRPalette.MinValue = 0;
+            this.OWProperty_SPRPalette.Name = "OWProperty_SPRPalette";
+            this.OWProperty_SPRPalette.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_SPRPalette.TabIndex = 27;
+            this.OWProperty_SPRPalette.Text = "00";
+            this.OWProperty_SPRPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_SPRPalette.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_SPRPalette.MouseEnter += new System.EventHandler(this.OWProperty_MainPalette_MouseEnter);
+            this.OWProperty_SPRPalette.MouseLeave += new System.EventHandler(this.OWProperty_MainPalette_MouseLeave);
+            // 
+            // OWProperty_SPRGFX
+            // 
+            this.OWProperty_SPRGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_SPRGFX.Decimal = false;
+            this.OWProperty_SPRGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_SPRGFX.HexValue = 0;
+            this.OWProperty_SPRGFX.Location = new System.Drawing.Point(59, 32);
+            this.OWProperty_SPRGFX.MaxLength = 2;
+            this.OWProperty_SPRGFX.MaxValue = 255;
+            this.OWProperty_SPRGFX.MinValue = 0;
+            this.OWProperty_SPRGFX.Name = "OWProperty_SPRGFX";
+            this.OWProperty_SPRGFX.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_SPRGFX.TabIndex = 26;
+            this.OWProperty_SPRGFX.Text = "00";
+            this.OWProperty_SPRGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_SPRGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_SPRGFX.MouseEnter += new System.EventHandler(this.OWProperty_SPRGFX_MouseEnter);
+            this.OWProperty_SPRGFX.MouseLeave += new System.EventHandler(this.OWProperty_SPRGFX_MouseLeave);
+            // 
+            // OWProperty_BGGFX
+            // 
+            this.OWProperty_BGGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.OWProperty_BGGFX.Decimal = false;
+            this.OWProperty_BGGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.OWProperty_BGGFX.Enabled = false;
+            this.OWProperty_BGGFX.HexValue = 0;
+            this.OWProperty_BGGFX.Location = new System.Drawing.Point(3, 32);
+            this.OWProperty_BGGFX.MaxLength = 2;
+            this.OWProperty_BGGFX.MaxValue = 255;
+            this.OWProperty_BGGFX.MinValue = 0;
+            this.OWProperty_BGGFX.Name = "OWProperty_BGGFX";
+            this.OWProperty_BGGFX.Size = new System.Drawing.Size(48, 20);
+            this.OWProperty_BGGFX.TabIndex = 24;
+            this.OWProperty_BGGFX.Text = "00";
+            this.OWProperty_BGGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_BGGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
             // 
             // OverworldEditor
             // 
@@ -1340,6 +1595,7 @@
             this.owToolStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
@@ -1354,18 +1610,21 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
+            this.owspriteTab.ResumeLayout(false);
+            this.owspriteTab.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.mapGroupbox.ResumeLayout(false);
+            this.mapGroupbox.PerformLayout();
+            this.mosaicGroupbox.ResumeLayout(false);
+            this.mosaicGroupbox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
             this.objectGroupbox.ResumeLayout(false);
             this.objectGroupbox.PerformLayout();
-            this.mapGroupbox.ResumeLayout(false);
-            this.mapGroupbox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
-            this.owspriteTab.ResumeLayout(false);
-            this.owspriteTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1393,7 +1652,6 @@
         private System.Windows.Forms.ToolStripButton spriteModeButton;
         private System.Windows.Forms.ToolStripButton transportModeButton;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox stateCombobox;
         public System.Windows.Forms.PictureBox tilePictureBox;
         public System.Windows.Forms.GroupBox objectGroupbox;
@@ -1471,5 +1729,25 @@
         public System.Windows.Forms.Panel owspritePanel;
         public System.Windows.Forms.TabPage Tiles8;
         public System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox mosaicGroupbox;
+        public System.Windows.Forms.CheckBox bottommosaicCheckbox;
+        public System.Windows.Forms.CheckBox topmosaicCheckbox;
+        public System.Windows.Forms.CheckBox rightmosaicCheckbox;
+        public System.Windows.Forms.CheckBox leftmosaicCheckbox;
+        private System.Windows.Forms.ComboBox ambient4Box;
+        private System.Windows.Forms.ComboBox ambient3Box;
+        private System.Windows.Forms.ComboBox ambient2Box;
+        private System.Windows.Forms.ComboBox ambient1Box;
+        private System.Windows.Forms.ComboBox music4Box;
+        private System.Windows.Forms.ComboBox music3Box;
+        private System.Windows.Forms.ComboBox music2Box;
+        private System.Windows.Forms.ComboBox music1Box;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.PictureBox previewsheetPicturebox;
+        private System.Windows.Forms.Timer paletteCyclingTimer;
     }
 }

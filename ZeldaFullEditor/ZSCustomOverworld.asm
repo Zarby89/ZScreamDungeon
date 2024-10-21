@@ -753,6 +753,8 @@ AnimateMirrorWarp_LoadSubscreen:
     LDA.w GFXSheetPointers_sprite_high, Y : STA.b $01
     LDA.w GFXSheetPointers_sprite_bank, Y : STA.b $02
     STA.b $05
+
+    PLB
         
     REP #$31 ; Set A, X, and Y in 16bit mode. +1 no idea.
         
