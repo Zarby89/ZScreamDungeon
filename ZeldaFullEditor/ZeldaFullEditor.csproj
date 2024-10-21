@@ -804,6 +804,12 @@
     </Content>
     <Content Include="PatchNotes.txt" />
     <Content Include="Resources\damageclass.png" />
+    <None Include="Resources\lwimage.png" />
+    <None Include="Resources\dwimage.png" />
+    <None Include="Resources\swimage.png" />
+    <None Include="Resources\lwimage1.png" />
+    <None Include="Resources\dwimage1.png" />
+    <None Include="Resources\swimage1.png" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

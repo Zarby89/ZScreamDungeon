@@ -31,46 +31,18 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OverworldEditor));
             this.owToolStrip = new System.Windows.Forms.ToolStrip();
-            this.openfileButton = new System.Windows.Forms.ToolStripButton();
-            this.saveButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.debugtestButton = new System.Windows.Forms.ToolStripButton();
-            this.runtestButton = new System.Windows.Forms.ToolStripButton();
-            this.undoButton = new System.Windows.Forms.ToolStripButton();
-            this.redoButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.penModeButton = new System.Windows.Forms.ToolStripButton();
-            this.fillModeButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.entranceModeButton = new System.Windows.Forms.ToolStripButton();
-            this.exitModeButton = new System.Windows.Forms.ToolStripButton();
-            this.itemModeButton = new System.Windows.Forms.ToolStripButton();
-            this.spriteModeButton = new System.Windows.Forms.ToolStripButton();
-            this.transportModeButton = new System.Windows.Forms.ToolStripButton();
-            this.spButton = new System.Windows.Forms.ToolStripButton();
-            this.dwButton = new System.Windows.Forms.ToolStripButton();
-            this.lwButton = new System.Windows.Forms.ToolStripButton();
-            this.overlayButton = new System.Windows.Forms.ToolStripButton();
-            this.overlayAnimationButton = new System.Windows.Forms.ToolStripButton();
-            this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
-            this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
-            this.exportPNGToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tilePictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.scratchPicturebox = new System.Windows.Forms.PictureBox();
             this.Tiles8 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.priorityCheckbox = new System.Windows.Forms.CheckBox();
-            this.currentTile8Box = new System.Windows.Forms.PictureBox();
             this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
-            this.palette8Box = new System.Windows.Forms.PictureBox();
             this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
             this.owspriteTab = new System.Windows.Forms.TabPage();
             this.owspritePanel = new System.Windows.Forms.Panel();
@@ -106,17 +78,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.mosaicCheckBox = new System.Windows.Forms.CheckBox();
-            this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.largemapCheckbox = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.musicButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.selectedTileLabel = new System.Windows.Forms.Label();
-            this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
             this.objectGroupbox = new System.Windows.Forms.GroupBox();
             this.SelectedObjectY = new System.Windows.Forms.Label();
@@ -128,9 +97,43 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
-            this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
             this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
+            this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.tilePictureBox = new System.Windows.Forms.PictureBox();
+            this.scratchPicturebox = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.currentTile8Box = new System.Windows.Forms.PictureBox();
+            this.palette8Box = new System.Windows.Forms.PictureBox();
+            this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
+            this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.thumbnailBox = new System.Windows.Forms.PictureBox();
+            this.lwmodeButton = new System.Windows.Forms.Button();
+            this.dwmodeButton = new System.Windows.Forms.Button();
+            this.swmodeButton = new System.Windows.Forms.Button();
+            this.openfileButton = new System.Windows.Forms.ToolStripButton();
+            this.saveButton = new System.Windows.Forms.ToolStripButton();
+            this.debugtestButton = new System.Windows.Forms.ToolStripButton();
+            this.runtestButton = new System.Windows.Forms.ToolStripButton();
+            this.undoButton = new System.Windows.Forms.ToolStripButton();
+            this.redoButton = new System.Windows.Forms.ToolStripButton();
+            this.penModeButton = new System.Windows.Forms.ToolStripButton();
+            this.fillModeButton = new System.Windows.Forms.ToolStripButton();
+            this.entranceModeButton = new System.Windows.Forms.ToolStripButton();
+            this.exitModeButton = new System.Windows.Forms.ToolStripButton();
+            this.itemModeButton = new System.Windows.Forms.ToolStripButton();
+            this.spriteModeButton = new System.Windows.Forms.ToolStripButton();
+            this.transportModeButton = new System.Windows.Forms.ToolStripButton();
+            this.spButton = new System.Windows.Forms.ToolStripButton();
+            this.dwButton = new System.Windows.Forms.ToolStripButton();
+            this.lwButton = new System.Windows.Forms.ToolStripButton();
+            this.overlayButton = new System.Windows.Forms.ToolStripButton();
+            this.overlayAnimationButton = new System.Windows.Forms.ToolStripButton();
+            this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
+            this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
+            this.exportPNGToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.OWProperty_TileGFX7 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_TileGFX6 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_TileGFX5 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -154,26 +157,26 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
             this.Tiles8.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
             this.owspriteTab.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.mapGroupbox.SuspendLayout();
             this.mosaicGroupbox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -211,265 +214,20 @@
             this.owToolStrip.TabIndex = 0;
             this.owToolStrip.Text = "toolStrip1";
             // 
-            // openfileButton
-            // 
-            this.openfileButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openfileButton.Image = ((System.Drawing.Image)(resources.GetObject("openfileButton.Image")));
-            this.openfileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openfileButton.Name = "openfileButton";
-            this.openfileButton.Size = new System.Drawing.Size(23, 22);
-            this.openfileButton.Text = "Open ROM…";
-            // 
-            // saveButton
-            // 
-            this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
-            this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(23, 22);
-            this.saveButton.Text = "Save ROM…";
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // debugtestButton
-            // 
-            this.debugtestButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.debugtestButton.Enabled = false;
-            this.debugtestButton.Image = ((System.Drawing.Image)(resources.GetObject("debugtestButton.Image")));
-            this.debugtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.debugtestButton.Name = "debugtestButton";
-            this.debugtestButton.Size = new System.Drawing.Size(23, 22);
-            this.debugtestButton.Text = "Save and Debug in Emulator…";
-            // 
-            // runtestButton
-            // 
-            this.runtestButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.runtestButton.Image = ((System.Drawing.Image)(resources.GetObject("runtestButton.Image")));
-            this.runtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.runtestButton.Name = "runtestButton";
-            this.runtestButton.Size = new System.Drawing.Size(23, 22);
-            this.runtestButton.Text = "Save and Run in Emulator…";
-            this.runtestButton.Click += new System.EventHandler(this.runtestButton_Click);
-            // 
-            // undoButton
-            // 
-            this.undoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
-            this.undoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.undoButton.Name = "undoButton";
-            this.undoButton.Size = new System.Drawing.Size(23, 22);
-            this.undoButton.Text = "Undo";
-            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
-            // 
-            // redoButton
-            // 
-            this.redoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.redoButton.Image = ((System.Drawing.Image)(resources.GetObject("redoButton.Image")));
-            this.redoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.redoButton.Name = "redoButton";
-            this.redoButton.Size = new System.Drawing.Size(23, 22);
-            this.redoButton.Text = "Redo";
-            this.redoButton.Click += new System.EventHandler(this.redoButton_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // penModeButton
-            // 
-            this.penModeButton.Checked = true;
-            this.penModeButton.CheckOnClick = true;
-            this.penModeButton.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.penModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.penModeButton.Image = ((System.Drawing.Image)(resources.GetObject("penModeButton.Image")));
-            this.penModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.penModeButton.Name = "penModeButton";
-            this.penModeButton.Size = new System.Drawing.Size(23, 22);
-            this.penModeButton.Text = "Tile mode";
-            this.penModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // fillModeButton
-            // 
-            this.fillModeButton.CheckOnClick = true;
-            this.fillModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.fillModeButton.Image = ((System.Drawing.Image)(resources.GetObject("fillModeButton.Image")));
-            this.fillModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.fillModeButton.Name = "fillModeButton";
-            this.fillModeButton.Size = new System.Drawing.Size(23, 22);
-            this.fillModeButton.Text = "Fill mode";
-            this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // entranceModeButton
-            // 
-            this.entranceModeButton.CheckOnClick = true;
-            this.entranceModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.entranceModeButton.Image = ((System.Drawing.Image)(resources.GetObject("entranceModeButton.Image")));
-            this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.entranceModeButton.Name = "entranceModeButton";
-            this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
-            this.entranceModeButton.Text = "Entrance mode";
-            this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // exitModeButton
-            // 
-            this.exitModeButton.CheckOnClick = true;
-            this.exitModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.exitModeButton.Image = ((System.Drawing.Image)(resources.GetObject("exitModeButton.Image")));
-            this.exitModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.exitModeButton.Name = "exitModeButton";
-            this.exitModeButton.Size = new System.Drawing.Size(23, 22);
-            this.exitModeButton.Text = "Exit mode";
-            this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // itemModeButton
-            // 
-            this.itemModeButton.CheckOnClick = true;
-            this.itemModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.itemModeButton.Image = ((System.Drawing.Image)(resources.GetObject("itemModeButton.Image")));
-            this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.itemModeButton.Name = "itemModeButton";
-            this.itemModeButton.Size = new System.Drawing.Size(23, 22);
-            this.itemModeButton.Text = "Item mode";
-            this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // spriteModeButton
-            // 
-            this.spriteModeButton.CheckOnClick = true;
-            this.spriteModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.spriteModeButton.Image = ((System.Drawing.Image)(resources.GetObject("spriteModeButton.Image")));
-            this.spriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.spriteModeButton.Name = "spriteModeButton";
-            this.spriteModeButton.Size = new System.Drawing.Size(23, 22);
-            this.spriteModeButton.Text = "Sprite mode";
-            this.spriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // transportModeButton
-            // 
-            this.transportModeButton.CheckOnClick = true;
-            this.transportModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.transportModeButton.Image = ((System.Drawing.Image)(resources.GetObject("transportModeButton.Image")));
-            this.transportModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.transportModeButton.Name = "transportModeButton";
-            this.transportModeButton.Size = new System.Drawing.Size(23, 22);
-            this.transportModeButton.Text = "Transport mode";
-            this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // spButton
-            // 
-            this.spButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.spButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.spButton.Image = ((System.Drawing.Image)(resources.GetObject("spButton.Image")));
-            this.spButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.spButton.Name = "spButton";
-            this.spButton.Size = new System.Drawing.Size(28, 22);
-            this.spButton.Text = "SW";
-            this.spButton.Click += new System.EventHandler(this.spButton_Click);
-            // 
-            // dwButton
-            // 
-            this.dwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.dwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.dwButton.Image = ((System.Drawing.Image)(resources.GetObject("dwButton.Image")));
-            this.dwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.dwButton.Name = "dwButton";
-            this.dwButton.Size = new System.Drawing.Size(30, 22);
-            this.dwButton.Text = "DW";
-            this.dwButton.Click += new System.EventHandler(this.dwButton_Click);
-            // 
-            // lwButton
-            // 
-            this.lwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.lwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.lwButton.Image = ((System.Drawing.Image)(resources.GetObject("lwButton.Image")));
-            this.lwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.lwButton.Name = "lwButton";
-            this.lwButton.Size = new System.Drawing.Size(27, 22);
-            this.lwButton.Text = "LW";
-            this.lwButton.Click += new System.EventHandler(this.lwButton_Click);
-            // 
-            // overlayButton
-            // 
-            this.overlayButton.CheckOnClick = true;
-            this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
-            this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.overlayButton.Name = "overlayButton";
-            this.overlayButton.Size = new System.Drawing.Size(23, 22);
-            this.overlayButton.Text = "Overlay";
-            this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // overlayAnimationButton
-            // 
-            this.overlayAnimationButton.CheckOnClick = true;
-            this.overlayAnimationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.overlayAnimationButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayAnimationButton.Image")));
-            this.overlayAnimationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.overlayAnimationButton.Name = "overlayAnimationButton";
-            this.overlayAnimationButton.Size = new System.Drawing.Size(23, 22);
-            this.overlayAnimationButton.Text = "Overlay Animation";
-            this.overlayAnimationButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // gravestoneButton
-            // 
-            this.gravestoneButton.CheckOnClick = true;
-            this.gravestoneButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.gravestoneButton.Image = ((System.Drawing.Image)(resources.GetObject("gravestoneButton.Image")));
-            this.gravestoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.gravestoneButton.Name = "gravestoneButton";
-            this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
-            this.gravestoneButton.Text = "Gravestones";
-            this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // searchtilesButton
-            // 
-            this.searchtilesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.searchtilesButton.Image = ((System.Drawing.Image)(resources.GetObject("searchtilesButton.Image")));
-            this.searchtilesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.searchtilesButton.Name = "searchtilesButton";
-            this.searchtilesButton.Size = new System.Drawing.Size(23, 22);
-            this.searchtilesButton.Text = "Search for tiles";
-            this.searchtilesButton.Click += new System.EventHandler(this.searchtilesButton_Click);
-            // 
-            // exportPNGToolStripButton
-            // 
-            this.exportPNGToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.exportPNGToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("exportPNGToolStripButton.Image")));
-            this.exportPNGToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.exportPNGToolStripButton.Name = "exportPNGToolStripButton";
-            this.exportPNGToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.exportPNGToolStripButton.Text = "Map export to PNG";
-            this.exportPNGToolStripButton.Click += new System.EventHandler(this.exportPNGToolStripButton_Click);
-            // 
-            // refreshToolStrip
-            // 
-            this.refreshToolStrip.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.refreshToolStrip.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStrip.Image")));
-            this.refreshToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.refreshToolStrip.Name = "refreshToolStrip";
-            this.refreshToolStrip.Size = new System.Drawing.Size(82, 22);
-            this.refreshToolStrip.Text = "Refresh maps";
-            this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(65, 22);
-            this.toolStripButton1.Text = "Clear map";
-            this.toolStripButton1.Visible = false;
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click_1);
             // 
             // splitContainer1
             // 
@@ -520,18 +278,6 @@
             this.tabPage1.Text = "Tile 16";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tilePictureBox
-            // 
-            this.tilePictureBox.Location = new System.Drawing.Point(0, 0);
-            this.tilePictureBox.Name = "tilePictureBox";
-            this.tilePictureBox.Size = new System.Drawing.Size(256, 16384);
-            this.tilePictureBox.TabIndex = 0;
-            this.tilePictureBox.TabStop = false;
-            this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
-            this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
-            this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
-            this.tilePictureBox.MouseEnter += new System.EventHandler(this.tilePictureBox_MouseEnter);
-            // 
             // tabPage2
             // 
             this.tabPage2.AutoScroll = true;
@@ -543,18 +289,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "ScratchPad";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // scratchPicturebox
-            // 
-            this.scratchPicturebox.Location = new System.Drawing.Point(3, 3);
-            this.scratchPicturebox.Name = "scratchPicturebox";
-            this.scratchPicturebox.Size = new System.Drawing.Size(256, 3600);
-            this.scratchPicturebox.TabIndex = 1;
-            this.scratchPicturebox.TabStop = false;
-            this.scratchPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.scratchPicturebox_Paint);
-            this.scratchPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseDown);
-            this.scratchPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseMove);
-            this.scratchPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseUp);
             // 
             // Tiles8
             // 
@@ -576,16 +310,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(274, 408);
             this.panel2.TabIndex = 3;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             // 
             // panel1
             // 
@@ -611,15 +335,6 @@
             this.priorityCheckbox.UseVisualStyleBackColor = true;
             this.priorityCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
-            // currentTile8Box
-            // 
-            this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
-            this.currentTile8Box.Name = "currentTile8Box";
-            this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
-            this.currentTile8Box.TabIndex = 3;
-            this.currentTile8Box.TabStop = false;
-            this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
-            // 
             // mirrorYCheckbox
             // 
             this.mirrorYCheckbox.AutoSize = true;
@@ -630,16 +345,6 @@
             this.mirrorYCheckbox.Text = "Flip Y";
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
             this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-            // 
-            // palette8Box
-            // 
-            this.palette8Box.Location = new System.Drawing.Point(3, 83);
-            this.palette8Box.Name = "palette8Box";
-            this.palette8Box.Size = new System.Drawing.Size(256, 128);
-            this.palette8Box.TabIndex = 2;
-            this.palette8Box.TabStop = false;
-            this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
-            this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
             // 
             // mirrorXCheckbox
             // 
@@ -1038,16 +743,6 @@
             this.mosaicCheckBox.UseVisualStyleBackColor = true;
             this.mosaicCheckBox.Click += new System.EventHandler(this.mosaicCheckBox_Click);
             // 
-            // areaBGColorPictureBox
-            // 
-            this.areaBGColorPictureBox.Location = new System.Drawing.Point(12, 234);
-            this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
-            this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
-            this.areaBGColorPictureBox.TabIndex = 23;
-            this.areaBGColorPictureBox.TabStop = false;
-            this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
-            this.areaBGColorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AreaBGColorPicturebox_Paint);
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -1067,17 +762,6 @@
             this.largemapCheckbox.Text = "Large map";
             this.largemapCheckbox.UseVisualStyleBackColor = true;
             this.largemapCheckbox.Click += new System.EventHandler(this.largemapCheckbox_Clicked);
-            // 
-            // button1
-            // 
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(163, 190);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(23, 23);
-            this.button1.TabIndex = 13;
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // musicButton
             // 
@@ -1136,19 +820,13 @@
             this.selectedTileLabel.TabIndex = 2;
             this.selectedTileLabel.Text = "Selected tile";
             // 
-            // thumbnailBox
-            // 
-            this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
-            this.thumbnailBox.Name = "thumbnailBox";
-            this.thumbnailBox.Size = new System.Drawing.Size(24, 24);
-            this.thumbnailBox.TabIndex = 22;
-            this.thumbnailBox.TabStop = false;
-            this.thumbnailBox.Visible = false;
-            // 
             // owPropertyPanel
             // 
-            this.owPropertyPanel.Controls.Add(this.objectGroupbox);
             this.owPropertyPanel.Controls.Add(this.groupBox1);
+            this.owPropertyPanel.Controls.Add(this.lwmodeButton);
+            this.owPropertyPanel.Controls.Add(this.dwmodeButton);
+            this.owPropertyPanel.Controls.Add(this.swmodeButton);
+            this.owPropertyPanel.Controls.Add(this.objectGroupbox);
             this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.owPropertyPanel.Location = new System.Drawing.Point(0, 25);
             this.owPropertyPanel.Name = "owPropertyPanel";
@@ -1238,7 +916,7 @@
             // 
             this.groupBox1.Controls.Add(this.stateCombobox);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBox1.Location = new System.Drawing.Point(1028, 0);
+            this.groupBox1.Location = new System.Drawing.Point(908, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(156, 43);
             this.groupBox1.TabIndex = 0;
@@ -1259,6 +937,12 @@
             this.stateCombobox.Text = "0,1 Rescue Zelda";
             this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
             // 
+            // paletteCyclingTimer
+            // 
+            this.paletteCyclingTimer.Enabled = true;
+            this.paletteCyclingTimer.Interval = 1000;
+            this.paletteCyclingTimer.Tick += new System.EventHandler(this.paletteCyclingTimer_Tick);
+            // 
             // previewTextPicturebox
             // 
             this.previewTextPicturebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -1270,20 +954,390 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
+            // tilePictureBox
+            // 
+            this.tilePictureBox.Location = new System.Drawing.Point(0, 0);
+            this.tilePictureBox.Name = "tilePictureBox";
+            this.tilePictureBox.Size = new System.Drawing.Size(256, 16384);
+            this.tilePictureBox.TabIndex = 0;
+            this.tilePictureBox.TabStop = false;
+            this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
+            this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
+            this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
+            this.tilePictureBox.MouseEnter += new System.EventHandler(this.tilePictureBox_MouseEnter);
+            // 
+            // scratchPicturebox
+            // 
+            this.scratchPicturebox.Location = new System.Drawing.Point(3, 3);
+            this.scratchPicturebox.Name = "scratchPicturebox";
+            this.scratchPicturebox.Size = new System.Drawing.Size(256, 3600);
+            this.scratchPicturebox.TabIndex = 1;
+            this.scratchPicturebox.TabStop = false;
+            this.scratchPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.scratchPicturebox_Paint);
+            this.scratchPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseDown);
+            this.scratchPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseMove);
+            this.scratchPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseUp);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            // 
+            // currentTile8Box
+            // 
+            this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
+            this.currentTile8Box.Name = "currentTile8Box";
+            this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
+            this.currentTile8Box.TabIndex = 3;
+            this.currentTile8Box.TabStop = false;
+            this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
+            // 
+            // palette8Box
+            // 
+            this.palette8Box.Location = new System.Drawing.Point(3, 83);
+            this.palette8Box.Name = "palette8Box";
+            this.palette8Box.Size = new System.Drawing.Size(256, 128);
+            this.palette8Box.TabIndex = 2;
+            this.palette8Box.TabStop = false;
+            this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
+            this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
+            // 
             // previewsheetPicturebox
             // 
-            this.previewsheetPicturebox.Location = new System.Drawing.Point(0, 504);
+            this.previewsheetPicturebox.Location = new System.Drawing.Point(-1, 545);
             this.previewsheetPicturebox.Name = "previewsheetPicturebox";
             this.previewsheetPicturebox.Size = new System.Drawing.Size(256, 64);
             this.previewsheetPicturebox.TabIndex = 23;
             this.previewsheetPicturebox.TabStop = false;
             this.previewsheetPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewsheetPicturebox_Paint);
             // 
-            // paletteCyclingTimer
+            // areaBGColorPictureBox
             // 
-            this.paletteCyclingTimer.Enabled = true;
-            this.paletteCyclingTimer.Interval = 1000;
-            this.paletteCyclingTimer.Tick += new System.EventHandler(this.paletteCyclingTimer_Tick);
+            this.areaBGColorPictureBox.Location = new System.Drawing.Point(12, 234);
+            this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
+            this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
+            this.areaBGColorPictureBox.TabIndex = 23;
+            this.areaBGColorPictureBox.TabStop = false;
+            this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
+            this.areaBGColorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AreaBGColorPicturebox_Paint);
+            // 
+            // button1
+            // 
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.Location = new System.Drawing.Point(163, 190);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 13;
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // thumbnailBox
+            // 
+            this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
+            this.thumbnailBox.Name = "thumbnailBox";
+            this.thumbnailBox.Size = new System.Drawing.Size(24, 24);
+            this.thumbnailBox.TabIndex = 22;
+            this.thumbnailBox.TabStop = false;
+            this.thumbnailBox.Visible = false;
+            // 
+            // lwmodeButton
+            // 
+            this.lwmodeButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lwmodeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lwmodeButton.ForeColor = System.Drawing.Color.White;
+            this.lwmodeButton.Image = global::ZeldaFullEditor.Properties.Resources.lwimage1;
+            this.lwmodeButton.Location = new System.Drawing.Point(1064, 0);
+            this.lwmodeButton.Name = "lwmodeButton";
+            this.lwmodeButton.Size = new System.Drawing.Size(40, 43);
+            this.lwmodeButton.TabIndex = 11;
+            this.lwmodeButton.Text = "LW";
+            this.lwmodeButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lwmodeButton.UseVisualStyleBackColor = true;
+            this.lwmodeButton.Click += new System.EventHandler(this.lwmodeButton_Click);
+            // 
+            // dwmodeButton
+            // 
+            this.dwmodeButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.dwmodeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dwmodeButton.ForeColor = System.Drawing.Color.White;
+            this.dwmodeButton.Image = global::ZeldaFullEditor.Properties.Resources.dwimage1;
+            this.dwmodeButton.Location = new System.Drawing.Point(1104, 0);
+            this.dwmodeButton.Name = "dwmodeButton";
+            this.dwmodeButton.Size = new System.Drawing.Size(40, 43);
+            this.dwmodeButton.TabIndex = 12;
+            this.dwmodeButton.Text = "DW";
+            this.dwmodeButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.dwmodeButton.UseVisualStyleBackColor = true;
+            this.dwmodeButton.Click += new System.EventHandler(this.dwButton_Click);
+            // 
+            // swmodeButton
+            // 
+            this.swmodeButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.swmodeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.swmodeButton.ForeColor = System.Drawing.Color.White;
+            this.swmodeButton.Image = global::ZeldaFullEditor.Properties.Resources.swimage1;
+            this.swmodeButton.Location = new System.Drawing.Point(1144, 0);
+            this.swmodeButton.Name = "swmodeButton";
+            this.swmodeButton.Size = new System.Drawing.Size(40, 43);
+            this.swmodeButton.TabIndex = 13;
+            this.swmodeButton.Text = "SW";
+            this.swmodeButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.swmodeButton.UseVisualStyleBackColor = true;
+            this.swmodeButton.Click += new System.EventHandler(this.spButton_Click);
+            // 
+            // openfileButton
+            // 
+            this.openfileButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openfileButton.Image = ((System.Drawing.Image)(resources.GetObject("openfileButton.Image")));
+            this.openfileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openfileButton.Name = "openfileButton";
+            this.openfileButton.Size = new System.Drawing.Size(23, 22);
+            this.openfileButton.Text = "Open ROM…";
+            // 
+            // saveButton
+            // 
+            this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
+            this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(23, 22);
+            this.saveButton.Text = "Save ROM…";
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // debugtestButton
+            // 
+            this.debugtestButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.debugtestButton.Enabled = false;
+            this.debugtestButton.Image = ((System.Drawing.Image)(resources.GetObject("debugtestButton.Image")));
+            this.debugtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.debugtestButton.Name = "debugtestButton";
+            this.debugtestButton.Size = new System.Drawing.Size(23, 22);
+            this.debugtestButton.Text = "Save and Debug in Emulator…";
+            // 
+            // runtestButton
+            // 
+            this.runtestButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.runtestButton.Image = ((System.Drawing.Image)(resources.GetObject("runtestButton.Image")));
+            this.runtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.runtestButton.Name = "runtestButton";
+            this.runtestButton.Size = new System.Drawing.Size(23, 22);
+            this.runtestButton.Text = "Save and Run in Emulator…";
+            this.runtestButton.Click += new System.EventHandler(this.runtestButton_Click);
+            // 
+            // undoButton
+            // 
+            this.undoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
+            this.undoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.undoButton.Name = "undoButton";
+            this.undoButton.Size = new System.Drawing.Size(23, 22);
+            this.undoButton.Text = "Undo";
+            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
+            // 
+            // redoButton
+            // 
+            this.redoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.redoButton.Image = ((System.Drawing.Image)(resources.GetObject("redoButton.Image")));
+            this.redoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.redoButton.Name = "redoButton";
+            this.redoButton.Size = new System.Drawing.Size(23, 22);
+            this.redoButton.Text = "Redo";
+            this.redoButton.Click += new System.EventHandler(this.redoButton_Click);
+            // 
+            // penModeButton
+            // 
+            this.penModeButton.Checked = true;
+            this.penModeButton.CheckOnClick = true;
+            this.penModeButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.penModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.penModeButton.Image = ((System.Drawing.Image)(resources.GetObject("penModeButton.Image")));
+            this.penModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.penModeButton.Name = "penModeButton";
+            this.penModeButton.Size = new System.Drawing.Size(23, 22);
+            this.penModeButton.Text = "Tile mode";
+            this.penModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // fillModeButton
+            // 
+            this.fillModeButton.CheckOnClick = true;
+            this.fillModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.fillModeButton.Image = ((System.Drawing.Image)(resources.GetObject("fillModeButton.Image")));
+            this.fillModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.fillModeButton.Name = "fillModeButton";
+            this.fillModeButton.Size = new System.Drawing.Size(23, 22);
+            this.fillModeButton.Text = "Fill mode";
+            this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // entranceModeButton
+            // 
+            this.entranceModeButton.CheckOnClick = true;
+            this.entranceModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.entranceModeButton.Image = ((System.Drawing.Image)(resources.GetObject("entranceModeButton.Image")));
+            this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.entranceModeButton.Name = "entranceModeButton";
+            this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
+            this.entranceModeButton.Text = "Entrance mode";
+            this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // exitModeButton
+            // 
+            this.exitModeButton.CheckOnClick = true;
+            this.exitModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.exitModeButton.Image = ((System.Drawing.Image)(resources.GetObject("exitModeButton.Image")));
+            this.exitModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exitModeButton.Name = "exitModeButton";
+            this.exitModeButton.Size = new System.Drawing.Size(23, 22);
+            this.exitModeButton.Text = "Exit mode";
+            this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // itemModeButton
+            // 
+            this.itemModeButton.CheckOnClick = true;
+            this.itemModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.itemModeButton.Image = ((System.Drawing.Image)(resources.GetObject("itemModeButton.Image")));
+            this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.itemModeButton.Name = "itemModeButton";
+            this.itemModeButton.Size = new System.Drawing.Size(23, 22);
+            this.itemModeButton.Text = "Item mode";
+            this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // spriteModeButton
+            // 
+            this.spriteModeButton.CheckOnClick = true;
+            this.spriteModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.spriteModeButton.Image = ((System.Drawing.Image)(resources.GetObject("spriteModeButton.Image")));
+            this.spriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.spriteModeButton.Name = "spriteModeButton";
+            this.spriteModeButton.Size = new System.Drawing.Size(23, 22);
+            this.spriteModeButton.Text = "Sprite mode";
+            this.spriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // transportModeButton
+            // 
+            this.transportModeButton.CheckOnClick = true;
+            this.transportModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.transportModeButton.Image = ((System.Drawing.Image)(resources.GetObject("transportModeButton.Image")));
+            this.transportModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.transportModeButton.Name = "transportModeButton";
+            this.transportModeButton.Size = new System.Drawing.Size(23, 22);
+            this.transportModeButton.Text = "Transport mode";
+            this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // spButton
+            // 
+            this.spButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.spButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.spButton.Image = ((System.Drawing.Image)(resources.GetObject("spButton.Image")));
+            this.spButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.spButton.Name = "spButton";
+            this.spButton.Size = new System.Drawing.Size(28, 22);
+            this.spButton.Text = "SW";
+            this.spButton.Visible = false;
+            this.spButton.Click += new System.EventHandler(this.spButton_Click);
+            // 
+            // dwButton
+            // 
+            this.dwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.dwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.dwButton.Image = ((System.Drawing.Image)(resources.GetObject("dwButton.Image")));
+            this.dwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.dwButton.Name = "dwButton";
+            this.dwButton.Size = new System.Drawing.Size(30, 22);
+            this.dwButton.Text = "DW";
+            this.dwButton.Visible = false;
+            this.dwButton.Click += new System.EventHandler(this.dwButton_Click);
+            // 
+            // lwButton
+            // 
+            this.lwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.lwButton.Image = ((System.Drawing.Image)(resources.GetObject("lwButton.Image")));
+            this.lwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.lwButton.Name = "lwButton";
+            this.lwButton.Size = new System.Drawing.Size(27, 22);
+            this.lwButton.Text = "LW";
+            this.lwButton.Visible = false;
+            this.lwButton.Click += new System.EventHandler(this.lwButton_Click);
+            // 
+            // overlayButton
+            // 
+            this.overlayButton.CheckOnClick = true;
+            this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
+            this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.overlayButton.Name = "overlayButton";
+            this.overlayButton.Size = new System.Drawing.Size(23, 22);
+            this.overlayButton.Text = "Overlay";
+            this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // overlayAnimationButton
+            // 
+            this.overlayAnimationButton.CheckOnClick = true;
+            this.overlayAnimationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.overlayAnimationButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayAnimationButton.Image")));
+            this.overlayAnimationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.overlayAnimationButton.Name = "overlayAnimationButton";
+            this.overlayAnimationButton.Size = new System.Drawing.Size(23, 22);
+            this.overlayAnimationButton.Text = "Overlay Animation";
+            this.overlayAnimationButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // gravestoneButton
+            // 
+            this.gravestoneButton.CheckOnClick = true;
+            this.gravestoneButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gravestoneButton.Image = ((System.Drawing.Image)(resources.GetObject("gravestoneButton.Image")));
+            this.gravestoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.gravestoneButton.Name = "gravestoneButton";
+            this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
+            this.gravestoneButton.Text = "Gravestones";
+            this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // searchtilesButton
+            // 
+            this.searchtilesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.searchtilesButton.Image = ((System.Drawing.Image)(resources.GetObject("searchtilesButton.Image")));
+            this.searchtilesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.searchtilesButton.Name = "searchtilesButton";
+            this.searchtilesButton.Size = new System.Drawing.Size(23, 22);
+            this.searchtilesButton.Text = "Search for tiles";
+            this.searchtilesButton.Click += new System.EventHandler(this.searchtilesButton_Click);
+            // 
+            // exportPNGToolStripButton
+            // 
+            this.exportPNGToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.exportPNGToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("exportPNGToolStripButton.Image")));
+            this.exportPNGToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exportPNGToolStripButton.Name = "exportPNGToolStripButton";
+            this.exportPNGToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.exportPNGToolStripButton.Text = "Map export to PNG";
+            this.exportPNGToolStripButton.Click += new System.EventHandler(this.exportPNGToolStripButton_Click);
+            // 
+            // refreshToolStrip
+            // 
+            this.refreshToolStrip.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.refreshToolStrip.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStrip.Image")));
+            this.refreshToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.refreshToolStrip.Name = "refreshToolStrip";
+            this.refreshToolStrip.Size = new System.Drawing.Size(82, 22);
+            this.refreshToolStrip.Text = "Refresh maps";
+            this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(65, 22);
+            this.toolStripButton1.Text = "Clear map";
+            this.toolStripButton1.Visible = false;
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click_1);
             // 
             // OWProperty_TileGFX7
             // 
@@ -1600,16 +1654,11 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
             this.Tiles8.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
             this.owspriteTab.ResumeLayout(false);
             this.owspriteTab.PerformLayout();
             this.tabPage3.ResumeLayout(false);
@@ -1617,14 +1666,19 @@
             this.mapGroupbox.PerformLayout();
             this.mosaicGroupbox.ResumeLayout(false);
             this.mosaicGroupbox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
             this.objectGroupbox.ResumeLayout(false);
             this.objectGroupbox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1749,5 +1803,8 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.PictureBox previewsheetPicturebox;
         private System.Windows.Forms.Timer paletteCyclingTimer;
+        private System.Windows.Forms.Button lwmodeButton;
+        private System.Windows.Forms.Button dwmodeButton;
+        private System.Windows.Forms.Button swmodeButton;
     }
 }

@@ -2581,5 +2581,10 @@ namespace ZeldaFullEditor.Gui
             ispalPreview = false;
             previewsheetPicturebox.Visible = false;
         }
+
+        private void lwmodeButton_Click(object sender, EventArgs e)
+        {
+            this.SelectMapOffset(0);
+        }
     }
 }

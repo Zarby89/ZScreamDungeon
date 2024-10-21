@@ -83,9 +83,49 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap dwimage {
+            get {
+                object obj = ResourceManager.GetObject("dwimage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap dwimage1 {
+            get {
+                object obj = ResourceManager.GetObject("dwimage1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap floorselector {
             get {
                 object obj = ResourceManager.GetObject("floorselector", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap lwimage {
+            get {
+                object obj = ResourceManager.GetObject("lwimage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap lwimage1 {
+            get {
+                object obj = ResourceManager.GetObject("lwimage1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +166,26 @@ namespace ZeldaFullEditor.Properties {
         public static System.Drawing.Bitmap starn {
             get {
                 object obj = ResourceManager.GetObject("starn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap swimage {
+            get {
+                object obj = ResourceManager.GetObject("swimage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap swimage1 {
+            get {
+                object obj = ResourceManager.GetObject("swimage1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
