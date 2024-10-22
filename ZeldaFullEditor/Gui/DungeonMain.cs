@@ -576,6 +576,8 @@ namespace ZeldaFullEditor
                 return;
             }
 
+            save.SaveOWNotes(overworldEditor.scene, Path.GetDirectoryName(this.projectFilename));
+
             //sw.Stop();
             //Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
             //Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
@@ -876,6 +878,17 @@ namespace ZeldaFullEditor
             if (ROM.DATA[Constants.OverworldCustomSubscreenOverlayEnabled] != 0x00)
             {
                 this.saveSettingsArr[44] = true;
+            }
+            if (File.Exists(Path.GetDirectoryName(this.projectFilename) + "\\OWNotes.txt"))
+            {
+                string tmpOWNotes = File.ReadAllText(Path.GetDirectoryName(this.projectFilename) + "\\OWNotes.txt");
+
+                string[] notes = tmpOWNotes.Split('@');
+
+                foreach (string n in notes)
+                {
+                    overworldEditor.scene.owNotesList.Add(new OWSceneModes.OWNote(n));
+                }
             }
 
             this.projectLoaded = true;

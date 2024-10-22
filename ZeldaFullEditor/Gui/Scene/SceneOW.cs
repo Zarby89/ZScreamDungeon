@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -51,6 +52,7 @@ namespace ZeldaFullEditor
         public OverlayMode overlayMode;
         public OverlayAnimationMode overlayAnimationMode;
         public GravestoneMode gravestoneMode;
+        public NoteMode noteMode;
         public bool showEntrances = true;
         public bool showExits = true;
         public bool showFlute = true;
@@ -66,6 +68,7 @@ namespace ZeldaFullEditor
         public bool showLinkCamera = false;
         bool pan = false;
         //int selectedMode = 0;
+        public List<OWNote> owNotesList = new List<OWNote>();
 
         public bool lowEndMode = false;
 
@@ -93,6 +96,7 @@ namespace ZeldaFullEditor
             this.overlayMode = new OverlayMode(this);
             this.gravestoneMode = new GravestoneMode(this);
             this.overlayAnimationMode = new OverlayAnimationMode(this);
+            this.noteMode = new NoteMode(this);
 
         }
 
@@ -273,6 +277,9 @@ namespace ZeldaFullEditor
                 case ObjectMode.Gravestone:
                     this.gravestoneMode.onMouseDown(e);
                     break;
+                case ObjectMode.Notemode:
+                    this.noteMode.onMouseDown(e);
+                    break;
             }
 
             this.InvalidateHighEnd();
@@ -397,6 +404,10 @@ namespace ZeldaFullEditor
             {
                 this.gravestoneMode.OnMouseUp(e);
             }
+            else if (this.selectedMode == ObjectMode.Notemode)
+            {
+                    this.noteMode.onMouseUp(e);
+            }
 
             this.owForm.objectGroupbox.Text = text;
             this.InvalidateHighEnd();
@@ -511,6 +522,9 @@ namespace ZeldaFullEditor
                     break;
                 case ObjectMode.Gravestone:
                     this.gravestoneMode.OnMouseMove(e);
+                    break;
+                case ObjectMode.Notemode:
+                    this.noteMode.onMouseMove(e);
                     break;
             }
 
@@ -855,6 +869,8 @@ namespace ZeldaFullEditor
                     this.transportMode.Draw(g);
                 }
 
+                this.noteMode.Draw(g);
+
                 if (this.entrancePreview)
                 {
                     if (this.entranceMode.selectedEntrance != null)
@@ -1163,6 +1179,9 @@ namespace ZeldaFullEditor
                     break;
                 case ObjectMode.Gravestone:
                     //this.gravestoneMode.Delete();
+                    break;
+                case ObjectMode.Notemode:
+                    this.noteMode.Delete();
                     break;
             }
         }

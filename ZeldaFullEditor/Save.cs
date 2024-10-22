@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using AsarCLR;
 using ZCompressLibrary;
+using ZeldaFullEditor.OWSceneModes;
 
 namespace ZeldaFullEditor
 {
@@ -243,6 +245,8 @@ namespace ZeldaFullEditor
 
             return false;
         }
+
+
 
         /// <summary>
         ///     Writes the data used for the custom overworld ASM and then applies the ASM itself to ROM.
@@ -2791,5 +2795,26 @@ namespace ZeldaFullEditor
 
             return false;
         }
+
+        public bool SaveOWNotes(SceneOW scene, string path)
+        {
+            if (scene.owNotesList.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (OWNote note in scene.owNotesList)
+                {
+
+                    sb.Append(note.ToString());
+                }
+                sb.Remove(sb.Length - 1, 1);
+                File.WriteAllText(path + "\\OWNotes.txt", sb.ToString());
+            }
+
+
+            return true;
+        }
     }
+
+
+
 }

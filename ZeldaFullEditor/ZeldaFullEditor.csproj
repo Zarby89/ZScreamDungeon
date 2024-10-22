@@ -383,6 +383,12 @@
     <Compile Include="Gui\MainTabs\SpriteEditor.Designer.cs">
       <DependentUpon>SpriteEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\NoteAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\NoteAdd.Designer.cs">
+      <DependentUpon>NoteAdd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\PaletteEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -448,7 +454,9 @@
     <Compile Include="OWSceneModes\EntranceMode.cs" />
     <Compile Include="OWSceneModes\ExitMode.cs" />
     <Compile Include="OWSceneModes\ItemMode.cs" />
+    <Compile Include="OWSceneModes\NoteMode.cs" />
     <Compile Include="OWSceneModes\OverlayAnimationMode.cs" />
+    <Compile Include="OWSceneModes\OWNote.cs" />
     <Compile Include="OWSceneModes\SpriteMode.cs" />
     <Compile Include="OWSceneModes\OverlayMode.cs" />
     <Compile Include="OWSceneModes\TileMode.cs" />
@@ -701,6 +709,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\SpriteEditor.resx">
       <DependentUpon>SpriteEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\NoteAdd.resx">
+      <DependentUpon>NoteAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PaletteEditor.resx">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
