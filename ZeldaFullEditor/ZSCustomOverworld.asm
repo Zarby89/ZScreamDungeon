@@ -8,57 +8,218 @@
 pushpc
 
 incsrc HardwareRegisters.asm
+;warnings disable Wfeature_deprecated
 
 AnimatedTileGFXSet = $0FC0
 TransGFXModuleIndex = $0CF3
 
-Sound_LoadLightWorldSongBank              = $808913
-GFXSheetPointers_sprite_bank              = $00CF80
+Sound_LoadLightWorldSongBank              = $008913
+GFXSheetPointers_sprite_bank              = $00CFF3
 GFXSheetPointers_sprite_high              = $00D0D2
 GFXSheetPointers_sprite_low               = $00D1B1
-DecompOwAnimatedTiles                     = $80D394
-GetAnimatedSpriteTile                     = $80D4DB
-GetAnimatedSpriteTile_variable            = $80D4ED
+DecompOwAnimatedTiles                     = $00D394
+GetAnimatedSpriteTile                     = $00D4DB
+GetAnimatedSpriteTile_variable            = $00D4ED
 LoadTransAuxGFX_sprite_continue           = $00D706
-Do3To4High16Bit                           = $80DF4F
+Do3To4High16Bit                           = $00DF4F
 Do3To4Low16Bit                            = $00DFB8
-InitTilesets                              = $80E19B
-CopyFontToVram                            = $80E556
+InitTilesets                              = $00E19B
+CopyFontToVram                            = $00E556
 Decomp_bg_variable                        = $00E78F
 
-DeleteCertainAncillaeStopDashing          = $828B0C
+DeleteCertainAncillaeStopDashing          = $028B0C
 Overworld_FinishTransGfx_firstHalf_Retrun = $02ABC5
-Overworld_LoadSubscreenAndSilenceSFX1     = $82AF19
-Dungeon_LoadPalettes_cacheSettings        = $82C65F
-LoadSubscreenOverlay                      = $82FD0D
+Overworld_LoadSubscreenAndSilenceSFX1     = $02AF19
+Dungeon_LoadPalettes_cacheSettings        = $02C65F
+SpecialOverworld_CopyPalettesToCache      = $02C6EB
+LoadSubscreenOverlay                      = $02FD0D
 
-Link_ItemReset_FromOverworldThings        = $87B107
+Link_ItemReset_FromOverworldThings        = $07B107
 
-Tagalong_Init                             = $899EFC
-Sprite_ReinitWarpVortex                   = $89AF89
-Sprite_ResetAll                           = $89C44E
-Sprite_OverworldReloadAll                 = $89C499
+Tagalong_Init                             = $099EFC
+Sprite_ReinitWarpVortex                   = $09AF89
+Sprite_ResetAll                           = $09C44E
+Sprite_OverworldReloadAll                 = $09C499
 
-Overworld_SetFixedColorAndScroll          = $8BFE70
+Overworld_SetFixedColorAndScroll          = $0BFE70
 
-Overworld_LoadPalettes                    = $8ED5A8
-Palette_SetOwBgColor_Long                 = $8ED618
-LoadGearPalettes_bunny                    = $8ED6DD
+Overworld_LoadPalettes                    = $0ED5A8
+Palette_SetOwBgColor_Long                 = $0ED618
+LoadGearPalettes_bunny                    = $0ED6DD
 
-Palette_SpriteAux3                        = $9BEC77
-Palette_MainSpr                           = $9BEC9E
-Palette_SpriteAux1                        = $9BECC5
-Palette_SpriteAux2                        = $9BECE4
-Palette_Sword                             = $9BED03
-Palette_Shield                            = $9BED29
-Palette_MiscSpr                           = $9BED6E
-Palette_ArmorAndGloves                    = $9BEDF9
-Palette_Hud                               = $9BEE52
-Palette_OverworldBgMain                   = $9BEEC7
+Palette_SpriteAux3                        = $1BEC77
+Palette_MainSpr                           = $1BEC9E
+Palette_SpriteAux1                        = $1BECC5
+Palette_SpriteAux2                        = $1BECE4
+Palette_Sword                             = $1BED03
+Palette_Shield                            = $1BED29
+Palette_MiscSpr                           = $1BED6E
+Palette_ArmorAndGloves                    = $1BEDF9
+Palette_Hud                               = $1BEE52
+Palette_OverworldBgMain                   = $1BEEC7
+
+; ==============================================================================
+; Debug addresses:
+; ==============================================================================
+
+; These can be used to turn off each hook used. Some are reliant on eachother
+; and disabling only some can break entire features.
+
+; TODO: Re-assess the letters and numbers. A lot has changed since they were
+; originally marked.
+; The letter indicates during which process the hook is called and the letter is
+; roughly the order in which it is called.
+; W = Takes place during a warp
+; T = Takes place during a regular transition
+; E = Takes place when exiting a dungeon
+; S = Takes place when entering a special area
+
+; W7
+; Animated tiles on warp.
+; $00D8D5
+!Func00D8D5 = $01
+
+; W8
+; Enable/Disable subscreen.
+; $00DA63
+!Func00DA63 = $01
+
+; T2.5 (probably)
+; Makes the game decompress the 3 static OW tile sheets on transition.
+; $00D585
+!Func00D585 = $01
+
+; Changes the InitTilesets function to call from the long tables.
+; $006221
+!Func00E221 = $01
+
+; Zeros out the BG color when mirror warping to the pyramid area.
+; $00EEBB
+!Func00EEBB = $01
+
+; W9 BG scrolling for HC and the pyramid area.
+; $00FF7C
+!Func00FF7C = $01
+
+; E2
+; Changes the function that loads overworld properties when exiting a dungeon.
+; Includes removing asm that plays music in certain areas and changing how
+; animated tiles are loaded.
+; $0283EE
+!Func0283EE = $01
+
+; Changes a function that loads animated tiles under certain conditions.
+; $028632
+!Func028632 = $01
+
+; E1
+; Changes part of a function that changes the sub mask color when leaving
+; dungeons.
+; $029AA6
+!Func029AA6 = $01
+
+; T2 S2 W2
+; Main subscreen loading function.
+; $02AF58
+!Func02AF58 = $01
+
+; W1
+; turns on subscreen for pyramid.
+; $02B2D4
+!Func02B2D4 = $01
+
+; W6
+; Activate subscreen durring pyramid warp.
+; $02B3A1
+!Func02B3A1 = $01 
+
+; Controls overworld vertical subscreen movement for the pyramid BG.
+; $02BC44
+!Func02BC44 = $01
+
+; T4 Changes how the pyramid BG scrolls durring transition.
+; $02C02D
+!Func02C02D = $01
+
+; W3 Main palette loading routine.
+; $02C692
+!Func02C692 = $01 
+
+; Rain animation code.
+; $02A4CD
+!Func02A4CD = $01
+
+; T1
+; Mosaic.
+; $02AADB
+!Func02AADB = $01
+
+; T3
+; transition animated and main palette.
+; $02ABBE
+!Func02ABBE = $01
+
+; Loads the animated tiles after the overworld map is closed.
+; $0ABC5A
+!Func0ABC5A = $01
+
+; Loads different animated tiles when returning from bird travel.
+; $0AB8F5
+!Func0AB8F5 = $01
+
+; W5
+; Load overlay, fixed color, and BG color.
+; $0BFEC6
+!Func0BFEC6 = $01
+
+; S1 W4
+; Transparent color durring warp and during special area enter.
+; $0ED627
+!Func0ED627 = $01
+
+; Resets the area special color after the screen flashes.
+; $0ED8AE
+!Func0ED8AE = $01
+
+; If 1, all of the default vanilla pool values will be applied. 00 by default.
+!UseVanillaPool = $00
+
+; Use this var to disable all of the debug vars above.
+!AllOff = $00
+
+if !AllOff == 1
+!Func00D8D5 = $00
+!Func00DA63 = $00
+!Func00D585 = $00
+!Func00E221 = $00
+!Func00EEBB = $00
+!Func00FF7C = $00
+!Func0283EE = $00
+!Func028632 = $00
+!Func029AA6 = $00
+!Func02AF58 = $00
+!Func02B2D4 = $00
+!Func02B3A1 = $00 
+!Func02BC44 = $00
+!Func02C02D = $00
+!Func02C692 = $00 
+!Func02A4CD = $00
+!Func02AADB = $00
+!Func02ABBE = $00
+!Func0ABC5A = $00
+!Func0AB8F5 = $00
+!Func0BFEC6 = $00
+!Func0ED627 = $00
+!Func0ED8AE = $00
+endif
 
 ; ==============================================================================
 ; Fixing old hooks:
 ; ==============================================================================
+
+; TODO: Eventually remove these? I'm not sure. If anyone uses an old ZS on their
+; ROM these will need to be fixed but also could block people from hooking into
+; these spots.
 
 ; Loads the transparent color under some load conditions.
 org $0BFEB6
@@ -72,6 +233,16 @@ org $0ED5E7
 org $02E94A
     JSL.l $8ED5A8 ; Overworld_LoadPalettes
 
+; Repairs an old ZS call.
+org $02ABB8 ; $012BB8
+    db $A9, $09, $80, $02
+
+; Some old but now unused addresses:
+; $028027
+; $029C0C
+; $029D1E
+; $029F82
+
 ; ==============================================================================
 ; Expanded Space
 ; ==============================================================================
@@ -82,95 +253,121 @@ org $02E94A
 org $288000 ; $140000
 Pool:
 {
-    .BGColorTable ; $140000
     ; Valid values:
     ; 555 color value $0000 to $7FFF.
+    ; $2669 LW green grass color
+    ; $2A32 DW dead grass color
+    ; $19C6 SW dark green shadow color
+    .BGColorTable ; $140000
+        if !UseVanillaPool == 1
+        ; LW
+        dw $2669, $2669, $2669, $0000, $0000, $0000, $0000, $0000
+        dw $2669, $2669, $2669, $0000, $0000, $0000, $0000, $2669
+        dw $2669, $2669, $2669, $2669, $2669, $2669, $2669, $2669
+        dw $2669, $2669, $2669, $2669, $2669, $2669, $2669, $2669
+        dw $2669, $2669, $2669, $2669, $2669, $2669, $2669, $2669
+        dw $2669, $2669, $2669, $2669, $2669, $2669, $2669, $2669
+        dw $2669, $2669, $2669, $2669, $2669, $2669, $2669, $2669
+        dw $2669, $2669, $2669, $2669, $2669, $2669, $2669, $2669
 
-    ; LW
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ; DW
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ; SW
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-    ;dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+        ; DW
+        dw $2A32, $2A32, $2A32, $0000, $0000, $0000, $0000, $0000
+        dw $2A32, $2A32, $2A32, $0000, $0000, $0000, $0000, $2A32
+        dw $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32
+        dw $2A32, $2A32, $2A32, $0000, $0000, $2A32, $2A32, $2A32
+        dw $2A32, $2A32, $2A32, $0000, $0000, $2A32, $2A32, $2A32
+        dw $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32
+        dw $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32
+        dw $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32, $2A32
+
+        ; SW
+        dw $19C6, $19C6, $19C6, $0000, $0000, $0000, $0000, $0000
+        dw $0000, $19C6, $19C6, $0000, $0000, $0000, $0000, $0000
+        dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+        dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+        endif
     warnpc $288140
 
-    org $288140 ; $140140
-    .EnableTable ; 0x20
     ; Valid values:
     ; $00 - Disabled
-    ; $FF - Enabled
+    ; Non $00 - Enabled
+    org $288140 ; $140140
+    .EnableTable ; 0x20
 
     org $288140 ; $140140
     .EnableBGColor ; 0x01
-    db $01
+        if !UseVanillaPool == 1
+        db $01
+        endif
 
     org $288141 ; $140141
     .EnableMainPalette ; 0x01
-    db $01
+        if !UseVanillaPool == 1
+        db $01
+        endif
     
     org $288142 ; $140142
     .EnableMosaic ; 0x01 Unused for now.
-    db $01
+        if !UseVanillaPool == 1
+        db $01
+        endif
 
     ; When non 0 this will allow animated tiles to be updated between OW
     ; transitions. Default is $FF.
     org $288143 ; $140143
     .EnableAnimated ; 0x01
-    db $01
+        if !UseVanillaPool == 1
+        db $01
+        endif
     
     ; When non 0 this will allow Subscreen Overlays to be updated between OW
     ; transitions. Default is $FF.
     org $288144 ; $140144
     .EnableSubScreenOverlay ; 0x01
-    db $01
+        if !UseVanillaPool == 1
+        db $01
+        endif
 
     ; This is a reserved value that ZS will write to when it has applied the
     ; ASM. That way the next time ZS loads the ROM it knows to read the custom
     ; values instead of using the default ones. The current version is 02.
     org $288145 ; $140145
     .ZSAppliedASM ; 0x01
-    db $02
+        if !UseVanillaPool == 1
+        db $02
+        endif
 
     ; When non 0 this will cause rain to appear on all areas in the beginning
     ; phase. Default is $FF.
     org $288146 ; $140146
     .EnableBeginningRain ; 0x01
-    db $FF
+        if !UseVanillaPool == 1
+        db $FF
+        endif
 
     ; When non 0 this will disable the ambiant sound that plays in the mire
     ; area after the event is triggered. Default is $FF.
     org $288147 ; $140147
     .EnableRainMireEvent ; 0x01
-    db $FF
+        if !UseVanillaPool == 1
+        db $FF
+        endif
 
     ; When non 0 this will make the game reload all gfx in between OW
     ; transitions. Default is $FF.
     org $288148 ; $140143
     .EnableTransitionGFXGroupLoad ; 0x01
-    db $01
+        if !UseVanillaPool == 1
+        db $01
+        endif
 
     ; The bridge color is different from the Master Sword area so we are going to
-    ; hard code it here for now.
+    ; hard code it here for now. Defualt is $2669 which is the vanilla LW green.
     org $288149 ; $140149
     .BGColorTable_Bridge ; 0x02
-    dw $2669 ; Defualt vanilla LW green.
+        if !UseVanillaPool == 1
+        dw $2669
+        endif
 
     ; The rest of these are extra bytes that can be used for anything else
     ; later on.
@@ -179,8 +376,6 @@ Pool:
     ;db $00, $00, $00, $00, $00
     warnpc $288160
 
-    org $288160 ; $140160
-    .MainPaletteTable ; 0xA0
     ; Valid values:
     ; Main overworld palette index $00 to $05.
     ; $00 is the normal light world palette.
@@ -189,60 +384,64 @@ Pool:
     ; $03 is the normal dark world death mountain palette.
     ; $04 is the Triforce room palette.
     ; $05 is the title screen palette?
-
-    ; LW
-    ;db $00, $00, $00, $02, $00, $20, $00, $20
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ; DW
-    ;db $01, $01, $01, $03, $01, $03, $01, $03
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ;db $01, $01, $01, $01, $01, $01, $01, $01
-    ; SW
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $04, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    org $288160 ; $140160
+    .MainPaletteTable ; 0xA0
+        if !UseVanillaPool == 1
+        ; LW
+        db $00, $00, $00, $02, $00, $20, $00, $20
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        ; DW
+        db $01, $01, $01, $03, $01, $03, $01, $03
+        db $01, $01, $01, $01, $01, $01, $01, $01
+        db $01, $01, $01, $01, $01, $01, $01, $01
+        db $01, $01, $01, $01, $01, $01, $01, $01
+        db $01, $01, $01, $01, $01, $01, $01, $01
+        db $01, $01, $01, $01, $01, $01, $01, $01
+        db $01, $01, $01, $01, $01, $01, $01, $01
+        db $01, $01, $01, $01, $01, $01, $01, $01
+        ; SW
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $04, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        endif
     warnpc $288200
-    
-    org $288200 ; $140200
-    .MosaicTable ; 0xA0
+
     ; Valid values:
     ; $01 to enable mosaic, $00 to disable.
-
-    ; LW
-    ;db $01, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ; DW
-    ;db $01, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ; SW
-    ;db $01, $01, $00, $00, $00, $00, $00, $00
-    ;db $01, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
-    ;db $00, $00, $00, $00, $00, $00, $00, $00
+    org $288200 ; $140200
+    .MosaicTable ; 0xA0
+        if !UseVanillaPool == 1
+        ; LW
+        db $01, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        ; DW
+        db $01, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        ; SW
+        db $01, $01, $00, $00, $00, $00, $00, $00
+        db $01, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
+        endif
     warnpc $2882A0
 
     ; Not the same as OWGFXGroupTable_sheet7. The game uses a combination of $59
@@ -252,45 +451,45 @@ Pool:
     ; LW or DW. It then loads the actual animated tile frames into a buffer
     ; where it can transfer over from durring NMI based on whether we are on
     ; Death Mountain or not (LW or DW). This table is to control the latter.
-    org $2882A0 ; $1402A0
-    .AnimatedTable ; 0xA0
     ; Valid values:
     ; GFX index $00 to $FF.
     ; In vanilla, $59 are the DW door frames and clouds and $5B are the Lw door
     ; frames and the regular water tiles.
+    org $2882A0 ; $1402A0
+    .AnimatedTable ; 0xA0
+        if !UseVanillaPool == 1
+        ; LW
+        db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
 
-    ; LW
-    ;db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ; DW
-    ;db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ; SW
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-    ;db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        ; DW
+        db $5B, $5B, $5B, $59, $5B, $59, $5B, $59
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+
+        ; SW
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        db $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B
+        endif
     warnpc $288340
 
-    org $288340 ; $140340
-    .OverlayTable ; 0x140
     ; Valid values:
     ; Can be any value $00 to $FF but is stored as 2 bytes instead of one to
     ; help the code out below. $FF is for no overlay area. Hopefully no crazy
     ; person decides to expand their overworld to $FF areas.
-
     ; $0093 is the triforce room curtain overlay.
     ; $0094 is the under the bridge overlay.
     ; $0095 is the sky background overlay.
@@ -301,253 +500,273 @@ Pool:
     ; $009D is the second fog overlay.
     ; $009E is the tree canopy overlay.
     ; $009F is the rain overlay.
+    org $288340 ; $140340
+    .OverlayTable ; 0x140
+        if !UseVanillaPool == 1
+        ; LW
+        dw $009D, $00FF, $00FF, $0095, $00FF, $0095, $00FF, $0095
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
 
-    ; LW
-    ;dw $009D, $00FF, $00FF, $0095, $00FF, $0095, $00FF, $0095
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ; DW
-    ;dw $009D, $00FF, $00FF, $009C, $00FF, $009C, $00FF, $009C
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $0096, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $009F, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ; SP
-    ;dw $0097, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $0093, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
-    ;dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        ; DW
+        dw $009D, $00FF, $00FF, $009C, $00FF, $009C, $00FF, $009C
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $0096, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $009F, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+
+        ; SP
+        dw $0097, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $0093, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        dw $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF, $00FF
+        endif
     warnpc $288480
 
+    ; Just in case 0xFF is used and there is no sheet to load when warping using
+    ; the bird, unloading the map, or exiting a dungeon, the DefaultGFXGroups
+    ; values are used. 0xFF is used instead of 0x00 as the "don't change the
+    ; sheet" value. That way, we can actually use sheet 00 if we want.
     org $288480 ; $140480
     .OWGFXGroupTable ; 0x500 (0xA0 * 0x08)
-
-    ; 0xFF is used instead of 0x00 as the "don't change the sheet" value. That
-    ; way, we can actually use sheet 00 if we want. Just in case 0xFF is used
-    ; and there is no sheet to load when warping using the bird, unloading the
-    ; map, or exiting a dungeon, the DefaultGFXGroups values are used.
 
     ; LW
     org $288480 ; $140480
     .OWGFXGroupTable_sheet0
-    ;db $3A ; 0x00 sheet 0
+        if !UseVanillaPool == 1
+        db $3A ; 0x00 sheet 0
+        endif
 
     org $288481 ; $140481
     .OWGFXGroupTable_sheet1
-    ;db $3B ; 0x00 sheet 1
+        if !UseVanillaPool == 1
+        db $3B ; 0x00 sheet 1
+        endif
 
     org $288482 ; $140482
     .OWGFXGroupTable_sheet2
-    ;db $3C ; 0x00 sheet 2
+        if !UseVanillaPool == 1
+        db $3C ; 0x00 sheet 2
+        endif
 
     org $288483 ; $140483
     .OWGFXGroupTable_sheet3
-    ;db $3D ; 0x00 sheet 3
+        if !UseVanillaPool == 1
+        db $3D ; 0x00 sheet 3
+        endif
 
     org $288484 ; $140484
     .OWGFXGroupTable_sheet4
-    ;db $57 ; 0x00 sheet 4
+        if !UseVanillaPool == 1
+        db $57 ; 0x00 sheet 4
+        endif
 
     org $288485 ; $140485
     .OWGFXGroupTable_sheet5
-    ;db $4C ; 0x00 sheet 5
+        if !UseVanillaPool == 1
+        db $4C ; 0x00 sheet 5
+        endif
 
     org $288486 ; $140486
     .OWGFXGroupTable_sheet6
-    ;db $3E ; 0x00 sheet 6
+        if !UseVanillaPool == 1
+        db $3E ; 0x00 sheet 6
+        endif
 
     org $288487 ; $140487
     .OWGFXGroupTable_sheet7
-    ;db $5B ; 0x00 sheet 7
+        if !UseVanillaPool == 1
+        db $5B ; 0x00 sheet 7
 
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x01
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x02
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x03
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x04
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x05
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x06
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x07
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x01
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x02
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x03
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x04
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x05
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x06
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x07
 
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x08
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x09
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x0A
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0B
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0C
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0D
-    ;db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0E
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x0F
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x08
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x09
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x0A
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0B
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0C
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0D
+        db $3A, $3B, $3C, $3D, $56, $4F, $3E, $5B ; 0x0E
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x0F
 
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x10
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x11
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x12
-    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x13
-    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x14
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x15
-    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x16
-    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x17
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x10
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x11
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x12
+        db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x13
+        db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x14
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x15
+        db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x16
+        db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x17
 
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x18
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x19
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x1A
-    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x1B
-    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x1C
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x1D
-    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x1E
-    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x1F
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x18
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x19
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x1A
+        db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x1B
+        db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x1C
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x1D
+        db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x1E
+        db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x1F
 
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x20
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x21
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x22
-    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x23
-    ;db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x24
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x25
-    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x26
-    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x27
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x20
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x21
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x22
+        db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x23
+        db $3A, $3B, $3C, $3D, $52, $49, $3E, $5B ; 0x24
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x25
+        db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x26
+        db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x27
 
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x28
-    ;db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x29
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x2A
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2B
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2C
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x2D
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2E
-    ;db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x2F
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x28
+        db $3A, $3B, $3C, $3D, $50, $4B, $3E, $5B ; 0x29
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x2A
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2B
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2C
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x2D
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x2E
+        db $3A, $3B, $3C, $3D, $55, $4A, $3E, $5B ; 0x2F
 
-    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x30
-    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x31
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x32
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x33
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x34
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x35
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x36
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x37
+        db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x30
+        db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x31
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x32
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x33
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x34
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x35
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x36
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x37
 
-    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x38
-    ;db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x39
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x3A
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3B
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3C
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3D
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3E
-    ;db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3F
+        db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x38
+        db $3A, $3B, $3C, $3D, $55, $54, $3E, $5B ; 0x39
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x3A
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3B
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3C
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3D
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3E
+        db $3A, $3B, $3C, $3D, $51, $4E, $3E, $5B ; 0x3F
 
-    ; DW
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x40
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x41
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x42
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x43
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x44
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x45
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x46
-    ;db $42, $43, $44, $45, $60, $34, $3F, $59 ; 0x47
+        ; DW
+        db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x40
+        db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x41
+        db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x42
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x43
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x44
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x45
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x46
+        db $42, $43, $44, $45, $60, $34, $3F, $59 ; 0x47
 
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x48
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x49
-    ;db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x4A
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4B
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4C
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4D
-    ;db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4E
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x4F
+        db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x48
+        db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x49
+        db $42, $43, $44, $45, $2D, $2E, $3F, $59 ; 0x4A
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4B
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4C
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4D
+        db $42, $43, $44, $45, $33, $34, $3F, $59 ; 0x4E
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x4F
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x50
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x51
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x52
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x53
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x54
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x55
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x56
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x57
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x50
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x51
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x52
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x53
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x54
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x55
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x56
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x57
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x58
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x59
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x5A
-    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5B
-    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5C
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x5D
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5E
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5F
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x58
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x59
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x5A
+        db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5B
+        db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x5C
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x5D
+        db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5E
+        db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x5F
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x60
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x61
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x62
-    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x63
-    ;db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x64
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x65
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x66
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x67
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x60
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x61
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x62
+        db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x63
+        db $42, $43, $44, $45, $35, $36, $3F, $59 ; 0x64
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x65
+        db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x66
+        db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x67
 
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x68
-    ;db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x69
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6A
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6B
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6C
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6D
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6E
-    ;db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x6F
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x68
+        db $42, $43, $44, $45, $2F, $30, $3F, $59 ; 0x69
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6A
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6B
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6C
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6D
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x6E
+        db $42, $43, $44, $45, $2B, $2C, $3F, $59 ; 0x6F
 
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x70
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x71
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x72
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x73
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x74
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x75
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x76
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x77
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x70
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x71
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x72
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x73
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x74
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x75
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x76
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x77
 
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x78
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x79
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7A
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7B
-    ;db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7C
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7D
-    ;db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7E
-    ;db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7F
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x78
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x79
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7A
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7B
+        db $42, $43, $44, $45, $37, $38, $3F, $59 ; 0x7C
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7D
+        db $42, $43, $44, $45, $31, $32, $3F, $59 ; 0x7E
+        db $42, $43, $44, $45, $20, $2B, $3F, $59 ; 0x7F
 
-    ; SW
-    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x80
-    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x81
-    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x82
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x83
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x84
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x85
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x86
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x87
+        ; SW
+        db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x80
+        db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x81
+        db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x82
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x83
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x84
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x85
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x86
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x87
 
-    ;db $3A, $3B, $3C, $17, $40, $41, $39, $5B ; 0x88
-    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x89
-    ;db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x8A
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8B
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8C
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8D
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8E
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8F
+        db $3A, $3B, $3C, $17, $40, $41, $39, $5B ; 0x88
+        db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x89
+        db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B ; 0x8A
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8B
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8C
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8D
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8E
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x8F
 
-    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x90
-    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x91
-    ;db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x92
-    ;db $3A, $3B, $3C, $08, $53, $22, $1B, $5B ; 0x93
-    ;db $3A, $3B, $3C, $3D, $53, $47, $48, $5B ; 0x94
-    ;db $3A, $3B, $3C, $3D, $53, $56, $4F, $5B ; 0x95
-    ;db $3A, $3B, $3C, $3D, $35, $36, $3E, $5B ; 0x96
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x97
+        db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x90
+        db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x91
+        db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x92
+        db $3A, $3B, $3C, $08, $53, $22, $1B, $5B ; 0x93
+        db $3A, $3B, $3C, $3D, $53, $47, $48, $5B ; 0x94
+        db $3A, $3B, $3C, $3D, $53, $56, $4F, $5B ; 0x95
+        db $3A, $3B, $3C, $3D, $35, $36, $3E, $5B ; 0x96
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x97
 
-    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x98
-    ;db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x99
-    ;db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x9A
-    ;db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x9B
-    ;db $3A, $3B, $3C, $3D, $53, $33, $34, $5B ; 0x9C
-    ;db $3A, $3B, $3C, $3D, $53, $57, $4C, $5B ; 0x9D
-    ;db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x9E
-    ;db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x9F
+        db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x98
+        db $3A, $3B, $3C, $08, $00, $22, $1B, $5B ; 0x99
+        db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x9A
+        db $3A, $3B, $3C, $06, $53, $1F, $18, $5B ; 0x9B
+        db $3A, $3B, $3C, $3D, $53, $33, $34, $5B ; 0x9C
+        db $3A, $3B, $3C, $3D, $53, $57, $4C, $5B ; 0x9D
+        db $3A, $3B, $3C, $3D, $57, $4C, $3E, $5B ; 0x9E
+        db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B ; 0x9F
+        endif
     warnpc $288980
 
     ; TODO: Add a way to edit these within ZS? Unsure.
@@ -557,106 +776,48 @@ Pool:
     ; LW
     org $288980 ; $140980
     .DefaultGFXGroups_sheet0
-    db $3A ; Sheet 0
+        db $3A ; Sheet 0
 
     org $288981 ; $140981
     .DefaultGFXGroups_sheet1
-    db $3B ; Sheet 1
+        db $3B ; Sheet 1
 
     org $288982 ; $140982
     .DefaultGFXGroups_sheet2
-    db $3C ; Sheet 2
+        db $3C ; Sheet 2
 
     org $288983 ; $140983
     .DefaultGFXGroups_sheet3
-    db $3D ; Sheet 3
+        db $3D ; Sheet 3
 
     org $288984 ; $140984
     .DefaultGFXGroups_sheet4
-    db $53 ; Sheet 4
+        db $53 ; Sheet 4
 
     org $288985 ; $140985
     .DefaultGFXGroups_sheet5
-    db $4D ; Sheet 5
+        db $4D ; Sheet 5
 
     org $288986 ; $140986
     .DefaultGFXGroups_sheet6
-    db $3E ; Sheet 6
+        db $3E ; Sheet 6
 
     org $288987 ; $140987
     .DefaultGFXGroups_sheet7
-    db $5B ; Sheet 7
+        db $5B ; Sheet 7
 
-    ; DW
-    db $42, $43, $44, $45, $2F, $30, $3F, $59
+        ; DW
+        db $42, $43, $44, $45, $2F, $30, $3F, $59
 
-    ; SW
-    db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B
-
+        ; SW
+        db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B
     warnpc $288998 ; $140998
 }
 
-; Debug addresses:
-; $00D8D5 ; W7 Animated tiles on warp.
-!Func00D8D5 = $01
-; $00DA63 ; W8 Enable/Disable subscreen.
-!Func00DA63 = $01
-; $00E133 ; T2.5 (probably) ; Makes the game decompress the 3 static OW tile
-; sheets on transition.
-!Func00E133 = $01
-; $006221 ; Changes the InitTilesets function to call from the long tables.
-!Func00E221 = $01
-; $00EEBB ; Zeros out the BG color when mirror warping to the pyramid area.
-!Func00EEBB = $01
-; $00FF7C ; W9 BG scrolling for HC and the pyramid area.
-!Func00FF7C = $01
+; ==============================================================================
+; Start of function space.
+; ==============================================================================
 
-; Some old but now unused addresses:
-; $028027
-; $029C0C
-; $029D1E
-; $029F82
-
-; $0283EE ; E2 ; Changes the function that loads overworld properties when
-; exiting a dungeon. Includes removing asm that plays music in certain areas
-; and changing how animated tiles are loaded.
-!Func0283EE = $01
-; $028632 ; Changes a function that loads animated tiles under certain
-; conditions.
-!Func028632 = $01
-; $029AA6 ; E1 ; Changes part of a function that changes the sub mask color
-; when leaving dungeons.
-!Func029AA6 = $01
-; $02AF58 ; T2 S2 W2 Main subscreen loading function.
-!Func02AF58 = $01
-; $02B2D4 ; W1 turns on subscreen for pyramid.
-!Func02B2D4 = $01
-; $02B3A1 ; W6 Activate subscreen durring pyramid warp.
-!Func02B3A1 = $01 
-; $02BC44 ; Controls overworld vertical subscreen movement for the pyramid BG.
-!Func02BC44 = $01
-; $02C02D ; T4 Changes how the pyramid BG scrolls durring transition.
-!Func02C02D = $01
-; $02C692 ; W3 Main palette loading routine.
-!Func02C692 = $01 
-; $02A4CD ; Rain animation code.
-!Func02A4CD = $01
-; $02AADB ; T1 Mosaic.
-!Func02AADB = $01
-; $02ABBE ; T3 transition animated and main palette.
-!Func02ABBE = $01
-; $0ABC5A ; Loads the animated tiles after the overworld map is closed.
-!Func0ABC5A = $01
-; $0AB8F5 ; Loads different animated tiles when returning from bird travel.
-!Func0AB8F5 = $01
-; $0BFEC6 ; W5 Load overlay, fixed color, and BG color.
-!Func0BFEC6 = $01
-; $0ED627 ; S1 W4 Transparent color durring warp and during special area enter.
-!Func0ED627 = $01
-; $0ED8AE ; Resets the area special color after the screen flashes.
-!Func0ED8AE = $01
-
-; Start of expanded space.
 org $2892B8 ; $1412B8
 pushpc
 
@@ -704,18 +865,18 @@ ReadAnimatedTable:
     SEP #$20 ; Set A in 8bit mode.
 
     ; $00 crashes the game so just double check that.
-    LDA.w Pool_AnimatedTable, X : BNE .not007
+    LDA.w Pool_AnimatedTable, X : BNE .not00
         LDA.w Pool_DefaultGFXGroups_sheet7, Y
 
-        BRA .notFF7
+        BRA .notFF
 
-    .not007
+    .not00
 
     ; Load the default sheet if the value is FF.
-    CMP.b #$FF : BNE .notFF7
+    CMP.b #$FF : BNE .notFF
         LDA.w Pool_DefaultGFXGroups_sheet7, Y
 
-    .notFF7
+    .notFF
 
     SEP #$10 ; Set X and Y in 8bit mode.
 
@@ -753,6 +914,8 @@ AnimateMirrorWarp_LoadSubscreen:
     LDA.w GFXSheetPointers_sprite_high, Y : STA.b $01
     LDA.w GFXSheetPointers_sprite_bank, Y : STA.b $02
     STA.b $05
+
+    PLB
         
     REP #$31 ; Set A, X, and Y in 16bit mode. +1 no idea.
         
@@ -877,7 +1040,7 @@ org $00EEBB ; $006EBB
 db $A5, $8A, $C9, $1B, $00, $D0, $13, $A9
 db $00, $00, $8F, $00, $C3, $7E, $8F, $40
 db $C3, $7E, $8F, $00, $C5, $7E, $8F, $40
-db $C5. $7E, $E2, $20, $A9, $08, $8D, $BB
+db $C5, $7E, $E2, $20, $A9, $08, $8D, $BB
 db $06, $9C, $BA, $06, $6B
 
 endif
@@ -922,7 +1085,7 @@ Func00FF7C:
         
     RTL
 }
-; This end point also uses up a null block at the end of the function.
+; NOTE: This end point also uses up a null block at the end of the function.
 warnpc $00FFC0
 
 else
@@ -964,7 +1127,7 @@ org $029D1E ; $011D1E
 
 warnpc $029D21
 
-; GanonEmerges_LOadPyramidArea:
+; GanonEmerges_LoadPyramidArea:
 org $029F82 ; $011F82
     JSR.w PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
 
@@ -1038,7 +1201,7 @@ PreOverworld_LoadProperties_LoadMain:
     .specialArea2
     
     ; Apparently special overworld handles palettes a bit differently?
-    JSR.w $C6EB ; $0146EB IN ROM
+    JSR.w SpecialOverworld_CopyPalettesToCache
     
     .normalArea2
     
@@ -1412,7 +1575,8 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
                         
                     SEP #$30 ; Set A, X, and Y in 8bit mode.
                         
-                    STZ.b $1D ; Clear TSQ PPU Register, to be handled in NMI.
+                    ; Clear TSQ PPU Register, to be handled in NMI.
+                    STZ.b $1D
                             
                     INC.b $11 ; SCAWFUL: Verify the submodule we are moving to.
                             
@@ -1787,12 +1951,11 @@ ReadOverlayArray:
     RTL
 }
 
+; TODO: These comparison values will need to be calulated somehow or set
+; depending on the area. Right now they are hardcoded to work with the
+; pyramid area.
 BGControl:
 {
-    ; TODO: These comparison values will need to be calulated somehow or set
-    ; depending on the area. Right now they are hardcoded to work with the
-    ; pyramid area.
-
     ; Check link's Y position. This will need to be changed per area and per
     ; need.
     LDA.b $20 : CMP.w #$08E0 : BCC .startShowingMountains
@@ -2116,10 +2279,6 @@ pushpc
 
 ; ==============================================================================
 
-; Repairs an old ZS call.
-org $02ABB8 ; $012BB8
-db $A9, $09, $80, $02
-
 if !Func02ABBE == 1
 
 org $02ABBE ; $012BBE
@@ -2257,7 +2416,8 @@ CheckForChangeGraphicsTransitionLoad:
                 LDA.w Pool_EnableBGColor : BEQ .dontUpdateBGColor1
                     REP #$30 ; Set A, X, and Y in 16bit mode.
 
-                    LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
+                    ; Get area code and times it by 2.
+                    LDA.b $8A : ASL : TAX
 
                     ; Where ZS saves the array of palettes
                     LDA.w Pool_BGColorTable, X
@@ -2310,8 +2470,11 @@ CheckForChangeGraphicsTransitionLoad:
 
     .notBridge
 
-    LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
-    LDA.w Pool_BGColorTable, X ; Where ZS saves the array of palettes.
+    ; Get area code and times it by 2.
+    LDA.b $8A : ASL : TAX
+
+    ; Where ZS saves the array of palettes.
+    LDA.w Pool_BGColorTable, X
 
     .storeColor
 
@@ -2574,8 +2737,8 @@ db $22, $9B, $E1, $00
 
 endif
 
-; Loads the animated tiles after the overworld map is closed.
 pullpc
+; Loads the animated tiles after the overworld map is closed.
 CheckForChangeGraphicsNormalLoad:
 {
     PHB : PHK : PLB
@@ -2850,10 +3013,14 @@ ReplaceBGColor:
 
     ;REP #$20 ; Set A in 16bit mode.
 
-    LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
-    LDA.w Pool_BGColorTable, X ; Get the color.
+    ; Get area code and times it by 2.
+    LDA.b $8A : ASL : TAX
 
-    ;STA.l $7EC300 : STA.l $7EC340 ; Set the BG color.
+    ; Get the color.
+    LDA.w Pool_BGColorTable, X
+
+    ; Set the BG color.
+    ;STA.l $7EC300 : STA.l $7EC340
     STA.l $7EC500 : STA.l $7EC540
 
     PLB
@@ -2936,12 +3103,16 @@ InitColorLoad2:
 
     .notBridge
 
-    LDA.b $8A : ASL : TAX ; Get area code and times it by 2.
-    LDA.w Pool_BGColorTable, X ; Get the color.
+    ; Get area code and times it by 2.
+    LDA.b $8A : ASL : TAX
+
+    ; Get the color.
+    LDA.w Pool_BGColorTable, X
 
     .storeColor
 
-    STA.l $7EC300 : STA.l $7EC340 ; Set transparent color.
+    ; Set transparent color.
+    STA.l $7EC300 : STA.l $7EC340
     ;STA.l $7EC500 : STA.l $7EC540
 
     INC.b $15
@@ -3019,7 +3190,7 @@ endif
 
 ; ==============================================================================
 
-if !Func00E133 == 1
+if !Func00D585 == 1
 
 ; Interupts the vanilla LoadTransAuxGFX function
 org $00D673 ; $005673
@@ -3028,9 +3199,9 @@ org $00D673 ; $005673
 warnpc $00D677 ; $005677
 
 org $008C8A ; $000C8A
-dw NMI_UpdateChr_Bg2HalfAndAnimated
+    dw NMI_UpdateChr_Bg2HalfAndAnimated
 
-warnpc $00D677 ; $005677
+warnpc $008C8C ; $000C8C
 
 ; Replaces the UNREACHABLE_00D585 which is unused.
 org $00D585 ; $005585
@@ -3085,47 +3256,6 @@ db $A9, $60, $85, $01
 org $008C8A ; $000C8A
 db $4B, $8E
 
-; This is the old 0AA1 table. Will eventually be unused so I'll leave this here
-; for future use.
-org $00E073 ; $006073
-db $00, $01, $10, $06, $0E, $1F, $18, $0F
-db $00, $01, $10, $08, $0E, $22, $1B, $0F
-db $00, $01, $10, $06, $0E, $1F, $18, $0F
-db $00, $01, $13, $07, $0E, $23, $1C, $0F
-db $00, $01, $10, $07, $0E, $21, $18, $0F
-db $00, $01, $10, $09, $0E, $20, $19, $0F
-db $02, $03, $12, $0B, $0E, $21, $1A, $0F
-db $00, $01, $11, $0C, $0E, $24, $1B, $0F
-db $00, $01, $11, $08, $0E, $22, $1B, $0F
-db $00, $01, $11, $0C, $0E, $25, $1A, $0F
-db $00, $01, $11, $0C, $0E, $26, $1B, $0F
-db $00, $01, $14, $0A, $0E, $27, $1D, $0F
-db $00, $01, $11, $0A, $0E, $28, $1E, $0F
-db $02, $03, $12, $0B, $0E, $29, $16, $0F
-db $00, $01, $15, $0D, $0E, $2A, $18, $0F
-db $00, $01, $10, $07, $0E, $23, $1C, $0F
-db $00, $01, $13, $07, $0E, $04, $05, $0F
-db $00, $01, $13, $07, $0E, $04, $05, $0F
-db $00, $01, $10, $09, $0E, $20, $1B, $0F
-db $00, $01, $10, $09, $0E, $2A, $17, $0F
-db $02, $03, $12, $0B, $0E, $21, $1C, $0F
-db $00, $08, $11, $1B, $22, $2E, $5D, $5B
-db $00, $08, $10, $18, $20, $2B, $5D, $5B
-db $00, $08, $10, $18, $20, $2B, $5D, $5B
-db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B
-db $42, $43, $44, $45, $20, $2B, $3F, $5D
-db $00, $08, $10, $18, $20, $2B, $5D, $5B
-db $00, $08, $10, $18, $20, $2B, $5D, $5B
-db $00, $08, $10, $18, $20, $2B, $5D, $5B
-db $00, $08, $10, $18, $20, $2B, $5D, $5B
-db $00, $08, $10, $18, $20, $2B, $5D, $5B
-db $71, $72, $71, $72, $20, $2B, $5D, $5B
-db $3A, $3B, $3C, $3D, $53, $4D, $3E, $5B
-db $42, $43, $44, $45, $20, $2B, $3F, $59
-db $00, $72, $71, $72, $20, $2B, $5D, $0F
-db $16, $39, $1D, $17, $40, $41, $39, $1E
-db $00, $46, $39, $72, $40, $41, $39, $0F
-
 org $00D585 ; $005585
 db $A0, $08, $00, $84, $0E, $85, $00, $18
 db $69, $10, $00, $85, $03, $A0, $07, $00
@@ -3140,18 +3270,20 @@ db $03, $C6, $0E, $D0, $C0, $60
 endif
 
 pullpc
-
 NewLoadTransAuxGFX:
 {
     PHB : PHK : PLB
 
-    LDA.w Pool_EnableTransitionGFXGroupLoad : BNE .notNormalLoad
-        ; Replaced code:
-        LDA.b #$60 : STA.b $01
+    LDA.b $1B : BNE .indoors
+        LDA.w Pool_EnableTransitionGFXGroupLoad : BNE .notNormalLoad
+            .indoors
 
-        PLB
+            PLB
+            
+            ; Replaced code:
+            LDA.b #$60 : STA.b $01
 
-        JML $00D677 ; $005677 Return to regular code.
+            JML $00D677 ; $005677 Return to regular code.
 
     .notNormalLoad
 
@@ -3234,7 +3366,8 @@ NewLoadTransAuxGFX:
 
     PLB
 
-    JML LoadTransAuxGFX_sprite_continue ; $005706 Return to regular code.
+    ; $005706 Return to regular code.
+    JML LoadTransAuxGFX_sprite_continue
 }
 
 NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
@@ -3352,14 +3485,19 @@ InitTilesetsLongCalls:
     SEP #$20
     ; TODO: This will eventually be changed when changing the dungeon GFX.
     ; Only trigger the new code when in the:
-    LDA.b $10 : CMP.b #$08 : BEQ .outdoors ; Pre-overworld main module
-                CMP.b #$0E : BEQ .outdoors ; Text Mode/Item Screen/Map module
-        REP #$30
-        LDA.w $0AA1 : AND.w #$00FF ; Replaced code.
+    ; Pre-overworld main module
+    LDA.b $10 : CMP.b #$08 : BEQ .outdoors
+        ; Text Mode/Item Screen/Map module
+        ;CMP.b #$0E : BEQ .outdoors
+            REP #$30
 
-        PLB
+            PLB
 
-        JML $00E227 ; $006227 Return to normal code.
+            ; Replaced code.
+            LDA.w $0AA1 : AND.w #$00FF
+
+            ; Return to normal code.
+            JML $00E227 ; $006227
 
     .outdoors
 
@@ -3426,7 +3564,8 @@ InitTilesetsLongCalls:
 
     PLB
 
-    JML $00E282 ; $006282 Skip normal sheet load.
+    ; $006282 Skip normal sheet load.
+    JML $00E282
 }
 
 AnimateMirrorWarp_DecompressNewTileSetsLongCalls:
@@ -3467,7 +3606,8 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls:
 
     PLB
 
-    JML $00D949 ; $005949 Skip normal sheet load.
+    ; $005949 Skip normal sheet load.
+    JML $00D949
 }
 
 AnimateMirrorWarp_DecompressNewTileSetsLongCalls2:
@@ -3497,7 +3637,8 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls2:
 
     PLB
 
-    JML $00D988 ; $005988 Skip normal sheet load.
+    ; $005988 Skip normal sheet load.
+    JML $00D988
 }
 
 AnimateMirrorWarp_DecompressBackgroundsALongCalls:
@@ -3527,7 +3668,8 @@ AnimateMirrorWarp_DecompressBackgroundsALongCalls:
 
     PLB
 
-    JML $00D9C7 ; $0059C7 Skip normal sheet load.
+    ; $0059C7 Skip normal sheet load.
+    JML $00D9C7
 }
 
 AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
@@ -3544,7 +3686,7 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
 
     .notFF7
 
-    STA.b $08 : STA AnimatedTileGFXSet
+    STA.b $08 : STA.w AnimatedTileGFXSet
 
     LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
@@ -3557,13 +3699,14 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
 
     PLB
 
-    JML $00DA3A ; $005A3A Skip normal sheet load.
+    ; $005A3A Skip normal sheet load.
+    JML $00DA3A
 }
 pushpc
 
 ; ==============================================================================
 
-; A second pullpc is needed here just in case someone incorperates this ASM into
-; their own code base.
+; NOTE: A second pullpc is needed here just in case someone incorperates this
+; ASM into their own code base.
 pullpc
 pullpc
