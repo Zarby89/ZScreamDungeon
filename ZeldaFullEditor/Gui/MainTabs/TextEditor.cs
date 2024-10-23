@@ -26,7 +26,6 @@ namespace ZeldaFullEditor
 		private const int DictionarySize = 0xEC8D9 - 0xEC7C7;
 		public const byte MessageTerminator = 0x7F;
 		public const byte NumberOfCharacters = 100;
-		private bool CustomDraw = false;
 		private bool NeedRefresh = false;
 
 		readonly byte[] widthArray = new byte[NumberOfCharacters];
@@ -972,18 +971,18 @@ namespace ZeldaFullEditor
 			return Regex.Replace(str, @"\[[123V]\]", "\r\n$0");
 		}
 
-		SolidBrush bg1 = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
-        SolidBrush bg2 = new SolidBrush(Color.FromArgb(255, 240, 240, 255));
-        SolidBrush bg3 = new SolidBrush(Color.FromArgb(255, 40, 40, 255));
+		SolidBrush bg1 = new SolidBrush(Color.FromArgb(255, 240, 240, 255));
+        SolidBrush bg2 = new SolidBrush(Color.FromArgb(255, 212, 212, 255));
 
-
+		Font boldFont = new Font("Microsoft Sans Serif", 8, FontStyle.Bold);
         private void TextListbox_DrawItem(object sender, DrawItemEventArgs e)
         {
 			
             string s = textListbox.Items[e.Index].ToString();
-
-            s = Regex.Replace(s, @"\[1\]|\[2\]|\[3\]|\[V\]", "\r\n");
-			if (textListbox.SelectedIndex != e.Index)
+			string id = s.Substring(0, 3);
+			string msg = s.Substring(6);
+            s = Regex.Replace(msg, @"\[[123V]\]", "\r\n");
+            if (textListbox.SelectedIndex != e.Index)
 			{
 
 				if ((e.Index & 0x01) == 0x01)
@@ -1001,7 +1000,8 @@ namespace ZeldaFullEditor
 			{
 				e.DrawBackground();
 			}
-            e.Graphics.DrawString(s, e.Font, new SolidBrush(e.ForeColor), e.Bounds);
+            e.Graphics.DrawString(id, boldFont, new SolidBrush(e.ForeColor), new RectangleF(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
+            e.Graphics.DrawString(s, e.Font, new SolidBrush(e.ForeColor), new RectangleF(e.Bounds.X+32, e.Bounds.Y, e.Bounds.Width,e.Bounds.Height));
             
         }
 
@@ -1757,21 +1757,15 @@ namespace ZeldaFullEditor
 
         private void textwrapButton_CheckStateChanged(object sender, EventArgs e)
         {
-			if (textwrapButton.Checked == true)
+			if (textwrapButton.Checked)
 			{
-				CustomDraw = true;
-                textListbox.DrawItem += TextListbox_DrawItem;
-                textListbox.MeasureItem += TextListbox_MeasureItem;
 				textListbox.DrawMode = DrawMode.OwnerDrawVariable;
             }
 			else
 			{
-				CustomDraw = false;
-                textListbox.DrawItem -= TextListbox_DrawItem;
-                textListbox.MeasureItem -= TextListbox_MeasureItem;
 				textListbox.DrawMode = DrawMode.Normal;
             }
-			textListbox.Refresh();
+			
         }
     }
 }

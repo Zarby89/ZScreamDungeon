@@ -6203,5 +6203,21 @@ namespace ZeldaFullEditor
             animSettingForm.scene = overworldEditor.scene;
             animSettingForm.ShowDialog();
         }
+
+        private void DungeonMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.L)
+            {
+                overworldEditor.scene.showLinkCamera = true;
+            }
+        }
+
+        private void DungeonMain_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.L)
+            {
+                overworldEditor.scene.showLinkCamera = false;
+            }
+        }
     }
 }
