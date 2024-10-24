@@ -869,7 +869,10 @@ namespace ZeldaFullEditor
                     this.transportMode.Draw(g);
                 }
 
-                this.noteMode.Draw(g);
+                if (this.showOverlayText)
+                {
+                    this.noteMode.Draw(g);
+                }
 
                 if (this.entrancePreview)
                 {
@@ -883,8 +886,14 @@ namespace ZeldaFullEditor
                         g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
                     }
                 }
+                foreach(Rectangle rect in mainForm.tilesToDraw)
+                {
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(80, 255, 0, 0)), rect);
+                }
+                
 
-                if (this.selectedMode == ObjectMode.Overlay)
+
+                    if (this.selectedMode == ObjectMode.Overlay)
                 {
                     int mid = this.ow.AllMaps[this.selectedMap].ParentID;
                     int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;

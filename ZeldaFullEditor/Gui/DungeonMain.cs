@@ -3020,6 +3020,7 @@ namespace ZeldaFullEditor
                     graphics.DrawImage(bitmap, 0, 0, new Rectangle(image_start_x, image_start_y, image_size_x, image_size_y), GraphicsUnit.Pixel);
                 }
 
+
                 // TODO: Better names so we can have more than 1 map.
                 bitmap2.Save("MapTest.png");
                 bitmap.Dispose();
@@ -6242,6 +6243,42 @@ namespace ZeldaFullEditor
             if (e.KeyCode == Keys.L)
             {
                 overworldEditor.scene.showLinkCamera = false;
+            }
+        }
+        public List<Rectangle> tilesToDraw = new List<Rectangle>();
+        private void showUniqueTile32ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tilesToDraw.Clear();
+            List<ulong> drawnAlready = new List<ulong>();
+            List<ulong> allTile16 = new List<ulong>();
+            int sx = 0;
+            int sy = 0;
+            for (int i = 0; i < 64; i++)
+            {
+                for (int tily = 0; tily < 32; tily += 2)
+                {
+                    for (int tilx = 0; tilx < 32; tilx += 2)
+                    {
+                        ulong tilelong = new Tile32(
+                                overworldEditor.scene.ow.AllMapTile32LW[tilx + (sx * 32), tily + (sy * 32)],
+                                overworldEditor.scene.ow.AllMapTile32LW[tilx + 1 + (sx * 32), tily + (sy * 32)],
+                                overworldEditor.scene.ow.AllMapTile32LW[tilx + (sx * 32), tily + 1 + (sy * 32)],
+                                overworldEditor.scene.ow.AllMapTile32LW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
+
+                        if (!drawnAlready.Contains(tilelong))
+                        {
+                            tilesToDraw.Add(new Rectangle((tilx*16) + (sx * 512), (tily*16) + (sy * 512), 32, 32));
+                            drawnAlready.Add(tilelong);
+                        }
+                    }
+                }
+
+                sx++;
+                if (sx >= 8)
+                {
+                    sy++;
+                    sx = 0;
+                }
             }
         }
     }

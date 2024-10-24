@@ -340,6 +340,16 @@
             this.invisibleObjectsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMapIndexInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showStairIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.openRightRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLeftRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openUpRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDownRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveZeldaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -358,6 +368,7 @@
             this.clearDWTilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyLWToDWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTiles32CountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showUniqueTile32ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.areaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSpritesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.saveZeldaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -386,16 +397,6 @@
             this.useAreaSpecificBGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showOverlayTextsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.openRightRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openLeftRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openUpRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDownRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vramViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cGramViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -3130,10 +3131,10 @@
             this.testToolStripMenuItem,
             this.roomToolStripMenuItem,
             this.dungeonViewToolStripMenuItem,
+            this.naviguateToolStripMenuItem,
             this.overworldToolStripMenuItem,
             this.areaToolStripMenuItem,
             this.overworldViewToolStripMenuItem,
-            this.naviguateToolStripMenuItem,
             this.windowToolStripMenuItem,
             this.multiplayerToolStripMenuItem,
             this.jPDebugToolStripMenuItem,
@@ -3879,6 +3880,93 @@
             this.showStairIndexToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             this.showStairIndexToolStripMenuItem.Click += new System.EventHandler(this.ShowStairIndexToolStripMenuItem_Click);
             // 
+            // naviguateToolStripMenuItem
+            // 
+            this.naviguateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.moveToRightToolStripMenuItem,
+            this.moveToLeftToolStripMenuItem,
+            this.moveToUpToolStripMenuItem,
+            this.moveToDownToolStripMenuItem,
+            this.toolStripSeparator8,
+            this.openRightRoomToolStripMenuItem,
+            this.openLeftRoomToolStripMenuItem,
+            this.openUpRoomToolStripMenuItem,
+            this.openDownRoomToolStripMenuItem});
+            this.naviguateToolStripMenuItem.Enabled = false;
+            this.naviguateToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.naviguateToolStripMenuItem.Name = "naviguateToolStripMenuItem";
+            this.naviguateToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.naviguateToolStripMenuItem.Text = "Navigate";
+            // 
+            // moveToRightToolStripMenuItem
+            // 
+            this.moveToRightToolStripMenuItem.Enabled = false;
+            this.moveToRightToolStripMenuItem.Name = "moveToRightToolStripMenuItem";
+            this.moveToRightToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Right)));
+            this.moveToRightToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToRightToolStripMenuItem.Text = "Move 1 Room to the East";
+            // 
+            // moveToLeftToolStripMenuItem
+            // 
+            this.moveToLeftToolStripMenuItem.Enabled = false;
+            this.moveToLeftToolStripMenuItem.Name = "moveToLeftToolStripMenuItem";
+            this.moveToLeftToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Left)));
+            this.moveToLeftToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToLeftToolStripMenuItem.Text = "Move 1 Room to the West";
+            // 
+            // moveToUpToolStripMenuItem
+            // 
+            this.moveToUpToolStripMenuItem.Enabled = false;
+            this.moveToUpToolStripMenuItem.Name = "moveToUpToolStripMenuItem";
+            this.moveToUpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Up)));
+            this.moveToUpToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToUpToolStripMenuItem.Text = "Move 1 Room to the North";
+            // 
+            // moveToDownToolStripMenuItem
+            // 
+            this.moveToDownToolStripMenuItem.Enabled = false;
+            this.moveToDownToolStripMenuItem.Name = "moveToDownToolStripMenuItem";
+            this.moveToDownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Down)));
+            this.moveToDownToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToDownToolStripMenuItem.Text = "Move 1 Room to the South";
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(274, 6);
+            // 
+            // openRightRoomToolStripMenuItem
+            // 
+            this.openRightRoomToolStripMenuItem.Name = "openRightRoomToolStripMenuItem";
+            this.openRightRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
+            this.openRightRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openRightRoomToolStripMenuItem.Text = "Open Room to the East";
+            this.openRightRoomToolStripMenuItem.Click += new System.EventHandler(this.openRightRoomToolStripMenuItem_Click);
+            // 
+            // openLeftRoomToolStripMenuItem
+            // 
+            this.openLeftRoomToolStripMenuItem.Name = "openLeftRoomToolStripMenuItem";
+            this.openLeftRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
+            this.openLeftRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openLeftRoomToolStripMenuItem.Text = "Open Room to the West";
+            this.openLeftRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenLeftRoomToolStripMenuItem_Click);
+            // 
+            // openUpRoomToolStripMenuItem
+            // 
+            this.openUpRoomToolStripMenuItem.Name = "openUpRoomToolStripMenuItem";
+            this.openUpRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
+            this.openUpRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openUpRoomToolStripMenuItem.Text = "Open Room to the North";
+            this.openUpRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenUpRoomToolStripMenuItem_Click);
+            // 
+            // openDownRoomToolStripMenuItem
+            // 
+            this.openDownRoomToolStripMenuItem.Name = "openDownRoomToolStripMenuItem";
+            this.openDownRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
+            this.openDownRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openDownRoomToolStripMenuItem.Text = "Open Room to the South";
+            this.openDownRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenDownRoomToolStripMenuItem_Click);
+            // 
             // overworldToolStripMenuItem
             // 
             this.overworldToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3895,7 +3983,8 @@
             this.toolStripMenuItem7,
             this.clearDWTilesToolStripMenuItem,
             this.copyLWToDWToolStripMenuItem,
-            this.showTiles32CountToolStripMenuItem});
+            this.showTiles32CountToolStripMenuItem,
+            this.showUniqueTile32ToolStripMenuItem});
             this.overworldToolStripMenuItem.Enabled = false;
             this.overworldToolStripMenuItem.Name = "overworldToolStripMenuItem";
             this.overworldToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
@@ -4023,6 +4112,13 @@
             this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.showTiles32CountToolStripMenuItem.Text = "Show Tiles32 Count";
             this.showTiles32CountToolStripMenuItem.Click += new System.EventHandler(this.ShowTiles32CountToolStripMenuItem_Click);
+            // 
+            // showUniqueTile32ToolStripMenuItem
+            // 
+            this.showUniqueTile32ToolStripMenuItem.Name = "showUniqueTile32ToolStripMenuItem";
+            this.showUniqueTile32ToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.showUniqueTile32ToolStripMenuItem.Text = "Show Unique Tile32";
+            this.showUniqueTile32ToolStripMenuItem.Click += new System.EventHandler(this.showUniqueTile32ToolStripMenuItem_Click);
             // 
             // areaToolStripMenuItem
             // 
@@ -4278,93 +4374,6 @@
             this.showOverlayTextsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showOverlayTextsToolStripMenuItem.Text = "Show Overlay Texts";
             this.showOverlayTextsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
-            // 
-            // naviguateToolStripMenuItem
-            // 
-            this.naviguateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.moveToRightToolStripMenuItem,
-            this.moveToLeftToolStripMenuItem,
-            this.moveToUpToolStripMenuItem,
-            this.moveToDownToolStripMenuItem,
-            this.toolStripSeparator8,
-            this.openRightRoomToolStripMenuItem,
-            this.openLeftRoomToolStripMenuItem,
-            this.openUpRoomToolStripMenuItem,
-            this.openDownRoomToolStripMenuItem});
-            this.naviguateToolStripMenuItem.Enabled = false;
-            this.naviguateToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.naviguateToolStripMenuItem.Name = "naviguateToolStripMenuItem";
-            this.naviguateToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
-            this.naviguateToolStripMenuItem.Text = "Navigate";
-            // 
-            // moveToRightToolStripMenuItem
-            // 
-            this.moveToRightToolStripMenuItem.Enabled = false;
-            this.moveToRightToolStripMenuItem.Name = "moveToRightToolStripMenuItem";
-            this.moveToRightToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Right)));
-            this.moveToRightToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToRightToolStripMenuItem.Text = "Move 1 Room to the East";
-            // 
-            // moveToLeftToolStripMenuItem
-            // 
-            this.moveToLeftToolStripMenuItem.Enabled = false;
-            this.moveToLeftToolStripMenuItem.Name = "moveToLeftToolStripMenuItem";
-            this.moveToLeftToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Left)));
-            this.moveToLeftToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToLeftToolStripMenuItem.Text = "Move 1 Room to the West";
-            // 
-            // moveToUpToolStripMenuItem
-            // 
-            this.moveToUpToolStripMenuItem.Enabled = false;
-            this.moveToUpToolStripMenuItem.Name = "moveToUpToolStripMenuItem";
-            this.moveToUpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Up)));
-            this.moveToUpToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToUpToolStripMenuItem.Text = "Move 1 Room to the North";
-            // 
-            // moveToDownToolStripMenuItem
-            // 
-            this.moveToDownToolStripMenuItem.Enabled = false;
-            this.moveToDownToolStripMenuItem.Name = "moveToDownToolStripMenuItem";
-            this.moveToDownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Down)));
-            this.moveToDownToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToDownToolStripMenuItem.Text = "Move 1 Room to the South";
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(274, 6);
-            // 
-            // openRightRoomToolStripMenuItem
-            // 
-            this.openRightRoomToolStripMenuItem.Name = "openRightRoomToolStripMenuItem";
-            this.openRightRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
-            this.openRightRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openRightRoomToolStripMenuItem.Text = "Open Room to the East";
-            this.openRightRoomToolStripMenuItem.Click += new System.EventHandler(this.openRightRoomToolStripMenuItem_Click);
-            // 
-            // openLeftRoomToolStripMenuItem
-            // 
-            this.openLeftRoomToolStripMenuItem.Name = "openLeftRoomToolStripMenuItem";
-            this.openLeftRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
-            this.openLeftRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openLeftRoomToolStripMenuItem.Text = "Open Room to the West";
-            this.openLeftRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenLeftRoomToolStripMenuItem_Click);
-            // 
-            // openUpRoomToolStripMenuItem
-            // 
-            this.openUpRoomToolStripMenuItem.Name = "openUpRoomToolStripMenuItem";
-            this.openUpRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
-            this.openUpRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openUpRoomToolStripMenuItem.Text = "Open Room to the North";
-            this.openUpRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenUpRoomToolStripMenuItem_Click);
-            // 
-            // openDownRoomToolStripMenuItem
-            // 
-            this.openDownRoomToolStripMenuItem.Name = "openDownRoomToolStripMenuItem";
-            this.openDownRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
-            this.openDownRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openDownRoomToolStripMenuItem.Text = "Open Room to the South";
-            this.openDownRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenDownRoomToolStripMenuItem_Click);
             // 
             // windowToolStripMenuItem
             // 
@@ -5196,6 +5205,7 @@
         public System.Windows.Forms.Label warningLabel;
         private System.Windows.Forms.ToolStripMenuItem exportOverlayAnimationAsASMInClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showOverlayTextsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showUniqueTile32ToolStripMenuItem;
     }
 }
 

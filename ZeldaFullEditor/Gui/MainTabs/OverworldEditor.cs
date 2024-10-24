@@ -2340,6 +2340,12 @@ namespace ZeldaFullEditor.Gui
                 g.DrawImage(this.overworld.AllMaps[i].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
+            foreach (Rectangle rect in mainForm.tilesToDraw)
+            {
+                g.FillRectangle(new SolidBrush(Color.FromArgb(80, 255, 0, 0)), rect);
+            }
+
+
             temp.Save("LW.png");
 
             temp = new Bitmap(4096, 4096);
@@ -2489,7 +2495,6 @@ namespace ZeldaFullEditor.Gui
             {
                 previewSheets[i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (OWProperty_SPRGFX.HexValue * 4) + i] + 115);
             }
-
             previewsheetPicturebox.Height = (64 * 4);
             previewsheetPicturebox.Visible = true;
             previewsheetPicturebox.Refresh();
@@ -2502,6 +2507,7 @@ namespace ZeldaFullEditor.Gui
 
         private void previewsheetPicturebox_Paint(object sender, PaintEventArgs e)
         {
+            
             if (ispalPreview)
             {
                 for(int i = 0; i<256;i++)
@@ -2512,6 +2518,15 @@ namespace ZeldaFullEditor.Gui
             }
             else
             {
+                for (int i = 0; i < previewSheets.Length; i++)
+                {
+                    if (previewSheets[i] >= 0xDE)
+                    {
+                        previewSheets[i] = 0x00;
+                    }
+                }
+
+
                 ColorPalette cp = GFX.allgfxBitmap.Palette;
                 byte paloffset = 0;
                 if (previewSheets.Length > 1)

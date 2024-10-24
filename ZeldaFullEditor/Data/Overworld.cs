@@ -368,13 +368,18 @@ namespace ZeldaFullEditor
         /// </summary>
         /// <param name="onlyShow"> If True, calculate the unique number of tiles and send a message box with the result. </param>
         /// <returns> True if there were too many unique Tile32. </returns>
+        /// 
+
         public bool CreateTile32Tilemap(bool onlyShow = false)
         {
             this.UniqueTile32List.Clear();
             this.Tile32List.Clear();
 
-            // Create tile32 from tiles16.
             List<ulong> allTile16 = new List<ulong>();
+            
+
+            // Create tile32 from tiles16.
+
 
             int sx = 0;
             int sy = 0;
