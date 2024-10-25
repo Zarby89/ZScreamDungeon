@@ -21,7 +21,7 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     All of the entrances.
         /// </summary>
-        public static Entrance[] Entrances = new Entrance[0x85];
+        public static Entrance[] Entrances = new Entrance[0xFF];
 
         /// <summary>
         ///     All of the starting entrances (entrances that the player can spawn at).

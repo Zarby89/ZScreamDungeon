@@ -103,6 +103,7 @@
             this.entrancetabPage = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.facedownCheckbox = new System.Windows.Forms.CheckBox();
             this.EntranceProperties_FloorSel = new System.Windows.Forms.ComboBox();
             this.EntranceProperties_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_DungeonID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -1157,6 +1158,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.facedownCheckbox);
             this.panel2.Controls.Add(this.EntranceProperties_FloorSel);
             this.panel2.Controls.Add(this.EntranceProperties_Blockset);
             this.panel2.Controls.Add(this.EntranceProperties_Music);
@@ -1203,6 +1205,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(292, 372);
             this.panel2.TabIndex = 61;
+            // 
+            // facedownCheckbox
+            // 
+            this.facedownCheckbox.AutoSize = true;
+            this.facedownCheckbox.Location = new System.Drawing.Point(210, 55);
+            this.facedownCheckbox.Name = "facedownCheckbox";
+            this.facedownCheckbox.Size = new System.Drawing.Size(79, 17);
+            this.facedownCheckbox.TabIndex = 140;
+            this.facedownCheckbox.Text = "Face down";
+            this.facedownCheckbox.UseVisualStyleBackColor = true;
+            this.facedownCheckbox.CheckedChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_FloorSel
             // 
@@ -1645,7 +1658,7 @@
             // doorCheckbox
             // 
             this.doorCheckbox.AutoSize = true;
-            this.doorCheckbox.Location = new System.Drawing.Point(118, 55);
+            this.doorCheckbox.Location = new System.Drawing.Point(99, 55);
             this.doorCheckbox.Name = "doorCheckbox";
             this.doorCheckbox.Size = new System.Drawing.Size(69, 17);
             this.doorCheckbox.TabIndex = 105;
@@ -5218,6 +5231,7 @@
         private System.Windows.Forms.ToolStripMenuItem showOverlayTextsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showUniqueTile32ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setUnusedTiles16ToToolStripMenuItem;
+        private System.Windows.Forms.CheckBox facedownCheckbox;
     }
 }
 

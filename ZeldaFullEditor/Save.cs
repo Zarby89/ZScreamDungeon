@@ -37,7 +37,7 @@ namespace ZeldaFullEditor
 
         public bool SaveEntrances(Entrance[] entrances, Entrance[] startingentrances)
         {
-            for (int i = 0; i < 0x84; i++)
+            for (int i = 0; i < 0xFF; i++)
             {
                 entrances[i].Save(i);
             }
@@ -376,6 +376,17 @@ namespace ZeldaFullEditor
                     UIText.CryAboutSaving("Missing ASM file 'ZSCustomOverworld.asm'.\nSaving will continue but the ASM will not be applied.");
                 }
             }
+
+            // TODO: handle differently in projects.
+            /*if (File.Exists("expandedEntrances.asm"))
+            {
+                _ = Asar.patch("expandedEntrances.asm", ref ROM.DATA);
+
+            }
+            else
+            {
+                UIText.CryAboutSaving("Missing ASM file 'expandedEntrances.asm'.\nSaving will continue but the ASM will not be applied.");
+            }*/
 
             foreach (Asarerror error in Asar.geterrors())
             {

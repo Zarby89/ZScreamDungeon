@@ -459,16 +459,6 @@ namespace ZeldaFullEditor
         // ===========================================================================================
         // Dungeon Entrances Related Variables
         // ===========================================================================================
-        public static int entrance_room = 0x014813; // 0x14577 // Word value for each room
-        public static int entrance_scrolledge = 0x01491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                                                         // TODO: Swap CameraX and CameraY position because X is stored first!!
-
-        public static int entrance_cameray = 0x014D45; // 0x14AA9 // 2bytes each room
-        public static int entrance_camerax = 0x014E4F; // 0x14BB3 // 2bytes
-        public static int entrance_yposition = 0x014F59; // 0x14CBD 2bytes
-        public static int entrance_xposition = 0x015063;// 0x14DC7 2bytes
-        public static int entrance_cameraytrigger = 0x01516D;// 0x14ED1 2bytes
-        public static int entrance_cameraxtrigger = 0x015277;// 0x14FDB 2bytes
 
         /// <summary>
         /// 128 is the valid low X range where the camera can be placed.
@@ -493,8 +483,17 @@ namespace ZeldaFullEditor
         /// Any more than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
         /// </summary>
         public static int CameraTriggerYHigh = 392;
-
         public static int entrance_gfx_group = 0x005D97;
+
+
+        public static int entrance_room = 0x014813; // 0x14577 // Word value for each room
+        public static int entrance_scrolledge = 0x01491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+        public static int entrance_cameray = 0x014D45; // 0x14AA9 // 2bytes each room
+        public static int entrance_camerax = 0x014E4F; // 0x14BB3 // 2bytes
+        public static int entrance_yposition = 0x014F59; // 0x14CBD 2bytes
+        public static int entrance_xposition = 0x015063;// 0x14DC7 2bytes
+        public static int entrance_cameraytrigger = 0x01516D;// 0x14ED1 2bytes
+        public static int entrance_cameraxtrigger = 0x015277;// 0x14FDB 2bytes
         public static int entrance_blockset = 0x015381; // 0x150E5 1byte
         public static int entrance_floor = 0x015406; // 0x1516A 1byte
         public static int entrance_dungeon = 0x01548B; // 0x151EF 1byte (dungeon id)
@@ -504,6 +503,27 @@ namespace ZeldaFullEditor
         public static int entrance_scrollquadrant = 0x01569F; // 0x15403 1byte
         public static int entrance_exit = 0x015724; // 0x15488 // 2byte word
         public static int entrance_music = 0x01582E; // 0x15592
+
+
+        //EXPANDED to 0x78000 to 0x7A000
+        public static int entrance_roomEXP = 0x078000; 
+        public static int entrance_scrolledgeEXP = 0x78200;
+        public static int entrance_camerayEXP = 0x78A00;
+        public static int entrance_cameraxEXP = 0x78C00;
+        public static int entrance_ypositionEXP = 0x78E00;
+        public static int entrance_xpositionEXP = 0x79000;
+        public static int entrance_cameraytriggerEXP = 0x79200;
+        public static int entrance_cameraxtriggerEXP = 0x79400;
+        public static int entrance_blocksetEXP = 0x79600;
+        public static int entrance_floorEXP = 0x79700;
+        public static int entrance_dungeonEXP = 0x79800;
+        public static int entrance_doorEXP = 0x79900;
+        public static int entrance_ladderbgEXP = 0x79A00; 
+        public static int entrance_scrollingEXP = 0x79B00;
+        public static int entrance_scrollquadrantEXP = 0x79C00;
+        public static int entrance_exitEXP = 0x79D00;
+        public static int entrance_musicEXP = 0x79F00;
+        public static int entrance_ExtraEXP = 0x7A000;
 
         public static int startingentrance_room = 0x015B6E; // 0x158D2 // Word value for each room
         public static int startingentrance_scrolledge = 0x015B7C; // 0x158E0 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR

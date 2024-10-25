@@ -401,6 +401,9 @@ namespace ZeldaFullEditor
 
                 if (this.saveSettingsArr[8] && save.SaveEntrances(DungeonsData.Entrances, DungeonsData.StartingEntrances))
                 {
+                    // Set entrances expansion Bytes
+                    ROM.DATA[0x07F000] = 00;
+                    ROM.DATA[0x07F001] = 01;
                     UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
                     break;
                 }
@@ -977,7 +980,7 @@ namespace ZeldaFullEditor
                 _ = this.entrancetreeView.Nodes[1].Nodes.Add(treeNode);
             }
 
-            for (int i = 0; i < 0x85; i++)
+            for (int i = 0; i < 0xFF; i++)
             {
                 DungeonsData.Entrances[i] = new Entrance((byte)i, false);
                 string tname = "[" + i.ToString("X2") + "] -> ";
@@ -1025,7 +1028,7 @@ namespace ZeldaFullEditor
                 this.entrancetreeView.Nodes[1].Nodes[i].Text = tname;
             }
 
-            for (int i = 0; i < 0x85; i++)
+            for (int i = 0; i < 0xFF; i++)
             {
                 string tname = "[" + i.ToString("X2") + "] -> ";
                 foreach (DataRoom d in ROMStructure.dungeonsRoomList)
@@ -1865,6 +1868,8 @@ namespace ZeldaFullEditor
 
             this.EntranceProperties_Exit.HexValue = entrance.Exit;
 
+            this.facedownCheckbox.Checked = entrance.FaceDown;
+
             // Jared_Brian_: commented out because it is unused?
             /*
             bool b = false;
@@ -2586,6 +2591,8 @@ namespace ZeldaFullEditor
             {
                 this.selectedEntrance.Blockset = (byte)this.EntranceProperties_Blockset.HexValue;
                 this.selectedEntrance.Room = (short)this.EntranceProperties_RoomID.HexValue;
+
+                this.selectedEntrance.FaceDown = this.facedownCheckbox.Checked;
 
                 if (this.EntranceProperties_FloorSel.SelectedIndex >= 0)
                 {
