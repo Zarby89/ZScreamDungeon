@@ -103,11 +103,12 @@
             this.entrancetabPage = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.dooryHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.doorxHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.facedownCheckbox = new System.Windows.Forms.CheckBox();
             this.EntranceProperties_FloorSel = new System.Windows.Forms.ComboBox();
             this.EntranceProperties_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_DungeonID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.EntranceProperties_Exit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_CameraTriggerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_CameraTriggerX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label46 = new System.Windows.Forms.Label();
@@ -136,8 +137,6 @@
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.doorCheckbox = new System.Windows.Forms.CheckBox();
-            this.dooryTextbox = new System.Windows.Forms.TextBox();
-            this.doorxTextbox = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.entranceProperty_quadbr = new System.Windows.Forms.RadioButton();
             this.entranceProperty_quadtr = new System.Windows.Forms.RadioButton();
@@ -153,7 +152,6 @@
             this.label21 = new System.Windows.Forms.Label();
             this.mouseEntranceButton = new System.Windows.Forms.Button();
             this.entranceProperty_bg = new System.Windows.Forms.CheckBox();
-            this.label39 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
@@ -1158,12 +1156,13 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.dooryHexbox);
+            this.panel2.Controls.Add(this.doorxHexbox);
             this.panel2.Controls.Add(this.facedownCheckbox);
             this.panel2.Controls.Add(this.EntranceProperties_FloorSel);
             this.panel2.Controls.Add(this.EntranceProperties_Blockset);
             this.panel2.Controls.Add(this.EntranceProperties_Music);
             this.panel2.Controls.Add(this.EntranceProperties_DungeonID);
-            this.panel2.Controls.Add(this.EntranceProperties_Exit);
             this.panel2.Controls.Add(this.EntranceProperties_CameraTriggerY);
             this.panel2.Controls.Add(this.EntranceProperties_CameraTriggerX);
             this.panel2.Controls.Add(this.label46);
@@ -1178,8 +1177,6 @@
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Controls.Add(this.label30);
             this.panel2.Controls.Add(this.doorCheckbox);
-            this.panel2.Controls.Add(this.dooryTextbox);
-            this.panel2.Controls.Add(this.doorxTextbox);
             this.panel2.Controls.Add(this.label27);
             this.panel2.Controls.Add(this.entranceProperty_quadbr);
             this.panel2.Controls.Add(this.entranceProperty_quadtr);
@@ -1195,7 +1192,6 @@
             this.panel2.Controls.Add(this.label21);
             this.panel2.Controls.Add(this.mouseEntranceButton);
             this.panel2.Controls.Add(this.entranceProperty_bg);
-            this.panel2.Controls.Add(this.label39);
             this.panel2.Controls.Add(this.label22);
             this.panel2.Controls.Add(this.label40);
             this.panel2.Controls.Add(this.label24);
@@ -1205,6 +1201,40 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(292, 372);
             this.panel2.TabIndex = 61;
+            // 
+            // dooryHexbox
+            // 
+            this.dooryHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.dooryHexbox.Decimal = false;
+            this.dooryHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.dooryHexbox.HexValue = 0;
+            this.dooryHexbox.Location = new System.Drawing.Point(117, 198);
+            this.dooryHexbox.MaxLength = 2;
+            this.dooryHexbox.MaxValue = 255;
+            this.dooryHexbox.MinValue = 0;
+            this.dooryHexbox.Name = "dooryHexbox";
+            this.dooryHexbox.Size = new System.Drawing.Size(44, 20);
+            this.dooryHexbox.TabIndex = 142;
+            this.dooryHexbox.Text = "00";
+            this.dooryHexbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.dooryHexbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // doorxHexbox
+            // 
+            this.doorxHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.doorxHexbox.Decimal = false;
+            this.doorxHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.doorxHexbox.HexValue = 0;
+            this.doorxHexbox.Location = new System.Drawing.Point(67, 198);
+            this.doorxHexbox.MaxLength = 2;
+            this.doorxHexbox.MaxValue = 255;
+            this.doorxHexbox.MinValue = 0;
+            this.doorxHexbox.Name = "doorxHexbox";
+            this.doorxHexbox.Size = new System.Drawing.Size(44, 20);
+            this.doorxHexbox.TabIndex = 141;
+            this.doorxHexbox.Text = "00";
+            this.doorxHexbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.doorxHexbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // facedownCheckbox
             // 
@@ -1260,23 +1290,6 @@
             this.EntranceProperties_DungeonID.Text = "00";
             this.EntranceProperties_DungeonID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.EntranceProperties_DungeonID.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
-            // EntranceProperties_Exit
-            // 
-            this.EntranceProperties_Exit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.EntranceProperties_Exit.Decimal = false;
-            this.EntranceProperties_Exit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.EntranceProperties_Exit.HexValue = 0;
-            this.EntranceProperties_Exit.Location = new System.Drawing.Point(228, 198);
-            this.EntranceProperties_Exit.MaxLength = 2;
-            this.EntranceProperties_Exit.MaxValue = 255;
-            this.EntranceProperties_Exit.MinValue = 0;
-            this.EntranceProperties_Exit.Name = "EntranceProperties_Exit";
-            this.EntranceProperties_Exit.Size = new System.Drawing.Size(49, 20);
-            this.EntranceProperties_Exit.TabIndex = 135;
-            this.EntranceProperties_Exit.Text = "00";
-            this.EntranceProperties_Exit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.EntranceProperties_Exit.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_CameraTriggerY
             // 
@@ -1666,24 +1679,6 @@
             this.doorCheckbox.UseVisualStyleBackColor = true;
             this.doorCheckbox.CheckedChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
-            // dooryTextbox
-            // 
-            this.dooryTextbox.Location = new System.Drawing.Point(131, 198);
-            this.dooryTextbox.Name = "dooryTextbox";
-            this.dooryTextbox.Size = new System.Drawing.Size(44, 20);
-            this.dooryTextbox.TabIndex = 104;
-            this.dooryTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.dooryTextbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
-            // doorxTextbox
-            // 
-            this.doorxTextbox.Location = new System.Drawing.Point(68, 198);
-            this.doorxTextbox.Name = "doorxTextbox";
-            this.doorxTextbox.Size = new System.Drawing.Size(44, 20);
-            this.doorxTextbox.TabIndex = 103;
-            this.doorxTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.doorxTextbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
             // label27
             // 
             this.label27.AutoSize = true;
@@ -1848,15 +1843,6 @@
             this.entranceProperty_bg.Text = "Layer 2";
             this.entranceProperty_bg.UseVisualStyleBackColor = true;
             this.entranceProperty_bg.CheckStateChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(198, 202);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(24, 13);
-            this.label39.TabIndex = 20;
-            this.label39.Text = "Exit";
             // 
             // label22
             // 
@@ -4964,7 +4950,6 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label label40;
         public System.Windows.Forms.CheckBox entranceProperty_bg;
         private CustomPanel panel1;
@@ -5108,8 +5093,6 @@
         public System.Windows.Forms.RadioButton entranceProperty_quadbl;
         public System.Windows.Forms.RadioButton entranceProperty_quadtl;
         private System.Windows.Forms.CheckBox doorCheckbox;
-        public System.Windows.Forms.TextBox dooryTextbox;
-        public System.Windows.Forms.TextBox doorxTextbox;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TabControl tabControl2;
@@ -5189,7 +5172,6 @@
 		private System.Windows.Forms.Label label41;
 		private System.Windows.Forms.Label label38;
 		private Gui.ExtraForms.Hexbox EntranceProperties_RoomID;
-		private Gui.ExtraForms.Hexbox EntranceProperties_Exit;
 		private Gui.ExtraForms.Hexbox EntranceProperties_Blockset;
 		private Gui.ExtraForms.Hexbox EntranceProperties_Music;
 		private Gui.ExtraForms.Hexbox EntranceProperties_DungeonID;
@@ -5232,6 +5214,8 @@
         private System.Windows.Forms.ToolStripMenuItem showUniqueTile32ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setUnusedTiles16ToToolStripMenuItem;
         private System.Windows.Forms.CheckBox facedownCheckbox;
+        private Gui.ExtraForms.Hexbox doorxHexbox;
+        private Gui.ExtraForms.Hexbox dooryHexbox;
     }
 }
 

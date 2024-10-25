@@ -378,7 +378,7 @@ namespace ZeldaFullEditor
             }
 
             // TODO: handle differently in projects.
-            /*if (File.Exists("expandedEntrances.asm"))
+            if (File.Exists("expandedEntrances.asm"))
             {
                 _ = Asar.patch("expandedEntrances.asm", ref ROM.DATA);
 
@@ -386,7 +386,7 @@ namespace ZeldaFullEditor
             else
             {
                 UIText.CryAboutSaving("Missing ASM file 'expandedEntrances.asm'.\nSaving will continue but the ASM will not be applied.");
-            }*/
+            }
 
             foreach (Asarerror error in Asar.geterrors())
             {

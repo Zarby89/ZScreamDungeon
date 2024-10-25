@@ -243,6 +243,15 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
 
                 scene.mainForm.lastRoomID = roomId;
+                for (int i = 0; i < scene.ow.AllEntrances.Length; i++)
+                {
+                    if (scene.ow.AllEntrances[i] == selectedEntrance)
+                    {
+                        scene.owForm.owentrancesListbox.SelectedIndex = i; 
+                        break;
+                    }
+                }
+
             }
         }
 

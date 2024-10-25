@@ -1866,8 +1866,6 @@ namespace ZeldaFullEditor
 
             this.EntranceProperties_FloorSel.SelectedIndex = Constants.FloorNumber.FindFloorIndex(entrance.Floor);
 
-            this.EntranceProperties_Exit.HexValue = entrance.Exit;
-
             this.facedownCheckbox.Checked = entrance.FaceDown;
 
             // Jared_Brian_: commented out because it is unused?
@@ -1932,9 +1930,11 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryFE.HexValue = entrance.CameraBoundaryFE;
 
             int p = (entrance.Exit & 0x7FFF) >> 1;
-            this.doorxTextbox.Text = (p % 64).ToString("X2");
-            this.dooryTextbox.Text = (p >> 6).ToString("X2");
 
+            //this.doorxTextbox.Text = (p % 64).ToString("X2");
+            //this.dooryTextbox.Text = (p >> 6).ToString("X2");
+            this.doorxHexbox.HexValue = p % 64;
+            this.dooryHexbox.HexValue = p >> 6;
             if ((entrance.Scrolling & 0x20) == 0x20)
             {
                 this.entranceProperty_hscroll.Checked = true;
@@ -2602,7 +2602,7 @@ namespace ZeldaFullEditor
                 this.selectedEntrance.DungeonID = (byte)this.EntranceProperties_DungeonID.HexValue;
                 this.selectedEntrance.Music = (byte)this.EntranceProperties_Music.HexValue;
 
-                this.selectedEntrance.Exit = (byte)this.EntranceProperties_Exit.HexValue;
+                //this.selectedEntrance.Exit = (byte)this.EntranceProperties_Exit.HexValue;
 
                 this.selectedEntrance.LadderBG = (byte)(this.entranceProperty_bg.Checked ? 0x10 : 0x00);
 
@@ -2626,7 +2626,7 @@ namespace ZeldaFullEditor
                 //Console.WriteLine("Camera X: " + EntranceProperties_CameraX.HexValue.ToString() + " Camera Y: " + EntranceProperties_CameraY.HexValue.ToString());
                 //Console.WriteLine("Camera trigger X: " + EntranceProperties_CameraTriggerX.HexValue.ToString() + " Camera trigger Y: " + EntranceProperties_CameraTriggerY.HexValue.ToString());
 
-                if (int.TryParse(this.doorxTextbox.Text, NumberStyles.HexNumber, null, out int r))
+                /*if (int.TryParse(this.doorxTextbox.Text, NumberStyles.HexNumber, null, out int r))
                 {
                     if (int.TryParse(this.dooryTextbox.Text, NumberStyles.HexNumber, null, out int rr))
                     {
@@ -2640,7 +2640,16 @@ namespace ZeldaFullEditor
                 else
                 {
                     this.selectedEntrance.Exit = 0;
+                }*/
+
+
+                this.selectedEntrance.Exit = (short)(((dooryHexbox.HexValue << 6) + (doorxHexbox.HexValue & 0x3F)) << 1);
+                if (facedownCheckbox.Checked )
+                {
+                    selectedEntrance.Exit = (short)(selectedEntrance.Exit | 0xC001);
                 }
+
+
 
                 byte b = 0;
                 if (this.entranceProperty_hscroll.Checked)

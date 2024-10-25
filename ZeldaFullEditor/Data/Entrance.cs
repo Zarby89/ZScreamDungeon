@@ -208,114 +208,115 @@ namespace ZeldaFullEditor
         /// <param name="isSpawnPoint"> Whether the entrance is a spawn point or not. </param>
         public Entrance(byte entranceID, bool isSpawnPoint = false)
         {
-            // if expanded == false
-            if (ROM.DATA[0x07F000] != 00 && ROM.DATA[0x07F001] != 01)
+            if (!isSpawnPoint)
             {
-                if (entranceID > 0x84)
+                // if expanded == false
+                if (ROM.DATA[0x07F000] != 00 && ROM.DATA[0x07F001] != 01)
                 {
-                    this.Room = 0;
-                    this.YPosition = 0;
-                    this.XPosition = 0;
-                    this.CameraX = 0;
-                    this.CameraY = 0;
-                    this.CameraTriggerY = 0;
-                    this.CameraTriggerX = 0;
-                    this.Blockset = 0;
-                    this.Music = 0;
-                    this.DungeonID = 0;
-                    this.Floor = 0;
-                    this.Door = 0;
-                    this.LadderBG = 0;
-                    this.Scrolling = 0;
-                    this.ScrollQuadrant = 0;
-                    this.Exit = 0;
+                    if (entranceID > 0x84)
+                    {
+                        this.Room = 0;
+                        this.YPosition = 0;
+                        this.XPosition = 0;
+                        this.CameraX = 0;
+                        this.CameraY = 0;
+                        this.CameraTriggerY = 0;
+                        this.CameraTriggerX = 0;
+                        this.Blockset = 0;
+                        this.Music = 0;
+                        this.DungeonID = 0;
+                        this.Floor = 0;
+                        this.Door = 0;
+                        this.LadderBG = 0;
+                        this.Scrolling = 0;
+                        this.ScrollQuadrant = 0;
+                        this.Exit = 0;
 
-                    this.CameraBoundaryQN = 0;
-                    this.CameraBoundaryFN = 0;
-                    this.CameraBoundaryQS = 0;
-                    this.CameraBoundaryFS = 0;
-                    this.CameraBoundaryQW = 0;
-                    this.CameraBoundaryFW = 0;
-                    this.CameraBoundaryQE = 0;
-                    this.CameraBoundaryFE = 0;
+                        this.CameraBoundaryQN = 0;
+                        this.CameraBoundaryFN = 0;
+                        this.CameraBoundaryQS = 0;
+                        this.CameraBoundaryFS = 0;
+                        this.CameraBoundaryQW = 0;
+                        this.CameraBoundaryFW = 0;
+                        this.CameraBoundaryQE = 0;
+                        this.CameraBoundaryFE = 0;
 
-                    FaceDown = false;
-                }
+                        FaceDown = false;
+                    }
 
-                this.Room = (short)((ROM.DATA[Constants.entrance_room + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceID * 2)]);
-                this.YPosition = (ushort)((ROM.DATA[Constants.entrance_yposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_yposition + (entranceID * 2)]);
-                this.XPosition = (ushort)((ROM.DATA[Constants.entrance_xposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_xposition + (entranceID * 2)]);
-                this.CameraX = (ushort)((ROM.DATA[Constants.entrance_camerax + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_camerax + (entranceID * 2)]);
-                this.CameraY = (ushort)((ROM.DATA[Constants.entrance_cameray + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_cameray + (entranceID * 2)]);
-                this.CameraTriggerY = (ushort)((ROM.DATA[(Constants.entrance_cameraytrigger + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraytrigger + (entranceID * 2)]);
-                this.CameraTriggerX = (ushort)((ROM.DATA[(Constants.entrance_cameraxtrigger + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraxtrigger + (entranceID * 2)]);
-                this.Blockset = ROM.DATA[Constants.entrance_blockset + entranceID];
-                this.Music = ROM.DATA[Constants.entrance_music + entranceID];
-                this.DungeonID = ROM.DATA[Constants.entrance_dungeon + entranceID];
-                this.Floor = ROM.DATA[Constants.entrance_floor + entranceID];
-                this.Door = ROM.DATA[Constants.entrance_door + entranceID];
-                this.LadderBG = ROM.DATA[Constants.entrance_ladderbg + entranceID];
-                this.Scrolling = ROM.DATA[Constants.entrance_scrolling + entranceID];
-                this.ScrollQuadrant = ROM.DATA[Constants.entrance_scrollquadrant + entranceID];
-                this.Exit = (short)((ROM.DATA[Constants.entrance_exit + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_exit + (entranceID * 2)]);
+                    this.Room = (short)((ROM.DATA[Constants.entrance_room + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceID * 2)]);
+                    this.YPosition = (ushort)((ROM.DATA[Constants.entrance_yposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_yposition + (entranceID * 2)]);
+                    this.XPosition = (ushort)((ROM.DATA[Constants.entrance_xposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_xposition + (entranceID * 2)]);
+                    this.CameraX = (ushort)((ROM.DATA[Constants.entrance_camerax + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_camerax + (entranceID * 2)]);
+                    this.CameraY = (ushort)((ROM.DATA[Constants.entrance_cameray + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_cameray + (entranceID * 2)]);
+                    this.CameraTriggerY = (ushort)((ROM.DATA[(Constants.entrance_cameraytrigger + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraytrigger + (entranceID * 2)]);
+                    this.CameraTriggerX = (ushort)((ROM.DATA[(Constants.entrance_cameraxtrigger + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraxtrigger + (entranceID * 2)]);
+                    this.Blockset = ROM.DATA[Constants.entrance_blockset + entranceID];
+                    this.Music = ROM.DATA[Constants.entrance_music + entranceID];
+                    this.DungeonID = ROM.DATA[Constants.entrance_dungeon + entranceID];
+                    this.Floor = ROM.DATA[Constants.entrance_floor + entranceID];
+                    this.Door = ROM.DATA[Constants.entrance_door + entranceID];
+                    this.LadderBG = ROM.DATA[Constants.entrance_ladderbg + entranceID];
+                    this.Scrolling = ROM.DATA[Constants.entrance_scrolling + entranceID];
+                    this.ScrollQuadrant = ROM.DATA[Constants.entrance_scrollquadrant + entranceID];
+                    this.Exit = (short)((ROM.DATA[Constants.entrance_exit + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_exit + (entranceID * 2)]);
 
-                this.CameraBoundaryQN = ROM.DATA[Constants.entrance_scrolledge + 0 + (entranceID * 8)];
-                this.CameraBoundaryFN = ROM.DATA[Constants.entrance_scrolledge + 1 + (entranceID * 8)];
-                this.CameraBoundaryQS = ROM.DATA[Constants.entrance_scrolledge + 2 + (entranceID * 8)];
-                this.CameraBoundaryFS = ROM.DATA[Constants.entrance_scrolledge + 3 + (entranceID * 8)];
-                this.CameraBoundaryQW = ROM.DATA[Constants.entrance_scrolledge + 4 + (entranceID * 8)];
-                this.CameraBoundaryFW = ROM.DATA[Constants.entrance_scrolledge + 5 + (entranceID * 8)];
-                this.CameraBoundaryQE = ROM.DATA[Constants.entrance_scrolledge + 6 + (entranceID * 8)];
-                this.CameraBoundaryFE = ROM.DATA[Constants.entrance_scrolledge + 7 + (entranceID * 8)];
+                    this.CameraBoundaryQN = ROM.DATA[Constants.entrance_scrolledge + 0 + (entranceID * 8)];
+                    this.CameraBoundaryFN = ROM.DATA[Constants.entrance_scrolledge + 1 + (entranceID * 8)];
+                    this.CameraBoundaryQS = ROM.DATA[Constants.entrance_scrolledge + 2 + (entranceID * 8)];
+                    this.CameraBoundaryFS = ROM.DATA[Constants.entrance_scrolledge + 3 + (entranceID * 8)];
+                    this.CameraBoundaryQW = ROM.DATA[Constants.entrance_scrolledge + 4 + (entranceID * 8)];
+                    this.CameraBoundaryFW = ROM.DATA[Constants.entrance_scrolledge + 5 + (entranceID * 8)];
+                    this.CameraBoundaryQE = ROM.DATA[Constants.entrance_scrolledge + 6 + (entranceID * 8)];
+                    this.CameraBoundaryFE = ROM.DATA[Constants.entrance_scrolledge + 7 + (entranceID * 8)];
 
-                if (entranceID == 0x43 || entranceID == 0x00)
-                {
-                    FaceDown = true;
+                    if (entranceID == 0x43 || entranceID == 0x00)
+                    {
+                        FaceDown = true;
+                    }
+                    else
+                    {
+                        FaceDown = false;
+                    }
+                    return;
                 }
                 else
                 {
-                    FaceDown = false;
+                    this.Room = (short)((ROM.DATA[Constants.entrance_roomEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_roomEXP + (entranceID * 2)]);
+                    this.YPosition = (ushort)((ROM.DATA[Constants.entrance_ypositionEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_ypositionEXP + (entranceID * 2)]);
+                    this.XPosition = (ushort)((ROM.DATA[Constants.entrance_xpositionEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_xpositionEXP + (entranceID * 2)]);
+                    this.CameraX = (ushort)((ROM.DATA[Constants.entrance_cameraxEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_cameraxEXP + (entranceID * 2)]);
+                    this.CameraY = (ushort)((ROM.DATA[Constants.entrance_camerayEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_camerayEXP + (entranceID * 2)]);
+                    this.CameraTriggerY = (ushort)((ROM.DATA[(Constants.entrance_cameraytriggerEXP + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraytriggerEXP + (entranceID * 2)]);
+                    this.CameraTriggerX = (ushort)((ROM.DATA[(Constants.entrance_cameraxtriggerEXP + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraxtriggerEXP + (entranceID * 2)]);
+                    this.Blockset = ROM.DATA[Constants.entrance_blocksetEXP + entranceID];
+                    this.Music = ROM.DATA[Constants.entrance_musicEXP + entranceID];
+                    this.DungeonID = ROM.DATA[Constants.entrance_dungeonEXP + entranceID];
+                    this.Floor = ROM.DATA[Constants.entrance_floorEXP + entranceID];
+                    this.Door = ROM.DATA[Constants.entrance_doorEXP + entranceID];
+                    this.LadderBG = ROM.DATA[Constants.entrance_ladderbgEXP + entranceID];
+                    this.Scrolling = ROM.DATA[Constants.entrance_scrollingEXP + entranceID];
+                    this.ScrollQuadrant = ROM.DATA[Constants.entrance_scrollquadrantEXP + entranceID];
+                    this.Exit = (short)((ROM.DATA[Constants.entrance_exitEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_exitEXP + (entranceID * 2)]);
+
+                    this.CameraBoundaryQN = ROM.DATA[Constants.entrance_scrolledgeEXP + 0 + (entranceID * 8)];
+                    this.CameraBoundaryFN = ROM.DATA[Constants.entrance_scrolledgeEXP + 1 + (entranceID * 8)];
+                    this.CameraBoundaryQS = ROM.DATA[Constants.entrance_scrolledgeEXP + 2 + (entranceID * 8)];
+                    this.CameraBoundaryFS = ROM.DATA[Constants.entrance_scrolledgeEXP + 3 + (entranceID * 8)];
+                    this.CameraBoundaryQW = ROM.DATA[Constants.entrance_scrolledgeEXP + 4 + (entranceID * 8)];
+                    this.CameraBoundaryFW = ROM.DATA[Constants.entrance_scrolledgeEXP + 5 + (entranceID * 8)];
+                    this.CameraBoundaryQE = ROM.DATA[Constants.entrance_scrolledgeEXP + 6 + (entranceID * 8)];
+                    this.CameraBoundaryFE = ROM.DATA[Constants.entrance_scrolledgeEXP + 7 + (entranceID * 8)];
+
+                    byte extraByte = ROM.DATA[Constants.entrance_ExtraEXP + entranceID];
+                    if ((extraByte & 0x01) == 0x01)
+                    {
+                        FaceDown = true;
+                    }
                 }
-                return;
+
             }
             else
-            {
-                this.Room = (short)((ROM.DATA[Constants.entrance_roomEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_roomEXP + (entranceID * 2)]);
-                this.YPosition = (ushort)((ROM.DATA[Constants.entrance_ypositionEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_ypositionEXP + (entranceID * 2)]);
-                this.XPosition = (ushort)((ROM.DATA[Constants.entrance_xpositionEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_xpositionEXP + (entranceID * 2)]);
-                this.CameraX = (ushort)((ROM.DATA[Constants.entrance_cameraxEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_cameraxEXP + (entranceID * 2)]);
-                this.CameraY = (ushort)((ROM.DATA[Constants.entrance_camerayEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_camerayEXP + (entranceID * 2)]);
-                this.CameraTriggerY = (ushort)((ROM.DATA[(Constants.entrance_cameraytriggerEXP + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraytriggerEXP + (entranceID * 2)]);
-                this.CameraTriggerX = (ushort)((ROM.DATA[(Constants.entrance_cameraxtriggerEXP + (entranceID * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_cameraxtriggerEXP + (entranceID * 2)]);
-                this.Blockset = ROM.DATA[Constants.entrance_blocksetEXP + entranceID];
-                this.Music = ROM.DATA[Constants.entrance_musicEXP + entranceID];
-                this.DungeonID = ROM.DATA[Constants.entrance_dungeonEXP + entranceID];
-                this.Floor = ROM.DATA[Constants.entrance_floorEXP + entranceID];
-                this.Door = ROM.DATA[Constants.entrance_doorEXP + entranceID];
-                this.LadderBG = ROM.DATA[Constants.entrance_ladderbgEXP + entranceID];
-                this.Scrolling = ROM.DATA[Constants.entrance_scrollingEXP + entranceID];
-                this.ScrollQuadrant = ROM.DATA[Constants.entrance_scrollquadrantEXP + entranceID];
-                this.Exit = (short)((ROM.DATA[Constants.entrance_exitEXP + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.entrance_exitEXP + (entranceID * 2)]);
-
-                this.CameraBoundaryQN = ROM.DATA[Constants.entrance_scrolledgeEXP + 0 + (entranceID * 8)];
-                this.CameraBoundaryFN = ROM.DATA[Constants.entrance_scrolledgeEXP + 1 + (entranceID * 8)];
-                this.CameraBoundaryQS = ROM.DATA[Constants.entrance_scrolledgeEXP + 2 + (entranceID * 8)];
-                this.CameraBoundaryFS = ROM.DATA[Constants.entrance_scrolledgeEXP + 3 + (entranceID * 8)];
-                this.CameraBoundaryQW = ROM.DATA[Constants.entrance_scrolledgeEXP + 4 + (entranceID * 8)];
-                this.CameraBoundaryFW = ROM.DATA[Constants.entrance_scrolledgeEXP + 5 + (entranceID * 8)];
-                this.CameraBoundaryQE = ROM.DATA[Constants.entrance_scrolledgeEXP + 6 + (entranceID * 8)];
-                this.CameraBoundaryFE = ROM.DATA[Constants.entrance_scrolledgeEXP + 7 + (entranceID * 8)];
-
-                byte extraByte = ROM.DATA[Constants.entrance_ExtraEXP + entranceID];
-                if ((extraByte & 0x01) == 0x01)
-                {
-                    FaceDown = true;
-                }
-            }
-
-
-
-            if (isSpawnPoint)
             {
                 this.Room = (short)((ROM.DATA[Constants.startingentrance_room + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_room + (entranceID * 2)]);
                 this.YPosition = (ushort)((ROM.DATA[Constants.startingentrance_yposition + (entranceID * 2) + 1] << 8) + ROM.DATA[Constants.startingentrance_yposition + (entranceID * 2)]);

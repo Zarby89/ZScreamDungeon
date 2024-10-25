@@ -20,6 +20,13 @@ NOP
 
 
 
+org $0299B0
+JSL NewFaceDownCheck
+BRA .skipuseless
+
+org $0299BA
+.skipuseless
+
 org $02D9A3
 LDA.w EntranceData_room_id,X
 
@@ -191,6 +198,15 @@ LDA.b #$02 ; Get the new entrance bank
 PHA ; Go back to databank 02
 PLB
 
+RTL
+
+NewFaceDownCheck:
+LDX.w $010E
+LDA.l EntranceData_entranceExtra, X : AND.b #$01 : BEQ .faceup
+LDX.b #$01
+RTL
+.faceup
+LDX.b #$00
 RTL
 
 

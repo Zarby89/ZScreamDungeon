@@ -92,7 +92,20 @@ namespace ZeldaFullEditor.Gui
             ambient3Box.Items.AddRange(Constants.ambientNamesOW);
             ambient4Box.Items.AddRange(Constants.ambientNamesOW);
 
-
+            for (int i = 0; i< overworld.AllEntrances.Length;i++)
+            {
+                
+                string tname = "OW[" + i.ToString("X2") + "] -> UW";
+                foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
+                {
+                    if (dataRoom.ID == DungeonsData.Entrances[overworld.AllEntrances[i].EntranceID].Room)
+                    {
+                        tname += "[" + overworld.AllEntrances[i].EntranceID.ToString("X2") + "]" + dataRoom.Name;
+                        break;
+                    }
+                }
+                owentrancesListbox.Items.Add(tname);
+            }
 
 
 
@@ -2639,6 +2652,81 @@ namespace ZeldaFullEditor.Gui
         private void lwmodeButton_Click(object sender, EventArgs e)
         {
             this.SelectMapOffset(0);
+        }
+
+        private void owentrancesListbox_DoubleClick(object sender, EventArgs e)
+        {
+            EntranceOW eow = overworld.AllEntrances[owentrancesListbox.SelectedIndex];
+
+            int xView = (eow.X - (splitContainer1.Panel2.Width/2));
+            xView.Clamp(0, 4096 - splitContainer1.Panel2.Width);
+
+            int yView = (eow.Y - (splitContainer1.Panel2.Height / 2));
+            yView.Clamp(0, 4096 - splitContainer1.Panel2.Width);
+            splitContainer1.Panel2.AutoScrollPosition = new Point(xView, yView);
+
+            scene.selectedMode = ObjectMode.Entrances;
+            scene.entranceMode.selectedEntrance = eow;
+            scene.entranceMode.lastselectedEntrance = eow;
+            scene.entranceMode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+            if (eow.MapID < 0x40)
+            {
+                this.SelectMapOffset(0);
+            }
+            else if (eow.MapID >= 0x40)
+            {
+                this.SelectMapOffset(0x40);
+            }
+
+
+        }
+
+        private void owentrancesListbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fromForm = true;
+            if (owentrancesListbox.SelectedIndex != -1)
+            {
+                EntranceOW eow = overworld.AllEntrances[owentrancesListbox.SelectedIndex];
+
+                scene.entranceMode.selectedEntrance = eow;
+                scene.entranceMode.lastselectedEntrance = eow;
+                scene.entranceMode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+
+                owentrance_property_entranceid.HexValue = scene.entranceMode.lastselectedEntrance.EntranceID;
+                owentrance_property_ishole.Checked = scene.entranceMode.lastselectedEntrance.IsHole;
+                owentrance_property_mapid.HexValue = scene.entranceMode.lastselectedEntrance.MapID;
+                owentrance_property_mappos.HexValue = scene.entranceMode.lastselectedEntrance.MapPos;
+                owentrance_property_x.HexValue = scene.entranceMode.lastselectedEntrance.X;
+                owentrance_property_y.HexValue = scene.entranceMode.lastselectedEntrance.Y;
+            }
+
+            fromForm = false;
+        }
+
+        private void owentrance_property_entranceid_TextChanged(object sender, EventArgs e)
+        {
+            if (!fromForm)
+            {
+                scene.entranceMode.lastselectedEntrance.EntranceID = (byte)owentrance_property_entranceid.HexValue;
+                scene.entranceMode.lastselectedEntrance.IsHole = owentrance_property_ishole.Checked;
+                scene.entranceMode.lastselectedEntrance.MapID = (short)owentrance_property_mapid.HexValue;
+                scene.entranceMode.lastselectedEntrance.MapPos = (ushort)owentrance_property_mappos.HexValue;
+                scene.entranceMode.lastselectedEntrance.X = (ushort)owentrance_property_x.HexValue;
+                scene.entranceMode.lastselectedEntrance.Y = (ushort)owentrance_property_y.HexValue;
+
+
+
+                string tname = "OW[" + owentrancesListbox.SelectedIndex.ToString("X2") + "] -> UW";
+                foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
+                {
+                    if (dataRoom.ID == DungeonsData.Entrances[overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID].Room)
+                    {
+                        tname += "[" + overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID.ToString("X2") + "]" + dataRoom.Name;
+                        break;
+                    }
+                }
+                owentrancesListbox.Items[owentrancesListbox.SelectedIndex] = tname;
+            }
         }
     }
 }
