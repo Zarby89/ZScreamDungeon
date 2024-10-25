@@ -5,8 +5,6 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
-;asar 1.81
-
 pushpc
 
 incsrc HardwareRegisters.asm
@@ -188,7 +186,7 @@ Palette_OverworldBgMain                   = $1BEEC7
 !Func0ED8AE = $01
 
 ; If 1, all of the default vanilla pool values will be applied. 00 by default.
-!UseVanillaPool = $00
+!UseVanillaPool = $01
 
 ; Use this var to disable all of the debug vars above.
 !AllOff = $00
@@ -355,9 +353,7 @@ Pool:
     ; area after the event is triggered. Default is $FF.
     org $288147 ; $140147
     .EnableRainMireEvent ; 0x01
-        if !UseVanillaPool == 1
         db $FF
-        endif
 
     ; When non 0 this will make the game reload all gfx in between OW
     ; transitions. Default is $FF.
@@ -1655,7 +1651,7 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
 
     ; Overworld map16 buffer manipulation during scrolling.
     LDA.b $84 : SEC : SBC.w #$0400 : AND.w #$0F80 : ASL A : XBA : STA.b $88
-    LDA.b $84 : SEC : SBC.w #$0010 : AND.w #$003E : LSR A : STA.b $86
+    LDA.b $84 : SEC : SBC.w #$0010 : AND.w #$003E : LSR A       : STA.b $86
         
     STZ.w $0418 : STZ.w $0410 : STZ.w $0416
         
@@ -2694,11 +2690,10 @@ LoadTransMainGFX:
     RTS
 }
 
+; Prepares the transition graphics to be transferred to VRAM during NMI.
+; This could occur either during this frame or any subsequent frame.
 NewPrepTransAuxGFX:
 {
-    ; Prepares the transition graphics to be transferred to VRAM during NMI.
-    ; This could occur either during this frame or any subsequent frame.
-    
     ; Set bank for source address.
     LDA.b #$7E : STA.b $02 : STA.b $05
     
@@ -2775,7 +2770,8 @@ if !Func0AB8F5 == 1
 org $0AB8F5 ; $0538F5
 Func0AB8F5:
 {
-    JSL.l ReadAnimatedTable : STA.w AnimatedTileGFXSet : DEC : TAY
+    JSL.l ReadAnimatedTable : STA.w AnimatedTileGFXSet
+    DEC : TAY
     
     ; From this point on it is the vanilla function.
     JSL.l DecompOwAnimatedTiles

@@ -2698,7 +2698,21 @@ namespace ZeldaFullEditor.Gui
                 owentrance_property_mappos.HexValue = scene.entranceMode.lastselectedEntrance.MapPos;
                 owentrance_property_x.HexValue = scene.entranceMode.lastselectedEntrance.X;
                 owentrance_property_y.HexValue = scene.entranceMode.lastselectedEntrance.Y;
+
+
+                string text = "Entrance";
+
+                if (scene.entranceMode.lastselectedEntrance != null)
+                {
+                    scene.owForm.SetSelectedObjectLabels(
+                        scene.entranceMode.lastselectedEntrance.EntranceID,
+                        scene.entranceMode.lastselectedEntrance.X,
+                        scene.entranceMode.lastselectedEntrance.Y);
+
+                }
+                scene.owForm.objectGroupbox.Text = text;
             }
+
 
             fromForm = false;
         }
@@ -2726,6 +2740,8 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
                 owentrancesListbox.Items[owentrancesListbox.SelectedIndex] = tname;
+
+
             }
         }
     }
