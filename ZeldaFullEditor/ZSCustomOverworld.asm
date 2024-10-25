@@ -5,10 +5,16 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
+asar 1.81
+
 pushpc
 
 incsrc HardwareRegisters.asm
-;warnings disable Wfeature_deprecated
+
+; Disable the warnpc warning on the newer asar version.
+if !assembler_ver >= 1.9
+warnings disable Wfeature_deprecated
+endif
 
 AnimatedTileGFXSet = $0FC0
 TransGFXModuleIndex = $0CF3
@@ -2856,7 +2862,7 @@ pushpc
 if !Func0BFEC6 == 1
 
 ; Loads different special transparent colors and overlay speeds based on the
-; overlay duringtransition and under other certain cases. Exact cases need to be
+; overlay during transition and under other certain cases. Exact cases need to be
 ; investigated. When leaving dungeon.
 org $0BFEC6 ; $05FEC6
 Overworld_LoadBGColorAndSubscreenOverlay:
@@ -2998,20 +3004,21 @@ ReplaceBGColor:
 {
     PHB : PHK : PLB
 
-    ; TODO: This may need to check if we are in a warp and then if so load the
-    ; custom color. If not, then chceck if its enabled or not.
-    ;SEP #$20 ; Set A in 8bit mode.
+    SEP #$20 ; Set A in 8bit mode.
 
-    ;LDA.w Pool_EnableBGColor : BNE .custom
-        ;REP #$20 ; Set A in 16bit mode.
+    LDA.w Pool_EnableBGColor : BNE .custom
+        REP #$20 ; Set A in 16bit mode.
 
-        ;PLB
+        PLB
 
-        ;RTL
+        RTL
 
-    ;.custom
+    .custom
 
-    ;REP #$20 ; Set A in 16bit mode.
+    REP #$20 ; Set A in 16bit mode.
+
+    ; TODO: Saving the Y may not be necessary, done just in case.
+    PHY
 
     ; Get area code and times it by 2.
     LDA.b $8A : ASL : TAX
@@ -3020,8 +3027,29 @@ ReplaceBGColor:
     LDA.w Pool_BGColorTable, X
 
     ; Set the BG color.
-    ;STA.l $7EC300 : STA.l $7EC340
     STA.l $7EC500 : STA.l $7EC540
+
+    TAY ; Save the color.
+    
+    SEP #$20 ; Set A in 8bit mode.
+
+    ; TODO: Check if this is needed. I think it is. If not, it should always
+    ; set the buffer too. If not the warp fades into the wrong color for a
+    ; second.
+    ; Only set the buffer color during warps.
+    LDA.b $11 : CMP.b #$23 : BNE .notWarp
+        REP #$20 ; Set A in 16bit mode.
+
+        TYA
+
+        ; Set the BG color buffer.
+        STA.l $7EC300 : STA.l $7EC340
+
+    .notWarp
+
+    REP #$20 ; Set A in 16bit mode.
+
+    PLY
 
     PLB
 
@@ -3394,7 +3422,7 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
     ; Write 0x0800 bytes.
     LDA.w #$0800 : STA.w DMA.0_TransferSizeLow
     
-    ; Transfer data on channel 1.
+    ; Transfer data on channel 0.
     LDY.b #$01 : STY.w SNES.DMAChannelEnable
 
     ; Sheet 2
@@ -3417,7 +3445,7 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
     ; Write 0x08400 bytes.
     LDA.w #$0400 : STA.w DMA.0_TransferSizeLow
     
-    ; Transfer data on channel 1.
+    ; Transfer data on channel 0.
     LDY.b #$01 : STY.w SNES.DMAChannelEnable
     
     SEP #$20

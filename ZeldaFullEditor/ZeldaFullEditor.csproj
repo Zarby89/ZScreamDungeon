@@ -568,6 +568,7 @@
     <Compile Include="Data\TilePos.cs" />
     <Compile Include="Data\TileUndo.cs" />
     <Compile Include="Data\TransportOW.cs" />
+    <Compile Include="T32UniqueCounter.cs" />
     <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Gui\WhirlpoolForm.cs">

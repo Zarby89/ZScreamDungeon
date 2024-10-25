@@ -6245,9 +6245,16 @@ namespace ZeldaFullEditor
                 overworldEditor.scene.showLinkCamera = false;
             }
         }
-        public List<Rectangle> tilesToDraw = new List<Rectangle>();
+        public List<T32UniqueCounter> tilesToDraw = new List<T32UniqueCounter>();
+        //8192
         private void showUniqueTile32ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!showUniqueTile32ToolStripMenuItem.Checked)
+            {
+                overworldEditor.showUsedTile32 = false;
+                return;
+            }
+            overworldEditor.showUsedTile32 = true;
             tilesToDraw.Clear();
             List<ulong> drawnAlready = new List<ulong>();
             List<ulong> allTile16 = new List<ulong>();
@@ -6260,15 +6267,64 @@ namespace ZeldaFullEditor
                     for (int tilx = 0; tilx < 32; tilx += 2)
                     {
                         ulong tilelong = new Tile32(
-                                overworldEditor.scene.ow.AllMapTile32LW[tilx + (sx * 32), tily + (sy * 32)],
-                                overworldEditor.scene.ow.AllMapTile32LW[tilx + 1 + (sx * 32), tily + (sy * 32)],
-                                overworldEditor.scene.ow.AllMapTile32LW[tilx + (sx * 32), tily + 1 + (sy * 32)],
-                                overworldEditor.scene.ow.AllMapTile32LW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
+                        overworldEditor.scene.ow.AllMapTile32LW[tilx + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32LW[tilx + 1 + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32LW[tilx + (sx * 32), tily + 1 + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32LW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
+
+                        ulong tilelong2 = new Tile32(
+                        overworldEditor.scene.ow.AllMapTile32DW[tilx + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32DW[tilx + 1 + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32DW[tilx + (sx * 32), tily + 1 + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32DW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
+
+                        ulong tilelong3 = new Tile32(
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + 1 + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + (sx * 32), tily + 1 + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
 
                         if (!drawnAlready.Contains(tilelong))
                         {
-                            tilesToDraw.Add(new Rectangle((tilx*16) + (sx * 512), (tily*16) + (sy * 512), 32, 32));
+                            tilesToDraw.Add(new T32UniqueCounter((tilx * 16) + (sx * 512), (tily * 16) + (sy * 512), 1, tilelong));
                             drawnAlready.Add(tilelong);
+                        }
+                        else
+                        {
+                            T32UniqueCounter t = tilesToDraw.Find(x => x.tileid == tilelong);
+                            if (t != null)
+                            {
+                                t.count++;
+                            }
+                        }
+
+
+                        if (!drawnAlready.Contains(tilelong2))
+                        {
+                            tilesToDraw.Add(new T32UniqueCounter((tilx * 16) + (sx * 512) + 4096, (tily * 16) + (sy * 512), 1, tilelong2));
+                            drawnAlready.Add(tilelong2);
+                        }
+                        else
+                        {
+                            T32UniqueCounter t = tilesToDraw.Find(x => x.tileid == tilelong2);
+                            if (t != null)
+                            {
+                                t.count++;
+                            }
+                        }
+
+                        if (!drawnAlready.Contains(tilelong3))
+                        {
+                            tilesToDraw.Add(new T32UniqueCounter((tilx * 16) + (sx * 512) + 8192, (tily * 16) + (sy * 512), 1, tilelong3));
+                            drawnAlready.Add(tilelong3);
+                        }
+                        else
+                        {
+                            T32UniqueCounter t = tilesToDraw.Find(x => x.tileid == tilelong3);
+                            if (t != null)
+                            {
+                                t.count++;
+                            }
                         }
                     }
                 }
@@ -6279,6 +6335,105 @@ namespace ZeldaFullEditor
                     sy++;
                     sx = 0;
                 }
+            }
+        }
+        // exceptions tiles
+        // 0DA4 to 0DDE
+        // 0918 to 191B
+        // 09BF, 09C0
+        // 09E3
+
+        // animation tiles
+        // 0DDF to 0EA3
+        private void setUnusedTiles16ToToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!setUnusedTiles16ToToolStripMenuItem.Checked)
+            {
+                overworldEditor.showUnusedTile16 = false;
+                return;
+            }
+
+            overworldEditor.showUnusedTile16 = true;
+
+            Dictionary<ushort, ushort> alltilesIndexed = new Dictionary<ushort, ushort>();
+            int sx = 0;
+            int sy = 0;
+
+            for (ushort i = 0; i < 4096; i++)
+            {
+                alltilesIndexed.Add(i, 0);
+            }
+
+            for (int i = 0; i < 64; i++)
+            {
+                for (int y = 0; y < 32; y += 1)
+                {
+                    for (int x = 0; x < 32; x += 1)
+                    {
+                        ushort LWTile = overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)];
+                        alltilesIndexed[LWTile]++;
+                        ushort DWTile = overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)];
+                        alltilesIndexed[DWTile]++;
+
+                        if (i < 32)
+                        {
+                            alltilesIndexed[overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)]]++;
+                        }
+                    }
+                }
+
+                foreach (TilePos t in overworldEditor.overworld.AllOverlays[i].TileDataList)
+                {
+                    alltilesIndexed[t.tileId]++;
+                }
+
+                foreach (TilePos t in overworldEditor.overworld.AllOverlays[i + 64].TileDataList)
+                {
+                    alltilesIndexed[t.tileId]++;
+                }
+
+                sx++;
+                if (sx >= 8)
+                {
+                    sy++;
+                    sx = 0;
+                }
+            }
+            // exceptions tiles
+            // 0DA4 to 0DDE
+            // 0918 to 091B
+            // 09BF, 09C0
+            // 09E3
+
+            // animation tiles
+            // 0DDF to 0EA3
+
+            List<ushort> exceptionsTiles = new List<ushort>();
+            for(int i = 0xDA4; i <= 0x0DDE; i++)
+            {
+                exceptionsTiles.Add((ushort)i);
+            }
+
+            exceptionsTiles.Add(0x918);
+            exceptionsTiles.Add(0x919);
+            exceptionsTiles.Add(0x91A);
+            exceptionsTiles.Add(0x91B);
+            exceptionsTiles.Add(0x9BF);
+            exceptionsTiles.Add(0x9C0);
+            exceptionsTiles.Add(0x9E3);
+            exceptionsTiles.Add(0xDDF);
+            
+
+            foreach (KeyValuePair<ushort, ushort> tiles in alltilesIndexed.OrderBy(key => key.Value))
+            {
+                if (tiles.Value == 0)
+                {
+                    if (!exceptionsTiles.Contains(tiles.Key))
+                    {
+                        overworldEditor.overworld.usedTiles16[tiles.Key] = false;
+                    }
+                }
+                
             }
         }
     }

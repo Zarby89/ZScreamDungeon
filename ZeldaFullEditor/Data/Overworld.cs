@@ -158,6 +158,8 @@ namespace ZeldaFullEditor
 
         public OverlayAnimationData[] AllAnimationOverlays { get; set; } = new OverlayAnimationData[128];
 
+        public bool[] usedTiles16 = new bool[4096];
+
         public Overworld()
         {
             for (int i = 0; i < 0x2B; i++)
@@ -166,6 +168,11 @@ namespace ZeldaFullEditor
                 this.RightTileEntrance[i] = ROM.ReadShort(Constants.overworldEntranceAllowedTilesRight + (i * 2));
 
                 /* Console.WriteLine(tileLeftEntrance[i].ToString("D4") + " , " + tileRightEntrance[i].ToString("D4")); */
+            }
+
+            for (int i = 0; i < 4096;i++)
+            {
+                usedTiles16[i] = true;
             }
 
             this.UniqueTile32List = this.AssembleMap32Tiles();

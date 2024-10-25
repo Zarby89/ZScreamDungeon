@@ -26,6 +26,7 @@ namespace ZeldaFullEditor.Gui
         public Bitmap tmpPreviewBitmap = new Bitmap(256, 256);
         public Bitmap scratchPadBitmap = new Bitmap(256, 3600);
         public ushort[,] scratchPadTiles = new ushort[16, 225];
+
         public byte gridDisplay = 0;
         private bool mouse_down = false;
 
@@ -44,6 +45,8 @@ namespace ZeldaFullEditor.Gui
 
         public static bool UseAreaSpecificBgColor = true;
         public static bool scratchPadGrid = false;
+        public bool showUnusedTile16 = false;
+        public bool showUsedTile32 = false;
 
         bool fromForm = false;
 
@@ -350,6 +353,7 @@ namespace ZeldaFullEditor.Gui
             // scene.Refresh();
         }
         Pen selectionPen = new Pen(Color.LimeGreen, 2);
+        Brush unusedTile = new SolidBrush(Color.FromArgb(80, 255, 0, 0));
         private void tilePictureBox_Paint(object sender, PaintEventArgs e)
         {
             if (GFX.mapblockset16Bitmap != null)
@@ -370,6 +374,17 @@ namespace ZeldaFullEditor.Gui
 
                     e.Graphics.DrawRectangle(selectionPen, new Rectangle(x, y, 32, 32));
                     //selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}"; // do not put set label in paint wtf
+                }
+
+                if (!showUnusedTile16) { return; }
+
+                e.Graphics.CompositingMode = CompositingMode.SourceOver; // why was it over that's much slower than copy
+                for (int i = 0; i < 4096; i++)
+                {
+                    if (!overworld.usedTiles16[i])
+                    {
+                        e.Graphics.FillRectangle(unusedTile, new Rectangle((i % 8) * 32, (i / 8) * 32, 32, 32));
+                    }
                 }
 
                 //e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
@@ -454,6 +469,8 @@ namespace ZeldaFullEditor.Gui
         private void tilePictureBox_DoubleClick(object sender, EventArgs e)
         {
             Tile16Editor ted = new Tile16Editor(this.scene);
+            
+
             if (ted.ShowDialog() == DialogResult.OK)
             {
                 new Thread(() =>
@@ -2340,11 +2357,32 @@ namespace ZeldaFullEditor.Gui
                 g.DrawImage(this.overworld.AllMaps[i].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
-            foreach (Rectangle rect in mainForm.tilesToDraw)
+            /*foreach (T32UniqueCounter t32 in mainForm.tilesToDraw)
             {
-                g.FillRectangle(new SolidBrush(Color.FromArgb(80, 255, 0, 0)), rect);
-            }
+                // LW
+                if (t32.x < 4096)
+                {
+                    byte alpha = (byte)(40 + t32.count);
+                    if (alpha >= 160)
+                    {
+                        alpha = 160;
+                    }
+                    if (t32.count == 1)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(150, 55, 255, 0)), new Rectangle(t32.x, t32.y, 32, 32));
+                    }
+                    else if (t32.count <= 5)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(150, 255, 255, 0)), new Rectangle(t32.x, t32.y, 32, 32));
+                    }
+                    else
+                    {
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, 255, 0, 0)), new Rectangle(t32.x, t32.y, 32, 32));
+                    }
 
+                }
+            }
+            */
 
             temp.Save("LW.png");
 

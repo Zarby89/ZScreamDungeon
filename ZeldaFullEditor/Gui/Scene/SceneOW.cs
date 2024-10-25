@@ -886,11 +886,62 @@ namespace ZeldaFullEditor
                         g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
                     }
                 }
-                foreach(Rectangle rect in mainForm.tilesToDraw)
+                if (owForm.showUsedTile32)
                 {
-                    g.FillRectangle(new SolidBrush(Color.FromArgb(80, 255, 0, 0)), rect);
+                    foreach (T32UniqueCounter t32 in mainForm.tilesToDraw)
+                    {
+
+                        byte alpha = (byte)(40 + t32.count);
+                        int offsetx = 0;
+                        if (t32.x >= 8192)
+                        {
+                            if (ow.WorldOffset != 128)
+                            {
+                                continue;
+                            }
+                            //SW
+                            offsetx = 8192;
+                        }
+                        else if (t32.x >= 4096)
+                        {
+                            // DW
+                            if (ow.WorldOffset != 64)
+                            {
+                                continue;
+                            }
+                            offsetx = 4096;
+                        }
+                        else
+                        {
+                            // LW
+                            if (ow.WorldOffset != 0)
+                            {
+                                continue;
+                            }
+                            offsetx = 0;
+                        }
+
+
+                        if (alpha >= 160)
+                        {
+                            alpha = 160;
+                        }
+                        if (t32.count == 1)
+                        {
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(150, 55, 255, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
+                        }
+                        else if (t32.count <= 5)
+                        {
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(150, 255, 255, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
+                        }
+                        else
+                        {
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, 255, 0, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
+                        }
+
+
+                    }
                 }
-                
 
 
                     if (this.selectedMode == ObjectMode.Overlay)

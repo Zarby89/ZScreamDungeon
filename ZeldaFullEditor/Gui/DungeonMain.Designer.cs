@@ -369,6 +369,7 @@
             this.copyLWToDWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTiles32CountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showUniqueTile32ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setUnusedTiles16ToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.areaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSpritesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.saveZeldaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -3984,7 +3985,8 @@
             this.clearDWTilesToolStripMenuItem,
             this.copyLWToDWToolStripMenuItem,
             this.showTiles32CountToolStripMenuItem,
-            this.showUniqueTile32ToolStripMenuItem});
+            this.showUniqueTile32ToolStripMenuItem,
+            this.setUnusedTiles16ToToolStripMenuItem});
             this.overworldToolStripMenuItem.Enabled = false;
             this.overworldToolStripMenuItem.Name = "overworldToolStripMenuItem";
             this.overworldToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
@@ -3998,7 +4000,7 @@
             this.zeldaSavedToolStripMenuItem,
             this.agahDeadToolStripMenuItem});
             this.clearSpritesToolStripMenuItem.Name = "clearSpritesToolStripMenuItem";
-            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.clearSpritesToolStripMenuItem.Text = "Clear All Sprites";
             // 
             // saveZeldaToolStripMenuItem
@@ -4025,63 +4027,63 @@
             // clearItemsToolStripMenuItem
             // 
             this.clearItemsToolStripMenuItem.Name = "clearItemsToolStripMenuItem";
-            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.clearItemsToolStripMenuItem.Text = "Clear All Items";
             this.clearItemsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWItemsToolStripMenuItem_Click);
             // 
             // clearEntrancesToolStripMenuItem
             // 
             this.clearEntrancesToolStripMenuItem.Name = "clearEntrancesToolStripMenuItem";
-            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.clearEntrancesToolStripMenuItem.Text = "Clear All Entrances";
             this.clearEntrancesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWEntrancesToolStripMenuItem_Click);
             // 
             // clearAllHolesToolStripMenuItem
             // 
             this.clearAllHolesToolStripMenuItem.Name = "clearAllHolesToolStripMenuItem";
-            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.clearAllHolesToolStripMenuItem.Text = "Clear All Holes";
             this.clearAllHolesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWHolesToolStripMenuItem_Click);
             // 
             // clearExitsToolStripMenuItem
             // 
             this.clearExitsToolStripMenuItem.Name = "clearExitsToolStripMenuItem";
-            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.clearExitsToolStripMenuItem.Text = "Clear All Exits";
             this.clearExitsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWExitsToolStripMenuItem_Click);
             // 
             // clearAllOverlaysToolStripMenuItem
             // 
             this.clearAllOverlaysToolStripMenuItem.Name = "clearAllOverlaysToolStripMenuItem";
-            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.clearAllOverlaysToolStripMenuItem.Text = "Clear All Overlays";
             this.clearAllOverlaysToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOverworldOverlaysToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(183, 22);
             this.toolStripMenuItem6.Text = "Export All Areas";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.ExportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(183, 22);
             this.toolStripMenuItem5.Text = "Import All Areas";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.ImportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(183, 22);
             this.toolStripMenuItem9.Text = "Export All Tiles";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.ExportAllTilesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(183, 22);
             this.toolStripMenuItem10.Text = "Import All Tiles";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.ImportAllTilesToolStripMenuItem_Click);
             // 
@@ -4089,36 +4091,45 @@
             // 
             this.toolStripMenuItem7.Enabled = false;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(183, 22);
             this.toolStripMenuItem7.Text = "Import from ROM";
             // 
             // clearDWTilesToolStripMenuItem
             // 
             this.clearDWTilesToolStripMenuItem.Name = "clearDWTilesToolStripMenuItem";
-            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.clearDWTilesToolStripMenuItem.Text = "Clear DW Tiles";
             this.clearDWTilesToolStripMenuItem.Click += new System.EventHandler(this.ClearDWTilesToolStripMenuItem_Click);
             // 
             // copyLWToDWToolStripMenuItem
             // 
             this.copyLWToDWToolStripMenuItem.Name = "copyLWToDWToolStripMenuItem";
-            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.copyLWToDWToolStripMenuItem.Text = "Copy LW to DW";
             this.copyLWToDWToolStripMenuItem.Click += new System.EventHandler(this.CopyLWToDWToolStripMenuItem_Click);
             // 
             // showTiles32CountToolStripMenuItem
             // 
             this.showTiles32CountToolStripMenuItem.Name = "showTiles32CountToolStripMenuItem";
-            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.showTiles32CountToolStripMenuItem.Text = "Show Tiles32 Count";
             this.showTiles32CountToolStripMenuItem.Click += new System.EventHandler(this.ShowTiles32CountToolStripMenuItem_Click);
             // 
             // showUniqueTile32ToolStripMenuItem
             // 
+            this.showUniqueTile32ToolStripMenuItem.CheckOnClick = true;
             this.showUniqueTile32ToolStripMenuItem.Name = "showUniqueTile32ToolStripMenuItem";
-            this.showUniqueTile32ToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.showUniqueTile32ToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.showUniqueTile32ToolStripMenuItem.Text = "Show Unique Tile32";
             this.showUniqueTile32ToolStripMenuItem.Click += new System.EventHandler(this.showUniqueTile32ToolStripMenuItem_Click);
+            // 
+            // setUnusedTiles16ToToolStripMenuItem
+            // 
+            this.setUnusedTiles16ToToolStripMenuItem.CheckOnClick = true;
+            this.setUnusedTiles16ToToolStripMenuItem.Name = "setUnusedTiles16ToToolStripMenuItem";
+            this.setUnusedTiles16ToToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.setUnusedTiles16ToToolStripMenuItem.Text = "Show unused Tiles16";
+            this.setUnusedTiles16ToToolStripMenuItem.Click += new System.EventHandler(this.setUnusedTiles16ToToolStripMenuItem_Click);
             // 
             // areaToolStripMenuItem
             // 
@@ -5206,6 +5217,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportOverlayAnimationAsASMInClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showOverlayTextsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showUniqueTile32ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setUnusedTiles16ToToolStripMenuItem;
     }
 }
 
