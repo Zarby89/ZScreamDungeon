@@ -5,16 +5,16 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
-asar 1.81
+;asar 1.81
 
 pushpc
 
 incsrc HardwareRegisters.asm
 
 ; Disable the warnpc warning on the newer asar version.
-if !assembler_ver >= 1.9
-warnings disable Wfeature_deprecated
-endif
+;if !assembler_ver >= 1.9
+;warnings disable Wfeature_deprecated
+;endif
 
 AnimatedTileGFXSet = $0FC0
 TransGFXModuleIndex = $0CF3
