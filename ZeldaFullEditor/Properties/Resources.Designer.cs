@@ -143,6 +143,16 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Pen1 {
+            get {
+                object obj = ResourceManager.GetObject("Pen1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap spriteFont {
             get {
                 object obj = ResourceManager.GetObject("spriteFont", resourceCulture);

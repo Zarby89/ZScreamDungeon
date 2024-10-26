@@ -408,18 +408,18 @@ namespace ZeldaFullEditor.Gui
         {
             int y = (this.scene.selectedTile[0] / 8) * 32;
 
-            if (y + this.tabPage1.Size.Height > this.tilePictureBox.Size.Height)
+            if (y + this.tile16Tab.Size.Height > this.tilePictureBox.Size.Height)
             {
-                y = this.tilePictureBox.Size.Height - this.tabPage1.Size.Height;
+                y = this.tilePictureBox.Size.Height - this.tile16Tab.Size.Height;
             }
 
             // TODO: Fix this garbage, it doesn't update all of the time for some reason but works better without the if. -Jared_Brian_
             //if (y < tabPage1.VerticalScroll.Value || y > tabPage1.VerticalScroll.Value + tabPage1.Size.Height)
             //{
-            this.tabPage1.VerticalScroll.Value = y;
+            this.tile16Tab.VerticalScroll.Value = y;
             this.tilePictureBox.Refresh();
-            this.tabPage1.Update();
-            this.tabPage1.Refresh();
+            this.tile16Tab.Update();
+            this.tile16Tab.Refresh();
             //}
         }
 

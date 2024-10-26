@@ -825,6 +825,7 @@
     <None Include="Resources\lwimage1.png" />
     <None Include="Resources\dwimage1.png" />
     <None Include="Resources\swimage1.png" />
+    <None Include="Resources\Pen1.png" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -60,9 +60,9 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tile16Tab = new System.Windows.Forms.TabPage();
             this.tilePictureBox = new System.Windows.Forms.PictureBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.scratchpadTab = new System.Windows.Forms.TabPage();
             this.scratchPicturebox = new System.Windows.Forms.PictureBox();
             this.Tiles8 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -75,7 +75,7 @@
             this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
             this.owspriteTab = new System.Windows.Forms.TabPage();
             this.owspritePanel = new System.Windows.Forms.Panel();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.propertyTabpage = new System.Windows.Forms.TabPage();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
             this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
             this.ambient4Box = new System.Windows.Forms.ComboBox();
@@ -134,7 +134,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.entranceTabpage = new System.Windows.Forms.TabPage();
+            this.owentrancesListbox = new System.Windows.Forms.ListBox();
+            this.label29 = new System.Windows.Forms.Label();
             this.entrancePropertiesGroupbox = new System.Windows.Forms.GroupBox();
+            this.owentrance_property_ishole = new System.Windows.Forms.CheckBox();
             this.owentrance_property_y = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label28 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -165,18 +168,16 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.owentrancesListbox = new System.Windows.Forms.ListBox();
-            this.label29 = new System.Windows.Forms.Label();
-            this.owentrance_property_ishole = new System.Windows.Forms.CheckBox();
+            this.tabcontrolImagelist = new System.Windows.Forms.ImageList(this.components);
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tile16Tab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.scratchpadTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
             this.Tiles8.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -185,7 +186,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
             this.owspriteTab.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.propertyTabpage.SuspendLayout();
             this.mapGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).BeginInit();
             this.mosaicGroupbox.SuspendLayout();
@@ -525,6 +526,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Panel2.Controls.Add(this.thumbnailBox);
             this.splitContainer1.Size = new System.Drawing.Size(1184, 651);
             this.splitContainer1.SplitterDistance = 282;
@@ -532,34 +534,37 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.Tiles8);
+            this.tabControl1.Controls.Add(this.propertyTabpage);
+            this.tabControl1.Controls.Add(this.tile16Tab);
+            this.tabControl1.Controls.Add(this.scratchpadTab);
             this.tabControl1.Controls.Add(this.owspriteTab);
-            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.entranceTabpage);
             this.tabControl1.Controls.Add(this.exitTabpage);
             this.tabControl1.Controls.Add(this.transportTabpage);
+            this.tabControl1.Controls.Add(this.Tiles8);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.ImageList = this.tabcontrolImagelist;
+            this.tabControl1.ItemSize = new System.Drawing.Size(24, 24);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(282, 651);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // tabPage1
+            // tile16Tab
             // 
-            this.tabPage1.AutoScroll = true;
-            this.tabPage1.Controls.Add(this.tilePictureBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 40);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(274, 607);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tile 16";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tile16Tab.AutoScroll = true;
+            this.tile16Tab.Controls.Add(this.tilePictureBox);
+            this.tile16Tab.ImageIndex = 3;
+            this.tile16Tab.Location = new System.Drawing.Point(4, 28);
+            this.tile16Tab.Name = "tile16Tab";
+            this.tile16Tab.Padding = new System.Windows.Forms.Padding(3);
+            this.tile16Tab.Size = new System.Drawing.Size(274, 619);
+            this.tile16Tab.TabIndex = 0;
+            this.tile16Tab.ToolTipText = "Tiles 16";
+            this.tile16Tab.UseVisualStyleBackColor = true;
             // 
             // tilePictureBox
             // 
@@ -573,17 +578,18 @@
             this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
             this.tilePictureBox.MouseEnter += new System.EventHandler(this.tilePictureBox_MouseEnter);
             // 
-            // tabPage2
+            // scratchpadTab
             // 
-            this.tabPage2.AutoScroll = true;
-            this.tabPage2.Controls.Add(this.scratchPicturebox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 40);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(274, 607);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "ScratchPad";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.scratchpadTab.AutoScroll = true;
+            this.scratchpadTab.Controls.Add(this.scratchPicturebox);
+            this.scratchpadTab.ImageIndex = 5;
+            this.scratchpadTab.Location = new System.Drawing.Point(4, 28);
+            this.scratchpadTab.Name = "scratchpadTab";
+            this.scratchpadTab.Padding = new System.Windows.Forms.Padding(3);
+            this.scratchpadTab.Size = new System.Drawing.Size(274, 619);
+            this.scratchpadTab.TabIndex = 1;
+            this.scratchpadTab.ToolTipText = "ScratchPad";
+            this.scratchpadTab.UseVisualStyleBackColor = true;
             // 
             // scratchPicturebox
             // 
@@ -601,9 +607,9 @@
             // 
             this.Tiles8.Controls.Add(this.panel2);
             this.Tiles8.Controls.Add(this.panel1);
-            this.Tiles8.Location = new System.Drawing.Point(4, 40);
+            this.Tiles8.Location = new System.Drawing.Point(4, 28);
             this.Tiles8.Name = "Tiles8";
-            this.Tiles8.Size = new System.Drawing.Size(274, 607);
+            this.Tiles8.Size = new System.Drawing.Size(274, 619);
             this.Tiles8.TabIndex = 2;
             this.Tiles8.Text = "Tile 8";
             this.Tiles8.UseVisualStyleBackColor = true;
@@ -615,7 +621,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 217);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(274, 390);
+            this.panel2.Size = new System.Drawing.Size(274, 402);
             this.panel2.TabIndex = 3;
             // 
             // pictureBox1
@@ -697,11 +703,12 @@
             // 
             this.owspriteTab.AutoScroll = true;
             this.owspriteTab.Controls.Add(this.owspritePanel);
-            this.owspriteTab.Location = new System.Drawing.Point(4, 40);
+            this.owspriteTab.ImageIndex = 2;
+            this.owspriteTab.Location = new System.Drawing.Point(4, 28);
             this.owspriteTab.Name = "owspriteTab";
-            this.owspriteTab.Size = new System.Drawing.Size(274, 607);
+            this.owspriteTab.Size = new System.Drawing.Size(274, 619);
             this.owspriteTab.TabIndex = 3;
-            this.owspriteTab.Text = "Sprites";
+            this.owspriteTab.ToolTipText = "Sprites";
             this.owspriteTab.UseVisualStyleBackColor = true;
             // 
             // owspritePanel
@@ -711,19 +718,20 @@
             this.owspritePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.owspritePanel.Location = new System.Drawing.Point(0, 0);
             this.owspritePanel.Name = "owspritePanel";
-            this.owspritePanel.Size = new System.Drawing.Size(274, 607);
+            this.owspritePanel.Size = new System.Drawing.Size(274, 619);
             this.owspritePanel.TabIndex = 23;
             // 
-            // tabPage3
+            // propertyTabpage
             // 
-            this.tabPage3.AutoScroll = true;
-            this.tabPage3.Controls.Add(this.mapGroupbox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 40);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(274, 607);
-            this.tabPage3.TabIndex = 4;
-            this.tabPage3.Text = "Properties";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.propertyTabpage.AutoScroll = true;
+            this.propertyTabpage.Controls.Add(this.mapGroupbox);
+            this.propertyTabpage.ImageIndex = 6;
+            this.propertyTabpage.Location = new System.Drawing.Point(4, 28);
+            this.propertyTabpage.Name = "propertyTabpage";
+            this.propertyTabpage.Size = new System.Drawing.Size(274, 619);
+            this.propertyTabpage.TabIndex = 4;
+            this.propertyTabpage.ToolTipText = "Properties";
+            this.propertyTabpage.UseVisualStyleBackColor = true;
             // 
             // mapGroupbox
             // 
@@ -1478,12 +1486,34 @@
             this.entranceTabpage.Controls.Add(this.owentrancesListbox);
             this.entranceTabpage.Controls.Add(this.label29);
             this.entranceTabpage.Controls.Add(this.entrancePropertiesGroupbox);
-            this.entranceTabpage.Location = new System.Drawing.Point(4, 40);
+            this.entranceTabpage.ImageIndex = 0;
+            this.entranceTabpage.Location = new System.Drawing.Point(4, 28);
             this.entranceTabpage.Name = "entranceTabpage";
-            this.entranceTabpage.Size = new System.Drawing.Size(274, 607);
+            this.entranceTabpage.Size = new System.Drawing.Size(274, 619);
             this.entranceTabpage.TabIndex = 5;
-            this.entranceTabpage.Text = "Entrances";
+            this.entranceTabpage.ToolTipText = "Entrances";
             this.entranceTabpage.UseVisualStyleBackColor = true;
+            // 
+            // owentrancesListbox
+            // 
+            this.owentrancesListbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.owentrancesListbox.FormattingEnabled = true;
+            this.owentrancesListbox.Location = new System.Drawing.Point(0, 162);
+            this.owentrancesListbox.Name = "owentrancesListbox";
+            this.owentrancesListbox.Size = new System.Drawing.Size(274, 457);
+            this.owentrancesListbox.TabIndex = 23;
+            this.owentrancesListbox.SelectedIndexChanged += new System.EventHandler(this.owentrancesListbox_SelectedIndexChanged);
+            this.owentrancesListbox.DoubleClick += new System.EventHandler(this.owentrancesListbox_DoubleClick);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label29.Location = new System.Drawing.Point(0, 149);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(125, 13);
+            this.label29.TabIndex = 23;
+            this.label29.Text = "Overworld Entrances List";
             // 
             // entrancePropertiesGroupbox
             // 
@@ -1505,6 +1535,17 @@
             this.entrancePropertiesGroupbox.TabIndex = 23;
             this.entrancePropertiesGroupbox.TabStop = false;
             this.entrancePropertiesGroupbox.Text = "Selected Entrance Property";
+            // 
+            // owentrance_property_ishole
+            // 
+            this.owentrance_property_ishole.AutoSize = true;
+            this.owentrance_property_ishole.Enabled = false;
+            this.owentrance_property_ishole.Location = new System.Drawing.Point(139, 71);
+            this.owentrance_property_ishole.Name = "owentrance_property_ishole";
+            this.owentrance_property_ishole.Size = new System.Drawing.Size(63, 17);
+            this.owentrance_property_ishole.TabIndex = 23;
+            this.owentrance_property_ishole.Text = "Is hole?";
+            this.owentrance_property_ishole.UseVisualStyleBackColor = true;
             // 
             // owentrance_property_y
             // 
@@ -1637,20 +1678,22 @@
             // 
             // exitTabpage
             // 
-            this.exitTabpage.Location = new System.Drawing.Point(4, 40);
+            this.exitTabpage.ImageIndex = 1;
+            this.exitTabpage.Location = new System.Drawing.Point(4, 28);
             this.exitTabpage.Name = "exitTabpage";
-            this.exitTabpage.Size = new System.Drawing.Size(274, 607);
+            this.exitTabpage.Size = new System.Drawing.Size(274, 619);
             this.exitTabpage.TabIndex = 6;
-            this.exitTabpage.Text = "Exits";
+            this.exitTabpage.ToolTipText = "Exits";
             this.exitTabpage.UseVisualStyleBackColor = true;
             // 
             // transportTabpage
             // 
-            this.transportTabpage.Location = new System.Drawing.Point(4, 40);
+            this.transportTabpage.ImageIndex = 4;
+            this.transportTabpage.Location = new System.Drawing.Point(4, 28);
             this.transportTabpage.Name = "transportTabpage";
-            this.transportTabpage.Size = new System.Drawing.Size(274, 607);
+            this.transportTabpage.Size = new System.Drawing.Size(274, 619);
             this.transportTabpage.TabIndex = 7;
-            this.transportTabpage.Text = "Transports";
+            this.transportTabpage.ToolTipText = "Transports";
             this.transportTabpage.UseVisualStyleBackColor = true;
             // 
             // thumbnailBox
@@ -1852,37 +1895,17 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
-            // owentrancesListbox
+            // tabcontrolImagelist
             // 
-            this.owentrancesListbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.owentrancesListbox.FormattingEnabled = true;
-            this.owentrancesListbox.Location = new System.Drawing.Point(0, 162);
-            this.owentrancesListbox.Name = "owentrancesListbox";
-            this.owentrancesListbox.Size = new System.Drawing.Size(274, 445);
-            this.owentrancesListbox.TabIndex = 23;
-            this.owentrancesListbox.SelectedIndexChanged += new System.EventHandler(this.owentrancesListbox_SelectedIndexChanged);
-            this.owentrancesListbox.DoubleClick += new System.EventHandler(this.owentrancesListbox_DoubleClick);
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label29.Location = new System.Drawing.Point(0, 149);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(125, 13);
-            this.label29.TabIndex = 23;
-            this.label29.Text = "Overworld Entrances List";
-            // 
-            // owentrance_property_ishole
-            // 
-            this.owentrance_property_ishole.AutoSize = true;
-            this.owentrance_property_ishole.Enabled = false;
-            this.owentrance_property_ishole.Location = new System.Drawing.Point(139, 71);
-            this.owentrance_property_ishole.Name = "owentrance_property_ishole";
-            this.owentrance_property_ishole.Size = new System.Drawing.Size(63, 17);
-            this.owentrance_property_ishole.TabIndex = 23;
-            this.owentrance_property_ishole.Text = "Is hole?";
-            this.owentrance_property_ishole.UseVisualStyleBackColor = true;
+            this.tabcontrolImagelist.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("tabcontrolImagelist.ImageStream")));
+            this.tabcontrolImagelist.TransparentColor = System.Drawing.Color.Transparent;
+            this.tabcontrolImagelist.Images.SetKeyName(0, "entrance.png");
+            this.tabcontrolImagelist.Images.SetKeyName(1, "exit.png");
+            this.tabcontrolImagelist.Images.SetKeyName(2, "spritie.png");
+            this.tabcontrolImagelist.Images.SetKeyName(3, "tile.png");
+            this.tabcontrolImagelist.Images.SetKeyName(4, "transport.png");
+            this.tabcontrolImagelist.Images.SetKeyName(5, "scratch.png");
+            this.tabcontrolImagelist.Images.SetKeyName(6, "properties_16xLG.png");
             // 
             // OverworldEditor
             // 
@@ -1901,9 +1924,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tile16Tab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.scratchpadTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
             this.Tiles8.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -1914,7 +1937,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
             this.owspriteTab.ResumeLayout(false);
             this.owspriteTab.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
+            this.propertyTabpage.ResumeLayout(false);
             this.mapGroupbox.ResumeLayout(false);
             this.mapGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).EndInit();
@@ -1971,8 +1994,8 @@
         private System.Windows.Forms.ToolStripButton refreshToolStrip;
         private System.Windows.Forms.ToolStripButton overlayButton;
         public System.Windows.Forms.PictureBox previewTextPicturebox;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tile16Tab;
+        private System.Windows.Forms.TabPage scratchpadTab;
         public System.Windows.Forms.PictureBox scratchPicturebox;
         public System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox priorityCheckbox;
@@ -2036,7 +2059,7 @@
         public System.Windows.Forms.Panel owspritePanel;
         public System.Windows.Forms.TabPage Tiles8;
         public System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage propertyTabpage;
         private System.Windows.Forms.GroupBox mosaicGroupbox;
         public System.Windows.Forms.CheckBox bottommosaicCheckbox;
         public System.Windows.Forms.CheckBox topmosaicCheckbox;
@@ -2077,5 +2100,6 @@
         private System.Windows.Forms.Label label29;
         public System.Windows.Forms.ListBox owentrancesListbox;
         private System.Windows.Forms.CheckBox owentrance_property_ishole;
+        private System.Windows.Forms.ImageList tabcontrolImagelist;
     }
 }

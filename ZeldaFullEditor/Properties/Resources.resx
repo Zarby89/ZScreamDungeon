@@ -151,13 +151,16 @@
   <data name="damageclass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\damageclass.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="swimage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\swimage1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="swimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\swimage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="starl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\starl.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="swimage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\swimage1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Pen1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pen1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
