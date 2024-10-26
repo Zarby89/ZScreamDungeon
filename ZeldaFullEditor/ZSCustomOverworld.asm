@@ -477,7 +477,7 @@ Pool:
         db $08, $08, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
-        db $00, $00, $00, $00, $00, $00, $00, $00
+        db $00, $00, $00, $00, $0F, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         ; DW
@@ -2307,13 +2307,6 @@ MosaicAreaCheck:
     ; Check if the area we are in needs a mosaic.
     TAX
     LDA.w Pool_MosaicTable, x
-
-    ; TODO: Decide this.
-    ; OR
-
-    ; Check if the area we are going to needs a mosaic.
-    LDX.b $8A
-    LDA.w Pool_MosaicTable, X
     
     ; ----udlr
     ; u - Up
