@@ -36,7 +36,6 @@
 ;     The fog overlay being disabled after obtaining the master sword in the 
 ;        master sword area.
 ;     The bridge overlay present in the under the bridge area.
-;     The curtain overlay present in the triforce room area.
 ;     The BG color present in the under the bridge area.
 ;     The pyramid overlay only scrolling properly on area $5B.
 ; ==============================================================================
@@ -3078,11 +3077,21 @@ ReplaceBGColor:
     
     SEP #$20 ; Set A in 8bit mode.
 
+    ; TODO: Pretty sure this is needed. Just keep an eye out for it.
+    ; Set the buffer color when exiting to the OW to prevent a bug when using the
+    ; map in an area with a subscreen overlay.
+    LDA.b $10 : CMP.b #$08 : BNE .notPreOverworld
+        BRA .setBuffer
+
+    .notPreOverworld
+
     ; TODO: Check if this is needed. I think it is. If not, it should always
     ; set the buffer too. If not the warp fades into the wrong color for a
     ; second.
     ; Only set the buffer color during warps.
     LDA.b $11 : CMP.b #$23 : BNE .notWarp
+        .setBuffer
+
         REP #$20 ; Set A in 16bit mode.
 
         TYA
