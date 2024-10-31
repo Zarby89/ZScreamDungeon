@@ -3111,6 +3111,9 @@ ReplaceBGColor:
 }
 
 ; TODO: Doccument this better and fiture out what it actually does.
+; This sets the initial scroll offsets for the pyramid BG. It seems highly
+; hardcoded and overly complicated. it could probably be changed to just a
+; standard clamp function to keep it from being too high or too low.
 NeedSomeSpaceForWhateverThisIs:
 {
     LDA.b $E2 : SEC : SBC.w #$0778 : LSR A : TAY : AND.w #$4000 : BEQ .BRANCH_7
