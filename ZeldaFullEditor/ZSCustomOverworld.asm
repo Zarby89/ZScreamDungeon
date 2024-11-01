@@ -381,9 +381,7 @@ Pool:
     ; values instead of using the default ones. The current version is 02.
     org $288145 ; $140145
     .ZSAppliedASM ; 0x01
-        if !UseVanillaPool == 1
         db $02
-        endif
 
     ; When non 0 this will cause rain to appear on all areas in the beginning
     ; phase. Default is $FF.
