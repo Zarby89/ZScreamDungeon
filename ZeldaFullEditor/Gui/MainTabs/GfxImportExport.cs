@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace ZeldaFullEditor.Gui
 {
     public partial class GfxImportExport : UserControl
     {
         DungeonMain mainForm;
-        public int selectedSheet = 0;
+        private int selectedSheet = 0;
 
         byte[][] modifiedSheets = new byte[Constants.NumberOfSheets][];
         byte[][] gfxSheets3bpp = new byte[Constants.NumberOfSheets][];
@@ -115,7 +107,6 @@ namespace ZeldaFullEditor.Gui
         /// <returns> True if saving failed.  </returns>
         public bool SaveAllGfx()
         {
-            
             unsafe
             {
                 byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
@@ -131,8 +122,6 @@ namespace ZeldaFullEditor.Gui
                     {
                         sdata[j] = gdata[(i * Constants.UncompressedSheetSize) + j];
                     }
-
-
 
                     if (GFX.isbpp3[i])
                     {
@@ -422,8 +411,6 @@ namespace ZeldaFullEditor.Gui
         {
             if (GFX.isbpp3[selectedSheet])
             {
-
-
                 byte[] sdata = new byte[Constants.UncompressedSheetSize];
                 unsafe
                 {
@@ -482,98 +469,103 @@ namespace ZeldaFullEditor.Gui
 
         private void paste24bpp_Click(object sender, EventArgs e)
         {
-            if (Clipboard.ContainsImage())
+            if (!Clipboard.ContainsImage())
             {
-                bool is2bpp = false;
-                Bitmap b = (Bitmap)Clipboard.GetImage();
-                BitmapData bd;
+                return;
+            }
+
+            Bitmap b = (Bitmap)Clipboard.GetImage();
+            BitmapData bd;
+            if (GFX.isbpp3[selectedSheet])
+            {
+                if (b.Size.Width != 128 || (b.Size.Height != 40))
+                {
+                    MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+
+                    return;
+                }
+
+                bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+            }
+            else
+            {
+                if (b.Size.Width != 128 || (b.Size.Height != 72))
+                {
+                    MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+
+                    return;
+                }
+
+                bd = b.LockBits(new Rectangle(0, 0, 128, 72), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+            }
+
+            unsafe
+            {
                 if (GFX.isbpp3[selectedSheet])
                 {
-                    if (b.Size.Width != 128 || (b.Size.Height != 40))
+                    byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                    byte* data = (byte*)bd.Scan0.ToPointer();
+                    // One line is 512 - palette (32 bytes per palettes)
+                    for (int i = 0; i < 8; i++)
                     {
-                        MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
-                        return;
+                        palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
+                        //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
                     }
-                     bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+
+                    int pos = 0; // Should be line where data start inverted
+                    for (int y = 0; y < 32; y++) // for each line
+                    {
+                        for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
+                        {
+                            byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
+                            byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
+                            byte mpix = (byte)((pix1 << 4) + pix2);
+                            gdata[pos + (selectedSheet * Constants.UncompressedSheetSize)] = mpix;
+                            pos++;
+                        }
+                    }
                 }
                 else
                 {
-                    if (b.Size.Width != 128 || (b.Size.Height != 72))
+                    byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                    byte* gdata2 = (byte*)GFX.allgfx2bpp16Ptr.ToPointer();
+                    byte* data = (byte*)bd.Scan0.ToPointer();
+                    // One line is 512 - palette (32 bytes per palettes)
+                    for (int i = 0; i < 4; i++)
                     {
-                        MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
-                        return;
+                        palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x8800], data[(i * 32) + 1 - 0x8800], data[(i * 32) - 0x8800]);
+                        //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
                     }
-                    bd = b.LockBits(new Rectangle(0,0,128,72), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                }
-                
 
-                unsafe
-                {
-                    if (GFX.isbpp3[selectedSheet])
+                    int pos = 0; // Should be line where data start inverted
+                    for (int y = 0; y < 64; y++) // for each line
                     {
-                        byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                        byte* data = (byte*)bd.Scan0.ToPointer();
-                        // One line is 512 - palette (32 bytes per palettes)
-                        for (int i = 0; i < 8; i++)
+                        for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
                         {
-                            palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
-                            //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
-                        }
-
-                        int pos = 0; // Should be line where data start inverted
-                        for (int y = 0; y < 32; y++) // for each line
-                        {
-                            for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
+                            byte pix1 = matchPalette2bpp(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
+                            byte pix2 = matchPalette2bpp(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
+                            byte mpix = (byte)((pix1 << 4) + pix2);
+                            if (y < 32)
                             {
-                                byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
-                                byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
-                                byte mpix = (byte)((pix1 << 4) + pix2);
                                 gdata[pos + (selectedSheet * Constants.UncompressedSheetSize)] = mpix;
-                                pos++;
                             }
-                        }
-                    }
-                    else
-                    {
-                        byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                        byte* gdata2 = (byte*)GFX.allgfx2bpp16Ptr.ToPointer();
-                        byte* data = (byte*)bd.Scan0.ToPointer();
-                        // One line is 512 - palette (32 bytes per palettes)
-                        for (int i = 0; i < 4; i++)
-                        {
-                            palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x8800], data[(i * 32) + 1 - 0x8800], data[(i * 32) - 0x8800]);
-                            //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
-                        }
 
-                        int pos = 0; // Should be line where data start inverted
-                        for (int y = 0; y < 64; y++) // for each line
-                        {
-                            for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
-                            {
-                                byte pix1 = matchPalette2bpp(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
-                                byte pix2 = matchPalette2bpp(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
-                                byte mpix = (byte)((pix1 << 4) + pix2);
-                                if (y < 32)
-                                {
-                                    gdata[pos + (selectedSheet * Constants.UncompressedSheetSize)] = mpix;
-                                }
-                                gdata2[(Array.IndexOf(GFX.bpp2SheetsIndex, (byte)selectedSheet) * 0x1000) + pos] = mpix;
-                                pos++;
-                            }
+                            gdata2[(Array.IndexOf(GFX.bpp2SheetsIndex, (byte)selectedSheet) * 0x1000) + pos] = mpix;
+                            pos++;
                         }
                     }
                 }
+            }
 
-                b.UnlockBits(bd);
-                mainForm.activeScene.room.reloadGfx();
-                mainForm.activeScene.DrawRoom();
-                mainForm.activeScene.Refresh();
-                allgfxPicturebox.Refresh();
+            b.UnlockBits(bd);
+            mainForm.activeScene.room.reloadGfx();
+            mainForm.activeScene.DrawRoom();
+            mainForm.activeScene.Refresh();
+            allgfxPicturebox.Refresh();
 
-                for (int i = 0; i < 159; i++)
-                {
-                    mainForm.overworldEditor.overworld.AllMaps[i].NeedRefresh = true;
-                }
+            for (int i = 0; i < 159; i++)
+            {
+                mainForm.overworldEditor.overworld.AllMaps[i].NeedRefresh = true;
             }
         }
 
@@ -636,11 +628,6 @@ namespace ZeldaFullEditor.Gui
                 fs.Read(modifiedSheets[selectedSheet], 0, (int)fs.Length);
                 fs.Close();
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

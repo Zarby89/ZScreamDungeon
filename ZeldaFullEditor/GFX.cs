@@ -492,7 +492,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-                unsafe
+            unsafe
             {
                 byte* allgfx16Data = (byte*)allgfx16Ptr.ToPointer();
                 byte* allgfx2bpp16Data = (byte*)allgfx2bpp16Ptr.ToPointer();

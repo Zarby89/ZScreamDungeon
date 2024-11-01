@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
@@ -111,6 +110,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private bool showBG1Grid = false;
         private bool showBG2Grid = false;
         private bool showBG3Grid = false;
+
+        Bitmap tempOW;
 
         public ScreenEditor()
         {
@@ -1477,8 +1478,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             // New position //PC:108000 / S:218000
-            int titleScreenPosition = Constants.TitleScreenPosition; // In PC
-            int snestitleScreenPosition = Utils.PcToSnes(titleScreenPosition);
+            int snestitleScreenPosition = Utils.PcToSnes(Constants.TitleScreenPosition);
             ROM.Write(0x138C + 3, (byte)(snestitleScreenPosition >> 16), WriteType.TitleScreenPointer);
             ROM.Write(0x1383 + 3, (byte)(snestitleScreenPosition >> 8), WriteType.TitleScreenPointer);
             ROM.Write(0x137A + 3, (byte)snestitleScreenPosition, WriteType.TitleScreenPointer);
@@ -1532,7 +1532,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 ROM.Write(0x67E92, (byte)(0x21 + (oamData[0].Palette << 1)), WriteType.TitleScreenSprites);
             }
 
-            ROM.Write(titleScreenPosition, allData.ToArray(), WriteType.TitleScreenData);
+            ROM.Write(Constants.TitleScreenPosition, allData.ToArray(), WriteType.TitleScreenData);
 
             ROM.Write(Constants.titleScreenTilesGFX, (byte)titleScreenTilesGFX, WriteType.GFX);
             ROM.Write(Constants.titleScreenExtraTilesGFX, (byte)titleScreenExtraTilesGFX, WriteType.GFX);
@@ -3214,15 +3214,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
         }
 
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void mapPicturebox_Click(object sender, EventArgs e)
-        {
-
-        }
-        Bitmap tempOW;
         private void overworldpreviewPicturebox_Paint(object sender, PaintEventArgs e)
         {
             if (selectedMapIcon != null)
@@ -3235,6 +3226,79 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 e.Graphics.DrawImage(tempOW, new Rectangle(0, 0, 256, 256), new Rectangle(screenxpos*16, screenypos*16, 256, 256), GraphicsUnit.Pixel);
                 e.Graphics.FillRectangle(Brushes.Red, new Rectangle(128 - 4, 128 - 4, 8, 8));
             }
+        }
+
+        Color[] palettes = new Color[8];
+        private int selectedSheet = 0;
+
+        // TODO: finish this Jared.
+        private void paste24bpp_Click(object sender, EventArgs e)
+        {
+            if (!Clipboard.ContainsImage())
+            {
+                return;
+            }
+
+            Bitmap b = (Bitmap)Clipboard.GetImage();
+            BitmapData bd;
+            if (b.Size.Width != 128 || (b.Size.Height != 40))
+            {
+                MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+
+                return;
+            }
+
+            bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                byte* data = (byte*)bd.Scan0.ToPointer();
+                // One line is 512 - palette (32 bytes per palettes)
+                for (int i = 0; i < 8; i++)
+                {
+                    palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
+                    //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
+                }
+
+                int pos = 0; // Should be line where data start inverted
+                for (int y = 0; y < 32; y++) // for each line
+                {
+                    for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
+                    {
+                        byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
+                        byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
+                        byte mpix = (byte)((pix1 << 4) + pix2);
+                        gdata[pos + (selectedSheet * Constants.UncompressedSheetSize)] = mpix;
+                        pos++;
+                    }
+                }
+            }
+
+            // TODO: Uncomment this stuff.
+            b.UnlockBits(bd);
+            //mainForm.activeScene.room.reloadGfx();
+            //mainForm.activeScene.DrawRoom();
+            //mainForm.activeScene.Refresh();
+            //allgfxPicturebox.Refresh();
+
+            for (int i = 0; i < 159; i++)
+            {
+                //mainForm.overworldEditor.overworld.AllMaps[i].NeedRefresh = true;
+            }
+        }
+
+        public byte matchPalette(Color c)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (palettes[i].R == c.R && palettes[i].G == c.G && palettes[i].B == c.B)
+                {
+                    return (byte)i;
+                }
+            }
+
+            return 1;
         }
     }
 }
