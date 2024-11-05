@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Gui
     public partial class GfxImportExport : UserControl
     {
         DungeonMain mainForm;
-        private int selectedSheet = 0;
+        public int selectedSheet = 0;
 
         byte[][] modifiedSheets = new byte[Constants.NumberOfSheets][];
         byte[][] gfxSheets3bpp = new byte[Constants.NumberOfSheets][];
@@ -17,6 +17,8 @@ namespace ZeldaFullEditor.Gui
         int selectedPal = 0;
 
         Color[] palettes = new Color[8];
+
+        bool rightSide = false;
 
         public GfxImportExport(DungeonMain mainForm)
         {
@@ -62,7 +64,6 @@ namespace ZeldaFullEditor.Gui
             int bitDepth = GFX.isbpp3[selectedSheet] ? 3 : 2;
 
             selectedLabel.Text = $"Selected sheet: {selectedSheet:X2} ({bitDepth}bpp)";
-
         }
 
         private void allgfxPicturebox_Paint(object sender, PaintEventArgs e)
@@ -338,7 +339,7 @@ namespace ZeldaFullEditor.Gui
         {
             palettePicturebox.Refresh();
         }
-        bool rightSide = false;
+        
         private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             selectedPal = e.Y / 16;
@@ -364,7 +365,6 @@ namespace ZeldaFullEditor.Gui
                 }
                 else
                 {
-
                     if (rightSide)
                     {
                         cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + selectedPal * 16) + 8];

@@ -75,13 +75,17 @@ namespace ZeldaFullEditor
         public static readonly Rectangle Rect_0_0_128_128 = new Rectangle(0, 0, 128, 128);
         public static readonly Rectangle Rect_0_0_128_512 = new Rectangle(0, 0, 128, 512);
         public static readonly Rectangle Rect_0_0_128_4096 = new Rectangle(0, 0, 128, 4096);
+        public static readonly Rectangle Rect_0_0_128_256 = new Rectangle(0, 0, 128, 256);
+        public static readonly Rectangle Rect_0_0_256_128 = new Rectangle(0, 0, 256, 128);
         public static readonly Rectangle Rect_0_0_256_192 = new Rectangle(0, 0, 256, 192);
         public static readonly Rectangle Rect_0_0_256_256 = new Rectangle(0, 0, 256, 256);
         public static readonly Rectangle Rect_0_0_256_1024 = new Rectangle(0, 0, 256, 1024);
         public static readonly Rectangle Rect_0_0_1024_1024 = new Rectangle(0, 0, 1024, 1024);
+        public static readonly Rectangle Rect_0_0_256_512 = new Rectangle(0, 0, 256, 512);
         public static readonly Rectangle Rect_0_0_512_384 = new Rectangle(0, 0, 512, 384);
         public static readonly Rectangle Rect_0_0_512_512 = new Rectangle(0, 0, 512, 512);
         public static readonly Rectangle Rect_0_0_128_40 = new Rectangle(0, 0, 128, 40);
+        public static readonly Rectangle Rect_0_0_128_64 = new Rectangle(0, 0, 128, 64);
         public static readonly Rectangle Rect_0_0_256_14272 = new Rectangle(0, 0, 256, 14272);
         public static readonly Rectangle Rect_0_0_128_7136 = new Rectangle(0, 0, 128, 7136);
 

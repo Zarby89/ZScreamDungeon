@@ -30,6 +30,12 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.Extra4bppTilesBox = new System.Windows.Forms.PictureBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.paste24bpp = new System.Windows.Forms.Button();
+            this.copy24bpp = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
             this.grid3CheckBox = new System.Windows.Forms.CheckBox();
             this.grid1CheckBox = new System.Windows.Forms.CheckBox();
             this.grid2CheckBox = new System.Windows.Forms.CheckBox();
@@ -77,6 +83,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.overworldPanel = new System.Windows.Forms.Panel();
+            this.overworldpreviewPicturebox = new System.Windows.Forms.PictureBox();
             this.mapPicturebox = new System.Windows.Forms.PictureBox();
             this.owMapTilesBox = new System.Windows.Forms.PictureBox();
             this.mapPalettePicturebox = new System.Windows.Forms.PictureBox();
@@ -118,9 +125,12 @@
             this.triforcebox2 = new System.Windows.Forms.PictureBox();
             this.triforceLabel1 = new System.Windows.Forms.Label();
             this.triforcebox1 = new System.Windows.Forms.PictureBox();
-            this.overworldpreviewPicturebox = new System.Windows.Forms.PictureBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Extra4bppTilesBox)).BeginInit();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.extraSpritesNumBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.extraTilesNumBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spritesNumBox)).BeginInit();
@@ -132,6 +142,7 @@
             this.tabPage2.SuspendLayout();
             this.mapiconGroupbox.SuspendLayout();
             this.overworldPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.overworldpreviewPicturebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.owMapTilesBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapPalettePicturebox)).BeginInit();
@@ -144,7 +155,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.triforcebox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.triforcebox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.triforcebox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.overworldpreviewPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -157,12 +167,16 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1080, 800);
+            this.tabControl1.Size = new System.Drawing.Size(1160, 800);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label16);
+            this.tabPage1.Controls.Add(this.panel2);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.grid3CheckBox);
             this.tabPage1.Controls.Add(this.grid1CheckBox);
             this.tabPage1.Controls.Add(this.grid2CheckBox);
@@ -198,10 +212,71 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1072, 774);
+            this.tabPage1.Size = new System.Drawing.Size(1152, 774);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Titlescreen";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.AutoScroll = true;
+            this.panel2.Controls.Add(this.Extra4bppTilesBox);
+            this.panel2.Location = new System.Drawing.Point(801, 464);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(276, 256);
+            this.panel2.TabIndex = 37;
+            // 
+            // Extra4bppTilesBox
+            // 
+            this.Extra4bppTilesBox.BackColor = System.Drawing.Color.Black;
+            this.Extra4bppTilesBox.Location = new System.Drawing.Point(3, 3);
+            this.Extra4bppTilesBox.Name = "Extra4bppTilesBox";
+            this.Extra4bppTilesBox.Padding = new System.Windows.Forms.Padding(3);
+            this.Extra4bppTilesBox.Size = new System.Drawing.Size(256, 576);
+            this.Extra4bppTilesBox.TabIndex = 34;
+            this.Extra4bppTilesBox.TabStop = false;
+            this.Extra4bppTilesBox.Paint += new System.Windows.Forms.PaintEventHandler(this.Extra4bppTilesBox_Paint);
+            this.Extra4bppTilesBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Extra4bppTilesBox_MouseDown);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.paste24bpp);
+            this.groupBox1.Controls.Add(this.copy24bpp);
+            this.groupBox1.Location = new System.Drawing.Point(801, 388);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(256, 57);
+            this.groupBox1.TabIndex = 36;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Copy / Paste (Ctrl+C / Ctrl+V)";
+            // 
+            // paste24bpp
+            // 
+            this.paste24bpp.Location = new System.Drawing.Point(112, 19);
+            this.paste24bpp.Name = "paste24bpp";
+            this.paste24bpp.Size = new System.Drawing.Size(100, 23);
+            this.paste24bpp.TabIndex = 3;
+            this.paste24bpp.Text = "Paste";
+            this.paste24bpp.UseVisualStyleBackColor = true;
+            this.paste24bpp.Click += new System.EventHandler(this.paste24bpp_Click);
+            // 
+            // copy24bpp
+            // 
+            this.copy24bpp.Location = new System.Drawing.Point(6, 19);
+            this.copy24bpp.Name = "copy24bpp";
+            this.copy24bpp.Size = new System.Drawing.Size(100, 23);
+            this.copy24bpp.TabIndex = 1;
+            this.copy24bpp.Text = "Copy 32bpp +Pal";
+            this.copy24bpp.UseVisualStyleBackColor = true;
+            this.copy24bpp.Click += new System.EventHandler(this.copy24bpp_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(801, 448);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(82, 13);
+            this.label15.TabIndex = 35;
+            this.label15.Text = "Extra 4bpp tiles:";
             // 
             // grid3CheckBox
             // 
@@ -740,6 +815,15 @@
             this.overworldPanel.Size = new System.Drawing.Size(752, 768);
             this.overworldPanel.TabIndex = 1;
             // 
+            // overworldpreviewPicturebox
+            // 
+            this.overworldpreviewPicturebox.Location = new System.Drawing.Point(1024, 0);
+            this.overworldpreviewPicturebox.Name = "overworldpreviewPicturebox";
+            this.overworldpreviewPicturebox.Size = new System.Drawing.Size(256, 256);
+            this.overworldpreviewPicturebox.TabIndex = 1;
+            this.overworldpreviewPicturebox.TabStop = false;
+            this.overworldpreviewPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.overworldpreviewPicturebox_Paint);
+            // 
             // mapPicturebox
             // 
             this.mapPicturebox.Location = new System.Drawing.Point(3, 3);
@@ -1212,14 +1296,15 @@
             this.triforcebox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseMove);
             this.triforcebox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseUp);
             // 
-            // overworldpreviewPicturebox
+            // label16
             // 
-            this.overworldpreviewPicturebox.Location = new System.Drawing.Point(1024, 0);
-            this.overworldpreviewPicturebox.Name = "overworldpreviewPicturebox";
-            this.overworldpreviewPicturebox.Size = new System.Drawing.Size(256, 256);
-            this.overworldpreviewPicturebox.TabIndex = 1;
-            this.overworldpreviewPicturebox.TabStop = false;
-            this.overworldpreviewPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.overworldpreviewPicturebox_Paint);
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(801, 346);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(265, 39);
+            this.label16.TabIndex = 38;
+            this.label16.Text = "The \"Extra 4bpp tiles\" are some Extra GFX that are not\r\npart of the standard GFX " +
+    "space that is loaded into the\r\ngame via ASM Only for the titlescreen.\r\n";
             // 
             // ScreenEditor
             // 
@@ -1227,10 +1312,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Name = "ScreenEditor";
-            this.Size = new System.Drawing.Size(1080, 800);
+            this.Size = new System.Drawing.Size(1160, 800);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Extra4bppTilesBox)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.extraSpritesNumBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.extraTilesNumBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spritesNumBox)).EndInit();
@@ -1244,6 +1332,7 @@
             this.mapiconGroupbox.ResumeLayout(false);
             this.mapiconGroupbox.PerformLayout();
             this.overworldPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.overworldpreviewPicturebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.owMapTilesBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapPalettePicturebox)).EndInit();
@@ -1258,7 +1347,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.triforcebox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.triforcebox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.triforcebox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.overworldpreviewPicturebox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1342,19 +1430,26 @@
         private System.Windows.Forms.PictureBox triforcebox1;
         private System.Windows.Forms.RadioButton crystalRadio;
         private System.Windows.Forms.RadioButton triforceRadio;
-		private System.Windows.Forms.Label spritesLabel;
-		private System.Windows.Forms.NumericUpDown spritesNumBox;
-		private System.Windows.Forms.Label tilesLabel;
-		private System.Windows.Forms.NumericUpDown tilesNumBox;
-		private System.Windows.Forms.Label extraSpritesLable;
-		private System.Windows.Forms.NumericUpDown extraSpritesNumBox;
-		private System.Windows.Forms.Label extraTilesLabel;
-		private System.Windows.Forms.NumericUpDown extraTilesNumBox;
-		private System.Windows.Forms.CheckBox grid2CheckBox;
-		private System.Windows.Forms.CheckBox grid3CheckBox;
-		private System.Windows.Forms.CheckBox grid1CheckBox;
+        private System.Windows.Forms.Label spritesLabel;
+        private System.Windows.Forms.NumericUpDown spritesNumBox;
+        private System.Windows.Forms.Label tilesLabel;
+        private System.Windows.Forms.NumericUpDown tilesNumBox;
+        private System.Windows.Forms.Label extraSpritesLable;
+        private System.Windows.Forms.NumericUpDown extraSpritesNumBox;
+        private System.Windows.Forms.Label extraTilesLabel;
+        private System.Windows.Forms.NumericUpDown extraTilesNumBox;
+        private System.Windows.Forms.CheckBox grid2CheckBox;
+        private System.Windows.Forms.CheckBox grid3CheckBox;
+        private System.Windows.Forms.CheckBox grid1CheckBox;
         private System.Windows.Forms.Button exportObjButton;
         private System.Windows.Forms.Button importObjButton;
         private System.Windows.Forms.PictureBox overworldpreviewPicturebox;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button paste24bpp;
+        private System.Windows.Forms.Button copy24bpp;
+        public System.Windows.Forms.PictureBox Extra4bppTilesBox;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label16;
     }
 }

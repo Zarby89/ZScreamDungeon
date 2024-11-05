@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -48,6 +49,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         public IntPtr oamBGPtr = Marshal.AllocHGlobal(0x80000);
         public Bitmap oamBGBitmap;
+
+        public IntPtr titleTriforcePtr;
+        private Bitmap titleTriforceBitMap;
 
         private byte palSelected = 0;
         private ushort selectedTile = 0;
@@ -113,10 +117,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         Bitmap tempOW;
 
+        private static IntPtr ExtraGFX16Ptr = Marshal.AllocHGlobal((128 * 288) / 2);
+        private static Bitmap ExtraGFXBitmap;
+
         public ScreenEditor()
         {
             InitializeComponent();
             overworldCombobox.SelectedIndex = 0;
+
+            ExtraGFXBitmap = new Bitmap(128, 288, 64, PixelFormat.Format4bppIndexed, ExtraGFX16Ptr);
         }
 
         public void CreateTempOWBitmap()
@@ -143,7 +152,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         public void Init()
         {
-            
             triforceVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
             crystalVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
 
@@ -207,7 +215,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             tilesBG1Bitmap = new Bitmap(256, 256, 256, PixelFormat.Format8bppIndexed, tilesBG1Ptr);
             tilesBG2Bitmap = new Bitmap(256, 256, 256, PixelFormat.Format8bppIndexed, tilesBG2Ptr);
             oamBGBitmap = new Bitmap(256, 256, 256, PixelFormat.Format8bppIndexed, oamBGPtr);
-            floorSelector = new Bitmap(Resources.floorselector); ;
+            floorSelector = new Bitmap(Resources.floorselector);
+            titleTriforceBitMap = new Bitmap(Resources.Triforce);
             Buildtileset();
             AssembleMapTiles();
 
@@ -1304,7 +1313,16 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
 
+            ColorPalette cp = ExtraGFXBitmap.Palette;
+            for (int i = 0; i < 16; i++)
+            {
+                cp.Entries[i] = tiles8Bitmap.Palette.Entries[(i + palSelected * 16)];
+            }
+
+            ExtraGFXBitmap.Palette = cp;
+
             screenBox.Refresh();
+            Extra4bppTilesBox.Refresh();
         }
 
         private void owMapTilesBox_Paint(object sender, PaintEventArgs e)
@@ -3231,7 +3249,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
         Color[] palettes = new Color[8];
         private int selectedSheet = 0;
 
-        // TODO: finish this Jared.
         private void paste24bpp_Click(object sender, EventArgs e)
         {
             if (!Clipboard.ContainsImage())
@@ -3240,7 +3257,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             Bitmap b = (Bitmap)Clipboard.GetImage();
-            BitmapData bd;
             if (b.Size.Width != 128 || (b.Size.Height != 40))
             {
                 MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
@@ -3248,23 +3264,26 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 return;
             }
 
-            bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+            BitmapData bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
 
             unsafe
             {
-                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                byte* gdata = (byte*)ExtraGFX16Ptr.ToPointer();
                 byte* data = (byte*)bd.Scan0.ToPointer();
-                // One line is 512 - palette (32 bytes per palettes)
+                // One line is 512 - palette (32 bytes per palettes).
                 for (int i = 0; i < 8; i++)
                 {
                     palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
                     //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
                 }
 
-                int pos = 0; // Should be line where data start inverted
-                for (int y = 0; y < 32; y++) // for each line
+                // Should be line where data start inverted.
+                int pos = 0;
+                // For each line:
+                for (int y = 0; y < 32; y++)
                 {
-                    for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
+                    // Advance by 64 pixel but merge them together.
+                    for (int x = 0; x < 64; x++)
                     {
                         byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
                         byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
@@ -3275,17 +3294,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
 
-            // TODO: Uncomment this stuff.
             b.UnlockBits(bd);
-            //mainForm.activeScene.room.reloadGfx();
-            //mainForm.activeScene.DrawRoom();
-            //mainForm.activeScene.Refresh();
-            //allgfxPicturebox.Refresh();
-
-            for (int i = 0; i < 159; i++)
-            {
-                //mainForm.overworldEditor.overworld.AllMaps[i].NeedRefresh = true;
-            }
+            screenBox.Refresh();
+            Extra4bppTilesBox.Refresh();
         }
 
         public byte matchPalette(Color c)
@@ -3299,6 +3310,79 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             return 1;
+        }
+
+        private void copy24bpp_Click(object sender, EventArgs e)
+        {
+            byte[] sdata = new byte[Constants.UncompressedSheetSize];
+            unsafe
+            {
+                byte* gdata = (byte*)ExtraGFX16Ptr.ToPointer();
+                for (int i = 0; i < Constants.UncompressedSheetSize; i++)
+                {
+                    sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
+                }
+            }
+
+            byte[] pdata = new byte[64];
+            for (int i = 0; i < 16; i++)
+            {
+                pdata[(i * 4) + 0] = ExtraGFXBitmap.Palette.Entries[i].B;
+                pdata[(i * 4) + 1] = ExtraGFXBitmap.Palette.Entries[i].G;
+                pdata[(i * 4) + 2] = ExtraGFXBitmap.Palette.Entries[i].R;
+                pdata[(i * 4) + 3] = ExtraGFXBitmap.Palette.Entries[i].A;
+            }
+
+            ImgClipboard.SetImageDataWithPal(sdata, pdata);
+        }
+
+        private void Extra4bppTilesBox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            e.Graphics.DrawImage(ExtraGFXBitmap, new Rectangle(0, 0, 256, 576), new Rectangle(0, 0, 128, 288), GraphicsUnit.Pixel);
+            e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
+        }
+
+        private void Extra4bppTilesBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            selectedSheet = (e.Y / 64);
+            Extra4bppTilesBox.Refresh();
+
+            Extra4bppTilesBox.Text = $"Selected sheet: {selectedSheet:X2}";
+        }
+
+        public unsafe void CopyTriforce()
+        {
+            byte p = palSelected;
+
+            // ushort tempTile = selectedTile;
+            byte* destPtr = (byte*)tiles8Ptr.ToPointer();
+            byte* srcPtr = (byte*)titleTriforceBitMap;
+            int xx = 0;
+            int yy = 0;
+
+            for (int i = 0; i < 1024; i++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    for (int x = 0; x < 4; x++)
+                    {
+                        CopyTile(x, y, xx, yy, i, p, destPtr, srcPtr);
+                    }
+                }
+
+                xx += 8;
+                if (xx >= 128)
+                {
+                    yy += 1024;
+                    xx = 0;
+                }
+            }
+
+            // Updated bitmap palette here
+            tiles8Bitmap.Palette = tilesBG1Bitmap.Palette;
+            tilesBox.Refresh();
         }
     }
 }

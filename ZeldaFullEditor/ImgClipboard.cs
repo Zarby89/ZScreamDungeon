@@ -127,26 +127,24 @@ namespace ZeldaFullEditor
 
         public static void SetImageDataWithPal(byte[] idata, byte[] palData, bool bpp2 = false) // or 63
         {
-            
             Clipboard.Clear();
 
             if (!bpp2)
             {
-               
                 // Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
                 byte[] headerData = new byte[40] {
-                0x28, 0x00, 0x00, 0x00, // ? dib header
-                0x80, 0x00, 0x00, 0x00, // Width
-                0x28, 0x00, 0x00, 0x00, // Height
-                0x01, 0x00, // Planes
-                0x20, 0x00, // Bpp 
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x50, 0x00, 0x00, // Numbers of byte for the image (0x5000)
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00 // ??
-            };
+                    0x28, 0x00, 0x00, 0x00, // ? dib header
+                    0x80, 0x00, 0x00, 0x00, // Width
+                    0x28, 0x00, 0x00, 0x00, // Height
+                    0x01, 0x00, // Planes
+                    0x20, 0x00, // Bpp 
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x50, 0x00, 0x00, // Numbers of byte for the image (0x5000)
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00 // ??
+                };
 
                 Color[] pals = new Color[8];
                 unsafe
@@ -157,6 +155,7 @@ namespace ZeldaFullEditor
                     {
                         imgdata[i] = headerData[i];
                     }
+
                     for (int i = 0; i < 8; i++) // Colors Palettes
                     {
                         pals[i] = Color.FromArgb(palData[(i * 4) + 2], palData[(i * 4) + 1], palData[(i * 4)]);
@@ -211,25 +210,23 @@ namespace ZeldaFullEditor
                     CloseClipboard();
                     //Marshal.FreeHGlobal(imgData);
                 }
-
             }
             else
             {
-                
                 // Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
                 byte[] headerData = new byte[40] {
-                0x28, 0x00, 0x00, 0x00, // ? dib header
-                0x80, 0x00, 0x00, 0x00, // Width
-                0x48, 0x00, 0x00, 0x00, // Height
-                0x01, 0x00, // Planes
-                0x20, 0x00, // Bpp 
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x90, 0x00, 0x00, // Numbers of byte for the image (0x5000)
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00 // ??
-            };
+                    0x28, 0x00, 0x00, 0x00, // ? dib header
+                    0x80, 0x00, 0x00, 0x00, // Width
+                    0x48, 0x00, 0x00, 0x00, // Height
+                    0x01, 0x00, // Planes
+                    0x20, 0x00, // Bpp 
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x90, 0x00, 0x00, // Numbers of byte for the image (0x5000)
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00 // ??
+                };
 
                 Color[] pals = new Color[8];
                 unsafe
@@ -240,6 +237,7 @@ namespace ZeldaFullEditor
                     {
                         imgdata[i] = headerData[i];
                     }
+
                     for (int i = 0; i < 8; i++) // Colors Palettes
                     {
                         pals[i] = Color.FromArgb(palData[(i * 4) + 2], palData[(i * 4) + 1], palData[(i * 4)]);
@@ -293,12 +291,10 @@ namespace ZeldaFullEditor
                     //SetClipboardData(8, imgDataB);
 
                     CloseClipboard();
-
                 }
 
                 //Marshal.FreeHGlobal(imgData);
             }
-
         }
     }
 }

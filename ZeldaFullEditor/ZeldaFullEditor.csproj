@@ -804,6 +804,8 @@
     </Content>
     <Content Include="PatchNotes.txt" />
     <Content Include="Resources\damageclass.png" />
+    <None Include="Resources\Triforce.bmp" />
+    <None Include="Resources\Triforce.png" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
