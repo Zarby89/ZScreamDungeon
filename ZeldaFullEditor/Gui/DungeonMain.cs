@@ -4072,7 +4072,7 @@ namespace ZeldaFullEditor
 
             if (this.editorsTabControl.SelectedTab.Name == "ScreenEditor")
             {
-                this.screenEditor.ReLoadPalettes();
+                this.screenEditor.SetColorsPalette();
                 GFX.UpdatePalette(this.screenEditor.darkWorld);
                 this.screenEditor.BringToFront();
                 this.screenEditor.Buildtileset();

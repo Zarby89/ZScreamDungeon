@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label16 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.Extra4bppTilesBox = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -125,7 +126,6 @@
             this.triforcebox2 = new System.Windows.Forms.PictureBox();
             this.triforceLabel1 = new System.Windows.Forms.Label();
             this.triforcebox1 = new System.Windows.Forms.PictureBox();
-            this.label16 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -217,6 +217,17 @@
             this.tabPage1.Text = "Titlescreen";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(801, 346);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(268, 39);
+            this.label16.TabIndex = 38;
+            this.label16.Text = "The \"Extra 4bpp tiles\" is an extra 10 sheets of GFX that\r\nare not part of the sta" +
+    "ndard GFX space that is loaded\r\ninto the game via ASM Only for the titlescreen.\r" +
+    "\n";
+            // 
             // panel2
             // 
             this.panel2.AutoScroll = true;
@@ -232,7 +243,7 @@
             this.Extra4bppTilesBox.Location = new System.Drawing.Point(3, 3);
             this.Extra4bppTilesBox.Name = "Extra4bppTilesBox";
             this.Extra4bppTilesBox.Padding = new System.Windows.Forms.Padding(3);
-            this.Extra4bppTilesBox.Size = new System.Drawing.Size(256, 576);
+            this.Extra4bppTilesBox.Size = new System.Drawing.Size(256, 640);
             this.Extra4bppTilesBox.TabIndex = 34;
             this.Extra4bppTilesBox.TabStop = false;
             this.Extra4bppTilesBox.Paint += new System.Windows.Forms.PaintEventHandler(this.Extra4bppTilesBox_Paint);
@@ -610,7 +621,7 @@
             this.tilesBox.BackColor = System.Drawing.Color.Black;
             this.tilesBox.Location = new System.Drawing.Point(3, 3);
             this.tilesBox.Name = "tilesBox";
-            this.tilesBox.Size = new System.Drawing.Size(256, 1024);
+            this.tilesBox.Size = new System.Drawing.Size(256, 1344);
             this.tilesBox.TabIndex = 2;
             this.tilesBox.TabStop = false;
             this.tilesBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
@@ -662,7 +673,7 @@
             this.tabPage2.Controls.Add(this.mapPalettePicturebox);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(1072, 774);
+            this.tabPage2.Size = new System.Drawing.Size(1152, 774);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Overworld Map";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -888,7 +899,7 @@
             this.tabPage3.Controls.Add(this.dungmapPicturebox);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1072, 774);
+            this.tabPage3.Size = new System.Drawing.Size(1152, 774);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Dungeon Map";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1178,7 +1189,7 @@
             this.tabPage4.Controls.Add(this.triforcebox1);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1072, 774);
+            this.tabPage4.Size = new System.Drawing.Size(1152, 774);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Triforce/Crystal Editor";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1295,16 +1306,6 @@
             this.triforcebox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseDown);
             this.triforcebox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseMove);
             this.triforcebox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseUp);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(801, 346);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(265, 39);
-            this.label16.TabIndex = 38;
-            this.label16.Text = "The \"Extra 4bpp tiles\" are some Extra GFX that are not\r\npart of the standard GFX " +
-    "space that is loaded into the\r\ngame via ASM Only for the titlescreen.\r\n";
             // 
             // ScreenEditor
             // 

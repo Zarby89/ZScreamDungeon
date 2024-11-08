@@ -133,9 +133,9 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Triforce {
+        public static System.Drawing.Bitmap triforceSheet {
             get {
-                object obj = ResourceManager.GetObject("Triforce", resourceCulture);
+                object obj = ResourceManager.GetObject("triforceSheet", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

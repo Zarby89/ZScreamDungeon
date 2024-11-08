@@ -806,6 +806,7 @@
     <Content Include="Resources\damageclass.png" />
     <None Include="Resources\Triforce.bmp" />
     <None Include="Resources\Triforce.png" />
+    <None Include="Resources\triforceSheet.png" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

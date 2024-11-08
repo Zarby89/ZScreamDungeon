@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -36,7 +35,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         public IntPtr dungmaptiles16Ptr = Marshal.AllocHGlobal(0x20000);
         public Bitmap dungmaptiles16Bitmap;
 
-        public IntPtr tiles8Ptr = Marshal.AllocHGlobal(0x20000);
+        public IntPtr tiles8Ptr = Marshal.AllocHGlobal(0x2A000);
         public Bitmap tiles8Bitmap;
 
         public ushort[] tilesBG1Buffer = new ushort[0x1000];
@@ -52,6 +51,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         public IntPtr titleTriforcePtr;
         private Bitmap titleTriforceBitMap;
+
+        private IntPtr ExtraGFX16Ptr = Marshal.AllocHGlobal(0xA0000);
+        private Bitmap ExtraGFXBitmap;
 
         private byte palSelected = 0;
         private ushort selectedTile = 0;
@@ -117,15 +119,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         Bitmap tempOW;
 
-        private static IntPtr ExtraGFX16Ptr = Marshal.AllocHGlobal((128 * 288) / 2);
-        private static Bitmap ExtraGFXBitmap;
-
         public ScreenEditor()
         {
             InitializeComponent();
             overworldCombobox.SelectedIndex = 0;
-
-            ExtraGFXBitmap = new Bitmap(128, 288, 64, PixelFormat.Format4bppIndexed, ExtraGFX16Ptr);
         }
 
         public void CreateTempOWBitmap()
@@ -209,14 +206,16 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 crystalface3Ds[i] = new Face3D(datac);
             }
 
-            tiles8Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, tiles8Ptr);
+            tiles8Bitmap = new Bitmap(128, 672, 128, PixelFormat.Format8bppIndexed, tiles8Ptr);
             dungmaptiles8Bitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, dungmaptiles8Ptr);
             dungmaptiles16Bitmap = new Bitmap(256, 192, 256, PixelFormat.Format8bppIndexed, dungmaptiles16Ptr);
             tilesBG1Bitmap = new Bitmap(256, 256, 256, PixelFormat.Format8bppIndexed, tilesBG1Ptr);
             tilesBG2Bitmap = new Bitmap(256, 256, 256, PixelFormat.Format8bppIndexed, tilesBG2Ptr);
             oamBGBitmap = new Bitmap(256, 256, 256, PixelFormat.Format8bppIndexed, oamBGPtr);
             floorSelector = new Bitmap(Resources.floorselector);
-            titleTriforceBitMap = new Bitmap(Resources.Triforce);
+            titleTriforceBitMap = new Bitmap(Resources.triforceSheet);
+            ExtraGFXBitmap = new Bitmap(128, 320, 64, PixelFormat.Format4bppIndexed, ExtraGFX16Ptr);
+
             Buildtileset();
             AssembleMapTiles();
 
@@ -226,15 +225,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 tilesBG2Buffer[i] = 492;
             }
 
-            SetColorsPalette (
-                Palettes.OverworldMainPalettes[5],
-                Palettes.OverworldAnimatedPalettes[0],
-                Palettes.OverworldAuxPalettes[3],
-                Palettes.OverworldAuxPalettes[3],
-                Palettes.HudPalettes[0],
-                Color.FromArgb(0, 0, 0, 0),
-                Palettes.SpritesAux1Palettes[1],
-                Palettes.SpritesAux1Palettes[1]);
+            SetColorsPalette();
 
             int p = Constants.IDKZarby;
             int p2 = Constants.IDKZarby + 0x0400;
@@ -339,7 +330,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // byte 2 and 3 = Tile Count in Big Endian if 8XXX this is the last index
             // 11 0B    00 19
 
-            // TODO magic numbers
+            // TODO: Magic numbers.
             uppersprCheckbox.Checked = (ROM.DATA[0x67E92] & 0x01) == 0;
 
             int xLowest = 256;
@@ -391,22 +382,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
             dungmapListbox.SelectedIndex = 0;
 
             updateGFXGroup();
-        }
-
-        /// <summary>
-        ///		Used to reload the palettes when switching to the screen editor and between its tabs.
-        /// </summary>
-        public void ReLoadPalettes()
-        {
-            SetColorsPalette (
-                Palettes.OverworldMainPalettes[5],
-                Palettes.OverworldAnimatedPalettes[0],
-                Palettes.OverworldAuxPalettes[3],
-                Palettes.OverworldAuxPalettes[3],
-                Palettes.HudPalettes[0],
-                Color.FromArgb(0, 0, 0, 0),
-                Palettes.SpritesAux1Palettes[1],
-                Palettes.SpritesAux1Palettes[1] );
         }
 
         public void LoadOverworldMap()
@@ -492,10 +467,26 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
 
+            unsafe
+            {
+                byte* destPtr = (byte*)ExtraGFX16Ptr.ToPointer();
+
+                byte[] yourbitmapdata = new byte[128 * 320];
+                BitmapData bitmapData = ExtraGFXBitmap.LockBits(new Rectangle(0, 0, 128, 320), ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+                Marshal.Copy(bitmapData.Scan0, yourbitmapdata, 0, 128 * 320);
+                ExtraGFXBitmap.UnlockBits(bitmapData);
+
+                // 0x1000 per sheet.
+                for (int i = 0; i < 0xA000; i++)
+                {
+                    destPtr[i] = 0xF;
+                }
+            }
+
             // label4.Text = count.ToString("X6");
             // label4.Text = "Break at position " + pos.ToString("X6");
             palSelected = 2;
-            updateTiles();
+            UpdateTiles();
         }
 
         public void Buildtileset()
@@ -567,7 +558,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             titleScreenExtraSpritesGFX = (int)extraSpritesNumBox.Value;
 
             Buildtileset();
-            updateTiles();
+            UpdateTiles();
             screenBox.Refresh();
         }
 
@@ -637,7 +628,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
         }
 
-        public unsafe void updateTiles()
+        public unsafe void UpdateTiles()
         {
             byte p = palSelected;
 
@@ -665,7 +656,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
 
-            // Updated bitmap palette here
+            CopyTriforce();
+            CopyExtraGFX();
+
+            // Updated bitmap palette here.
             tiles8Bitmap.Palette = tilesBG1Bitmap.Palette;
             tilesBox.Refresh();
         }
@@ -747,7 +741,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            e.Graphics.DrawImage(tiles8Bitmap, Constants.Rect_0_0_256_1024, Constants.Rect_0_0_128_512, GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(tiles8Bitmap, Constants.Rect_0_0_256_1344, Constants.Rect_0_0_128_672, GraphicsUnit.Pixel);
             int sx = selectedTile % 16;
             int sy = selectedTile / 16;
 
@@ -763,7 +757,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         private void mirrorXCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            updateTiles();
+            UpdateTiles();
         }
 
         public unsafe void DrawBGs(IntPtr destPtr, ushort[] tilesBgBuffer, bool onlyPrior = false)
@@ -1014,7 +1008,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 mirrorXCheckbox.Checked = t.H;
                 mirrorYCheckbox.Checked = t.V;
                 onTopCheckbox.Checked = t.O;
-                updateTiles();
+                UpdateTiles();
                 paletteBox.Refresh();
                 tilesBox.Refresh();
                 // Copy Tile
@@ -1129,7 +1123,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 palSelected = (byte)(lastSelectedOamTile.Palette + 8);
                 mirrorXCheckbox.Checked = lastSelectedOamTile.MirrorX == 1;
                 mirrorYCheckbox.Checked = lastSelectedOamTile.MirrorY == 1;
-                updateTiles();
+                UpdateTiles();
                 paletteBox.Refresh();
                 tilesBox.Refresh();
             }
@@ -1138,12 +1132,24 @@ namespace ZeldaFullEditor.Gui.MainTabs
             selectedOamTile = null;
         }
 
-        private void SetColorsPalette(Color[] main, Color[] animated, Color[] aux1, Color[] aux2, Color[] hud, Color bgrcolor, Color[] spr, Color[] spr2)
+        /// <summary>
+        ///     Generates the palette shown on the title screen tab.
+        ///     Used to reload the palettes when switching to the screen editor and between its tabs.
+        /// </summary>
+        public void SetColorsPalette()
         {
-            // Palettes infos, color 0 of a palette is always transparent (the arrays contains 7 colors width wide)
-            // There is 16 color per line so 16*Y
+            // Palettes infos, color 0 of a palette is always transparent (the arrays contains 7 colors width wide).
+            // There is 16 color per line so 16*Y.
 
-            // Left side of the palette - Main, Animated
+            // Left side of the palette - Main, Animated.
+
+            Color bgrcolor = Color.FromArgb(0, 0, 0, 0);
+
+            // Set all the defaults to black.
+            for (int i = 0; i < 256; i++)
+            {
+                currentPalette[i] = Color.Black;
+            }
 
             // Main Palette, Location 0,2 : 35 colors [7x5]
             int k = 0;
@@ -1151,14 +1157,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 8; x++)
                 {
-                    currentPalette[x + (16 * y)] = main[k++];
+                    currentPalette[x + (16 * y)] = Palettes.OverworldMainPalettes[5][k++];
                 }
             }
 
             // Animated Palette, Location 0,7 : 7colors
             for (int x = 1; x < 8; x++)
             {
-                currentPalette[(16 * 7) + x] = animated[x - 1];
+                currentPalette[(16 * 7) + x] = Palettes.OverworldAnimatedPalettes[0][x - 1];
             }
 
             // Right side of the palette - Aux1, Aux2
@@ -1169,7 +1175,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 9; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = aux1[k++];
+                    currentPalette[x + (16 * y)] = Palettes.OverworldAuxPalettes[3][k++];
                 }
             }
 
@@ -1179,7 +1185,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 9; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = aux2[k++];
+                    currentPalette[x + (16 * y)] = Palettes.OverworldAuxPalettes[3][k++];
                 }
             }
 
@@ -1187,7 +1193,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             k = 0;
             for (int i = 0; i < 32; i++)
             {
-                currentPalette[i] = hud[i];
+                //currentPalette[i] = Palettes.HudPalettes[0][i];
             }
 
             // Hardcoded grass color (that might change to become invisible instead)
@@ -1203,7 +1209,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 8; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.SpritesAux1Palettes[1][k++];
+                    //currentPalette[x + (16 * y)] = Palettes.SpritesAux1Palettes[1][k++];
                 }
             }
 
@@ -1213,7 +1219,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 9; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.SpritesAux3Palettes[0][k++];
+                    //currentPalette[x + (16 * y)] = Palettes.SpritesAux3Palettes[0][k++];
                 }
             }
 
@@ -1233,7 +1239,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 8; x++)
                 {
-                    currentPalette[x + (16 * y)] = spr[k++];
+                    //currentPalette[x + (16 * y)] = Palettes.SpritesAux1Palettes[1][k++];
                 }
             }
 
@@ -1243,7 +1249,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 8; x++)
                 {
-                    currentPalette[x + (16 * y)] = spr2[k++];
+                    //currentPalette[x + (16 * y)] = Palettes.SpritesAux1Palettes[1][k++];
                 }
             }
 
@@ -1253,38 +1259,45 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int x = 1; x < 16; x++)
                 {
-                    currentPalette[x + (16 * y)] = Palettes.ArmorPalettes[0][k++];
+                    //currentPalette[x + (16 * y)] = Palettes.ArmorPalettes[0][k++];
                 }
             }
 
+            // Sword Palette
             k = 0;
             for (int x = 1; x < 8; x++)
             {
                 currentPalette[x + (16 * 8)] = Palettes.SpritesAux1Palettes[11][k++];
             }
 
-            try
+            for (int i = 1; i < 8; i++)
             {
-                ColorPalette pal = tilesBG1Bitmap.Palette;
-                for (int i = 0; i < 256; i++)
+                currentPalette[208 + i] = Palettes.Object3DPalettes[0][i];
+            }
+
+            for (int i = 0; i < 7; i++)
+            {
+                currentPalette[217 + i] = Palettes.SpritesAux2Palettes[5][i];
+            }
+
+            // Set all of the transparent colors.
+            ColorPalette pal = tilesBG1Bitmap.Palette;
+            for (int i = 0; i < 256; i++)
+            {
+                pal.Entries[i] = currentPalette[i];
+                if ((i % 8) == 0)
                 {
-                    pal.Entries[i] = currentPalette[i];
-                    if ((i % 16) == 0)
-                    {
-                        pal.Entries[i] = Color.Transparent;
-                    }
+                    pal.Entries[i] = Color.Transparent;
                 }
-
-                GFX.currentTileScreengfx16Bitmap.Palette = pal;
-
-                tilesBG1Bitmap.Palette = pal;
-                tilesBG2Bitmap.Palette = pal;
-                oamBGBitmap.Palette = pal;
             }
-            catch (Exception)
-            {
-                // TODO: Add error message here.
-            }
+
+            ExtraGFXBitmap.Palette = pal;
+            titleTriforceBitMap.Palette = pal;
+            currentPalette = pal.Entries;
+            GFX.currentTileScreengfx16Bitmap.Palette = pal;
+            tilesBG1Bitmap.Palette = pal;
+            tilesBG2Bitmap.Palette = pal;
+            oamBGBitmap.Palette = pal;
         }
 
         private void paletteBox_Paint(object sender, PaintEventArgs e)
@@ -1303,7 +1316,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             palSelected = (byte)(e.Y / 16);
             paletteBox.Refresh();
-            updateTiles();
+            UpdateTiles();
 
             if (editsprRadio.Checked)
             {
@@ -2118,18 +2131,18 @@ namespace ZeldaFullEditor.Gui.MainTabs
         /// <param name="e"></param>
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.ReLoadPalettes();
+            this.SetColorsPalette();
 
             if (tabControl1.SelectedIndex == 0)
             {
                 Buildtileset();
-                updateTiles();
+                UpdateTiles();
             }
             else if (tabControl1.SelectedIndex == 1)
             {
                 GFX.UpdatePalette(darkWorld);
                 Buildtilesetmap();
-                updateTiles();
+                UpdateTiles();
             }
             else if (tabControl1.SelectedIndex == 2)
             {
@@ -3246,7 +3259,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
         }
 
-        Color[] palettes = new Color[8];
+        Color[] palettes = new Color[16];
         private int selectedSheet = 0;
 
         private void paste24bpp_Click(object sender, EventArgs e)
@@ -3259,7 +3272,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             Bitmap b = (Bitmap)Clipboard.GetImage();
             if (b.Size.Width != 128 || (b.Size.Height != 40))
             {
-                MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+                MessageBox.Show("Your image must be 128x40 pixels", "Error");
 
                 return;
             }
@@ -3271,7 +3284,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 byte* gdata = (byte*)ExtraGFX16Ptr.ToPointer();
                 byte* data = (byte*)bd.Scan0.ToPointer();
                 // One line is 512 - palette (32 bytes per palettes).
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
                     //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
@@ -3285,7 +3298,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     // Advance by 64 pixel but merge them together.
                     for (int x = 0; x < 64; x++)
                     {
-                        byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
+                        byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) + 0 - (y * 512)]));
                         byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
                         byte mpix = (byte)((pix1 << 4) + pix2);
                         gdata[pos + (selectedSheet * Constants.UncompressedSheetSize)] = mpix;
@@ -3295,13 +3308,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
 
             b.UnlockBits(bd);
+
+            UpdateTiles();
             screenBox.Refresh();
             Extra4bppTilesBox.Refresh();
         }
 
         public byte matchPalette(Color c)
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 16; i++)
             {
                 if (palettes[i].R == c.R && palettes[i].G == c.G && palettes[i].B == c.B)
                 {
@@ -3340,7 +3355,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-            e.Graphics.DrawImage(ExtraGFXBitmap, new Rectangle(0, 0, 256, 576), new Rectangle(0, 0, 128, 288), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(ExtraGFXBitmap, new Rectangle(0, 0, 256, 640), new Rectangle(0, 0, 128, 320), GraphicsUnit.Pixel);
             e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
         }
 
@@ -3354,35 +3369,35 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         public unsafe void CopyTriforce()
         {
-            byte p = palSelected;
-
-            // ushort tempTile = selectedTile;
             byte* destPtr = (byte*)tiles8Ptr.ToPointer();
-            byte* srcPtr = (byte*)titleTriforceBitMap;
-            int xx = 0;
-            int yy = 0;
 
-            for (int i = 0; i < 1024; i++)
+            byte[] yourbitmapdata = new byte[128 * 32];
+            BitmapData bitmapData = titleTriforceBitMap.LockBits(new Rectangle(0, 0, 128, 32), ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+            Marshal.Copy(bitmapData.Scan0, yourbitmapdata, 0, 128 * 32);
+            titleTriforceBitMap.UnlockBits(bitmapData);
+
+            // Then use that for the copy if you wanna write at the sheet 13 you do (128*32)*14 (0xE000).
+            // Then you literally just do a copy for the amount of pixels you wanna copy so if 3 sheets (128*32)*3 (0x3000).
+
+            for (int i = 0; i < 0x1000; i++)
             {
-                for (int y = 0; y < 8; y++)
-                {
-                    for (int x = 0; x < 4; x++)
-                    {
-                        CopyTile(x, y, xx, yy, i, p, destPtr, srcPtr);
-                    }
-                }
-
-                xx += 8;
-                if (xx >= 128)
-                {
-                    yy += 1024;
-                    xx = 0;
-                }
+                destPtr[i + 0xE000] = yourbitmapdata[i];
             }
+        }
 
-            // Updated bitmap palette here
-            tiles8Bitmap.Palette = tilesBG1Bitmap.Palette;
-            tilesBox.Refresh();
+        public unsafe void CopyExtraGFX()
+        {
+            byte* destPtr = (byte*)tiles8Ptr.ToPointer();
+
+            byte[] yourbitmapdata = new byte[128 * 320];
+            BitmapData bitmapData = ExtraGFXBitmap.LockBits(new Rectangle(0, 0, 128, 320), ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+            Marshal.Copy(bitmapData.Scan0, yourbitmapdata, 0, 128 * 320);
+            ExtraGFXBitmap.UnlockBits(bitmapData);
+
+            for (int i = 0; i < 0xA000; i++)
+            {
+                destPtr[i + 0xF000] = yourbitmapdata[i];
+            }
         }
     }
 }
