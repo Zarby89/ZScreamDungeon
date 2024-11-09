@@ -479,7 +479,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 // 0x1000 per sheet.
                 for (int i = 0; i < 0xA000; i++)
                 {
-                    destPtr[i] = 0xF;
+                    destPtr[i] = 0x0;
                 }
             }
 
@@ -740,6 +740,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.Clear(Color.Black);
+
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.DrawImage(tiles8Bitmap, Constants.Rect_0_0_256_1344, Constants.Rect_0_0_128_672, GraphicsUnit.Pixel);
             int sx = selectedTile % 16;
@@ -1199,8 +1201,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             // Hardcoded grass color (that might change to become invisible instead)
             for (int i = 0; i < 8; i++)
             {
-                currentPalette[i * 16] = bgrcolor;
-                currentPalette[(i * 16) + 8] = bgrcolor;
+                //currentPalette[i * 16] = bgrcolor;
+                //currentPalette[(i * 16) + 8] = bgrcolor;
             }
 
             // Sprite Palettes
@@ -1284,13 +1286,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
             ColorPalette pal = tilesBG1Bitmap.Palette;
             for (int i = 0; i < 256; i++)
             {
-                pal.Entries[i] = currentPalette[i];
-
                 // Every 8th color:
                 if ((i % 8) == 0)
                 {
-                    pal.Entries[i] = Color.Transparent;
+                    currentPalette[i] = bgrcolor;
                 }
+
+                pal.Entries[i] = currentPalette[i];
             }
 
             ExtraGFXBitmap.Palette = pal;
@@ -3403,7 +3405,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     destPtr[i + 0xF000] = (byte)(yourbitmapdata[i] + (p * 16));
                 }
+                else
+                {
+                    destPtr[i + 0xF000] = 0;
+                }
             }
+
+            File.WriteAllBytes("file.bin", yourbitmapdata);
         }
 
         public static byte[] SnesTilesToPc8bppTiles(byte[] snesTiles, int nbrOfTiles, byte bpp = 3)
