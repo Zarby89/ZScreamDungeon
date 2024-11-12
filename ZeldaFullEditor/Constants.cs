@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
+using System.Net.Configuration;
 using System.Reflection.Emit;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -434,10 +436,17 @@ namespace ZeldaFullEditor
 
         // TEXT EDITOR RELATED CONSTANTS
         public static int gfx_font = 0x070000; // 2bpp format
+
         public static int text_data = 0x0E0000;
         public static int text_data_end = 0x0E7FFF;
         public static int text_data2 = 0x075F40;
         public static int text_data2_end = 0x0773FF;
+        public static int text_data3 = 0x000000; // find free space (half bank should give us
+        public static int text_data3_end = 0x000000; // use half of that bank reserve rest for other stuff
+        public static int text_expanded_check = 0x075436;
+        public static byte text_expanded_check_value = 0xA9; // if not A9 text has been expanded
+
+
         public static int pointers_dictionaries = 0x074703;
         public static int characters_width = 0x074ADF;
 

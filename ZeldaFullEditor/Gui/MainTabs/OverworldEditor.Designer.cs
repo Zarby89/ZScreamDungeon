@@ -64,17 +64,6 @@
             this.tilePictureBox = new System.Windows.Forms.PictureBox();
             this.scratchpadTab = new System.Windows.Forms.TabPage();
             this.scratchPicturebox = new System.Windows.Forms.PictureBox();
-            this.Tiles8 = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.priorityCheckbox = new System.Windows.Forms.CheckBox();
-            this.currentTile8Box = new System.Windows.Forms.PictureBox();
-            this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
-            this.palette8Box = new System.Windows.Forms.PictureBox();
-            this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
-            this.owspriteTab = new System.Windows.Forms.TabPage();
-            this.owspritePanel = new System.Windows.Forms.Panel();
             this.propertyTabpage = new System.Windows.Forms.TabPage();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
             this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
@@ -133,6 +122,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.owspriteTab = new System.Windows.Forms.TabPage();
+            this.owspritePanel = new System.Windows.Forms.Panel();
             this.entranceTabpage = new System.Windows.Forms.TabPage();
             this.owentrancesListbox = new System.Windows.Forms.ListBox();
             this.label29 = new System.Windows.Forms.Label();
@@ -150,6 +141,16 @@
             this.entranceLabel1 = new System.Windows.Forms.Label();
             this.exitTabpage = new System.Windows.Forms.TabPage();
             this.transportTabpage = new System.Windows.Forms.TabPage();
+            this.Tiles8 = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.priorityCheckbox = new System.Windows.Forms.CheckBox();
+            this.currentTile8Box = new System.Windows.Forms.PictureBox();
+            this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
+            this.palette8Box = new System.Windows.Forms.PictureBox();
+            this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
+            this.tabcontrolImagelist = new System.Windows.Forms.ImageList(this.components);
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.selectedTileLabel = new System.Windows.Forms.Label();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
@@ -168,7 +169,6 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.tabcontrolImagelist = new System.Windows.Forms.ImageList(this.components);
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -179,20 +179,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
             this.scratchpadTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
+            this.propertyTabpage.SuspendLayout();
+            this.mapGroupbox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).BeginInit();
+            this.mosaicGroupbox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
+            this.owspriteTab.SuspendLayout();
+            this.entranceTabpage.SuspendLayout();
+            this.entrancePropertiesGroupbox.SuspendLayout();
             this.Tiles8.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
-            this.owspriteTab.SuspendLayout();
-            this.propertyTabpage.SuspendLayout();
-            this.mapGroupbox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewsheetPicturebox)).BeginInit();
-            this.mosaicGroupbox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
-            this.entranceTabpage.SuspendLayout();
-            this.entrancePropertiesGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -534,9 +534,9 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.propertyTabpage);
             this.tabControl1.Controls.Add(this.tile16Tab);
             this.tabControl1.Controls.Add(this.scratchpadTab);
+            this.tabControl1.Controls.Add(this.propertyTabpage);
             this.tabControl1.Controls.Add(this.owspriteTab);
             this.tabControl1.Controls.Add(this.entranceTabpage);
             this.tabControl1.Controls.Add(this.exitTabpage);
@@ -602,124 +602,6 @@
             this.scratchPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseDown);
             this.scratchPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseMove);
             this.scratchPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseUp);
-            // 
-            // Tiles8
-            // 
-            this.Tiles8.Controls.Add(this.panel2);
-            this.Tiles8.Controls.Add(this.panel1);
-            this.Tiles8.Location = new System.Drawing.Point(4, 28);
-            this.Tiles8.Name = "Tiles8";
-            this.Tiles8.Size = new System.Drawing.Size(274, 619);
-            this.Tiles8.TabIndex = 2;
-            this.Tiles8.Text = "Tile 8";
-            this.Tiles8.UseVisualStyleBackColor = true;
-            // 
-            // panel2
-            // 
-            this.panel2.AutoScroll = true;
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 217);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(274, 402);
-            this.panel2.TabIndex = 3;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.priorityCheckbox);
-            this.panel1.Controls.Add(this.currentTile8Box);
-            this.panel1.Controls.Add(this.mirrorYCheckbox);
-            this.panel1.Controls.Add(this.palette8Box);
-            this.panel1.Controls.Add(this.mirrorXCheckbox);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(274, 217);
-            this.panel1.TabIndex = 2;
-            // 
-            // priorityCheckbox
-            // 
-            this.priorityCheckbox.AutoSize = true;
-            this.priorityCheckbox.Location = new System.Drawing.Point(75, 59);
-            this.priorityCheckbox.Name = "priorityCheckbox";
-            this.priorityCheckbox.Size = new System.Drawing.Size(57, 17);
-            this.priorityCheckbox.TabIndex = 5;
-            this.priorityCheckbox.Text = "Priority";
-            this.priorityCheckbox.UseVisualStyleBackColor = true;
-            this.priorityCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-            // 
-            // currentTile8Box
-            // 
-            this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
-            this.currentTile8Box.Name = "currentTile8Box";
-            this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
-            this.currentTile8Box.TabIndex = 3;
-            this.currentTile8Box.TabStop = false;
-            this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
-            // 
-            // mirrorYCheckbox
-            // 
-            this.mirrorYCheckbox.AutoSize = true;
-            this.mirrorYCheckbox.Location = new System.Drawing.Point(75, 36);
-            this.mirrorYCheckbox.Name = "mirrorYCheckbox";
-            this.mirrorYCheckbox.Size = new System.Drawing.Size(52, 17);
-            this.mirrorYCheckbox.TabIndex = 4;
-            this.mirrorYCheckbox.Text = "Flip Y";
-            this.mirrorYCheckbox.UseVisualStyleBackColor = true;
-            this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-            // 
-            // palette8Box
-            // 
-            this.palette8Box.Location = new System.Drawing.Point(3, 83);
-            this.palette8Box.Name = "palette8Box";
-            this.palette8Box.Size = new System.Drawing.Size(256, 128);
-            this.palette8Box.TabIndex = 2;
-            this.palette8Box.TabStop = false;
-            this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
-            this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
-            // 
-            // mirrorXCheckbox
-            // 
-            this.mirrorXCheckbox.AutoSize = true;
-            this.mirrorXCheckbox.Location = new System.Drawing.Point(75, 13);
-            this.mirrorXCheckbox.Name = "mirrorXCheckbox";
-            this.mirrorXCheckbox.Size = new System.Drawing.Size(52, 17);
-            this.mirrorXCheckbox.TabIndex = 3;
-            this.mirrorXCheckbox.Text = "Flip X";
-            this.mirrorXCheckbox.UseVisualStyleBackColor = true;
-            this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-            // 
-            // owspriteTab
-            // 
-            this.owspriteTab.AutoScroll = true;
-            this.owspriteTab.Controls.Add(this.owspritePanel);
-            this.owspriteTab.ImageIndex = 2;
-            this.owspriteTab.Location = new System.Drawing.Point(4, 28);
-            this.owspriteTab.Name = "owspriteTab";
-            this.owspriteTab.Size = new System.Drawing.Size(274, 619);
-            this.owspriteTab.TabIndex = 3;
-            this.owspriteTab.ToolTipText = "Sprites";
-            this.owspriteTab.UseVisualStyleBackColor = true;
-            // 
-            // owspritePanel
-            // 
-            this.owspritePanel.AutoScroll = true;
-            this.owspritePanel.AutoSize = true;
-            this.owspritePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.owspritePanel.Location = new System.Drawing.Point(0, 0);
-            this.owspritePanel.Name = "owspritePanel";
-            this.owspritePanel.Size = new System.Drawing.Size(274, 619);
-            this.owspritePanel.TabIndex = 23;
             // 
             // propertyTabpage
             // 
@@ -1481,6 +1363,28 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "GFX";
             // 
+            // owspriteTab
+            // 
+            this.owspriteTab.AutoScroll = true;
+            this.owspriteTab.Controls.Add(this.owspritePanel);
+            this.owspriteTab.ImageIndex = 2;
+            this.owspriteTab.Location = new System.Drawing.Point(4, 28);
+            this.owspriteTab.Name = "owspriteTab";
+            this.owspriteTab.Size = new System.Drawing.Size(274, 619);
+            this.owspriteTab.TabIndex = 3;
+            this.owspriteTab.ToolTipText = "Sprites";
+            this.owspriteTab.UseVisualStyleBackColor = true;
+            // 
+            // owspritePanel
+            // 
+            this.owspritePanel.AutoScroll = true;
+            this.owspritePanel.AutoSize = true;
+            this.owspritePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.owspritePanel.Location = new System.Drawing.Point(0, 0);
+            this.owspritePanel.Name = "owspritePanel";
+            this.owspritePanel.Size = new System.Drawing.Size(274, 619);
+            this.owspritePanel.TabIndex = 23;
+            // 
             // entranceTabpage
             // 
             this.entranceTabpage.Controls.Add(this.owentrancesListbox);
@@ -1696,6 +1600,114 @@
             this.transportTabpage.ToolTipText = "Transports";
             this.transportTabpage.UseVisualStyleBackColor = true;
             // 
+            // Tiles8
+            // 
+            this.Tiles8.Controls.Add(this.panel2);
+            this.Tiles8.Controls.Add(this.panel1);
+            this.Tiles8.Location = new System.Drawing.Point(4, 28);
+            this.Tiles8.Name = "Tiles8";
+            this.Tiles8.Size = new System.Drawing.Size(274, 619);
+            this.Tiles8.TabIndex = 2;
+            this.Tiles8.Text = "Tile 8";
+            this.Tiles8.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.AutoScroll = true;
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 217);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(274, 402);
+            this.panel2.TabIndex = 3;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.priorityCheckbox);
+            this.panel1.Controls.Add(this.currentTile8Box);
+            this.panel1.Controls.Add(this.mirrorYCheckbox);
+            this.panel1.Controls.Add(this.palette8Box);
+            this.panel1.Controls.Add(this.mirrorXCheckbox);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(274, 217);
+            this.panel1.TabIndex = 2;
+            // 
+            // priorityCheckbox
+            // 
+            this.priorityCheckbox.AutoSize = true;
+            this.priorityCheckbox.Location = new System.Drawing.Point(75, 59);
+            this.priorityCheckbox.Name = "priorityCheckbox";
+            this.priorityCheckbox.Size = new System.Drawing.Size(57, 17);
+            this.priorityCheckbox.TabIndex = 5;
+            this.priorityCheckbox.Text = "Priority";
+            this.priorityCheckbox.UseVisualStyleBackColor = true;
+            this.priorityCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            // 
+            // currentTile8Box
+            // 
+            this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
+            this.currentTile8Box.Name = "currentTile8Box";
+            this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
+            this.currentTile8Box.TabIndex = 3;
+            this.currentTile8Box.TabStop = false;
+            this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
+            // 
+            // mirrorYCheckbox
+            // 
+            this.mirrorYCheckbox.AutoSize = true;
+            this.mirrorYCheckbox.Location = new System.Drawing.Point(75, 36);
+            this.mirrorYCheckbox.Name = "mirrorYCheckbox";
+            this.mirrorYCheckbox.Size = new System.Drawing.Size(52, 17);
+            this.mirrorYCheckbox.TabIndex = 4;
+            this.mirrorYCheckbox.Text = "Flip Y";
+            this.mirrorYCheckbox.UseVisualStyleBackColor = true;
+            this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            // 
+            // palette8Box
+            // 
+            this.palette8Box.Location = new System.Drawing.Point(3, 83);
+            this.palette8Box.Name = "palette8Box";
+            this.palette8Box.Size = new System.Drawing.Size(256, 128);
+            this.palette8Box.TabIndex = 2;
+            this.palette8Box.TabStop = false;
+            this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
+            this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
+            // 
+            // mirrorXCheckbox
+            // 
+            this.mirrorXCheckbox.AutoSize = true;
+            this.mirrorXCheckbox.Location = new System.Drawing.Point(75, 13);
+            this.mirrorXCheckbox.Name = "mirrorXCheckbox";
+            this.mirrorXCheckbox.Size = new System.Drawing.Size(52, 17);
+            this.mirrorXCheckbox.TabIndex = 3;
+            this.mirrorXCheckbox.Text = "Flip X";
+            this.mirrorXCheckbox.UseVisualStyleBackColor = true;
+            this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            // 
+            // tabcontrolImagelist
+            // 
+            this.tabcontrolImagelist.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("tabcontrolImagelist.ImageStream")));
+            this.tabcontrolImagelist.TransparentColor = System.Drawing.Color.Transparent;
+            this.tabcontrolImagelist.Images.SetKeyName(0, "entrance.png");
+            this.tabcontrolImagelist.Images.SetKeyName(1, "exit.png");
+            this.tabcontrolImagelist.Images.SetKeyName(2, "spritie.png");
+            this.tabcontrolImagelist.Images.SetKeyName(3, "tile.png");
+            this.tabcontrolImagelist.Images.SetKeyName(4, "transport.png");
+            this.tabcontrolImagelist.Images.SetKeyName(5, "scratch.png");
+            this.tabcontrolImagelist.Images.SetKeyName(6, "properties_16xLG.png");
+            // 
             // thumbnailBox
             // 
             this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
@@ -1895,18 +1907,6 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
-            // tabcontrolImagelist
-            // 
-            this.tabcontrolImagelist.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("tabcontrolImagelist.ImageStream")));
-            this.tabcontrolImagelist.TransparentColor = System.Drawing.Color.Transparent;
-            this.tabcontrolImagelist.Images.SetKeyName(0, "entrance.png");
-            this.tabcontrolImagelist.Images.SetKeyName(1, "exit.png");
-            this.tabcontrolImagelist.Images.SetKeyName(2, "spritie.png");
-            this.tabcontrolImagelist.Images.SetKeyName(3, "tile.png");
-            this.tabcontrolImagelist.Images.SetKeyName(4, "transport.png");
-            this.tabcontrolImagelist.Images.SetKeyName(5, "scratch.png");
-            this.tabcontrolImagelist.Images.SetKeyName(6, "properties_16xLG.png");
-            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1928,15 +1928,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
             this.scratchpadTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
-            this.Tiles8.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
-            this.owspriteTab.ResumeLayout(false);
-            this.owspriteTab.PerformLayout();
             this.propertyTabpage.ResumeLayout(false);
             this.mapGroupbox.ResumeLayout(false);
             this.mapGroupbox.PerformLayout();
@@ -1944,10 +1935,19 @@
             this.mosaicGroupbox.ResumeLayout(false);
             this.mosaicGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
+            this.owspriteTab.ResumeLayout(false);
+            this.owspriteTab.PerformLayout();
             this.entranceTabpage.ResumeLayout(false);
             this.entranceTabpage.PerformLayout();
             this.entrancePropertiesGroupbox.ResumeLayout(false);
             this.entrancePropertiesGroupbox.PerformLayout();
+            this.Tiles8.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
             this.owPropertyPanel.PerformLayout();

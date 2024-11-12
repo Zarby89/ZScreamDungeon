@@ -2656,6 +2656,8 @@ namespace ZeldaFullEditor.Gui
 
         private void owentrancesListbox_DoubleClick(object sender, EventArgs e)
         {
+            entranceModeButton.PerformClick();
+
             EntranceOW eow = overworld.AllEntrances[owentrancesListbox.SelectedIndex];
 
             int xView = (eow.X - (splitContainer1.Panel2.Width/2));
