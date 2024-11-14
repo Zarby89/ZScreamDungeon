@@ -3329,7 +3329,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
 
-            return 1;
+            return 0;
         }
 
         private void copy24bpp_Click(object sender, EventArgs e)
@@ -3431,6 +3431,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                                 snesTiles[(line * 2) + 16 + (i * 0x20)],
                                 snesTiles[(line * 2) + 17 + (i * 0x20)]
                             };
+
                             for (int pixel = 7; pixel >= 0; pixel--)
                             {
 
@@ -3445,7 +3446,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             }
                         }
                     }
+
                     break;
+
                 case 3:
                     for (int i = 0; i < nbrOfTiles; i++)
                     {
@@ -3457,6 +3460,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                                 snesTiles[(line * 2) + 1 + (i * 0x18)],
                                 snesTiles[(line) + 16 + (i * 0x18)]
                             };
+
                             for (int pixel = 7; pixel >= 0; pixel--)
                             {
 
@@ -3469,6 +3473,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             }
                         }
                     }
+
                     break;
 
                 case 2:
@@ -3481,6 +3486,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                                 snesTiles[(line * 2) + (i * 0x10)],
                                 snesTiles[(line * 2) + 1 + (i * 0x10)]
                             };
+
                             for (int pixel = 7; pixel >= 0; pixel--)
                             {
 
@@ -3491,6 +3497,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             }
                         }
                     }
+
                     break;
 
                 case 1:
@@ -3502,6 +3509,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             {
                                 snesTiles[(line) + (i * 0x08)],
                             };
+
                             for (int pixel = 7; pixel >= 0; pixel--)
                             {
                                 tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)(pixelvalues[0] & 0x01);
@@ -3509,6 +3517,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             }
                         }
                     }
+
                     break;
             }
 
