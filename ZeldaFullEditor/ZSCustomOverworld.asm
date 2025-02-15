@@ -49,8 +49,15 @@ pushpc
 incsrc HardwareRegisters.asm
 
 ; Free RAM
-AnimatedTileGFXSet = $0FC0
-TransGFXModuleIndex = $0CF3
+AnimatedTileGFXSet = $0FC0 ; [0x01]
+TransGFXModuleFrame = $0CF3 ; [0x01]
+TransGFXModule_PriorSheets = $04CB ; [0x08] May use more in the future here.
+NewNMITarget1 = $04D3 ; [0x02]
+NewNMISource1 = $04D5 ; [0x02]
+NewNMICount1 = $04D7 ; [0x02]
+NewNMITarget2 = $04D9 ; [0x02]
+NewNMISource2 = $04DB ; [0x02]
+NewNMICount2 = $04DD ; [0x02]
 
 ; Hooks
 Sound_LoadLightWorldSongBank               = $008913
@@ -61,6 +68,7 @@ DecompOwAnimatedTiles                      = $00D394
 GetAnimatedSpriteTile                      = $00D4DB
 GetAnimatedSpriteTile_variable             = $00D4ED
 LoadTransAuxGFX_sprite_continue            = $00D706
+PrepTransAuxGFX                            = $00DF1A
 Do3To4High16Bit                            = $00DF4F
 Do3To4Low16Bit                             = $00DFB8
 InitTilesets                               = $00E19B
@@ -344,19 +352,19 @@ Pool:
 
     org $288140 ; $140140
     .EnableBGColor ; 0x01
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         db $01
         endif
 
     org $288141 ; $140141
     .EnableMainPalette ; 0x01
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         db $01
         endif
     
     org $288142 ; $140142
     .EnableMosaic ; 0x01 Unused for now.
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         db $01
         endif
 
@@ -364,7 +372,7 @@ Pool:
     ; transitions. Default is $FF.
     org $288143 ; $140143
     .EnableAnimated ; 0x01
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         db $01
         endif
     
@@ -372,7 +380,7 @@ Pool:
     ; transitions. Default is $FF.
     org $288144 ; $140144
     .EnableSubScreenOverlay ; 0x01
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         db $01
         endif
 
@@ -387,7 +395,7 @@ Pool:
     ; phase. Default is $FF.
     org $288146 ; $140146
     .EnableBeginningRain ; 0x01
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         db $FF
         endif
 
@@ -403,7 +411,7 @@ Pool:
     ; transitions. Default is $FF.
     org $288148 ; $140143
     .EnableTransitionGFXGroupLoad ; 0x01
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         db $01
         endif
 
@@ -411,7 +419,7 @@ Pool:
     ; hard code it here for now. Defualt is $2669 which is the vanilla LW green.
     org $288149 ; $140149
     .BGColorTable_Bridge ; 0x02
-        if !UseVanillaPool == 1
+        if !UseVanillaPool > 0
         dw $2669
         endif
 
@@ -474,7 +482,7 @@ Pool:
         db $08, $08, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
-        db $00, $00, $00, $00, $0F, $00, $00, $00
+        db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         ; DW
@@ -914,6 +922,7 @@ ReadAnimatedTable:
     AND.w #$00C0 : LSR #3 : TAY ; (Area / 8) = LW, DW, or SW *8
     SEP #$20 ; Set A in 8bit mode.
 
+    ; TODO: For the sake of speed, remove these checks.
     ; $00 crashes the game so just double check that.
     LDA.w Pool_AnimatedTable, X : BNE .not00
         LDA.w Pool_DefaultGFXGroups_sheet7, Y
@@ -1036,7 +1045,9 @@ ActivateSubScreen:
     .noRain
     
     ; Get the overlay value for this overworld area.
-    JSL.l ReadOverlayArray : CMP.w #$00FF : BEQ .normal
+    ; ReadOverlayArray 
+    LDA.b $8A : ASL : TAX
+    LDA.w Pool_OverlayTable, X : CMP.w #$00FF : BEQ .normal
         ; If not $FF, assume we want an overlay.
 
         .turnOn
@@ -1863,7 +1874,9 @@ EnableSubScreenCheckForPyramid:
 {
     REP #$20 ; Set A in 16bit mode.
 
-    JSL.l ReadOverlayArray
+    ; ReadOverlayArray
+    LDA.b $8A : ASL : TAX
+    LDA.w Pool_OverlayTable, X
         
     CMP.w #$0096 : BNE .notPyramidOrCastle
         SEP #$20 ; Set A in 8bit mode.
@@ -2080,7 +2093,9 @@ ReadOverlayArray2:
     ; A is already 16 bit here.
     REP #$10 ; Set X and Y in 16bit mode.
 
-    JSL.l ReadOverlayArray : TAY
+    ; ReadOverlayArray
+    LDA.b $8A : ASL : TAX
+    LDA.w Pool_OverlayTable, X : TAY
 
     SEP #$10 ; Set X and Y in 8bit mode.
 
@@ -2348,82 +2363,138 @@ NewOverworld_FinishTransGfx:
 {
     PHB : PHK : PLB
     
-    ; First frame
-    LDA.w TransGFXModuleIndex : BNE .notLoad
-        JSR CheckForChangeGraphicsTransitionLoad
+    LDA.w TransGFXModuleFrame : BNE .notFirstFrame
+        JSR.w CheckForChangeGraphicsTransitionLoad
 
-        ; Trigger NMI module: NMI_UpdateBgChrSlots_3_to_4.
-        LDA.b #$09
+        ; Prep the new static gfx tile sets.
+        JSR.w LoadTransMainGFX
 
-        ; Signal for a graphics transfer in the NMI routine later.
-        STA.b $17 : STA.w $0710
+        ; A check to see if we need to Prep the GFX in the buffer. 
+        ; Saves about a frame.
+        LDA.b $04 : BEQ .dontPrep
+            JSR.w PrepTransMainGFX
+
+        .dontPrep
 
         ; Move on to next submodule.
         INC.b $11
 
-        ; Move on to next subsubmodule.
-        INC.w TransGFXModuleIndex
+    .notFirstFrame
 
-        BRA .return
+    LDA.b #$08 : STA.b $06
 
-    .notLoad
+    JSR.w BlockGFXCheck
 
-    ; Second frame
-    CMP.b #$01 : BNE .notFinish
-        ; Trigger NMI module: NMI_UpdateBgChrSlots_5_to_6.
-        LDA.b #$0A
-
-        ; Signal for a graphics transfer in the NMI routine later.
-        STA.b $17 : STA.w $0710
-
-        ; Don't move on to the next submodule yet.
-
-        ; Move on to next subsubmodule.
-        INC.w TransGFXModuleIndex
-
-        BRA .return
-
-    .notFinish
-
-    ; Third frame
-    CMP.b #$02 : BNE .notMain1
-        LDA.w Pool_EnableTransitionGFXGroupLoad : BEQ .moveOn
-            ; Prep the new static gfx tile sets.
-            JSR LoadTransMainGFX
-            JSR NewPrepTransAuxGFX
-
-            ; Trigger NMI module: NMI_UpdateChr_Bg0.
-            LDA.b #$0E
-
-            ; Signal for a graphics transfer in the NMI routine later.
-            STA.b $17 : STA.w $0710
-
-            ; Move on to next subsubmodule.
-            INC.w TransGFXModuleIndex
-
-            BRA .return
-
-    .notMain1
-
-    ; Fourth frame
-    LDA.w Pool_EnableTransitionGFXGroupLoad : BEQ .moveOn
-        ; Trigger NMI module: NMI_DoNothing which we replaced with
-        ; NMI_UpdateChr_Bg2HalfAndAnimated down below.
-        LDA.b #$06
-
-        ; Signal for a graphics transfer in the NMI routine later.
-        STA.b $17 : STA.w $0710
-
-    .moveOn
-
-    ; Move on to next submodule.
-    INC.b $11
+    ; If we haven't made it to frame 8, don't move on yet.
+    LDA.w TransGFXModuleFrame : CMP.b #$08 : BCC .return
+        ; Move on to next submodule.
+        INC.b $11
 
     .return
 
     PLB
 
     RTL
+}
+
+BlockGFXCheck:
+{
+    REP #$30
+    ; $0E = $8A * 8 
+    LDA.b $8A : AND.w #$00FF : ASL #3 : STA.b $0E
+
+    STZ.b $02
+    STZ.b $04
+    STZ.w NewNMITarget1
+    STZ.w NewNMISource1
+    STZ.w NewNMICount1
+    STZ.w NewNMITarget2
+    STZ.w NewNMISource2
+    STZ.w NewNMICount2
+
+    SEP #$30
+
+    LDY.w TransGFXModuleFrame
+    .loop
+
+        ; Get the sheet that needs to be loaded.
+        LDA.w .sheetLoadOrder, Y : STA $02
+        REP #$30
+        AND.w #$00FF : CLC : ADC.b $0E : TAX
+        SEP #$20
+        LDA.l Pool_OWGFXGroupTable_sheet0, X : STA.b $00
+        SEP #$10
+
+        ; Check if it is #$FF.
+        CMP.b #$FF : BEQ .dontLoadThisSheet
+            ; Get the sheet that is currently loaded.
+            LDX.b $02
+            LDA.w TransGFXModule_PriorSheets, X
+
+            ; Check if the sheets are the same.
+            CMP.b $00 : BEQ .dontLoadThisSheet
+                LDA.b $00 : STA.w TransGFXModule_PriorSheets, X
+
+                ; Trigger NMI module: NMI_DoNothing which we replaced with
+                ; NMI_UpdateChr_Bg2HalfAndAnimated down below.
+                LDA.b #$06
+
+                ; Signal for a graphics transfer in the NMI routine later.
+                STA.b $17 : STA.w $0710
+
+                TXA : ASL : TAX
+
+                REP #$20
+
+                LDA.b $04 : BNE .second
+                    LDA.w .sheetTarget, X : STA.w NewNMITarget1
+                    LDA.w .sheetSource, X : STA.w NewNMISource1
+                    LDA.w .sheetCount, X  : STA.w NewNMICount1
+
+                    SEP #$20
+
+                    INC.b $04
+
+                    BRA .first
+
+                .second
+
+                LDA.w .sheetTarget, X : STA.w NewNMITarget2
+                LDA.w .sheetSource, X : STA.w NewNMISource2
+                LDA.w .sheetCount, X  : STA.w NewNMICount2
+
+                SEP #$20
+
+                INC.b $04
+
+                INY
+
+                BRA .twoReady
+
+                .first
+        .dontLoadThisSheet
+    INY : CPY.b $06 : BCC .loop
+
+    .twoReady
+    
+    STY.w TransGFXModuleFrame
+
+    RTS
+
+    .sheetLoadOrder
+    db $03, $04, $05, $06, $00, $01, $02, $07
+
+    .sheetTarget
+    dw #$2000, #$2400, #$2800, #$2C00, #$3000, #$3400, #$3800, #$3E00
+
+    .sheetSource
+    dw #$2000, #$2800, #$3000, #$0000, #$0800, #$1000, #$1800, #$3C00
+
+    .sheetCount
+    dw #$0800, #$0800, #$0800, #$0800, #$0800, #$0800, #$0800, #$0400
+
+    ; Only copy the latter half of the sheet to prevent the animated tiles
+    ; from flickering on transition.
 }
 
 CheckForChangeGraphicsTransitionLoad:
@@ -2529,6 +2600,7 @@ CheckForChangeGraphicsTransitionLoad:
     ; during mosaic transition.
     STA.l $7EC300 : STA.l $7EC340
 
+    ; Write the fixed color.
     LDX.w #$4020 : STX.b $9C
     LDX.w #$8040 : STX.b $9D
         
@@ -2537,7 +2609,9 @@ CheckForChangeGraphicsTransitionLoad:
         
     ; Change the fixed color depending on our sub screen overlay.
     ; Lost woods and skull woods.
-    JSL.l ReadOverlayArray : CMP.w #$009D : BEQ .noSpecialColor
+    ; ReadOverlayArray
+    LDA.b $8A : ASL : TAX
+    LDA.w Pool_OverlayTable, X : CMP.w #$009D : BEQ .noSpecialColor
         CMP.w #$0040 : BEQ .noSpecialColor
             ; Pyramid area.
             CMP.w #$0096 : BEQ .specialColor
@@ -2555,6 +2629,7 @@ CheckForChangeGraphicsTransitionLoad:
                 
             .specialColor
 
+            ; Write the fixed color.
             STX.b $9C
             STY.b $9D
         
@@ -2663,10 +2738,12 @@ Palette_MultiLoad2:
 LoadTransMainGFX:
 {
     ; Setup the decompression buffer address.
-    ; $00[3] = $7E6000
+    ; $00[3] = $7E4000
     STZ.b $00
     LDA.b #$40 : STA.b $01
     LDA.b #$7E : STA.b $02
+
+    STZ.b $04
 
     REP #$30
     ; $0E = $8A * 8 
@@ -2677,14 +2754,17 @@ LoadTransMainGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BEQ .noBgGfxChange0
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+0 : BEQ .noBgGfxChange0
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange0
 
     SEP #$10
+
     ; Increment buffer address by 0x0600.
     LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
     REP #$10
@@ -2693,14 +2773,17 @@ LoadTransMainGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BEQ .noBgGfxChange1 
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+1 : BEQ .noBgGfxChange1
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange1
 
     SEP #$10
+
     ; Increment buffer address by 0x0600.
     LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
     REP #$10
@@ -2709,14 +2792,17 @@ LoadTransMainGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BEQ .noBgGfxChange2
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+2 : BEQ .noBgGfxChange2
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange2
 
     SEP #$10
+
     ; Increment buffer address by 0x0600.
     LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
     REP #$10
@@ -2725,10 +2811,12 @@ LoadTransMainGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BEQ .noBgGfxChange7
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+7 : BEQ .noBgGfxChange7
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange7
 
@@ -2737,16 +2825,16 @@ LoadTransMainGFX:
 
 ; Prepares the transition graphics to be transferred to VRAM during NMI.
 ; This could occur either during this frame or any subsequent frame.
-NewPrepTransAuxGFX:
+PrepTransMainGFX:
 {
     ; Set bank for source address.
     LDA.b #$7E : STA.b $02 : STA.b $05
     
     REP #$31
     
-    ; Source address is $7E6000, number of tiles is 0x40,
+    ; Source address is $7E4000, number of tiles is 0x40,
     ; base address is $7F0000.
-    LDX.w #$0000
+    LDX.w #$2000
     LDY.w #$0040
     LDA.w #$4000
     
@@ -3286,6 +3374,11 @@ org $008C8A ; $000C8A
 
 warnpc $008C8C ; $000C8C
 
+org $02ABB4
+    JSL.l NewPrepTransAuxGFX
+
+warnpc $02ABB8 ; $012BB8
+
 ; Replaces the UNREACHABLE_00D585 which is unused.
 org $00D585 ; $005585
 Decomp_bg_variableLONG:
@@ -3376,6 +3469,8 @@ NewLoadTransAuxGFX:
     LDA.b #$60 : STA.b $01
     LDA.b #$7E : STA.b $02
 
+    STZ.b $04
+
     REP #$30
     ; $0E = $8A * 8 
     LDA.b $8A : AND.w #$00FF : ASL #3 : STA.b $0E
@@ -3385,10 +3480,12 @@ NewLoadTransAuxGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BEQ .noBgGfxChange3
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+3 : BEQ .noBgGfxChange3
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange3
 
@@ -3401,10 +3498,12 @@ NewLoadTransAuxGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BEQ .noBgGfxChange4
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+4 : BEQ .noBgGfxChange4
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange4
 
@@ -3417,10 +3516,12 @@ NewLoadTransAuxGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BEQ .noBgGfxChange5
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+5 : BEQ .noBgGfxChange5
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange5
 
@@ -3433,10 +3534,12 @@ NewLoadTransAuxGFX:
     LDX.b $0E
     LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BEQ .noBgGfxChange6
         SEP #$10
-        
-        TAY
-        
-        JSL.l Decomp_bg_variableLONG
+        CMP.w TransGFXModule_PriorSheets+6 : BEQ .noBgGfxChange6
+            TAY
+
+            INC.b $04
+            
+            JSL.l Decomp_bg_variableLONG
 
     .noBgGfxChange6
 
@@ -3445,7 +3548,7 @@ NewLoadTransAuxGFX:
     LDA.b $01 : CLC : ADC.b #$06 : STA.b $01
     REP #$10
 
-    STZ.w TransGFXModuleIndex
+    STZ.w TransGFXModuleFrame
 
     PLB
 
@@ -3458,50 +3561,47 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
     PHB : PHK : PLB
 
     REP #$20
-    
-    ; Sheet 1
-    ; Set VRAM target to $3000 (word).
-    LDA.w #$2800 : STA.w SNES.VRAMAddrReadWriteLow
-    
-    ; Increment on writes to SNES.VRAMDataWriteHigh.
-    LDY.b #$80 : STY.w SNES.VRAMAddrIncrementVal
-    
-    ; Target is SNES.VRAMDataWriteLow, write two registers once
-    ; (SNES.VRAMDataWriteLow / SNES.VRAMDataWriteHigh).
-    LDA.w #$1801 : STA.w DMA.0_TransferParameters
-    
-    ; Source address is $7F1000.
-    LDA.w #$1000 : STA.w DMA.0_SourceAddrOffsetLow
-    LDY.b #$7F   : STY.w DMA.0_SourceAddrBank
-    
-    ; Write 0x0800 bytes.
-    LDA.w #$0800 : STA.w DMA.0_TransferSizeLow
-    
-    ; Transfer data on channel 0.
-    LDY.b #$01 : STY.w SNES.DMAChannelEnable
 
-    ; Sheet 2
-    ; Set VRAM target to $3000 (word).
-    LDA.w #$3E00 : STA.w SNES.VRAMAddrReadWriteLow
-    
     ; Increment on writes to SNES.VRAMDataWriteHigh.
     LDY.b #$80 : STY.w SNES.VRAMAddrIncrementVal
-    
+        
     ; Target is SNES.VRAMDataWriteLow, write two registers once
     ; (SNES.VRAMDataWriteLow / SNES.VRAMDataWriteHigh).
     LDA.w #$1801 : STA.w DMA.0_TransferParameters
-    
-    ; Only copy the latter half of the sheet to prevent the animated tiles from
-    ; flickering on transition.
-    ; Source address is $7F1C00.
-    LDA.w #$1C00 : STA.w DMA.0_SourceAddrOffsetLow
-    LDY.b #$7F   : STY.w DMA.0_SourceAddrBank
-    
-    ; Write 0x08400 bytes.
-    LDA.w #$0400 : STA.w DMA.0_TransferSizeLow
-    
-    ; Transfer data on channel 0.
-    LDY.b #$01 : STY.w SNES.DMAChannelEnable
+
+    LDA.w NewNMICount1 : BEQ .skipFirst
+        ; Sheet 1
+        ; Target address
+        LDA.w NewNMITarget1 : STA.w SNES.VRAMAddrReadWriteLow
+        
+        ; Source address
+        LDA.w NewNMISource1 : STA.w DMA.0_SourceAddrOffsetLow
+        LDY.b #$7F          : STY.w DMA.0_SourceAddrBank
+        
+        ; Write count
+        LDA.w NewNMICount1 : STA.w DMA.0_TransferSizeLow
+        
+        ; Transfer data on channel 0.
+        LDY.b #$01 : STY.w SNES.DMAChannelEnable
+
+    .skipFirst
+
+    LDA.w NewNMICount2 : BEQ .skipSecond
+        ; Sheet 2
+        ; Target address
+        LDA.w NewNMITarget2 : STA.w SNES.VRAMAddrReadWriteLow
+        
+        ; Source address
+        LDA.w NewNMISource2 : STA.w DMA.0_SourceAddrOffsetLow
+        LDY.b #$7F          : STY.w DMA.0_SourceAddrBank
+        
+        ; Write count
+        LDA.w NewNMICount2 : STA.w DMA.0_TransferSizeLow
+        
+        ; Transfer data on channel 0.
+        LDY.b #$01 : STY.w SNES.DMAChannelEnable
+
+    .skipSecond
     
     SEP #$20
     
@@ -3511,6 +3611,17 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
 
     RTL
 }
+
+NewPrepTransAuxGFX:
+{
+    LDA.b $04 : BEQ .dontPrep
+        JSL.l PrepTransAuxGFX
+
+    .dontPrep
+
+    RTL
+}
+
 pushpc
 
 ; ==============================================================================
@@ -3594,56 +3705,56 @@ InitTilesetsLongCalls:
 
     .notFF0
     
-    STA.b $0D
+    STA.b $0D : STA.w TransGFXModule_PriorSheets+0
 
     LDA.w Pool_OWGFXGroupTable_sheet1, X : CMP.b #$FF : BNE .notFF1
         LDA.w Pool_DefaultGFXGroups_sheet1, Y
 
     .notFF1
     
-    STA.b $0C
+    STA.b $0C : STA.w TransGFXModule_PriorSheets+1
 
     LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BNE .notFF2
         LDA.w Pool_DefaultGFXGroups_sheet2, Y
 
     .notFF2
 
-    STA.b $0B
+    STA.b $0B : STA.w TransGFXModule_PriorSheets+2
     
     LDA.w Pool_OWGFXGroupTable_sheet3, X : CMP.b #$FF : BNE .notFF3
         LDA.w Pool_DefaultGFXGroups_sheet3, Y
 
     .notFF3
     
-    STA.l $7EC2F8 : STA.b $0A
+    STA.l $7EC2F8 : STA.b $0A : STA.w TransGFXModule_PriorSheets+3
 
     LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BNE .notFF4
         LDA.w Pool_DefaultGFXGroups_sheet4, Y
 
     .notFF4
     
-    STA.l $7EC2F9 : STA.b $09
+    STA.l $7EC2F9 : STA.b $09 : STA.w TransGFXModule_PriorSheets+4
 
     LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BNE .notFF5
         LDA.w Pool_DefaultGFXGroups_sheet5, Y
 
     .notFF5
     
-    STA.l $7EC2FA : STA.b $08
+    STA.l $7EC2FA : STA.b $08 : STA.w TransGFXModule_PriorSheets+5
 
     LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
 
     .notFF6
     
-    STA.l $7EC2FB : STA.b $07
+    STA.l $7EC2FB : STA.b $07 : STA.w TransGFXModule_PriorSheets+6
     
     LDA.w Pool_OWGFXGroupTable_sheet7, X : CMP.b #$FF : BNE .notFF7
         LDA.w Pool_DefaultGFXGroups_sheet7, Y
 
     .notFF7
     
-    STA.b $06
+    STA.b $06 : STA.w TransGFXModule_PriorSheets+7
 
     PLB
 
@@ -3664,28 +3775,28 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls:
 
     .notFF3
 
-    STA.l $7EC2F8
+    STA.l $7EC2F8 : STA.w TransGFXModule_PriorSheets+3
 
     LDA.w Pool_OWGFXGroupTable_sheet4, X : CMP.b #$FF : BNE .notFF4
         LDA.w Pool_DefaultGFXGroups_sheet4, Y
 
     .notFF4
 
-    STA.l $7EC2F9
+    STA.l $7EC2F9 : STA.w TransGFXModule_PriorSheets+4
 
     LDA.w Pool_OWGFXGroupTable_sheet5, X : CMP.b #$FF : BNE .notFF5
         LDA.w Pool_DefaultGFXGroups_sheet5, Y
 
     .notFF5
 
-    STA.l $7EC2FA
+    STA.l $7EC2FA : STA.w TransGFXModule_PriorSheets+5
 
     LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
 
     .notFF6
 
-    STA.l $7EC2FB
+    STA.l $7EC2FB : STA.w TransGFXModule_PriorSheets+6
 
     PLB
 
@@ -3707,14 +3818,14 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls2:
 
     .notFF1
 
-    STA.b $08
+    STA.b $08 : STA.w TransGFXModule_PriorSheets+1
 
     LDA.w Pool_OWGFXGroupTable_sheet0, X : CMP.b #$FF : BNE .notFF0
         LDA.w Pool_DefaultGFXGroups_sheet0, Y
 
     .notFF0
 
-    TAY
+    TAY : STA.w TransGFXModule_PriorSheets+0
 
     SEP #$10
 
@@ -3738,14 +3849,14 @@ AnimateMirrorWarp_DecompressBackgroundsALongCalls:
 
     .notFF3
     
-    STA.b $08
+    STA.b $08 : STA.w TransGFXModule_PriorSheets+3
 
     LDA.w Pool_OWGFXGroupTable_sheet2, X : CMP.b #$FF : BNE .notFF2
         LDA.w Pool_DefaultGFXGroups_sheet2, Y
 
     .notFF2
     
-    TAY
+    TAY : STA.w TransGFXModule_PriorSheets+2
 
     SEP #$10
 
@@ -3769,14 +3880,14 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
 
     .notFF7
 
-    STA.b $08 : STA.w AnimatedTileGFXSet
+    STA.b $08 : STA.w AnimatedTileGFXSet : STA.w TransGFXModule_PriorSheets+7
 
     LDA.w Pool_OWGFXGroupTable_sheet6, X : CMP.b #$FF : BNE .notFF6
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
 
     .notFF6
     
-    TAY
+    TAY  : STA.w TransGFXModule_PriorSheets+6
 
     SEP #$10
 
@@ -3785,11 +3896,20 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
     ; $005A3A Skip normal sheet load.
     JML $00DA3A
 }
+
 pushpc
+
+; ==============================================================================
+
+; $013CFB
+; In the fog scrolling code, there is a bit that checks for the turtle rock area.
+; If left unchanged, this will prevent the fog and lava from working poperly in
+; this area.
 
 ; ==============================================================================
 
 ; NOTE: A second pullpc is needed here just in case someone incorperates this
 ; ASM into their own code base.
+
 pullpc
 pullpc
