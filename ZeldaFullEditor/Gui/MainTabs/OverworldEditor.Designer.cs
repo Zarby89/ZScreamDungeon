@@ -181,8 +181,7 @@
             this.toolStripButton1});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
             this.owToolStrip.Name = "owToolStrip";
-            this.owToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.owToolStrip.Size = new System.Drawing.Size(2171, 25);
+            this.owToolStrip.Size = new System.Drawing.Size(1184, 25);
             this.owToolStrip.TabIndex = 0;
             this.owToolStrip.Text = "toolStrip1";
             // 
@@ -451,8 +450,7 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 219);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 130);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -464,9 +462,8 @@
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.thumbnailBox);
-            this.splitContainer1.Size = new System.Drawing.Size(2171, 1108);
+            this.splitContainer1.Size = new System.Drawing.Size(1184, 589);
             this.splitContainer1.SplitterDistance = 288;
-            this.splitContainer1.SplitterWidth = 7;
             this.splitContainer1.TabIndex = 1;
             // 
             // tabControl1
@@ -476,10 +473,9 @@
             this.tabControl1.Controls.Add(this.Tiles8);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(288, 1108);
+            this.tabControl1.Size = new System.Drawing.Size(288, 589);
             this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -487,11 +483,10 @@
             // 
             this.tabPage1.AutoScroll = true;
             this.tabPage1.Controls.Add(this.tilePictureBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 33);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.tabPage1.Size = new System.Drawing.Size(280, 1071);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(280, 563);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tile 16";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -499,9 +494,8 @@
             // tilePictureBox
             // 
             this.tilePictureBox.Location = new System.Drawing.Point(0, 0);
-            this.tilePictureBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tilePictureBox.Name = "tilePictureBox";
-            this.tilePictureBox.Size = new System.Drawing.Size(466, 7562);
+            this.tilePictureBox.Size = new System.Drawing.Size(254, 4096);
             this.tilePictureBox.TabIndex = 0;
             this.tilePictureBox.TabStop = false;
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
@@ -513,21 +507,19 @@
             // 
             this.tabPage2.AutoScroll = true;
             this.tabPage2.Controls.Add(this.scratchPicturebox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 33);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.tabPage2.Size = new System.Drawing.Size(520, 1050);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(149, 574);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tile 16 ScratchPad";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // scratchPicturebox
             // 
-            this.scratchPicturebox.Location = new System.Drawing.Point(6, 6);
-            this.scratchPicturebox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.scratchPicturebox.Location = new System.Drawing.Point(3, 3);
             this.scratchPicturebox.Name = "scratchPicturebox";
-            this.scratchPicturebox.Size = new System.Drawing.Size(469, 6646);
+            this.scratchPicturebox.Size = new System.Drawing.Size(256, 3600);
             this.scratchPicturebox.TabIndex = 1;
             this.scratchPicturebox.TabStop = false;
             this.scratchPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.scratchPicturebox_Paint);
@@ -539,10 +531,9 @@
             // 
             this.Tiles8.Controls.Add(this.panel2);
             this.Tiles8.Controls.Add(this.panel1);
-            this.Tiles8.Location = new System.Drawing.Point(4, 33);
-            this.Tiles8.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Tiles8.Location = new System.Drawing.Point(4, 22);
             this.Tiles8.Name = "Tiles8";
-            this.Tiles8.Size = new System.Drawing.Size(520, 1050);
+            this.Tiles8.Size = new System.Drawing.Size(149, 574);
             this.Tiles8.TabIndex = 2;
             this.Tiles8.Text = "Tile 8";
             this.Tiles8.UseVisualStyleBackColor = true;
@@ -552,18 +543,16 @@
             this.panel2.AutoScroll = true;
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 401);
-            this.panel2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel2.Location = new System.Drawing.Point(0, 217);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(520, 649);
+            this.panel2.Size = new System.Drawing.Size(149, 357);
             this.panel2.TabIndex = 3;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(6, 6);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(469, 1890);
+            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
@@ -578,18 +567,16 @@
             this.panel1.Controls.Add(this.mirrorXCheckbox);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(520, 401);
+            this.panel1.Size = new System.Drawing.Size(149, 217);
             this.panel1.TabIndex = 2;
             // 
             // priorityCheckbox
             // 
             this.priorityCheckbox.AutoSize = true;
-            this.priorityCheckbox.Location = new System.Drawing.Point(138, 109);
-            this.priorityCheckbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.priorityCheckbox.Location = new System.Drawing.Point(75, 59);
             this.priorityCheckbox.Name = "priorityCheckbox";
-            this.priorityCheckbox.Size = new System.Drawing.Size(85, 28);
+            this.priorityCheckbox.Size = new System.Drawing.Size(57, 17);
             this.priorityCheckbox.TabIndex = 5;
             this.priorityCheckbox.Text = "Priority";
             this.priorityCheckbox.UseVisualStyleBackColor = true;
@@ -597,10 +584,9 @@
             // 
             // currentTile8Box
             // 
-            this.currentTile8Box.Location = new System.Drawing.Point(9, 24);
-            this.currentTile8Box.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
             this.currentTile8Box.Name = "currentTile8Box";
-            this.currentTile8Box.Size = new System.Drawing.Size(117, 118);
+            this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
             this.currentTile8Box.TabIndex = 3;
             this.currentTile8Box.TabStop = false;
             this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
@@ -608,10 +594,9 @@
             // mirrorYCheckbox
             // 
             this.mirrorYCheckbox.AutoSize = true;
-            this.mirrorYCheckbox.Location = new System.Drawing.Point(138, 66);
-            this.mirrorYCheckbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.mirrorYCheckbox.Location = new System.Drawing.Point(75, 36);
             this.mirrorYCheckbox.Name = "mirrorYCheckbox";
-            this.mirrorYCheckbox.Size = new System.Drawing.Size(77, 28);
+            this.mirrorYCheckbox.Size = new System.Drawing.Size(52, 17);
             this.mirrorYCheckbox.TabIndex = 4;
             this.mirrorYCheckbox.Text = "Flip Y";
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
@@ -619,10 +604,9 @@
             // 
             // palette8Box
             // 
-            this.palette8Box.Location = new System.Drawing.Point(6, 153);
-            this.palette8Box.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.palette8Box.Location = new System.Drawing.Point(3, 83);
             this.palette8Box.Name = "palette8Box";
-            this.palette8Box.Size = new System.Drawing.Size(469, 236);
+            this.palette8Box.Size = new System.Drawing.Size(256, 128);
             this.palette8Box.TabIndex = 2;
             this.palette8Box.TabStop = false;
             this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
@@ -631,10 +615,9 @@
             // mirrorXCheckbox
             // 
             this.mirrorXCheckbox.AutoSize = true;
-            this.mirrorXCheckbox.Location = new System.Drawing.Point(138, 24);
-            this.mirrorXCheckbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.mirrorXCheckbox.Location = new System.Drawing.Point(75, 13);
             this.mirrorXCheckbox.Name = "mirrorXCheckbox";
-            this.mirrorXCheckbox.Size = new System.Drawing.Size(79, 28);
+            this.mirrorXCheckbox.Size = new System.Drawing.Size(52, 17);
             this.mirrorXCheckbox.TabIndex = 3;
             this.mirrorXCheckbox.Text = "Flip X";
             this.mirrorXCheckbox.UseVisualStyleBackColor = true;
@@ -642,10 +625,9 @@
             // 
             // thumbnailBox
             // 
-            this.thumbnailBox.Location = new System.Drawing.Point(6, 6);
-            this.thumbnailBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
             this.thumbnailBox.Name = "thumbnailBox";
-            this.thumbnailBox.Size = new System.Drawing.Size(44, 44);
+            this.thumbnailBox.Size = new System.Drawing.Size(24, 24);
             this.thumbnailBox.TabIndex = 22;
             this.thumbnailBox.TabStop = false;
             this.thumbnailBox.Visible = false;
@@ -657,9 +639,8 @@
             this.owPropertyPanel.Controls.Add(this.groupBox1);
             this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.owPropertyPanel.Location = new System.Drawing.Point(0, 25);
-            this.owPropertyPanel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.owPropertyPanel.Name = "owPropertyPanel";
-            this.owPropertyPanel.Size = new System.Drawing.Size(2171, 194);
+            this.owPropertyPanel.Size = new System.Drawing.Size(1184, 105);
             this.owPropertyPanel.TabIndex = 0;
             // 
             // objectGroupbox
@@ -671,11 +652,9 @@
             this.objectGroupbox.Controls.Add(this.label9);
             this.objectGroupbox.Controls.Add(this.label8);
             this.objectGroupbox.Controls.Add(this.objCombobox);
-            this.objectGroupbox.Location = new System.Drawing.Point(1639, 6);
-            this.objectGroupbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.objectGroupbox.Location = new System.Drawing.Point(894, 3);
             this.objectGroupbox.Name = "objectGroupbox";
-            this.objectGroupbox.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.objectGroupbox.Size = new System.Drawing.Size(500, 183);
+            this.objectGroupbox.Size = new System.Drawing.Size(273, 99);
             this.objectGroupbox.TabIndex = 10;
             this.objectGroupbox.TabStop = false;
             this.objectGroupbox.Text = "Selected object";
@@ -683,70 +662,63 @@
             // SelectedObjectY
             // 
             this.SelectedObjectY.AutoSize = true;
-            this.SelectedObjectY.Location = new System.Drawing.Point(60, 81);
-            this.SelectedObjectY.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.SelectedObjectY.Location = new System.Drawing.Point(33, 44);
             this.SelectedObjectY.Name = "SelectedObjectY";
-            this.SelectedObjectY.Size = new System.Drawing.Size(16, 24);
+            this.SelectedObjectY.Size = new System.Drawing.Size(10, 13);
             this.SelectedObjectY.TabIndex = 7;
             this.SelectedObjectY.Text = "-";
             // 
             // SelectedObjectX
             // 
             this.SelectedObjectX.AutoSize = true;
-            this.SelectedObjectX.Location = new System.Drawing.Point(60, 57);
-            this.SelectedObjectX.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.SelectedObjectX.Location = new System.Drawing.Point(33, 31);
             this.SelectedObjectX.Name = "SelectedObjectX";
-            this.SelectedObjectX.Size = new System.Drawing.Size(16, 24);
+            this.SelectedObjectX.Size = new System.Drawing.Size(10, 13);
             this.SelectedObjectX.TabIndex = 6;
             this.SelectedObjectX.Text = "-";
             // 
             // SelectedObjectID
             // 
             this.SelectedObjectID.AutoSize = true;
-            this.SelectedObjectID.Location = new System.Drawing.Point(60, 30);
-            this.SelectedObjectID.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.SelectedObjectID.Location = new System.Drawing.Point(33, 16);
             this.SelectedObjectID.Name = "SelectedObjectID";
-            this.SelectedObjectID.Size = new System.Drawing.Size(16, 24);
+            this.SelectedObjectID.Size = new System.Drawing.Size(10, 13);
             this.SelectedObjectID.TabIndex = 5;
             this.SelectedObjectID.Text = "-";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(18, 81);
-            this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label10.Location = new System.Drawing.Point(10, 44);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(27, 24);
+            this.label10.Size = new System.Drawing.Size(17, 13);
             this.label10.TabIndex = 4;
             this.label10.Text = "Y:";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(18, 57);
-            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label9.Location = new System.Drawing.Point(10, 31);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 24);
+            this.label9.Size = new System.Drawing.Size(17, 13);
             this.label9.TabIndex = 3;
             this.label9.Text = "X:";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 30);
-            this.label8.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label8.Location = new System.Drawing.Point(6, 16);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(32, 24);
+            this.label8.Size = new System.Drawing.Size(21, 13);
             this.label8.TabIndex = 2;
             this.label8.Text = "ID:";
             // 
             // objCombobox
             // 
             this.objCombobox.FormattingEnabled = true;
-            this.objCombobox.Location = new System.Drawing.Point(204, 24);
-            this.objCombobox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.objCombobox.Location = new System.Drawing.Point(111, 13);
             this.objCombobox.Name = "objCombobox";
-            this.objCombobox.Size = new System.Drawing.Size(283, 32);
+            this.objCombobox.Size = new System.Drawing.Size(156, 21);
             this.objCombobox.TabIndex = 1;
             // 
             // mapGroupbox
@@ -789,11 +761,9 @@
             this.mapGroupbox.Controls.Add(this.label5);
             this.mapGroupbox.Controls.Add(this.label3);
             this.mapGroupbox.Controls.Add(this.label2);
-            this.mapGroupbox.Location = new System.Drawing.Point(293, 6);
-            this.mapGroupbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.mapGroupbox.Location = new System.Drawing.Point(160, 3);
             this.mapGroupbox.Name = "mapGroupbox";
-            this.mapGroupbox.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.mapGroupbox.Size = new System.Drawing.Size(1335, 183);
+            this.mapGroupbox.Size = new System.Drawing.Size(728, 99);
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
@@ -801,10 +771,9 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(752, 102);
-            this.label21.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label21.Location = new System.Drawing.Point(410, 55);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(101, 24);
+            this.label21.Size = new System.Drawing.Size(57, 13);
             this.label21.TabIndex = 56;
             this.label21.Text = "Tile GFX 7";
             // 
@@ -814,24 +783,23 @@
             this.OWProperty_TileGFX7.Decimal = false;
             this.OWProperty_TileGFX7.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX7.HexValue = 0;
-            this.OWProperty_TileGFX7.Location = new System.Drawing.Point(757, 131);
-            this.OWProperty_TileGFX7.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX7.Location = new System.Drawing.Point(413, 71);
             this.OWProperty_TileGFX7.MaxLength = 2;
             this.OWProperty_TileGFX7.MaxValue = 255;
             this.OWProperty_TileGFX7.MinValue = 0;
             this.OWProperty_TileGFX7.Name = "OWProperty_TileGFX7";
-            this.OWProperty_TileGFX7.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX7.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX7.TabIndex = 55;
             this.OWProperty_TileGFX7.Text = "00";
             this.OWProperty_TileGFX7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX7.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(645, 102);
-            this.label20.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label20.Location = new System.Drawing.Point(352, 55);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(101, 24);
+            this.label20.Size = new System.Drawing.Size(57, 13);
             this.label20.TabIndex = 54;
             this.label20.Text = "Tile GFX 6";
             // 
@@ -841,13 +809,12 @@
             this.OWProperty_TileGFX6.Decimal = false;
             this.OWProperty_TileGFX6.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX6.HexValue = 0;
-            this.OWProperty_TileGFX6.Location = new System.Drawing.Point(651, 131);
-            this.OWProperty_TileGFX6.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX6.Location = new System.Drawing.Point(355, 71);
             this.OWProperty_TileGFX6.MaxLength = 2;
             this.OWProperty_TileGFX6.MaxValue = 255;
             this.OWProperty_TileGFX6.MinValue = 0;
             this.OWProperty_TileGFX6.Name = "OWProperty_TileGFX6";
-            this.OWProperty_TileGFX6.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX6.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX6.TabIndex = 53;
             this.OWProperty_TileGFX6.Text = "00";
             this.OWProperty_TileGFX6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -856,10 +823,9 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(539, 102);
-            this.label19.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label19.Location = new System.Drawing.Point(294, 55);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(101, 24);
+            this.label19.Size = new System.Drawing.Size(57, 13);
             this.label19.TabIndex = 52;
             this.label19.Text = "Tile GFX 5";
             // 
@@ -869,13 +835,12 @@
             this.OWProperty_TileGFX5.Decimal = false;
             this.OWProperty_TileGFX5.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX5.HexValue = 0;
-            this.OWProperty_TileGFX5.Location = new System.Drawing.Point(544, 131);
-            this.OWProperty_TileGFX5.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX5.Location = new System.Drawing.Point(297, 71);
             this.OWProperty_TileGFX5.MaxLength = 2;
             this.OWProperty_TileGFX5.MaxValue = 255;
             this.OWProperty_TileGFX5.MinValue = 0;
             this.OWProperty_TileGFX5.Name = "OWProperty_TileGFX5";
-            this.OWProperty_TileGFX5.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX5.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX5.TabIndex = 51;
             this.OWProperty_TileGFX5.Text = "00";
             this.OWProperty_TileGFX5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -884,10 +849,9 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(433, 102);
-            this.label18.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label18.Location = new System.Drawing.Point(236, 55);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(101, 24);
+            this.label18.Size = new System.Drawing.Size(57, 13);
             this.label18.TabIndex = 50;
             this.label18.Text = "Tile GFX 4";
             // 
@@ -897,13 +861,12 @@
             this.OWProperty_TileGFX4.Decimal = false;
             this.OWProperty_TileGFX4.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX4.HexValue = 0;
-            this.OWProperty_TileGFX4.Location = new System.Drawing.Point(438, 131);
-            this.OWProperty_TileGFX4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX4.Location = new System.Drawing.Point(239, 71);
             this.OWProperty_TileGFX4.MaxLength = 2;
             this.OWProperty_TileGFX4.MaxValue = 255;
             this.OWProperty_TileGFX4.MinValue = 0;
             this.OWProperty_TileGFX4.Name = "OWProperty_TileGFX4";
-            this.OWProperty_TileGFX4.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX4.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX4.TabIndex = 49;
             this.OWProperty_TileGFX4.Text = "00";
             this.OWProperty_TileGFX4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -912,10 +875,9 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(326, 102);
-            this.label17.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label17.Location = new System.Drawing.Point(178, 55);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(101, 24);
+            this.label17.Size = new System.Drawing.Size(57, 13);
             this.label17.TabIndex = 48;
             this.label17.Text = "Tile GFX 3";
             // 
@@ -925,13 +887,12 @@
             this.OWProperty_TileGFX3.Decimal = false;
             this.OWProperty_TileGFX3.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX3.HexValue = 0;
-            this.OWProperty_TileGFX3.Location = new System.Drawing.Point(332, 131);
-            this.OWProperty_TileGFX3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX3.Location = new System.Drawing.Point(181, 71);
             this.OWProperty_TileGFX3.MaxLength = 2;
             this.OWProperty_TileGFX3.MaxValue = 255;
             this.OWProperty_TileGFX3.MinValue = 0;
             this.OWProperty_TileGFX3.Name = "OWProperty_TileGFX3";
-            this.OWProperty_TileGFX3.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX3.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX3.TabIndex = 47;
             this.OWProperty_TileGFX3.Text = "00";
             this.OWProperty_TileGFX3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -940,10 +901,9 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(220, 102);
-            this.label16.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label16.Location = new System.Drawing.Point(120, 55);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(101, 24);
+            this.label16.Size = new System.Drawing.Size(57, 13);
             this.label16.TabIndex = 46;
             this.label16.Text = "Tile GFX 2";
             // 
@@ -953,13 +913,12 @@
             this.OWProperty_TileGFX2.Decimal = false;
             this.OWProperty_TileGFX2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX2.HexValue = 0;
-            this.OWProperty_TileGFX2.Location = new System.Drawing.Point(226, 131);
-            this.OWProperty_TileGFX2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX2.Location = new System.Drawing.Point(123, 71);
             this.OWProperty_TileGFX2.MaxLength = 2;
             this.OWProperty_TileGFX2.MaxValue = 255;
             this.OWProperty_TileGFX2.MinValue = 0;
             this.OWProperty_TileGFX2.Name = "OWProperty_TileGFX2";
-            this.OWProperty_TileGFX2.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX2.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX2.TabIndex = 45;
             this.OWProperty_TileGFX2.Text = "00";
             this.OWProperty_TileGFX2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -968,10 +927,9 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(114, 102);
-            this.label15.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label15.Location = new System.Drawing.Point(62, 55);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(101, 24);
+            this.label15.Size = new System.Drawing.Size(57, 13);
             this.label15.TabIndex = 44;
             this.label15.Text = "Tile GFX 1";
             // 
@@ -981,13 +939,12 @@
             this.OWProperty_TileGFX1.Decimal = false;
             this.OWProperty_TileGFX1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX1.HexValue = 0;
-            this.OWProperty_TileGFX1.Location = new System.Drawing.Point(119, 131);
-            this.OWProperty_TileGFX1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX1.Location = new System.Drawing.Point(65, 71);
             this.OWProperty_TileGFX1.MaxLength = 2;
             this.OWProperty_TileGFX1.MaxValue = 255;
             this.OWProperty_TileGFX1.MinValue = 0;
             this.OWProperty_TileGFX1.Name = "OWProperty_TileGFX1";
-            this.OWProperty_TileGFX1.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX1.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX1.TabIndex = 43;
             this.OWProperty_TileGFX1.Text = "00";
             this.OWProperty_TileGFX1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -999,13 +956,12 @@
             this.OWProperty_AniGFX.Decimal = false;
             this.OWProperty_AniGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_AniGFX.HexValue = 0;
-            this.OWProperty_AniGFX.Location = new System.Drawing.Point(873, 131);
-            this.OWProperty_AniGFX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_AniGFX.Location = new System.Drawing.Point(476, 71);
             this.OWProperty_AniGFX.MaxLength = 2;
             this.OWProperty_AniGFX.MaxValue = 255;
             this.OWProperty_AniGFX.MinValue = 0;
             this.OWProperty_AniGFX.Name = "OWProperty_AniGFX";
-            this.OWProperty_AniGFX.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_AniGFX.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_AniGFX.TabIndex = 29;
             this.OWProperty_AniGFX.Text = "00";
             this.OWProperty_AniGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1014,10 +970,9 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(9, 102);
-            this.label14.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label14.Location = new System.Drawing.Point(5, 55);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(101, 24);
+            this.label14.Size = new System.Drawing.Size(57, 13);
             this.label14.TabIndex = 42;
             this.label14.Text = "Tile GFX 0";
             // 
@@ -1027,13 +982,12 @@
             this.OWProperty_TileGFX0.Decimal = false;
             this.OWProperty_TileGFX0.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_TileGFX0.HexValue = 0;
-            this.OWProperty_TileGFX0.Location = new System.Drawing.Point(13, 131);
-            this.OWProperty_TileGFX0.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_TileGFX0.Location = new System.Drawing.Point(7, 71);
             this.OWProperty_TileGFX0.MaxLength = 2;
             this.OWProperty_TileGFX0.MaxValue = 255;
             this.OWProperty_TileGFX0.MinValue = 0;
             this.OWProperty_TileGFX0.Name = "OWProperty_TileGFX0";
-            this.OWProperty_TileGFX0.Size = new System.Drawing.Size(92, 29);
+            this.OWProperty_TileGFX0.Size = new System.Drawing.Size(52, 20);
             this.OWProperty_TileGFX0.TabIndex = 35;
             this.OWProperty_TileGFX0.Text = "00";
             this.OWProperty_TileGFX0.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1042,10 +996,9 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(561, 30);
-            this.label13.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label13.Location = new System.Drawing.Point(306, 16);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(171, 24);
+            this.label13.Size = new System.Drawing.Size(97, 13);
             this.label13.TabIndex = 34;
             this.label13.Text = "Subscreen Overlay";
             // 
@@ -1055,13 +1008,12 @@
             this.OWProperty_SubscreenOverlay.Decimal = false;
             this.OWProperty_SubscreenOverlay.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_SubscreenOverlay.HexValue = 0;
-            this.OWProperty_SubscreenOverlay.Location = new System.Drawing.Point(566, 61);
-            this.OWProperty_SubscreenOverlay.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_SubscreenOverlay.Location = new System.Drawing.Point(309, 33);
             this.OWProperty_SubscreenOverlay.MaxLength = 2;
             this.OWProperty_SubscreenOverlay.MaxValue = 255;
             this.OWProperty_SubscreenOverlay.MinValue = 0;
             this.OWProperty_SubscreenOverlay.Name = "OWProperty_SubscreenOverlay";
-            this.OWProperty_SubscreenOverlay.Size = new System.Drawing.Size(169, 29);
+            this.OWProperty_SubscreenOverlay.Size = new System.Drawing.Size(94, 20);
             this.OWProperty_SubscreenOverlay.TabIndex = 33;
             this.OWProperty_SubscreenOverlay.Text = "00";
             this.OWProperty_SubscreenOverlay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1073,13 +1025,12 @@
             this.OWProperty_MainPalette.Decimal = false;
             this.OWProperty_MainPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_MainPalette.HexValue = 0;
-            this.OWProperty_MainPalette.Location = new System.Drawing.Point(209, 61);
-            this.OWProperty_MainPalette.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_MainPalette.Location = new System.Drawing.Point(114, 33);
             this.OWProperty_MainPalette.MaxLength = 2;
             this.OWProperty_MainPalette.MaxValue = 5;
             this.OWProperty_MainPalette.MinValue = 0;
             this.OWProperty_MainPalette.Name = "OWProperty_MainPalette";
-            this.OWProperty_MainPalette.Size = new System.Drawing.Size(107, 29);
+            this.OWProperty_MainPalette.Size = new System.Drawing.Size(60, 20);
             this.OWProperty_MainPalette.TabIndex = 32;
             this.OWProperty_MainPalette.Text = "00";
             this.OWProperty_MainPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1088,40 +1039,36 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(867, 102);
-            this.label11.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label11.Location = new System.Drawing.Point(473, 55);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(88, 24);
+            this.label11.Size = new System.Drawing.Size(49, 13);
             this.label11.TabIndex = 30;
             this.label11.Text = "Ani. GFX";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(200, 30);
-            this.label12.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label12.Location = new System.Drawing.Point(109, 16);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(112, 24);
+            this.label12.Size = new System.Drawing.Size(66, 13);
             this.label12.TabIndex = 31;
             this.label12.Text = "Main Palette";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(326, 30);
-            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label4.Location = new System.Drawing.Point(178, 16);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(110, 24);
+            this.label4.Size = new System.Drawing.Size(64, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Aux. Palette";
             // 
             // mosaicCheckBox
             // 
             this.mosaicCheckBox.AutoSize = true;
-            this.mosaicCheckBox.Location = new System.Drawing.Point(1091, 74);
-            this.mosaicCheckBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.mosaicCheckBox.Location = new System.Drawing.Point(595, 40);
             this.mosaicCheckBox.Name = "mosaicCheckBox";
-            this.mosaicCheckBox.Size = new System.Drawing.Size(89, 28);
+            this.mosaicCheckBox.Size = new System.Drawing.Size(60, 17);
             this.mosaicCheckBox.TabIndex = 23;
             this.mosaicCheckBox.Text = "Mosaic";
             this.mosaicCheckBox.UseVisualStyleBackColor = true;
@@ -1133,13 +1080,12 @@
             this.OWProperty_AuxPalette.Decimal = false;
             this.OWProperty_AuxPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_AuxPalette.HexValue = 0;
-            this.OWProperty_AuxPalette.Location = new System.Drawing.Point(332, 61);
-            this.OWProperty_AuxPalette.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_AuxPalette.Location = new System.Drawing.Point(181, 33);
             this.OWProperty_AuxPalette.MaxLength = 2;
             this.OWProperty_AuxPalette.MaxValue = 255;
             this.OWProperty_AuxPalette.MinValue = 0;
             this.OWProperty_AuxPalette.Name = "OWProperty_AuxPalette";
-            this.OWProperty_AuxPalette.Size = new System.Drawing.Size(103, 29);
+            this.OWProperty_AuxPalette.Size = new System.Drawing.Size(58, 20);
             this.OWProperty_AuxPalette.TabIndex = 25;
             this.OWProperty_AuxPalette.Text = "00";
             this.OWProperty_AuxPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1151,13 +1097,12 @@
             this.OWProperty_MessageID.Decimal = false;
             this.OWProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
             this.OWProperty_MessageID.HexValue = 0;
-            this.OWProperty_MessageID.Location = new System.Drawing.Point(750, 61);
-            this.OWProperty_MessageID.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_MessageID.Location = new System.Drawing.Point(409, 33);
             this.OWProperty_MessageID.MaxLength = 4;
             this.OWProperty_MessageID.MaxValue = 4095;
             this.OWProperty_MessageID.MinValue = 0;
             this.OWProperty_MessageID.Name = "OWProperty_MessageID";
-            this.OWProperty_MessageID.Size = new System.Drawing.Size(107, 29);
+            this.OWProperty_MessageID.Size = new System.Drawing.Size(60, 20);
             this.OWProperty_MessageID.TabIndex = 28;
             this.OWProperty_MessageID.Text = "0000";
             this.OWProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1169,13 +1114,12 @@
             this.OWProperty_SPRPalette.Decimal = false;
             this.OWProperty_SPRPalette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_SPRPalette.HexValue = 0;
-            this.OWProperty_SPRPalette.Location = new System.Drawing.Point(449, 61);
-            this.OWProperty_SPRPalette.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_SPRPalette.Location = new System.Drawing.Point(245, 33);
             this.OWProperty_SPRPalette.MaxLength = 2;
             this.OWProperty_SPRPalette.MaxValue = 255;
             this.OWProperty_SPRPalette.MinValue = 0;
             this.OWProperty_SPRPalette.Name = "OWProperty_SPRPalette";
-            this.OWProperty_SPRPalette.Size = new System.Drawing.Size(103, 29);
+            this.OWProperty_SPRPalette.Size = new System.Drawing.Size(58, 20);
             this.OWProperty_SPRPalette.TabIndex = 27;
             this.OWProperty_SPRPalette.Text = "00";
             this.OWProperty_SPRPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1187,13 +1131,12 @@
             this.OWProperty_SPRGFX.Decimal = false;
             this.OWProperty_SPRGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_SPRGFX.HexValue = 0;
-            this.OWProperty_SPRGFX.Location = new System.Drawing.Point(110, 59);
-            this.OWProperty_SPRGFX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_SPRGFX.Location = new System.Drawing.Point(60, 32);
             this.OWProperty_SPRGFX.MaxLength = 2;
             this.OWProperty_SPRGFX.MaxValue = 255;
             this.OWProperty_SPRGFX.MinValue = 0;
             this.OWProperty_SPRGFX.Name = "OWProperty_SPRGFX";
-            this.OWProperty_SPRGFX.Size = new System.Drawing.Size(85, 29);
+            this.OWProperty_SPRGFX.Size = new System.Drawing.Size(48, 20);
             this.OWProperty_SPRGFX.TabIndex = 26;
             this.OWProperty_SPRGFX.Text = "00";
             this.OWProperty_SPRGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1206,13 +1149,12 @@
             this.OWProperty_BGGFX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
             this.OWProperty_BGGFX.Enabled = false;
             this.OWProperty_BGGFX.HexValue = 0;
-            this.OWProperty_BGGFX.Location = new System.Drawing.Point(11, 59);
-            this.OWProperty_BGGFX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OWProperty_BGGFX.Location = new System.Drawing.Point(6, 32);
             this.OWProperty_BGGFX.MaxLength = 2;
             this.OWProperty_BGGFX.MaxValue = 255;
             this.OWProperty_BGGFX.MinValue = 0;
             this.OWProperty_BGGFX.Name = "OWProperty_BGGFX";
-            this.OWProperty_BGGFX.Size = new System.Drawing.Size(85, 29);
+            this.OWProperty_BGGFX.Size = new System.Drawing.Size(48, 20);
             this.OWProperty_BGGFX.TabIndex = 24;
             this.OWProperty_BGGFX.Text = "00";
             this.OWProperty_BGGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1220,10 +1162,9 @@
             // 
             // areaBGColorPictureBox
             // 
-            this.areaBGColorPictureBox.Location = new System.Drawing.Point(1258, 61);
-            this.areaBGColorPictureBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.areaBGColorPictureBox.Location = new System.Drawing.Point(686, 33);
             this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
-            this.areaBGColorPictureBox.Size = new System.Drawing.Size(44, 44);
+            this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
             this.areaBGColorPictureBox.TabIndex = 23;
             this.areaBGColorPictureBox.TabStop = false;
             this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
@@ -1232,20 +1173,18 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1241, 24);
-            this.label7.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label7.Location = new System.Drawing.Point(677, 13);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(83, 24);
+            this.label7.Size = new System.Drawing.Size(48, 13);
             this.label7.TabIndex = 15;
             this.label7.Text = "BG color";
             // 
             // largemapCheckbox
             // 
             this.largemapCheckbox.AutoSize = true;
-            this.largemapCheckbox.Location = new System.Drawing.Point(1091, 30);
-            this.largemapCheckbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.largemapCheckbox.Location = new System.Drawing.Point(595, 16);
             this.largemapCheckbox.Name = "largemapCheckbox";
-            this.largemapCheckbox.Size = new System.Drawing.Size(119, 28);
+            this.largemapCheckbox.Size = new System.Drawing.Size(76, 17);
             this.largemapCheckbox.TabIndex = 14;
             this.largemapCheckbox.Text = "Large map";
             this.largemapCheckbox.UseVisualStyleBackColor = true;
@@ -1254,10 +1193,9 @@
             // button1
             // 
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(891, 39);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Location = new System.Drawing.Point(486, 21);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(42, 42);
+            this.button1.Size = new System.Drawing.Size(23, 23);
             this.button1.TabIndex = 13;
             this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.button1.UseVisualStyleBackColor = true;
@@ -1265,10 +1203,9 @@
             // 
             // musicButton
             // 
-            this.musicButton.Location = new System.Drawing.Point(944, 41);
-            this.musicButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.musicButton.Location = new System.Drawing.Point(515, 22);
             this.musicButton.Name = "musicButton";
-            this.musicButton.Size = new System.Drawing.Size(112, 41);
+            this.musicButton.Size = new System.Drawing.Size(61, 22);
             this.musicButton.TabIndex = 12;
             this.musicButton.Text = "Music";
             this.musicButton.UseVisualStyleBackColor = true;
@@ -1277,40 +1214,36 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(744, 30);
-            this.label6.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label6.Location = new System.Drawing.Point(406, 16);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(109, 24);
+            this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 11;
             this.label6.Text = "Message ID";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(442, 30);
-            this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label5.Location = new System.Drawing.Point(241, 16);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(105, 24);
+            this.label5.Size = new System.Drawing.Size(62, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Spr. Palette";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(104, 30);
-            this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label3.Location = new System.Drawing.Point(57, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 24);
+            this.label3.Size = new System.Drawing.Size(50, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Spr. GFX";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 30);
-            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label2.Location = new System.Drawing.Point(3, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 24);
+            this.label2.Size = new System.Drawing.Size(28, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "GFX";
             // 
@@ -1319,11 +1252,9 @@
             this.groupBox1.Controls.Add(this.selectedTileLabel);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.stateCombobox);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.groupBox1.Size = new System.Drawing.Size(277, 183);
+            this.groupBox1.Size = new System.Drawing.Size(151, 99);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Global settings";
@@ -1331,20 +1262,18 @@
             // selectedTileLabel
             // 
             this.selectedTileLabel.AutoSize = true;
-            this.selectedTileLabel.Location = new System.Drawing.Point(6, 144);
-            this.selectedTileLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.selectedTileLabel.Location = new System.Drawing.Point(3, 78);
             this.selectedTileLabel.Name = "selectedTileLabel";
-            this.selectedTileLabel.Size = new System.Drawing.Size(112, 24);
+            this.selectedTileLabel.Size = new System.Drawing.Size(65, 13);
             this.selectedTileLabel.TabIndex = 2;
             this.selectedTileLabel.Text = "Selected tile";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 28);
-            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Location = new System.Drawing.Point(3, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 24);
+            this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Game state";
             // 
@@ -1355,10 +1284,9 @@
             "0,1 Rescue Zelda",
             "2 Zelda rescued",
             "3 Agahnim defeated"});
-            this.stateCombobox.Location = new System.Drawing.Point(11, 57);
-            this.stateCombobox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.stateCombobox.Location = new System.Drawing.Point(6, 31);
             this.stateCombobox.Name = "stateCombobox";
-            this.stateCombobox.Size = new System.Drawing.Size(250, 32);
+            this.stateCombobox.Size = new System.Drawing.Size(138, 21);
             this.stateCombobox.TabIndex = 1;
             this.stateCombobox.Text = "0,1 Rescue Zelda";
             this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
@@ -1366,10 +1294,9 @@
             // previewTextPicturebox
             // 
             this.previewTextPicturebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.previewTextPicturebox.Location = new System.Drawing.Point(935, 6);
-            this.previewTextPicturebox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.previewTextPicturebox.Location = new System.Drawing.Point(510, 3);
             this.previewTextPicturebox.Name = "previewTextPicturebox";
-            this.previewTextPicturebox.Size = new System.Drawing.Size(28, 28);
+            this.previewTextPicturebox.Size = new System.Drawing.Size(16, 16);
             this.previewTextPicturebox.TabIndex = 2;
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
@@ -1377,15 +1304,14 @@
             // 
             // OverworldEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.previewTextPicturebox);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.owPropertyPanel);
             this.Controls.Add(this.owToolStrip);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "OverworldEditor";
-            this.Size = new System.Drawing.Size(2171, 1327);
+            this.Size = new System.Drawing.Size(1184, 719);
             this.owToolStrip.ResumeLayout(false);
             this.owToolStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
