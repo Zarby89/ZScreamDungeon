@@ -28,6 +28,7 @@ namespace ZeldaFullEditor
 
         public void Restore(SceneOW scene)
         {
+           
             int i = 0;
             for (int y = 0; y < savedTiles.Length / lengthX; y++)
             {
@@ -37,7 +38,7 @@ namespace ZeldaFullEditor
                     int superY = (mouseYDown + y) / 32;
                     int mapId = (superY * 8) + superX + scene.ow.WorldOffset;
                     usedTiles[x + mouseXDown, y + mouseYDown] = savedTiles[i];
-                    scene.ow.AllMaps[mapId].BuildMap();
+                    //scene.ow.AllMaps[mapId].BuildMap();
                     scene.ow.AllMaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512), savedTiles[i], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
                     i++;
                 }

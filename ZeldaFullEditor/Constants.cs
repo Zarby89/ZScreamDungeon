@@ -1752,41 +1752,41 @@ namespace ZeldaFullEditor
         public static string[] musicNamesOW = new string[]
         {
             "0x00 None",
-            "0x01 Title",
-            "0x02 World Map",
-            "0x03 Beginning",
-            "0x04 Rabbit",
-            "0x05 Forest",
-            "0x06 Intro",
-            "0x07 Town",
-            "0x08 Warp",
+            "0x01 Triforce Opening",
+            "0x02 Light World",
+            "0x03 Rain",
+            "0x04 Bunny Link",
+            "0x05 Lost woods",
+            "0x06 Legends theme (attract mode)",
+            "0x07 Kakariko Village",
+            "0x08 Mirror warp",
             "0x09 Dark World",
-            "0x0A Mastersword",
-            "0x0B File Select",
-            "0x0C Soldier",
-            "0x0D Mountain",
-            "0x0E Shop",
-            "0x0F Fanfare"
+            "0x0A Restoring Master Sword",
+            "0x0B Faerie Theme",
+            "0x0C Chase Theme",
+            "0x0D Skull Woods",
+            "0x0E Game theme",
+            "0x0F Intro no Triforce"
         };
 
         public static string[] ambientNamesOW = new string[]
         {
             "0x00 Nothing",
-            "0x01 Rain/Zora area",
+            "0x01 Rain / Zora area",
             "0x02 Quiet rain",
             "0x03 More rain",
             "0x04 Even more rain",
             "0x05 Silence",
-            "0x06 Quiets ambient sound",
+            "0x06 Silence 2",
             "0x07 Rumbling",
             "0x08 Endless rumbling",
-            "0x09 DM wind/Telepathy",
+            "0x09 Wind",
             "0x0A Quiet wind",
             "0x0B Flute song",
             "0x0C Flute again",
             "0x0D Magic bat/Witch shroom",
-            "0x0E Short jingle",
-            "0x0F Crystal get/Save and quit",
+            "0x0E Magic bat",
+            "0x0F Crystal get / Save and quit",
             "0x10 SQ sound",
             "0x11 Choir melody",
             "0x12 Choir countermelody",
@@ -1803,7 +1803,7 @@ namespace ZeldaFullEditor
             "0x1D Some jingle",
             "0x1E That broken jingle again",
             "0x1F Crystal get again",
-            "0x20 Some other jingle"
+            "0x20 Crystal get again again"
         };
     }
 }

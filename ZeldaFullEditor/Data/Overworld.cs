@@ -1221,7 +1221,11 @@ namespace ZeldaFullEditor
                     {
                         break; // Just to be sure.
                     }
-
+                    else
+                    {
+                        Console.WriteLine($"MapIndex Overlay: {index:X2} Might not have been loaded properly");
+                        break;
+                    }
                     /*
 					else if (b == 0xC2) // Add me back in to open goddess of wisdom at least in the dungeon editor.
 					{

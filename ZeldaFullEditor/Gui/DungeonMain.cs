@@ -2294,11 +2294,13 @@ namespace ZeldaFullEditor
             if (File.Exists(ProjectPath + "\\Patches\\generated.asm"))
             {
                 _ = AsarCLR.Asar.patch(Path.GetDirectoryName(this.projectFilename) + "\\Patches\\generated.asm", ref data);
+                Console.WriteLine("Patched Generated");
+
             }
 
             foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
             {
-                Console.WriteLine(error.Fullerrdata.ToString());
+                Console.WriteLine(error.Block.ToString());
             }
 
             FileStream fileStream = new FileStream(UIText.TestROM, FileMode.CreateNew, FileAccess.Write);
