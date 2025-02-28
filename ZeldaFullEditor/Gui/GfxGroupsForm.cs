@@ -488,10 +488,7 @@ namespace ZeldaFullEditor.Gui
                         }
 
                         int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0];
-                        if (value >= 20)
-                        {
-                            value = 19;
-                        }
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
 
                         palettes[pPos] = Palettes.OverworldAuxPalettes[value][i];
                         pPos++;
@@ -506,10 +503,7 @@ namespace ZeldaFullEditor.Gui
                         }
 
                         int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0];
-                        if (value >= 20)
-                        {
-                            value = 19;
-                        }
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
 
                         palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 7];
                         pPos++;
@@ -524,10 +518,7 @@ namespace ZeldaFullEditor.Gui
                         }
 
                         int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0];
-                        if (value >= 20)
-                        {
-                            value = 19;
-                        }
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
 
                         palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 14];
                         pPos++;
@@ -545,10 +536,7 @@ namespace ZeldaFullEditor.Gui
                         }
 
                         int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1];
-                        if (value >= 20)
-                        {
-                            value = 19; // this one.
-                        }
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
 
                         palettes[pPos] = Palettes.OverworldAuxPalettes[value][i];
                         pPos++;
@@ -563,10 +551,7 @@ namespace ZeldaFullEditor.Gui
                         }
 
                         int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1];
-                        if (value >= 20)
-                        {
-                            value = 19;
-                        }
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
 
                         palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 7];
                         pPos++;
@@ -581,10 +566,7 @@ namespace ZeldaFullEditor.Gui
                         }
 
                         int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1];
-                        if (value >= 20)
-                        {
-                            value = 19;
-                        }
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
 
                         palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 14];
                         pPos++;
