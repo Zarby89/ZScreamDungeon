@@ -85,8 +85,9 @@ namespace ZeldaFullEditor
 
         /// <summary>
         ///     Gets a value indicating whether the game will use a mosaic transition when transitioning into or out of area.
+        ///     This is 4 bits, one for each direction leaving the area. Up, Down, Left, Right.
         /// </summary>
-        public bool Mosaic { get; internal set; } = false;
+        public (bool Up, bool Down, bool Left, bool Right) Mosaic { get; set; } = (false, false, false, false);
 
         /// <summary>
         ///     Gets the GFX pointer for the map.
@@ -324,7 +325,38 @@ namespace ZeldaFullEditor
                 }
 
                 // Set the mosaic values.
-                this.Mosaic = index == 0x00 || index == 0x40 || index == 0x80 || index == 0x81 || index == 0x88;
+                switch (index)
+                {
+                    case 0x00:
+                    case 0x40:
+                        this.Mosaic = (false, true, false, true);
+
+                        break;
+
+                    case 0x02:
+                    case 0x0A:
+                    case 0x42:
+                    case 0x4A:
+                        this.Mosaic = (false, false, true, false);
+                        
+                        break;
+
+                    case 0x0F:
+                    case 0x10:
+                    case 0x11:
+                    case 0x50:
+                    case 0x51:
+                        this.Mosaic = (true, false, false, false);
+
+                        break;
+
+                    case 0x80:
+                    case 0x81:
+                    case 0x88:
+                        this.Mosaic = (false, true, false, false);
+
+                        break;
+                }
 
                 int indexWorld = 0x20;
 
@@ -430,7 +462,9 @@ namespace ZeldaFullEditor
             {
                 this.MainPalette = ROM.DATA[Constants.OverworldCustomMainPaletteArray + index];
 
-                this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
+                byte mosaicByte = ROM.DATA[Constants.OverworldCustomMosaicArray + index];
+                // .... udlr
+                this.Mosaic = ((mosaicByte & 0x08) != 0x00, (mosaicByte & 0x04) != 0x00, (mosaicByte & 0x02) != 0x00, (mosaicByte & 0x01) != 0x00);
 
                 // This is just to load the GFX groups for ROMs that have an older version of the Overworld ASM already applied.
                 if (asmVersion >= 0x01 && asmVersion != 0xFF)

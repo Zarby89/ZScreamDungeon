@@ -325,14 +325,13 @@ namespace ZeldaFullEditor
             // Write the mosaic table.
             for (int i = 0; i < scene.ow.AllMaps.Length; i++)
             {
-                if (scene.ow.AllMaps[i].Mosaic)
-                {
-                    ROM.Write(Constants.OverworldCustomMosaicArray + i, 0x01);
-                }
-                else
-                {
-                    ROM.Write(Constants.OverworldCustomMosaicArray + i, 0x00);
-                }
+                // .... udlr
+                int up    = scene.ow.AllMaps[i].Mosaic.Up    == true ? 0x08 : 0x00;
+                int down  = scene.ow.AllMaps[i].Mosaic.Down  == true ? 0x04 : 0x00;
+                int left  = scene.ow.AllMaps[i].Mosaic.Left  == true ? 0x02 : 0x00;
+                int right = scene.ow.AllMaps[i].Mosaic.Right == true ? 0x01 : 0x00;
+
+                ROM.Write(Constants.OverworldCustomMosaicArray + i, (byte)(up | down | left | right));
             }
 
             // Write the main and animated gfx tiles table.

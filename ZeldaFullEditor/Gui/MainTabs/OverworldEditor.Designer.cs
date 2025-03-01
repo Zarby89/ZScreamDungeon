@@ -107,7 +107,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.mosaicCheckBox = new System.Windows.Forms.CheckBox();
             this.OWProperty_AuxPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_SPRPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -140,7 +139,9 @@
             this.owentrance_property_entranceid = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.entranceLabel1 = new System.Windows.Forms.Label();
             this.exitTabpage = new System.Windows.Forms.TabPage();
+            this.label30 = new System.Windows.Forms.Label();
             this.transportTabpage = new System.Windows.Forms.TabPage();
+            this.label31 = new System.Windows.Forms.Label();
             this.Tiles8 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -169,8 +170,6 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -658,7 +657,6 @@
             this.mapGroupbox.Controls.Add(this.label11);
             this.mapGroupbox.Controls.Add(this.label12);
             this.mapGroupbox.Controls.Add(this.label4);
-            this.mapGroupbox.Controls.Add(this.mosaicCheckBox);
             this.mapGroupbox.Controls.Add(this.OWProperty_AuxPalette);
             this.mapGroupbox.Controls.Add(this.OWProperty_MessageID);
             this.mapGroupbox.Controls.Add(this.OWProperty_SPRPalette);
@@ -816,7 +814,7 @@
             this.mosaicGroupbox.Size = new System.Drawing.Size(161, 75);
             this.mosaicGroupbox.TabIndex = 58;
             this.mosaicGroupbox.TabStop = false;
-            this.mosaicGroupbox.Text = "Mosaics";
+            this.mosaicGroupbox.Text = "Mosaic Settings";
             // 
             // bottommosaicCheckbox
             // 
@@ -828,6 +826,7 @@
             this.bottommosaicCheckbox.TabIndex = 27;
             this.bottommosaicCheckbox.Text = "Bottom";
             this.bottommosaicCheckbox.UseVisualStyleBackColor = true;
+            this.bottommosaicCheckbox.Click += new System.EventHandler(this.bottommosaicCheckbox_Click);
             // 
             // topmosaicCheckbox
             // 
@@ -839,6 +838,7 @@
             this.topmosaicCheckbox.TabIndex = 26;
             this.topmosaicCheckbox.Text = "Top";
             this.topmosaicCheckbox.UseVisualStyleBackColor = true;
+            this.topmosaicCheckbox.Click += new System.EventHandler(this.topmosaicCheckbox_Click);
             // 
             // rightmosaicCheckbox
             // 
@@ -850,6 +850,7 @@
             this.rightmosaicCheckbox.TabIndex = 25;
             this.rightmosaicCheckbox.Text = "Right";
             this.rightmosaicCheckbox.UseVisualStyleBackColor = true;
+            this.rightmosaicCheckbox.Click += new System.EventHandler(this.rightmosaicCheckbox_Click);
             // 
             // leftmosaicCheckbox
             // 
@@ -861,6 +862,7 @@
             this.leftmosaicCheckbox.TabIndex = 24;
             this.leftmosaicCheckbox.Text = "Left";
             this.leftmosaicCheckbox.UseVisualStyleBackColor = true;
+            this.leftmosaicCheckbox.Click += new System.EventHandler(this.leftmosaicCheckbox_Click);
             // 
             // label21
             // 
@@ -1175,18 +1177,6 @@
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Aux. Pal.";
-            // 
-            // mosaicCheckBox
-            // 
-            this.mosaicCheckBox.AutoSize = true;
-            this.mosaicCheckBox.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.mosaicCheckBox.Location = new System.Drawing.Point(141, 241);
-            this.mosaicCheckBox.Name = "mosaicCheckBox";
-            this.mosaicCheckBox.Size = new System.Drawing.Size(60, 17);
-            this.mosaicCheckBox.TabIndex = 23;
-            this.mosaicCheckBox.Text = "Mosaic";
-            this.mosaicCheckBox.UseVisualStyleBackColor = true;
-            this.mosaicCheckBox.Click += new System.EventHandler(this.mosaicCheckBox_Click);
             // 
             // OWProperty_AuxPalette
             // 
@@ -1597,6 +1587,15 @@
             this.exitTabpage.ToolTipText = "Exits";
             this.exitTabpage.UseVisualStyleBackColor = true;
             // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(12, 10);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(87, 13);
+            this.label30.TabIndex = 3;
+            this.label30.Text = "Work in progress";
+            // 
             // transportTabpage
             // 
             this.transportTabpage.Controls.Add(this.label31);
@@ -1607,6 +1606,15 @@
             this.transportTabpage.TabIndex = 7;
             this.transportTabpage.ToolTipText = "Transports";
             this.transportTabpage.UseVisualStyleBackColor = true;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(12, 10);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(87, 13);
+            this.label31.TabIndex = 4;
+            this.label31.Text = "Work in progress";
             // 
             // Tiles8
             // 
@@ -1915,24 +1923,6 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(12, 10);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(87, 13);
-            this.label30.TabIndex = 3;
-            this.label30.Text = "Work in progress";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(12, 10);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(87, 13);
-            this.label31.TabIndex = 4;
-            this.label31.Text = "Work in progress";
-            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2056,7 +2046,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.CheckBox mosaicCheckBox;
         private ExtraForms.Hexbox OWProperty_AuxPalette;
         public ExtraForms.Hexbox OWProperty_MessageID;
         private ExtraForms.Hexbox OWProperty_SPRPalette;

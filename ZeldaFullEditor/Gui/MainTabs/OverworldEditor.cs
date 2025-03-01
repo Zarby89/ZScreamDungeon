@@ -181,7 +181,10 @@ namespace ZeldaFullEditor.Gui
             this.OWProperty_SubscreenOverlay.HexValue = map.SubscreenOverlay;
 
             this.largemapCheckbox.Checked = map.LargeMap;
-            this.mosaicCheckBox.Checked = map.Mosaic;
+            this.leftmosaicCheckbox.Checked = map.Mosaic.Left;
+            this.rightmosaicCheckbox.Checked = map.Mosaic.Right;
+            this.topmosaicCheckbox.Checked = map.Mosaic.Up;
+            this.bottommosaicCheckbox.Checked = map.Mosaic.Down;
             this.propertiesChangedFromForm = false;
 
             fromForm = true;
@@ -2453,9 +2456,36 @@ namespace ZeldaFullEditor.Gui
             this.areaBGColorPictureBox.Visible = x;
         }
 
-        private void mosaicCheckBox_Click(object sender, EventArgs e)
+        private void leftmosaicCheckbox_Click(object sender, EventArgs e)
         {
-            this.scene.ow.AllMaps[this.scene.ow.AllMaps[this.scene.selectedMap].ParentID].Mosaic = this.mosaicCheckBox.Checked;
+            int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
+            (bool Up, bool Down, bool Left, bool Right) tempMosaic = this.scene.ow.AllMaps[parentID].Mosaic;
+            tempMosaic.Left = this.leftmosaicCheckbox.Checked;
+            this.scene.ow.AllMaps[parentID].Mosaic = tempMosaic;
+        }
+
+        private void topmosaicCheckbox_Click(object sender, EventArgs e)
+        {
+            int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
+            (bool Up, bool Down, bool Left, bool Right) tempMosaic = this.scene.ow.AllMaps[parentID].Mosaic;
+            tempMosaic.Up = this.topmosaicCheckbox.Checked;
+            this.scene.ow.AllMaps[parentID].Mosaic = tempMosaic;
+        }
+
+        private void rightmosaicCheckbox_Click(object sender, EventArgs e)
+        {
+            int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
+            (bool Up, bool Down, bool Left, bool Right) tempMosaic = this.scene.ow.AllMaps[parentID].Mosaic;
+            tempMosaic.Right = this.rightmosaicCheckbox.Checked;
+            this.scene.ow.AllMaps[parentID].Mosaic = tempMosaic;
+        }
+
+        private void bottommosaicCheckbox_Click(object sender, EventArgs e)
+        {
+            int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
+            (bool Up, bool Down, bool Left, bool Right) tempMosaic = this.scene.ow.AllMaps[parentID].Mosaic;
+            tempMosaic.Down = this.bottommosaicCheckbox.Checked;
+            this.scene.ow.AllMaps[parentID].Mosaic = tempMosaic;
         }
 
         public void SendLargeMapChanged(int m, bool c)
