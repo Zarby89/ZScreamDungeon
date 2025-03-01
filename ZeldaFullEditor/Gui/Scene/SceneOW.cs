@@ -294,6 +294,7 @@ namespace ZeldaFullEditor
             }
 
             this.owForm.objCombobox.Items.Clear();
+            this.owForm.objCombobox.Text = string.Empty;
             this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedSprite;
             this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedItem;
             string text = "Selected object: ";
@@ -301,36 +302,60 @@ namespace ZeldaFullEditor
             if (this.selectedMode == ObjectMode.Tile)
             {
                 text = "Selected Tile " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
+
+                this.owForm.SetSelectedObjectLabels(
+                        selectedTile[0].ToString("X4"),
+                        (e.X / 16).ToString(),
+                        (e.Y / 16).ToString());
+
                 this.tilemode.OnMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.Overlay)
             {
+                text += "Overlay";
+
+                this.owForm.SetSelectedObjectLabels(
+                        selectedTile[0].ToString("X4"),
+                        (e.X / 16).ToString(),
+                        (e.Y / 16).ToString());
+
                 this.overlayMode.OnMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.OverlayAnimation)
             {
+                text += "Overlay Animation";
+
+                this.owForm.SetSelectedObjectLabels(string.Empty, string.Empty, string.Empty);
+
                 this.overlayAnimationMode.OnMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.Exits)
             {
-                this.exitmode.onMouseUp(e);
                 text += "Exit";
+
+                this.exitmode.onMouseUp(e);
+
                 if (this.exitmode.lastselectedExit != null)
                 {
                     this.owForm.SetSelectedObjectLabels(
                         this.exitmode.lastselectedExit.MapID,
                         this.exitmode.lastselectedExit.PlayerX,
                         this.exitmode.lastselectedExit.PlayerY);
-                }
+                } 
             }
             else if (this.selectedMode == ObjectMode.OWDoor)
             {
+                text += "Door";
+
+                this.owForm.SetSelectedObjectLabels(string.Empty, string.Empty, string.Empty);
+
                 //doorMode.onMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.Entrances)
             {
-                this.entranceMode.onMouseUp(e);
                 text += "Entrance";
+
+                this.entranceMode.onMouseUp(e);
 
                 if (this.entranceMode.lastselectedEntrance != null)
                 {
@@ -338,12 +363,13 @@ namespace ZeldaFullEditor
                         this.entranceMode.lastselectedEntrance.EntranceID,
                         this.entranceMode.lastselectedEntrance.X,
                         this.entranceMode.lastselectedEntrance.Y);
-                }
+                }  
             }
             else if (this.selectedMode == ObjectMode.Itemmode)
             {
-                this.itemMode.onMouseUp(e);
                 text += "Item";
+
+                this.itemMode.onMouseUp(e);
 
                 if (this.itemMode.lastselectedItem != null)
                 {
@@ -368,8 +394,9 @@ namespace ZeldaFullEditor
             }
             else if (this.selectedMode == ObjectMode.Spritemode)
             {
-                this.spriteMode.onMouseUp(e);
                 text += "Sprite";
+
+                this.spriteMode.onMouseUp(e);
 
                 if (this.spriteMode.lastselectedSprite != null)
                 {
@@ -385,8 +412,9 @@ namespace ZeldaFullEditor
             }
             else if (this.selectedMode == ObjectMode.Flute)
             {
-                this.transportMode.onMouseUp(e);
                 text += "Transport";
+
+                this.transportMode.onMouseUp(e);
 
                 if (this.transportMode.lastselectedTransport != null)
                 {
@@ -398,11 +426,25 @@ namespace ZeldaFullEditor
             }
             else if (this.selectedMode == ObjectMode.Gravestone)
             {
+                text += "Grave";
+
                 this.gravestoneMode.OnMouseUp(e);
+
+                this.owForm.SetSelectedObjectLabels(
+                        this.gravestoneMode.selectedGrave.UniqueID,
+                        this.gravestoneMode.selectedGrave.XTilePos,
+                        this.gravestoneMode.selectedGrave.YTilePos);
             }
             else if (this.selectedMode == ObjectMode.Notemode)
             {
-                    this.noteMode.onMouseUp(e);
+                text += "Note";
+
+                this.noteMode.onMouseUp(e);
+
+                this.owForm.SetSelectedObjectLabels(
+                        this.noteMode.selectedNote.ID,
+                        this.noteMode.selectedNote.x,
+                        this.noteMode.selectedNote.y);
             }
 
             this.owForm.objectGroupbox.Text = text;

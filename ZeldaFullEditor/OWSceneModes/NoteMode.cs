@@ -7,8 +7,9 @@ namespace ZeldaFullEditor.OWSceneModes
 {
     public class NoteMode
     {
+        public OWNote selectedNote = null;
+
         SceneOW scene;
-        OWNote selectedNote = null;
         bool clickedOn = false;
         int mx = 0;
         int my = 0;

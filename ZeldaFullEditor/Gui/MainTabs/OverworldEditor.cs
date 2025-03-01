@@ -2333,6 +2333,13 @@ namespace ZeldaFullEditor.Gui
             this.SelectedObjectY.Text = y.ToString("X2");
         }
 
+        public void SetSelectedObjectLabels(string id, string x, string y)
+        {
+            this.SelectedObjectID.Text = id;
+            this.SelectedObjectX.Text = x;
+            this.SelectedObjectY.Text = y;
+        }
+
         private void exportPNGToolStripButton_Click(object sender, EventArgs e)
         {
             Bitmap temp = new Bitmap(4096, 4096);

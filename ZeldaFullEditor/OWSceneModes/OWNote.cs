@@ -11,6 +11,9 @@ namespace ZeldaFullEditor.OWSceneModes
         public Color color;
         public int x, y;
         public SizeF size;
+        public int ID;
+
+        private static int CurrentID;
 
         public OWNote(int x, int y, string text, Font font, Color color)
         {
@@ -24,6 +27,8 @@ namespace ZeldaFullEditor.OWSceneModes
             this.size = g.MeasureString(text, font);
             g.Dispose();
             b.Dispose();
+            this.ID = CurrentID++;
+
             Console.WriteLine(ToString());
         }
 
