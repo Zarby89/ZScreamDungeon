@@ -877,7 +877,6 @@ namespace ZeldaFullEditor.Gui
 
         private void importAllPalettes(object sender, EventArgs e)
         {
-
             byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3415 total colors * 4 for 4 bytes
             using (OpenFileDialog sfd = new OpenFileDialog())
             {
