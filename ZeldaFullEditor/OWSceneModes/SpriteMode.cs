@@ -2,9 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
-using System.Windows.Markup;
 using Lidgren.Network;
 using ZeldaFullEditor.Properties;
 
@@ -37,9 +35,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.selectedDragSprite = null;
                 scene.mouse_down = true;
                 isLeftPress = true;
+
                 return;
             }
-
 
             isLeftPress = e.Button == MouseButtons.Left;
 
@@ -57,8 +55,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16 && spr.mapid == scene.selectedMapParent)
                     {
                         selectedSprite = spr;
-
-
                     }
 
                     //Console.WriteLine("X:" + spr.map_x + ", Y:" + spr.map_y);
@@ -84,7 +80,6 @@ namespace ZeldaFullEditor.OWSceneModes
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
-
         public void Paste()
         {
             int data = (int)Clipboard.GetData("owsprite");
@@ -104,6 +99,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     if (gs == 0)
                     {
                         MessageBox.Show("Can't add sprite in rain state in the Dark World!");
+
                         return;
                     }
                 }
@@ -117,7 +113,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
             }
         }
-
 
         public void onMouseUp(MouseEventArgs e)
         {
@@ -148,6 +143,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 }
+
                 if (selectedSprite != null)
                 {
                     selectedSprite.updateMapStuff(mid);
@@ -187,12 +183,11 @@ namespace ZeldaFullEditor.OWSceneModes
         private void deleteSprite_Click(object sender, EventArgs e)
         {
             Delete();
-
         }
 
         private void spriteProperties_Click(object sender, EventArgs e)
         {
-            // Nothing for now
+            // TODO: Nothing for now.
         }
 
         private void addSprite_Click(object sender, EventArgs e)
@@ -295,7 +290,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-
             scene.ow.AllSprites[0].RemoveAll(x => x.deleted);
             scene.ow.AllSprites[1].RemoveAll(x => x.deleted);
             scene.ow.AllSprites[2].RemoveAll(x => x.deleted);
@@ -437,10 +431,13 @@ namespace ZeldaFullEditor.OWSceneModes
         }
         */
 
-
         private void SendSpriteData(Sprite spr)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer(24);
             buffer.Write((byte)07); // sprite data
             buffer.Write((byte)NetZS.userID); //user ID
@@ -458,7 +455,5 @@ namespace ZeldaFullEditor.OWSceneModes
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
         }
-
-
     }
 }

@@ -88,8 +88,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                         scene.ow.AllHoles[i].UpdateMapStuff(mid);
 
-
-
                         found = i;
                         selectedEntrance = scene.ow.AllHoles[i];
                         scene.mouse_down = true;
@@ -111,6 +109,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                         }
+
                         scene.ow.AllEntrances[i].Deleted = false;
                         scene.ow.AllEntrances[i].MapID = mid;
                         scene.ow.AllEntrances[i].X = (ushort)((mxRightclick / 16) * 16);
@@ -251,7 +250,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         break;
                     }
                 }
-
             }
         }
 
@@ -521,6 +519,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
+
                     scene.ow.AllEntrances[i].Deleted = false;
                     scene.ow.AllEntrances[i].MapID = mid;
                     scene.ow.AllEntrances[i].X = (mxRightclick / 16) * 16;
@@ -528,6 +527,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.ow.AllEntrances[i].UpdateMapStuff(mid);
                     found = true;
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+
                     break;
                 }
             }
@@ -685,10 +685,13 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-
         public void SendEntranceData(EntranceOW entrance)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer(24);
             buffer.Write((byte)06); // entrance data
             buffer.Write((byte)NetZS.userID); //user ID
@@ -706,9 +709,6 @@ namespace ZeldaFullEditor.OWSceneModes
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
-
-
     }
 }

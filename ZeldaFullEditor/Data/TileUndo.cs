@@ -28,7 +28,6 @@ namespace ZeldaFullEditor
 
         public void Restore(SceneOW scene)
         {
-           
             int i = 0;
             for (int y = 0; y < savedTiles.Length / lengthX; y++)
             {

@@ -3409,7 +3409,6 @@ warnpc $00D5CB ; $0055CB
 
 else
 
-; Undo the functions above:
 org $00D673 ; $005673
 db $A9, $60, $85, $01
 
@@ -3637,7 +3636,6 @@ org $00DA2F ; $005A2F
 
 else
 
-; Undo the functions above:
 org $00E221 ; $006221
 db $AD, $A1, $0A, $29
 

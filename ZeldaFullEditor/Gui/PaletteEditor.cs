@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
@@ -126,7 +120,7 @@ namespace ZeldaFullEditor.Gui
         {
             CreateTempPalettes();
 
-            // Recreate temp of all palettes
+            // Recreate temp of all palettes.
         }
 
         private void PaletteEditor_Load(object sender, EventArgs e)
@@ -136,7 +130,7 @@ namespace ZeldaFullEditor.Gui
 
         private void restoreallButton_Click(object sender, EventArgs e)
         {
-            // Restore temp of all palettes
+            // Restore temp of all palettes.
             if (MessageBox.Show("Are you sure you want to restore all palettes " +
                 "to the last applied values?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -149,7 +143,7 @@ namespace ZeldaFullEditor.Gui
             restoreSelected();
             refreshallGfx();
 
-            // Restore the temp selected palette only
+            // Restore the temp selected palette only.
         }
 
         private void refreshallGfx()
@@ -406,7 +400,6 @@ namespace ZeldaFullEditor.Gui
 
             for (int i = 0; i < 20; i++)
             {
-
                 DungeonMainPal[i] = new Color[Palettes.DungeonsMainPalettes[i].Length];
                 for (int j = 0; j < Palettes.DungeonsMainPalettes[i].Length; j++)
                 {

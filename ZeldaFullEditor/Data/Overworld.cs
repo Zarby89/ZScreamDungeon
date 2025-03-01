@@ -170,7 +170,7 @@ namespace ZeldaFullEditor
                 /* Console.WriteLine(tileLeftEntrance[i].ToString("D4") + " , " + tileRightEntrance[i].ToString("D4")); */
             }
 
-            for (int i = 0; i < 4096;i++)
+            for (int i = 0; i < 4096; i++)
             {
                 usedTiles16[i] = true;
             }
@@ -191,8 +191,8 @@ namespace ZeldaFullEditor
                 {
                     AllAnimationOverlays[i].FramesList[j] = new List<TilePos>();
                 }
-
             }
+
             this.AllTileTypes = this.LoadTileTypes();
             this.AllGraves = this.LoadGraves();
 
@@ -380,9 +380,7 @@ namespace ZeldaFullEditor
 
             List<ulong> allTile16 = new List<ulong>();
             
-
             // Create tile32 from tiles16.
-
 
             int sx = 0;
             int sy = 0;
@@ -473,7 +471,6 @@ namespace ZeldaFullEditor
                 limit = Constants.LimitOfMap32*2;
             }
 
-
             if (onlyShow)
             {
                 MessageBox.Show($"Unique Tiles32 count: {uniqueTiles.Count} | Max: {limit}");
@@ -488,6 +485,7 @@ namespace ZeldaFullEditor
                     $"or empty the Dark World with the \"Clear DW Tiles\" option\r\n" +
                     $"in the Overworld menu."
                    );
+
                 return true;
             }
 
@@ -1211,6 +1209,7 @@ namespace ZeldaFullEditor
                         Console.WriteLine($"MapIndex Overlay: {index:X2} Might not have been loaded properly");
                         break;
                     }
+
                     /*
 					else if (b == 0xC2) // Add me back in to open goddess of wisdom at least in the dungeon editor.
 					{

@@ -37,7 +37,7 @@ namespace ZeldaFullEditor
 
         public bool SaveEntrances(Entrance[] entrances, Entrance[] startingentrances)
         {
-            for (int i = 0; i < 0xFF; i++)
+            for (int i = 0; i < Constants.entrance_TotalEXP; i++)
             {
                 entrances[i].Save(i);
             }
@@ -246,8 +246,6 @@ namespace ZeldaFullEditor
             return false;
         }
 
-
-
         /// <summary>
         ///     Writes the data used for the custom overworld ASM and then applies the ASM itself to ROM.
         /// </summary>
@@ -377,15 +375,14 @@ namespace ZeldaFullEditor
                 }
             }
 
-            // TODO: handle differently in projects.
-            if (File.Exists("expandedEntrances.asm"))
+            // TODO: Handle differently in projects.
+            if (File.Exists("ExpandedEntrances.asm"))
             {
-                _ = Asar.patch("expandedEntrances.asm", ref ROM.DATA);
-
+                _ = Asar.patch("ExpandedEntrances.asm", ref ROM.DATA);
             }
             else
             {
-                UIText.CryAboutSaving("Missing ASM file 'expandedEntrances.asm'.\nSaving will continue but the ASM will not be applied.");
+                UIText.CryAboutSaving("Missing ASM file 'ExpandedEntrances.asm'.\nSaving will continue but the ASM will not be applied.");
             }
 
             foreach (Asarerror error in Asar.geterrors())
@@ -845,8 +842,6 @@ namespace ZeldaFullEditor
 
         public bool SaveAllPots()
         {
-
-
             //int pos = Constants.items_data_start + 2; // Skip 2 FF FF that are empty pointer.
             int ptrOfPointers = Utils.SnesToPc(ROM.ReadLong(Constants.room_items_pointers_ptr));
 
@@ -856,14 +851,10 @@ namespace ZeldaFullEditor
 
             ROM.WriteShort(emptyroom, 0xFFFF, true); // write empty room pointer
 
-
-
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
                 if (this.AllRooms[i].pot_items.Count == 0)
                 {
-
-
                     ROM.WriteShort(ptrOfPointers + (i * 2), Utils.PcToSnes(emptyroom), true, "Items Pointer for Room " + i.ToString("D3"));
                     continue;
                 }
@@ -907,6 +898,7 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+
             return false; // False = no error.
         }
 
@@ -934,8 +926,6 @@ namespace ZeldaFullEditor
             ROM.WriteShort(Constants.rooms_sprite_pointer, (Utils.PcToSnes(ROM.spaceUsedOWSprites) & 0x00FFFF));
 
             int spritePointer = (09 << 16) + (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + ROM.DATA[Constants.rooms_sprite_pointer];
-
-
 
             int spritePointerPC = Utils.SnesToPc(spritePointer);
             ROM.StartBlockLogWriting("Dungeon Sprites", spritePointerPC);
@@ -1027,6 +1017,7 @@ namespace ZeldaFullEditor
             }
 
             ROM.EndBlockLogWriting();
+
             return false;
         }
 
@@ -1147,7 +1138,6 @@ namespace ZeldaFullEditor
 
         public bool SaveOWSprites(SceneOW scene)
         {
-            
             ROM.StartBlockLogWriting("Sprites OW DATA & Pointers", Constants.overworldSpritesBegining);
             var spritePointers = new int[Constants.NumberOfOWSprites];
             var spritePointersReused = new int[Constants.NumberOfOWSprites];
@@ -2535,7 +2525,6 @@ namespace ZeldaFullEditor
 
         public bool SaveAllPots2(short[] listofrooms)
         {
-
             int ptrOfPointers = Utils.SnesToPc(ROM.ReadLong(Constants.room_items_pointers_ptr));
             int emptyroom = ptrOfPointers + 0x27E;
             int pos = ptrOfPointers + 0x280;
@@ -2550,6 +2539,7 @@ namespace ZeldaFullEditor
                     if (this.AllRooms[i].pot_items.Count == 0)
                     {
                         ROM.WriteShort2(ptrOfPointers + (i * 2), Utils.PcToSnes(emptyroom), true, "Items Pointer for Room " + i.ToString("D3"));
+
                         continue;
                     }
 
@@ -2586,6 +2576,7 @@ namespace ZeldaFullEditor
                         if (pos > Constants.items_data_end)
                         {
                             ROM.SaveLogs();
+
                             return true;
                         }
                     }
@@ -2595,6 +2586,7 @@ namespace ZeldaFullEditor
                     if (DungeonsData.AllRoomsMoved[i].pot_items.Count == 0)
                     {
                         ROM.WriteShort2(ptrOfPointers + (i * 2), Utils.PcToSnes(emptyroom), true, "Items Pointer for Room " + i.ToString("D3"));
+
                         continue;
                     }
 
@@ -2631,6 +2623,7 @@ namespace ZeldaFullEditor
                         if (pos > Constants.items_data_end)
                         {
                             ROM.SaveLogs();
+
                             return true;
                         }
                     }
@@ -2638,6 +2631,7 @@ namespace ZeldaFullEditor
             }
 
             ROM.EndBlockLogWriting();
+
             return false; // False = no error.
         }
 
@@ -2764,6 +2758,7 @@ namespace ZeldaFullEditor
             }
 
             ROM.EndBlockLogWriting();
+
             return false; // False = no error.
         }
 
@@ -2773,6 +2768,7 @@ namespace ZeldaFullEditor
             if (cData.Length >= 0x1000)
             {
                 _ = MessageBox.Show("Too much sprite damage taken data this data is compressed something must have been wrong");
+
                 return true;
             }
 
@@ -2814,18 +2810,13 @@ namespace ZeldaFullEditor
                 StringBuilder sb = new StringBuilder();
                 foreach (OWNote note in scene.owNotesList)
                 {
-
                     sb.Append(note.ToString());
                 }
                 sb.Remove(sb.Length - 1, 1);
                 File.WriteAllText(path + "\\OWNotes.txt", sb.ToString());
             }
 
-
             return true;
         }
     }
-
-
-
 }

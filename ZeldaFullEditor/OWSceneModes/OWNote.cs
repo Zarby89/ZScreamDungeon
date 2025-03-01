@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
     public class OWNote
     {
-
         public string text;
         public Font font;
         public Color color;
@@ -39,6 +35,7 @@ namespace ZeldaFullEditor.OWSceneModes
             s += text.ToString() + "|";
             s += color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString() + "|" ;
             s += font.Name + "|" + font.Style + "|" + font.Size + "@";
+
             return s;
         }
 
@@ -59,18 +56,22 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 fs |= FontStyle.Regular;
             }
+
             if (styleString.Contains("Italic"))
             {
                 fs |= FontStyle.Italic;
             }
+
             if (styleString.Contains("Bold"))
             {
                 fs |= FontStyle.Bold;
             }
+
             if (styleString.Contains("Strikeout"))
             {
                 fs |= FontStyle.Strikeout;
             }
+
             if (styleString.Contains("Underline"))
             {
                 fs |= FontStyle.Underline;
@@ -81,8 +82,6 @@ namespace ZeldaFullEditor.OWSceneModes
             g.Dispose();
             b.Dispose();
             Console.WriteLine(ToString());
-
         }
-
     }
 }

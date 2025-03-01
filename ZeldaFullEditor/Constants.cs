@@ -515,25 +515,26 @@ namespace ZeldaFullEditor
         public static int entrance_music = 0x01582E; // 0x15592
 
 
-        //EXPANDED to 0x78000 to 0x7A000
+        // EXPANDED to 0x78000 to 0x7A000
         public static int entrance_roomEXP = 0x078000; 
-        public static int entrance_scrolledgeEXP = 0x78200;
-        public static int entrance_camerayEXP = 0x78A00;
-        public static int entrance_cameraxEXP = 0x78C00;
-        public static int entrance_ypositionEXP = 0x78E00;
-        public static int entrance_xpositionEXP = 0x79000;
-        public static int entrance_cameraytriggerEXP = 0x79200;
-        public static int entrance_cameraxtriggerEXP = 0x79400;
-        public static int entrance_blocksetEXP = 0x79600;
-        public static int entrance_floorEXP = 0x79700;
-        public static int entrance_dungeonEXP = 0x79800;
-        public static int entrance_doorEXP = 0x79900;
-        public static int entrance_ladderbgEXP = 0x79A00; 
-        public static int entrance_scrollingEXP = 0x79B00;
-        public static int entrance_scrollquadrantEXP = 0x79C00;
-        public static int entrance_exitEXP = 0x79D00;
-        public static int entrance_musicEXP = 0x79F00;
-        public static int entrance_ExtraEXP = 0x7A000;
+        public static int entrance_scrolledgeEXP = 0x078200;
+        public static int entrance_camerayEXP = 0x078A00;
+        public static int entrance_cameraxEXP = 0x078C00;
+        public static int entrance_ypositionEXP = 0x078E00;
+        public static int entrance_xpositionEXP = 0x079000;
+        public static int entrance_cameraytriggerEXP = 0x079200;
+        public static int entrance_cameraxtriggerEXP = 0x079400;
+        public static int entrance_blocksetEXP = 0x079600;
+        public static int entrance_floorEXP = 0x079700;
+        public static int entrance_dungeonEXP = 0x079800;
+        public static int entrance_doorEXP = 0x079900;
+        public static int entrance_ladderbgEXP = 0x079A00; 
+        public static int entrance_scrollingEXP = 0x079B00;
+        public static int entrance_scrollquadrantEXP = 0x079C00;
+        public static int entrance_exitEXP = 0x079D00;
+        public static int entrance_musicEXP = 0x079F00;
+        public static int entrance_ExtraEXP = 0x07A000;
+        public static int entrance_TotalEXP = 0xFF;
 
         public static int startingentrance_room = 0x015B6E; // 0x158D2 // Word value for each room
         public static int startingentrance_scrolledge = 0x015B7C; // 0x158E0 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR

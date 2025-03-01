@@ -9,11 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 using Lidgren.Network;
 using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Properties;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -50,6 +48,9 @@ namespace ZeldaFullEditor.Gui
 
         bool fromForm = false;
 
+        Pen selectionPen = new Pen(Color.LimeGreen, 2);
+        Brush unusedTile = new SolidBrush(Color.FromArgb(80, 255, 0, 0));
+
         public OverworldEditor()
         {
             InitializeComponent();
@@ -81,7 +82,6 @@ namespace ZeldaFullEditor.Gui
             this.stateCombobox.SelectedIndex = 1;
             this.scratchPicturebox.Image = this.scratchPadBitmap;
 
-
             music1Box.Items.AddRange(Constants.musicNamesOW);
             music2Box.Items.AddRange(Constants.musicNamesOW);
             music3Box.Items.AddRange(Constants.musicNamesOW);
@@ -94,7 +94,6 @@ namespace ZeldaFullEditor.Gui
 
             for (int i = 0; i< overworld.AllEntrances.Length;i++)
             {
-                
                 string tname = "OW[" + i.ToString("X2") + "] -> UW";
                 foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
                 {
@@ -104,10 +103,9 @@ namespace ZeldaFullEditor.Gui
                         break;
                     }
                 }
+
                 owentrancesListbox.Items.Add(tname);
             }
-
-
 
             //setTilesGfx();
             bool fromFile = false;
@@ -186,7 +184,6 @@ namespace ZeldaFullEditor.Gui
             this.mosaicCheckBox.Checked = map.Mosaic;
             this.propertiesChangedFromForm = false;
 
-
             fromForm = true;
             music1Box.SelectedIndex = scene.ow.AllMaps[this.scene.selectedMapParent].Music[0] & 0x0F;
             music2Box.SelectedIndex = scene.ow.AllMaps[this.scene.selectedMapParent].Music[1] & 0x0F;
@@ -208,10 +205,6 @@ namespace ZeldaFullEditor.Gui
                 ambient3Box.Enabled = false;
                 ambient4Box.Enabled = false;
             }
-
-
-
-
         }
 
         private void ModeButton_Click(object sender, EventArgs e)
@@ -248,6 +241,7 @@ namespace ZeldaFullEditor.Gui
                 if (ispalPreview)
                 {
                     OWProperty_MainPalette_MouseEnter(sender, null);
+
                     return;
                 }
 
@@ -259,8 +253,6 @@ namespace ZeldaFullEditor.Gui
                 {
                     OWProperty_TileGFX0_MouseEnter(sender, null);
                 }
-
-
             }
         }
 
@@ -365,8 +357,7 @@ namespace ZeldaFullEditor.Gui
             this.scene.Invalidate();
             // scene.Refresh();
         }
-        Pen selectionPen = new Pen(Color.LimeGreen, 2);
-        Brush unusedTile = new SolidBrush(Color.FromArgb(80, 255, 0, 0));
+
         private void tilePictureBox_Paint(object sender, PaintEventArgs e)
         {
             if (GFX.mapblockset16Bitmap != null)
@@ -431,6 +422,7 @@ namespace ZeldaFullEditor.Gui
             {
                 objectGroupbox.Text = "Selected Tile " + scene.selectedTile[0].ToString("X4") + "   Selected Map " + scene.ow.AllMaps[scene.selectedMap].ParentID.ToString("X2");
             }
+
             this.tilePictureBox.Refresh();
         }
 
@@ -483,7 +475,6 @@ namespace ZeldaFullEditor.Gui
         {
             Tile16Editor ted = new Tile16Editor(this.scene);
             
-
             if (ted.ShowDialog() == DialogResult.OK)
             {
                 new Thread(() =>
@@ -911,8 +902,6 @@ namespace ZeldaFullEditor.Gui
             // TODO: Copy.
             if (this.tabControl1.SelectedTab.Name == "Tiles8")
             {
-                // TODO: Add something here?
-
                 /*
                 int sx = 0;
                 int sy = 0;
@@ -1260,7 +1249,7 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-		// TODO KAN REFACTOR THIS IS A HORRIBLE FUCKING FUNCTION AND I HATE IT AND IT NEEDS MASSIVE CLEAN UP
+		// TODO: KAN REFACTOR THIS IS A HORRIBLE FUCKING FUNCTION AND I HATE IT AND IT NEEDS MASSIVE CLEAN UP
 		public void UpdateLargeMap(int m, bool largemapChecked)
         {
             if (largemapChecked) // Large map
@@ -1271,7 +1260,7 @@ namespace ZeldaFullEditor.Gui
                     int i = 0;
                     string temp = string.Empty;
 
-					// TODO KAN REFACTOR
+					// TODO: KAN REFACTOR
 					if (this.scene.ow.AllMaps[m + 1].LargeMap)
                     {
                         temp += (m + 1).ToString("X2") + ", ";

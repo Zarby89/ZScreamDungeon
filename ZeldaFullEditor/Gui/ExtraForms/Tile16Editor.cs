@@ -1,13 +1,8 @@
 ﻿using Lidgren.Network;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
@@ -25,6 +20,9 @@ namespace ZeldaFullEditor.Gui
         ushort searchedTile = 0xFFFF;
 
         Tile16 copiedTile;
+
+        // TODO: Switch to entities.cs version, etc.
+        string[] tilesTypesNames = new string[0xFF];
 
         public Tile16Editor(SceneOW scene)
         {
@@ -224,6 +222,7 @@ namespace ZeldaFullEditor.Gui
             {
                 tileTypeBox.SelectedIndex = (int)tempTiletype[tid];
             }
+
             pictureboxTile8.Refresh();
             fromForm = false;
 
@@ -259,6 +258,7 @@ namespace ZeldaFullEditor.Gui
                         inFrontCheckbox.Checked,
                         mirrorXCheckbox.Checked,
                         mirrorYCheckbox.Checked);
+
                     if (t8x == 0 && t8y == 0)
                     {
                         allTiles[t16] = new Tile16(t, allTiles[t16].Tile1, allTiles[t16].Tile2, allTiles[t16].Tile3);
@@ -285,16 +285,19 @@ namespace ZeldaFullEditor.Gui
                     inFrontCheckbox.Checked,
                     mirrorXCheckbox.Checked,
                     mirrorYCheckbox.Checked);
+
                     TileInfo t2 = new TileInfo((ushort)(tile8selected + 1),
                     (byte)paletteUpDown.Value,
                     inFrontCheckbox.Checked,
                     mirrorXCheckbox.Checked,
                     mirrorYCheckbox.Checked);
+
                     TileInfo t3 = new TileInfo((ushort)(tile8selected + 16),
                     (byte)paletteUpDown.Value,
                     inFrontCheckbox.Checked,
                     mirrorXCheckbox.Checked,
                     mirrorYCheckbox.Checked);
+
                     TileInfo t4 = new TileInfo((ushort)(tile8selected + 17),
                     (byte)paletteUpDown.Value,
                     inFrontCheckbox.Checked,
@@ -318,7 +321,7 @@ namespace ZeldaFullEditor.Gui
                         allTiles[t16] = new Tile16(t4, t3, t2, t);
                     }
 
-                        BuildTiles16Gfx();
+                    BuildTiles16Gfx();
                 }
                 else if (tiledrawsizeHexbox.HexValue == 4)
                 {
@@ -327,20 +330,23 @@ namespace ZeldaFullEditor.Gui
                         for (int j = 0; j < 2; j++)
                         {
                             TileInfo t = new TileInfo((ushort)(tile8selected + (i * 2) + (j * 32)),
-                        (byte)paletteUpDown.Value,
-                        inFrontCheckbox.Checked,
-                        mirrorXCheckbox.Checked,
-                        mirrorYCheckbox.Checked);
+                            (byte)paletteUpDown.Value,
+                            inFrontCheckbox.Checked,
+                            mirrorXCheckbox.Checked,
+                            mirrorYCheckbox.Checked);
+
                             TileInfo t2 = new TileInfo((ushort)(tile8selected + 1 + (i *2) + (j * 32)),
                             (byte)paletteUpDown.Value,
                             inFrontCheckbox.Checked,
                             mirrorXCheckbox.Checked,
                             mirrorYCheckbox.Checked);
+
                             TileInfo t3 = new TileInfo((ushort)(tile8selected + 16 + (i * 2) + (j * 32)),
                             (byte)paletteUpDown.Value,
                             inFrontCheckbox.Checked,
                             mirrorXCheckbox.Checked,
                             mirrorYCheckbox.Checked);
+
                             TileInfo t4 = new TileInfo((ushort)(tile8selected + 17 + (i * 2) + (j * 32)),
                             (byte)paletteUpDown.Value,
                             inFrontCheckbox.Checked,
@@ -350,6 +356,7 @@ namespace ZeldaFullEditor.Gui
                             allTiles[t16 + i + (j*8)] = new Tile16(t, t2, t3, t4);
                         }
                     }
+
                     BuildTiles16Gfx();
                 }
             }
@@ -520,7 +527,7 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
 
-                // check all tiles that changed
+                // Check all tiles that changed.
                 scene.ow.Tile16List[i] = allTiles[i];
             }
 
@@ -660,9 +667,6 @@ namespace ZeldaFullEditor.Gui
             tileTypeBox.Items.AddRange(tilesTypesNames);
         }
 
-        // TODO switch to entities.cs version, etc
-        string[] tilesTypesNames = new string[0xFF];
-
         private void gridcheckBox_CheckedChanged(object sender, EventArgs e)
         {
             pictureboxTile16.Refresh();
@@ -674,6 +678,7 @@ namespace ZeldaFullEditor.Gui
             scene.mainForm.editorsTabControl.SelectedIndex = 2;
             scene.mainForm.gfxEditor.selectedSheet = scene.ow.AllMaps[scene.selectedMap].StaticGFX[(e.Y / 64)];
             scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
+
             this.Close();
         }
 
@@ -723,8 +728,8 @@ namespace ZeldaFullEditor.Gui
                 { 
                     tilemapdata[i] = br.ReadUInt16();
                 }
-                br.Close();
 
+                br.Close();
 
                 for (int h = 0; h < tilemapHeight/2; h++)
                 {
@@ -749,8 +754,6 @@ namespace ZeldaFullEditor.Gui
                             allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile3 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2)) + tilemapWidth]);
                         }
                     }
-                    
-
                 }
                 for (int j = 0; j < tilemapHeight / 2; j++)
                 {
@@ -759,13 +762,7 @@ namespace ZeldaFullEditor.Gui
                         scene.owForm.scratchPadTiles[i,j] = (ushort)(i + (j * 8));
                     }
                 }
-
-                
-
-
             }
-
-
         }
 
         private void tiledrawsizeHexbox_TextChanged(object sender, EventArgs e)

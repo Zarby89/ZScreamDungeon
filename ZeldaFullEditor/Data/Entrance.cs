@@ -278,6 +278,7 @@ namespace ZeldaFullEditor
                     {
                         FaceDown = false;
                     }
+
                     return;
                 }
                 else
@@ -314,7 +315,6 @@ namespace ZeldaFullEditor
                         FaceDown = true;
                     }
                 }
-
             }
             else
             {
@@ -387,8 +387,8 @@ namespace ZeldaFullEditor
                 {
                     ExtraByte |= 1;
                 }
-                ROM.Write(Constants.entrance_ExtraEXP + (entranceID), ExtraByte, WriteType.EntranceProperties);
 
+                ROM.Write(Constants.entrance_ExtraEXP + (entranceID), ExtraByte, WriteType.EntranceProperties);
             }
             else
             {

@@ -72,6 +72,8 @@ namespace ZeldaFullEditor
 
         public bool lowEndMode = false;
 
+        Pen camPen = new Pen(Color.Red, 2);
+
         public SceneOW(OverworldEditor f, Overworld ow, DungeonMain mform)
         {
             this.owForm = f;
@@ -97,9 +99,7 @@ namespace ZeldaFullEditor
             this.gravestoneMode = new GravestoneMode(this);
             this.overlayAnimationMode = new OverlayAnimationMode(this);
             this.noteMode = new NoteMode(this);
-
         }
-
 
         public void CreateScene()
         {
@@ -126,11 +126,11 @@ namespace ZeldaFullEditor
                     }
 
                 }
+
                 this.InvalidateHighEnd();
                 ((HandledMouseEventArgs)e).Handled = true;
                 return;
             }
-
 
             ((HandledMouseEventArgs)e).Handled = true;
             int xPos = this.owForm.splitContainer1.Panel2.HorizontalScroll.Value;
@@ -210,7 +210,6 @@ namespace ZeldaFullEditor
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-
             if (e.Button == MouseButtons.Middle)
             {
                 startingPoint = mainForm.PointToClient(Cursor.Position);
@@ -218,7 +217,6 @@ namespace ZeldaFullEditor
                 startpanPoint = new Point(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value);
                 pan = true;
             }
-
 
             int tileX = e.X / 16;
             int tileY = e.Y / 16;
@@ -287,15 +285,13 @@ namespace ZeldaFullEditor
             base.OnMouseDown(e);
         }
 
-        // TODO switch statements
+        // TODO: Switch statements.
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
-
             if (e.Button == MouseButtons.Middle)
             {
                 pan = false;
             }
-
 
             this.owForm.objCombobox.Items.Clear();
             this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedSprite;
@@ -490,7 +486,6 @@ namespace ZeldaFullEditor
                 return; // prevent running extra code
             }
 
-
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
@@ -677,7 +672,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        Pen camPen = new Pen(Color.Red, 2);
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -698,7 +692,6 @@ namespace ZeldaFullEditor
             {
                 int x = 0;
                 int y = 0;
-
 
                 for (int i = ow.WorldOffset; i < 64 + ow.WorldOffset; i++)
                 {
@@ -736,8 +729,6 @@ namespace ZeldaFullEditor
                                 g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
                             }
                         }
-
-
                     }
                     x++;
                     if (x >= 8)
@@ -760,7 +751,6 @@ namespace ZeldaFullEditor
                     g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
                 }
 
-                
                 if (showLinkCamera)
                 {
                     if (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].LargeMap)
@@ -813,9 +803,7 @@ namespace ZeldaFullEditor
                         }
                         g.DrawRectangle(camPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
                     }
-                    
                 }
-
 
                 int offset = 0;
                 if (this.selectedMap >= 128)
@@ -886,6 +874,7 @@ namespace ZeldaFullEditor
                         g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
                     }
                 }
+
                 if (owForm.showUsedTile32)
                 {
                     foreach (T32UniqueCounter t32 in mainForm.tilesToDraw)
@@ -926,6 +915,7 @@ namespace ZeldaFullEditor
                         {
                             alpha = 160;
                         }
+
                         if (t32.count == 1)
                         {
                             g.FillRectangle(new SolidBrush(Color.FromArgb(150, 55, 255, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
@@ -938,13 +928,10 @@ namespace ZeldaFullEditor
                         {
                             g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, 255, 0, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
                         }
-
-
                     }
                 }
 
-
-                    if (this.selectedMode == ObjectMode.Overlay)
+                if (this.selectedMode == ObjectMode.Overlay)
                 {
                     int mid = this.ow.AllMaps[this.selectedMap].ParentID;
                     int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
@@ -955,6 +942,7 @@ namespace ZeldaFullEditor
                         this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
                         this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
                     }
+
                     for (int i = 0; i < this.ow.AllOverlays[mid].TileDataList.Count; i++)
                     {
                         int xo = this.ow.AllOverlays[mid].TileDataList[i].x * 16;
@@ -1012,6 +1000,7 @@ namespace ZeldaFullEditor
                         this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
                         this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
                     }
+
                     Pen p2 = new Pen(new SolidBrush(Color.FromArgb(255, 0, 0, 255)));
                     if (overlayAnimationMode.selectedFrame != 0 || ModifierKeys == Keys.Shift)
                     {
@@ -1033,7 +1022,6 @@ namespace ZeldaFullEditor
                         }
                         else
                         {
-
                             Pen p = new Pen(new SolidBrush(Color.FromArgb(64, 0, 0, 255)));
                             for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1].Count; i++)
                             {
@@ -1074,9 +1062,9 @@ namespace ZeldaFullEditor
                             }
                         }
                     }
+
                     for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame].Count; i++)
                     {
-
                         int xo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].x * 16;
                         int yo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].y * 16;
                         int to = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].tileId;
@@ -1112,7 +1100,6 @@ namespace ZeldaFullEditor
                             g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
                         }
                     }
- 
 
                     g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
                     g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
@@ -1121,7 +1108,7 @@ namespace ZeldaFullEditor
                     this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
                 }
 
-                    if (this.owForm.gridDisplay != 0)
+                if (this.owForm.gridDisplay != 0)
                 {
                     int gridsize = 512;
                     if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
