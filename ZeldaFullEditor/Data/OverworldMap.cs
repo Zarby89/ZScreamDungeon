@@ -849,7 +849,7 @@ namespace ZeldaFullEditor
 
             // If the GFX are 0xFF they need to show the defualt GFX instead.
             int world = 0;
-            if (this.ParentID >= 0x40)
+            if (this.ParentID >= 0x40 && this.ParentID < 0x80)
             {
                 world = 8;
             }

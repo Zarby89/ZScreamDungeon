@@ -274,7 +274,7 @@ namespace ZeldaFullEditor.Gui
             mapParent.GFX = (byte)this.OWProperty_BGGFX.HexValue;
             mapParent.MessageID = (short)this.OWProperty_MessageID.HexValue;
 
-            if (mapParent.Index >= 64)
+            if (mapParent.Index >= 0x40)
             {
                 mapParent.SpriteGFX[0] = (byte)this.OWProperty_SPRGFX.HexValue;
                 mapParent.SpritePalette[0] = (byte)this.OWProperty_SPRPalette.HexValue;
