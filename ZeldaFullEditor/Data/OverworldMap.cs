@@ -433,19 +433,19 @@ namespace ZeldaFullEditor
                 // Set the subscreen overlay values.
                 this.SubscreenOverlay = 0x00FF;
 
-                if (index == 0x00 || index == 0x40) // Add fog 2 to the lost woods and skull woods.
+                if (index == 0x00 || index == 0x01 || index == 0x08 || index == 0x09 || index == 0x40 || index == 0x41 || index == 0x48 || index == 0x49) // Add fog 2 to the lost woods and skull woods.
                 {
                     this.SubscreenOverlay = 0x009D;
                 }
-                else if (index == 0x03 || index == 0x05 || index == 0x07) // Add the sky BG to LW death mountain.
+                else if (index == 0x03 || index == 0x04 || index == 0x0B || index == 0x0C || index == 0x05 || index == 0x06 || index == 0x0D || index == 0x0E || index == 0x07) // Add the sky BG to LW death mountain.
                 {
                     this.SubscreenOverlay = 0x0095;
                 }
-                else if (index == 0x43 || index == 0x45 || index == 0x47) // Add the lava to DW death mountain.
+                else if (index == 0x43 || index == 0x44 || index == 0x4B || index == 0x4C || index == 0x45 || index == 0x46 || index == 0x4D || index == 0x4E || index == 0x47) // Add the lava to DW death mountain.
                 {
                     this.SubscreenOverlay = 0x009C;
                 }
-                else if (index == 0x5B) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
+                else if (index == 0x5B || index == 0x5C || index == 0x63 || index == 0x64) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
                 {
                     this.SubscreenOverlay = 0x0096;
                 }

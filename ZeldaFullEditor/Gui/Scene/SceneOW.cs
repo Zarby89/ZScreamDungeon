@@ -744,6 +744,8 @@ namespace ZeldaFullEditor
 
                         g.CompositingMode = CompositingMode.SourceCopy; // Why over?
 
+                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+
                         // Draw the base image (either a BG color or tilemap like the pyramid BG).
                         if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
                         {
@@ -755,7 +757,6 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
                         g.CompositingMode = CompositingMode.SourceOver;
                         // Draw the actual tile maps.
                         g.DrawImage(ow.AllMaps[i].GFXBitmap, new PointF(x * 512, y * 512));
