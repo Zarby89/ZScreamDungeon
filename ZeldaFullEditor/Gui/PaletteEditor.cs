@@ -701,6 +701,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.OverworldMainPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -713,6 +714,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.OverworldAuxPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -725,6 +727,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.OverworldAnimatedPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -737,6 +740,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color _color in Palettes.OverworldGrassPalettes)
                     {
                         byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
@@ -746,6 +750,7 @@ namespace ZeldaFullEditor.Gui
                             count++;
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.GlobalSpritePalettes)
                     {
                         foreach (Color _color in _palette)
@@ -758,6 +763,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.ArmorPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -770,6 +776,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.SwordsPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -782,6 +789,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.SpritesAux1Palettes)
                     {
                         foreach (Color _color in _palette)
@@ -794,6 +802,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.SpritesAux2Palettes)
                     {
                         foreach (Color _color in _palette)
@@ -806,6 +815,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.SpritesAux3Palettes)
                     {
                         foreach (Color _color in _palette)
@@ -818,6 +828,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.ShieldsPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -830,6 +841,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.DungeonsMainPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -842,6 +854,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.Object3DPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -854,6 +867,7 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
                     }
+
                     foreach (Color[] _palette in Palettes.OverworldMiniMapPalettes)
                     {
                         foreach (Color _color in _palette)
@@ -898,6 +912,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.OverworldMainPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.OverworldMainPalettes[i].Length; j++)
@@ -908,6 +923,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.OverworldAuxPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.OverworldAuxPalettes[i].Length; j++)
@@ -918,6 +934,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.OverworldAnimatedPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.OverworldAnimatedPalettes[i].Length; j++)
@@ -928,6 +945,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.OverworldGrassPalettes.Length; i++)
                     {
                         byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
@@ -935,6 +953,7 @@ namespace ZeldaFullEditor.Gui
 
                         count += 4;
                     }
+
                     for (int i = 0; i < Palettes.GlobalSpritePalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.GlobalSpritePalettes[i].Length; j++)
@@ -945,6 +964,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.ArmorPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.ArmorPalettes[i].Length; j++)
@@ -955,6 +975,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.SwordsPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.SwordsPalettes[i].Length; j++)
@@ -965,6 +986,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.SpritesAux1Palettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.SpritesAux1Palettes[i].Length; j++)
@@ -975,6 +997,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.SpritesAux2Palettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.SpritesAux2Palettes[i].Length; j++)
@@ -985,6 +1008,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.SpritesAux3Palettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.SpritesAux3Palettes[i].Length; j++)
@@ -995,6 +1019,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.ShieldsPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.ShieldsPalettes[i].Length; j++)
@@ -1005,6 +1030,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.DungeonsMainPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.DungeonsMainPalettes[i].Length; j++)
@@ -1015,6 +1041,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.Object3DPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.Object3DPalettes[i].Length; j++)
@@ -1025,6 +1052,7 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
+
                     for (int i = 0; i < Palettes.OverworldMiniMapPalettes.Length; i++)
                     {
                         for (int j = 0; j < Palettes.OverworldMiniMapPalettes[i].Length; j++)
@@ -1035,7 +1063,6 @@ namespace ZeldaFullEditor.Gui
                             count += 4;
                         }
                     }
-
                 }
             }
         }
@@ -1055,6 +1082,7 @@ namespace ZeldaFullEditor.Gui
                     selectedcolorbytes[i+2] = c.B;
                     i += 3;
                 }
+
                 fs.Write(selectedcolorbytes,0, selectedcolorbytes.Length);
                 fs.Close();
             }
@@ -1077,7 +1105,6 @@ namespace ZeldaFullEditor.Gui
                 
                 fs.Close();
                 refreshallGfx();
-                
             }
         }
     }

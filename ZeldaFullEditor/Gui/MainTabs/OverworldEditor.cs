@@ -2546,6 +2546,7 @@ namespace ZeldaFullEditor.Gui
             {
                 previewSheets[i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (OWProperty_SPRGFX.HexValue * 4) + i] + 115);
             }
+
             previewsheetPicturebox.Height = (64 * 4);
             previewsheetPicturebox.Visible = true;
             previewsheetPicturebox.Refresh();
@@ -2558,14 +2559,12 @@ namespace ZeldaFullEditor.Gui
 
         private void previewsheetPicturebox_Paint(object sender, PaintEventArgs e)
         {
-            
             if (ispalPreview)
             {
                 for(int i = 0; i<256;i++)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(scene.ow.AllMaps[scene.selectedMapParent].GFXBitmap.Palette.Entries[i]), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
                 }
-
             }
             else
             {
@@ -2577,18 +2576,19 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
 
-
                 ColorPalette cp = GFX.allgfxBitmap.Palette;
                 byte paloffset = 0;
                 if (previewSheets.Length > 1)
                 {
                     paloffset = 8;
                 }
+
                 for (int i = 0; i < 16; i++)
                 {
 
                     cp.Entries[i] = scene.ow.AllMaps[scene.selectedMapParent].GFXBitmap.Palette.Entries[i + ((globalPalPreview + paloffset) * 16)];
                 }
+
                 GFX.allgfxBitmap.Palette = cp;
 
                 e.Graphics.CompositingMode = CompositingMode.SourceCopy;
@@ -2597,21 +2597,18 @@ namespace ZeldaFullEditor.Gui
                 for (int i = 0; i < previewSheets.Length; i++)
                 {
                     e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0, i * 64, 256, 64), new Rectangle(0, previewSheets[i] * 32, 128, 32), GraphicsUnit.Pixel);
-
-
                 }
             }
         }
 
         private void paletteCyclingTimer_Tick(object sender, EventArgs e)
         {
-
             globalPalPreview++;
             if (globalPalPreview >= 8)
             {
                 globalPalPreview = 0;
-
             }
+
             previewsheetPicturebox.Refresh();
         }
 
@@ -2671,6 +2668,7 @@ namespace ZeldaFullEditor.Gui
             scene.entranceMode.selectedEntrance = eow;
             scene.entranceMode.lastselectedEntrance = eow;
             scene.entranceMode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+
             if (eow.MapID < 0x40)
             {
                 this.SelectMapOffset(0);
@@ -2679,8 +2677,6 @@ namespace ZeldaFullEditor.Gui
             {
                 this.SelectMapOffset(0x40);
             }
-
-
         }
 
         private void owentrancesListbox_SelectedIndexChanged(object sender, EventArgs e)
@@ -2701,7 +2697,6 @@ namespace ZeldaFullEditor.Gui
                 owentrance_property_x.HexValue = scene.entranceMode.lastselectedEntrance.X;
                 owentrance_property_y.HexValue = scene.entranceMode.lastselectedEntrance.Y;
 
-
                 string text = "Entrance";
 
                 if (scene.entranceMode.lastselectedEntrance != null)
@@ -2710,11 +2705,10 @@ namespace ZeldaFullEditor.Gui
                         scene.entranceMode.lastselectedEntrance.EntranceID,
                         scene.entranceMode.lastselectedEntrance.X,
                         scene.entranceMode.lastselectedEntrance.Y);
-
                 }
+
                 scene.owForm.objectGroupbox.Text = text;
             }
-
 
             fromForm = false;
         }
@@ -2730,20 +2724,18 @@ namespace ZeldaFullEditor.Gui
                 scene.entranceMode.lastselectedEntrance.X = (ushort)owentrance_property_x.HexValue;
                 scene.entranceMode.lastselectedEntrance.Y = (ushort)owentrance_property_y.HexValue;
 
-
-
                 string tname = "OW[" + owentrancesListbox.SelectedIndex.ToString("X2") + "] -> UW";
                 foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
                 {
                     if (dataRoom.ID == DungeonsData.Entrances[overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID].Room)
                     {
                         tname += "[" + overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID.ToString("X2") + "]" + dataRoom.Name;
+
                         break;
                     }
                 }
+
                 owentrancesListbox.Items[owentrancesListbox.SelectedIndex] = tname;
-
-
             }
         }
     }

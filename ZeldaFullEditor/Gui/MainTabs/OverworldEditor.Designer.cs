@@ -169,6 +169,8 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -187,6 +189,8 @@
             this.owspriteTab.SuspendLayout();
             this.entranceTabpage.SuspendLayout();
             this.entrancePropertiesGroupbox.SuspendLayout();
+            this.exitTabpage.SuspendLayout();
+            this.transportTabpage.SuspendLayout();
             this.Tiles8.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -1069,6 +1073,8 @@
             this.OWProperty_AniGFX.Text = "00";
             this.OWProperty_AniGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.OWProperty_AniGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_AniGFX.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_AniGFX.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
             // 
             // label14
             // 
@@ -1582,6 +1588,7 @@
             // 
             // exitTabpage
             // 
+            this.exitTabpage.Controls.Add(this.label30);
             this.exitTabpage.ImageIndex = 1;
             this.exitTabpage.Location = new System.Drawing.Point(4, 28);
             this.exitTabpage.Name = "exitTabpage";
@@ -1592,6 +1599,7 @@
             // 
             // transportTabpage
             // 
+            this.transportTabpage.Controls.Add(this.label31);
             this.transportTabpage.ImageIndex = 4;
             this.transportTabpage.Location = new System.Drawing.Point(4, 28);
             this.transportTabpage.Name = "transportTabpage";
@@ -1907,6 +1915,24 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(12, 10);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(87, 13);
+            this.label30.TabIndex = 3;
+            this.label30.Text = "Work in progress";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(12, 10);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(87, 13);
+            this.label31.TabIndex = 4;
+            this.label31.Text = "Work in progress";
+            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1941,6 +1967,10 @@
             this.entranceTabpage.PerformLayout();
             this.entrancePropertiesGroupbox.ResumeLayout(false);
             this.entrancePropertiesGroupbox.PerformLayout();
+            this.exitTabpage.ResumeLayout(false);
+            this.exitTabpage.PerformLayout();
+            this.transportTabpage.ResumeLayout(false);
+            this.transportTabpage.PerformLayout();
             this.Tiles8.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -2101,5 +2131,7 @@
         public System.Windows.Forms.ListBox owentrancesListbox;
         private System.Windows.Forms.CheckBox owentrance_property_ishole;
         private System.Windows.Forms.ImageList tabcontrolImagelist;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
     }
 }
