@@ -487,7 +487,10 @@ namespace ZeldaFullEditor.Gui
                             pPos++;
                         }
 
-                        palettes[pPos] = Palettes.OverworldAuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][0]][i];
+                        int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0];
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
+
+                        palettes[pPos] = Palettes.OverworldAuxPalettes[value][i];
                         pPos++;
                     }
 
@@ -499,7 +502,10 @@ namespace ZeldaFullEditor.Gui
                             pPos++;
                         }
 
-                        palettes[pPos] = Palettes.OverworldAuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][0]][i + 7];
+                        int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0];
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
+
+                        palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 7];
                         pPos++;
                     }
 
@@ -511,7 +517,10 @@ namespace ZeldaFullEditor.Gui
                             pPos++;
                         }
 
-                        palettes[pPos] = Palettes.OverworldAuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][0]][i + 14];
+                        int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0];
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
+
+                        palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 14];
                         pPos++;
                     }
                 }
@@ -526,7 +535,10 @@ namespace ZeldaFullEditor.Gui
                             pPos++;
                         }
 
-                        palettes[pPos] = Palettes.OverworldAuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][1]][i];
+                        int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1];
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
+
+                        palettes[pPos] = Palettes.OverworldAuxPalettes[value][i];
                         pPos++;
                     }
 
@@ -538,7 +550,10 @@ namespace ZeldaFullEditor.Gui
                             pPos++;
                         }
 
-                        palettes[pPos] = Palettes.OverworldAuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][1]][i + 7];
+                        int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1];
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
+
+                        palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 7];
                         pPos++;
                     }
 
@@ -550,7 +565,10 @@ namespace ZeldaFullEditor.Gui
                             pPos++;
                         }
 
-                        palettes[pPos] = Palettes.OverworldAuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][1]][i + 14];
+                        int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1];
+                        value = value.Clamp(0, Constants.overworldAuxPaletteMax);
+
+                        palettes[pPos] = Palettes.OverworldAuxPalettes[value][i + 14];
                         pPos++;
                     }
                 }
@@ -565,7 +583,8 @@ namespace ZeldaFullEditor.Gui
                             pPos++;
                         }
 
-                        palettes[pPos] = Palettes.OverworldAnimatedPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][2]][i];
+                        int value = GfxGroups.paletteGfx[(int)paletteUpDown.Value][2];
+                        palettes[pPos] = Palettes.OverworldAnimatedPalettes[value][i];
                         pPos++;
                     }
                 }

@@ -120,6 +120,8 @@ Palette_OverworldBgMain                    = $1BEEC7
 
 ; These can be used to turn off each hook used. Some are reliant on eachother
 ; and disabling only some can break entire features.
+; TODO: Create a log of dependencies and change the naming structure of the
+; vars themseleves to be more reflective of those features.
 
 ; TODO: Re-assess the letters and numbers. A lot has changed since they were
 ; originally marked.
@@ -238,7 +240,7 @@ Palette_OverworldBgMain                    = $1BEEC7
 !Func0ED8AE = $01
 
 ; If 1, all of the default vanilla pool values will be applied. 00 by default.
-!UseVanillaPool = $02
+!UseVanillaPool = $00
 
 ; Use this var to disable all of the debug vars above.
 !AllOff = $00
@@ -275,7 +277,7 @@ endif
 
 ; TODO: Eventually remove these? I'm not sure. If anyone uses an old ZS on their
 ; ROM these will need to be fixed but also could block people from hooking into
-; these spots.
+; these spots. We could potentially add these to a "repair ROM" asm feature.
 
 ; Loads the transparent color under some load conditions.
 org $0BFEB6
@@ -416,7 +418,7 @@ Pool:
         endif
 
     ; The bridge color is different from the Master Sword area so we are going to
-    ; hard code it here for now. Defualt is $2669 which is the vanilla LW green.
+    ; hard code it here for now. Default is $2669 which is the vanilla LW green.
     org $288149 ; $140149
     .BGColorTable_Bridge ; 0x02
         if !UseVanillaPool > 0
@@ -903,7 +905,6 @@ warnpc $00D8EE
 
 else
 
-; Undo the function above:
 org $00D8D5 ; $0058D5
 db $A0, $58, $A5, $8A, $29, $BF, $C9, $03
 db $F0, $0A, $C9, $05, $F0, $06, $C9, $07
@@ -995,7 +996,6 @@ warnpc $00DABB
 
 else
 
-; Undo the function above:
 org $00DA63 ; $005A63
 db $64, $1D, $A5, $8A, $F0, $24, $C9, $70
 db $F0, $20, $C9, $40, $F0, $1C, $C9, $5B
@@ -1045,7 +1045,6 @@ ActivateSubScreen:
     .noRain
     
     ; Get the overlay value for this overworld area.
-    ; ReadOverlayArray 
     LDA.b $8A : ASL : TAX
     LDA.w Pool_OverlayTable, X : CMP.w #$00FF : BEQ .normal
         ; If not $FF, assume we want an overlay.
@@ -1096,7 +1095,6 @@ warnpc $00EEE0
 
 else
 
-; Undo the function above:
 org $00EEBB ; $006EBB
 db $A5, $8A, $C9, $1B, $00, $D0, $13, $A9
 db $00, $00, $8F, $00, $C3, $7E, $8F, $40
@@ -1151,7 +1149,6 @@ warnpc $00FFC0
 
 else
 
-; Undo the function above:
 org $00FF7C ; $007F7C
 db $AD, $80, $1C, $0D, $90, $1C, $0D, $A0
 db $1C, $0D, $B0, $1C, $C5, $E2, $D0, $28
@@ -1369,7 +1366,6 @@ warnpc $02856A ; $01056A
 
 else
 
-; Undo the function above:
 org $028027 ; $010027
     db $20, $4C, $85, $C2
 
@@ -1493,7 +1489,6 @@ warnpc $028697
 
 else
 
-; Undo the function above:
 org $028632 ; $010632
 db $A0, $58, $A5, $8A, $29, $BF, $C9, $03
 db $F0, $0A, $C9, $05, $F0, $06, $C9, $07
@@ -1547,7 +1542,6 @@ warnpc $029AD3
 
 else
 
-; Undo the function above:
 org $029AA6 ; $011AA6
 db $A5, $8A, $C9, $03, $00, $F0, $1F, $C9
 db $05, $00, $F0, $1A, $C9, $07, $00, $F0
@@ -1788,7 +1782,6 @@ warnpc $02B0D2 ; $0130D2
 
 else
 
-; Undo the function above:
 org $02AF58 ; $012F58
 db $A5, $8A, $C9, $80, $00, $90, $44, $A2
 db $97, $00, $A5, $A0, $C9, $80, $01, $D0
@@ -1861,7 +1854,6 @@ warnpc $02B2E6 ; $0132E6
 
 else
 
-; Undo the function above:
 org $02B2D4 ; $0132D4
 db $20, $19, $AF, $A5, $8A, $C9, $1B, $F0
 db $04, $C9, $5B, $D0, $04, $A9, $01, $85
@@ -1874,7 +1866,6 @@ EnableSubScreenCheckForPyramid:
 {
     REP #$20 ; Set A in 16bit mode.
 
-    ; ReadOverlayArray
     LDA.b $8A : ASL : TAX
     LDA.w Pool_OverlayTable, X
         
@@ -1950,7 +1941,6 @@ warnpc $02B40A ; $01340A
 
 else
 
-; Undo the function above:
 org $02B3A1 ; $0133A1
 db $A5, $8A, $C9, $1B, $F0, $04, $C9, $5B
 db $D0, $04, $A9, $01, $85, $1D, $C2, $20
@@ -1991,7 +1981,6 @@ warnpc $02BC60
 
 else
 
-; Undo the function above:
 org $02BC44 ; $013C44
 db $A5, $8A, $29, $3F, $00, $C9, $1B, $00
 db $D0, $12, $A9, $00, $06, $C5, $E6, $90
@@ -2013,7 +2002,7 @@ ReadOverlayArray:
     RTL
 }
 
-; TODO: These comparison values will need to be calulated somehow or set
+; TODO: These comparison values will need to be calculated somehow or set
 ; depending on the area. Right now they are hardcoded to work with the
 ; pyramid area.
 BGControl:
@@ -2038,7 +2027,7 @@ BGControl:
     ; Don't let the BG scroll up further than the "bottom" of the bg when
     ; walking down.
     LDA.w #$06C0 : CMP.b $E6 : BCS .dontLock2 ; #$06C0 
-        STA.b $E6 ; $TODO: I had this at $E2 for some reason.
+        STA.b $E6 ; TODO: I had this at $E2 for some reason.
 
     .dontLock2
 
@@ -2078,7 +2067,6 @@ warnpc $02C039 ; $014039
 
 else
 
-; Undo the function above:
 org $02C02D ; $01402D
 db $A4, $8A, $C0, $1B, $F0, $06, $C0, $5B
 db $F0, $02, $95, $E0
@@ -2184,7 +2172,6 @@ warnpc $02C6EB ; $0146EB
 
 else
 
-; Undo the function above:
 org $02A07A ; $01207A
 db $20, $AD, $C6
 
@@ -2275,7 +2262,6 @@ warnpc $02A52D ; $01252D
 
 else
 
-; Undo the function above:
 org $02A4CD ; $0124CD
 db $A5, $8A, $C9, $70, $F0, $08, $AF, $C5
 db $F3, $7E, $C9, $02, $B0, $51, $AF, $F0
@@ -2305,7 +2291,6 @@ warnpc $02AADF ; $012ADF
 
 else
 
-; Undo the function above:
 org $02AADB ; $012ADB
 db $29, $3F, $F0, $06
 
@@ -2351,7 +2336,6 @@ warnpc $02ABC5 ; $012BC5
 
 else
 
-; Undo the function above:
 org $02ABBE ; $012BBE
 db $85, $17, $8D, $10, $07, $E6, $11
 
@@ -2609,7 +2593,6 @@ CheckForChangeGraphicsTransitionLoad:
         
     ; Change the fixed color depending on our sub screen overlay.
     ; Lost woods and skull woods.
-    ; ReadOverlayArray
     LDA.b $8A : ASL : TAX
     LDA.w Pool_OverlayTable, X : CMP.w #$009D : BEQ .noSpecialColor
         CMP.w #$0040 : BEQ .noSpecialColor
@@ -2865,7 +2848,6 @@ warnpc $0ABC5E ; $053C5E
 
 else
 
-; Undo the function above:
 org $0ABC5A ; $053C5A
 db $22, $9B, $E1, $00
 
@@ -2888,6 +2870,13 @@ CheckForChangeGraphicsNormalLoad:
 
     ; PLACE CUSTOM GFX LOAD HERE!
     ;JSL.l CheckForChangeGraphicsNormalLoadCastle
+
+    ; TODO: Instead of the place custom gfx load here, pre-allocate a function.
+    ; Some free space 
+    ; ZSOW_LoadCustomGraphics:
+    ; Maybe register push/pops or leave that to users
+    ; User defined custom graphics code
+    ; RTL
         
     PLB
 
@@ -2947,7 +2936,6 @@ warnpc $0AB948 ; $053948
 
 else
 
-; Undo the function above:
 org $0AB8F5 ; $0538F5
 db $A0, $58, $A5, $8A, $29, $BF, $C9, $03
 db $F0, $0A, $C9, $05, $F0, $06, $C9, $07
@@ -3059,7 +3047,7 @@ Overworld_LoadBGColorAndSubscreenOverlay:
             
         ; Are we at Hyrule Castle or Pyramid of Power?
         CMP.w #$0096 : BNE .subscreenOnAndReturn
-            JSL.l NeedSomeSpaceForWhateverThisIs
+            JSL.l SpecialBgHorizOffsetAdjustment
                 
             BRA .subscreenOnAndReturn
     
@@ -3095,7 +3083,6 @@ warnpc $0BFFA8 ; $05FFA8
 
 else
 
-; Undo the function above:
 org $0BFEC6 ; $05FEC6
 db $A9, $20, $40, $85, $9C, $A9, $40, $80
 db $85, $9D, $A5, $8A, $F0, $40, $C9, $70
@@ -3147,7 +3134,7 @@ ReplaceBGColor:
 
     REP #$20 ; Set A in 16bit mode.
 
-    ; TODO: Saving the Y may not be necessary, done just in case.
+    ; TODO: Investigate: Saving the Y may not be necessary, done just in case.
     PHY
 
     ; Get area code and times it by 2.
@@ -3196,11 +3183,10 @@ ReplaceBGColor:
     RTL
 }
 
-; TODO: Doccument this better and fiture out what it actually does.
 ; This sets the initial scroll offsets for the pyramid BG. It seems highly
 ; hardcoded and overly complicated. it could probably be changed to just a
 ; standard clamp function to keep it from being too high or too low.
-NeedSomeSpaceForWhateverThisIs:
+SpecialBgHorizOffsetAdjustment:
 {
     LDA.b $E2 : SEC : SBC.w #$0778 : LSR A : TAY : AND.w #$4000 : BEQ .BRANCH_7
         TYA : ORA.w #$8000 : TAY
@@ -3251,7 +3237,6 @@ warnpc $0ED62C ; $07562C
 
 else 
 
-; Undo the function above:
 org $0ED627 ; $075627
 db $A5, $8A, $C9, $80, $00
 
@@ -3344,7 +3329,6 @@ warnpc $0ED8FB ; $0758FB
 
 else
 
-; Undo the function above:
 org $0ED8AE ; $0758AE
 db $A5, $1B, $D0, $46, $C2, $10, $A2, $20
 db $40, $86, $9C, $A2, $40, $80, $86, $9D
@@ -3902,9 +3886,9 @@ pushpc
 ; ==============================================================================
 
 ; $013CFB
-; In the fog scrolling code, there is a bit that checks for the turtle rock area.
-; If left unchanged, this will prevent the fog and lava from working poperly in
-; this area.
+; TODO: In the fog scrolling code, there is a bit that checks for the turtle
+; rock area. If left unchanged, this will prevent the fog and lava from working
+; poperly in this area.
 
 ; ==============================================================================
 

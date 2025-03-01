@@ -239,6 +239,7 @@ namespace ZeldaFullEditor
         public static int overworldSpritePalette = 0x007B41;
         public static int overworldMapPaletteGroup = 0x075504;
         public static int overworldSpritePaletteGroup = 0x075580;
+        public static int overworldAuxPaletteMax = 19;
         public static int overworldSpriteset = 0x007A41;
         public static int overworldSpecialGFXGroup = 0x016821;
         public static int overworldSpecialPALGroup = 0x016831;
