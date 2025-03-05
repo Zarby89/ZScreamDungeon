@@ -424,6 +424,7 @@ namespace ZeldaFullEditor.Gui
             if (scene.selectedMode == ObjectMode.Tile)
             {
                 objectGroupbox.Text = "Selected Tile " + scene.selectedTile[0].ToString("X4") + "   Selected Map " + scene.ow.AllMaps[scene.selectedMap].ParentID.ToString("X2");
+                this.SelectedObjectID.Text = scene.selectedTile[0].ToString("X4");
             }
 
             this.tilePictureBox.Refresh();
@@ -2328,7 +2329,7 @@ namespace ZeldaFullEditor.Gui
 
         public void SetSelectedObjectLabels(int id, int x, int y)
         {
-            this.SelectedObjectID.Text = id.ToString("X2");
+            this.SelectedObjectID.Text = id.ToString("X4");
             this.SelectedObjectX.Text = x.ToString("X2");
             this.SelectedObjectY.Text = y.ToString("X2");
         }

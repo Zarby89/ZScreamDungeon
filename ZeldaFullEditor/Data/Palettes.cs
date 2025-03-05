@@ -389,11 +389,10 @@ namespace ZeldaFullEditor
             short color = (short)(((colorC.B / 8) << 10) | ((colorC.G / 8) << 5) | (colorC.R / 8));
             romData[romPosition] = (byte)color;
             romData[romPosition + 1] = (byte)(color >> 8);
+
         }
 
-        #region Unused
-
-        private static Color GetColorShade(Color col, byte shade)
+        public static Color GetColorShade(Color col, byte shade)
         {
             int r = col.R;
             int g = col.G;
@@ -413,7 +412,9 @@ namespace ZeldaFullEditor
             return Color.FromArgb(r * 8, g * 8, b * 8);
         }
 
-		private static string SavePalettesToAsm(byte[] romData)
+        #region Unused
+
+        private static string SavePalettesToAsm(byte[] romData)
 		{
 			var asmString = new StringBuilder();
 

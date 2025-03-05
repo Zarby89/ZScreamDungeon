@@ -305,8 +305,8 @@ namespace ZeldaFullEditor
 
                 this.owForm.SetSelectedObjectLabels(
                         selectedTile[0].ToString("X4"),
-                        (e.X / 16).ToString(),
-                        (e.Y / 16).ToString());
+                        (e.X / 16).ToString("X2"),
+                        (e.Y / 16).ToString("X2"));
 
                 this.tilemode.OnMouseUp(e);
             }
@@ -316,8 +316,8 @@ namespace ZeldaFullEditor
 
                 this.owForm.SetSelectedObjectLabels(
                         selectedTile[0].ToString("X4"),
-                        (e.X / 16).ToString(),
-                        (e.Y / 16).ToString());
+                        (e.X / 16).ToString("X2"),
+                        (e.Y / 16).ToString("X2"));
 
                 this.overlayMode.OnMouseUp(e);
             }
@@ -441,10 +441,13 @@ namespace ZeldaFullEditor
 
                 this.noteMode.onMouseUp(e);
 
-                this.owForm.SetSelectedObjectLabels(
-                        this.noteMode.selectedNote.ID,
-                        this.noteMode.selectedNote.x,
-                        this.noteMode.selectedNote.y);
+                if (this.noteMode.selectedNote != null)
+                {
+                    this.owForm.SetSelectedObjectLabels(
+                            this.noteMode.selectedNote.ID,
+                            this.noteMode.selectedNote.x,
+                            this.noteMode.selectedNote.y);
+                }
             }
 
             this.owForm.objectGroupbox.Text = text;

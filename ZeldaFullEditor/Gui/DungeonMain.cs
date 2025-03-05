@@ -6466,5 +6466,38 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
+        private void generatePaletteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Color baseColor = Color.FromArgb(32 + GFX.random.Next(224), 32 + GFX.random.Next(224), 32 + GFX.random.Next(224));
+
+            // example if you need 4 different shade of the same color
+            Color colorShade0 = Palettes.GetColorShade(baseColor, 0); // very bright
+            Color colorShade1 = Palettes.GetColorShade(baseColor, 1);
+            Color colorShade2 = Palettes.GetColorShade(baseColor, 2);
+            Color colorShade3 = Palettes.GetColorShade(baseColor, 3);
+            Color colorShade4 = Palettes.GetColorShade(baseColor, 4);
+            Color colorShade5 = Palettes.GetColorShade(baseColor, 5); // very dark
+
+            OverworldMap parentMap = overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent];
+
+            ColorPalette colorpal = parentMap.GFXBitmap.Palette;
+            colorpal.Entries[15 + (7 * 16)] = colorShade5;
+            colorpal.Entries[14 + (7 * 16)] = colorShade4;
+            colorpal.Entries[13 + (7 * 16)] = colorShade0;
+            colorpal.Entries[12 + (7 * 16)] = colorShade1;
+            colorpal.Entries[11 + (7 * 16)] = colorShade2;
+            colorpal.Entries[10 + (7 * 16)] = colorShade3;
+
+            parentMap.GFXBitmap.Palette = colorpal;
+            if (parentMap.LargeMap)
+            {
+                overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 1].GFXBitmap.Palette = colorpal;
+                overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 8].GFXBitmap.Palette = colorpal;
+                overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 9].GFXBitmap.Palette = colorpal;
+            }
+
+            overworldEditor.scene.Invalidate();
+        }
     }
 }
