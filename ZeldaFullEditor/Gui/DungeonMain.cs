@@ -63,7 +63,6 @@ namespace ZeldaFullEditor
         public bool settingEntrance = false;
         public int selectedLayer = -1;
         public Entrance selectedEntrance = null;
-        private PaletteEditor paletteForm;
         private Bitmap xTabButton;
         public Room previewRoom = null;
         public ScreenEditor screenEditor = new ScreenEditor();
@@ -178,6 +177,7 @@ namespace ZeldaFullEditor
 
             this.xTabButton = new Bitmap(Resources.xbutton);
             this.layoutForm = new RoomLayout(this);
+            this.gfxGroupsForm = new GfxGroupsForm(this);
             this.gfxEditor = new GfxImportExport(this);
             this.Initialize_properties();
             GFX.initGfx();
@@ -215,7 +215,6 @@ namespace ZeldaFullEditor
             this.Controls.Add(this.musicEditor);
             this.Controls.Add(this.spriteEditor);
             this.Controls.Add(this.nameEditor);
-
 
             // If we are in the debug version, show the Experimental Features drop down menu.
             #if DEBUG
@@ -833,17 +832,13 @@ namespace ZeldaFullEditor
             }
 
             this.entrancetreeView_AfterSelect(null, null);
-            this.gfxGroupsForm = new GfxGroupsForm(this);
+            this.gfxEditor.GfxImportExport_Load();
             this.gfxGroupsForm.CreateTempGfx();
             this.gfxGroupsForm.Location = Constants.Point_0_0;
 
-            this.paletteForm = new PaletteEditor(this)
-            {
-                Location = Constants.Point_0_0
-            };
             this.RefreshRecentsFiles();
             this.overworldEditor.InitOpen(this);
-            screenEditor.oweditor = overworldEditor;
+            this.screenEditor.oweditor = this.overworldEditor;
             this.textEditor.InitializeOnOpen();
             this.screenEditor.Init();
             // InitDungeonViewer();
@@ -3466,29 +3461,60 @@ namespace ZeldaFullEditor
             }
         }
 
+        public WindowPanel paletteFormWindowPanel = null;
+        public bool paletteFormActive = false;
+
         private void PalettesEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.editorsTabControl.SelectedTab.Name == "dungeonPage" || this.editorsTabControl.SelectedTab.Name == "overworldPage")
+            if (this.editorsTabControl.SelectedTab.Name != "dungeonPage" && this.editorsTabControl.SelectedTab.Name != "overworldPage")
             {
-                WindowPanel windowPanel = new WindowPanel();
-                windowPanel.Tag = "Palettes Editor";
-                windowPanel.Location = Constants.Point_512_0;
-                windowPanel.Size = new Size(this.paletteForm.Size.Width + 2, this.paletteForm.Size.Height + 26);
-
-                if (this.editorsTabControl.SelectedTab.Name == "dungeonPage")
-                {
-                    windowPanel.containerPanel.Controls.Add(this.paletteForm);
-                    this.customPanel3.Controls.Add(windowPanel);
-                }
-                else
-                {
-                    windowPanel.containerPanel.Controls.Add(new PaletteEditor(this));
-                    this.overworldEditor.splitContainer1.Panel2.Controls.Add(windowPanel);
-                }
-
-                this.paletteForm.BringToFront();
-                windowPanel.BringToFront();
+                return;
             }
+
+            this.paletteFormActive = !this.paletteFormActive;
+
+            this.SetupPaletteForm();
+        }
+
+        public void SetupPaletteForm()
+        {
+            if (this.editorsTabControl.SelectedTab.Name != "dungeonPage" && this.editorsTabControl.SelectedTab.Name != "overworldPage")
+            {
+                return;
+            }
+
+            if (this.paletteFormWindowPanel is null)
+            {
+                this.paletteFormWindowPanel = new WindowPanel();
+                this.paletteFormWindowPanel.ForeColor = Color.Black;
+                this.paletteFormWindowPanel.Tag = "Palettes Editor";
+                this.paletteFormWindowPanel.Location = Constants.Point_512_0;
+                this.paletteFormWindowPanel.Size = new Size(this.gfxEditor.paletteForm.Size.Width + 2, this.gfxEditor.paletteForm.Size.Height + 26);
+            }
+
+            if (!this.paletteFormActive)
+            {
+                this.paletteFormWindowPanel.Visible = false;
+            }
+            else
+            {
+                this.paletteFormWindowPanel.Visible = true;
+            }
+
+            this.gfxEditor.paletteForm.Location = Constants.Point_0_0;
+            this.paletteFormWindowPanel.containerPanel.Controls.Add(this.gfxEditor.paletteForm);
+
+            if (this.editorsTabControl.SelectedTab.Name == "dungeonPage")
+            {
+                this.customPanel3.Controls.Add(this.paletteFormWindowPanel);
+            }
+            else
+            {
+                this.overworldEditor.splitContainer1.Panel2.Controls.Add(this.paletteFormWindowPanel);
+            }
+
+            this.gfxEditor.paletteForm.BringToFront();
+            this.paletteFormWindowPanel.BringToFront();
         }
 
         // Export Palette to YY-CHR Palette Format
@@ -3967,23 +3993,24 @@ namespace ZeldaFullEditor
         bool lastTabWasNaming = false;
         private void EditorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             // copyToolStripMenuItem
             if (this.editorsTabControl.SelectedTab.Name == "textPage")
             {
-                deleteToolStripMenuItem.Enabled = false;
+                this.deleteToolStripMenuItem.Enabled = false;
                 this.textEditor.BringToFront();
                 this.textEditor.Visible = true;
             }
             else
             {
-                deleteToolStripMenuItem.Enabled = true;
+                this.deleteToolStripMenuItem.Enabled = true;
                 this.textEditor.Visible = false;
             }
 
             if (this.editorsTabControl.SelectedTab.Name == "dungeonPage")
             {
-                customPanel1.Parent = tabPage4;
+                this.SetupPaletteForm();
+
+                this.customPanel1.Parent = tabPage4;
 
                 this.toolStrip1.Visible = true;
                 this.panel1.Visible = true;
@@ -4084,14 +4111,15 @@ namespace ZeldaFullEditor
                         this.editorsTabControl.SelectedIndex = 0;
                     }
 
-                    if (overworldEditor.tabControl1.TabPages.Contains(overworldEditor.Tiles8))
+                    if (this.overworldEditor.tabControl1.TabPages.Contains(overworldEditor.Tiles8))
                     {
-                        overworldEditor.tabControl1.TabPages.Remove(overworldEditor.Tiles8);
+                        this.overworldEditor.tabControl1.TabPages.Remove(overworldEditor.Tiles8);
                     }
                 }
-                customPanel1.Parent = overworldEditor.owspritePanel;
 
+                this.SetupPaletteForm();
 
+                this.customPanel1.Parent = overworldEditor.owspritePanel;
             }
             else
             {
@@ -4107,6 +4135,7 @@ namespace ZeldaFullEditor
 
             if (this.editorsTabControl.SelectedTab.Name == "GfxEditorPage")
             {
+                this.gfxEditor.GfxImportExport_Load();
                 this.gfxEditor.BringToFront();
                 this.gfxEditor.Visible = true;
             }
@@ -6498,6 +6527,13 @@ namespace ZeldaFullEditor
             }
 
             overworldEditor.scene.Invalidate();
+        }
+
+        private void useExpandedOWPaletteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Palettes.ReloadOWAuxPaletteFromExpanded(ROM.DATA);
+
+            this.gfxEditor.paletteForm.ResetTreeNodes();
         }
     }
 }

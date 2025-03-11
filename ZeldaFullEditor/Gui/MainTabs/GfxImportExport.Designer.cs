@@ -258,7 +258,6 @@
             this.Controls.Add(this.panel1);
             this.Name = "GfxImportExport";
             this.Size = new System.Drawing.Size(838, 661);
-            this.Load += new System.EventHandler(this.GfxImportExport_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.allgfxPicturebox)).EndInit();
             this.groupBox1.ResumeLayout(false);

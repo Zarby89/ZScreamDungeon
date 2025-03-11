@@ -239,10 +239,26 @@ namespace ZeldaFullEditor
         public static int overworldSpritePalette = 0x007B41;
         public static int overworldMapPaletteGroup = 0x075504;
         public static int overworldSpritePaletteGroup = 0x075580;
-        public static int overworldAuxPaletteMax = 19;
         public static int overworldSpriteset = 0x007A41;
         public static int overworldSpecialGFXGroup = 0x016821;
         public static int overworldSpecialPALGroup = 0x016831;
+
+        public static int HudPalettesMax = 2;
+        public static int OverworldMainPalettesMax = 6;
+        public static int OverworldAuxPalettesMax = 20;
+        public static int OverworldAnimatedPalettesMax = 14;
+        public static int GlobalSpritePalettesMax = 2;
+        public static int ArmorPalettesMax = 5;
+        public static int SwordsPalettesMax = 4;
+        public static int SpritesAux1PalettesMax = 12;
+        public static int SpritesAux2PalettesMax = 11;
+        public static int SpritesAux3PalettesMax = 24;
+        public static int ShieldsPalettesMax = 3;
+        public static int DungeonsMainPalettesMax = 20;
+        public static int OverworldBackgroundPaletteMax = NumberOfOWMaps;
+        public static int OverworldGrassPalettesMax = 3;
+        public static int Object3DPalettesMax = 2;
+        public static int OverworldMiniMapPalettesMax = 2;
 
         public static int overworldSpritesBegining = 0x04C881;
         public static int overworldSpritesAgahnim = 0x04CA21;

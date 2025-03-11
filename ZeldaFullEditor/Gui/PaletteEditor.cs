@@ -7,22 +7,22 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class PaletteEditor : UserControl
     {
-        Color[][] HudPal = new Color[2][];
-        Color[][] OverworldMainPal = new Color[6][];
-        Color[][] OverworldAuxPal = new Color[20][];
-        Color[][] OverworldAnimatedPal = new Color[14][];
-        Color[][] DungeonMainPal = new Color[20][];
-        Color[][] GlobalSpritesPal = new Color[2][];
-        Color[][] SpritesAux1Pal = new Color[12][];
-        Color[][] SpritesAux2Pal = new Color[11][];
-        Color[][] SpritesAux3Pal = new Color[24][];
-        Color[][] ShieldsPal = new Color[3][];
-        Color[][] SwordsPal = new Color[4][];
-        Color[][] ArmorsPal = new Color[5][];
+        Color[][] HudPal;
+        Color[][] OverworldMainPal;
+        Color[][] OverworldAuxPal;
+        Color[][] OverworldAnimatedPal;
+        Color[][] DungeonMainPal;
+        Color[][] GlobalSpritesPal;
+        Color[][] SpritesAux1Pal;
+        Color[][] SpritesAux2Pal;
+        Color[][] SpritesAux3Pal;
+        Color[][] ShieldsPal;
+        Color[][] SwordsPal;
+        Color[][] ArmorsPal;
 
-        Color[] overworld_GrassPal = new Color[3];
-        Color[][] object3D_Pal = new Color[2][];
-        Color[][] overworld_Maps_Pal = new Color[2][];
+        Color[] overworld_GrassPal;
+        Color[][] object3D_Pal;
+        Color[][] overworld_Maps_Pal;
 
         Color tempColor;
         int tempIndex = -1;
@@ -35,69 +35,160 @@ namespace ZeldaFullEditor.Gui
 
         public PaletteEditor(DungeonMain mainForm)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.mainForm = mainForm;
 
-            CreateTempPalettes();
-            // Create temp of all palettes
-            for (int i = 0; i < 2; i++)
+            this.HudPal = new Color[Constants.HudPalettesMax][];
+            this.OverworldMainPal = new Color[Constants.OverworldMainPalettesMax][];
+            this.OverworldAuxPal = new Color[Constants.OverworldAuxPalettesMax][];
+            this.OverworldAnimatedPal = new Color[Constants.OverworldAnimatedPalettesMax][];
+            this.DungeonMainPal = new Color[Constants.DungeonsMainPalettesMax][];
+            this.GlobalSpritesPal = new Color[Constants.GlobalSpritePalettesMax][];
+            this.SpritesAux1Pal = new Color[Constants.SpritesAux1PalettesMax][];
+            this.SpritesAux2Pal = new Color[Constants.SpritesAux2PalettesMax][];
+            this.SpritesAux3Pal = new Color[Constants.SpritesAux3PalettesMax][];
+            this.ShieldsPal = new Color[Constants.ShieldsPalettesMax][];
+            this.SwordsPal = new Color[Constants.SwordsPalettesMax][];
+            this.ArmorsPal = new Color[Constants.ArmorPalettesMax][];
+
+            this.overworld_GrassPal = new Color[Constants.OverworldGrassPalettesMax];
+            this.object3D_Pal = new Color[Constants.Object3DPalettesMax][];
+            this.overworld_Maps_Pal = new Color[Constants.OverworldMiniMapPalettesMax][];
+
+            // Create temp of all palettes.
+            this.CreateTempPalettes();
+
+            this.RedoPaletteTreeNodes();
+        }
+
+        public void ResetTreeNodes()
+        {
+            this.palettesTreeView.BeginUpdate();
+
+            this.palettesTreeView.Nodes.Clear();
+
+            var treeNode1 = new TreeNode("Hud");
+            var treeNode2 = new TreeNode("Overworld Main");
+            var treeNode3 = new TreeNode("Overworld Aux"); 
+            var treeNode4 = new TreeNode("Overworld Animated");
+            var treeNode5 = new TreeNode("Dungeon Main");
+            var treeNode6 = new TreeNode("Global Sprites");
+            var treeNode7 = new TreeNode("Sprites Aux1");
+            var treeNode8 = new TreeNode("Sprites Aux2");
+            var treeNode9 = new TreeNode("Sprites Aux3");
+            var treeNode10 = new TreeNode("Shields");
+            var treeNode11 = new TreeNode("Swords");
+            var treeNode12 = new TreeNode("Armors");
+            var treeNode13 = new TreeNode("Overworld Grass");
+            var treeNode14 = new TreeNode("3D Objects");
+            var treeNode15 = new TreeNode("OverworldMaps");
+
+            treeNode1.Name = "HudPal";
+            treeNode2.Name = "OverworldMainPal";
+            treeNode3.Name = "OverworldAuxPal";
+            treeNode4.Name = "OverworldAnimatedPal";
+            treeNode5.Name = "DungeonMainPal";
+            treeNode6.Name = "GlobalSpritesPal";
+            treeNode7.Name = "SpritesAux1Pal";
+            treeNode8.Name = "SpritesAux2Pal";
+            treeNode9.Name = "SpritesAux3Pal";
+            treeNode10.Name = "ShieldsPal";
+            treeNode11.Name = "SwordsPal";
+            treeNode12.Name = "ArmorsPal";
+            treeNode13.Name = "OverworldGrassPal";
+            treeNode14.Name = "Objects3DPal";
+            treeNode15.Name = "OverworldMapsPal";
+
+            this.palettesTreeView.Nodes.Add(treeNode1);
+            this.palettesTreeView.Nodes.Add(treeNode2);
+            this.palettesTreeView.Nodes.Add(treeNode3);
+            this.palettesTreeView.Nodes.Add(treeNode4);
+            this.palettesTreeView.Nodes.Add(treeNode5);
+            this.palettesTreeView.Nodes.Add(treeNode6);
+            this.palettesTreeView.Nodes.Add(treeNode7);
+            this.palettesTreeView.Nodes.Add(treeNode8);
+            this.palettesTreeView.Nodes.Add(treeNode9);
+            this.palettesTreeView.Nodes.Add(treeNode10);
+            this.palettesTreeView.Nodes.Add(treeNode11);
+            this.palettesTreeView.Nodes.Add(treeNode12);
+            this.palettesTreeView.Nodes.Add(treeNode13);
+            this.palettesTreeView.Nodes.Add(treeNode14);
+            this.palettesTreeView.Nodes.Add(treeNode15);
+
+            this.RedoPaletteTreeNodes();
+
+            this.palettesTreeView.EndUpdate();
+
+            this.palettesTreeView.Refresh();
+            this.palettePicturebox.Refresh();
+        }
+
+        public void RedoPaletteTreeNodes()
+        {
+            for (int i = 0; i < Palettes.HudPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["HudPal"].Nodes.Add("Hud " + i.ToString("D2"));
+                palettesTreeView.Nodes["HudPal"].Nodes.Add("Hud " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < Palettes.OverworldMainPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["OverworldMainPal"].Nodes.Add("Main " + i.ToString("D2"));
+                palettesTreeView.Nodes["OverworldMainPal"].Nodes.Add("Main " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < Palettes.OverworldAuxPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["OverworldAuxPal"].Nodes.Add("Aux " + i.ToString("D2"));
+                string extra = "";
+                if (i >= Constants.OverworldAuxPalettesMax)
+                {
+                    extra = " Expanded";
+                }
+
+                palettesTreeView.Nodes["OverworldAuxPal"].Nodes.Add("Aux " + i.ToString("X2") + extra);
             }
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < Palettes.OverworldAnimatedPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["OverworldAnimatedPal"].Nodes.Add("Animated " + i.ToString("D2"));
+                palettesTreeView.Nodes["OverworldAnimatedPal"].Nodes.Add("Animated " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < Palettes.DungeonsMainPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["DungeonMainPal"].Nodes.Add("Main " + i.ToString("D2"));
+                palettesTreeView.Nodes["DungeonMainPal"].Nodes.Add("Main " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.GlobalSpritePalettes.Length; i++)
             {
-                palettesTreeView.Nodes["GlobalSpritesPal"].Nodes.Add("Global " + i.ToString("D2"));
+                palettesTreeView.Nodes["GlobalSpritesPal"].Nodes.Add("Global " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < Palettes.SpritesAux1Palettes.Length; i++)
             {
-                palettesTreeView.Nodes["SpritesAux1Pal"].Nodes.Add("Aux " + i.ToString("D2"));
+                palettesTreeView.Nodes["SpritesAux1Pal"].Nodes.Add("Aux " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < Palettes.SpritesAux2Palettes.Length; i++)
             {
-                palettesTreeView.Nodes["SpritesAux2Pal"].Nodes.Add("Aux " + i.ToString("D2"));
+                palettesTreeView.Nodes["SpritesAux2Pal"].Nodes.Add("Aux " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < Palettes.SpritesAux3Palettes.Length; i++)
             {
-                palettesTreeView.Nodes["SpritesAux3Pal"].Nodes.Add("Aux " + i.ToString("D2"));
+                palettesTreeView.Nodes["SpritesAux3Pal"].Nodes.Add("Aux " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < Palettes.ShieldsPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["ShieldsPal"].Nodes.Add("Shields " + i.ToString("D2"));
+                palettesTreeView.Nodes["ShieldsPal"].Nodes.Add("Shields " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < Palettes.SwordsPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["SwordsPal"].Nodes.Add("Swords " + i.ToString("D2"));
+                palettesTreeView.Nodes["SwordsPal"].Nodes.Add("Swords " + i.ToString("X2"));
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < Palettes.ArmorPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["ArmorsPal"].Nodes.Add("Armors " + i.ToString("D2"));
+                palettesTreeView.Nodes["ArmorsPal"].Nodes.Add("Armors " + i.ToString("X2"));
             }
 
             palettesTreeView.Nodes["OverworldGrassPal"].Nodes.Add("Overworld Grass");
@@ -105,9 +196,9 @@ namespace ZeldaFullEditor.Gui
             palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Triforce");
             palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Crystal");
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.OverworldMiniMapPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["OverworldMapsPal"].Nodes.Add("Overworld Maps  " + i.ToString("D2"));
+                palettesTreeView.Nodes["OverworldMapsPal"].Nodes.Add("Overworld Maps " + i.ToString("X2"));
             }
         }
 
@@ -134,26 +225,337 @@ namespace ZeldaFullEditor.Gui
             if (MessageBox.Show("Are you sure you want to restore all palettes " +
                 "to the last applied values?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                RestoreallPalettes();
+                this.RestoreallPalettes();
             }
         }
 
         private void restoreselButton_Click(object sender, EventArgs e)
         {
-            restoreSelected();
-            refreshallGfx();
+            this.restoreSelected();
+            this.refreshallGfx();
 
             // Restore the temp selected palette only.
         }
 
         private void refreshallGfx()
         {
-            GFX.loadedPalettes = GFX.LoadDungeonPalette(mainForm.activeScene.room.palette);
-            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(mainForm.activeScene.room.palette);
-            mainForm.activeScene.room.reloadGfx();
-            mainForm.activeScene.DrawRoom();
-            mainForm.activeScene.Refresh();
-            palettePicturebox.Refresh();
+            GFX.loadedPalettes = GFX.LoadDungeonPalette(this.mainForm.activeScene.room.palette);
+            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(this.mainForm.activeScene.room.palette);
+            this.mainForm.activeScene.room.reloadGfx();
+            this.mainForm.activeScene.DrawRoom();
+            this.mainForm.activeScene.Refresh();
+            this.palettePicturebox.Refresh();
+        }
+
+        public void VerifyPaletteSizes()
+        {
+            if (HudPal.Length < Palettes.HudPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.HudPalettes.Length][];
+
+                int i = 0;
+                while (i < HudPal.Length)
+                {
+                    temp[i] = HudPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.HudPalettes[i];
+
+                    i++;
+                }
+
+                HudPal = temp;
+            }
+
+            if (OverworldMainPal.Length < Palettes.OverworldMainPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.OverworldMainPalettes.Length][];
+
+                int i = 0;
+                while (i < OverworldMainPal.Length)
+                {
+                    temp[i] = OverworldMainPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.OverworldMainPalettes[i];
+
+                    i++;
+                }
+
+                OverworldMainPal = temp;
+            }
+
+            if (OverworldAuxPal.Length < Palettes.OverworldAuxPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.OverworldAuxPalettes.Length][];
+
+                int i = 0;
+                while (i < OverworldAuxPal.Length)
+                {
+                    temp[i] = OverworldAuxPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.OverworldAuxPalettes[i];
+
+                    i++;
+                }
+
+                OverworldAuxPal = temp;
+            }
+
+            if (OverworldAnimatedPal.Length < Palettes.OverworldAnimatedPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.OverworldAnimatedPalettes.Length][];
+
+                int i = 0;
+                while (i < OverworldAnimatedPal.Length)
+                {
+                    temp[i] = OverworldAnimatedPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.OverworldAnimatedPalettes[i];
+
+                    i++;
+                }
+
+                OverworldAnimatedPal = temp;
+            }
+
+            if (DungeonMainPal.Length < Palettes.DungeonsMainPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.DungeonsMainPalettes.Length][];
+
+                int i = 0;
+                while (i < DungeonMainPal.Length)
+                {
+                    temp[i] = DungeonMainPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.DungeonsMainPalettes[i];
+
+                    i++;
+                }
+
+                DungeonMainPal = temp;
+            }
+
+            if (GlobalSpritesPal.Length < Palettes.GlobalSpritePalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.GlobalSpritePalettes.Length][];
+
+                int i = 0;
+                while (i < GlobalSpritesPal.Length)
+                {
+                    temp[i] = GlobalSpritesPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.GlobalSpritePalettes[i];
+
+                    i++;
+                }
+
+                GlobalSpritesPal = temp;
+            }
+
+            if (SpritesAux1Pal.Length < Palettes.SpritesAux1Palettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.SpritesAux1Palettes.Length][];
+
+                int i = 0;
+                while (i < SpritesAux1Pal.Length)
+                {
+                    temp[i] = SpritesAux1Pal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.SpritesAux1Palettes[i];
+
+                    i++;
+                }
+
+                SpritesAux1Pal = temp;
+            }
+
+            if (SpritesAux2Pal.Length < Palettes.SpritesAux2Palettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.SpritesAux2Palettes.Length][];
+
+                int i = 0;
+                while (i < SpritesAux2Pal.Length)
+                {
+                    temp[i] = SpritesAux2Pal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.SpritesAux2Palettes[i];
+
+                    i++;
+                }
+
+                SpritesAux2Pal = temp;
+            }
+
+            if (SpritesAux3Pal.Length < Palettes.SpritesAux3Palettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.SpritesAux3Palettes.Length][];
+
+                int i = 0;
+                while (i < SpritesAux3Pal.Length)
+                {
+                    temp[i] = SpritesAux3Pal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.SpritesAux3Palettes[i];
+
+                    i++;
+                }
+
+                SpritesAux3Pal = temp;
+            }
+
+            if (ShieldsPal.Length < Palettes.ShieldsPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.ShieldsPalettes.Length][];
+
+                int i = 0;
+                while (i < ShieldsPal.Length)
+                {
+                    temp[i] = ShieldsPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.ShieldsPalettes[i];
+
+                    i++;
+                }
+
+                ShieldsPal = temp;
+            }
+
+            if (SwordsPal.Length < Palettes.SwordsPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.SwordsPalettes.Length][];
+
+                int i = 0;
+                while (i < SwordsPal.Length)
+                {
+                    temp[i] = SwordsPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.SwordsPalettes[i];
+
+                    i++;
+                }
+
+                SwordsPal = temp;
+            }
+
+            if (ArmorsPal.Length < Palettes.ArmorPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.ArmorPalettes.Length][];
+
+                int i = 0;
+                while (i < ArmorsPal.Length)
+                {
+                    temp[i] = ArmorsPal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.ArmorPalettes[i];
+
+                    i++;
+                }
+
+                ArmorsPal = temp;
+            }
+
+            if (object3D_Pal.Length < Palettes.Object3DPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.Object3DPalettes.Length][];
+
+                int i = 0;
+                while (i < object3D_Pal.Length)
+                {
+                    temp[i] = object3D_Pal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.Object3DPalettes[i];
+
+                    i++;
+                }
+
+                object3D_Pal = temp;
+            }
+
+            if (overworld_Maps_Pal.Length < Palettes.OverworldMiniMapPalettes.Length)
+            {
+                Color[][] temp = new Color[Palettes.OverworldMiniMapPalettes.Length][];
+
+                int i = 0;
+                while (i < overworld_Maps_Pal.Length)
+                {
+                    temp[i] = overworld_Maps_Pal[i];
+
+                    i++;
+                }
+
+                while (i < temp.Length)
+                {
+                    temp[i] = Palettes.OverworldMiniMapPalettes[i];
+
+                    i++;
+                }
+
+                overworld_Maps_Pal = temp;
+            }
         }
 
         private void palettesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -243,6 +645,13 @@ namespace ZeldaFullEditor.Gui
 
         private void restoreSelected()
         {
+            if (palettesTreeView.SelectedNode is null)
+            {
+                return;
+            }
+
+            this.VerifyPaletteSizes();
+
             if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["HudPal"])
             {
                 for (int i = 0; i < Palettes.HudPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
@@ -342,7 +751,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            palettePicturebox.Refresh();
+            this.palettePicturebox.Refresh();
         }
 
         private void palettePicturebox_Paint(object sender, PaintEventArgs e)
@@ -362,7 +771,9 @@ namespace ZeldaFullEditor.Gui
 
         private void CreateTempPalettes()
         {
-            for (int i = 0; i < 2; i++)
+            this.VerifyPaletteSizes();
+
+            for (int i = 0; i < Palettes.HudPalettes.Length; i++)
             {
                 HudPal[i] = new Color[Palettes.HudPalettes[i].Length];
                 for (int j = 0; j < Palettes.HudPalettes[i].Length; j++)
@@ -371,7 +782,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < Palettes.OverworldMainPalettes.Length; i++)
             {
                 OverworldMainPal[i] = new Color[Palettes.OverworldMainPalettes[i].Length];
                 for (int j = 0; j < Palettes.OverworldMainPalettes[i].Length; j++)
@@ -380,7 +791,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < Palettes.OverworldAuxPalettes.Length; i++)
             {
                 OverworldAuxPal[i] = new Color[Palettes.OverworldAuxPalettes[i].Length];
                 for (int j = 0; j < Palettes.OverworldAuxPalettes[i].Length; j++)
@@ -389,7 +800,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < Palettes.OverworldAnimatedPalettes.Length; i++)
             {
                 OverworldAnimatedPal[i] = new Color[Palettes.OverworldAnimatedPalettes[i].Length];
                 for (int j = 0; j < Palettes.OverworldAnimatedPalettes[i].Length; j++)
@@ -398,7 +809,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < Palettes.DungeonsMainPalettes.Length; i++)
             {
                 DungeonMainPal[i] = new Color[Palettes.DungeonsMainPalettes[i].Length];
                 for (int j = 0; j < Palettes.DungeonsMainPalettes[i].Length; j++)
@@ -407,7 +818,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.GlobalSpritePalettes.Length; i++)
             {
                 GlobalSpritesPal[i] = new Color[Palettes.GlobalSpritePalettes[i].Length];
                 for (int j = 0; j < Palettes.GlobalSpritePalettes[i].Length; j++)
@@ -416,7 +827,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < Palettes.SpritesAux1Palettes.Length; i++)
             {
                 SpritesAux1Pal[i] = new Color[Palettes.SpritesAux1Palettes[i].Length];
                 for (int j = 0; j < Palettes.SpritesAux1Palettes[i].Length; j++)
@@ -425,7 +836,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < Palettes.SpritesAux2Palettes.Length; i++)
             {
                 SpritesAux2Pal[i] = new Color[Palettes.SpritesAux2Palettes[i].Length];
                 for (int j = 0; j < Palettes.SpritesAux2Palettes[i].Length; j++)
@@ -434,7 +845,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < Palettes.SpritesAux3Palettes.Length; i++)
             {
                 SpritesAux3Pal[i] = new Color[Palettes.SpritesAux3Palettes[i].Length];
                 for (int j = 0; j < Palettes.SpritesAux3Palettes[i].Length; j++)
@@ -443,7 +854,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < Palettes.ShieldsPalettes.Length; i++)
             {
                 ShieldsPal[i] = new Color[Palettes.ShieldsPalettes[i].Length];
                 for (int j = 0; j < Palettes.ShieldsPalettes[i].Length; j++)
@@ -452,7 +863,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < Palettes.SwordsPalettes.Length; i++)
             {
                 SwordsPal[i] = new Color[Palettes.SwordsPalettes[i].Length];
                 for (int j = 0; j < Palettes.SwordsPalettes[i].Length; j++)
@@ -461,7 +872,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < Palettes.ArmorPalettes.Length; i++)
             {
                 ArmorsPal[i] = new Color[Palettes.ArmorPalettes[i].Length];
                 for (int j = 0; j < Palettes.ArmorPalettes[i].Length; j++)
@@ -470,7 +881,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.Object3DPalettes.Length; i++)
             {
                 object3D_Pal[i] = new Color[Palettes.Object3DPalettes[i].Length];
                 for (int j = 0; j < Palettes.Object3DPalettes[i].Length; j++)
@@ -479,7 +890,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.OverworldMiniMapPalettes.Length; i++)
             {
                 overworld_Maps_Pal[i] = new Color[Palettes.OverworldMiniMapPalettes[i].Length];
                 for (int j = 0; j < Palettes.OverworldMiniMapPalettes[i].Length; j++)
@@ -491,7 +902,9 @@ namespace ZeldaFullEditor.Gui
 
         private void RestoreallPalettes()
         {
-            for (int i = 0; i < 2; i++)
+            this.VerifyPaletteSizes();
+
+            for (int i = 0; i < Palettes.HudPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.HudPalettes[i].Length; j++)
                 {
@@ -499,7 +912,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < Palettes.OverworldMainPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.OverworldMainPalettes[i].Length; j++)
                 {
@@ -507,7 +920,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < Palettes.OverworldAuxPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.OverworldAuxPalettes[i].Length; j++)
                 {
@@ -515,7 +928,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < Palettes.OverworldAnimatedPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.OverworldAnimatedPalettes[i].Length; j++)
                 {
@@ -523,7 +936,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < Palettes.DungeonsMainPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.DungeonsMainPalettes[i].Length; j++)
                 {
@@ -531,7 +944,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.GlobalSpritePalettes.LongLength; i++)
             {
                 for (int j = 0; j < Palettes.GlobalSpritePalettes[i].Length; j++)
                 {
@@ -539,7 +952,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < Palettes.SpritesAux1Palettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.SpritesAux1Palettes[i].Length; j++)
                 {
@@ -547,7 +960,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < Palettes.SpritesAux2Palettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.SpritesAux2Palettes[i].Length; j++)
                 {
@@ -555,7 +968,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < Palettes.SpritesAux3Palettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.SpritesAux3Palettes[i].Length; j++)
                 {
@@ -563,7 +976,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < Palettes.ShieldsPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.ShieldsPalettes[i].Length; j++)
                 {
@@ -571,7 +984,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < Palettes.SwordsPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.SwordsPalettes[i].Length; j++)
                 {
@@ -579,7 +992,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < Palettes.ArmorPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.ArmorPalettes[i].Length; j++)
                 {
@@ -587,7 +1000,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.Object3DPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.Object3DPalettes[i].Length; j++)
                 {
@@ -595,7 +1008,7 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Palettes.OverworldMiniMapPalettes.Length; i++)
             {
                 for (int j = 0; j < Palettes.OverworldMiniMapPalettes[i].Length; j++)
                 {
@@ -630,17 +1043,17 @@ namespace ZeldaFullEditor.Gui
 
         private void palettePicturebox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (tempIndex != -1)
+            if (this.tempIndex != -1)
             {
-                selectedPalette[tempIndex] = tempColor;
+                this.selectedPalette[tempIndex] = this.tempColor;
                 for (int i = 0; i < 159; i++)
                 {
-                    mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
+                    this.mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
                 }
 
-                mainForm.overworldEditor.scene.Refresh();
-                refreshallGfx();
-                tempIndex = -1;
+                this.mainForm.overworldEditor.scene.Refresh();
+                this.refreshallGfx();
+                this.tempIndex = -1;
             }
         }
 

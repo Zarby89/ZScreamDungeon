@@ -415,6 +415,8 @@
             this.saveVRAMAsPngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveRoomsToOtherROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportImageMapMultipleROMsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generatePaletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useExpandedOWPaletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -434,7 +436,6 @@
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
-            this.generatePaletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -4401,28 +4402,28 @@
             // vramViewerToolStripMenuItem
             // 
             this.vramViewerToolStripMenuItem.Name = "vramViewerToolStripMenuItem";
-            this.vramViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.vramViewerToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.vramViewerToolStripMenuItem.Text = "VRAM Viewer";
             this.vramViewerToolStripMenuItem.Click += new System.EventHandler(this.VRAMViewerToolStripMenuItem_Click);
             // 
             // cGramViewerToolStripMenuItem
             // 
             this.cGramViewerToolStripMenuItem.Name = "cGramViewerToolStripMenuItem";
-            this.cGramViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cGramViewerToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.cGramViewerToolStripMenuItem.Text = "CGRAM Viewer";
             this.cGramViewerToolStripMenuItem.Click += new System.EventHandler(this.CGRAMViewerToolStripMenuItem_Click);
             // 
             // gfxGroupsetsToolStripMenuItem
             // 
             this.gfxGroupsetsToolStripMenuItem.Name = "gfxGroupsetsToolStripMenuItem";
-            this.gfxGroupsetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gfxGroupsetsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.gfxGroupsetsToolStripMenuItem.Text = "Graphics Groups";
             this.gfxGroupsetsToolStripMenuItem.Click += new System.EventHandler(this.GFXGroupsetsToolStripMenuItem_Click);
             // 
             // palettesEditorToolStripMenuItem
             // 
             this.palettesEditorToolStripMenuItem.Name = "palettesEditorToolStripMenuItem";
-            this.palettesEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.palettesEditorToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.palettesEditorToolStripMenuItem.Text = "Palettes Editor";
             this.palettesEditorToolStripMenuItem.Click += new System.EventHandler(this.PalettesEditorToolStripMenuItem_Click);
             // 
@@ -4490,7 +4491,8 @@
             this.saveVRAMAsPngToolStripMenuItem,
             this.moveRoomsToOtherROMToolStripMenuItem,
             this.exportImageMapMultipleROMsToolStripMenuItem,
-            this.generatePaletteToolStripMenuItem});
+            this.generatePaletteToolStripMenuItem,
+            this.useExpandedOWPaletteToolStripMenuItem});
             this.ExperimentalToolStripMenuItem1.Enabled = false;
             this.ExperimentalToolStripMenuItem1.Name = "ExperimentalToolStripMenuItem1";
             this.ExperimentalToolStripMenuItem1.Size = new System.Drawing.Size(135, 20);
@@ -4531,6 +4533,20 @@
             this.exportImageMapMultipleROMsToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
             this.exportImageMapMultipleROMsToolStripMenuItem.Text = "Export Image Map (Multiple ROMs)";
             this.exportImageMapMultipleROMsToolStripMenuItem.Click += new System.EventHandler(this.ExportImageMapMultipleROMsToolStripMenuItem_Click);
+            // 
+            // generatePaletteToolStripMenuItem
+            // 
+            this.generatePaletteToolStripMenuItem.Name = "generatePaletteToolStripMenuItem";
+            this.generatePaletteToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.generatePaletteToolStripMenuItem.Text = "Generate Palette";
+            this.generatePaletteToolStripMenuItem.Click += new System.EventHandler(this.generatePaletteToolStripMenuItem_Click);
+            // 
+            // useExpandedOWPaletteToolStripMenuItem
+            // 
+            this.useExpandedOWPaletteToolStripMenuItem.Name = "useExpandedOWPaletteToolStripMenuItem";
+            this.useExpandedOWPaletteToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.useExpandedOWPaletteToolStripMenuItem.Text = "Use Expanded OW Palette";
+            this.useExpandedOWPaletteToolStripMenuItem.Click += new System.EventHandler(this.useExpandedOWPaletteToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -4723,13 +4739,6 @@
             // 
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
-            // 
-            // generatePaletteToolStripMenuItem
-            // 
-            this.generatePaletteToolStripMenuItem.Name = "generatePaletteToolStripMenuItem";
-            this.generatePaletteToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
-            this.generatePaletteToolStripMenuItem.Text = "Generate Palette";
-            this.generatePaletteToolStripMenuItem.Click += new System.EventHandler(this.generatePaletteToolStripMenuItem_Click);
             // 
             // DungeonMain
             // 
@@ -5225,6 +5234,7 @@
         private Gui.ExtraForms.Hexbox doorxHexbox;
         private Gui.ExtraForms.Hexbox dooryHexbox;
         private System.Windows.Forms.ToolStripMenuItem generatePaletteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useExpandedOWPaletteToolStripMenuItem;
     }
 }
 

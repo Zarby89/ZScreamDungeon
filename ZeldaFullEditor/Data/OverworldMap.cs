@@ -705,9 +705,9 @@ namespace ZeldaFullEditor
 
             if (pal1 != 255)
             {
-                if (pal1 >= 20)
+                if (pal1 >= Palettes.OverworldAuxPalettes.Length)
                 {
-                    pal1 = 19;
+                    pal1 = (byte)(Palettes.OverworldAuxPalettes.Length - 1);
                 }
 
                 aux1 = Palettes.OverworldAuxPalettes[pal1];
@@ -724,9 +724,9 @@ namespace ZeldaFullEditor
 
             if (pal2 != 255)
             {
-                if (pal2 >= 20)
+                if (pal2 >= Palettes.OverworldAuxPalettes.Length)
                 {
-                    pal2 = 19;
+                    pal2 = (byte)(Palettes.OverworldAuxPalettes.Length - 1);
                 }
 
                 aux2 = Palettes.OverworldAuxPalettes[pal2];
@@ -785,9 +785,9 @@ namespace ZeldaFullEditor
                 main = Palettes.OverworldMainPalettes[0];
             }
 
-            if (pal3 >= 14)
+            if (pal3 >= Palettes.OverworldAnimatedPalettes.Length)
             {
-                pal3 = 13;
+                pal3 = (byte)(Palettes.OverworldAnimatedPalettes.Length - 1);
             }
 
             animated = Palettes.OverworldAnimatedPalettes[pal3];
@@ -803,9 +803,9 @@ namespace ZeldaFullEditor
                 pal4 = 0;
             }
 
-            if (pal4 >= 24)
+            if (pal4 >= Palettes.SpritesAux3Palettes.Length)
             {
-                pal4 = 23;
+                pal4 = (byte)(Palettes.SpritesAux3Palettes.Length - 1);
             }
 
             spr = Palettes.SpritesAux3Palettes[pal4];
@@ -820,9 +820,9 @@ namespace ZeldaFullEditor
                 pal5 = 0;
             }
 
-            if (pal5 >= 24)
+            if (pal5 >= Palettes.SpritesAux3Palettes.Length)
             {
-                pal5 = 23;
+                pal5 = (byte)(Palettes.SpritesAux3Palettes.Length - 1);
             }
 
             spr2 = Palettes.SpritesAux3Palettes[pal5];
