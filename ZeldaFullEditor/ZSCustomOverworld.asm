@@ -366,9 +366,7 @@ Pool:
     
     org $288142 ; $140142
     .EnableMosaic ; 0x01 Unused for now.
-        if !UseVanillaPool > 0
         db $01
-        endif
 
     ; When non 0 this will allow animated tiles to be updated between OW
     ; transitions. Default is $FF.
@@ -470,7 +468,7 @@ Pool:
     warnpc $288200
 
     ; Valid values:
-    ; ; ----udlr
+    ; .... udlr
     ; u - Up
     ; d - Down
     ; l - Left
@@ -497,7 +495,7 @@ Pool:
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         ; SW
-        db $04, $01, $00, $00, $00, $00, $00, $00
+        db $04, $04, $00, $00, $00, $00, $00, $00
         db $04, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
@@ -1014,6 +1012,8 @@ endif
 pullpc
 ActivateSubScreen:
 {
+    PHB : PHK : PLB
+
     STZ.b $1D
 
     PHX
@@ -1045,6 +1045,7 @@ ActivateSubScreen:
     .noRain
     
     ; Get the overlay value for this overworld area.
+    ; ReadOverlayArray 
     LDA.b $8A : ASL : TAX
     LDA.w Pool_OverlayTable, X : CMP.w #$00FF : BEQ .normal
         ; If not $FF, assume we want an overlay.
@@ -1060,6 +1061,8 @@ ActivateSubScreen:
     SEP #$20 ; Set A in 8bit mode.
 
     PLX
+
+    PLB
 
     RTL
 }

@@ -139,51 +139,68 @@ org $02DACB
 
 ; Long no need to change DataBank
 org $0299E5
-    LDA.l EntranceData_song,X
+    LDA.l EntranceData_song, X
 
 org $029B04
-    LDA.l EntranceData_song,X
+    LDA.l EntranceData_song, X
 
 
 ; UNUSED old Tile16 space
 org $0F8000
 EntranceData:
 {
-    ; Space for 0xFF entrances dungeon data
+    ; Space for 0xFF entrances dungeon data.
     .room_id
     skip $200 ; words values
+
     .camera_scroll_boundaries
     skip $800 ; 8 bytes values
+
     .horizontal_scroll
     skip $200 ; words values
+
     .vertical_scroll
     skip $200 ; words values
+
     .y_coordinate
     skip $200 ; words values
+
     .x_coordinate
     skip $200 ; words values
+
     .camera_trigger_y
     skip $200 ; words values
+
     .camera_trigger_x
     skip $200 ; words values
+
     .main_GFX
     skip $100 ; byte values
+
     .floor
     skip $100 ; byte values
+
     .dungeon_id
     skip $100 ; byte values
+
     .in_door
     skip $100 ; byte values
+
     .layer
     skip $100 ; byte values
+
     .camera_scroll_controller
     skip $100 ; byte values
+
     .quadrant
     skip $100 ; byte values
+
     .overworld_door_tilemap
     skip $200 ; words values
+
     .song
     skip $100 ; byte values
+
     .entranceExtra
     skip $100 ; byte values
     ; Bit0 = is facing down? (set = true)
