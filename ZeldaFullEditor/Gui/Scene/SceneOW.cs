@@ -124,11 +124,11 @@ namespace ZeldaFullEditor
                     {
                         overlayAnimationMode.selectedFrame += 1;
                     }
-
                 }
 
                 this.InvalidateHighEnd();
                 ((HandledMouseEventArgs)e).Handled = true;
+
                 return;
             }
 
@@ -227,6 +227,7 @@ namespace ZeldaFullEditor
             if (mapId + this.ow.WorldOffset >= this.ow.AllMaps.Length)
             {
                 Console.WriteLine("Invalid area selected");
+
                 return;
             }
 
@@ -248,33 +249,43 @@ namespace ZeldaFullEditor
                 case ObjectMode.Tile:
                     this.tilemode.OnMouseDown(e);
                     break;
+
                 case ObjectMode.Overlay:
                     this.overlayMode.OnMouseDown(e);
                     break;
+
                 case ObjectMode.OverlayAnimation:
                     this.overlayAnimationMode.OnMouseDown(e);
                     break;
+
                 case ObjectMode.Exits:
                     this.exitmode.onMouseDown(e);
                     break;
+
                 case ObjectMode.OWDoor:
                     this.doorMode.OnMouseDown(e);
                     break;
+
                 case ObjectMode.Entrances:
                     this.entranceMode.onMouseDown(e);
                     break;
+
                 case ObjectMode.Itemmode:
                     this.itemMode.onMouseDown(e);
                     break;
+
                 case ObjectMode.Spritemode:
                     this.spriteMode.onMouseDown(e);
                     break;
+
                 case ObjectMode.Flute:
                     this.transportMode.onMouseDown(e);
                     break;
+
                 case ObjectMode.Gravestone:
                     this.gravestoneMode.onMouseDown(e);
                     break;
+
                 case ObjectMode.Notemode:
                     this.noteMode.onMouseDown(e);
                     break;
@@ -520,6 +531,7 @@ namespace ZeldaFullEditor
                     tempValue = tempValue.Clamp(0, hScroll.Maximum);
                     hScroll.Value = tempValue;
                 }
+
                 if (vScroll.Value >= 0 && vScroll.Value < vScroll.Maximum)
                 {
                     int tempValue = startpanPoint.Y - (panPoint.Y);
@@ -528,6 +540,7 @@ namespace ZeldaFullEditor
                 }
 
                 //this.InvalidateHighEnd();
+
                 return; // prevent running extra code
             }
 
@@ -536,33 +549,43 @@ namespace ZeldaFullEditor
                 case ObjectMode.Tile:
                     this.tilemode.OnMouseMove(e);
                     break;
+
                 case ObjectMode.Overlay:
                     this.overlayMode.OnMouseMove(e);
                     break;
+
                 case ObjectMode.OverlayAnimation:
                     this.overlayAnimationMode.OnMouseMove(e);
                     break;
+
                 case ObjectMode.Exits:
                     this.exitmode.onMouseMove(e);
                     break;
+
                 case ObjectMode.OWDoor:
                     this.doorMode.onMouseMove(e);
                     break;
+
                 case ObjectMode.Entrances:
                     this.entranceMode.onMouseMove(e);
                     break;
+
                 case ObjectMode.Itemmode:
                     this.itemMode.onMouseMove(e);
                     break;
+
                 case ObjectMode.Spritemode:
                     this.spriteMode.onMouseMove(e);
                     break;
+
                 case ObjectMode.Flute:
                     this.transportMode.onMouseMove(e);
                     break;
+
                 case ObjectMode.Gravestone:
                     this.gravestoneMode.OnMouseMove(e);
                     break;
+
                 case ObjectMode.Notemode:
                     this.noteMode.onMouseMove(e);
                     break;
@@ -596,27 +619,35 @@ namespace ZeldaFullEditor
                 case ObjectMode.Tile:
                     this.tilemode.Paste();
                     break;
+
                 case ObjectMode.Overlay:
                     //this.overlayMode.Paste();
                     break;
+
                 case ObjectMode.Exits:
                     this.exitmode.Paste();
                     break;
+
                 case ObjectMode.OWDoor:
                     //this.doorMode.Paste();
                     break;
+
                 case ObjectMode.Entrances:
                     this.entranceMode.Paste();
                     break;
+
                 case ObjectMode.Itemmode:
                     this.itemMode.Paste();
                     break;
+
                 case ObjectMode.Spritemode:
                     this.spriteMode.Paste();
                     break;
+
                 case ObjectMode.Flute:
                     //this.transportMode.Paste();
                     break;
+
                 case ObjectMode.Gravestone:
                     //this.gravestoneMode.Paste();
                     break;
@@ -632,27 +663,35 @@ namespace ZeldaFullEditor
                 case ObjectMode.Tile:
                     this.tilemode.Copy();
                     break;
+
                 case ObjectMode.Overlay:
                     //this.overlayMode.Copy();
                     break;
+
                 case ObjectMode.Exits:
                     this.exitmode.Copy();
                     break;
+
                 case ObjectMode.OWDoor:
                     //this.doorMode.Copy();
                     break;
+
                 case ObjectMode.Entrances:
                     this.entranceMode.Copy();
                     break;
+
                 case ObjectMode.Itemmode:
                     this.itemMode.Copy();
                     break;
+
                 case ObjectMode.Spritemode:
                     this.spriteMode.Copy();
                     break;
+
                 case ObjectMode.Flute:
                     //this.transportMode.Copy();
                     break;
+
                 case ObjectMode.Gravestone:
                     //this.gravestoneMode.Copy();
                     break;
@@ -668,27 +707,35 @@ namespace ZeldaFullEditor
                 case ObjectMode.Tile:
                     //this.tilemode.Cut();
                     break;
+
                 case ObjectMode.Overlay:
                     //this.overlayMode.Cut();
                     break;
+
                 case ObjectMode.Exits:
                     this.exitmode.Cut();
                     break;
+
                 case ObjectMode.OWDoor:
                     //this.doorMode.Cut();
                     break;
+
                 case ObjectMode.Entrances:
                     this.entranceMode.Cut();
                     break;
+
                 case ObjectMode.Itemmode:
                     this.itemMode.Cut();
                     break;
+
                 case ObjectMode.Spritemode:
                     this.spriteMode.Cut();
                     break;
+
                 case ObjectMode.Flute:
                     //this.transportMode.Cut();
                     break;
+
                 case ObjectMode.Gravestone:
                     //this.gravestoneMode.Cut();
                     break;
@@ -711,10 +758,8 @@ namespace ZeldaFullEditor
 
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -740,7 +785,6 @@ namespace ZeldaFullEditor
 
                 for (int i = ow.WorldOffset; i < 64 + ow.WorldOffset; i++)
                 {
-                    
                     if (i <= 0x9F)
                     {
                         ushort subscreenOverlay = ow.AllMaps[i].SubscreenOverlay;
@@ -776,6 +820,7 @@ namespace ZeldaFullEditor
                             }
                         }
                     }
+
                     x++;
                     if (x >= 8)
                     {
@@ -925,7 +970,6 @@ namespace ZeldaFullEditor
                 {
                     foreach (T32UniqueCounter t32 in mainForm.tilesToDraw)
                     {
-
                         byte alpha = (byte)(40 + t32.count);
                         int offsetx = 0;
                         if (t32.x >= 8192)
@@ -955,7 +999,6 @@ namespace ZeldaFullEditor
                             }
                             offsetx = 0;
                         }
-
 
                         if (alpha >= 160)
                         {
@@ -1064,7 +1107,6 @@ namespace ZeldaFullEditor
                                     g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), tox, toy, 16, 16, GraphicsUnit.Pixel, ia);
                                 }
                             }
-
                         }
                         else
                         {
@@ -1234,6 +1276,7 @@ namespace ZeldaFullEditor
                     return t;
                 }
             }
+
             return null;
         }
 
@@ -1249,30 +1292,39 @@ namespace ZeldaFullEditor
                 case ObjectMode.Tile:
                     //this.tilemode.Delete();
                     break;
+
                 case ObjectMode.Overlay:
                     //this.overlayMode.Delete();
                     break;
+
                 case ObjectMode.Exits:
                     this.exitmode.Delete();
                     break;
+
                 case ObjectMode.OWDoor:
                     //this.doorMode.Delete();
                     break;
+
                 case ObjectMode.Entrances:
                     this.entranceMode.Delete();
                     break;
+
                 case ObjectMode.Itemmode:
                     this.itemMode.Delete();
                     break;
+
                 case ObjectMode.Spritemode:
                     this.spriteMode.Delete();
                     break;
+
                 case ObjectMode.Flute:
                     //this.transportMode.Delete();
                     break;
+
                 case ObjectMode.Gravestone:
                     //this.gravestoneMode.Delete();
                     break;
+
                 case ObjectMode.Notemode:
                     this.noteMode.Delete();
                     break;
