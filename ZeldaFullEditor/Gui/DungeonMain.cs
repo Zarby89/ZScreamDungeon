@@ -6531,7 +6531,7 @@ namespace ZeldaFullEditor
 
         private void useExpandedOWPaletteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Palettes.ReloadOWAuxPaletteFromExpanded(ROM.DATA);
+            Palettes.ReloadOWPalettesFromExpanded(ROM.DATA);
 
             this.gfxEditor.paletteForm.ResetTreeNodes();
         }

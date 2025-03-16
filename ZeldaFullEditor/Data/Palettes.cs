@@ -290,8 +290,14 @@ namespace ZeldaFullEditor
                 WritePalette(romData, Constants.overworldPaletteAuxialiary + (i * (21 * 2)), OverworldAuxPalettes[i]);
             }
 
-            if (UsingExpandedAuxOWPalettes)
+            if (UsingExpandedOWPalettes)
             {
+                // 35 colors each, 7x5 (0,2 on grid).
+                for (int i = 0; i < OverworldMainPalettes.Length; i++)
+                {
+                    WritePalette(romData, ExpandedMainOWPalettes + (i * (35 * 2)), OverworldMainPalettes[i]);
+                }
+
                 // 21 colors each, 7x3 (8,2 and 8,5 on grid).
                 for (int i = 0; i < OverworldAuxPalettes.Length; i++)
                 {
@@ -423,27 +429,44 @@ namespace ZeldaFullEditor
 
         // I'm leaving this here and not moving it to constants because this is FG specific and should not be used by anyone else.
         private static int ExpandedAuxOWPalettes = 0x165000;
-        private static bool UsingExpandedAuxOWPalettes = false;
+        private static int ExpandedMainOWPalettes = 0x165500;
+        private static bool UsingExpandedOWPalettes = false;
 
-        public static void ReloadOWAuxPaletteFromExpanded(byte[] romData)
+        public static void ReloadOWPalettesFromExpanded(byte[] romData)
         {
             int startIndex = OverworldAuxPalettes.Length;
-            Color[][] oldPalettes = OverworldAuxPalettes;
+            Color[][] oldAuxPalettes = OverworldAuxPalettes;
 
             // Copy over the old palettes.
             OverworldAuxPalettes = new Color[30][];
-            for (int i = 0; i < oldPalettes.Length; i++)
+            for (int i = 0; i < oldAuxPalettes.Length; i++)
             {
-                OverworldAuxPalettes[i] = oldPalettes[i];
+                OverworldAuxPalettes[i] = oldAuxPalettes[i];
             }
 
             // 21 colors each, 7x3 (8,2 and 8,5 on grid).
             for (int i = startIndex; i < OverworldAuxPalettes.Length; i++)
             {
-                OverworldAuxPalettes[i] = ReadPalette(romData, ExpandedAuxOWPalettes + (i * (21 * 2)), 21);
+                OverworldAuxPalettes[i] = ReadPalette(romData, ExpandedAuxOWPalettes + (i * 21 * 2), 21);
             }
 
-            UsingExpandedAuxOWPalettes = true;
+            startIndex = OverworldMainPalettes.Length;
+            Color[][] oldMainPalettes = OverworldMainPalettes;
+
+            // Copy over the old palettes.
+            OverworldMainPalettes = new Color[10][];
+            for (int i = 0; i < oldMainPalettes.Length; i++)
+            {
+                OverworldMainPalettes[i] = oldMainPalettes[i];
+            }
+
+            // 35 colors each, 7x5 (0,2 on grid).
+            for (int i = startIndex; i < OverworldMainPalettes.Length; i++)
+            {
+                OverworldMainPalettes[i] = ReadPalette(romData, ExpandedMainOWPalettes + (i * 35 * 2), 35);
+            }
+
+            UsingExpandedOWPalettes = true;
         }
 
         #region Unused

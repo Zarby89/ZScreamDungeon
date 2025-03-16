@@ -776,9 +776,16 @@ namespace ZeldaFullEditor
             }
 
             int mainPalette = this.overworld.AllMaps[this.ParentID].MainPalette;
-            if (mainPalette >= 0 && mainPalette < Palettes.OverworldMainPalettes.Length)
+            if (mainPalette >= 0)
             {
-                main = Palettes.OverworldMainPalettes[mainPalette];
+                if (mainPalette < Palettes.OverworldMainPalettes.Length)
+                {
+                    main = Palettes.OverworldMainPalettes[mainPalette];
+                }
+                else
+                {
+                    main = Palettes.OverworldMainPalettes[Palettes.OverworldMainPalettes.Length - 1];
+                }
             }
             else
             {

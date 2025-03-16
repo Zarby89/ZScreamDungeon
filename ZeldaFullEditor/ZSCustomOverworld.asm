@@ -113,6 +113,7 @@ Palette_ArmorAndGloves                     = $1BEDF9
 Palette_Hud                                = $1BEE52
 Palette_OverworldBgAux3                    = $1BEEA8
 Palette_OverworldBgMain                    = $1BEEC7
+PaletteData_owmain                         = $1BE6C8
 
 ; ==============================================================================
 ; Debug addresses:
@@ -227,8 +228,8 @@ Palette_OverworldBgMain                    = $1BEEC7
 
 ; W5
 ; Load overlay, fixed color, and BG color.
-; $0BFEC6
-!Func0BFEC6 = $01
+; $0BFEB6
+!Func0BFEB6 = $01
 
 ; S1 W4
 ; Transparent color durring warp and during special area enter.
@@ -266,7 +267,7 @@ if !AllOff == 1
 !Func02ABBE = $00
 !Func0ABC5A = $00
 !Func0AB8F5 = $00
-!Func0BFEC6 = $00
+!Func0BFEB6 = $00
 !Func0ED627 = $00
 !Func0ED8AE = $00
 endif
@@ -278,10 +279,6 @@ endif
 ; TODO: Eventually remove these? I'm not sure. If anyone uses an old ZS on their
 ; ROM these will need to be fixed but also could block people from hooking into
 ; these spots. We could potentially add these to a "repair ROM" asm feature.
-
-; Loads the transparent color under some load conditions.
-org $0BFEB6
-    STA.l $7EC500
 
 ; Main Palette loading routine.
 org $0ED5E7
@@ -1072,25 +1069,27 @@ pushpc
 
 if !Func00EEBB == 1
 
-; Zeros out the BG color when mirror warping to the pyramid area.
-; TODO: This is done in the vanilla I think as just a precaution at the apex of
-; the fade to white to make sure all of the colors truly are white but it may
-; not actually be needed.
+; Zeros out the BG color when mirror warping from an area with the pyramid BG.
+; This is done to prevent a case where the black transparent color is faded to white
+; on top of the pyramid BG, resulting in a double faded effect on transparent tiles.
 org $00EEBB ; $006EBB
 Func00EEBB:
 {
-    ; Check if we are warping to an area with the pyramid BG.
-    JSL.l ReadOverlayArray : CMP.w #$0096 : BNE .notHyruleCastle
-        ; This is annoying but I just needed a little bit of extra space.
+    ; Check if we are currently in an area that is using an overlay.
+    ; By this point $8A is already set to the area we are going to so flip the
+    ; #$40 bit to get the one we are currently in.
+    LDA.b $8A : EOR.w #$0040 : ASL : TAX
+    LDA.l Pool_OverlayTable, X : CMP.w #$0096 : BNE .notPyramidBG
+        ; If so, don't fade that color to white because then we will get the 
+        ; double fading.
         JSL.l EraseBGColors
 
-    .notHyruleCastle
+    .notPyramidBG
 
     SEP #$20 ; Set A in 8bit mode.
         
     LDA.b #$08 : STA.w $06BB
-        
-    STZ.w $06BA
+                 STZ.w $06BA
         
     RTL
 }
@@ -1689,17 +1688,16 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
     PHX
 
     ; If the value is 0xFF that means we didn't set any overlay so load the
-    ; pyramid one by default.
+    ; pyramid one by default. This is done in vanilla to not have to load the
+    ; BG during a normal transition from area 0x65 to the pyramid area.
     CPX.w #$00FF : BNE .notFF
         ; The pyramid background.
         LDX.w #$0096
 
     .notFF
     
-    ; TODO: Verify this. If it is an alternate entry I can't find where it is
-    ; referenced anywhere.
-    ; $01300B ALTERNATE ENTRY POINT
     .loadSubScreenOverlay
+
     STY.b $84
         
     STX.b $8A : STX.b $8C
@@ -1741,11 +1739,9 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
         CPX.b #$95 : BEQ .loadOverlay ; Sky
         CPX.b #$9C : BEQ .loadOverlay ; Lava
         CPX.b #$96 : BEQ .loadOverlay ; Pyramid BG
-            LDX.b $11
-        
             ; TODO: Investigate what these checks are for.
-            CPX.b #$23 : BEQ .loadOverlay
-            CPX.b #$2C : BEQ .loadOverlay
+            LDX.b $11 : CPX.b #$23 : BEQ .loadOverlay
+                        CPX.b #$2C : BEQ .loadOverlay
                 STZ.b $1D
     
     .loadOverlay
@@ -2010,27 +2006,28 @@ ReadOverlayArray:
 ; pyramid area.
 BGControl:
 {
+    ; TODO: I'm pretty sure this part was AHE specific. Verify.
     ; Check link's Y position. This will need to be changed per area and per
     ; need.
-    LDA.b $20 : CMP.w #$08E0 : BCC .startShowingMountains
+    ;LDA.b $20 : CMP.w #$08E0 : BCC .startShowingMountains
         ; Lock the position so that nothing shows through the trees.
-        LDA.w #$06C0 : STA.b $E6
+        ;LDA.w #$06C0 : STA.b $E6
 
-        RTL
+        ;RTL
 
-    .startShowingMountains
+    ;.startShowingMountains
 
     ; Don't let the BG scroll down further than the "top" of the bg when
     ; walking up.
-    LDA.w #$0600 : CMP.b $E6 : BCC .dontLock ; #$0600 
+    LDA.w #$0600 : CMP.b $E6 : BCC .dontLock
         STA.b $E6
     
     .dontLock
     
     ; Don't let the BG scroll up further than the "bottom" of the bg when
     ; walking down.
-    LDA.w #$06C0 : CMP.b $E6 : BCS .dontLock2 ; #$06C0 
-        STA.b $E6 ; TODO: I had this at $E2 for some reason.
+    LDA.w #$06C0 : CMP.b $E6 : BCS .dontLock2
+        STA.b $E6
 
     .dontLock2
 
@@ -2055,6 +2052,8 @@ Func02C02D:
         ; This shifts the BG over by a half small area's width. This is to
         ; line up the mountain with the tower in the distance at the appropriate
         ; location when coming into the pyramid area from the right.
+        ; This also keeps the BG aligned when entering the area from below, 
+        ; keeping you from seeing the mountains through the trees.
         STA.b $E0, X 
 
         ; NOTE: There is currently a bug in vanilla where if you exit a dungeon
@@ -2086,7 +2085,7 @@ ReadOverlayArray2:
 
     ; ReadOverlayArray
     LDA.b $8A : ASL : TAX
-    LDA.w Pool_OverlayTable, X : TAY
+    LDA.l Pool_OverlayTable, X : TAY
 
     SEP #$10 ; Set X and Y in 8bit mode.
 
@@ -2512,9 +2511,15 @@ CheckForChangeGraphicsTransitionLoad:
                     LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
                         STA.w $0AB3
 
+                        ; TODO: Verify: It seems at some point this was necesary
+                        ; but now the buffer gets copied over anyway so its not
+                        ; needed. We can just run the normal one now.
+
                         ; Run the modified routine that loads the buffer
                         ; and normal color ram.
-                        JSL.l Palette_OverworldBgMain2
+                        ;JSL.l Palette_OverworldBgMain2
+
+                        JSL.l Palette_OverworldBgMain
 
                 .dontUpdateMain1
 
@@ -2642,7 +2647,7 @@ CheckForChangeGraphicsTransitionLoad:
     RTS
 }
 
-; The following 2 functions are copied from the palettes.asm but they only
+; The following 2 functions are copied from the bank 0x1B but they only
 ; copied colors into the buffer so these copy colors into the normal ram as
 ; well.
 Palette_OverworldBgMain2:
@@ -2651,7 +2656,7 @@ Palette_OverworldBgMain2:
         
     LDA.w $0AB3 : ASL A : TAX
         
-    LDA.l PaletteIDtoOffset_OW2, X : ADC.w #$E6C8 : STA.b $00
+    LDA.l PaletteIDtoOffset_OW2, X : ADC.w #PaletteData_owmain : STA.b $00
         
     REP #$10
         
@@ -2979,12 +2984,20 @@ pushpc
 
 ; ==============================================================================
 
-if !Func0BFEC6 == 1
+if !Func0BFEB6 == 1
+
+; There is a STZ.b $1D here in vanilla and I'm not sure why. It might have been
+; to hide something but then just gets set a second later. So all this does in
+; function is give the game a chance to hit NMI and flash a transparent color
+; on screen when while warping from and area that has a different transparent
+; color set.
+org $0BFE70 ; $05FE70
+    NOP : NOP
 
 ; Loads different special transparent colors and overlay speeds based on the
-; overlay during transition and under other certain cases. Exact cases need to be
-; investigated. When leaving dungeon.
-org $0BFEC6 ; $05FEC6
+; overlay during transition and under other certain cases. TOOD: Exact cases need
+; to be investigated. When leaving dungeon.
+org $0BFEB6 ; $05FEB6
 Overworld_LoadBGColorAndSubscreenOverlay:
 {
     JSL.l ReplaceBGColor
@@ -3025,7 +3038,15 @@ Overworld_LoadBGColorAndSubscreenOverlay:
             ; Check for DW Death mountain. (not turtle rock?).
             CMP.w #$009C : BEQ .setCustomFixedColor
                 SEP #$30 ; Set A, X, and Y in 8bit mode.
-                
+
+                ; Don't set the subscreen during a warp to hide the transparent
+                ; color change. This will get set properly later in the warp
+                ; but not everywhere else.
+                LDA.b $11 : CMP.b #$23 : BEQ .inWarp
+                    STZ.b $1D
+
+                .inWarp
+
                 ; Update CGRAM this frame.
                 INC.b $15
                 
@@ -3086,7 +3107,12 @@ warnpc $0BFFA8 ; $05FFA8
 
 else
 
-org $0BFEC6 ; $05FEC6
+org $0BFE70 ; $05FE70
+STZ.b $1D
+
+org $0BFEB6 ; $05FEB6
+db $8F, $00, $C5, $7E, $8F, $00, $C3, $7E
+db $8F, $40, $C5, $7E, $8F, $40, $C3, $7E
 db $A9, $20, $40, $85, $9C, $A9, $40, $80
 db $85, $9D, $A5, $8A, $F0, $40, $C9, $70
 db $00, $D0, $03, $4C, $9D, $FF, $C9, $40
@@ -3137,19 +3163,9 @@ ReplaceBGColor:
 
     REP #$20 ; Set A in 16bit mode.
 
-    ; TODO: Investigate: Saving the Y may not be necessary, done just in case.
-    PHY
-
-    ; Get area code and times it by 2.
+    ; Get area code and times it by 2. Get the color.
     LDA.b $8A : ASL : TAX
-
-    ; Get the color.
-    LDA.w Pool_BGColorTable, X
-
-    ; Set the BG color.
-    STA.l $7EC500 : STA.l $7EC540
-
-    TAY ; Save the color.
+    LDA.w Pool_BGColorTable, X : PHA
     
     SEP #$20 ; Set A in 8bit mode.
 
@@ -3161,25 +3177,25 @@ ReplaceBGColor:
 
     .notPreOverworld
 
-    ; TODO: Check if this is needed. I think it is. If not, it should always
-    ; set the buffer too. If not the warp fades into the wrong color for a
-    ; second.
     ; Only set the buffer color during warps.
     LDA.b $11 : CMP.b #$23 : BNE .notWarp
         .setBuffer
 
         REP #$20 ; Set A in 16bit mode.
 
-        TYA
-
         ; Set the BG color buffer.
-        STA.l $7EC300 : STA.l $7EC340
+        PLA : STA.l $7EC300 : STA.l $7EC340
+
+        BRA .skipActualColor
 
     .notWarp
 
     REP #$20 ; Set A in 16bit mode.
 
-    PLY
+    ; Set the BG color.
+    PLA : STA.l $7EC500 : STA.l $7EC540
+
+    .skipActualColor
 
     PLB
 
@@ -3191,7 +3207,8 @@ ReplaceBGColor:
 ; standard clamp function to keep it from being too high or too low.
 SpecialBgHorizOffsetAdjustment:
 {
-    LDA.b $E2 : SEC : SBC.w #$0778 : LSR A : TAY : AND.w #$4000 : BEQ .BRANCH_7
+    LDA.b $E2 : SEC : SBC.w #$0778 : LSR A : TAY
+    AND.w #$4000 : BEQ .BRANCH_7
         TYA : ORA.w #$8000 : TAY
             
     .BRANCH_7
@@ -3204,13 +3221,13 @@ SpecialBgHorizOffsetAdjustment:
         SEC : SBC.w #$0600 : AND.w #$03FF : CMP.w #$0180 : BCS .BRANCH_8
             LSR A : ORA.w #$0600
                 
-                BRA .BRANCH_10
-            
-            .BRANCH_8
-            
-            LDA.w #$06C0
-                
             BRA .BRANCH_10
+            
+        .BRANCH_8
+            
+        LDA.w #$06C0
+                
+        BRA .BRANCH_10
             
     .BRANCH_9
 
@@ -3229,9 +3246,9 @@ pushpc
 
 if !Func0ED627 == 1
 
-; Loads the transparent color under some load conditions such as the
-; mirror\warp.
-; TODO: Investigate the other conditions. Exiting dungeons.
+; Loads the transparent color during mirror\warp, entering/leaving special
+; overworlds, exiting dungeons, loading end credits overworld scenes, whirlpool
+; warps, and bird travel.
 org $0ED627 ; $075627
     JML InitColorLoad2
     NOP
@@ -3272,6 +3289,9 @@ InitColorLoad2:
 
     ; Set transparent color.
     STA.l $7EC300 : STA.l $7EC340
+
+    ; TODO: Based on the conditions as explained above, double check that this is not
+    ; needed for any of them.
     ;STA.l $7EC500 : STA.l $7EC540
 
     INC.b $15
