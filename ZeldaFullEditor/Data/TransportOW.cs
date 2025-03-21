@@ -56,6 +56,7 @@ namespace ZeldaFullEditor
             {
                 large = ow.AllMaps[mapId].LargeMap ? 768 : 256;
             }
+
             this.mapId = mapId;
             var mapx = (mapId & 7) << 9;
             var mapy = (mapId & 0x38) << 6;

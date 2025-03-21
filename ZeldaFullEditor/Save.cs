@@ -1741,75 +1741,78 @@ namespace ZeldaFullEditor
 
                 if (scene.ow.AllMaps[i].LargeMap) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
                 {
-                    // Check 1.
-                    ROM.Write(Constants.overworldMapSize + i, 0x20);
+                    // Check 1
+                    ROM.Write(Constants.overworldMapSize + i + 0, 0x20);
                     ROM.Write(Constants.overworldMapSize + i + 1, 0x20);
                     ROM.Write(Constants.overworldMapSize + i + 8, 0x20);
                     ROM.Write(Constants.overworldMapSize + i + 9, 0x20);
 
-                    // Check 2.
-                    ROM.Write(Constants.overworldMapSizeHighByte + i, 0x03);
+                    // Check 2
+                    ROM.Write(Constants.overworldMapSizeHighByte + i + 0, 0x03);
                     ROM.Write(Constants.overworldMapSizeHighByte + i + 1, 0x03);
                     ROM.Write(Constants.overworldMapSizeHighByte + i + 8, 0x03);
                     ROM.Write(Constants.overworldMapSizeHighByte + i + 9, 0x03);
 
-                    // Check 3.
-                    ROM.Write(Constants.overworldScreenSize + i, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i + 64, 0x00);
+                    // Check 3
+                    // In this check we need to set a table for the DW too.
+                    ROM.Write(Constants.overworldScreenSize + i + 0 + 00, 0x00);
+                    ROM.Write(Constants.overworldScreenSize + i + 0 + 64, 0x00);
 
-                    ROM.Write(Constants.overworldScreenSize + i + 1, 0x00);
+                    ROM.Write(Constants.overworldScreenSize + i + 1 + 00, 0x00);
                     ROM.Write(Constants.overworldScreenSize + i + 1 + 64, 0x00);
 
-                    ROM.Write(Constants.overworldScreenSize + i + 8, 0x00);
+                    ROM.Write(Constants.overworldScreenSize + i + 8 + 00, 0x00);
                     ROM.Write(Constants.overworldScreenSize + i + 8 + 64, 0x00);
 
-                    ROM.Write(Constants.overworldScreenSize + i + 9, 0x00);
+                    ROM.Write(Constants.overworldScreenSize + i + 9 + 00, 0x00);
                     ROM.Write(Constants.overworldScreenSize + i + 9 + 64, 0x00);
 
-                    // Check 4.
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 64, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 128, 0x04);
+                    // Check 4
+                    // This check needs to set a DW and SW table too.
+                    // TODO: I'm not sure why the SW table needs to be the same here but its that way in vanilla.
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 0 + 0,   0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 0 + 64,  0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 0 + 128, 0x04);
 
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 64, 0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 0,   0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 64,  0x04);
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 128, 0x04);
 
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 64, 0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 0,   0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 64,  0x04);
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 128, 0x04);
 
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 64, 0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 0,   0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 64,  0x04);
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 128, 0x04);
 
-                    // Check 5 and 6.
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2), (ushort)((parentyPos * 0x200) - 0xE0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2), (ushort)((parentxPos * 0x200) - 0x100));
+                    // Check 5 and 6
+                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
+                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 2, (ushort)((parentyPos * 0x200) - 0xE0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2) + 2, (ushort)((parentxPos * 0x200) - 0x100));
+                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 02, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
+                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 02, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 16, (ushort)((parentyPos * 0x200) - 0xE0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2) + 16, (ushort)((parentxPos * 0x200) - 0x100));
+                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 16, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
+                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 16, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 18, (ushort)((parentyPos * 0x200) - 0xE0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2) + 18, (ushort)((parentxPos * 0x200) - 0x100));
+                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 18, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
+                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 18, (ushort)((parentxPos * 0x0200) - 0x0100));
 
                     // Check 7 and 8.
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), parentxPos * 0x200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), parentyPos * 0x200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 00, parentxPos * 0x0200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 00, parentyPos * 0x0200);
 
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 2, parentxPos * 0x200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 2, parentyPos * 0x200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 02, parentxPos * 0x0200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 02, parentyPos * 0x0200);
 
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 16, parentxPos * 0x200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 16, parentyPos * 0x200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 16, parentxPos * 0x0200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 16, parentyPos * 0x0200);
 
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 18, parentxPos * 0x200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 18, parentyPos * 0x200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 18, parentxPos * 0x0200);
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 18, parentyPos * 0x0200);
 
-                    // Check 9.
+                    // Check 9
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, 0x0060); // Always 0x0060.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, 0x0060); // Always 0x0060.
 
@@ -1829,13 +1832,18 @@ namespace ZeldaFullEditor
                         // Just to make sure where don't try to read outside of the array.
                         if ((i - 1) >= 0)
                         {
-                            // If the area to the left is a large area.
+                            // If the area to the upper left is a large area.
                             if (scene.ow.AllMaps[i - 1].LargeMap)
                             {
-                                // If the area to the left is the bottom right of a large area.
+                                // If the area to the upper left is the top right of a large area:
                                 if (scene.ow.AllMaps[i - 1].LargeIndex == 1)
                                 {
                                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, 0x0060);
+                                }
+                                // If the area to the upper left is the bottom right of a large area:
+                                else if (scene.ow.AllMaps[i - 1].LargeIndex == 3)
+                                {
+                                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, 0xF060);
                                 }
                             }
                         }
@@ -1844,7 +1852,6 @@ namespace ZeldaFullEditor
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, 0x0080); // Always 0x0080.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, 0x0080); // Always 0x0080.
 
-                                                                                                            // Lower are always 8010.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 16, 0x1080); // Always 0x1080.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, 0x1080); // Always 0x1080.
 
@@ -1852,13 +1859,18 @@ namespace ZeldaFullEditor
                     // Just to make sure where don't try to read outside of the array.
                     if ((i + 2) < 64)
                     {
-                        // If the area to the right is a large area.
+                        // If the area to the upper right is a large area:
                         if (scene.ow.AllMaps[i + 2].LargeMap)
                         {
-                            // If the area to the right is the top left of a large area.
+                            // If the area to the upper right is the top left of a large area:
                             if (scene.ow.AllMaps[i + 2].LargeIndex == 0)
                             {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, 0x0080); // Always 0x1080.
+                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, 0x0080);
+                            }
+                            // If the area to the upper right is the bottom left of a large area:
+                            else if (scene.ow.AllMaps[i + 2].LargeIndex == 2)
+                            {
+                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, 0xF080);
                             }
                         }
                     }
@@ -1866,7 +1878,6 @@ namespace ZeldaFullEditor
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, 0x1800); // Always 0x1800.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, 0x1800); // Always 0x1800.
 
-                                                                                                            // Right side is always 1840.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, 0x1840); // Always 0x1840.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 18, 0x1840); // Always 0x1840.
 
@@ -1874,13 +1885,18 @@ namespace ZeldaFullEditor
                     // Just to make sure where don't try to read outside of the array.
                     if (i - 8 >= 0)
                     {
-                        // If the area just above us is a large area.
+                        // If the area just above us to the bottom left is a large area:
                         if (scene.ow.AllMaps[i - 8].LargeMap)
                         {
-                            // If the area just above us is the bottom left of a large area.
+                            // If the area just above us to the left is the bottom left of a large area:
                             if (scene.ow.AllMaps[i - 8].LargeIndex == 2)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, 0x1800);
+                            }
+                            // If the area just above us to the left is the bottom right of a large area:
+                            else if (scene.ow.AllMaps[i - 8].LargeIndex == 3)
+                            {
+                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, 0x17C0);
                             }
                         }
                     }
@@ -1888,7 +1904,6 @@ namespace ZeldaFullEditor
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, 0x2000); // Always 0x2000.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, 0x2000); // Always 0x2000.
 
-                                                                                                            // Right side is always 0x2040.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, 0x2040); // Always 0x2040.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, 0x2040); // Always 0x2040.
 
@@ -1896,13 +1911,18 @@ namespace ZeldaFullEditor
                     // Just to make sure where don't try to read outside of the array.
                     if (i + 16 < 64)
                     {
-                        // If the area just below us is a large area.
+                        // If the area just below us to the left is a large area:
                         if (scene.ow.AllMaps[i + 16].LargeMap)
                         {
-                            // If the area just below us is the top left of a large area.
+                            // If the area just below us to the left is the top left of a large area:
                             if (scene.ow.AllMaps[i + 16].LargeIndex == 0)
                             {
                                 ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, 0x2000);
+                            }
+                            // If the area just below us to the left is the top right of a large area:
+                            else if (scene.ow.AllMaps[i + 16].LargeIndex == 1)
+                            {
+                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, 0x1FC0);
                             }
                         }
                     }
@@ -1917,10 +1937,10 @@ namespace ZeldaFullEditor
                     ROM.Write(Constants.overworldMapSize + i, 0x00);
                     ROM.Write(Constants.overworldMapSizeHighByte + i, 0x01);
 
-                    ROM.Write(Constants.overworldScreenSize + i, 0x01);
+                    ROM.Write(Constants.overworldScreenSize + i + 00, 0x01);
                     ROM.Write(Constants.overworldScreenSize + i + 64, 0x01);
 
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i, 0x02);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 00, 0x02);
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 64, 0x02);
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 128, 0x02);
 
@@ -2008,6 +2028,7 @@ namespace ZeldaFullEditor
             ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 2, 0x1F80);
             ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 4, 0x007F);
             ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 6, 0x007F);
+
             Console.WriteLine("Overworld parent map: \n");
             for (int i = 0; i < 8; i++)
             {
@@ -2107,7 +2128,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 9:");
-            Console.WriteLine(".OverworldScreenTileMapChangeByScreen1 'right'\n");
+            Console.WriteLine("OverworldScreenTileMapChangeByScreen1 'Right'\n");
             for (int i = 0; i < 64; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
@@ -2118,7 +2139,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            Console.WriteLine("\n.OverworldScreenTileMapChangeByScreen2 'left'\n");
+            Console.WriteLine("\nOverworldScreenTileMapChangeByScreen2 'Left'\n");
             for (int i = 0; i < 64; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
@@ -2129,7 +2150,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            Console.WriteLine("\n.OverworldScreenTileMapChangeByScreen3 'Down'\n");
+            Console.WriteLine("\nOverworldScreenTileMapChangeByScreen3 'Down'\n");
             for (int i = 0; i < 64; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
@@ -2140,7 +2161,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            Console.WriteLine("\n.OverworldScreenTileMapChangeByScreen4 'Up'\n");
+            Console.WriteLine("\nOverworldScreenTileMapChangeByScreen4 'Up'\n");
             for (int i = 0; i < 64; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");

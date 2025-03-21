@@ -101,7 +101,7 @@ Overworld_LoadPalettes                     = $0ED5A8
 Palette_SetOwBgColor_Long                  = $0ED618
 LoadGearPalettes_bunny                     = $0ED6DD
 
-PaletteIDtoOffset_OW2                      = $1BEC3B
+PaletteIDtoOffset_OW_Main                  = $1BEC3B
 Palette_SpriteAux3                         = $1BEC77
 Palette_MainSpr                            = $1BEC9E
 Palette_SpriteAux1                         = $1BECC5
@@ -2511,15 +2511,9 @@ CheckForChangeGraphicsTransitionLoad:
                     LDA.w Pool_MainPaletteTable, X : CMP.w $0AB3 : BEQ .dontUpdateMain1
                         STA.w $0AB3
 
-                        ; TODO: Verify: It seems at some point this was necesary
-                        ; but now the buffer gets copied over anyway so its not
-                        ; needed. We can just run the normal one now.
-
                         ; Run the modified routine that loads the buffer
                         ; and normal color ram.
-                        ;JSL.l Palette_OverworldBgMain2
-
-                        JSL.l Palette_OverworldBgMain
+                        JSL.l Palette_OverworldBgMain2
 
                 .dontUpdateMain1
 
@@ -2656,7 +2650,7 @@ Palette_OverworldBgMain2:
         
     LDA.w $0AB3 : ASL A : TAX
         
-    LDA.l PaletteIDtoOffset_OW2, X : ADC.w #PaletteData_owmain : STA.b $00
+    LDA.l PaletteIDtoOffset_OW_Main, X : ADC.w #PaletteData_owmain : STA.b $00
         
     REP #$10
         
@@ -2667,7 +2661,7 @@ Palette_OverworldBgMain2:
     LDX.w #$0006
     LDY.w #$0004
         
-    JSR.w Palette_MultiLoad2
+    JSR.w Palette_MultiLoad_NonBuffer
         
     SEP #$30
         
@@ -2683,7 +2677,7 @@ Palette_OverworldBgMain2:
 ;             A = offset to add to $7EC300, in other words, where to write
 ;                 in palette memory.
 ;             Y = (number of palettes to load - 1).
-Palette_MultiLoad2:
+Palette_MultiLoad_NonBuffer:
 {
     STA.b $04 ; Save the values for future reference.
     STX.b $06
