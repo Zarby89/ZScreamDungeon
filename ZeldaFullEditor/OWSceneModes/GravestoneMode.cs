@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Lidgren.Network;
@@ -24,13 +25,13 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 for (int i = 0; i < 0x0F; i++)
                 {
-                    Gravestone en = scene.ow.AllGraves[i];
-                    if (e.X >= en.XTilePos && e.X < en.XTilePos + 32 && e.Y >= en.YTilePos && e.Y < en.YTilePos + 32)
+                    Gravestone gravestone = scene.ow.AllGraves[i];
+                    if (e.X >= gravestone.XTilePos && e.X < gravestone.XTilePos + 32 && e.Y >= gravestone.YTilePos && e.Y < gravestone.YTilePos + 32)
                     {
                         if (!scene.mouse_down)
                         {
-                            selectedGrave = en;
-                            lastselectedGrave = en;
+                            selectedGrave = gravestone;
+                            lastselectedGrave = gravestone;
                             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                             scene.mouse_down = true;
                         }
@@ -49,8 +50,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 int mouseTileX = e.X / 16;
                 int mouseTileY = e.Y / 16;
-                int mapX = mouseTileX / 32;
-                int mapY = mouseTileY / 32;
+                int mapX = mouseTileX.Clamp(0, 4080) / 32;
+                int mapY = mouseTileY.Clamp(0, 4080) / 32;
 
                 int tempMapHover = mapX + (mapY * 8);
 
@@ -58,14 +59,16 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (this.selectedGrave != null)
                 {
-                    this.selectedGrave.XTilePos = (ushort)e.X;
-                    this.selectedGrave.YTilePos = (ushort)e.Y;
+                    this.selectedGrave.XTilePos = (ushort)e.X.Clamp(0, 4088);
+                    this.selectedGrave.YTilePos = (ushort)e.Y.Clamp(0, 4088);
                     if (this.scene.snapToGrid)
                     {
-                        this.selectedGrave.XTilePos = (ushort)((e.X / 8) * 8);
-                        this.selectedGrave.YTilePos = (ushort)((e.Y / 8) * 8);
+                        this.selectedGrave.XTilePos = (ushort)((e.X / 8) * 8).Clamp(0, 4088);
+                        this.selectedGrave.YTilePos = (ushort)((e.Y / 8) * 8).Clamp(0, 4088);
                     }
                 }
+
+                Console.WriteLine("Grave:    0x" + this.selectedGrave.UniqueID.ToString("X2") + " TilemapPos: 0x" + this.selectedGrave.TilemapPos.ToString("X2") + " X: " + this.selectedGrave.XTilePos + " Y: " + this.selectedGrave.YTilePos);
             }
         }
 
@@ -94,7 +97,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     this.lastselectedGrave = this.selectedGrave;
                     this.SendGraveData(this.lastselectedGrave);
-                    this.selectedGrave = null;
+                    // this.selectedGrave = null;
                     this.scene.mouse_down = false;
                 }
             }
@@ -139,8 +142,11 @@ namespace ZeldaFullEditor.OWSceneModes
         }
         private void SendGraveData(Gravestone gravestone)
         {
+            if (!NetZS.connected)
+            {
+                return;
+            }
 
-            if (!NetZS.connected) { return; }
             NetZSBuffer buffer = new NetZSBuffer(24);
             buffer.Write((byte)11); // grave data
             buffer.Write((byte)NetZS.userID); //user ID
@@ -150,13 +156,10 @@ namespace ZeldaFullEditor.OWSceneModes
             buffer.Write((ushort)gravestone.TilemapPos);
             buffer.Write((ushort)gravestone.GFX);
 
-
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
-
         }
     }
 }

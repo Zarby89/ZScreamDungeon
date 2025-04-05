@@ -1303,7 +1303,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0x11; i++)
             {
-                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].mapId, true, "MapId");
+                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].MapID, true, "MapId");
 
                 ROM.WriteShort(Constants.OWExitXScrollWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].xScroll, true, "XScroll");
 

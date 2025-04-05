@@ -19,8 +19,8 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             Bitmap b = new Bitmap(1, 1);
             Graphics g =  Graphics.FromImage(b);
-            this.x = x;
-            this.y = y;
+            this.x = x.Clamp(0, 4088);
+            this.y = y.Clamp(0, 4088);
             this.text = text;
             this.font = font;
             this.color = color;
@@ -81,6 +81,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 fs |= FontStyle.Underline;
             }
+
             font = new Font(valuesString[4], float.Parse(valuesString[6]), fs);
 
             this.size = g.MeasureString(text, font);

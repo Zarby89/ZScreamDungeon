@@ -430,7 +430,7 @@ namespace ZeldaFullEditor
                 if (this.transportMode.lastselectedTransport != null)
                 {
                     this.owForm.SetSelectedObjectLabels(
-                        this.transportMode.lastselectedTransport.mapId,
+                        this.transportMode.lastselectedTransport.MapID,
                         this.transportMode.lastselectedTransport.playerX,
                         this.transportMode.lastselectedTransport.playerY);
                 }
@@ -441,10 +441,13 @@ namespace ZeldaFullEditor
 
                 this.gravestoneMode.OnMouseUp(e);
 
-                this.owForm.SetSelectedObjectLabels(
+                if (this.gravestoneMode.selectedGrave != null)
+                {
+                    this.owForm.SetSelectedObjectLabels(
                         this.gravestoneMode.selectedGrave.UniqueID,
                         this.gravestoneMode.selectedGrave.XTilePos,
                         this.gravestoneMode.selectedGrave.YTilePos);
+                }
             }
             else if (this.selectedMode == ObjectMode.Notemode)
             {

@@ -1,7 +1,4 @@
 ﻿using System.Drawing;
-using System.Net.Configuration;
-using System.Reflection.Emit;
-using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {

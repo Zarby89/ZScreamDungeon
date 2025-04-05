@@ -75,8 +75,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedNote != null)
                 {
-                    selectedNote.x = e.X; 
-                    selectedNote.y = e.Y;
+                    selectedNote.x = e.X.Clamp(0, 4088); 
+                    selectedNote.y = e.Y.Clamp(0, 4088);
                 }
             }
 

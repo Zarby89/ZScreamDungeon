@@ -29,8 +29,8 @@ namespace ZeldaFullEditor
             editingExit.IsAutomatic = automaticcheckBox.Checked;
             if (!automaticcheckBox.Checked)
             {
-                editingExit.PlayerX = (ushort)(xPosUpDown.Value + pixelMapx);
-                editingExit.PlayerY = (ushort)(yPosUpDown.Value + pixelMapy);
+                editingExit.PlayerX = (ushort)((int)(xPosUpDown.Value + pixelMapx)).Clamp(0, 4088);
+                editingExit.PlayerY = (ushort)((int)(yPosUpDown.Value + pixelMapy)).Clamp(0, 4088);
 
                 editingExit.CameraX = (ushort)(xCameraUpDown.Value + pixelMapx);
                 editingExit.CameraY = (ushort)(yCameraUpDown.Value + pixelMapy);
@@ -140,8 +140,8 @@ namespace ZeldaFullEditor
             {
                 editingExit.RoomID = (ushort)roomUpDown.HexValue;
                 editingExit.MapID = (byte)mapUpDown.Value;
-                editingExit.PlayerX = (ushort)(xPosUpDown.Value + pixelMapx);
-                editingExit.PlayerY = (ushort)(yPosUpDown.Value + pixelMapy);
+                editingExit.PlayerX = (ushort)((int)(xPosUpDown.Value + pixelMapx)).Clamp(0, 4088);
+                editingExit.PlayerY = (ushort)((int)(yPosUpDown.Value + pixelMapy)).Clamp(0, 4088);
                 editingExit.CameraX = (ushort)(xCameraUpDown.Value + pixelMapx);
                 editingExit.CameraY = (ushort)(yCameraUpDown.Value + pixelMapy);
                 editingExit.XScroll = (ushort)(xScrollUpDown.Value + pixelMapx);

@@ -12,7 +12,7 @@ namespace ZeldaFullEditor
             playerY,
             cameraX,
             cameraY,
-            mapId,
+            MapID,
             whirlpoolPos;
 
         public byte
@@ -23,92 +23,93 @@ namespace ZeldaFullEditor
 
         public bool isAutomatic = true;
 
-        public int uniqueID = 0;
+        public int ID = 0;
 
-        public TransportOW(byte mapId, ushort vramLocation, ushort yScroll, ushort xScroll, ushort playerY, ushort playerX, ushort cameraY, ushort cameraX, byte unk1, byte unk2, ushort whirlpoolPos)
+        public TransportOW(byte mapID, ushort vramLocation, ushort yScroll, ushort xScroll, ushort playerY, ushort playerX, ushort cameraY, ushort cameraX, byte unk1, byte unk2, ushort whirlpoolPos)
         {
-            this.mapId = mapId;
+            this.MapID = mapID;
             this.vramLocation = vramLocation;
             this.xScroll = xScroll;
             this.yScroll = yScroll;
-            this.playerX = playerX;
-            this.playerY = playerY;
+            this.playerX = playerX.Clamp(0, 4088);
+            this.playerY = playerY.Clamp(0, 4088);
             this.cameraX = cameraX;
             this.cameraY = cameraY;
             this.unk1 = unk1;
             this.unk2 = unk2;
             this.whirlpoolPos = whirlpoolPos;
 
-            int mapX = mapId - ((mapId / 8) * 8);
-            int mapY = mapId / 8;
+            int mapX = mapID - ((mapID / 8) * 8);
+            int mapY = mapID / 8;
 
-            AreaX = (byte)(Math.Abs(playerX - (mapX * 512)) / 16);
-            AreaY = (byte)(Math.Abs(playerY - (mapY * 512)) / 16);
+            this.AreaX = (byte)(Math.Abs(playerX - (mapX * 512)) / 16);
+            this.AreaY = (byte)(Math.Abs(playerY - (mapY * 512)) / 16);
 
-            uniqueID = ROM.uniqueTransportID++;
+            this.ID = ROM.uniqueTransportID++;
         }
 
-        public void updateMapStuff(byte mapId, Overworld ow)
+        public void updateMapStuff(byte mapID, Overworld ow)
         {
             var large = 256;
 
-            if (mapId < 128)
+            if (mapID < 128)
             {
-                large = ow.AllMaps[mapId].LargeMap ? 768 : 256;
+                large = ow.AllMaps[mapID].LargeMap ? 768 : 256;
             }
 
-            this.mapId = mapId;
-            var mapx = (mapId & 7) << 9;
-            var mapy = (mapId & 0x38) << 6;
-            xScroll = (ushort)(playerX - 134);
-            yScroll = (ushort)(playerY - 78);
+            this.MapID = mapID;
+            var mapx = (mapID & 7) << 9;
+            var mapy = (mapID & 0x38) << 6;
+            this.xScroll = (ushort)(this.playerX - 134);
+            this.yScroll = (ushort)(this.playerY - 78);
 
-            if (xScroll < mapx)
+            if (this.xScroll < mapx)
             {
-                xScroll = (ushort)mapx;
+                this.xScroll = (ushort)mapx;
             }
 
-            if (yScroll < mapy)
+            if (this.yScroll < mapy)
             {
-                yScroll = (ushort)mapy;
+                this.yScroll = (ushort)mapy;
             }
 
-            if (xScroll > mapx + large)
+            if (this.xScroll > mapx + large)
             {
-                xScroll = (ushort)(mapx + large);
-            }
-            if (yScroll > mapy + large + 30)
-            {
-                yScroll = (ushort)(mapy + large + 30);
+                this.xScroll = (ushort)(mapx + large);
             }
 
-            cameraX = playerX;
-            cameraY = (ushort)(playerY + 19);
-
-            if (cameraX < mapx + 127)
+            if (this.yScroll > mapy + large + 30)
             {
-                cameraX = (ushort)(mapx + 127);
-            }
-            else if (cameraX > mapx + 127 + large)
-            {
-                cameraX = (ushort)(mapx + 127 + large);
+                this.yScroll = (ushort)(mapy + large + 30);
             }
 
-            if (cameraY < mapy + 111)
+            this.cameraX = this.playerX;
+            this.cameraY = (ushort)(this.playerY + 19);
+
+            if (this.cameraX < mapx + 127)
             {
-                cameraY = (ushort)(mapy + 111);
+                this.cameraX = (ushort)(mapx + 127);
             }
-            else if (cameraY > mapy + 143 + large)
+            else if (this.cameraX > mapx + 127 + large)
             {
-                cameraY = (ushort)(mapy + 143 + large);
+                this.cameraX = (ushort)(mapx + 127 + large);
             }
 
-            var vramXScroll = (ushort)(xScroll - mapx);
-            var vramYScroll = (ushort)(yScroll - mapy);
+            if (this.cameraY < mapy + 111)
+            {
+                this.cameraY = (ushort)(mapy + 111);
+            }
+            else if (this.cameraY > mapy + 143 + large)
+            {
+                this.cameraY = (ushort)(mapy + 143 + large);
+            }
 
-            vramLocation = (ushort)((vramYScroll & 0xFFF0) << 3 | (vramXScroll & 0xFFF0) >> 3);
+            var vramXScroll = (ushort)(this.xScroll - mapx);
+            var vramYScroll = (ushort)(this.yScroll - mapy);
 
-            // Console.WriteLine("Transport: " + mapId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+            this.vramLocation = (ushort)((vramYScroll & 0xFFF0) << 3 | (vramXScroll & 0xFFF0) >> 3);
+
+            Console.WriteLine("Transport: " + this.ID.ToString("X2") + " MapID: " + mapID.ToString("X2") + " X: " + this.playerX + " Y: " + this.playerY);
         }
     }
 }
