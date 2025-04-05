@@ -689,6 +689,23 @@ namespace ZeldaFullEditor
             this.recentROMToolStripMenuItem.Enabled = false;
 
             this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
+
+            this.textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
+            this.textChestItemToolStripMenuItem.Checked = Settings.Default.chestText;
+            this.textPotItemToolStripMenuItem.Checked = Settings.Default.itemText;
+            this.unselectedBGTransparentToolStripMenuItem.Checked = Settings.Default.transparentBG;
+            this.rightSideToolboxToolStripMenuItem.Checked = Settings.Default.rightToolbox;
+            this.hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow;
+            this.hideItemsToolStripMenuItem.Checked = Settings.Default.itemsShow;
+            this.hideChestItemsToolStripMenuItem.Checked = Settings.Default.chestitemShow;
+            this.showDoorIDsToolStripMenuItem.Checked = Settings.Default.dooridShow;
+            this.showChestsIDsToolStripMenuItem.Checked = Settings.Default.chestidShow;
+            this.disableEntranceGFXToolStripMenuItem.Checked = Settings.Default.disableentranceGfx;
+            this.showBG2MaskOutlineToolStripMenuItem.Checked = Settings.Default.bg2maskShow;
+            this.entranceCameraToolStripMenuItem.Checked = Settings.Default.entranceCamera;
+            this.entrancePositionToolStripMenuItem.Checked = Settings.Default.entrancePos;
+
+            this.activeScene.Refresh();
         }
 
         // TODO: Move that to a data class.
