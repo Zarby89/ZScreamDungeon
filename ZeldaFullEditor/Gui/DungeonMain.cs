@@ -402,8 +402,8 @@ namespace ZeldaFullEditor
                 if (this.saveSettingsArr[8] && save.SaveEntrances(DungeonsData.Entrances, DungeonsData.StartingEntrances))
                 {
                     // Set entrances expansion Bytes
-                    ROM.DATA[0x07F000] = 00;
-                    ROM.DATA[0x07F001] = 01;
+                    ROM.DATA[Constants.entrance_EXP] = 00;
+                    ROM.DATA[Constants.entrance_EXP + 1] = 01;
                     UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
                     break;
                 }
@@ -2121,6 +2121,12 @@ namespace ZeldaFullEditor
 
         public void AddRoomTab(short roomId)
         {
+            // If the room doesn't exist, just load Link's house.
+            if (roomId > DungeonsData.AllRooms.Length)
+            {
+                roomId = 0x0104;
+            }
+
             bool alreadyFound = false;
             foreach (Room room in this.opened_rooms)
             {

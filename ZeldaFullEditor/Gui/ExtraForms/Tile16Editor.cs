@@ -172,14 +172,14 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f, 0f, 256.5f, 16384), new RectangleF(0, 0, 128, 8192), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f, 0f, 256.5f, Constants.Tile16EdiorBitmapSizex2), new RectangleF(0, 0, 128, Constants.Tile16EdiorBitmapSize), GraphicsUnit.Pixel);
             //e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
 
             if (gridcheckBox.Checked)
             {
                 for (int x = 0; x < 16; x++)
                 {
-                    e.Graphics.DrawLine(Constants.White100Pen1, x * 32, 0, x * 32, 16384);
+                    e.Graphics.DrawLine(Constants.White100Pen1, x * 32, 0, x * 32, Constants.Tile16EdiorBitmapSizex2);
 
                 }
                 for (int y = 0; y < 512; y++)

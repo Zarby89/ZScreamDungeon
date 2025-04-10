@@ -269,7 +269,7 @@ namespace ZeldaFullEditor
         /// </summary>
         /// <param name="romData"> The ROM to write to. </param>
         /// <returns> True if failed to write to ROM. </returns>
-        public static bool SavePalettesToROM(byte[] romData)
+        public static bool SavePalettesToROM(byte[] romData, int auxAddr = FG_ExpandedAuxOWPalettes, int mainAddr = FG_ExpandedMainOWPalettes)
         {
             WriteSinglePalette(romData, Constants.hardcodedGrassLW1, OverworldGrassPalettes[0]);
             WriteSinglePalette(romData, Constants.hardcodedGrassLW2, OverworldGrassPalettes[0]);
@@ -295,13 +295,13 @@ namespace ZeldaFullEditor
                 // 35 colors each, 7x5 (0,2 on grid).
                 for (int i = 0; i < OverworldMainPalettes.Length; i++)
                 {
-                    WritePalette(romData, ExpandedMainOWPalettes + (i * (35 * 2)), OverworldMainPalettes[i]);
+                    WritePalette(romData, mainAddr + (i * (35 * 2)), OverworldMainPalettes[i]);
                 }
 
                 // 21 colors each, 7x3 (8,2 and 8,5 on grid).
                 for (int i = 0; i < OverworldAuxPalettes.Length; i++)
                 {
-                    WritePalette(romData, ExpandedAuxOWPalettes + (i * (21 * 2)), OverworldAuxPalettes[i]);
+                    WritePalette(romData, auxAddr + (i * (21 * 2)), OverworldAuxPalettes[i]);
                 }
             }
 
@@ -428,11 +428,11 @@ namespace ZeldaFullEditor
         }
 
         // I'm leaving this here and not moving it to constants because this is FG specific and should not be used by anyone else.
-        private static int ExpandedAuxOWPalettes = 0x165000;
-        private static int ExpandedMainOWPalettes = 0x165500;
+        private const int FG_ExpandedAuxOWPalettes = 0x165000;
+        private const int FG_ExpandedMainOWPalettes = 0x165500;
         private static bool UsingExpandedOWPalettes = false;
 
-        public static void ReloadOWPalettesFromExpanded(byte[] romData)
+        public static void ReloadOWPalettesFromExpanded(byte[] romData, int auxAddr = FG_ExpandedAuxOWPalettes, int mainAddr = FG_ExpandedMainOWPalettes)
         {
             int startIndex = OverworldAuxPalettes.Length;
             Color[][] oldAuxPalettes = OverworldAuxPalettes;
@@ -447,7 +447,7 @@ namespace ZeldaFullEditor
             // 21 colors each, 7x3 (8,2 and 8,5 on grid).
             for (int i = startIndex; i < OverworldAuxPalettes.Length; i++)
             {
-                OverworldAuxPalettes[i] = ReadPalette(romData, ExpandedAuxOWPalettes + (i * 21 * 2), 21);
+                OverworldAuxPalettes[i] = ReadPalette(romData, auxAddr + (i * 21 * 2), 21);
             }
 
             startIndex = OverworldMainPalettes.Length;
@@ -463,7 +463,7 @@ namespace ZeldaFullEditor
             // 35 colors each, 7x5 (0,2 on grid).
             for (int i = startIndex; i < OverworldMainPalettes.Length; i++)
             {
-                OverworldMainPalettes[i] = ReadPalette(romData, ExpandedMainOWPalettes + (i * 35 * 2), 35);
+                OverworldMainPalettes[i] = ReadPalette(romData, mainAddr + (i * 35 * 2), 35);
             }
 
             UsingExpandedOWPalettes = true;

@@ -158,7 +158,7 @@ namespace ZeldaFullEditor
 
         public OverlayAnimationData[] AllAnimationOverlays { get; set; } = new OverlayAnimationData[128];
 
-        public bool[] usedTiles16 = new bool[4096];
+        public bool[] usedTiles16 = new bool[Constants.NumberOfMap16Ex];
 
         public Overworld()
         {
@@ -170,7 +170,7 @@ namespace ZeldaFullEditor
                 /* Console.WriteLine(tileLeftEntrance[i].ToString("D4") + " , " + tileRightEntrance[i].ToString("D4")); */
             }
 
-            for (int i = 0; i < 4096; i++)
+            for (int i = 0; i < usedTiles16.Length; i++)
             {
                 usedTiles16[i] = true;
             }
@@ -270,7 +270,7 @@ namespace ZeldaFullEditor
             ROM.WriteShort(Utils.SnesToPc(0x02FE33), Utils.PcToSnes(Constants.map16TilesEx+6));
 
 
-            ROM.Write(Utils.SnesToPc(0x02FD28), (byte)(Utils.PcToSnes(Constants.map16TilesEx)>>16));
+            ROM.Write(Constants.map16TilesBank, (byte)(Utils.PcToSnes(Constants.map16TilesEx)>>16));
             ROM.Write(Utils.SnesToPc(0x02FD39), (byte)(Utils.PcToSnes(Constants.map16TilesEx)>>16));
             
             int tpos = Constants.map16TilesEx;
@@ -466,7 +466,7 @@ namespace ZeldaFullEditor
             allTile16.Clear();
 
             int limit = Constants.LimitOfMap32;
-            if (ROM.DATA[0x1772E] != 4)
+            if (ROM.DATA[Constants.Map32Tiles_BottomLeft_0] != 4)
             {
                 limit = Constants.LimitOfMap32*2;
             }
@@ -639,7 +639,7 @@ namespace ZeldaFullEditor
             var tile16List = new List<Tile16>();
             int tpos = Constants.map16Tiles;
 
-            if (ROM.DATA[Utils.SnesToPc(0x02FD28)] == 0x0F)
+            if (ROM.DATA[Constants.map16TilesBank] == 0x0F)
             {
                 for (int i = 0; i < Constants.NumberOfMap16; i += 1)
                 {
@@ -696,7 +696,7 @@ namespace ZeldaFullEditor
 
             // Is the data expanded?
             // 04 by default that's the bank of BL tiles.
-            if (ROM.DATA[0x01772E] == 4)
+            if (ROM.DATA[Constants.Map32Tiles_BottomLeft_0] == 4)
             {
                 for (int i = 0; i < Constants.Map32TilesCount; i += 6)
                 {

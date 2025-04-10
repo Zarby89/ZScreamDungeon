@@ -2594,9 +2594,9 @@ namespace ZeldaFullEditor.Gui
         {
             if (ispalPreview)
             {
-                for(int i = 0; i<256;i++)
+                for(int i = 0; i < 256;i++)
                 {
-                    e.Graphics.FillRectangle(new SolidBrush(scene.ow.AllMaps[scene.selectedMapParent].GFXBitmap.Palette.Entries[i]), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
+                    e.Graphics.FillRectangle(new SolidBrush(scene.ow.AllMaps[scene.selectedMapParent].GFXBitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
                 }
             }
             else

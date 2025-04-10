@@ -67,37 +67,37 @@ namespace ZeldaFullEditor.Gui
 
             this.palettesTreeView.Nodes.Clear();
 
-            var treeNode1 = new TreeNode("Hud");
-            var treeNode2 = new TreeNode("Overworld Main");
-            var treeNode3 = new TreeNode("Overworld Aux"); 
-            var treeNode4 = new TreeNode("Overworld Animated");
-            var treeNode5 = new TreeNode("Dungeon Main");
-            var treeNode6 = new TreeNode("Global Sprites");
-            var treeNode7 = new TreeNode("Sprites Aux1");
-            var treeNode8 = new TreeNode("Sprites Aux2");
-            var treeNode9 = new TreeNode("Sprites Aux3");
-            var treeNode10 = new TreeNode("Shields");
-            var treeNode11 = new TreeNode("Swords");
-            var treeNode12 = new TreeNode("Armors");
-            var treeNode13 = new TreeNode("Overworld Grass");
-            var treeNode14 = new TreeNode("3D Objects");
-            var treeNode15 = new TreeNode("OverworldMaps");
-
-            treeNode1.Name = "HudPal";
-            treeNode2.Name = "OverworldMainPal";
-            treeNode3.Name = "OverworldAuxPal";
-            treeNode4.Name = "OverworldAnimatedPal";
-            treeNode5.Name = "DungeonMainPal";
-            treeNode6.Name = "GlobalSpritesPal";
-            treeNode7.Name = "SpritesAux1Pal";
-            treeNode8.Name = "SpritesAux2Pal";
-            treeNode9.Name = "SpritesAux3Pal";
-            treeNode10.Name = "ShieldsPal";
-            treeNode11.Name = "SwordsPal";
-            treeNode12.Name = "ArmorsPal";
-            treeNode13.Name = "OverworldGrassPal";
-            treeNode14.Name = "Objects3DPal";
-            treeNode15.Name = "OverworldMapsPal";
+            var treeNode1 = new TreeNode(Constants.PalDisplayName_HUD);
+            var treeNode2 = new TreeNode(Constants.PalDisplayName_OWMain);
+            var treeNode3 = new TreeNode(Constants.PalDisplayName_OWAux); 
+            var treeNode4 = new TreeNode(Constants.PalDisplayName_OWAni);
+            var treeNode5 = new TreeNode(Constants.PalDisplayName_DunMain);
+            var treeNode6 = new TreeNode(Constants.PalDisplayName_SprGlobal);
+            var treeNode7 = new TreeNode(Constants.PalDisplayName_SprAux1);
+            var treeNode8 = new TreeNode(Constants.PalDisplayName_SprAux2);
+            var treeNode9 = new TreeNode(Constants.PalDisplayName_SprAux3);
+            var treeNode10 = new TreeNode(Constants.PalDisplayName_Shield);
+            var treeNode11 = new TreeNode(Constants.PalDisplayName_Sword);
+            var treeNode12 = new TreeNode(Constants.PalDisplayName_Armor);
+            var treeNode13 = new TreeNode(Constants.PalDisplayName_OWGrass);
+            var treeNode14 = new TreeNode(Constants.PalDisplayName_Obj3D);
+            var treeNode15 = new TreeNode(Constants.PalDisplayName_OWMap);
+            
+            treeNode1.Name = Constants.PalName_HUD;
+            treeNode2.Name = Constants.PalName_OWMain;
+            treeNode3.Name = Constants.PalName_OWAux;
+            treeNode4.Name = Constants.PalName_OWAni;
+            treeNode5.Name = Constants.PalName_DunMain;
+            treeNode6.Name = Constants.PalName_SprGlobal;
+            treeNode7.Name = Constants.PalName_SprAux1;
+            treeNode8.Name = Constants.PalName_SprAux2;
+            treeNode9.Name = Constants.PalName_SprAux3;
+            treeNode10.Name = Constants.PalName_Shield;
+            treeNode11.Name = Constants.PalName_Sword;
+            treeNode12.Name = Constants.PalName_Armor;
+            treeNode13.Name = Constants.PalName_OWGrass;
+            treeNode14.Name = Constants.PalName_Obj3D;
+            treeNode15.Name = Constants.PalName_OWMap;
 
             this.palettesTreeView.Nodes.Add(treeNode1);
             this.palettesTreeView.Nodes.Add(treeNode2);
@@ -127,12 +127,12 @@ namespace ZeldaFullEditor.Gui
         {
             for (int i = 0; i < Palettes.HudPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["HudPal"].Nodes.Add("Hud " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_HUD].Nodes.Add(Constants.PalDisplayName_HUD + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.OverworldMainPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["OverworldMainPal"].Nodes.Add("Main " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_OWMain].Nodes.Add(Constants.PalDisplayName_OWMain + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.OverworldAuxPalettes.Length; i++)
@@ -143,62 +143,62 @@ namespace ZeldaFullEditor.Gui
                     extra = " Expanded";
                 }
 
-                palettesTreeView.Nodes["OverworldAuxPal"].Nodes.Add("Aux " + i.ToString("X2") + extra);
+                palettesTreeView.Nodes[Constants.PalName_OWAux].Nodes.Add(Constants.PalDisplayName_OWAux + " " + i.ToString("X2") + extra);
             }
 
             for (int i = 0; i < Palettes.OverworldAnimatedPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["OverworldAnimatedPal"].Nodes.Add("Animated " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_OWAni].Nodes.Add(Constants.PalDisplayName_OWAni + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.DungeonsMainPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["DungeonMainPal"].Nodes.Add("Main " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_DunMain].Nodes.Add(Constants.PalDisplayName_DunMain + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.GlobalSpritePalettes.Length; i++)
             {
-                palettesTreeView.Nodes["GlobalSpritesPal"].Nodes.Add("Global " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_SprGlobal].Nodes.Add(Constants.PalDisplayName_SprGlobal + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.SpritesAux1Palettes.Length; i++)
             {
-                palettesTreeView.Nodes["SpritesAux1Pal"].Nodes.Add("Aux " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_SprAux1].Nodes.Add(Constants.PalDisplayName_SprAux1 + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.SpritesAux2Palettes.Length; i++)
             {
-                palettesTreeView.Nodes["SpritesAux2Pal"].Nodes.Add("Aux " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_SprAux2].Nodes.Add(Constants.PalDisplayName_SprAux2 + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.SpritesAux3Palettes.Length; i++)
             {
-                palettesTreeView.Nodes["SpritesAux3Pal"].Nodes.Add("Aux " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_SprAux3].Nodes.Add(Constants.PalDisplayName_SprAux3 + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.ShieldsPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["ShieldsPal"].Nodes.Add("Shields " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_Shield].Nodes.Add(Constants.PalDisplayName_Shield + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.SwordsPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["SwordsPal"].Nodes.Add("Swords " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_Sword].Nodes.Add(Constants.PalDisplayName_Sword + " " + i.ToString("X2"));
             }
 
             for (int i = 0; i < Palettes.ArmorPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["ArmorsPal"].Nodes.Add("Armors " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_Armor].Nodes.Add(Constants.PalDisplayName_Armor + " " + i.ToString("X2"));
             }
 
-            palettesTreeView.Nodes["OverworldGrassPal"].Nodes.Add("Overworld Grass");
+            palettesTreeView.Nodes[Constants.PalName_OWGrass].Nodes.Add(Constants.PalDisplayName_OWGrass);
 
-            palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Triforce");
-            palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Crystal");
+            palettesTreeView.Nodes[Constants.PalName_Obj3D].Nodes.Add(Constants.PalDisplayName_Triforce);
+            palettesTreeView.Nodes[Constants.PalName_Obj3D].Nodes.Add(Constants.PalDisplayName_Crystals);
 
             for (int i = 0; i < Palettes.OverworldMiniMapPalettes.Length; i++)
             {
-                palettesTreeView.Nodes["OverworldMapsPal"].Nodes.Add("Overworld Maps " + i.ToString("X2"));
+                palettesTreeView.Nodes[Constants.PalName_OWMap].Nodes.Add(Constants.PalDisplayName_OWMap + " " + i.ToString("X2"));
             }
         }
 
@@ -560,77 +560,77 @@ namespace ZeldaFullEditor.Gui
 
         private void palettesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["HudPal"])
+            if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_HUD])
             {
                 selectedPalette = Palettes.HudPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 16;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWMain])
             {
                 selectedPalette = Palettes.OverworldMainPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAuxPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWAux])
             {
                 selectedPalette = Palettes.OverworldAuxPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAnimatedPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWAni])
             {
                 selectedPalette = Palettes.OverworldAnimatedPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["DungeonMainPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_DunMain])
             {
                 selectedPalette = Palettes.DungeonsMainPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 15;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["GlobalSpritesPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprGlobal])
             {
                 selectedPalette = Palettes.GlobalSpritePalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 15;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux1Pal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprAux1])
             {
                 selectedPalette = Palettes.SpritesAux1Palettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux2Pal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprAux2])
             {
                 selectedPalette = Palettes.SpritesAux2Palettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux3Pal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprAux3])
             {
                 selectedPalette = Palettes.SpritesAux3Palettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 7;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ShieldsPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_Shield])
             {
                 selectedPalette = Palettes.ShieldsPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 4;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SwordsPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_Sword])
             {
                 selectedPalette = Palettes.SwordsPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 3;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ArmorsPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_Armor])
             {
                 selectedPalette = Palettes.ArmorPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 15;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldGrassPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWGrass])
             {
                 selectedPalette = Palettes.OverworldGrassPalettes;
                 selectedX = 3;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["Objects3DPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_Obj3D])
             {
                 selectedPalette = Palettes.Object3DPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 8;
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMapsPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWMap])
             {
                 selectedPalette = Palettes.OverworldMiniMapPalettes[palettesTreeView.SelectedNode.Index];
                 selectedX = 16;
@@ -652,84 +652,84 @@ namespace ZeldaFullEditor.Gui
 
             this.VerifyPaletteSizes();
 
-            if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["HudPal"])
+            if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_HUD])
             {
                 for (int i = 0; i < Palettes.HudPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.HudPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(HudPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWMain])
             {
                 for (int i = 0; i < Palettes.OverworldMainPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.OverworldMainPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldMainPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAuxPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWAux])
             {
                 for (int i = 0; i < Palettes.OverworldAuxPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.OverworldAuxPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldAuxPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAnimatedPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWAni])
             {
                 for (int i = 0; i < Palettes.OverworldAnimatedPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.OverworldAnimatedPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(OverworldAnimatedPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["DungeonMainPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_DunMain])
             {
                 for (int i = 0; i < Palettes.DungeonsMainPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.DungeonsMainPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(DungeonMainPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["GlobalSpritesPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprGlobal])
             {
                 for (int i = 0; i < Palettes.GlobalSpritePalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.GlobalSpritePalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(GlobalSpritesPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux1Pal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprAux1])
             {
                 for (int i = 0; i < Palettes.SpritesAux1Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.SpritesAux1Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux1Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux2Pal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprAux2])
             {
                 for (int i = 0; i < Palettes.SpritesAux2Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.SpritesAux2Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux2Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux3Pal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_SprAux3])
             {
                 for (int i = 0; i < Palettes.SpritesAux3Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.SpritesAux3Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SpritesAux3Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ShieldsPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_Shield])
             {
                 for (int i = 0; i < Palettes.ShieldsPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.ShieldsPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(ShieldsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SwordsPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_Sword])
             {
                 for (int i = 0; i < Palettes.SwordsPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {
                     Palettes.SwordsPalettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(SwordsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
-            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ArmorsPal"])
+            else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_Armor])
             {
                 for (int i = 0; i < Palettes.ArmorPalettes[palettesTreeView.SelectedNode.Index].Length; i++)
                 {

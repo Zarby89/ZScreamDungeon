@@ -298,28 +298,28 @@ namespace ZeldaFullEditor
             if (asmVersion == 0x00)
             {
                 // Set the main palette values.
-                if (index < 0x40)
+                if (index < 0x40) // LW
                 {
                     this.MainPalette = 0;
                 }
-                else if (index >= 0x40 && index < 0x80)
+                else if (index >= 0x40 && index < 0x80) // DW
                 {
                     this.MainPalette = 1;
                 }
-                else if (index >= 0x80 && index < 0xA0)
+                else if (index >= 0x80 && index < 0xA0) // SW
                 {
                     this.MainPalette = 0;
                 }
 
-                if (index == 0x03 || index == 0x05 || index == 0x07)
+                if (index == 0x03 || index == 0x05 || index == 0x07) // LW Death Mountain
                 {
                     this.MainPalette = 2;
                 }
-                else if (index == 0x43 || index == 0x45 || index == 0x47)
+                else if (index == 0x43 || index == 0x45 || index == 0x47) // DW Death Mountain
                 {
                     this.MainPalette = 3;
                 }
-                else if (index == 0x88)
+                else if (index == 0x88) // Triforce room
                 {
                     this.MainPalette = 4;
                 }
@@ -327,13 +327,13 @@ namespace ZeldaFullEditor
                 // Set the mosaic values.
                 switch (index)
                 {
-                    case 0x00:
-                    case 0x40:
+                    case 0x00: // Leaving Skull Woods / Lost Woods
+                    case 0x40: 
                         this.Mosaic = (false, true, false, true);
 
                         break;
 
-                    case 0x02:
+                    case 0x02: // Going into Skull woods / Lost Woods west
                     case 0x0A:
                     case 0x42:
                     case 0x4A:
@@ -341,8 +341,8 @@ namespace ZeldaFullEditor
                         
                         break;
 
-                    case 0x0F:
-                    case 0x10:
+                    case 0x0F: // Going into Zora's Domain North
+                    case 0x10: // Going into Skull Woods / Lost Woods North
                     case 0x11:
                     case 0x50:
                     case 0x51:
@@ -350,7 +350,7 @@ namespace ZeldaFullEditor
 
                         break;
 
-                    case 0x80:
+                    case 0x80: // Leaving Zora's Domain, the Master Sword area, and the Triforce area
                     case 0x81:
                     case 0x88:
                         this.Mosaic = (false, true, false, false);

@@ -210,10 +210,10 @@ namespace ZeldaFullEditor
         {
             if (!isSpawnPoint)
             {
-                // if expanded == false
-                if (ROM.DATA[0x07F000] != 00 && ROM.DATA[0x07F001] != 01)
+                // If expanded == false
+                if (ROM.DATA[Constants.entrance_EXP] != 00 && ROM.DATA[Constants.entrance_EXP + 1] != 01)
                 {
-                    if (entranceID > 0x84)
+                    if (entranceID > Constants.entrance_Total)
                     {
                         this.Room = 0;
                         this.YPosition = 0;
@@ -270,7 +270,7 @@ namespace ZeldaFullEditor
                     this.CameraBoundaryQE = ROM.DATA[Constants.entrance_scrolledge + 6 + (entranceID * 8)];
                     this.CameraBoundaryFE = ROM.DATA[Constants.entrance_scrolledge + 7 + (entranceID * 8)];
 
-                    if (entranceID == 0x43 || entranceID == 0x00)
+                    if (entranceID == Constants.entrance_NorthTavern || entranceID == Constants.entrance_LinkSpawn)
                     {
                         FaceDown = true;
                     }

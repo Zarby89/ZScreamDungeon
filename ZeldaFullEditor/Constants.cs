@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -45,6 +46,8 @@ namespace ZeldaFullEditor
         public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
         public const int NumberOfOWSprites = 352;
         public const int NumberOfColors = 3415; // 3143
+        public const int Tile16EdiorBitmapSize = 0x2000;
+        public const int Tile16EdiorBitmapSizex2 = Tile16EdiorBitmapSize * 2;
 
         // TODO zarby stop making magic numbers
         public const int IDKZarby = 0x054727;
@@ -216,6 +219,7 @@ namespace ZeldaFullEditor
         public static int compressedAllMap32PointersLow = 0x017B2D;
         public static int map16Tiles = 0x078000;
         public static int map16TilesEx = 0x1E8000;
+        public static int map16TilesBank = 0x017D28;
 
         public static int map32TilesTL = 0x018000;
         public static int map32TilesTR = 0x01B400;
@@ -228,6 +232,7 @@ namespace ZeldaFullEditor
 
         public static int Map32TilesCount = 0x0033F0;
         public static int Map32TilesCountEx = 0x0067E0;
+        public static int Map32Tiles_BottomLeft_0 = 0x01772E;
 
         public static int overworldPalGroup1 = 0x0DE6C8;
         public static int overworldPalGroup2 = 0x0DE86C;
@@ -548,6 +553,11 @@ namespace ZeldaFullEditor
         public static int entrance_musicEXP = 0x079F00;
         public static int entrance_ExtraEXP = 0x07A000;
         public static int entrance_TotalEXP = 0xFF;
+        public static int entrance_Total = 0x84;
+        public static int entrance_LinkSpawn = 0x00;
+        public static int entrance_NorthTavern = 0x43;
+
+        public static int entrance_EXP = 0x07F000;
 
         public static int startingentrance_room = 0x015B6E; // 0x158D2 // Word value for each room
         public static int startingentrance_scrolledge = 0x015B7C; // 0x158E0 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
@@ -885,6 +895,40 @@ namespace ZeldaFullEditor
             new FloorNumber("7F", 0x06),
             new FloorNumber("8F", 0x07),
         };
+
+        public static string PalName_HUD = "HudPal";
+        public static string PalName_OWMain = "OverworldMainPal";
+        public static string PalName_OWAux = "OverworldAuxPal";
+        public static string PalName_OWAni = "OverworldAnimatedPal";
+        public static string PalName_DunMain = "DungeonMainPal";
+        public static string PalName_SprGlobal = "GlobalSpritesPal";
+        public static string PalName_SprAux1 = "SpritesAux1Pal";
+        public static string PalName_SprAux2 = "SpritesAux2Pal";
+        public static string PalName_SprAux3 = "SpritesAux3Pal";
+        public static string PalName_Shield = "ShieldsPal";
+        public static string PalName_Sword = "SwordsPal";
+        public static string PalName_Armor = "ArmorsPal";
+        public static string PalName_OWGrass = "OverworldGrassPal";
+        public static string PalName_Obj3D = "Objects3DPal";
+        public static string PalName_OWMap = "OverworldMapsPal";
+
+        public static string PalDisplayName_HUD = "Hud";
+        public static string PalDisplayName_OWMain = "Overworld Main";
+        public static string PalDisplayName_OWAux = "Overworld Aux";
+        public static string PalDisplayName_OWAni = "Overworld Animated";
+        public static string PalDisplayName_DunMain = "Dungeon Main";
+        public static string PalDisplayName_SprGlobal = "Global Sprites";
+        public static string PalDisplayName_SprAux1 = "Sprites Aux1";
+        public static string PalDisplayName_SprAux2 = "Sprites Aux2";
+        public static string PalDisplayName_SprAux3 = "Sprites Aux3";
+        public static string PalDisplayName_Shield = "Shields";
+        public static string PalDisplayName_Sword = "Swords";
+        public static string PalDisplayName_Armor = "Armors";
+        public static string PalDisplayName_OWGrass = "Overworld Grass";
+        public static string PalDisplayName_Obj3D = "3D Objects";
+        public static string PalDisplayName_OWMap = "OverworldMaps";
+        public static string PalDisplayName_Triforce = "Triforce";
+        public static string PalDisplayName_Crystals = "Crystal";
 
         // ===========================================================================================
         // Names
