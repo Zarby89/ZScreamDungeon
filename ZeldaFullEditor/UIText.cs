@@ -125,5 +125,14 @@ namespace ZeldaFullEditor
                 "Bad Error",
                 MessageBoxButtons.OK);
         }
+
+        public static DialogResult WarnTile16EditorToGFXEditorSwitch()
+        {
+            return MessageBox.Show(
+                $"You are about to navigate away from the Tile16 Editor.\nWould you like to save your current Tile16 edits?",
+                "Unsaved changes",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Warning);
+        }
     }
 }

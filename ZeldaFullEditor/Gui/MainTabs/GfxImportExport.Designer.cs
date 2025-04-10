@@ -270,7 +270,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button paste24bpp;
         private System.Windows.Forms.Button pasteIndexed;

@@ -24,6 +24,9 @@ namespace ZeldaFullEditor.Gui
         // TODO: Switch to entities.cs version, etc.
         string[] tilesTypesNames = new string[0xFF];
 
+        private bool MadeChange = false;
+        private bool cancelClosing = false;
+
         public Tile16Editor(SceneOW scene)
         {
             this.scene = scene;
@@ -382,6 +385,8 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
+            this.MadeChange = true;
+
             pictureboxTile16.Refresh();
         }
 
@@ -512,7 +517,12 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void OkButtonClick(object sender, EventArgs e)
+        {
+            this.SaveChanges();
+        }
+
+        private void SaveChanges()
         {
             List<ushort> zsnetTiles16ID = new List<ushort>();
             List<Tile16> zsnetTiles16 = new List<Tile16>();
@@ -565,7 +575,10 @@ namespace ZeldaFullEditor.Gui
             scene.ow.AllMaps[scene.selectedMap].BuildMap();
             scene.ow.AllMaps[scene.selectedMap].NeedRefresh = false;
 
-            this.Close();
+            scene.owForm.tilePictureBox.Refresh();
+            scene.owForm.splitContainer1.Panel2.Refresh();
+
+            this.MadeChange = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -624,7 +637,6 @@ namespace ZeldaFullEditor.Gui
             tilesTypesNames[0x4E] = "0x4E - Certain mountain tiles?";
             tilesTypesNames[0x4F] = "0x4F - Certain mountain tiles?";
 
-
             tilesTypesNames[0x50] = "0x50 - bush";
             tilesTypesNames[0x51] = "0x51 - off color bush";
             tilesTypesNames[0x52] = "0x52 - small light rock";
@@ -675,11 +687,21 @@ namespace ZeldaFullEditor.Gui
 
         private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            scene.mainForm.editorsTabControl.SelectedIndex = 2;
-            scene.mainForm.gfxEditor.selectedSheet = scene.ow.AllMaps[scene.selectedMap].StaticGFX[(e.Y / 64)];
-            scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
-
             this.Close();
+
+            if (this.cancelClosing)
+            {
+                this.cancelClosing = false;
+
+                return;
+            }
+
+            this.scene.mainForm.editorsTabControl.SelectedIndex = 2;
+            this.scene.mainForm.gfxEditor.selectedSheet = this.scene.ow.AllMaps[this.scene.selectedMap].StaticGFX[(e.Y / 64)];
+            this.scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
+
+            this.scene.mainForm.gfxEditor.panel1.AutoScrollPosition = new Point(0, this.scene.mainForm.gfxEditor.selectedSheet * 64);
+            this.scene.mainForm.gfxEditor.panel1.Refresh();
         }
 
         private void Tile16Editor_Shown(object sender, EventArgs e)
@@ -768,6 +790,30 @@ namespace ZeldaFullEditor.Gui
         private void tiledrawsizeHexbox_TextChanged(object sender, EventArgs e)
         {
             pictureboxTile8.Refresh();
+        }
+
+        private void Tile16Editor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!this.MadeChange)
+            {
+                return;
+            }
+
+            switch (UIText.WarnTile16EditorToGFXEditorSwitch())
+            {
+                case DialogResult.Yes:
+                    this.SaveChanges();
+                    break;
+
+                case DialogResult.No:
+                    break;
+
+                case DialogResult.Cancel:
+                default:
+                    e.Cancel = true;
+                    this.cancelClosing = true;
+                    break;
+            }
         }
     }
 }
