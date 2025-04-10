@@ -412,13 +412,15 @@ Pool:
         db $01
         endif
 
+    ; TODO: Vanilla pool check disabled for now until we put an actual place to
+    ; change it.
     ; The bridge color is different from the Master Sword area so we are going to
     ; hard code it here for now. Default is $2669 which is the vanilla LW green.
     org $288149 ; $140149
     .BGColorTable_Bridge ; 0x02
-        if !UseVanillaPool > 0
+        ;if !UseVanillaPool > 0
         dw $2669
-        endif
+        ;endif
 
     ; The rest of these are extra bytes that can be used for anything else
     ; later on.
@@ -779,7 +781,7 @@ Pool:
         db $42, $43, $44, $FF, $31, $32, $FF, $59 ; 0x78
         db $42, $43, $44, $FF, $31, $32, $FF, $59 ; 0x79
         db $42, $43, $44, $FF, $FF, $FF, $FF, $59 ; 0x7A
-        db $42, $43, $44, $Ff, $37, $38, $FF, $59 ; 0x7B
+        db $42, $43, $44, $FF, $37, $38, $FF, $59 ; 0x7B
         db $42, $43, $44, $FF, $37, $38, $FF, $59 ; 0x7C
         db $42, $43, $44, $FF, $31, $32, $FF, $59 ; 0x7D
         db $42, $43, $44, $FF, $31, $32, $FF, $59 ; 0x7E
