@@ -202,7 +202,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Titlescreen";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // grid3CheckBox
             // 
@@ -748,7 +747,6 @@
             this.mapPicturebox.Size = new System.Drawing.Size(1024, 1024);
             this.mapPicturebox.TabIndex = 0;
             this.mapPicturebox.TabStop = false;
-            this.mapPicturebox.Click += new System.EventHandler(this.mapPicturebox_Click);
             this.mapPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicturebox_Paint);
             this.mapPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseDown);
             this.mapPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseMove);

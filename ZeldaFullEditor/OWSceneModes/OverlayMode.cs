@@ -220,8 +220,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 scene.mouseX_Real = e.X;
                 scene.mouseY_Real = e.Y;
-                int mouseTileX = e.X / 16;
-                int mouseTileY = e.Y / 16;
+                int mouseTileX = e.X.Clamp(0, 4080) / 16;
+                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 

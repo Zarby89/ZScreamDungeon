@@ -13,7 +13,7 @@ namespace ZeldaFullEditor
         // var to keep track whether to show the console or not.
         // 0 = dont show.
         // 5 = show.
-        private static int showConsole = 5;
+        private static int showConsole = 0;
 
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
@@ -32,7 +32,8 @@ namespace ZeldaFullEditor
             "HardwareRegisters.asm",
             "CustomCollision.asm",
             "newgraves.asm",
-            "ZScream.exe.config"
+            "ZScream.exe.config",
+            "ExpandedEntrances.asm"
         };
 
         /// <summary>
@@ -43,6 +44,10 @@ namespace ZeldaFullEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            #if DEBUG
+            showConsole = 5;
+            #endif
 
             // Look for Command Line Arguments.
             if (args != null)
@@ -66,14 +71,14 @@ namespace ZeldaFullEditor
                 }
             }
 
-            // Hide console.
+            // Set console state.
             var handle = GetConsoleWindow();
             ShowWindow(handle, showConsole);
 
             // Make sure all the other needed files are here so the dummies who keep trying to move the .exe will learn.
             foreach (string file in requiredFiles)
             {
-                if (!System.IO.File.Exists(file))
+                if (!File.Exists(file))
                 {
                     UIText.WarnAboutMissingFile(file);
 

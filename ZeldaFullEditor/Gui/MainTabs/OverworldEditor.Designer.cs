@@ -107,7 +107,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.mosaicCheckBox = new System.Windows.Forms.CheckBox();
             this.OWProperty_AuxPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_SPRPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -140,7 +139,9 @@
             this.owentrance_property_entranceid = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.entranceLabel1 = new System.Windows.Forms.Label();
             this.exitTabpage = new System.Windows.Forms.TabPage();
+            this.label30 = new System.Windows.Forms.Label();
             this.transportTabpage = new System.Windows.Forms.TabPage();
+            this.label31 = new System.Windows.Forms.Label();
             this.Tiles8 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -152,8 +153,8 @@
             this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
             this.tabcontrolImagelist = new System.Windows.Forms.ImageList(this.components);
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
-            this.selectedTileLabel = new System.Windows.Forms.Label();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
+            this.selectedTileLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.lwmodeButton = new System.Windows.Forms.Button();
@@ -187,6 +188,8 @@
             this.owspriteTab.SuspendLayout();
             this.entranceTabpage.SuspendLayout();
             this.entrancePropertiesGroupbox.SuspendLayout();
+            this.exitTabpage.SuspendLayout();
+            this.transportTabpage.SuspendLayout();
             this.Tiles8.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -654,7 +657,6 @@
             this.mapGroupbox.Controls.Add(this.label11);
             this.mapGroupbox.Controls.Add(this.label12);
             this.mapGroupbox.Controls.Add(this.label4);
-            this.mapGroupbox.Controls.Add(this.mosaicCheckBox);
             this.mapGroupbox.Controls.Add(this.OWProperty_AuxPalette);
             this.mapGroupbox.Controls.Add(this.OWProperty_MessageID);
             this.mapGroupbox.Controls.Add(this.OWProperty_SPRPalette);
@@ -671,18 +673,19 @@
             this.mapGroupbox.Controls.Add(this.label2);
             this.mapGroupbox.Location = new System.Drawing.Point(3, 3);
             this.mapGroupbox.Name = "mapGroupbox";
-            this.mapGroupbox.Size = new System.Drawing.Size(268, 557);
+            this.mapGroupbox.Size = new System.Drawing.Size(268, 583);
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
             // 
             // previewsheetPicturebox
             // 
-            this.previewsheetPicturebox.Location = new System.Drawing.Point(-1, 545);
+            this.previewsheetPicturebox.Location = new System.Drawing.Point(2, 513);
             this.previewsheetPicturebox.Name = "previewsheetPicturebox";
             this.previewsheetPicturebox.Size = new System.Drawing.Size(256, 64);
             this.previewsheetPicturebox.TabIndex = 23;
             this.previewsheetPicturebox.TabStop = false;
+            this.previewsheetPicturebox.Visible = false;
             this.previewsheetPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewsheetPicturebox_Paint);
             // 
             // ambient4Box
@@ -812,7 +815,7 @@
             this.mosaicGroupbox.Size = new System.Drawing.Size(161, 75);
             this.mosaicGroupbox.TabIndex = 58;
             this.mosaicGroupbox.TabStop = false;
-            this.mosaicGroupbox.Text = "Mosaics";
+            this.mosaicGroupbox.Text = "Mosaic Settings";
             // 
             // bottommosaicCheckbox
             // 
@@ -824,6 +827,7 @@
             this.bottommosaicCheckbox.TabIndex = 27;
             this.bottommosaicCheckbox.Text = "Bottom";
             this.bottommosaicCheckbox.UseVisualStyleBackColor = true;
+            this.bottommosaicCheckbox.Click += new System.EventHandler(this.bottommosaicCheckbox_Click);
             // 
             // topmosaicCheckbox
             // 
@@ -835,6 +839,7 @@
             this.topmosaicCheckbox.TabIndex = 26;
             this.topmosaicCheckbox.Text = "Top";
             this.topmosaicCheckbox.UseVisualStyleBackColor = true;
+            this.topmosaicCheckbox.Click += new System.EventHandler(this.topmosaicCheckbox_Click);
             // 
             // rightmosaicCheckbox
             // 
@@ -846,6 +851,7 @@
             this.rightmosaicCheckbox.TabIndex = 25;
             this.rightmosaicCheckbox.Text = "Right";
             this.rightmosaicCheckbox.UseVisualStyleBackColor = true;
+            this.rightmosaicCheckbox.Click += new System.EventHandler(this.rightmosaicCheckbox_Click);
             // 
             // leftmosaicCheckbox
             // 
@@ -857,6 +863,7 @@
             this.leftmosaicCheckbox.TabIndex = 24;
             this.leftmosaicCheckbox.Text = "Left";
             this.leftmosaicCheckbox.UseVisualStyleBackColor = true;
+            this.leftmosaicCheckbox.Click += new System.EventHandler(this.leftmosaicCheckbox_Click);
             // 
             // label21
             // 
@@ -1069,6 +1076,8 @@
             this.OWProperty_AniGFX.Text = "00";
             this.OWProperty_AniGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.OWProperty_AniGFX.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
+            this.OWProperty_AniGFX.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
+            this.OWProperty_AniGFX.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
             // 
             // label14
             // 
@@ -1132,7 +1141,7 @@
             this.OWProperty_MainPalette.HexValue = 0;
             this.OWProperty_MainPalette.Location = new System.Drawing.Point(3, 152);
             this.OWProperty_MainPalette.MaxLength = 2;
-            this.OWProperty_MainPalette.MaxValue = 5;
+            this.OWProperty_MainPalette.MaxValue = 10;
             this.OWProperty_MainPalette.MinValue = 0;
             this.OWProperty_MainPalette.Name = "OWProperty_MainPalette";
             this.OWProperty_MainPalette.Size = new System.Drawing.Size(48, 20);
@@ -1169,18 +1178,6 @@
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Aux. Pal.";
-            // 
-            // mosaicCheckBox
-            // 
-            this.mosaicCheckBox.AutoSize = true;
-            this.mosaicCheckBox.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.mosaicCheckBox.Location = new System.Drawing.Point(141, 241);
-            this.mosaicCheckBox.Name = "mosaicCheckBox";
-            this.mosaicCheckBox.Size = new System.Drawing.Size(60, 17);
-            this.mosaicCheckBox.TabIndex = 23;
-            this.mosaicCheckBox.Text = "Mosaic";
-            this.mosaicCheckBox.UseVisualStyleBackColor = true;
-            this.mosaicCheckBox.Click += new System.EventHandler(this.mosaicCheckBox_Click);
             // 
             // OWProperty_AuxPalette
             // 
@@ -1378,7 +1375,6 @@
             // owspritePanel
             // 
             this.owspritePanel.AutoScroll = true;
-            this.owspritePanel.AutoSize = true;
             this.owspritePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.owspritePanel.Location = new System.Drawing.Point(0, 0);
             this.owspritePanel.Name = "owspritePanel";
@@ -1582,6 +1578,7 @@
             // 
             // exitTabpage
             // 
+            this.exitTabpage.Controls.Add(this.label30);
             this.exitTabpage.ImageIndex = 1;
             this.exitTabpage.Location = new System.Drawing.Point(4, 28);
             this.exitTabpage.Name = "exitTabpage";
@@ -1590,8 +1587,18 @@
             this.exitTabpage.ToolTipText = "Exits";
             this.exitTabpage.UseVisualStyleBackColor = true;
             // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(12, 10);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(87, 13);
+            this.label30.TabIndex = 3;
+            this.label30.Text = "Work in progress";
+            // 
             // transportTabpage
             // 
+            this.transportTabpage.Controls.Add(this.label31);
             this.transportTabpage.ImageIndex = 4;
             this.transportTabpage.Location = new System.Drawing.Point(4, 28);
             this.transportTabpage.Name = "transportTabpage";
@@ -1599,6 +1606,15 @@
             this.transportTabpage.TabIndex = 7;
             this.transportTabpage.ToolTipText = "Transports";
             this.transportTabpage.UseVisualStyleBackColor = true;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(12, 10);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(87, 13);
+            this.label31.TabIndex = 4;
+            this.label31.Text = "Work in progress";
             // 
             // Tiles8
             // 
@@ -1717,16 +1733,6 @@
             this.thumbnailBox.TabStop = false;
             this.thumbnailBox.Visible = false;
             // 
-            // selectedTileLabel
-            // 
-            this.selectedTileLabel.AutoSize = true;
-            this.selectedTileLabel.Location = new System.Drawing.Point(427, 16);
-            this.selectedTileLabel.Name = "selectedTileLabel";
-            this.selectedTileLabel.Size = new System.Drawing.Size(65, 13);
-            this.selectedTileLabel.TabIndex = 2;
-            this.selectedTileLabel.Text = "Selected tile";
-            this.selectedTileLabel.Visible = false;
-            // 
             // owPropertyPanel
             // 
             this.owPropertyPanel.Controls.Add(this.selectedTileLabel);
@@ -1740,6 +1746,16 @@
             this.owPropertyPanel.Name = "owPropertyPanel";
             this.owPropertyPanel.Size = new System.Drawing.Size(1184, 43);
             this.owPropertyPanel.TabIndex = 0;
+            // 
+            // selectedTileLabel
+            // 
+            this.selectedTileLabel.AutoSize = true;
+            this.selectedTileLabel.Location = new System.Drawing.Point(427, 16);
+            this.selectedTileLabel.Name = "selectedTileLabel";
+            this.selectedTileLabel.Size = new System.Drawing.Size(65, 13);
+            this.selectedTileLabel.TabIndex = 2;
+            this.selectedTileLabel.Text = "Selected tile";
+            this.selectedTileLabel.Visible = false;
             // 
             // groupBox1
             // 
@@ -1831,7 +1847,7 @@
             // SelectedObjectY
             // 
             this.SelectedObjectY.AutoSize = true;
-            this.SelectedObjectY.Location = new System.Drawing.Point(319, 17);
+            this.SelectedObjectY.Location = new System.Drawing.Point(312, 17);
             this.SelectedObjectY.Name = "SelectedObjectY";
             this.SelectedObjectY.Size = new System.Drawing.Size(10, 13);
             this.SelectedObjectY.TabIndex = 7;
@@ -1849,7 +1865,7 @@
             // SelectedObjectID
             // 
             this.SelectedObjectID.AutoSize = true;
-            this.SelectedObjectID.Location = new System.Drawing.Point(33, 16);
+            this.SelectedObjectID.Location = new System.Drawing.Point(194, 17);
             this.SelectedObjectID.Name = "SelectedObjectID";
             this.SelectedObjectID.Size = new System.Drawing.Size(10, 13);
             this.SelectedObjectID.TabIndex = 5;
@@ -1858,7 +1874,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(296, 17);
+            this.label10.Location = new System.Drawing.Point(288, 17);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(17, 13);
             this.label10.TabIndex = 4;
@@ -1867,7 +1883,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(229, 17);
+            this.label9.Location = new System.Drawing.Point(228, 17);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(17, 13);
             this.label9.TabIndex = 3;
@@ -1876,7 +1892,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 16);
+            this.label8.Location = new System.Drawing.Point(168, 17);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(21, 13);
             this.label8.TabIndex = 2;
@@ -1885,7 +1901,7 @@
             // objCombobox
             // 
             this.objCombobox.FormattingEnabled = true;
-            this.objCombobox.Location = new System.Drawing.Point(67, 14);
+            this.objCombobox.Location = new System.Drawing.Point(6, 14);
             this.objCombobox.Name = "objCombobox";
             this.objCombobox.Size = new System.Drawing.Size(156, 21);
             this.objCombobox.TabIndex = 1;
@@ -1936,11 +1952,14 @@
             this.mosaicGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
             this.owspriteTab.ResumeLayout(false);
-            this.owspriteTab.PerformLayout();
             this.entranceTabpage.ResumeLayout(false);
             this.entranceTabpage.PerformLayout();
             this.entrancePropertiesGroupbox.ResumeLayout(false);
             this.entrancePropertiesGroupbox.PerformLayout();
+            this.exitTabpage.ResumeLayout(false);
+            this.exitTabpage.PerformLayout();
+            this.transportTabpage.ResumeLayout(false);
+            this.transportTabpage.PerformLayout();
             this.Tiles8.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -2007,7 +2026,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox currentTile8Box;
-        public System.Windows.Forms.Label selectedTileLabel;
 		private System.Windows.Forms.Label SelectedObjectY;
 		private System.Windows.Forms.Label SelectedObjectX;
 		private System.Windows.Forms.Label SelectedObjectID;
@@ -2026,7 +2044,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.CheckBox mosaicCheckBox;
         private ExtraForms.Hexbox OWProperty_AuxPalette;
         public ExtraForms.Hexbox OWProperty_MessageID;
         private ExtraForms.Hexbox OWProperty_SPRPalette;
@@ -2101,5 +2118,8 @@
         public System.Windows.Forms.ListBox owentrancesListbox;
         private System.Windows.Forms.CheckBox owentrance_property_ishole;
         private System.Windows.Forms.ImageList tabcontrolImagelist;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
+        public System.Windows.Forms.Label selectedTileLabel;
     }
 }

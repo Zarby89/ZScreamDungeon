@@ -1,33 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
     public class OWNote
     {
-
         public string text;
         public Font font;
         public Color color;
         public int x, y;
         public SizeF size;
+        public int ID;
+
+        private static int CurrentID;
 
         public OWNote(int x, int y, string text, Font font, Color color)
         {
             Bitmap b = new Bitmap(1, 1);
             Graphics g =  Graphics.FromImage(b);
-            this.x = x;
-            this.y = y;
+            this.x = x.Clamp(0, 4088);
+            this.y = y.Clamp(0, 4088);
             this.text = text;
             this.font = font;
             this.color = color;
             this.size = g.MeasureString(text, font);
             g.Dispose();
             b.Dispose();
+            this.ID = CurrentID++;
+
             Console.WriteLine(ToString());
         }
 
@@ -39,6 +40,7 @@ namespace ZeldaFullEditor.OWSceneModes
             s += text.ToString() + "|";
             s += color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString() + "|" ;
             s += font.Name + "|" + font.Style + "|" + font.Size + "@";
+
             return s;
         }
 
@@ -59,30 +61,33 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 fs |= FontStyle.Regular;
             }
+
             if (styleString.Contains("Italic"))
             {
                 fs |= FontStyle.Italic;
             }
+
             if (styleString.Contains("Bold"))
             {
                 fs |= FontStyle.Bold;
             }
+
             if (styleString.Contains("Strikeout"))
             {
                 fs |= FontStyle.Strikeout;
             }
+
             if (styleString.Contains("Underline"))
             {
                 fs |= FontStyle.Underline;
             }
+
             font = new Font(valuesString[4], float.Parse(valuesString[6]), fs);
 
             this.size = g.MeasureString(text, font);
             g.Dispose();
             b.Dispose();
             Console.WriteLine(ToString());
-
         }
-
     }
 }

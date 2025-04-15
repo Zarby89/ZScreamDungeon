@@ -75,20 +75,20 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (scene.ow.AllHoles[i].Deleted)
                     {
-                        byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                        if (mid == 255)
+                        byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
+                        if (mapID == 255)
                         {
-                            mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
+                            mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                         }
+
                         scene.ow.AllHoles[i].Deleted = false;
-                        scene.ow.AllHoles[i].MapID = mid;
-                        scene.ow.AllHoles[i].X = (ushort)((mxRightclick / 16) * 16);
-                        scene.ow.AllHoles[i].Y = (ushort)((myRightclick / 16) * 16);
+                        scene.ow.AllHoles[i].MapID = mapID;
+                        scene.ow.AllHoles[i].X = (ushort)((mxRightclick / 16) * 16).Clamp(0, 4080);
+                        scene.ow.AllHoles[i].Y = (ushort)((myRightclick / 16) * 16).Clamp(0, 4080);
                         scene.ow.AllHoles[i].EntranceID = entranceID;
 
-                        scene.ow.AllHoles[i].UpdateMapStuff(mid);
-
-
+                        bool large = scene.ow.AllMaps[mapID].LargeMap;
+                        scene.ow.AllHoles[i].UpdateMapStuff(mapID, large);
 
                         found = i;
                         selectedEntrance = scene.ow.AllHoles[i];
@@ -106,18 +106,20 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (scene.ow.AllEntrances[i].Deleted)
                     {
-                        byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                        if (mid == 255)
+                        byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
+                        if (mapID == 255)
                         {
-                            mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
+                            mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                         }
+
                         scene.ow.AllEntrances[i].Deleted = false;
-                        scene.ow.AllEntrances[i].MapID = mid;
-                        scene.ow.AllEntrances[i].X = (ushort)((mxRightclick / 16) * 16);
-                        scene.ow.AllEntrances[i].Y = (ushort)((myRightclick / 16) * 16);
+                        scene.ow.AllEntrances[i].MapID = mapID;
+                        scene.ow.AllEntrances[i].X = (ushort)((mxRightclick / 16) * 16).Clamp(0, 4080);
+                        scene.ow.AllEntrances[i].Y = (ushort)((myRightclick / 16) * 16).Clamp(0, 4080);
                         scene.ow.AllEntrances[i].EntranceID = entranceID;
 
-                        scene.ow.AllEntrances[i].UpdateMapStuff(mid);
+                        bool large = scene.ow.AllMaps[mapID].LargeMap;
+                        scene.ow.AllEntrances[i].UpdateMapStuff(mapID, large);
 
                         found = i;
                         selectedEntrance = scene.ow.AllEntrances[i];
@@ -251,7 +253,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         break;
                     }
                 }
-
             }
         }
 
@@ -373,8 +374,8 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void onMouseMove(MouseEventArgs e)
         {
-            int mouseTileX = e.X / 16;
-            int mouseTileY = e.Y / 16;
+            int mouseTileX = e.X.Clamp(0, 4080) / 16;
+            int mouseTileY = e.Y.Clamp(0, 4080) / 16;
             int mapX = (mouseTileX / 32);
             int mapY = (mouseTileY / 32);
 
@@ -386,8 +387,8 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (scene.mouse_down)
                     {
-                        selectedEntrance.X = (e.X / 16) * 16;
-                        selectedEntrance.Y = (e.Y / 16) * 16;
+                        selectedEntrance.X = ((e.X / 16) * 16).Clamp(0, 4080);
+                        selectedEntrance.Y = ((e.Y / 16) * 16).Clamp(0, 4080);
                     }
                 }
 
@@ -404,13 +405,14 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedEntrance != null)
                 {
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                    if (mid == 255)
+                    byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
+                    if (mapID == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
+                        mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
-                    selectedEntrance.UpdateMapStuff(mid);
+                    bool large = scene.ow.AllMaps[mapID].LargeMap;
+                    selectedEntrance.UpdateMapStuff(mapID, large);
                     SendEntranceData(selectedEntrance);
                     selectedEntrance = null;
                     scene.mouse_down = false;
@@ -516,18 +518,22 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (scene.ow.AllEntrances[i].Deleted)
                 {
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                    if (mid == 255)
+                    byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
+                    if (mapID == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
+                        mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
+
                     scene.ow.AllEntrances[i].Deleted = false;
-                    scene.ow.AllEntrances[i].MapID = mid;
-                    scene.ow.AllEntrances[i].X = (mxRightclick / 16) * 16;
-                    scene.ow.AllEntrances[i].Y = (myRightclick / 16) * 16;
-                    scene.ow.AllEntrances[i].UpdateMapStuff(mid);
+                    scene.ow.AllEntrances[i].MapID = mapID;
+                    scene.ow.AllEntrances[i].X = ((mxRightclick / 16) * 16).Clamp(0, 4080);
+                    scene.ow.AllEntrances[i].Y = ((myRightclick / 16) * 16).Clamp(0, 4080);
+
+                    bool large = scene.ow.AllMaps[mapID].LargeMap;
+                    scene.ow.AllEntrances[i].UpdateMapStuff(mapID, large);
                     found = true;
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+
                     break;
                 }
             }
@@ -557,8 +563,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 lastselectedEntrance.EntranceID = ef.entranceId;
                 lastselectedEntrance.MapID = ef.mapId;
-                lastselectedEntrance.X = ef.x;
-                lastselectedEntrance.Y = ef.y;
+                lastselectedEntrance.X = ef.x.Clamp(0, 4080);
+                lastselectedEntrance.Y = ef.y.Clamp(0, 4080);
                 SendEntranceData(lastselectedEntrance);
             }
         }
@@ -685,10 +691,13 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-
         public void SendEntranceData(EntranceOW entrance)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer(24);
             buffer.Write((byte)06); // entrance data
             buffer.Write((byte)NetZS.userID); //user ID
@@ -706,9 +715,6 @@ namespace ZeldaFullEditor.OWSceneModes
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
-
-
     }
 }

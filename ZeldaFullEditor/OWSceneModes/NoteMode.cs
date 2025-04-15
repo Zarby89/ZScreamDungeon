@@ -1,10 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
 
@@ -12,11 +7,13 @@ namespace ZeldaFullEditor.OWSceneModes
 {
     public class NoteMode
     {
+        public OWNote selectedNote = null;
+
         SceneOW scene;
-        OWNote selectedNote = null;
         bool clickedOn = false;
         int mx = 0;
         int my = 0;
+
         public NoteMode(SceneOW scene)
         {
             this.scene = scene;
@@ -33,6 +30,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         selectedNote = note;
                         clickedOn = true;
+
                         break;
                     }
                 }
@@ -47,7 +45,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 menu.Items[1].Click += NoteModeDelete_Click;
                 menu.Show(Cursor.Position);
             }
-
         }
 
         private void NoteModeDelete_Click(object sender, EventArgs e)
@@ -78,10 +75,11 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedNote != null)
                 {
-                    selectedNote.x = e.X; 
-                    selectedNote.y = e.Y;
+                    selectedNote.x = e.X.Clamp(0, 4088); 
+                    selectedNote.y = e.Y.Clamp(0, 4088);
                 }
             }
+
             scene.Refresh();
         }
 
@@ -97,17 +95,12 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             foreach (OWNote note in scene.owNotesList)
             {
-
                 g.DrawString(note.text, note.font, new SolidBrush(note.color), note.x, note.y);
                 if (note == selectedNote)
                 {
                     g.DrawRectangle(Pens.Lime, new Rectangle(note.x, note.y, (int)note.size.Width, (int)note.size.Height));
                 }
-
             }
-
         }
-
-
-        }
+    }
 }

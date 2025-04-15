@@ -91,12 +91,14 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedItem != null)
                 {
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                    if (mid == 255)
+                    byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
+                    if (mapID == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
+                        mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
-                    selectedItem.UpdateMapStuff(mid);
+
+                    bool large = scene.ow.AllMaps[mapID].LargeMap;
+                    selectedItem.UpdateMapStuff(mapID, large);
                     lastselectedItem = selectedItem;
                     SendItemData(lastselectedItem);
                     selectedItem = null;
@@ -147,8 +149,8 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             scene.mouseX_Real = e.X;
             scene.mouseY_Real = e.Y;
-            int mouseTileX = e.X / 16;
-            int mouseTileY = e.Y / 16;
+            int mouseTileX = e.X.Clamp(0, 4080) / 16;
+            int mouseTileY = e.Y.Clamp(0, 4080) / 16;
             int mapX = (mouseTileX / 32);
             int mapY = (mouseTileY / 32);
 
@@ -160,11 +162,10 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (scene.mouse_down)
                     {
-                        selectedItem.X = (e.X / 16) * 16;
-                        selectedItem.Y = (e.Y / 16) * 16;
+                        selectedItem.X = ((e.X / 16) * 16).Clamp(0, 4080);
+                        selectedItem.Y = ((e.Y / 16) * 16).Clamp(0, 4080);
 
                         // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-
                     }
                 }
             }
@@ -258,7 +259,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void SendItemData(RoomPotSaveEditor item)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer(24);
             buffer.Write((byte)09); // pot item data
             buffer.Write((byte)NetZS.userID); //user ID
@@ -284,10 +289,6 @@ namespace ZeldaFullEditor.OWSceneModes
 		public bool bg2 = false;
 		public ushort roomMapId;
 			 */
-
-
-
         }
-
     }
 }

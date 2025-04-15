@@ -509,7 +509,7 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // cmd id 10
             buffer.ReadByte(); // user id
             int uId = buffer.ReadInt(); // item unique id
-            TransportOW[] transports = form.overworldEditor.scene.ow.AllWhirlpools.Where(x => x.uniqueID == uId).ToArray();
+            TransportOW[] transports = form.overworldEditor.scene.ow.AllWhirlpools.Where(x => x.ID == uId).ToArray();
             TransportOW transport = transports[0];
             transport.unk1 = buffer.ReadByte();
             transport.unk2 = buffer.ReadByte();
@@ -523,7 +523,7 @@ namespace ZeldaFullEditor.Properties
             transport.playerY = buffer.ReadUShort();
             transport.cameraX = buffer.ReadUShort();
             transport.cameraY = buffer.ReadUShort();
-            transport.mapId = buffer.ReadUShort();
+            transport.MapID = buffer.ReadUShort();
             transport.whirlpoolPos = buffer.ReadUShort();
 
             form.overworldEditor.scene.Invalidate();
@@ -564,7 +564,6 @@ namespace ZeldaFullEditor.Properties
 
         private void ReceivedSpriteData(NetIncomingMessage im)
         {
-
             NetZSBuffer buffer = new NetZSBuffer(im.Data);
             buffer.ReadByte(); // cmd id 07
             buffer.ReadByte(); // user id
@@ -573,6 +572,7 @@ namespace ZeldaFullEditor.Properties
             byte sprid = buffer.ReadByte();
             Sprite[] sprites = form.overworldEditor.scene.ow.AllSprites[sprstate].Where(x => x.uniqueID == sId).ToArray();
             Sprite spr = null;
+
             if (sprites.Length == 0)
             {
                 spr = new Sprite(0, sprid, 0, 0, 0, 0);
@@ -630,7 +630,6 @@ namespace ZeldaFullEditor.Properties
 
         private void ReceivedExitData(NetIncomingMessage im)
         {
-
             NetZSBuffer buffer = new NetZSBuffer(im.Data);
             buffer.ReadByte(); // cmd id 08
             buffer.ReadByte(); // user id
