@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -195,6 +195,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.headerGroupbox = new System.Windows.Forms.GroupBox();
+            this.overlayPanel = new System.Windows.Forms.Panel();
+            this.overlayCombobox = new System.Windows.Forms.ComboBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.selectedGroupbox = new System.Windows.Forms.GroupBox();
             this.SelectedObjectDataHEX = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -434,6 +437,7 @@
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
+            this.generateDungeonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -458,6 +462,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edit8x8palettebox)).BeginInit();
             this.headerGroupbox.SuspendLayout();
+            this.overlayPanel.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
             this.doorselectPanel.SuspendLayout();
@@ -718,7 +723,7 @@
             this.warpmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.warpmodeButton.Name = "warpmodeButton";
             this.warpmodeButton.Size = new System.Drawing.Size(23, 22);
-            this.warpmodeButton.Text = "Destination Mode";
+            this.warpmodeButton.Text = "Overlay Mode";
             this.warpmodeButton.Click += new System.EventHandler(this.Update_modes_buttons);
             // 
             // collisionModeButton
@@ -1877,13 +1882,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 102);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -2294,6 +2299,7 @@
             // headerGroupbox
             // 
             this.headerGroupbox.BackColor = System.Drawing.SystemColors.Control;
+            this.headerGroupbox.Controls.Add(this.overlayPanel);
             this.headerGroupbox.Controls.Add(this.selectedGroupbox);
             this.headerGroupbox.Controls.Add(this.roomHeaderPanel);
             this.headerGroupbox.Controls.Add(this.litCheckbox);
@@ -2309,6 +2315,66 @@
             this.headerGroupbox.TabIndex = 0;
             this.headerGroupbox.TabStop = false;
             this.headerGroupbox.Text = "Room header";
+            // 
+            // overlayPanel
+            // 
+            this.overlayPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.overlayPanel.Controls.Add(this.overlayCombobox);
+            this.overlayPanel.Controls.Add(this.label39);
+            this.overlayPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.overlayPanel.Location = new System.Drawing.Point(508, 16);
+            this.overlayPanel.Name = "overlayPanel";
+            this.overlayPanel.Size = new System.Drawing.Size(363, 50);
+            this.overlayPanel.TabIndex = 22;
+            this.overlayPanel.Visible = false;
+            // 
+            // overlayCombobox
+            // 
+            this.overlayCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayCombobox.BackColor = System.Drawing.SystemColors.Window;
+            this.overlayCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.overlayCombobox.FormattingEnabled = true;
+            this.overlayCombobox.Items.AddRange(new object[] {
+            "0x00",
+            "0x01",
+            "0x02",
+            "0x03",
+            "0x04",
+            "0x05",
+            "0x06",
+            "0x07",
+            "0x08",
+            "0x09",
+            "0x0A",
+            "0x0B",
+            "0x0C",
+            "0x0D",
+            "0x0E",
+            "0x0F",
+            "0x10",
+            "0x11",
+            "0x12",
+            "Dam Water flood overlay"});
+            this.overlayCombobox.Location = new System.Drawing.Point(6, 26);
+            this.overlayCombobox.Name = "overlayCombobox";
+            this.overlayCombobox.Size = new System.Drawing.Size(348, 21);
+            this.overlayCombobox.TabIndex = 8;
+            this.overlayCombobox.SelectedIndexChanged += new System.EventHandler(this.overlayCombobox_SelectedIndexChanged);
+            // 
+            // label39
+            // 
+            this.label39.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label39.AutoSize = true;
+            this.label39.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label39.Location = new System.Drawing.Point(3, 8);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(97, 13);
+            this.label39.TabIndex = 9;
+            this.label39.Text = "Selected Overlay : ";
             // 
             // selectedGroupbox
             // 
@@ -4488,7 +4554,8 @@
             this.saveMapsOnlyToolStripMenuItem,
             this.saveVRAMAsPngToolStripMenuItem,
             this.moveRoomsToOtherROMToolStripMenuItem,
-            this.exportImageMapMultipleROMsToolStripMenuItem});
+            this.exportImageMapMultipleROMsToolStripMenuItem,
+            this.generateDungeonToolStripMenuItem});
             this.ExperimentalToolStripMenuItem1.Enabled = false;
             this.ExperimentalToolStripMenuItem1.Name = "ExperimentalToolStripMenuItem1";
             this.ExperimentalToolStripMenuItem1.Size = new System.Drawing.Size(134, 20);
@@ -4722,6 +4789,13 @@
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
             // 
+            // generateDungeonToolStripMenuItem
+            // 
+            this.generateDungeonToolStripMenuItem.Name = "generateDungeonToolStripMenuItem";
+            this.generateDungeonToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.generateDungeonToolStripMenuItem.Text = "Generate Dungeon";
+            this.generateDungeonToolStripMenuItem.Click += new System.EventHandler(this.generateDungeonToolStripMenuItem_Click);
+            // 
             // DungeonMain
             // 
             this.AllowDrop = true;
@@ -4780,6 +4854,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.edit8x8palettebox)).EndInit();
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
+            this.overlayPanel.ResumeLayout(false);
+            this.overlayPanel.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
             this.selectedGroupbox.PerformLayout();
             this.roomHeaderPanel.ResumeLayout(false);
@@ -5215,6 +5291,10 @@
         private System.Windows.Forms.CheckBox facedownCheckbox;
         private Gui.ExtraForms.Hexbox doorxHexbox;
         private Gui.ExtraForms.Hexbox dooryHexbox;
+        public System.Windows.Forms.Panel overlayPanel;
+        public System.Windows.Forms.ComboBox overlayCombobox;
+        public System.Windows.Forms.Label label39;
+        private System.Windows.Forms.ToolStripMenuItem generateDungeonToolStripMenuItem;
     }
 }
 

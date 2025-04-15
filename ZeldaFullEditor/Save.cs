@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using AsarCLR;
 using ZCompressLibrary;
+using ZeldaFullEditor.Data;
 using ZeldaFullEditor.OWSceneModes;
 
 namespace ZeldaFullEditor
@@ -2823,6 +2824,15 @@ namespace ZeldaFullEditor
 
 
             return true;
+        }
+
+        public bool SaveDungeonHolesOverlay()
+        {
+            if (DungeonOverlays.SaveOverlays())
+            {
+                return true;
+            }
+            return false;
         }
     }
 

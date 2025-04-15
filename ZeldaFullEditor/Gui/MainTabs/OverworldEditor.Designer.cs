@@ -529,7 +529,7 @@
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Panel2.Controls.Add(this.thumbnailBox);
             this.splitContainer1.Size = new System.Drawing.Size(1184, 651);
-            this.splitContainer1.SplitterDistance = 282;
+            this.splitContainer1.SplitterDistance = 290;
             this.splitContainer1.TabIndex = 1;
             // 
             // tabControl1
@@ -548,7 +548,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(282, 651);
+            this.tabControl1.Size = new System.Drawing.Size(290, 651);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
@@ -561,7 +561,7 @@
             this.tile16Tab.Location = new System.Drawing.Point(4, 28);
             this.tile16Tab.Name = "tile16Tab";
             this.tile16Tab.Padding = new System.Windows.Forms.Padding(3);
-            this.tile16Tab.Size = new System.Drawing.Size(274, 619);
+            this.tile16Tab.Size = new System.Drawing.Size(282, 619);
             this.tile16Tab.TabIndex = 0;
             this.tile16Tab.ToolTipText = "Tiles 16";
             this.tile16Tab.UseVisualStyleBackColor = true;
@@ -570,7 +570,7 @@
             // 
             this.tilePictureBox.Location = new System.Drawing.Point(0, 0);
             this.tilePictureBox.Name = "tilePictureBox";
-            this.tilePictureBox.Size = new System.Drawing.Size(256, 16384);
+            this.tilePictureBox.Size = new System.Drawing.Size(264, 16384);
             this.tilePictureBox.TabIndex = 0;
             this.tilePictureBox.TabStop = false;
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
@@ -593,7 +593,7 @@
             // 
             // scratchPicturebox
             // 
-            this.scratchPicturebox.Location = new System.Drawing.Point(3, 3);
+            this.scratchPicturebox.Location = new System.Drawing.Point(0, 0);
             this.scratchPicturebox.Name = "scratchPicturebox";
             this.scratchPicturebox.Size = new System.Drawing.Size(256, 3600);
             this.scratchPicturebox.TabIndex = 1;

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
+using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
@@ -858,7 +859,7 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+            if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3 || selectedMode == ObjectMode.OverlayMode)
             {
                 if (room.selectedObject.Count == 1 && resizeType != SceneResizing.none)
                 {
@@ -873,30 +874,54 @@ namespace ZeldaFullEditor
 
             if (mainForm.tabControl1.SelectedIndex == 1) // If we are on object tab
             {
-                if ((byte)selectedMode <= 2) // If selected mode == bg1,bg2,bg3
+                if ((byte)selectedMode <= 2 || selectedMode == ObjectMode.OverlayMode) // If selected mode == bg1,bg2,bg3
                 {
                     if (selectedDragObject != null) // If there's an object selected
                     {
                         room.selectedObject.Clear(); // Clear the object buffer
-
+                        
                         // Add the new object in the buffer
-                        Room_Object ro = room.addObject(selectedDragObject.ID, 0, 0, 0, (byte)selectedMode);
+                        
 
-                        if (ro != null)
+                        if (selectedMode == ObjectMode.OverlayMode)
                         {
-                            ro.setRoom(room);
-                            ro.getObjectSize();
-                            room.tilesObjects.Add(ro);
-                            room.selectedObject.Add(ro);
-                            dragx = 0;
-                            dragy = 0;
-                        }
+                            Room_Object ro = room.addObject(selectedDragObject.ID, 0, 0, 0, 0);
+                            if (ro != null)
+                            {
+                                ro.setRoom(room);
+                                ro.getObjectSize();
+                                ro.options = ObjectOption.Overlay;
+                                DungeonOverlays.loadedOverlay.Add(ro);
+                                room.selectedObject.Add(ro);
+                                dragx = 0;
+                                dragy = 0;
+                            }
 
-                        room.has_changed = true;
-                        mouse_down = true;
-                        selectedDragObject = null;
-                        mainForm.objectViewer1.selectedObject = null;
-                        mainForm.objectViewer1.Refresh();
+                            room.has_changed = true;
+                            mouse_down = true;
+                            selectedDragObject = null;
+                            mainForm.objectViewer1.selectedObject = null;
+                            mainForm.objectViewer1.Refresh();
+                        }
+                        else
+                        {
+                            Room_Object ro = room.addObject(selectedDragObject.ID, 0, 0, 0, (byte)selectedMode);
+                            if (ro != null)
+                            {
+                                ro.setRoom(room);
+                                ro.getObjectSize();
+                                room.tilesObjects.Add(ro);
+                                room.selectedObject.Add(ro);
+                                dragx = 0;
+                                dragy = 0;
+                            }
+
+                            room.has_changed = true;
+                            mouse_down = true;
+                            selectedDragObject = null;
+                            mainForm.objectViewer1.selectedObject = null;
+                            mainForm.objectViewer1.Refresh();
+                        }
                     }
                 }
                 else if (selectedDragObject != null) // If there's an object selected
@@ -1062,6 +1087,7 @@ namespace ZeldaFullEditor
                         }
                     }
 
+
                     if (!found) // We didnt find any Tiles to click on so just clear the selection
                     {
                         if (ModifierKeys != Keys.Shift && ModifierKeys != Keys.Control)
@@ -1077,6 +1103,7 @@ namespace ZeldaFullEditor
                         room.selectedObject.Clear();
                     }
                 }
+
                 else if (selectedMode == ObjectMode.Doormode)
                 {
                     // Console.Write("Door mode");
@@ -1147,50 +1174,84 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-                else if (selectedMode == ObjectMode.Warpmode)
+                else if (selectedMode == ObjectMode.OverlayMode)
                 {
-                    room.selectedObject.Clear();
+
+                    if (room.selectedObject.Count == 1 && resizeType != SceneResizing.none)
+                    {
+                        //Room_Object obj = (room.selectedObject[0] as Room_Object);
+                        mouse_down = true;
+                        resizing = true;
+                        dragx = MX;
+                        dragy = MY;
+                        return;
+                    }
+
+
                     dragx = MX / 8;
                     dragy = MY / 8;
-                    int doorCount = 0;
-                    foreach (Room_Object o in room.tilesObjects)
-                    {
-                        if (doorsObject.Contains(o.id))
-                        {
-                            if (isMouseCollidingWith(o, e))
-                            {
-                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.staircase_rooms[doorCount].ToString("X2"));
+                    found = false;
 
-                                if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out byte b))
+
+                    for (int i = DungeonOverlays.loadedOverlay.Count - 1; i >= 0; i--)
+                    {
+                        Room_Object obj = DungeonOverlays.loadedOverlay[i];
+
+                        if (isMouseCollidingWith(obj, e))
+                        {
+                            if (room.selectedObject.Count != 0)
+                            {
+                                if (room.selectedObject.Contains(obj))
                                 {
-                                    room.staircase_rooms[doorCount] = b;
-                                    updateRoomInfos(mainForm);
+                                    found = true;
+                                    break;
                                 }
-                                else
+
+                                if (ModifierKeys != Keys.Shift && ModifierKeys != Keys.Control)
                                 {
-                                    MessageBox.Show(UIText.Range0toFF);
+                                    room.selectedObject.Clear();
                                 }
                             }
 
-                            doorCount++;
-                        }
-                        else if (o.id == 0xFCA)
-                        {
-                            if (isMouseCollidingWith(o, e))
+                            if ((obj.options == ObjectOption.Overlay))
                             {
-                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.holewarp.ToString("X2"));
-                                if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out byte b))
+                                for (int p = 0; p < obj.collisionPoint.Count; p++)
                                 {
-                                    room.holewarp = b;
-                                    updateRoomInfos(mainForm);
+                                    //Console.WriteLine(obj.collisionPoint[p].X);
+                                    if (MX >= obj.collisionPoint[p].X && MX <= obj.collisionPoint[p].X + 8
+                                        && MY >= obj.collisionPoint[p].Y && MY <= obj.collisionPoint[p].Y + 8)
+                                    {
+                                        room.selectedObject.Add(obj);
+                                        found = true;
+
+                                        break;
+                                    }
                                 }
-                                else
+
+                                if (found)
                                 {
-                                    MessageBox.Show(UIText.Range0toFF);
+                                    break;
                                 }
                             }
                         }
                     }
+
+
+                    if (!found) // We didnt find any Tiles to click on so just clear the selection
+                    {
+                        if (ModifierKeys != Keys.Shift && ModifierKeys != Keys.Control)
+                        {
+                            //Console.WriteLine("we didnt find any object so clear all");
+                            room.selectedObject.Clear();
+                        }
+                    }
+
+                    if (ModifierKeys == Keys.Alt)
+                    {
+                        found = false;
+                        room.selectedObject.Clear();
+                    }
+
                 }
                 else if (selectedMode == ObjectMode.CollisionMap)
                 {
@@ -1381,6 +1442,8 @@ namespace ZeldaFullEditor
                 o.Draw();
             }
 
+
+
             // Draw object on bitmap
 
             // TODO can these ifs be merged?
@@ -1408,7 +1471,14 @@ namespace ZeldaFullEditor
                     o.Draw();
                 }
             }
-
+            if (selectedMode == ObjectMode.OverlayMode)
+            {
+                foreach (Room_Object o in DungeonOverlays.loadedOverlay)
+                {
+                    o.collisionPoint.Clear();
+                    o.Draw();
+                }
+            }
             if (showLayer1)
             {
                 GFX.DrawBG1();
@@ -1653,6 +1723,7 @@ namespace ZeldaFullEditor
                         case ObjectMode.Bg2mode:
                         case ObjectMode.Bg3mode:
                         case ObjectMode.Bgallmode:
+                        case ObjectMode.OverlayMode:
                             mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
                             mainForm.nothingselectedcontextMenu.Items[2].Visible = false;
                             mainForm.nothingselectedcontextMenu.Items[3].Visible = false;
@@ -1859,7 +1930,7 @@ namespace ZeldaFullEditor
                         (o as PotItem).y = (o as PotItem).ny;
                     }
                 }
-                else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+                else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3 || selectedMode == ObjectMode.OverlayMode)
                 {
 
 
@@ -1944,7 +2015,7 @@ namespace ZeldaFullEditor
                 mx = MX / 8;
                 my = MY / 8;
             }
-            else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+            else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3 || selectedMode == ObjectMode.OverlayMode)
             {
                 mx = MX / 8;
                 my = MY / 8;
@@ -2074,6 +2145,35 @@ namespace ZeldaFullEditor
                                 {
                                     room.selectedObject.Add(o);
                                 }
+                            }
+                        }
+                    }
+                }
+                else if (selectedMode == ObjectMode.OverlayMode) // We're looking for overlay tiles
+                {
+                    foreach (Room_Object o in DungeonOverlays.loadedOverlay)
+                    {
+                        int rx = dragx;
+                        int ry = dragy;
+                        if (move_x < 0) { Math.Abs(rx = dragx + move_x); }
+                        if (move_y < 0) { Math.Abs(ry = dragy + move_y); }
+
+                        int yfix = 0;
+                        if (o.diagonalFix)
+                        {
+                            yfix = -(6 + o.Size);
+                        }
+
+                        if ((new Rectangle(
+                            (o.X + o.offsetX) * 8,
+                            (o.Y + o.offsetY + yfix) * 8,
+                            (o.width + o.offsetX),
+                            (o.height + o.offsetY + yfix))
+                            ).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
+                        {
+                            if ((o.options) == ObjectOption.Overlay)
+                            {
+                                room.selectedObject.Add(o);
                             }
                         }
                     }
@@ -2360,6 +2460,16 @@ namespace ZeldaFullEditor
 
             foreach (Object o in room.selectedObject)
             {
+                if (selectedMode == ObjectMode.OverlayMode)
+                {
+                    if (o is Room_Object rr)
+                    {
+                        rr.deleted = true;
+                        DungeonOverlays.loadedOverlay.Remove(rr);
+                    }
+                    
+                }
+
                 if (o is Room_Object r)
                 {
                     r.deleted = true;
@@ -2383,6 +2493,7 @@ namespace ZeldaFullEditor
 
         public override void paste()
         {
+            Console.WriteLine(selectedMode.ToString());
             if (!mouse_down)
             {
                 List<SaveObject> data = null;
@@ -2434,6 +2545,7 @@ namespace ZeldaFullEditor
                             }
                             else if (o.Type == typeof(Room_Object))
                             {
+                                Console.WriteLine("We pasted a room object");
                                 if ((o.Options & ObjectOption.Door) == ObjectOption.Door)
                                 {
                                     selectedMode = ObjectMode.Doormode;
@@ -2443,10 +2555,23 @@ namespace ZeldaFullEditor
                                     room.tilesObjects.Add(ro);
                                     room.selectedObject.Add(ro);
                                 }
+                                else if (selectedMode == ObjectMode.OverlayMode)
+                                {
+                                    Room_Object ro = room.addObject(o.TileID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Size, o.Layer);
+                                    Console.WriteLine("Pasted in overlay");
+                                    if (ro != null)
+                                    {
+                                        ro.setRoom(room);
+                                        ro.options = ObjectOption.Overlay;
+                                        DungeonOverlays.loadedOverlay.Add(ro);
+                                        room.selectedObject.Add(ro);
+                                        ro.getObjectSize();
+                                    }
+                                }
                                 else
                                 {
                                     Room_Object ro = room.addObject(o.TileID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Size, o.Layer);
-
+                                    Console.WriteLine("Pasted in BG");
                                     if (ro != null)
                                     {
                                         if ((byte)selectedMode > 3) // If it not BGAll or bg1-3
@@ -2469,6 +2594,7 @@ namespace ZeldaFullEditor
                                         ro.getObjectSize();
                                     }
                                 }
+
                             }
                             else if (o.Type == typeof(PotItem))
                             {

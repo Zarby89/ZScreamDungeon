@@ -65,7 +65,7 @@ namespace ZeldaFullEditor
                     Console.Write(buff[i].ToString("X2") + " ");
                 }
             }
-
+            
             CloseClipboard();
             return buff;
         }

@@ -338,8 +338,8 @@ namespace ZeldaFullEditor
         // Overworld Exits/Entrances Variables
         // ===========================================================================================
         public static int OWExitRoomId = 0x015D8A; // 0x15E07 Credits sequences
-                                                  // 105C2 Ending maps
-                                                  // 105E2 Sprite Group Table for Ending
+                                                   // 105C2 Ending maps
+                                                   // 105E2 Sprite Group Table for Ending
         public static int OWExitMapId = 0x015E28;
         public static int OWExitVram = 0x015E77;
         public static int OWExitYScroll = 0x015F15;
@@ -465,6 +465,19 @@ namespace ZeldaFullEditor
         public static int DungeonSection5Index = 0x148000; // 0x148000 to 0x14FFFF.
         public static int DungeonSection5EndIndex = 0x14FFFF;
 
+        public static int DungeonOverlayLoadPtr = 0x00B857; //# _01B856: LDA.l OverlayDataPointers+0,X ( orig value = C0 EC 04 ) *load & save* 0x12 ptrs
+        public static int DungeonOverlayLoadPtr2 = 0x00B851; //# _01B850: LDA.l OverlayDataPointers+1,X ( orig value = C1 EC 04 ) *saving only*
+
+        public static int DungeonOverlayWaterPtr1 = 0x009C2A;
+        public static int DungeonOverlayWaterPtr1Bank = 0x009C25;
+
+
+        public static int DungeonOverlayWaterPtr2 = 0x00CBB2;
+        public static int DungeonOverlayWaterPtr2Bank = 0x00CBAD;
+        
+        public static int DungeonOverlayNewPosition = 0x026C1C; // 04EC1C pc address
+        public static int DungeonOverlayDataLimit = 0x026F2E;
+
         // ===========================================================================================
         // Dungeon Entrances Related Variables
         // ===========================================================================================
@@ -515,7 +528,7 @@ namespace ZeldaFullEditor
 
 
         //EXPANDED to 0x78000 to 0x7A000
-        public static int entrance_roomEXP = 0x078000; 
+        public static int entrance_roomEXP = 0x078000;
         public static int entrance_scrolledgeEXP = 0x78200;
         public static int entrance_camerayEXP = 0x78A00;
         public static int entrance_cameraxEXP = 0x78C00;
@@ -527,7 +540,7 @@ namespace ZeldaFullEditor
         public static int entrance_floorEXP = 0x79700;
         public static int entrance_dungeonEXP = 0x79800;
         public static int entrance_doorEXP = 0x79900;
-        public static int entrance_ladderbgEXP = 0x79A00; 
+        public static int entrance_ladderbgEXP = 0x79A00;
         public static int entrance_scrollingEXP = 0x79B00;
         public static int entrance_scrollquadrantEXP = 0x79C00;
         public static int entrance_exitEXP = 0x79D00;
@@ -1804,6 +1817,430 @@ namespace ZeldaFullEditor
             "0x1E That broken jingle again",
             "0x1F Crystal get again",
             "0x20 Crystal get again again"
+        };
+
+        public static string[] textsLocations = new string[]
+        {
+            "Empty", // 00
+            "", // 01
+            "", // 02
+            "", // 03
+            "", // 04
+            "", // 05
+            "", // 06
+            "", // 07
+            "", // 08
+            "", // 09
+            "", // 0A
+            "", // 0B
+            "", // 0C
+            "Uncle 1st message (when you wake up)", // 0D
+            "Uncle 2nd message (when dying and giving sword & shield)", // 0E
+            "Tutorial Guard Message 1 (loop from message 1 to 7 in order)", // 0F
+            "Tutorial Guard Message 2", // 10
+            "Tutorial Guard Message 3", // 11
+            "Tutorial Guard Message 4", // 12
+            "Tutorial Guard Message 5", // 13
+            "Tutorial Guard Message 6", // 14
+            "Tutorial Guard Message 7", // 15
+            "Priest message (when you talk to him after rescuing zelda)", // 16
+            "1st Priest message (when you rescue zelda)", // 17
+            "3rd Priest message", // 18
+            "4th Priest message (after talking to sahasrahla)", // 19
+            "5th Priest message (when you have 3 pendants)", // 1A
+            "Priest message (dying on ground, after you get master sword)", // 1B
+            "Zelda 1st message (when touching her in cell)", // 1C
+            "2nd Priest message (when zelda moved beside priest)", // 1D
+            "Zelda message (when you talk to her after rescuing beside priest)", // 1E
+            "Zelda telepathic 1st message (when sleeping in bed)", // 1F
+            "Zelda telepathic message (every minute poping before you get sword)", // 20
+            "Zelda message (when entering castle lobby while following you)", // 21
+            "Zelda message (when entering throne room while following you)", // 22
+            "Zelda message (when entering the room with 2 lever to pull)", // 23
+            "Zelda 1st message (after you saved her in cell)", // 24
+            "Zelda 2nd message (after you saved her in cell)", // 25
+            "Zelda message (after talking to sahasrahla)", // 26
+            "Zelda message (when you have 3 pendants)", // 27
+            "Priest Telepathic Message (when you exit master sword area after getting it)", // 28
+            "Zelda message (when entering the sewers)", // 29
+            "Zelda message (when entering when approaching a switch)", // 2A
+            "Lady in elder house 1st message (after rescuing zelda)", // 2B
+            "Lady in elder house 2nd message", // 2C
+            "Lady in elder house 3rd message", // 2D
+            "Lady in elder house (after getting master sword)", // 2E
+            "Snitches in kakariko village", // 2F
+            "Sahasrahla (when you have the 3 pendants and ice rod)", // 30
+            "Sahasrahla (when you have mastersword and ice rod)", // 31
+            "Sahasrahla 1st message", // 32
+            "Sahasrahla 2nd message (when you accept his quest)", // 33
+            "Sahasrahla (when you have ice rod but not the 3 pendants)", // 34
+            "Message (when reaching top of the pyramid)", // 35
+            "", // 36
+            "", // 37
+            "", // 38
+            "", // 39
+            "", // 3A
+            "", // 3B
+            "", // 3C
+            "", // 3D
+            "", // 3E
+            "", // 3F
+
+            "", // 40
+            "", // 41
+            "", // 42
+            "", // 43
+            "", // 44
+            "", // 45
+            "", // 46
+            "", // 47
+            "", // 48
+            "", // 49
+            "", // 4A
+            "", // 4B
+            "", // 4C
+            "", // 4D
+            "", // 4E
+            "", // 4F
+
+            "", // 50
+            "", // 51
+            "", // 52
+            "", // 53
+            "", // 54
+            "", // 55
+            "", // 56
+            "", // 57
+            "", // 58
+            "", // 59
+            "", // 5A
+            "", // 5B
+            "", // 5C
+            "", // 5D
+            "", // 5E
+            "", // 5F
+
+            "", // 60
+            "", // 61
+            "", // 62
+            "", // 63
+            "", // 64
+            "", // 65
+            "", // 66
+            "", // 67
+            "", // 68
+            "", // 69
+            "", // 6A
+            "", // 6B
+            "", // 6C
+            "", // 6D
+            "", // 6E
+            "", // 6F
+
+            "Telepathic message (right after you get master sword)", // 70
+            "", // 71
+            "", // 72
+            "", // 73
+            "", // 74
+            "", // 75
+            "", // 76
+            "", // 77
+            "", // 78
+            "", // 79
+            "", // 7A
+            "", // 7B
+            "", // 7C
+            "", // 7D
+            "", // 7E
+            "", // 7F
+
+            "", // 80
+            "", // 81
+            "", // 82
+            "", // 83
+            "", // 84
+            "", // 85
+            "", // 86
+            "", // 87
+            "", // 88
+            "", // 89
+            "", // 8A
+            "", // 8B
+            "", // 8C
+            "", // 8D
+            "", // 8E
+            "", // 8F
+
+            "", // 90
+            "", // 91
+            "", // 92
+            "", // 93
+            "", // 94
+            "", // 95
+            "", // 96
+            "", // 97
+            "", // 98
+            "", // 99
+            "", // 9A
+            "", // 9B
+            "", // 9C
+            "", // 9D
+            "", // 9E
+            "", // 9F
+
+            "", // A0
+            "", // A1
+            "", // A2
+            "", // A3
+            "", // A4
+            "", // A5
+            "", // A6
+            "", // A7
+            "", // A8
+            "", // A9
+            "", // AA
+            "", // AB
+            "", // AC
+            "", // AD
+            "", // AE
+            "", // AF
+
+            "", // B0
+            "", // B1
+            "", // B2
+            "", // B3
+            "", // B4
+            "", // B5
+            "", // B6
+            "", // B7
+            "", // B8
+            "", // B9
+            "", // BA
+            "", // BB
+            "", // BC
+            "", // BD
+            "", // BE
+            "", // BF
+
+            "", // C0
+            "", // C1
+            "", // C2
+            "", // C3
+            "", // C4
+            "", // C5
+            "", // C6
+            "", // C7
+            "", // C8
+            "", // C9
+            "", // CA
+            "", // CB
+            "", // CC
+            "", // CD
+            "", // CE
+            "", // CF
+
+            "", // D0
+            "", // D1
+            "", // D2
+            "", // D3
+            "", // D4
+            "", // D5
+            "", // D6
+            "", // D7
+            "", // D8
+            "", // D9
+            "", // DA
+            "", // DB
+            "", // DC
+            "", // DD
+            "", // DE
+            "", // DF
+
+            "", // E0
+            "", // E1
+            "", // E2
+            "", // E3
+            "", // E4
+            "", // E5
+            "", // E6
+            "", // E7
+            "", // E8
+            "", // E9
+            "", // EA
+            "", // EB
+            "", // EC
+            "", // ED
+            "", // EE
+            "", // EF
+
+            "", // F0
+            "", // F1
+            "", // F2
+            "", // F3
+            "", // F4
+            "", // F5
+            "", // F6
+            "", // F7
+            "", // F8
+            "", // F9
+            "", // FA
+            "", // FB
+            "", // FC
+            "", // FD
+            "", // FE
+            "", // FF
+                        "", // 100
+            "", // 101
+            "", // 102
+            "", // 103
+            "", // 104
+            "", // 105
+            "", // 106
+            "", // 107
+            "", // 108
+            "", // 109
+            "", // 10A
+            "", // 10B
+            "", // 10C
+            "", // 10D
+            "", // 10E
+            "", // 10F
+
+            "", // 110
+            "", // 111
+            "", // 112
+            "", // 113
+            "", // 114
+            "", // 115
+            "", // 116
+            "", // 117
+            "", // 118
+            "", // 119
+            "", // 11A
+            "", // 11B
+            "", // 11C
+            "", // 11D
+            "", // 11E
+            "", // 11F
+            
+            "", // 120
+            "", // 121
+            "", // 122
+            "", // 123
+            "", // 124
+            "", // 125
+            "", // 126
+            "", // 127
+            "", // 128
+            "", // 129
+            "", // 12A
+            "", // 12B
+            "", // 12C
+            "", // 12D
+            "", // 12E
+            "", // 12F
+
+            "", // 130
+            "", // 131
+            "", // 132
+            "", // 133
+            "", // 134
+            "", // 135
+            "", // 136
+            "", // 137
+            "", // 138
+            "", // 139
+            "", // 13A
+            "", // 13B
+            "", // 13C
+            "", // 13D
+            "", // 13E
+            "", // 13F
+
+            "", // 140
+            "", // 141
+            "", // 142
+            "", // 143
+            "", // 144
+            "", // 145
+            "", // 146
+            "kid in kakariko (after you rescued zelda putting a X on your map)", // 147
+            "", // 148
+            "", // 149
+            "", // 14A
+            "", // 14B
+            "", // 14C
+            "", // 14D
+            "", // 14E
+            "", // 14F
+
+            "", // 150
+            "", // 151
+            "", // 152
+            "", // 153
+            "", // 154
+            "", // 155
+            "", // 156
+            "", // 157
+            "", // 158
+            "", // 159
+            "", // 15A
+            "", // 15B
+            "", // 15C
+            "", // 15D
+            "", // 15E
+            "", // 15F
+
+            "", // 160
+            "", // 161
+            "", // 162
+            "", // 163
+            "", // 164
+            "", // 165
+            "", // 166
+            "", // 167
+            "", // 168
+            "", // 169
+            "", // 16A
+            "", // 16B
+            "", // 16C
+            "", // 16D
+            "", // 16E
+            "", // 16F
+
+            "", // 170
+            "", // 171
+            "", // 172
+            "", // 173
+            "", // 174
+            "", // 175
+            "", // 176
+            "", // 177
+            "", // 178
+            "", // 179
+            "", // 17A
+            "", // 17B
+            "", // 17C
+            "", // 17D
+            "", // 17E
+            "", // 17F
+
+            "", // 180
+            "", // 181
+            "", // 182
+            "", // 183
+            "", // 184
+            "", // 185
+            "", // 186
+            "", // 187
+            "", // 188
+            "", // 189
+            "", // 18A
+            "", // 18B
+            "", // 18C
+            "", // 18D
+            "", // 18E
+            "", // 18F
         };
     }
 }

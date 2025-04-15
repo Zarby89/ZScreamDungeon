@@ -272,9 +272,9 @@
   <data name="warpmodeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACASURBVDhPrVK5DYAwDMw4HpERKBmNceiCXNiyzxcXkMIk
-        uo+zlCEi888M/RzX44Dez5sP6jwAzUbqGe8YkgKYwP7caXwFJOIqDE8rdCI0RD4FIMkMESsBrLI1iCFR
-        uzegq8uwErAyMHNp0IlWuGF7HtJKYCswLgWwimxQVxp8mReXl1P/Q9LtAAAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACFSURBVDhPrZLRDYAgDERZqau4jvPwyTqu0RE0JSk5zyJR
+        +HiGlN5LaUwics6Q7JNzDvEmruN9V2D1sm+Vt55Q4OGjSKUnaQIGwyxhmsDHjcIowWc1QTS2qt7gScId
+        2Nkb7exhrj92sEQw9QQP/14iE0kwhKz5kfgCJb3wUOANo/twB1+4AEtyVSP8xX2GAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="collisionModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

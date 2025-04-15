@@ -145,6 +145,7 @@
     <Compile Include="Data\AsmPropertyType.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DungeonMap.cs" />
+    <Compile Include="Data\DungeonOverlays.cs" />
     <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />

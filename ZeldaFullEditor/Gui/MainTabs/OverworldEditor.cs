@@ -68,7 +68,7 @@ namespace ZeldaFullEditor.Gui
             this.scene.initialized = true;
             this.scene.Refresh();
             this.penModeButton.Tag = ObjectMode.Tile;
-            this.fillModeButton.Tag = ObjectMode.Tile;
+            this.fillModeButton.Tag = ObjectMode.FillTile;
             this.entranceModeButton.Tag = ObjectMode.Entrances;
             this.exitModeButton.Tag = ObjectMode.Exits;
             this.itemModeButton.Tag = ObjectMode.Itemmode;
@@ -427,7 +427,7 @@ namespace ZeldaFullEditor.Gui
         {
             this.scene.selectedTileSizeX = 1;
             this.scene.selectedTile = new ushort[1] { (ushort)((e.X / 32) + ((e.Y / 32) * 8)) };
-            if (scene.selectedMode == ObjectMode.Tile)
+            if (scene.selectedMode == ObjectMode.Tile || scene.selectedMode == ObjectMode.FillTile)
             {
                 objectGroupbox.Text = "Selected Tile " + scene.selectedTile[0].ToString("X4") + "   Selected Map " + scene.ow.AllMaps[scene.selectedMap].ParentID.ToString("X2");
             }

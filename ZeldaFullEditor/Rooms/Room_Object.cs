@@ -278,7 +278,7 @@ namespace ZeldaFullEditor
     [Flags]
     public enum ObjectOption
     {
-        Nothing = 0, Door = 1, Chest = 2, Block = 4, Torch = 8, Bgr = 16, Stairs = 32
+        Nothing = 0, Door = 1, Chest = 2, Block = 4, Torch = 8, Bgr = 16, Stairs = 32, Overlay = 64
     }
 
     public static class EnumEx
