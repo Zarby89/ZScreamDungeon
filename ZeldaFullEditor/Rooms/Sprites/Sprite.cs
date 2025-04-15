@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -14,7 +15,7 @@ namespace ZeldaFullEditor
         public string name;
         public byte keyDrop = 0;
         public int sizeMap = 512;
-        bool overworld = false;
+        bool onOverworld = false;
         public bool preview = false;
         public byte mapid = 0;
         public int map_x = 0;
@@ -62,7 +63,7 @@ namespace ZeldaFullEditor
 
         public Sprite(byte mapid, byte id, byte x, byte y, int map_x, int map_y)
         {
-            overworld = true;
+            onOverworld = true;
             this.mapid = mapid;
             this.id = id;
             this.x = x;
@@ -70,8 +71,8 @@ namespace ZeldaFullEditor
             this.nx = x;
             this.ny = y;
             this.name = Sprites_Names.name[id];
-            this.map_x = map_x;
-            this.map_y = map_y;
+            this.map_x = map_x.Clamp(0, 4080);
+            this.map_y = map_y.Clamp(0, 4080);
             this.uniqueID = ROM.uniqueSpriteID;
             ROM.uniqueSpriteID += 1;
         }
@@ -1192,7 +1193,7 @@ namespace ZeldaFullEditor
         public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
         {
             var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
-            if (overworld)
+            if (onOverworld)
             {
                 alltilesData = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
             }
@@ -1362,7 +1363,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void updateMapStuff(short mapId)
+        public void updateMapStuff(short mapId, bool large)
         {
             this.mapid = (byte)mapId;
 
@@ -1371,13 +1372,23 @@ namespace ZeldaFullEditor
                 mapId -= 64;
             }
 
-            int mx = (mapId - ((mapId / 8) * 8));
-            int my = ((mapId / 8));
+            int mx = mapId - ((mapId / 8) * 8);
+            int my = (mapId / 8);
 
-            x = (byte)((map_x - (mx * 512)) / 16);
-            y = (byte)((map_y - (my * 512)) / 16);
+            this.x = (byte)((this.map_x - (mx * 512)) / 16);
+            this.y = (byte)((this.map_y - (my * 512)) / 16);
+            
+            this.x = this.x.Clamp(0, 63);
+            this.y = this.y.Clamp(0, 63);
 
-            Console.WriteLine("Sprite:    " + id.ToString("X2") + " MapId: " + mapid.ToString("X2") + " X: " + x + " Y: " + y);
+            // If we are on a large map:
+            if (!large)
+            {
+                this.x = this.x.Clamp(0, 31);
+                this.y = this.y.Clamp(0, 31);
+            }
+            
+            Console.WriteLine("Sprite:    0x" + this.id.ToString("X2") + " MapId: 0x" + this.mapid.ToString("X2") + " X: " + this.x + " Y: " + this.y);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace ZeldaFullEditor
         ///     Updates certain entrance properties based on the given area map ID.
         /// </summary>
         /// <param name="mapID"> The ID of the area map. </param>
-        public void UpdateMapStuff(short mapID)
+        public void UpdateMapStuff(short mapID, bool large = false)
         {
             this.MapID = mapID;
 
@@ -116,6 +116,16 @@ namespace ZeldaFullEditor
             this.AreaX = (byte)(Math.Abs(this.X - (mapX * 512)) / 16);
             this.AreaY = (byte)(Math.Abs(this.Y - (mapY * 512)) / 16);
 
+            this.AreaX = this.AreaX.Clamp(0, 63);
+            this.AreaY = this.AreaY.Clamp(0, 63);
+
+            // If we are on a large map:
+            if (!large)
+            {
+                this.AreaX = this.AreaX.Clamp(0, 31);
+                this.AreaY = this.AreaY.Clamp(0, 31);
+            }
+
             this.MapPos = (ushort)(((this.AreaY << 6) | (this.AreaX & 0x3F)) << 1);
             /*
                 int mx = mapId - ((mapId / 8) * 8);
@@ -127,11 +137,11 @@ namespace ZeldaFullEditor
 
             if (this.IsHole)
             {
-                Console.WriteLine("Hole:      " + this.EntranceID + " MapId: " + mapID.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
+                Console.WriteLine("Hole:      0x" + this.EntranceID.ToString("X2") + " MapId: 0x" + mapID.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
             }
             else
             {
-                Console.WriteLine("Entrance:  " + this.EntranceID + " MapId: " + mapID.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
+                Console.WriteLine("Entrance:  0x" + this.EntranceID.ToString("X2") + " MapId: 0x" + mapID.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
             }
         }
     }

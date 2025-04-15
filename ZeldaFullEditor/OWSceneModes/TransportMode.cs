@@ -25,7 +25,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 0x11; i++)
                 {
                     TransportOW en = scene.ow.AllWhirlpools[i];
-                    if (en.mapId >= scene.ow.WorldOffset && en.mapId < 64 + scene.ow.WorldOffset)
+                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 64 + scene.ow.WorldOffset)
                     {
                         if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
                         {
@@ -47,8 +47,8 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (scene.mouse_down)
             {
-                int mouseTileX = e.X / 16;
-                int mouseTileY = e.Y / 16;
+                int mouseTileX = e.X.Clamp(0, 4080) / 16;
+                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
                 int mapX = mouseTileX / 32;
                 int mapY = mouseTileY / 32;
 
@@ -56,21 +56,21 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (selectedTransport != null)
                 {
-                    selectedTransport.playerX = (ushort)e.X;
-                    selectedTransport.playerY = (ushort)e.Y;
+                    selectedTransport.playerX = (ushort)e.X.Clamp(0, 4088);
+                    selectedTransport.playerY = (ushort)e.Y.Clamp(0, 4088);
                     if (scene.snapToGrid)
                     {
-                        selectedTransport.playerX = (ushort)((e.X / 8) * 8);
-                        selectedTransport.playerY = (ushort)((e.Y / 8) * 8);
+                        selectedTransport.playerX = (ushort)((e.X / 8) * 8).Clamp(0, 4088);
+                        selectedTransport.playerY = (ushort)((e.Y / 8) * 8).Clamp(0, 4088);
                     }
 
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                    if (mid == 255)
+                    byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
+                    if (mapID == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
+                        mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
-                    selectedTransport.updateMapStuff(mid, scene.ow);
+                    selectedTransport.updateMapStuff(mapID, scene.ow);
 
                     // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 }
@@ -94,7 +94,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 0x11; i++)
                 {
                     TransportOW en = scene.ow.AllWhirlpools[i];
-                    if (en.mapId >= scene.ow.WorldOffset && en.mapId < 64 + scene.ow.WorldOffset)
+                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 64 + scene.ow.WorldOffset)
                     {
                         if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
                         {
@@ -142,19 +142,19 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < scene.ow.AllWhirlpools.Count; i++)
                 {
                     TransportOW e = scene.ow.AllWhirlpools[i];
-                    if (e.mapId != scene.ow.AllMaps[scene.selectedMap].ParentID)
+                    if (e.MapID != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }
 
-                    if (e.mapId < 64 + scene.ow.WorldOffset && e.mapId >= scene.ow.WorldOffset)
+                    if (e.MapID < 64 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
                     {
                         if (selectedTransport != null)
                         {
                             if (e == selectedTransport)
                             {
                                 bgrBrush = Constants.Azure200Brush;
-                                scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
+                                scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.MapID.ToString());
 
                                 // scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
                                 scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
@@ -191,14 +191,14 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     TransportOW e = scene.ow.AllWhirlpools[i];
 
-                    if (e.mapId < 64 + scene.ow.WorldOffset && e.mapId >= scene.ow.WorldOffset)
+                    if (e.MapID < 64 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
                     {
                         if (selectedTransport != null)
                         {
                             if (e == selectedTransport)
                             {
                                 bgrBrush = Constants.Azure200Brush;
-                                scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
+                                scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.MapID.ToString());
 
                                 // scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
                                 scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
@@ -230,11 +230,15 @@ namespace ZeldaFullEditor.OWSceneModes
 
         void SendTransportData(TransportOW transport)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer(32);
             buffer.Write((byte)10); // transport data
             buffer.Write((byte)NetZS.userID); // user ID
-            buffer.Write((int)transport.uniqueID);
+            buffer.Write((int)transport.ID);
 
             buffer.Write((byte)transport.unk1);
             buffer.Write((byte)transport.unk2);
@@ -248,7 +252,7 @@ namespace ZeldaFullEditor.OWSceneModes
             buffer.Write((short)transport.playerY);
             buffer.Write((short)transport.cameraX);
             buffer.Write((short)transport.cameraY);
-            buffer.Write((short)transport.mapId);
+            buffer.Write((short)transport.MapID);
             buffer.Write((short)transport.whirlpoolPos);
 
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
@@ -256,7 +260,5 @@ namespace ZeldaFullEditor.OWSceneModes
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
         }
-
-
     }
 }

@@ -12,7 +12,7 @@ namespace ZeldaFullEditor
         // META
         // ===========================================================================================
         public const string APPNAME = "ZScream";
-        public const string VERSION = "3.2.4BETA";
+        public const string VERSION = "3.2.4_BETA_2";
 
         public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
         public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
@@ -124,6 +124,15 @@ namespace ZeldaFullEditor
                 $"Missing File: {message} Please make sure that:\n1. You have extracted all the files from the .zip\n2. You are running the ZScream.exe within the same folder as the other files that it came with.",
                 "Bad Error",
                 MessageBoxButtons.OK);
+        }
+
+        public static DialogResult WarnTile16EditorToGFXEditorSwitch()
+        {
+            return MessageBox.Show(
+                $"You are about to navigate away from the Tile16 Editor.\nWould you like to save your current Tile16 edits?",
+                "Unsaved changes",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Warning);
         }
     }
 }

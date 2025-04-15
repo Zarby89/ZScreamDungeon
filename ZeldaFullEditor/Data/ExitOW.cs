@@ -213,6 +213,16 @@ namespace ZeldaFullEditor
             this.AreaX = (byte)(Math.Abs(this.PlayerX - (mapX * 512)) / 16);
             this.AreaY = (byte)(Math.Abs(this.PlayerY - (mapY * 512)) / 16);
 
+            this.AreaX = this.AreaX.Clamp(0, 63);
+            this.AreaY = this.AreaY.Clamp(0, 63);
+
+            // If we are on a large map:
+            if (!overworld.AllMaps[mapID].LargeMap)
+            {
+                this.AreaX = this.AreaX.Clamp(0, 31);
+                this.AreaY = this.AreaY.Clamp(0, 31);
+            }
+
             // If map is large, large = 768, otherwise 256.
 
             // mapx, mapy = "super map" position on the grid *512.
@@ -298,7 +308,7 @@ namespace ZeldaFullEditor
 
             this.VRAMLocation = (ushort)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
 
-            Console.WriteLine("Exit:      " + this.RoomID + " MapId: " + mapid.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY);
+            Console.WriteLine("Exit:      0x" + this.RoomID.ToString("X2") + " MapId: 0x" + mapid.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY + " CameraX: " + this.CameraX + " CameraY: " + this.CameraY + " XScroll: " + this.XScroll + " YScroll: " + this.YScroll + " PlayerX: " + this.PlayerX + " PlayerY: " + this.PlayerY);
         }
     }
 }

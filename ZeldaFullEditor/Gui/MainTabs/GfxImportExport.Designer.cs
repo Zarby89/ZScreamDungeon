@@ -258,7 +258,6 @@
             this.Controls.Add(this.panel1);
             this.Name = "GfxImportExport";
             this.Size = new System.Drawing.Size(838, 661);
-            this.Load += new System.EventHandler(this.GfxImportExport_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.allgfxPicturebox)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -271,7 +270,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button paste24bpp;
         private System.Windows.Forms.Button pasteIndexed;

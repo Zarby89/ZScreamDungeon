@@ -307,8 +307,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 scene.mouseX_Real = e.X;
                 scene.mouseY_Real = e.Y;
-                int mouseTileX = e.X / 16;
-                int mouseTileY = e.Y / 16;
+                int mouseTileX = e.X.Clamp(0, 4080) / 16;
+                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 
@@ -458,11 +458,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         int x = 0;
                         int mapId = 0 + scene.ow.WorldOffset;
 
-
-
-
-
-
                         for (int i = 0; i < scene.selectedTile.Length; i++)
                         {
                             if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
@@ -528,8 +523,6 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-
-
         private void SendTileData()
         {
             if (!NetZS.connected) { return; }
@@ -553,12 +546,12 @@ namespace ZeldaFullEditor.OWSceneModes
 
         }
 
-
         private void SendTileDataMove(int tileX, int tileY)
         {
-            if (!NetZS.connected) { return; }
-
-
+            if (!NetZS.connected)
+            {
+                return;
+            }
 
             NetZSBuffer buffer = new NetZSBuffer((short)(24 + (scene.selectedTile.Length * 2)));
             buffer.Write((byte)05); // tile data cmd

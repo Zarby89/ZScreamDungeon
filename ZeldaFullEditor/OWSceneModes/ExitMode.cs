@@ -49,7 +49,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.mouse_down = true;
                 SendExitData(lastselectedExit);
             }
-
         }
 
         public ExitOW AddExit(bool clipboard = false)
@@ -67,8 +66,8 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     scene.ow.AllExits[i].Deleted = false;
                     scene.ow.AllExits[i].MapID = mid;
-                    scene.ow.AllExits[i].PlayerX = (ushort)((mxRightclick / 16) * 16);
-                    scene.ow.AllExits[i].PlayerY = (ushort)((myRightclick / 16) * 16);
+                    scene.ow.AllExits[i].PlayerX = (ushort)((mxRightclick / 16) * 16).Clamp(0, 4088);
+                    scene.ow.AllExits[i].PlayerY = (ushort)((myRightclick / 16) * 16).Clamp(0, 4088);
 
                     if (clipboard)
                     {
@@ -180,8 +179,8 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (scene.mouse_down)
             {
-                int mouseTileX = e.X / 16;
-                int mouseTileY = e.Y / 16;
+                int mouseTileX = e.X.Clamp(0, 4080) / 16;
+                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 
@@ -189,22 +188,22 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (selectedExit != null)
                 {
-                    selectedExit.PlayerX = (ushort)e.X;
-                    selectedExit.PlayerY = (ushort)e.Y;
+                    selectedExit.PlayerX = (ushort)e.X.Clamp(0, 4088);
+                    selectedExit.PlayerY = (ushort)e.Y.Clamp(0, 4088);
 
                     if (scene.snapToGrid)
                     {
-                        selectedExit.PlayerX = (ushort)((e.X / 8) * 8);
-                        selectedExit.PlayerY = (ushort)((e.Y / 8) * 8);
+                        selectedExit.PlayerX = (ushort)((e.X / 8) * 8).Clamp(0, 4088);
+                        selectedExit.PlayerY = (ushort)((e.Y / 8) * 8).Clamp(0, 4088);
                     }
 
-                    byte mid = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                    if (mid == 255)
+                    byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
+                    if (mapID == 255)
                     {
-                        mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
+                        mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
-                    selectedExit.UpdateMapStuff(mid, scene.ow);
+                    selectedExit.UpdateMapStuff(mapID, scene.ow);
 
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 }
@@ -524,7 +523,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void SendExitData(ExitOW exit)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer(48);
             buffer.Write((byte)08); // entrance data
             buffer.Write((byte)NetZS.userID); //user ID
@@ -551,8 +554,6 @@ namespace ZeldaFullEditor.OWSceneModes
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
-
     }
 }

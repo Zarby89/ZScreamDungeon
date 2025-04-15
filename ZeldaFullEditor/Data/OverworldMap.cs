@@ -85,8 +85,9 @@ namespace ZeldaFullEditor
 
         /// <summary>
         ///     Gets a value indicating whether the game will use a mosaic transition when transitioning into or out of area.
+        ///     This is 4 bits, one for each direction leaving the area. Up, Down, Left, Right.
         /// </summary>
-        public bool Mosaic { get; internal set; } = false;
+        public (bool Up, bool Down, bool Left, bool Right) Mosaic { get; set; } = (false, false, false, false);
 
         /// <summary>
         ///     Gets the GFX pointer for the map.
@@ -297,34 +298,65 @@ namespace ZeldaFullEditor
             if (asmVersion == 0x00)
             {
                 // Set the main palette values.
-                if (index < 0x40)
+                if (index < 0x40) // LW
                 {
                     this.MainPalette = 0;
                 }
-                else if (index >= 0x40 && index < 0x80)
+                else if (index >= 0x40 && index < 0x80) // DW
                 {
                     this.MainPalette = 1;
                 }
-                else if (index >= 0x80 && index < 0xA0)
+                else if (index >= 0x80 && index < 0xA0) // SW
                 {
                     this.MainPalette = 0;
                 }
 
-                if (index == 0x03 || index == 0x05 || index == 0x07)
+                if (index == 0x03 || index == 0x05 || index == 0x07) // LW Death Mountain
                 {
                     this.MainPalette = 2;
                 }
-                else if (index == 0x43 || index == 0x45 || index == 0x47)
+                else if (index == 0x43 || index == 0x45 || index == 0x47) // DW Death Mountain
                 {
                     this.MainPalette = 3;
                 }
-                else if (index == 0x88)
+                else if (index == 0x88) // Triforce room
                 {
                     this.MainPalette = 4;
                 }
 
                 // Set the mosaic values.
-                this.Mosaic = index == 0x00 || index == 0x40 || index == 0x80 || index == 0x81 || index == 0x88;
+                switch (index)
+                {
+                    case 0x00: // Leaving Skull Woods / Lost Woods
+                    case 0x40: 
+                        this.Mosaic = (false, true, false, true);
+
+                        break;
+
+                    case 0x02: // Going into Skull woods / Lost Woods west
+                    case 0x0A:
+                    case 0x42:
+                    case 0x4A:
+                        this.Mosaic = (false, false, true, false);
+                        
+                        break;
+
+                    case 0x0F: // Going into Zora's Domain North
+                    case 0x10: // Going into Skull Woods / Lost Woods North
+                    case 0x11:
+                    case 0x50:
+                    case 0x51:
+                        this.Mosaic = (true, false, false, false);
+
+                        break;
+
+                    case 0x80: // Leaving Zora's Domain, the Master Sword area, and the Triforce area
+                    case 0x81:
+                    case 0x88:
+                        this.Mosaic = (false, true, false, false);
+
+                        break;
+                }
 
                 int indexWorld = 0x20;
 
@@ -401,19 +433,19 @@ namespace ZeldaFullEditor
                 // Set the subscreen overlay values.
                 this.SubscreenOverlay = 0x00FF;
 
-                if (index == 0x00 || index == 0x40) // Add fog 2 to the lost woods and skull woods.
+                if (index == 0x00 || index == 0x01 || index == 0x08 || index == 0x09 || index == 0x40 || index == 0x41 || index == 0x48 || index == 0x49) // Add fog 2 to the lost woods and skull woods.
                 {
                     this.SubscreenOverlay = 0x009D;
                 }
-                else if (index == 0x03 || index == 0x05 || index == 0x07) // Add the sky BG to LW death mountain.
+                else if (index == 0x03 || index == 0x04 || index == 0x0B || index == 0x0C || index == 0x05 || index == 0x06 || index == 0x0D || index == 0x0E || index == 0x07) // Add the sky BG to LW death mountain.
                 {
                     this.SubscreenOverlay = 0x0095;
                 }
-                else if (index == 0x43 || index == 0x45 || index == 0x47) // Add the lava to DW death mountain.
+                else if (index == 0x43 || index == 0x44 || index == 0x4B || index == 0x4C || index == 0x45 || index == 0x46 || index == 0x4D || index == 0x4E || index == 0x47) // Add the lava to DW death mountain.
                 {
                     this.SubscreenOverlay = 0x009C;
                 }
-                else if (index == 0x5B) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
+                else if (index == 0x5B || index == 0x5C || index == 0x63 || index == 0x64) // TODO: Might need this one too "index == 0x1B" but for now I don't think so.
                 {
                     this.SubscreenOverlay = 0x0096;
                 }
@@ -430,7 +462,9 @@ namespace ZeldaFullEditor
             {
                 this.MainPalette = ROM.DATA[Constants.OverworldCustomMainPaletteArray + index];
 
-                this.Mosaic = ROM.DATA[Constants.OverworldCustomMosaicArray + index] != 0x00;
+                byte mosaicByte = ROM.DATA[Constants.OverworldCustomMosaicArray + index];
+                // .... udlr
+                this.Mosaic = ((mosaicByte & 0x08) != 0x00, (mosaicByte & 0x04) != 0x00, (mosaicByte & 0x02) != 0x00, (mosaicByte & 0x01) != 0x00);
 
                 // This is just to load the GFX groups for ROMs that have an older version of the Overworld ASM already applied.
                 if (asmVersion >= 0x01 && asmVersion != 0xFF)
@@ -671,9 +705,9 @@ namespace ZeldaFullEditor
 
             if (pal1 != 255)
             {
-                if (pal1 >= 20)
+                if (pal1 >= Palettes.OverworldAuxPalettes.Length)
                 {
-                    pal1 = 19;
+                    pal1 = (byte)(Palettes.OverworldAuxPalettes.Length - 1);
                 }
 
                 aux1 = Palettes.OverworldAuxPalettes[pal1];
@@ -690,9 +724,9 @@ namespace ZeldaFullEditor
 
             if (pal2 != 255)
             {
-                if (pal2 >= 20)
+                if (pal2 >= Palettes.OverworldAuxPalettes.Length)
                 {
-                    pal2 = 19;
+                    pal2 = (byte)(Palettes.OverworldAuxPalettes.Length - 1);
                 }
 
                 aux2 = Palettes.OverworldAuxPalettes[pal2];
@@ -742,18 +776,25 @@ namespace ZeldaFullEditor
             }
 
             int mainPalette = this.overworld.AllMaps[this.ParentID].MainPalette;
-            if (mainPalette >= 0 && mainPalette < Palettes.OverworldMainPalettes.Length)
+            if (mainPalette >= 0)
             {
-                main = Palettes.OverworldMainPalettes[mainPalette];
+                if (mainPalette < Palettes.OverworldMainPalettes.Length)
+                {
+                    main = Palettes.OverworldMainPalettes[mainPalette];
+                }
+                else
+                {
+                    main = Palettes.OverworldMainPalettes[Palettes.OverworldMainPalettes.Length - 1];
+                }
             }
             else
             {
                 main = Palettes.OverworldMainPalettes[0];
             }
 
-            if (pal3 >= 14)
+            if (pal3 >= Palettes.OverworldAnimatedPalettes.Length)
             {
-                pal3 = 13;
+                pal3 = (byte)(Palettes.OverworldAnimatedPalettes.Length - 1);
             }
 
             animated = Palettes.OverworldAnimatedPalettes[pal3];
@@ -769,9 +810,9 @@ namespace ZeldaFullEditor
                 pal4 = 0;
             }
 
-            if (pal4 >= 24)
+            if (pal4 >= Palettes.SpritesAux3Palettes.Length)
             {
-                pal4 = 23;
+                pal4 = (byte)(Palettes.SpritesAux3Palettes.Length - 1);
             }
 
             spr = Palettes.SpritesAux3Palettes[pal4];
@@ -786,9 +827,9 @@ namespace ZeldaFullEditor
                 pal5 = 0;
             }
 
-            if (pal5 >= 24)
+            if (pal5 >= Palettes.SpritesAux3Palettes.Length)
             {
-                pal5 = 23;
+                pal5 = (byte)(Palettes.SpritesAux3Palettes.Length - 1);
             }
 
             spr2 = Palettes.SpritesAux3Palettes[pal5];
@@ -815,7 +856,7 @@ namespace ZeldaFullEditor
 
             // If the GFX are 0xFF they need to show the defualt GFX instead.
             int world = 0;
-            if (this.ParentID >= 0x40)
+            if (this.ParentID >= 0x40 && this.ParentID < 0x80)
             {
                 world = 8;
             }
@@ -925,7 +966,7 @@ namespace ZeldaFullEditor
             var yy = 0;
             var xx = 0;
 
-            for (var i = 0; i < this.overworld.Tile16List.Count; i++) // Number of tiles16 3748?
+            for (var i = 0; i < Constants.NumberOfMap16Ex; i++) // Number of tiles16 3748?
             {
                 // 8x8 tile draw
                 // gfx8 = 4bpp so everyting is /2
