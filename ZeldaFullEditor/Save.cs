@@ -2844,7 +2844,7 @@ namespace ZeldaFullEditor
         {
             if (DungeonOverlays.SaveOverlays())
             {
-                return true;
+                return true; 
             }
             return false;
         }
