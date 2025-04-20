@@ -107,6 +107,16 @@ namespace ZeldaFullEditor.Gui
                 owentrancesListbox.Items.Add(tname);
             }
 
+            for (int i = 0; i < overworld.AllExits.Length; i++)
+            {
+                string tname = "Exit [" + i.ToString("X2") + "] -> From room " + overworld.AllExits[i].RoomID.ToString("X4");
+                if (overworld.AllExits[i].RoomID >= 320)
+                {
+                    tname += " Ending Cutscene";
+                }
+                overworldexitsListbox.Items.Add(tname);
+            }
+
             //setTilesGfx();
             bool fromFile = false;
             byte[] file = new byte[(225 * 16) * 2];
@@ -2712,7 +2722,7 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        private void owentrancesListbox_SelectedIndexChanged(object sender, EventArgs e)
+        public void owentrancesListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             fromForm = true;
             if (owentrancesListbox.SelectedIndex != -1)
@@ -2757,6 +2767,7 @@ namespace ZeldaFullEditor.Gui
                 scene.entranceMode.lastselectedEntrance.X = (ushort)owentrance_property_x.HexValue;
                 scene.entranceMode.lastselectedEntrance.Y = (ushort)owentrance_property_y.HexValue;
 
+                scene.entranceMode.lastselectedEntrance.UpdateMapStuff(scene.exitmode.lastselectedExit.MapID);
                 string tname = "OW[" + owentrancesListbox.SelectedIndex.ToString("X2") + "] -> UW";
                 foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
                 {
@@ -2769,6 +2780,189 @@ namespace ZeldaFullEditor.Gui
                 }
 
                 owentrancesListbox.Items[owentrancesListbox.SelectedIndex] = tname;
+            }
+        }
+
+        private void mapUpDown_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void overworldexitsListbox_DoubleClick(object sender, EventArgs e)
+        {
+            exitModeButton.PerformClick();
+
+            ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
+
+            int xView = (eow.PlayerX - (splitContainer1.Panel2.Width / 2));
+            xView = xView.Clamp(0, 4096 - splitContainer1.Panel2.Width);
+
+            int yView = (eow.PlayerY - (splitContainer1.Panel2.Height / 2));
+            yView = yView.Clamp(0, 4096 - splitContainer1.Panel2.Width);
+            splitContainer1.Panel2.AutoScrollPosition = new Point(xView, yView);
+
+            scene.selectedMode = ObjectMode.Exits;
+            scene.exitmode.selectedExit = eow;
+            scene.exitmode.lastselectedExit = eow;
+            scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+
+
+            if (eow.MapID < 0x40)
+            {
+                this.SelectMapOffset(0);
+            }
+            else if (eow.MapID >= 0x40)
+            {
+                this.SelectMapOffset(0x40);
+            }
+        }
+
+        private void roomUpDown_TextChanged(object sender, EventArgs e)
+        {
+            if (!fromForm)
+            {
+                scene.exitmode.lastselectedExit.RoomID = (ushort)owexit_room_property.HexValue;
+                scene.exitmode.lastselectedExit.MapID = (byte)owexit_map_property.HexValue;
+                scene.exitmode.lastselectedExit.PlayerX = (ushort)owexit_x_property.HexValue;
+                scene.exitmode.lastselectedExit.PlayerY = (ushort)owexit_y_property.HexValue;
+                scene.exitmode.lastselectedExit.CameraX = (ushort)owexit_xcamera_property.HexValue;
+                scene.exitmode.lastselectedExit.CameraY = (ushort)owexit_ycamera_property.HexValue;
+                scene.exitmode.lastselectedExit.XScroll = (ushort)owexit_xscroll_property.HexValue;
+                scene.exitmode.lastselectedExit.YScroll = (ushort)owexit_yscroll_property.HexValue;
+                scene.exitmode.lastselectedExit.DoorXEditor = (byte)owexit_doorx_property.HexValue;
+                scene.exitmode.lastselectedExit.DoorXEditor = (byte)owexit_doory_property.HexValue;
+
+                if (wooddoorradioButton.Checked)
+                {
+                    if (scene.exitmode.lastselectedExit.DoorXEditor == 0 && scene.exitmode.lastselectedExit.DoorYEditor == 0)
+                    {
+                        scene.exitmode.lastselectedExit.DoorXEditor = 1;
+                    }
+                        scene.exitmode.lastselectedExit.DoorType1 = (ushort)((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1);
+                    scene.exitmode.lastselectedExit.DoorType2 = 0;
+                }
+                else if (sancdoorButton.Checked)
+                {
+                    if (scene.exitmode.lastselectedExit.DoorXEditor == 0 && scene.exitmode.lastselectedExit.DoorYEditor == 0)
+                    {
+                        scene.exitmode.lastselectedExit.DoorXEditor = 1;
+                    }
+                    scene.exitmode.lastselectedExit.DoorType2 = (ushort)((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1);
+                    scene.exitmode.lastselectedExit.DoorType1 = 0;
+                }
+                else if (bombdoorradioButton.Checked)
+                {
+                    if (scene.exitmode.lastselectedExit.DoorXEditor == 0 && scene.exitmode.lastselectedExit.DoorYEditor == 0)
+                    {
+                        scene.exitmode.lastselectedExit.DoorXEditor = 1;
+                    }
+                    scene.exitmode.lastselectedExit.DoorType1 = (ushort)(((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1) + 0x8000);
+                    scene.exitmode.lastselectedExit.DoorType2 = 0;
+                }
+                else if (castledoorradioButton.Checked)
+                {
+                    if (scene.exitmode.lastselectedExit.DoorXEditor == 0 && scene.exitmode.lastselectedExit.DoorYEditor == 0)
+                    {
+                        scene.exitmode.lastselectedExit.DoorXEditor = 1;
+                    }
+                    scene.exitmode.lastselectedExit.DoorType2 = (ushort)(((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1) + 0x8000);
+                    scene.exitmode.lastselectedExit.DoorType1 = 0;
+                }
+                else
+                {
+                    scene.exitmode.lastselectedExit.DoorXEditor = 0;
+                    scene.exitmode.lastselectedExit.DoorXEditor = 0;
+                    scene.exitmode.lastselectedExit.DoorType2 = 0;
+                    scene.exitmode.lastselectedExit.DoorType1 = 0;
+                }
+
+
+                scene.exitmode.lastselectedExit.UpdateMapStuff(scene.exitmode.lastselectedExit.MapID, overworld);
+
+                string tname = "Exit [" + overworldexitsListbox.SelectedIndex.ToString("X2") + "] -> From room " + overworld.AllExits[overworldexitsListbox.SelectedIndex].RoomID.ToString("X4");
+                if (overworld.AllExits[overworldexitsListbox.SelectedIndex].RoomID >= 320)
+                {
+                    tname += " Ending Cutscene";
+                }
+                scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+                overworldexitsListbox.Items[overworldexitsListbox.SelectedIndex] = tname;
+                
+                thumbnailBox.Refresh();
+                scene.Refresh();
+            }
+
+
+        }
+
+        public void overworldexitsListbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fromForm = true;
+            if (overworldexitsListbox.SelectedIndex != -1)
+            {
+                ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
+
+                scene.exitmode.selectedExit = eow;
+                scene.exitmode.lastselectedExit = eow;
+                scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+
+                owexit_room_property.HexValue = scene.exitmode.lastselectedExit.RoomID;
+                owexit_map_property.HexValue = scene.exitmode.lastselectedExit.MapID;
+                owexit_x_property.HexValue = scene.exitmode.lastselectedExit.PlayerX;
+                owexit_y_property.HexValue = scene.exitmode.lastselectedExit.PlayerY;
+                owexit_xcamera_property.HexValue = scene.exitmode.lastselectedExit.CameraX;
+                owexit_ycamera_property.HexValue = scene.exitmode.lastselectedExit.CameraY;
+                owexit_xscroll_property.HexValue = scene.exitmode.lastselectedExit.XScroll;
+                owexit_yscroll_property.HexValue = scene.exitmode.lastselectedExit.YScroll;
+                owexit_doorx_property.HexValue = scene.exitmode.lastselectedExit.DoorXEditor;
+                owexit_doory_property.HexValue = scene.exitmode.lastselectedExit.DoorYEditor;
+                nodoorradioButton.Checked = true;
+                if ((scene.exitmode.lastselectedExit.DoorType1 & 0x8000) != 0) { bombdoorradioButton.Checked = true; }
+                else if (scene.exitmode.lastselectedExit.DoorType1 != 0) { wooddoorradioButton.Checked = true; }
+                else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x8000) != 0) { castledoorradioButton.Checked = true; }
+                else if (scene.exitmode.lastselectedExit.DoorType2 != 0) { sancdoorButton.Checked = true; }
+
+                string text = "Exit";
+
+                if (scene.exitmode.lastselectedExit != null)
+                {
+                    scene.owForm.SetSelectedObjectLabels(
+                        scene.exitmode.lastselectedExit.MapID,
+                        scene.exitmode.lastselectedExit.PlayerX,
+                        scene.exitmode.lastselectedExit.PlayerY);
+                }
+
+                scene.owForm.objectGroupbox.Text = text;
+            }
+
+            fromForm = false;
+        }
+
+        private void setPositionButton_Click(object sender, EventArgs e)
+        {
+            scene.selectedMode = ObjectMode.OWDoor;
+            if (scene.exitmode.lastselectedExit.DoorType1 != 0) // Wooden door
+            {
+                scene.selectedTile = new ushort[2];
+                scene.selectedTileSizeX = 2;
+                scene.selectedTile[0] = 1865;
+                scene.selectedTile[1] = 1866;
+
+            }
+            else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x8000) != 0) // Castle door
+            {
+                scene.selectedTile = new ushort[4];
+                scene.selectedTileSizeX = 2;
+                scene.selectedTile[0] = 3510;
+                scene.selectedTile[1] = 3511;
+                scene.selectedTile[2] = 3512;
+                scene.selectedTile[3] = 3513;
+            }
+            else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x7FFF) != 0) // Sanctuary door
+            {
+                scene.selectedTile = new ushort[2];
+                scene.selectedTileSizeX = 2;
+                scene.selectedTile[0] = 3502;
+                scene.selectedTile[1] = 3503;
             }
         }
     }

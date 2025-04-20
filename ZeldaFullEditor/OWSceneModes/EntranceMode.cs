@@ -416,6 +416,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     SendEntranceData(selectedEntrance);
                     selectedEntrance = null;
                     scene.mouse_down = false;
+                    scene.owForm.owentrancesListbox_SelectedIndexChanged(null, null);
                 }
             }
             else if (e.Button == MouseButtons.Right)

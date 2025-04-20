@@ -118,7 +118,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.entranceLabel1 = new System.Windows.Forms.Label();
             this.exitTabpage = new System.Windows.Forms.TabPage();
-            this.label30 = new System.Windows.Forms.Label();
             this.transportTabpage = new System.Windows.Forms.TabPage();
             this.label31 = new System.Windows.Forms.Label();
             this.Tiles8 = new System.Windows.Forms.TabPage();
@@ -149,6 +148,25 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.exitpropertyGroupbox = new System.Windows.Forms.GroupBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.castledoorradioButton = new System.Windows.Forms.RadioButton();
+            this.bombdoorradioButton = new System.Windows.Forms.RadioButton();
+            this.setPositionButton = new System.Windows.Forms.Button();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.sancdoorButton = new System.Windows.Forms.RadioButton();
+            this.wooddoorradioButton = new System.Windows.Forms.RadioButton();
+            this.nodoorradioButton = new System.Windows.Forms.RadioButton();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.overworldexitsListbox = new System.Windows.Forms.ListBox();
             this.OWProperty_TileGFX7 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_TileGFX6 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_TileGFX5 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -170,6 +188,16 @@
             this.owentrance_property_mappos = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.owentrance_property_mapid = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.owentrance_property_entranceid = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_doory_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_doorx_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_yscroll_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_ycamera_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_y_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_xscroll_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_xcamera_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_x_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_map_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.owexit_room_property = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -201,6 +229,7 @@
             this.groupBox1.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
+            this.exitpropertyGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -1113,9 +1142,9 @@
             this.label29.Dock = System.Windows.Forms.DockStyle.Top;
             this.label29.Location = new System.Drawing.Point(0, 149);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(125, 13);
+            this.label29.Size = new System.Drawing.Size(247, 13);
             this.label29.TabIndex = 23;
-            this.label29.Text = "Overworld Entrances List";
+            this.label29.Text = "Overworld Entrances List  (double click to move to)";
             // 
             // entrancePropertiesGroupbox
             // 
@@ -1136,7 +1165,7 @@
             this.entrancePropertiesGroupbox.Size = new System.Drawing.Size(274, 149);
             this.entrancePropertiesGroupbox.TabIndex = 23;
             this.entrancePropertiesGroupbox.TabStop = false;
-            this.entrancePropertiesGroupbox.Text = "Selected Entrance Property";
+            this.entrancePropertiesGroupbox.Text = "Selected Entrance Properties";
             // 
             // owentrance_property_ishole
             // 
@@ -1196,7 +1225,9 @@
             // 
             // exitTabpage
             // 
+            this.exitTabpage.Controls.Add(this.overworldexitsListbox);
             this.exitTabpage.Controls.Add(this.label30);
+            this.exitTabpage.Controls.Add(this.exitpropertyGroupbox);
             this.exitTabpage.ImageIndex = 1;
             this.exitTabpage.Location = new System.Drawing.Point(4, 28);
             this.exitTabpage.Name = "exitTabpage";
@@ -1204,15 +1235,6 @@
             this.exitTabpage.TabIndex = 6;
             this.exitTabpage.ToolTipText = "Exits";
             this.exitTabpage.UseVisualStyleBackColor = true;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(12, 10);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(87, 13);
-            this.label30.TabIndex = 3;
-            this.label30.Text = "Work in progress";
             // 
             // transportTabpage
             // 
@@ -1333,7 +1355,7 @@
             // tabcontrolImagelist
             // 
             this.tabcontrolImagelist.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("tabcontrolImagelist.ImageStream")));
-            this.tabcontrolImagelist.TransparentColor = System.Drawing.Color.Transparent;
+            this.tabcontrolImagelist.TransparentColor = System.Drawing.Color.Fuchsia;
             this.tabcontrolImagelist.Images.SetKeyName(0, "entrance.png");
             this.tabcontrolImagelist.Images.SetKeyName(1, "exit.png");
             this.tabcontrolImagelist.Images.SetKeyName(2, "spritie.png");
@@ -1540,6 +1562,224 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
+            // 
+            // exitpropertyGroupbox
+            // 
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_doory_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_doorx_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_yscroll_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_ycamera_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_y_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_xscroll_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_xcamera_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_x_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_map_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_room_property);
+            this.exitpropertyGroupbox.Controls.Add(this.castledoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.bombdoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.setPositionButton);
+            this.exitpropertyGroupbox.Controls.Add(this.label32);
+            this.exitpropertyGroupbox.Controls.Add(this.label33);
+            this.exitpropertyGroupbox.Controls.Add(this.sancdoorButton);
+            this.exitpropertyGroupbox.Controls.Add(this.wooddoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.nodoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.label34);
+            this.exitpropertyGroupbox.Controls.Add(this.label35);
+            this.exitpropertyGroupbox.Controls.Add(this.label36);
+            this.exitpropertyGroupbox.Controls.Add(this.label37);
+            this.exitpropertyGroupbox.Controls.Add(this.label38);
+            this.exitpropertyGroupbox.Controls.Add(this.label39);
+            this.exitpropertyGroupbox.Controls.Add(this.label40);
+            this.exitpropertyGroupbox.Controls.Add(this.label41);
+            this.exitpropertyGroupbox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.exitpropertyGroupbox.Location = new System.Drawing.Point(0, 0);
+            this.exitpropertyGroupbox.Name = "exitpropertyGroupbox";
+            this.exitpropertyGroupbox.Size = new System.Drawing.Size(274, 227);
+            this.exitpropertyGroupbox.TabIndex = 0;
+            this.exitpropertyGroupbox.TabStop = false;
+            this.exitpropertyGroupbox.Text = "Selected Exit Properties";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label30.Location = new System.Drawing.Point(0, 227);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(213, 13);
+            this.label30.TabIndex = 1;
+            this.label30.Text = "Overworld exits list (double click to move to)";
+            // 
+            // castledoorradioButton
+            // 
+            this.castledoorradioButton.AutoSize = true;
+            this.castledoorradioButton.Location = new System.Drawing.Point(178, 159);
+            this.castledoorradioButton.Name = "castledoorradioButton";
+            this.castledoorradioButton.Size = new System.Drawing.Size(78, 17);
+            this.castledoorradioButton.TabIndex = 55;
+            this.castledoorradioButton.TabStop = true;
+            this.castledoorradioButton.Text = "Castle door";
+            this.castledoorradioButton.UseVisualStyleBackColor = true;
+            this.castledoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // bombdoorradioButton
+            // 
+            this.bombdoorradioButton.AutoSize = true;
+            this.bombdoorradioButton.Location = new System.Drawing.Point(80, 159);
+            this.bombdoorradioButton.Name = "bombdoorradioButton";
+            this.bombdoorradioButton.Size = new System.Drawing.Size(96, 17);
+            this.bombdoorradioButton.TabIndex = 54;
+            this.bombdoorradioButton.TabStop = true;
+            this.bombdoorradioButton.Text = "Bombable door";
+            this.bombdoorradioButton.UseVisualStyleBackColor = true;
+            this.bombdoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // setPositionButton
+            // 
+            this.setPositionButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            this.setPositionButton.Location = new System.Drawing.Point(185, 191);
+            this.setPositionButton.Name = "setPositionButton";
+            this.setPositionButton.Size = new System.Drawing.Size(80, 22);
+            this.setPositionButton.TabIndex = 52;
+            this.setPositionButton.Text = "Set position";
+            this.setPositionButton.UseVisualStyleBackColor = true;
+            this.setPositionButton.Click += new System.EventHandler(this.setPositionButton_Click);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(97, 179);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(79, 13);
+            this.label32.TabIndex = 51;
+            this.label32.Text = "Door Y position";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 179);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(82, 13);
+            this.label33.TabIndex = 48;
+            this.label33.Text = "Door X position.";
+            // 
+            // sancdoorButton
+            // 
+            this.sancdoorButton.AutoSize = true;
+            this.sancdoorButton.Location = new System.Drawing.Point(178, 136);
+            this.sancdoorButton.Name = "sancdoorButton";
+            this.sancdoorButton.Size = new System.Drawing.Size(93, 17);
+            this.sancdoorButton.TabIndex = 47;
+            this.sancdoorButton.TabStop = true;
+            this.sancdoorButton.Text = "Big fancy door";
+            this.sancdoorButton.UseVisualStyleBackColor = true;
+            this.sancdoorButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // wooddoorradioButton
+            // 
+            this.wooddoorradioButton.AutoSize = true;
+            this.wooddoorradioButton.Location = new System.Drawing.Point(80, 136);
+            this.wooddoorradioButton.Name = "wooddoorradioButton";
+            this.wooddoorradioButton.Size = new System.Drawing.Size(90, 17);
+            this.wooddoorradioButton.TabIndex = 46;
+            this.wooddoorradioButton.TabStop = true;
+            this.wooddoorradioButton.Text = "Wooden door";
+            this.wooddoorradioButton.UseVisualStyleBackColor = true;
+            this.wooddoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // nodoorradioButton
+            // 
+            this.nodoorradioButton.AutoSize = true;
+            this.nodoorradioButton.Location = new System.Drawing.Point(9, 136);
+            this.nodoorradioButton.Name = "nodoorradioButton";
+            this.nodoorradioButton.Size = new System.Drawing.Size(63, 17);
+            this.nodoorradioButton.TabIndex = 45;
+            this.nodoorradioButton.TabStop = true;
+            this.nodoorradioButton.Text = "No door";
+            this.nodoorradioButton.UseVisualStyleBackColor = true;
+            this.nodoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(186, 93);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(79, 13);
+            this.label34.TabIndex = 41;
+            this.label34.Text = "Y camera scroll";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(97, 94);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(52, 13);
+            this.label35.TabIndex = 40;
+            this.label35.Text = "Y camera";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(6, 94);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(53, 13);
+            this.label36.TabIndex = 39;
+            this.label36.Text = "Y position";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(186, 54);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(79, 13);
+            this.label37.TabIndex = 35;
+            this.label37.Text = "X camera scroll";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(97, 54);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(52, 13);
+            this.label38.TabIndex = 34;
+            this.label38.Text = "X camera";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(6, 55);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(53, 13);
+            this.label39.TabIndex = 33;
+            this.label39.Text = "X position";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(97, 15);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(28, 13);
+            this.label40.TabIndex = 31;
+            this.label40.Text = "Map";
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(6, 16);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(85, 13);
+            this.label41.TabIndex = 30;
+            this.label41.Text = "Associated room";
+            // 
+            // overworldexitsListbox
+            // 
+            this.overworldexitsListbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.overworldexitsListbox.FormattingEnabled = true;
+            this.overworldexitsListbox.Location = new System.Drawing.Point(0, 240);
+            this.overworldexitsListbox.Name = "overworldexitsListbox";
+            this.overworldexitsListbox.Size = new System.Drawing.Size(274, 379);
+            this.overworldexitsListbox.TabIndex = 2;
+            this.overworldexitsListbox.SelectedIndexChanged += new System.EventHandler(this.overworldexitsListbox_SelectedIndexChanged);
+            this.overworldexitsListbox.DoubleClick += new System.EventHandler(this.overworldexitsListbox_DoubleClick);
             // 
             // OWProperty_TileGFX7
             // 
@@ -1923,6 +2163,182 @@
             this.owentrance_property_entranceid.Text = "00";
             this.owentrance_property_entranceid.TextChanged += new System.EventHandler(this.owentrance_property_entranceid_TextChanged);
             // 
+            // owexit_doory_property
+            // 
+            this.owexit_doory_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_doory_property.Decimal = false;
+            this.owexit_doory_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.owexit_doory_property.HexValue = 0;
+            this.owexit_doory_property.Location = new System.Drawing.Point(100, 193);
+            this.owexit_doory_property.MaxLength = 2;
+            this.owexit_doory_property.MaxValue = 255;
+            this.owexit_doory_property.MinValue = 0;
+            this.owexit_doory_property.Name = "owexit_doory_property";
+            this.owexit_doory_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_doory_property.TabIndex = 65;
+            this.owexit_doory_property.Text = "00";
+            this.owexit_doory_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_doory_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_doorx_property
+            // 
+            this.owexit_doorx_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_doorx_property.Decimal = false;
+            this.owexit_doorx_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.owexit_doorx_property.HexValue = 0;
+            this.owexit_doorx_property.Location = new System.Drawing.Point(9, 195);
+            this.owexit_doorx_property.MaxLength = 2;
+            this.owexit_doorx_property.MaxValue = 255;
+            this.owexit_doorx_property.MinValue = 0;
+            this.owexit_doorx_property.Name = "owexit_doorx_property";
+            this.owexit_doorx_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_doorx_property.TabIndex = 64;
+            this.owexit_doorx_property.Text = "00";
+            this.owexit_doorx_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_doorx_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_yscroll_property
+            // 
+            this.owexit_yscroll_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_yscroll_property.Decimal = false;
+            this.owexit_yscroll_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.owexit_yscroll_property.Enabled = false;
+            this.owexit_yscroll_property.HexValue = 0;
+            this.owexit_yscroll_property.Location = new System.Drawing.Point(189, 110);
+            this.owexit_yscroll_property.MaxLength = 4;
+            this.owexit_yscroll_property.MaxValue = 65535;
+            this.owexit_yscroll_property.MinValue = 0;
+            this.owexit_yscroll_property.Name = "owexit_yscroll_property";
+            this.owexit_yscroll_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_yscroll_property.TabIndex = 63;
+            this.owexit_yscroll_property.Text = "0000";
+            this.owexit_yscroll_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_yscroll_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_ycamera_property
+            // 
+            this.owexit_ycamera_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_ycamera_property.Decimal = false;
+            this.owexit_ycamera_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.owexit_ycamera_property.Enabled = false;
+            this.owexit_ycamera_property.HexValue = 0;
+            this.owexit_ycamera_property.Location = new System.Drawing.Point(100, 110);
+            this.owexit_ycamera_property.MaxLength = 4;
+            this.owexit_ycamera_property.MaxValue = 65535;
+            this.owexit_ycamera_property.MinValue = 0;
+            this.owexit_ycamera_property.Name = "owexit_ycamera_property";
+            this.owexit_ycamera_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_ycamera_property.TabIndex = 62;
+            this.owexit_ycamera_property.Text = "0000";
+            this.owexit_ycamera_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_ycamera_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_y_property
+            // 
+            this.owexit_y_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_y_property.Decimal = false;
+            this.owexit_y_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.owexit_y_property.Enabled = false;
+            this.owexit_y_property.HexValue = 0;
+            this.owexit_y_property.Location = new System.Drawing.Point(12, 110);
+            this.owexit_y_property.MaxLength = 4;
+            this.owexit_y_property.MaxValue = 65535;
+            this.owexit_y_property.MinValue = 0;
+            this.owexit_y_property.Name = "owexit_y_property";
+            this.owexit_y_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_y_property.TabIndex = 61;
+            this.owexit_y_property.Text = "0000";
+            this.owexit_y_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_y_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_xscroll_property
+            // 
+            this.owexit_xscroll_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_xscroll_property.Decimal = false;
+            this.owexit_xscroll_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.owexit_xscroll_property.Enabled = false;
+            this.owexit_xscroll_property.HexValue = 0;
+            this.owexit_xscroll_property.Location = new System.Drawing.Point(189, 70);
+            this.owexit_xscroll_property.MaxLength = 4;
+            this.owexit_xscroll_property.MaxValue = 65535;
+            this.owexit_xscroll_property.MinValue = 0;
+            this.owexit_xscroll_property.Name = "owexit_xscroll_property";
+            this.owexit_xscroll_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_xscroll_property.TabIndex = 60;
+            this.owexit_xscroll_property.Text = "0000";
+            this.owexit_xscroll_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_xscroll_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_xcamera_property
+            // 
+            this.owexit_xcamera_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_xcamera_property.Decimal = false;
+            this.owexit_xcamera_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.owexit_xcamera_property.Enabled = false;
+            this.owexit_xcamera_property.HexValue = 0;
+            this.owexit_xcamera_property.Location = new System.Drawing.Point(100, 70);
+            this.owexit_xcamera_property.MaxLength = 4;
+            this.owexit_xcamera_property.MaxValue = 65535;
+            this.owexit_xcamera_property.MinValue = 0;
+            this.owexit_xcamera_property.Name = "owexit_xcamera_property";
+            this.owexit_xcamera_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_xcamera_property.TabIndex = 59;
+            this.owexit_xcamera_property.Text = "0000";
+            this.owexit_xcamera_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_xcamera_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_x_property
+            // 
+            this.owexit_x_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_x_property.Decimal = false;
+            this.owexit_x_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.owexit_x_property.Enabled = false;
+            this.owexit_x_property.HexValue = 0;
+            this.owexit_x_property.Location = new System.Drawing.Point(12, 71);
+            this.owexit_x_property.MaxLength = 4;
+            this.owexit_x_property.MaxValue = 65535;
+            this.owexit_x_property.MinValue = 0;
+            this.owexit_x_property.Name = "owexit_x_property";
+            this.owexit_x_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_x_property.TabIndex = 58;
+            this.owexit_x_property.Text = "0000";
+            this.owexit_x_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_x_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_map_property
+            // 
+            this.owexit_map_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_map_property.Decimal = false;
+            this.owexit_map_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.owexit_map_property.Enabled = false;
+            this.owexit_map_property.HexValue = 0;
+            this.owexit_map_property.Location = new System.Drawing.Point(100, 31);
+            this.owexit_map_property.MaxLength = 2;
+            this.owexit_map_property.MaxValue = 255;
+            this.owexit_map_property.MinValue = 0;
+            this.owexit_map_property.Name = "owexit_map_property";
+            this.owexit_map_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_map_property.TabIndex = 57;
+            this.owexit_map_property.Text = "00";
+            this.owexit_map_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_map_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // owexit_room_property
+            // 
+            this.owexit_room_property.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.owexit_room_property.Decimal = false;
+            this.owexit_room_property.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+            this.owexit_room_property.HexValue = 0;
+            this.owexit_room_property.Location = new System.Drawing.Point(9, 32);
+            this.owexit_room_property.MaxLength = 4;
+            this.owexit_room_property.MaxValue = 4095;
+            this.owexit_room_property.MinValue = 0;
+            this.owexit_room_property.Name = "owexit_room_property";
+            this.owexit_room_property.Size = new System.Drawing.Size(79, 20);
+            this.owexit_room_property.TabIndex = 56;
+            this.owexit_room_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.owexit_room_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1974,6 +2390,8 @@
             this.objectGroupbox.ResumeLayout(false);
             this.objectGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
+            this.exitpropertyGroupbox.ResumeLayout(false);
+            this.exitpropertyGroupbox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2118,8 +2536,36 @@
         public System.Windows.Forms.ListBox owentrancesListbox;
         private System.Windows.Forms.CheckBox owentrance_property_ishole;
         private System.Windows.Forms.ImageList tabcontrolImagelist;
-        private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
         public System.Windows.Forms.Label selectedTileLabel;
+        private System.Windows.Forms.GroupBox exitpropertyGroupbox;
+        private System.Windows.Forms.Label label30;
+        private ExtraForms.Hexbox owexit_room_property;
+        private System.Windows.Forms.RadioButton castledoorradioButton;
+        private System.Windows.Forms.RadioButton bombdoorradioButton;
+        private System.Windows.Forms.Button setPositionButton;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.RadioButton sancdoorButton;
+        private System.Windows.Forms.RadioButton wooddoorradioButton;
+        private System.Windows.Forms.RadioButton nodoorradioButton;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label label41;
+        private ExtraForms.Hexbox owexit_map_property;
+        private ExtraForms.Hexbox owexit_x_property;
+        private ExtraForms.Hexbox owexit_doory_property;
+        private ExtraForms.Hexbox owexit_doorx_property;
+        private ExtraForms.Hexbox owexit_yscroll_property;
+        private ExtraForms.Hexbox owexit_ycamera_property;
+        private ExtraForms.Hexbox owexit_y_property;
+        private ExtraForms.Hexbox owexit_xscroll_property;
+        private ExtraForms.Hexbox owexit_xcamera_property;
+        public System.Windows.Forms.ListBox overworldexitsListbox;
     }
 }
