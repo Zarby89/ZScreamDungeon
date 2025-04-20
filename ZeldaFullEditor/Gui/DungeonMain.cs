@@ -560,6 +560,12 @@ namespace ZeldaFullEditor
                     break;
                 }
 
+                // The mosaic byte is hardcoded to true on purpose for now.
+                if (save.SaveDungeonHolesOverlay())
+                {
+                    UIText.CryAboutSaving("problem saving dungeons holes overlays (probably using too much space) try removing objects");
+                    break;
+                }
                 // If we made it here, everything was fine.
                 badSave = false;
             }
@@ -741,6 +747,7 @@ namespace ZeldaFullEditor
             this.InitEntrancesList();
             this.customPanel3.Controls.Add(this.activeScene);
             this.AddRoomTab(260);
+            DungeonOverlays.LoadOverlays();
 
             this.TabControl2_SelectedIndexChanged(this.tabControl2.TabPages[0], new EventArgs());
             this.EnableProjectButtons();
@@ -1134,6 +1141,7 @@ namespace ZeldaFullEditor
             this.doorselectPanel.Visible = false;
             this.litCheckbox.Visible = false;
             this.collisionMapPanel.Visible = false;
+            this.overlayPanel.Visible = false;
             foreach (Room room in this.opened_rooms)
             {
                 room.selectedObject.Clear();
@@ -1187,7 +1195,9 @@ namespace ZeldaFullEditor
             }
             else if (this.warpmodeButton.Checked)
             {
-                this.SetmodeAllScene(ObjectMode.Warpmode);
+                this.SetmodeAllScene(ObjectMode.OverlayMode);
+                overlayPanel.Visible = true;
+                overlayCombobox.SelectedIndex = 0;
             }
             else if (this.chestmodeButton.Checked)
             {
@@ -1216,6 +1226,7 @@ namespace ZeldaFullEditor
             this.selectedLayer = -1;
             (sender as ToolStripButton).Checked = true;
             this.UpdateScenesMode();
+            sortObject(); // sort the object so we only see hole and floor on the overlay mode
 
             this.activeScene.room.update();
             this.activeScene.need_refresh = true;
@@ -2015,19 +2026,32 @@ namespace ZeldaFullEditor
             }
             else
             {
-                // Sorting sort;
-                string searchText = this.searchTextbox.Text.ToLower();
+                if (activeScene.selectedMode == ObjectMode.OverlayMode)
+                {
+                    // Sorting sort;
+                    string searchText = this.searchTextbox.Text.ToLower();
+                    objectViewer1.items.Add(listoftilesobjects.Where(x => x.id == 0xA4).ToList()[0]);
+                    objectViewer1.items.Add(listoftilesobjects.Where(x => x.id == 0xC7).ToList()[0]);
+                    this.objectViewer1.updateSize();
+                    this.panel1.VerticalScroll.Value = 0;
+                    this.objectViewer1.Refresh();
+                }
+                else
+                {
+                    // Sorting sort;
+                    string searchText = this.searchTextbox.Text.ToLower();
 
-                // ListView1
-                this.objectViewer1.items.AddRange(this.listoftilesobjects
-                    .Where(x => x != null)
-                    .Where(x => x.name.ToLower().Contains(searchText))
-                    .OrderBy(x => x.id)
-                    .Select(x => x) // ?
-                    .ToArray());
-                this.objectViewer1.updateSize();
-                this.panel1.VerticalScroll.Value = 0;
-                this.objectViewer1.Refresh();
+                    // ListView1
+                    this.objectViewer1.items.AddRange(this.listoftilesobjects
+                        .Where(x => x != null)
+                        .Where(x => x.name.ToLower().Contains(searchText))
+                        .OrderBy(x => x.id)
+                        .Select(x => x) // ?
+                        .ToArray());
+                    this.objectViewer1.updateSize();
+                    this.panel1.VerticalScroll.Value = 0;
+                    this.objectViewer1.Refresh();
+                }
             }
         }
 
@@ -2555,6 +2579,11 @@ namespace ZeldaFullEditor
             this.bg2checkbox3.Checked = room.staircase2Plane == 2;
             this.bg2checkbox4.Checked = room.staircase3Plane == 2;
             this.bg2checkbox5.Checked = room.staircase4Plane == 2;
+
+            foreach (Room_Object o in DungeonOverlays.loadedOverlay)
+            {
+                o.setRoom(room); // update the room for the gfx
+            }
 
             this.propertiesChangedFromForm = false;
         }
@@ -6557,6 +6586,14 @@ namespace ZeldaFullEditor
             Palettes.ReloadOWPalettesFromExpanded(ROM.DATA);
 
             this.gfxEditor.paletteForm.ResetTreeNodes();
+        }
+
+        private void overlayCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DungeonOverlays.loadedOverlay = DungeonOverlays.overlays[overlayCombobox.SelectedIndex];
+            activeScene.need_refresh = true;
+            activeScene.DrawRoom();
+            activeScene.Refresh();
         }
     }
 }

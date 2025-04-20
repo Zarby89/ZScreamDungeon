@@ -249,6 +249,9 @@ namespace ZeldaFullEditor
                 case ObjectMode.Tile:
                     this.tilemode.OnMouseDown(e);
                     break;
+                case ObjectMode.FillTile:
+                    this.tilemode.OnMouseDownFill(e);
+                    break;
 
                 case ObjectMode.Overlay:
                     this.overlayMode.OnMouseDown(e);
@@ -310,7 +313,7 @@ namespace ZeldaFullEditor
             this.owForm.objCombobox.SelectedIndexChanged -= this.ObjCombobox_SelectedIndexChangedItem;
             string text = "Selected object: ";
 
-            if (this.selectedMode == ObjectMode.Tile)
+            if (this.selectedMode == ObjectMode.Tile || this.selectedMode == ObjectMode.FillTile)
             {
                 text = "Selected Tile " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
 
@@ -550,6 +553,7 @@ namespace ZeldaFullEditor
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
+                case ObjectMode.FillTile:
                     this.tilemode.OnMouseMove(e);
                     break;
 
@@ -620,6 +624,7 @@ namespace ZeldaFullEditor
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
+                case ObjectMode.FillTile:
                     this.tilemode.Paste();
                     break;
 
@@ -664,6 +669,7 @@ namespace ZeldaFullEditor
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
+                case ObjectMode.FillTile:
                     this.tilemode.Copy();
                     break;
 
@@ -708,6 +714,7 @@ namespace ZeldaFullEditor
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
+                case ObjectMode.FillTile:
                     //this.tilemode.Cut();
                     break;
 
@@ -1293,6 +1300,7 @@ namespace ZeldaFullEditor
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
+                case ObjectMode.FillTile:
                     //this.tilemode.Delete();
                     break;
 

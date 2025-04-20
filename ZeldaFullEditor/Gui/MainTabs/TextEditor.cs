@@ -1002,7 +1002,9 @@ namespace ZeldaFullEditor
 			}
             e.Graphics.DrawString(id, boldFont, new SolidBrush(e.ForeColor), new RectangleF(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
             e.Graphics.DrawString(s, e.Font, new SolidBrush(e.ForeColor), new RectangleF(e.Bounds.X+32, e.Bounds.Y, e.Bounds.Width,e.Bounds.Height));
-            
+
+            e.Graphics.DrawString(Constants.textsLocations[e.Index], boldFont, new SolidBrush(Color.DarkRed), new RectangleF(e.Bounds.X + 240, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
+
         }
 
         private void TextListbox_SelectedIndexChanged(object sender, EventArgs e)

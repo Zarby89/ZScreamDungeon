@@ -153,6 +153,7 @@
     <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Data\SongAddress.cs" />
     <Compile Include="Data\SpriteProperty.cs" />
+    <Compile Include="DungeonOverlays.cs" />
     <Compile Include="Gui\AddDirectoryForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -12,7 +12,7 @@
         Blockmode,
         Torchmode,
         Doormode,
-        Warpmode,
+        OverlayMode,
         Tile,
         Exits,
         Entrances,
@@ -24,5 +24,6 @@
         CollisionMap,
         OverlayAnimation,
         Notemode,
+        FillTile
     }
 }
