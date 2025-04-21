@@ -118,6 +118,25 @@
             this.label1 = new System.Windows.Forms.Label();
             this.entranceLabel1 = new System.Windows.Forms.Label();
             this.exitTabpage = new System.Windows.Forms.TabPage();
+            this.overworldexitsListbox = new System.Windows.Forms.ListBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.exitpropertyGroupbox = new System.Windows.Forms.GroupBox();
+            this.castledoorradioButton = new System.Windows.Forms.RadioButton();
+            this.bombdoorradioButton = new System.Windows.Forms.RadioButton();
+            this.setPositionButton = new System.Windows.Forms.Button();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.sancdoorButton = new System.Windows.Forms.RadioButton();
+            this.wooddoorradioButton = new System.Windows.Forms.RadioButton();
+            this.nodoorradioButton = new System.Windows.Forms.RadioButton();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
             this.transportTabpage = new System.Windows.Forms.TabPage();
             this.label31 = new System.Windows.Forms.Label();
             this.Tiles8 = new System.Windows.Forms.TabPage();
@@ -148,25 +167,6 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.paletteCyclingTimer = new System.Windows.Forms.Timer(this.components);
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.exitpropertyGroupbox = new System.Windows.Forms.GroupBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.castledoorradioButton = new System.Windows.Forms.RadioButton();
-            this.bombdoorradioButton = new System.Windows.Forms.RadioButton();
-            this.setPositionButton = new System.Windows.Forms.Button();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.sancdoorButton = new System.Windows.Forms.RadioButton();
-            this.wooddoorradioButton = new System.Windows.Forms.RadioButton();
-            this.nodoorradioButton = new System.Windows.Forms.RadioButton();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.overworldexitsListbox = new System.Windows.Forms.ListBox();
             this.OWProperty_TileGFX7 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_TileGFX6 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.OWProperty_TileGFX5 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -217,6 +217,7 @@
             this.entranceTabpage.SuspendLayout();
             this.entrancePropertiesGroupbox.SuspendLayout();
             this.exitTabpage.SuspendLayout();
+            this.exitpropertyGroupbox.SuspendLayout();
             this.transportTabpage.SuspendLayout();
             this.Tiles8.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -229,7 +230,6 @@
             this.groupBox1.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
-            this.exitpropertyGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -1236,6 +1236,224 @@
             this.exitTabpage.ToolTipText = "Exits";
             this.exitTabpage.UseVisualStyleBackColor = true;
             // 
+            // overworldexitsListbox
+            // 
+            this.overworldexitsListbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.overworldexitsListbox.FormattingEnabled = true;
+            this.overworldexitsListbox.Location = new System.Drawing.Point(0, 240);
+            this.overworldexitsListbox.Name = "overworldexitsListbox";
+            this.overworldexitsListbox.Size = new System.Drawing.Size(274, 379);
+            this.overworldexitsListbox.TabIndex = 2;
+            this.overworldexitsListbox.SelectedIndexChanged += new System.EventHandler(this.overworldexitsListbox_SelectedIndexChanged);
+            this.overworldexitsListbox.DoubleClick += new System.EventHandler(this.overworldexitsListbox_DoubleClick);
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label30.Location = new System.Drawing.Point(0, 227);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(213, 13);
+            this.label30.TabIndex = 1;
+            this.label30.Text = "Overworld exits list (double click to move to)";
+            // 
+            // exitpropertyGroupbox
+            // 
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_doory_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_doorx_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_yscroll_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_ycamera_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_y_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_xscroll_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_xcamera_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_x_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_map_property);
+            this.exitpropertyGroupbox.Controls.Add(this.owexit_room_property);
+            this.exitpropertyGroupbox.Controls.Add(this.castledoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.bombdoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.setPositionButton);
+            this.exitpropertyGroupbox.Controls.Add(this.label32);
+            this.exitpropertyGroupbox.Controls.Add(this.label33);
+            this.exitpropertyGroupbox.Controls.Add(this.sancdoorButton);
+            this.exitpropertyGroupbox.Controls.Add(this.wooddoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.nodoorradioButton);
+            this.exitpropertyGroupbox.Controls.Add(this.label34);
+            this.exitpropertyGroupbox.Controls.Add(this.label35);
+            this.exitpropertyGroupbox.Controls.Add(this.label36);
+            this.exitpropertyGroupbox.Controls.Add(this.label37);
+            this.exitpropertyGroupbox.Controls.Add(this.label38);
+            this.exitpropertyGroupbox.Controls.Add(this.label39);
+            this.exitpropertyGroupbox.Controls.Add(this.label40);
+            this.exitpropertyGroupbox.Controls.Add(this.label41);
+            this.exitpropertyGroupbox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.exitpropertyGroupbox.Location = new System.Drawing.Point(0, 0);
+            this.exitpropertyGroupbox.Name = "exitpropertyGroupbox";
+            this.exitpropertyGroupbox.Size = new System.Drawing.Size(274, 227);
+            this.exitpropertyGroupbox.TabIndex = 0;
+            this.exitpropertyGroupbox.TabStop = false;
+            this.exitpropertyGroupbox.Text = "Selected Exit Properties";
+            // 
+            // castledoorradioButton
+            // 
+            this.castledoorradioButton.AutoSize = true;
+            this.castledoorradioButton.Location = new System.Drawing.Point(178, 159);
+            this.castledoorradioButton.Name = "castledoorradioButton";
+            this.castledoorradioButton.Size = new System.Drawing.Size(78, 17);
+            this.castledoorradioButton.TabIndex = 55;
+            this.castledoorradioButton.TabStop = true;
+            this.castledoorradioButton.Text = "Castle door";
+            this.castledoorradioButton.UseVisualStyleBackColor = true;
+            this.castledoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // bombdoorradioButton
+            // 
+            this.bombdoorradioButton.AutoSize = true;
+            this.bombdoorradioButton.Location = new System.Drawing.Point(80, 159);
+            this.bombdoorradioButton.Name = "bombdoorradioButton";
+            this.bombdoorradioButton.Size = new System.Drawing.Size(96, 17);
+            this.bombdoorradioButton.TabIndex = 54;
+            this.bombdoorradioButton.TabStop = true;
+            this.bombdoorradioButton.Text = "Bombable door";
+            this.bombdoorradioButton.UseVisualStyleBackColor = true;
+            this.bombdoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // setPositionButton
+            // 
+            this.setPositionButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            this.setPositionButton.Location = new System.Drawing.Point(185, 191);
+            this.setPositionButton.Name = "setPositionButton";
+            this.setPositionButton.Size = new System.Drawing.Size(80, 22);
+            this.setPositionButton.TabIndex = 52;
+            this.setPositionButton.Text = "Set position";
+            this.setPositionButton.UseVisualStyleBackColor = true;
+            this.setPositionButton.Click += new System.EventHandler(this.setPositionButton_Click);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(97, 179);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(79, 13);
+            this.label32.TabIndex = 51;
+            this.label32.Text = "Door Y position";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 179);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(82, 13);
+            this.label33.TabIndex = 48;
+            this.label33.Text = "Door X position.";
+            // 
+            // sancdoorButton
+            // 
+            this.sancdoorButton.AutoSize = true;
+            this.sancdoorButton.Location = new System.Drawing.Point(178, 136);
+            this.sancdoorButton.Name = "sancdoorButton";
+            this.sancdoorButton.Size = new System.Drawing.Size(93, 17);
+            this.sancdoorButton.TabIndex = 47;
+            this.sancdoorButton.TabStop = true;
+            this.sancdoorButton.Text = "Big fancy door";
+            this.sancdoorButton.UseVisualStyleBackColor = true;
+            this.sancdoorButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // wooddoorradioButton
+            // 
+            this.wooddoorradioButton.AutoSize = true;
+            this.wooddoorradioButton.Location = new System.Drawing.Point(80, 136);
+            this.wooddoorradioButton.Name = "wooddoorradioButton";
+            this.wooddoorradioButton.Size = new System.Drawing.Size(90, 17);
+            this.wooddoorradioButton.TabIndex = 46;
+            this.wooddoorradioButton.TabStop = true;
+            this.wooddoorradioButton.Text = "Wooden door";
+            this.wooddoorradioButton.UseVisualStyleBackColor = true;
+            this.wooddoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // nodoorradioButton
+            // 
+            this.nodoorradioButton.AutoSize = true;
+            this.nodoorradioButton.Location = new System.Drawing.Point(9, 136);
+            this.nodoorradioButton.Name = "nodoorradioButton";
+            this.nodoorradioButton.Size = new System.Drawing.Size(63, 17);
+            this.nodoorradioButton.TabIndex = 45;
+            this.nodoorradioButton.TabStop = true;
+            this.nodoorradioButton.Text = "No door";
+            this.nodoorradioButton.UseVisualStyleBackColor = true;
+            this.nodoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(186, 93);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(79, 13);
+            this.label34.TabIndex = 41;
+            this.label34.Text = "Y camera scroll";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(97, 94);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(52, 13);
+            this.label35.TabIndex = 40;
+            this.label35.Text = "Y camera";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(6, 94);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(53, 13);
+            this.label36.TabIndex = 39;
+            this.label36.Text = "Y position";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(186, 54);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(79, 13);
+            this.label37.TabIndex = 35;
+            this.label37.Text = "X camera scroll";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(97, 54);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(52, 13);
+            this.label38.TabIndex = 34;
+            this.label38.Text = "X camera";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(6, 55);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(53, 13);
+            this.label39.TabIndex = 33;
+            this.label39.Text = "X position";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(97, 15);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(28, 13);
+            this.label40.TabIndex = 31;
+            this.label40.Text = "Map";
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(6, 16);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(85, 13);
+            this.label41.TabIndex = 30;
+            this.label41.Text = "Associated room";
+            // 
             // transportTabpage
             // 
             this.transportTabpage.Controls.Add(this.label31);
@@ -1562,224 +1780,6 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-            // 
-            // exitpropertyGroupbox
-            // 
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_doory_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_doorx_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_yscroll_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_ycamera_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_y_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_xscroll_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_xcamera_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_x_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_map_property);
-            this.exitpropertyGroupbox.Controls.Add(this.owexit_room_property);
-            this.exitpropertyGroupbox.Controls.Add(this.castledoorradioButton);
-            this.exitpropertyGroupbox.Controls.Add(this.bombdoorradioButton);
-            this.exitpropertyGroupbox.Controls.Add(this.setPositionButton);
-            this.exitpropertyGroupbox.Controls.Add(this.label32);
-            this.exitpropertyGroupbox.Controls.Add(this.label33);
-            this.exitpropertyGroupbox.Controls.Add(this.sancdoorButton);
-            this.exitpropertyGroupbox.Controls.Add(this.wooddoorradioButton);
-            this.exitpropertyGroupbox.Controls.Add(this.nodoorradioButton);
-            this.exitpropertyGroupbox.Controls.Add(this.label34);
-            this.exitpropertyGroupbox.Controls.Add(this.label35);
-            this.exitpropertyGroupbox.Controls.Add(this.label36);
-            this.exitpropertyGroupbox.Controls.Add(this.label37);
-            this.exitpropertyGroupbox.Controls.Add(this.label38);
-            this.exitpropertyGroupbox.Controls.Add(this.label39);
-            this.exitpropertyGroupbox.Controls.Add(this.label40);
-            this.exitpropertyGroupbox.Controls.Add(this.label41);
-            this.exitpropertyGroupbox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.exitpropertyGroupbox.Location = new System.Drawing.Point(0, 0);
-            this.exitpropertyGroupbox.Name = "exitpropertyGroupbox";
-            this.exitpropertyGroupbox.Size = new System.Drawing.Size(274, 227);
-            this.exitpropertyGroupbox.TabIndex = 0;
-            this.exitpropertyGroupbox.TabStop = false;
-            this.exitpropertyGroupbox.Text = "Selected Exit Properties";
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label30.Location = new System.Drawing.Point(0, 227);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(213, 13);
-            this.label30.TabIndex = 1;
-            this.label30.Text = "Overworld exits list (double click to move to)";
-            // 
-            // castledoorradioButton
-            // 
-            this.castledoorradioButton.AutoSize = true;
-            this.castledoorradioButton.Location = new System.Drawing.Point(178, 159);
-            this.castledoorradioButton.Name = "castledoorradioButton";
-            this.castledoorradioButton.Size = new System.Drawing.Size(78, 17);
-            this.castledoorradioButton.TabIndex = 55;
-            this.castledoorradioButton.TabStop = true;
-            this.castledoorradioButton.Text = "Castle door";
-            this.castledoorradioButton.UseVisualStyleBackColor = true;
-            this.castledoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
-            // 
-            // bombdoorradioButton
-            // 
-            this.bombdoorradioButton.AutoSize = true;
-            this.bombdoorradioButton.Location = new System.Drawing.Point(80, 159);
-            this.bombdoorradioButton.Name = "bombdoorradioButton";
-            this.bombdoorradioButton.Size = new System.Drawing.Size(96, 17);
-            this.bombdoorradioButton.TabIndex = 54;
-            this.bombdoorradioButton.TabStop = true;
-            this.bombdoorradioButton.Text = "Bombable door";
-            this.bombdoorradioButton.UseVisualStyleBackColor = true;
-            this.bombdoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
-            // 
-            // setPositionButton
-            // 
-            this.setPositionButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.setPositionButton.Location = new System.Drawing.Point(185, 191);
-            this.setPositionButton.Name = "setPositionButton";
-            this.setPositionButton.Size = new System.Drawing.Size(80, 22);
-            this.setPositionButton.TabIndex = 52;
-            this.setPositionButton.Text = "Set position";
-            this.setPositionButton.UseVisualStyleBackColor = true;
-            this.setPositionButton.Click += new System.EventHandler(this.setPositionButton_Click);
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(97, 179);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(79, 13);
-            this.label32.TabIndex = 51;
-            this.label32.Text = "Door Y position";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(6, 179);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(82, 13);
-            this.label33.TabIndex = 48;
-            this.label33.Text = "Door X position.";
-            // 
-            // sancdoorButton
-            // 
-            this.sancdoorButton.AutoSize = true;
-            this.sancdoorButton.Location = new System.Drawing.Point(178, 136);
-            this.sancdoorButton.Name = "sancdoorButton";
-            this.sancdoorButton.Size = new System.Drawing.Size(93, 17);
-            this.sancdoorButton.TabIndex = 47;
-            this.sancdoorButton.TabStop = true;
-            this.sancdoorButton.Text = "Big fancy door";
-            this.sancdoorButton.UseVisualStyleBackColor = true;
-            this.sancdoorButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
-            // 
-            // wooddoorradioButton
-            // 
-            this.wooddoorradioButton.AutoSize = true;
-            this.wooddoorradioButton.Location = new System.Drawing.Point(80, 136);
-            this.wooddoorradioButton.Name = "wooddoorradioButton";
-            this.wooddoorradioButton.Size = new System.Drawing.Size(90, 17);
-            this.wooddoorradioButton.TabIndex = 46;
-            this.wooddoorradioButton.TabStop = true;
-            this.wooddoorradioButton.Text = "Wooden door";
-            this.wooddoorradioButton.UseVisualStyleBackColor = true;
-            this.wooddoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
-            // 
-            // nodoorradioButton
-            // 
-            this.nodoorradioButton.AutoSize = true;
-            this.nodoorradioButton.Location = new System.Drawing.Point(9, 136);
-            this.nodoorradioButton.Name = "nodoorradioButton";
-            this.nodoorradioButton.Size = new System.Drawing.Size(63, 17);
-            this.nodoorradioButton.TabIndex = 45;
-            this.nodoorradioButton.TabStop = true;
-            this.nodoorradioButton.Text = "No door";
-            this.nodoorradioButton.UseVisualStyleBackColor = true;
-            this.nodoorradioButton.CheckedChanged += new System.EventHandler(this.roomUpDown_TextChanged);
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(186, 93);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(79, 13);
-            this.label34.TabIndex = 41;
-            this.label34.Text = "Y camera scroll";
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(97, 94);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(52, 13);
-            this.label35.TabIndex = 40;
-            this.label35.Text = "Y camera";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(6, 94);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(53, 13);
-            this.label36.TabIndex = 39;
-            this.label36.Text = "Y position";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(186, 54);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(79, 13);
-            this.label37.TabIndex = 35;
-            this.label37.Text = "X camera scroll";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(97, 54);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(52, 13);
-            this.label38.TabIndex = 34;
-            this.label38.Text = "X camera";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(6, 55);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(53, 13);
-            this.label39.TabIndex = 33;
-            this.label39.Text = "X position";
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(97, 15);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(28, 13);
-            this.label40.TabIndex = 31;
-            this.label40.Text = "Map";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(6, 16);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(85, 13);
-            this.label41.TabIndex = 30;
-            this.label41.Text = "Associated room";
-            // 
-            // overworldexitsListbox
-            // 
-            this.overworldexitsListbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.overworldexitsListbox.FormattingEnabled = true;
-            this.overworldexitsListbox.Location = new System.Drawing.Point(0, 240);
-            this.overworldexitsListbox.Name = "overworldexitsListbox";
-            this.overworldexitsListbox.Size = new System.Drawing.Size(274, 379);
-            this.overworldexitsListbox.TabIndex = 2;
-            this.overworldexitsListbox.SelectedIndexChanged += new System.EventHandler(this.overworldexitsListbox_SelectedIndexChanged);
-            this.overworldexitsListbox.DoubleClick += new System.EventHandler(this.overworldexitsListbox_DoubleClick);
             // 
             // OWProperty_TileGFX7
             // 
@@ -2336,6 +2336,7 @@
             this.owexit_room_property.Name = "owexit_room_property";
             this.owexit_room_property.Size = new System.Drawing.Size(79, 20);
             this.owexit_room_property.TabIndex = 56;
+            this.owexit_room_property.Text = "0000";
             this.owexit_room_property.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.owexit_room_property.TextChanged += new System.EventHandler(this.roomUpDown_TextChanged);
             // 
@@ -2374,6 +2375,8 @@
             this.entrancePropertiesGroupbox.PerformLayout();
             this.exitTabpage.ResumeLayout(false);
             this.exitTabpage.PerformLayout();
+            this.exitpropertyGroupbox.ResumeLayout(false);
+            this.exitpropertyGroupbox.PerformLayout();
             this.transportTabpage.ResumeLayout(false);
             this.transportTabpage.PerformLayout();
             this.Tiles8.ResumeLayout(false);
@@ -2390,8 +2393,6 @@
             this.objectGroupbox.ResumeLayout(false);
             this.objectGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
-            this.exitpropertyGroupbox.ResumeLayout(false);
-            this.exitpropertyGroupbox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -92,9 +92,15 @@ namespace ZeldaFullEditor.Gui
             ambient3Box.Items.AddRange(Constants.ambientNamesOW);
             ambient4Box.Items.AddRange(Constants.ambientNamesOW);
 
-            for (int i = 0; i< overworld.AllEntrances.Length;i++)
+            for (int i = 0; i < overworld.AllEntrances.Length; i++)
             {
                 string tname = "OW[" + i.ToString("X2") + "] -> UW";
+                if (overworld.AllEntrances[i].Deleted)
+                {
+                    tname = "OW[" + i.ToString("X2") + "] DELETED";
+                    owentrancesListbox.Items.Add(tname);
+                    continue;
+                }
                 foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
                 {
                     if (dataRoom.ID == DungeonsData.Entrances[overworld.AllEntrances[i].EntranceID].Room)
@@ -114,8 +120,15 @@ namespace ZeldaFullEditor.Gui
                 {
                     tname += " Ending Cutscene";
                 }
+                if (overworld.AllExits[i].PlayerX == 0xFFFF)
+                {
+                    tname += " DELETED";
+                }
                 overworldexitsListbox.Items.Add(tname);
             }
+
+            owentrancesListbox.SelectedIndex = 0;
+            overworldexitsListbox.SelectedIndex = 0;
 
             //setTilesGfx();
             bool fromFile = false;
@@ -488,7 +501,7 @@ namespace ZeldaFullEditor.Gui
         private void tilePictureBox_DoubleClick(object sender, EventArgs e)
         {
             Tile16Editor ted = new Tile16Editor(this.scene);
-            
+
             if (ted.ShowDialog() == DialogResult.OK)
             {
                 new Thread(() =>
@@ -1263,8 +1276,8 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-		// TODO: KAN REFACTOR THIS IS A HORRIBLE FUCKING FUNCTION AND I HATE IT AND IT NEEDS MASSIVE CLEAN UP
-		public void UpdateLargeMap(int mapID, bool largemapChecked)
+        // TODO: KAN REFACTOR THIS IS A HORRIBLE FUCKING FUNCTION AND I HATE IT AND IT NEEDS MASSIVE CLEAN UP
+        public void UpdateLargeMap(int mapID, bool largemapChecked)
         {
             if (largemapChecked) // Large map
             {
@@ -1274,8 +1287,8 @@ namespace ZeldaFullEditor.Gui
                     int i = 0;
                     string temp = string.Empty;
 
-					// TODO: KAN REFACTOR
-					if (this.scene.ow.AllMaps[mapID + 1].LargeMap)
+                    // TODO: KAN REFACTOR
+                    if (this.scene.ow.AllMaps[mapID + 1].LargeMap)
                     {
                         temp += (mapID + 1).ToString("X2") + ", ";
                         i++;
@@ -2202,6 +2215,7 @@ namespace ZeldaFullEditor.Gui
         /// </summary>
         public void clearOverworldExits()
         {
+            int i = 0;
             foreach (var exit in this.overworld.AllExits)
             {
                 exit.PlayerX = 0xFFFF;
@@ -2209,6 +2223,11 @@ namespace ZeldaFullEditor.Gui
                 exit.MapID = 0;
                 exit.RoomID = 0;
                 exit.Deleted = true;
+
+                string tname = "Exit [" + i.ToString("X2") + "] -> From room " + overworld.AllExits[i].RoomID.ToString("X4") + " DELETED";
+                overworldexitsListbox.Items[i] = tname;
+                i++;
+
             }
         }
 
@@ -2585,7 +2604,7 @@ namespace ZeldaFullEditor.Gui
             previewsheetPicturebox.Location = new Point(0, (sender as Hexbox).Location.Y + 48);
 
             previewSheets = new byte[4];
-            for(int i = 0; i< 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 previewSheets[i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (OWProperty_SPRGFX.HexValue * 4) + i] + 115);
             }
@@ -2604,7 +2623,7 @@ namespace ZeldaFullEditor.Gui
         {
             if (ispalPreview)
             {
-                for(int i = 0; i < 256;i++)
+                for (int i = 0; i < 256; i++)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(scene.ow.AllMaps[scene.selectedMapParent].GFXBitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
                 }
@@ -2700,7 +2719,7 @@ namespace ZeldaFullEditor.Gui
 
             EntranceOW eow = overworld.AllEntrances[owentrancesListbox.SelectedIndex];
 
-            int xView = (eow.X - (splitContainer1.Panel2.Width/2));
+            int xView = (eow.X - (splitContainer1.Panel2.Width / 2));
             xView = xView.Clamp(0, 4096 - splitContainer1.Panel2.Width);
 
             int yView = (eow.Y - (splitContainer1.Panel2.Height / 2));
@@ -2731,7 +2750,8 @@ namespace ZeldaFullEditor.Gui
 
                 scene.entranceMode.selectedEntrance = eow;
                 scene.entranceMode.lastselectedEntrance = eow;
-                scene.entranceMode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+                //scene.entranceMode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+                scene.entranceMode.ShowRoomPreview();
 
                 owentrance_property_entranceid.HexValue = scene.entranceMode.lastselectedEntrance.EntranceID;
                 owentrance_property_ishole.Checked = scene.entranceMode.lastselectedEntrance.IsHole;
@@ -2758,27 +2778,35 @@ namespace ZeldaFullEditor.Gui
 
         private void owentrance_property_entranceid_TextChanged(object sender, EventArgs e)
         {
-            if (!fromForm)
+            if (!scene.entranceMode.lastselectedEntrance.Deleted)
             {
-                scene.entranceMode.lastselectedEntrance.EntranceID = (byte)owentrance_property_entranceid.HexValue;
-                scene.entranceMode.lastselectedEntrance.IsHole = owentrance_property_ishole.Checked;
-                scene.entranceMode.lastselectedEntrance.MapID = (short)owentrance_property_mapid.HexValue;
-                scene.entranceMode.lastselectedEntrance.MapPos = (ushort)owentrance_property_mappos.HexValue;
-                scene.entranceMode.lastselectedEntrance.X = (ushort)owentrance_property_x.HexValue;
-                scene.entranceMode.lastselectedEntrance.Y = (ushort)owentrance_property_y.HexValue;
-
-                scene.entranceMode.lastselectedEntrance.UpdateMapStuff(scene.exitmode.lastselectedExit.MapID);
-                string tname = "OW[" + owentrancesListbox.SelectedIndex.ToString("X2") + "] -> UW";
-                foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
+                if (!fromForm)
                 {
-                    if (dataRoom.ID == DungeonsData.Entrances[overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID].Room)
+                    scene.entranceMode.lastselectedEntrance.EntranceID = (byte)owentrance_property_entranceid.HexValue;
+                    scene.entranceMode.lastselectedEntrance.IsHole = owentrance_property_ishole.Checked;
+                    scene.entranceMode.lastselectedEntrance.MapID = (short)owentrance_property_mapid.HexValue;
+                    scene.entranceMode.lastselectedEntrance.MapPos = (ushort)owentrance_property_mappos.HexValue;
+                    scene.entranceMode.lastselectedEntrance.X = (ushort)owentrance_property_x.HexValue;
+                    scene.entranceMode.lastselectedEntrance.Y = (ushort)owentrance_property_y.HexValue;
+
+                    scene.entranceMode.lastselectedEntrance.UpdateMapStuff(scene.exitmode.lastselectedExit.MapID);
+                    string tname = "OW[" + owentrancesListbox.SelectedIndex.ToString("X2") + "] -> UW";
+                    foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
                     {
-                        tname += "[" + overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID.ToString("X2") + "]" + dataRoom.Name;
+                        if (dataRoom.ID == DungeonsData.Entrances[overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID].Room)
+                        {
+                            tname += "[" + overworld.AllEntrances[owentrancesListbox.SelectedIndex].EntranceID.ToString("X2") + "]" + dataRoom.Name;
 
-                        break;
+                            break;
+                        }
                     }
-                }
 
+                    owentrancesListbox.Items[owentrancesListbox.SelectedIndex] = tname;
+                }
+            }
+            else
+            {
+                string tname = "OW[" + owentrancesListbox.SelectedIndex.ToString("X2") + "] -> DELETED";
                 owentrancesListbox.Items[owentrancesListbox.SelectedIndex] = tname;
             }
         }
@@ -2884,7 +2912,12 @@ namespace ZeldaFullEditor.Gui
                 {
                     tname += " Ending Cutscene";
                 }
-                scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+
+                if (overworld.AllExits[overworldexitsListbox.SelectedIndex].PlayerX == 0xFFFF)
+                {
+                    tname += " DELETED";
+                }
+                scene.exitmode.ShowExitPreview();
                 overworldexitsListbox.Items[overworldexitsListbox.SelectedIndex] = tname;
                 
                 thumbnailBox.Refresh();
@@ -2893,48 +2926,50 @@ namespace ZeldaFullEditor.Gui
 
 
         }
-
+        int lastExitSelected = 0;
         public void overworldexitsListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fromForm = true;
-            if (overworldexitsListbox.SelectedIndex != -1)
+            if (lastExitSelected != overworldexitsListbox.SelectedIndex)
             {
-                ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
-
-                scene.exitmode.selectedExit = eow;
-                scene.exitmode.lastselectedExit = eow;
-                scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
-
-                owexit_room_property.HexValue = scene.exitmode.lastselectedExit.RoomID;
-                owexit_map_property.HexValue = scene.exitmode.lastselectedExit.MapID;
-                owexit_x_property.HexValue = scene.exitmode.lastselectedExit.PlayerX;
-                owexit_y_property.HexValue = scene.exitmode.lastselectedExit.PlayerY;
-                owexit_xcamera_property.HexValue = scene.exitmode.lastselectedExit.CameraX;
-                owexit_ycamera_property.HexValue = scene.exitmode.lastselectedExit.CameraY;
-                owexit_xscroll_property.HexValue = scene.exitmode.lastselectedExit.XScroll;
-                owexit_yscroll_property.HexValue = scene.exitmode.lastselectedExit.YScroll;
-                owexit_doorx_property.HexValue = scene.exitmode.lastselectedExit.DoorXEditor;
-                owexit_doory_property.HexValue = scene.exitmode.lastselectedExit.DoorYEditor;
-                nodoorradioButton.Checked = true;
-                if ((scene.exitmode.lastselectedExit.DoorType1 & 0x8000) != 0) { bombdoorradioButton.Checked = true; }
-                else if (scene.exitmode.lastselectedExit.DoorType1 != 0) { wooddoorradioButton.Checked = true; }
-                else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x8000) != 0) { castledoorradioButton.Checked = true; }
-                else if (scene.exitmode.lastselectedExit.DoorType2 != 0) { sancdoorButton.Checked = true; }
-
-                string text = "Exit";
-
-                if (scene.exitmode.lastselectedExit != null)
+                fromForm = true;
+                if (overworldexitsListbox.SelectedIndex != -1)
                 {
-                    scene.owForm.SetSelectedObjectLabels(
-                        scene.exitmode.lastselectedExit.MapID,
-                        scene.exitmode.lastselectedExit.PlayerX,
-                        scene.exitmode.lastselectedExit.PlayerY);
+                    ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
+
+                    scene.exitmode.selectedExit = eow;
+                    scene.exitmode.lastselectedExit = eow;
+                    //scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+                    scene.exitmode.ShowExitPreview();
+
+                    owexit_room_property.HexValue = scene.exitmode.lastselectedExit.RoomID;
+                    owexit_map_property.HexValue = scene.exitmode.lastselectedExit.MapID;
+                    owexit_x_property.HexValue = scene.exitmode.lastselectedExit.PlayerX;
+                    owexit_y_property.HexValue = scene.exitmode.lastselectedExit.PlayerY;
+                    owexit_xcamera_property.HexValue = scene.exitmode.lastselectedExit.CameraX;
+                    owexit_ycamera_property.HexValue = scene.exitmode.lastselectedExit.CameraY;
+                    owexit_xscroll_property.HexValue = scene.exitmode.lastselectedExit.XScroll;
+                    owexit_yscroll_property.HexValue = scene.exitmode.lastselectedExit.YScroll;
+                    owexit_doorx_property.HexValue = scene.exitmode.lastselectedExit.DoorXEditor;
+                    owexit_doory_property.HexValue = scene.exitmode.lastselectedExit.DoorYEditor;
+                    nodoorradioButton.Checked = true;
+                    if ((scene.exitmode.lastselectedExit.DoorType1 & 0x8000) != 0) { bombdoorradioButton.Checked = true; }
+                    else if (scene.exitmode.lastselectedExit.DoorType1 != 0) { wooddoorradioButton.Checked = true; }
+                    else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x8000) != 0) { castledoorradioButton.Checked = true; }
+                    else if (scene.exitmode.lastselectedExit.DoorType2 != 0) { sancdoorButton.Checked = true; }
+
+                    string text = "Exit";
+
+                    if (scene.exitmode.lastselectedExit != null)
+                    {
+                        scene.owForm.SetSelectedObjectLabels(
+                            scene.exitmode.lastselectedExit.MapID,
+                            scene.exitmode.lastselectedExit.PlayerX,
+                            scene.exitmode.lastselectedExit.PlayerY);
+                    }
+                    scene.owForm.objectGroupbox.Text = text;
                 }
-
-                scene.owForm.objectGroupbox.Text = text;
+                fromForm = false;
             }
-
-            fromForm = false;
         }
 
         private void setPositionButton_Click(object sender, EventArgs e)

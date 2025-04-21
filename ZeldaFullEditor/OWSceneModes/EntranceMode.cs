@@ -173,15 +173,15 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 selectedEntrance = en;
                                 lastselectedEntrance = en;
-                                scene.mouse_down = true;
                             }
                             else if (e.Button == MouseButtons.Right)
                             {
                                 lastselectedEntrance = en;
-                                scene.mouse_down = true;
                                 mxRightclick = (e.X);
                                 myRightclick = (e.Y);
                             }
+                            scene.mouse_down = true;
+                            break;
                         }
                     }
                 }
@@ -200,15 +200,16 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 selectedEntrance = en;
                                 lastselectedEntrance = en;
-                                scene.mouse_down = true;
                             }
                             else if (e.Button == MouseButtons.Right)
                             {
                                 lastselectedEntrance = en;
-                                scene.mouse_down = true;
+                                
                                 mxRightclick = (e.X);
                                 myRightclick = (e.Y);
                             }
+                            scene.mouse_down = true;
+                            break;
                         }
                     }
                 }
@@ -216,35 +217,9 @@ namespace ZeldaFullEditor.OWSceneModes
 
             if (selectedEntrance != null)
             {
-                //scene.owForm.thumbnailBox.Visible = true;
-                //scene.owForm.thumbnailBox.Size = new Size(256, 256);
+                ShowRoomPreview();
 
-                int roomId = DungeonsData.Entrances[selectedEntrance.EntranceID].Room;
-                if (roomId >= Constants.NumberOfRooms)
-                {
-                    //scene.owForm.thumbnailBox.Visible = false;
-                    return;
-                }
-
-                if (scene.mainForm.lastRoomID != roomId)
-                {
-                    scene.mainForm.previewRoom = DungeonsData.AllRooms[roomId];
-                    scene.mainForm.previewRoom.reloadGfx();
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.palette);
-                    scene.mainForm.DrawRoom();
-                    DrawTempEntrance();
-                    scene.entrancePreview = true;
-                    //scene.Refresh();
-
-                    if (scene.mainForm.activeScene.room != null)
-                    {
-                        GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.palette);
-                        scene.mainForm.activeScene.room.reloadGfx();
-                        scene.mainForm.activeScene.DrawRoom();
-                    }
-                }
-
-                scene.mainForm.lastRoomID = roomId;
+                
                 for (int i = 0; i < scene.ow.AllEntrances.Length; i++)
                 {
                     if (scene.ow.AllEntrances[i] == selectedEntrance)
@@ -254,6 +229,37 @@ namespace ZeldaFullEditor.OWSceneModes
                     }
                 }
             }
+        }
+        public void ShowRoomPreview()
+        {
+            //scene.owForm.thumbnailBox.Visible = true;
+            //scene.owForm.thumbnailBox.Size = new Size(256, 256);
+
+            int roomId = DungeonsData.Entrances[selectedEntrance.EntranceID].Room;
+            if (roomId >= Constants.NumberOfRooms)
+            {
+                //scene.owForm.thumbnailBox.Visible = false;
+                return;
+            }
+
+            if (scene.mainForm.lastRoomID != roomId)
+            {
+                scene.mainForm.previewRoom = DungeonsData.AllRooms[roomId];
+                scene.mainForm.previewRoom.reloadGfx();
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.palette);
+                scene.mainForm.DrawRoom();
+                DrawTempEntrance();
+                scene.entrancePreview = true;
+                //scene.Refresh();
+
+                if (scene.mainForm.activeScene.room != null)
+                {
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.palette);
+                    scene.mainForm.activeScene.room.reloadGfx();
+                    scene.mainForm.activeScene.DrawRoom();
+                }
+            }
+            scene.mainForm.lastRoomID = roomId;
         }
 
         public void DrawTempEntrance()
@@ -369,6 +375,8 @@ namespace ZeldaFullEditor.OWSceneModes
             lastselectedEntrance.EntranceID = 0;
             lastselectedEntrance.Deleted = true;
             SendEntranceData(lastselectedEntrance);
+            string tname = "OW[" + scene.owForm.owentrancesListbox.SelectedIndex.ToString("X2") + "] -> DELETED";
+            scene.owForm.owentrancesListbox.Items[scene.owForm.owentrancesListbox.SelectedIndex] = tname;
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
