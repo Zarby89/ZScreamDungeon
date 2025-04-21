@@ -6595,5 +6595,17 @@ namespace ZeldaFullEditor
             activeScene.DrawRoom();
             activeScene.Refresh();
         }
+
+        private void toolStripMenuItem8_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Zspr file (*.zspr)|*.zspr";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                ZsprImporter zsImporter = new ZsprImporter(ofd.FileName);
+                zsImporter.ShowDialog();
+
+            }
+        }
     }
 }

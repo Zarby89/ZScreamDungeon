@@ -294,6 +294,12 @@
     <Compile Include="Gui\ExtraForms\SearchTilesForm.Designer.cs">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\ZsprImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZsprImporter.Designer.cs">
+      <DependentUpon>ZsprImporter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ZSSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -464,6 +470,7 @@
     <Compile Include="OWSceneModes\GravestoneMode.cs" />
     <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Point3D.cs" />
+    <Compile Include="PointeredImage.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Gui\RoomMover.cs">
       <SubType>Form</SubType>
@@ -659,6 +666,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ZsprImporter.resx">
+      <DependentUpon>ZsprImporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ZSSettings.resx">
       <DependentUpon>ZSSettings.cs</DependentUpon>

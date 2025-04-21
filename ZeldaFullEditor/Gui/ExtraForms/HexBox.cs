@@ -149,7 +149,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         private void UpdateText()
         {
-            Console.WriteLine(hexValue);
             if (!_decimal)
             {
                 bool pad = this.enforcepad | !this.Focused;

@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -439,6 +439,7 @@
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1883,13 +1884,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 294);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -3445,7 +3446,8 @@
             this.saveSettingsToolStripMenuItem,
             this.loadNamesFileToolStripMenuItem,
             this.memoryManagementToolStripMenuItem,
-            this.pluginsToolStripMenuItem});
+            this.pluginsToolStripMenuItem,
+            this.toolStripMenuItem8});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -4791,6 +4793,13 @@
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
             // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(233, 22);
+            this.toolStripMenuItem8.Text = "Import player sprite .zspr";
+            this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
+            // 
             // DungeonMain
             // 
             this.AllowDrop = true;
@@ -5291,6 +5300,7 @@
         public System.Windows.Forms.Panel overlayPanel;
         public System.Windows.Forms.ComboBox overlayCombobox;
         public System.Windows.Forms.Label label39;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
     }
 }
 
