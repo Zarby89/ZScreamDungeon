@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +17,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         PointeredImage ptrImage = new PointeredImage(128, 448);
         Color[] pal1 = new Color[64];
         byte[] gfxData;
+        byte[] bpp8Data;
         public ZsprImporter(string image)
         {
             InitializeComponent();
@@ -86,7 +88,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
                 br.BaseStream.Seek(dataStart, SeekOrigin.Begin);
                 gfxData = br.ReadBytes(0x7000);
-                byte[] bpp8Data = GFX.SnesTilesToPc8bppTiles(gfxData, 0x380, 4);
+                bpp8Data = GFX.SnesTilesToPc8bppTiles(gfxData, 0x380, 4);
 
                 ptrImage.Draw8bppTiles(0, 0, bpp8Data, 16, 0, 0);
 
@@ -169,5 +171,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
             this.Close();
         }
+
     }
 }
