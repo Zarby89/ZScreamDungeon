@@ -16,6 +16,8 @@ using System.Windows.Forms.VisualStyles;
 using System.Xml.Linq;
 using ZeldaFullEditor.Data;
 using System.IO.Compression;
+using System.Threading;
+using System.Reflection;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
 {
@@ -513,7 +515,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             StringBuilder generatedAsmFile = new StringBuilder();
             generatedAsmFile.AppendLine("lorom");
 
-            generatedAsmFile.AppendLine("org $308000"); // need to do something about it
+            generatedAsmFile.AppendLine("org $3C8000"); // need to do something about it
             foreach (AsmPatch patch in PatchList)
             {
                 patch.Save(ProjectPath);
@@ -563,10 +565,11 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             if (Directory.Exists("Temp"))
             {
                 Directory.Delete("Temp", true);
+                
             }
-
-            // download the zip from the repo
-            client.DownloadFile(@"https://github.com/Zarby89/ZScreamPatches/archive/refs/heads/main.zip", "TempDownloadPatches.zip");
+            //download the zip from the repo
+            //client.DownloadFile(@"https://github.com/Zarby89/ZScreamPatches/archive/refs/heads/main.zip", "TempDownloadPatches.zip");
+            //Thread.Sleep(100);
             ZipFile.ExtractToDirectory("TempDownloadPatches.zip", "Temp\\");
             File.Delete("TempDownloadPatches.zip");
             CopyUpdate();
@@ -684,6 +687,14 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 of.Filter = "ASM source files (*.asm)|*.asm";
                 of.Multiselect = true;
                 of.DefaultExt = "asm";
+                if (Directory.Exists("ZS_Patches"))
+                {
+                    of.InitialDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\ZS_Patches";
+                }
+                else
+                {
+                    of.InitialDirectory = ProjectPath;
+                }
                 if (of.ShowDialog() == DialogResult.OK)
                 {
                     foreach (string file in of.FileNames)
@@ -693,6 +704,14 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 }
 
                 UpdatePatchList();
+            }
+        }
+
+        private void morepatchButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will bring you to the ZScreamPatches github to download more patch", "Open in browser",MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                System.Diagnostics.Process.Start("https://github.com/Zarby89/ZScreamPatches");
             }
         }
     }
