@@ -4086,6 +4086,8 @@ namespace ZeldaFullEditor
                 this.toolStripSeparator7.Visible = true;
                 this.increaseObjectSizeToolStripMenuItem.Visible = true;
                 this.decreaseObjectSizeToolStripMenuItem.Visible = true;
+                GFX.useOverworldGFX = false;
+                spritesView1.Refresh();
             }
             else
             {
@@ -4170,7 +4172,8 @@ namespace ZeldaFullEditor
                 }
 
                 this.SetupPaletteForm();
-
+                GFX.useOverworldGFX = true;
+                spritesView1.Refresh();
                 this.customPanel1.Parent = overworldEditor.owspritePanel;
             }
             else
