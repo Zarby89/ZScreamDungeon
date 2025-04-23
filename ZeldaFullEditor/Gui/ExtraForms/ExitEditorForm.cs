@@ -77,6 +77,8 @@ namespace ZeldaFullEditor
                 editingExit.DoorType2 = 0;
                 editingExit.DoorType1 = 0;
             }
+
+
         }
 
         private void nodoorradioButton_CheckedChanged(object sender, EventArgs e)

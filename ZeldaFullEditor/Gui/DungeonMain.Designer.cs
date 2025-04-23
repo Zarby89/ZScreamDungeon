@@ -293,6 +293,7 @@
             this.loadNamesFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.memoryManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -3445,7 +3446,8 @@
             this.saveSettingsToolStripMenuItem,
             this.loadNamesFileToolStripMenuItem,
             this.memoryManagementToolStripMenuItem,
-            this.pluginsToolStripMenuItem});
+            this.pluginsToolStripMenuItem,
+            this.toolStripMenuItem8});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -3479,6 +3481,13 @@
             this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.pluginsToolStripMenuItem.Text = "ROM Patches";
             this.pluginsToolStripMenuItem.Click += new System.EventHandler(this.pluginsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(233, 22);
+            this.toolStripMenuItem8.Text = "Import player sprite .zspr";
+            this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
             // 
             // testToolStripMenuItem
             // 
@@ -5291,6 +5300,7 @@
         public System.Windows.Forms.Panel overlayPanel;
         public System.Windows.Forms.ComboBox overlayCombobox;
         public System.Windows.Forms.Label label39;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
     }
 }
 

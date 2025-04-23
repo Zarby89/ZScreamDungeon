@@ -1023,5 +1023,105 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
+        public static byte[] SnesTilesToPc8bppTiles(byte[] snesTiles, int nbrOfTiles, byte bpp = 3)
+        {
+            byte[] tiles8x8 = new byte[0x40 * nbrOfTiles];
+            switch (bpp)
+            {
+                case 4:
+                    for (int i = 0; i < nbrOfTiles; i++)
+                    {
+                        for (int line = 0; line < 8; line++)
+                        {
+                            byte[] pixelvalues = new byte[4]
+                            {
+                                snesTiles[(line * 2) + (i * 0x20)],
+                                snesTiles[(line * 2) + 1 + (i * 0x20)],
+                                snesTiles[(line * 2) + 16 + (i * 0x20)],
+                                snesTiles[(line * 2) + 17 + (i * 0x20)]
+                            };
+                            for (int pixel = 7; pixel >= 0; pixel--)
+                            {
+
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)(pixelvalues[0] & 0x01);
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)((pixelvalues[1] & 0x01) << 1);
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)((pixelvalues[2] & 0x01) << 2);
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)((pixelvalues[3] & 0x01) << 3);
+                                pixelvalues[0] >>= 1;
+                                pixelvalues[1] >>= 1;
+                                pixelvalues[2] >>= 1;
+                                pixelvalues[3] >>= 1;
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < nbrOfTiles; i++)
+                    {
+                        for (int line = 0; line < 8; line++)
+                        {
+                            byte[] pixelvalues = new byte[3]
+                            {
+                                snesTiles[(line * 2) + (i * 0x18)],
+                                snesTiles[(line * 2) + 1 + (i * 0x18)],
+                                snesTiles[(line) + 16 + (i * 0x18)]
+                            };
+                            for (int pixel = 7; pixel >= 0; pixel--)
+                            {
+
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)(pixelvalues[0] & 0x01);
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)((pixelvalues[1] & 0x01) << 1);
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)((pixelvalues[2] & 0x01) << 2);
+                                pixelvalues[0] >>= 1;
+                                pixelvalues[1] >>= 1;
+                                pixelvalues[2] >>= 1;
+                            }
+                        }
+                    }
+                    break;
+
+                case 2:
+                    for (int i = 0; i < nbrOfTiles; i++)
+                    {
+                        for (int line = 0; line < 8; line++)
+                        {
+                            byte[] pixelvalues = new byte[2]
+                            {
+                                snesTiles[(line * 2) + (i * 0x10)],
+                                snesTiles[(line * 2) + 1 + (i * 0x10)]
+                            };
+                            for (int pixel = 7; pixel >= 0; pixel--)
+                            {
+
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)(pixelvalues[0] & 0x01);
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)((pixelvalues[1] & 0x01) << 1);
+                                pixelvalues[0] >>= 1;
+                                pixelvalues[1] >>= 1;
+                            }
+                        }
+                    }
+                    break;
+
+                case 1:
+                    for (int i = 0; i < nbrOfTiles; i++)
+                    {
+                        for (int line = 0; line < 8; line++)
+                        {
+                            byte[] pixelvalues = new byte[1]
+                            {
+                                snesTiles[(line) + (i * 0x08)],
+                            };
+                            for (int pixel = 7; pixel >= 0; pixel--)
+                            {
+                                tiles8x8[pixel + (line * 8) + (i * 0x40)] |= (byte)(pixelvalues[0] & 0x01);
+                                pixelvalues[0] >>= 1;
+                            }
+                        }
+                    }
+                    break;
+            }
+            return tiles8x8;
+        }
     }
 }

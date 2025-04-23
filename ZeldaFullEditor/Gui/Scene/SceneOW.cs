@@ -965,14 +965,19 @@ namespace ZeldaFullEditor
 
                 if (this.entrancePreview)
                 {
-                    if (this.entranceMode.selectedEntrance != null)
+                    if (selectedMode == ObjectMode.Entrances)
                     {
-                        g.DrawImage(this.owForm.tmpPreviewBitmap, this.entranceMode.selectedEntrance.X + 16, this.entranceMode.selectedEntrance.Y + 16);
+                        if (this.entranceMode.selectedEntrance != null)
+                        {
+                            g.DrawImage(this.owForm.tmpPreviewBitmap, this.entranceMode.selectedEntrance.X + 16, this.entranceMode.selectedEntrance.Y + 16);
+                        }
                     }
-
-                    if (this.exitmode.selectedExit != null)
+                    else if (selectedMode == ObjectMode.Exits)
                     {
-                        g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
+                        if (this.exitmode.selectedExit != null)
+                        {
+                            g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
+                        }
                     }
                 }
 

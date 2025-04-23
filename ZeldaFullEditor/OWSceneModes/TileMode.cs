@@ -269,33 +269,43 @@ namespace ZeldaFullEditor.OWSceneModes
                         int width = scene.selectedTileSizeX;
                         int height = (scene.selectedTile.Length / width);
 
-
+                        ushort[] undotiles = new ushort[32*32];
                         for (int y = 0; y < 32; y++)
                         {
                             for (int x = 0; x < 32; x++)
                             {
+
                                 int tile = (x % width) + ((y % height) * width);
                                 tileX = ((mapId % 8) * 32);
                                 tileY = ((mapId / 8) * 32);
+                                undotiles[x + (y*32)] = scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y];
                                 scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y] = scene.selectedTile[tile];
                                 scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[tile], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
+
                             }
                         }
+                        undoList.Add(new TileUndo((superX * 32), (superY * 32), 32, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));
+                        redoList.Clear();
 
 
                     }
                     else
                     {
+                        ushort[] undotiles = new ushort[32*32];
                         for (int y = 0; y < 32; y++)
                         {
                             for (int x = 0; x < 32; x++)
                             {
+                                
                                 tileX = ((mapId % 8) * 32);
                                 tileY = ((mapId / 8) * 32);
+                                undotiles[x + (y * 32)] = scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y];
                                 scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y] = scene.selectedTile[0];
                                 scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
                             }
                         }
+                        undoList.Add(new TileUndo((superX * 32), (superY * 32), 32, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));
+                        redoList.Clear();
 
                     }
                     //undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, 1, new ushort[] { scene.ow.AllMaps[mapId].TilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] }, (ushort[])scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));

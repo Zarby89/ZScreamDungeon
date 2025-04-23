@@ -50,6 +50,7 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.UpdateButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.morepatchButton = new System.Windows.Forms.Button();
             this.panel4.SuspendLayout();
             this.PatchPanel.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -129,7 +130,7 @@
             this.patchAuthorLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.patchAuthorLabel.Location = new System.Drawing.Point(0, 77);
             this.patchAuthorLabel.Name = "patchAuthorLabel";
-            this.patchAuthorLabel.Size = new System.Drawing.Size(78, 13);
+            this.patchAuthorLabel.Size = new System.Drawing.Size(85, 13);
             this.patchAuthorLabel.TabIndex = 5;
             this.patchAuthorLabel.Text = "Patch author(s): ";
             // 
@@ -149,7 +150,7 @@
             this.labelDescription.Dock = System.Windows.Forms.DockStyle.Top;
             this.labelDescription.Location = new System.Drawing.Point(0, 0);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(100, 13);
+            this.labelDescription.Size = new System.Drawing.Size(89, 13);
             this.labelDescription.TabIndex = 3;
             this.labelDescription.Text = "Patch description";
             // 
@@ -252,6 +253,7 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.morepatchButton);
             this.panel5.Controls.Add(this.refreshPluginButton);
             this.panel5.Controls.Add(this.UpdateButton);
             this.panel5.Controls.Add(this.CancelButton);
@@ -265,12 +267,13 @@
             // UpdateButton
             // 
             this.UpdateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UpdateButton.Location = new System.Drawing.Point(3, 1);
+            this.UpdateButton.Location = new System.Drawing.Point(274, 0);
             this.UpdateButton.Name = "UpdateButton";
             this.UpdateButton.Size = new System.Drawing.Size(106, 23);
             this.UpdateButton.TabIndex = 11;
             this.UpdateButton.Text = "Check for update";
             this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Visible = false;
             this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             // 
             // CancelButton
@@ -284,6 +287,17 @@
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
+            // morepatchButton
+            // 
+            this.morepatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.morepatchButton.Location = new System.Drawing.Point(3, 0);
+            this.morepatchButton.Name = "morepatchButton";
+            this.morepatchButton.Size = new System.Drawing.Size(106, 23);
+            this.morepatchButton.TabIndex = 12;
+            this.morepatchButton.Text = "Get more patches";
+            this.morepatchButton.UseVisualStyleBackColor = true;
+            this.morepatchButton.Click += new System.EventHandler(this.morepatchButton_Click);
             // 
             // AsmPlugin
             // 
@@ -329,5 +343,6 @@
         private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.Button RemoveDirectoryButton;
         private System.Windows.Forms.Button AddDirectoryButton;
+        private System.Windows.Forms.Button morepatchButton;
     }
 }

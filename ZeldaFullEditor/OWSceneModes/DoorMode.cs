@@ -25,6 +25,9 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 scene.exitmode.exitProperty_Click(null, null);
+
+
+
             }
         }
 

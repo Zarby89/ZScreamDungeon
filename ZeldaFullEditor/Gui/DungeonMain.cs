@@ -4086,6 +4086,8 @@ namespace ZeldaFullEditor
                 this.toolStripSeparator7.Visible = true;
                 this.increaseObjectSizeToolStripMenuItem.Visible = true;
                 this.decreaseObjectSizeToolStripMenuItem.Visible = true;
+                GFX.useOverworldGFX = false;
+                spritesView1.Refresh();
             }
             else
             {
@@ -4170,7 +4172,8 @@ namespace ZeldaFullEditor
                 }
 
                 this.SetupPaletteForm();
-
+                GFX.useOverworldGFX = true;
+                spritesView1.Refresh();
                 this.customPanel1.Parent = overworldEditor.owspritePanel;
             }
             else
@@ -6594,6 +6597,18 @@ namespace ZeldaFullEditor
             activeScene.need_refresh = true;
             activeScene.DrawRoom();
             activeScene.Refresh();
+        }
+
+        private void toolStripMenuItem8_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Zspr file (*.zspr)|*.zspr";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                ZsprImporter zsImporter = new ZsprImporter(ofd.FileName);
+                zsImporter.ShowDialog();
+
+            }
         }
     }
 }
