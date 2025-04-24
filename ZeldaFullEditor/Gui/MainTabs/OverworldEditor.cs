@@ -2974,6 +2974,11 @@ namespace ZeldaFullEditor.Gui
 
         private void setPositionButton_Click(object sender, EventArgs e)
         {
+            if (scene.exitmode.lastselectedExit is null)
+            {
+                return;
+            }
+
             scene.selectedMode = ObjectMode.OWDoor;
             if (scene.exitmode.lastselectedExit.DoorType1 != 0) // Wooden door
             {
