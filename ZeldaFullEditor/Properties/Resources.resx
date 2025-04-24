@@ -118,28 +118,49 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="spriteFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\spriteFont.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="starn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\starn.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="starl" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\starl.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Mblock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Mblock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="xbutton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\xbutton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="darkbg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\darkbg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="dwimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dwimage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spriteFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\spriteFont.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="xbutton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\xbutton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lwimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lwimage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dwimage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dwimage1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="floorselector" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\floorselector.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="lwimage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lwimage1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mblock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Mblock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="damageclass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\damageclass.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="swimage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\swimage1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="swimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\swimage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="starl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\starl.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pen1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pen1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

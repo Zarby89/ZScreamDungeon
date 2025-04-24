@@ -1,36 +1,46 @@
-Expanded space used by ZScream as of 1/16/2024
+Expanded space used by ZScream as of 02/28/2025
 
 Addresses are PC unless stated otherwise.
 
-ZS reserves everything up to 1.5mb or up to 0x150000
+ZS reserves everything up to 1.5MB or up to 0x150000
+And an additional 3 banks at the end of the 2.0MB 0x1E8000 to 0x1FFFFF
 
-0x100000 - 0x107FFF:
+0x100000 - 0x107FFF: 1 Bank
     Nothing?
 
-0x108000 - 0x10FFFF:
+0x108000 - 0x10FFFF: 1 Bank
     Title screen data
     Dungeon map data
 
-0x110000 - 0x117FFF:
+0x110000 - 0x117FFF: 1 Bank
     Default room header location
 
-0x118000 - 0x11FFFF:
+0x118000 - 0x11FFFF: 1 Bank
     Some sort of data but i can't figure out what.
 
-0x120000 - 0x127FFF:
+0x120000 - 0x127FFF: 1 Bank
     Expanded overlay data
 
-0x128000 - 0x12FFFF:
+0x128000 - 0x12FFFF: 1 Bank
     Custom collision data
 
-0x130000 - 0x137FFF:
+0x130000 - 0x137FFF: 1 Bank
     Overworld map data overflow
 
-0x138000 - 0x13FFFF:
+0x138000 - 0x13FFFF: 1 Bank
     Expanded Dungeon object data
 
-0x140000 - 0x147FFF:
+0x140000 - 0x147FFF: 1 Bank
     Custom overworld data
 
-0x148000 - 0x14FFFF:
+0x148000 - 0x14FFFF: 1 Bank
     Expanded Dungeon object data
+
+0x1E0000 - 1E07FFF: 1 Bank
+    Custom ASM Patches
+
+0x1E8000 - 0x1EFFFF: 1 Bank
+    Expanded Tile16 space
+
+0x1F0000 - 0x1FFFFF: 2 Banks
+    Edpanded Tile32 space

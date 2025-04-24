@@ -222,6 +222,108 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
+
+        public void OnMouseDownFill(MouseEventArgs e)
+        {
+            //Buildtileset();
+            //BuildTiles16Gfx();
+
+            if (!scene.mouse_down)
+            {
+                int tileX = (e.X / 16);
+                int tileY = (e.Y / 16);
+                int superX = (tileX / 32);
+                int superY = (tileY / 32);
+                int mapId = (superY * 8) + superX;
+                scene.globalmouseTileDownX = tileX;
+                scene.globalmouseTileDownY = tileY;
+                globalmouseTileDownXLOCK = tileX;
+                globalmouseTileDownYLOCK = tileY;
+
+                scene.selectedMap = mapId + scene.ow.WorldOffset;
+                scene.selectedMapParent = scene.ow.AllMaps[scene.selectedMap].ParentID;
+                //scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].BuildMap();
+
+                scene.tileBitmapPtr = GFX.mapblockset16;
+                scene.tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, scene.tileBitmapPtr);
+                scene.tileBitmap.Palette = scene.ow.AllMaps[scene.ow.AllMaps[mapId].ParentID].GFXBitmap.Palette;
+
+                if (scene.selectedMap >= 160)
+                {
+                    return;
+                }
+
+                if (scene.needRedraw)
+                {
+                    scene.needRedraw = false;
+                    return;
+                }
+
+
+
+                if (e.Button == MouseButtons.Left)
+                {
+
+                    if (scene.selectedTile.Length >= 1)
+                    {
+                        int width = scene.selectedTileSizeX;
+                        int height = (scene.selectedTile.Length / width);
+
+                        ushort[] undotiles = new ushort[32*32];
+                        for (int y = 0; y < 32; y++)
+                        {
+                            for (int x = 0; x < 32; x++)
+                            {
+
+                                int tile = (x % width) + ((y % height) * width);
+                                tileX = ((mapId % 8) * 32);
+                                tileY = ((mapId / 8) * 32);
+                                undotiles[x + (y*32)] = scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y];
+                                scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y] = scene.selectedTile[tile];
+                                scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[tile], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
+
+                            }
+                        }
+                        undoList.Add(new TileUndo((superX * 32), (superY * 32), 32, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));
+                        redoList.Clear();
+
+
+                    }
+                    else
+                    {
+                        ushort[] undotiles = new ushort[32*32];
+                        for (int y = 0; y < 32; y++)
+                        {
+                            for (int x = 0; x < 32; x++)
+                            {
+                                
+                                tileX = ((mapId % 8) * 32);
+                                tileY = ((mapId / 8) * 32);
+                                undotiles[x + (y * 32)] = scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y];
+                                scene.ow.AllMaps[mapId].TilesUsed[(superX * 32) + x, (superY * 32) + y] = scene.selectedTile[0];
+                                scene.ow.AllMaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.AllMaps[mapId].GFXPointer, GFX.mapblockset16);
+                            }
+                        }
+                        undoList.Add(new TileUndo((superX * 32), (superY * 32), 32, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));
+                        redoList.Clear();
+
+                    }
+                    //undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, 1, new ushort[] { scene.ow.AllMaps[mapId].TilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] }, (ushort[])scene.selectedTile.Clone(), ref scene.ow.AllMaps[mapId].TilesUsed));
+                    //redoList.Clear();
+
+
+
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    scene.mouse_down = true;
+                    scene.selecting = true;
+                    scene.owForm.selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString("X4");
+                }
+            }
+        }
+
+
         public void OnMouseUp(MouseEventArgs e)
         {
             if (scene.mouse_down)
@@ -307,8 +409,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 scene.mouseX_Real = e.X;
                 scene.mouseY_Real = e.Y;
-                int mouseTileX = e.X / 16;
-                int mouseTileY = e.Y / 16;
+                int mouseTileX = e.X.Clamp(0, 4080) / 16;
+                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 
@@ -458,11 +560,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         int x = 0;
                         int mapId = 0 + scene.ow.WorldOffset;
 
-
-
-
-
-
                         for (int i = 0; i < scene.selectedTile.Length; i++)
                         {
                             if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
@@ -528,8 +625,6 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-
-
         private void SendTileData()
         {
             if (!NetZS.connected) { return; }
@@ -553,12 +648,12 @@ namespace ZeldaFullEditor.OWSceneModes
 
         }
 
-
         private void SendTileDataMove(int tileX, int tileY)
         {
-            if (!NetZS.connected) { return; }
-
-
+            if (!NetZS.connected)
+            {
+                return;
+            }
 
             NetZSBuffer buffer = new NetZSBuffer((short)(24 + (scene.selectedTile.Length * 2)));
             buffer.Write((byte)05); // tile data cmd

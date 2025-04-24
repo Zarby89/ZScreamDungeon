@@ -103,10 +103,12 @@
             this.entrancetabPage = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.dooryHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.doorxHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.facedownCheckbox = new System.Windows.Forms.CheckBox();
             this.EntranceProperties_FloorSel = new System.Windows.Forms.ComboBox();
             this.EntranceProperties_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_DungeonID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.EntranceProperties_Exit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_CameraTriggerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.EntranceProperties_CameraTriggerX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label46 = new System.Windows.Forms.Label();
@@ -135,8 +137,6 @@
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.doorCheckbox = new System.Windows.Forms.CheckBox();
-            this.dooryTextbox = new System.Windows.Forms.TextBox();
-            this.doorxTextbox = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.entranceProperty_quadbr = new System.Windows.Forms.RadioButton();
             this.entranceProperty_quadtr = new System.Windows.Forms.RadioButton();
@@ -152,7 +152,6 @@
             this.label21 = new System.Windows.Forms.Label();
             this.mouseEntranceButton = new System.Windows.Forms.Button();
             this.entranceProperty_bg = new System.Windows.Forms.CheckBox();
-            this.label39 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
@@ -196,6 +195,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.headerGroupbox = new System.Windows.Forms.GroupBox();
+            this.overlayPanel = new System.Windows.Forms.Panel();
+            this.overlayCombobox = new System.Windows.Forms.ComboBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.selectedGroupbox = new System.Windows.Forms.GroupBox();
             this.SelectedObjectDataHEX = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -291,6 +293,7 @@
             this.loadNamesFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.memoryManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -340,6 +343,16 @@
             this.invisibleObjectsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMapIndexInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showStairIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.openRightRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLeftRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openUpRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDownRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveZeldaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -358,6 +371,8 @@
             this.clearDWTilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyLWToDWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTiles32CountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showUniqueTile32ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setUnusedTiles16ToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.areaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSpritesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.saveZeldaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -386,16 +401,6 @@
             this.useAreaSpecificBGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showOverlayTextsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.openRightRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openLeftRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openUpRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDownRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vramViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cGramViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -414,6 +419,8 @@
             this.saveVRAMAsPngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveRoomsToOtherROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportImageMapMultipleROMsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generatePaletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useExpandedOWPaletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -457,6 +464,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edit8x8palettebox)).BeginInit();
             this.headerGroupbox.SuspendLayout();
+            this.overlayPanel.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
             this.doorselectPanel.SuspendLayout();
@@ -1101,7 +1109,7 @@
             this.toolboxPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.toolboxPanel.Location = new System.Drawing.Point(0, 49);
             this.toolboxPanel.Name = "toolboxPanel";
-            this.toolboxPanel.Size = new System.Drawing.Size(300, 690);
+            this.toolboxPanel.Size = new System.Drawing.Size(300, 696);
             this.toolboxPanel.TabIndex = 14;
             // 
             // tabControl1
@@ -1116,7 +1124,7 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(300, 690);
+            this.tabControl1.Size = new System.Drawing.Size(300, 696);
             this.tabControl1.TabIndex = 12;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -1125,7 +1133,7 @@
             this.entrancetabPage.Controls.Add(this.splitContainer3);
             this.entrancetabPage.Location = new System.Drawing.Point(4, 22);
             this.entrancetabPage.Name = "entrancetabPage";
-            this.entrancetabPage.Size = new System.Drawing.Size(292, 664);
+            this.entrancetabPage.Size = new System.Drawing.Size(292, 670);
             this.entrancetabPage.TabIndex = 5;
             this.entrancetabPage.Text = "Rooms";
             this.entrancetabPage.UseVisualStyleBackColor = true;
@@ -1133,6 +1141,8 @@
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer3.IsSplitterFixed = true;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -1140,23 +1150,26 @@
             // splitContainer3.Panel1
             // 
             this.splitContainer3.Panel1.Controls.Add(this.panel2);
-            this.splitContainer3.Panel1MinSize = 359;
+            this.splitContainer3.Panel1MinSize = 372;
             // 
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.AutoScroll = true;
             this.splitContainer3.Panel2.Controls.Add(this.entrancetreeView);
-            this.splitContainer3.Size = new System.Drawing.Size(292, 664);
-            this.splitContainer3.SplitterDistance = 371;
+            this.splitContainer3.Panel2MinSize = 0;
+            this.splitContainer3.Size = new System.Drawing.Size(292, 670);
+            this.splitContainer3.SplitterDistance = 372;
             this.splitContainer3.TabIndex = 9;
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.dooryHexbox);
+            this.panel2.Controls.Add(this.doorxHexbox);
+            this.panel2.Controls.Add(this.facedownCheckbox);
             this.panel2.Controls.Add(this.EntranceProperties_FloorSel);
             this.panel2.Controls.Add(this.EntranceProperties_Blockset);
             this.panel2.Controls.Add(this.EntranceProperties_Music);
             this.panel2.Controls.Add(this.EntranceProperties_DungeonID);
-            this.panel2.Controls.Add(this.EntranceProperties_Exit);
             this.panel2.Controls.Add(this.EntranceProperties_CameraTriggerY);
             this.panel2.Controls.Add(this.EntranceProperties_CameraTriggerX);
             this.panel2.Controls.Add(this.label46);
@@ -1171,8 +1184,6 @@
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Controls.Add(this.label30);
             this.panel2.Controls.Add(this.doorCheckbox);
-            this.panel2.Controls.Add(this.dooryTextbox);
-            this.panel2.Controls.Add(this.doorxTextbox);
             this.panel2.Controls.Add(this.label27);
             this.panel2.Controls.Add(this.entranceProperty_quadbr);
             this.panel2.Controls.Add(this.entranceProperty_quadtr);
@@ -1188,7 +1199,6 @@
             this.panel2.Controls.Add(this.label21);
             this.panel2.Controls.Add(this.mouseEntranceButton);
             this.panel2.Controls.Add(this.entranceProperty_bg);
-            this.panel2.Controls.Add(this.label39);
             this.panel2.Controls.Add(this.label22);
             this.panel2.Controls.Add(this.label40);
             this.panel2.Controls.Add(this.label24);
@@ -1196,8 +1206,53 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.MinimumSize = new System.Drawing.Size(292, 359);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(292, 371);
+            this.panel2.Size = new System.Drawing.Size(292, 372);
             this.panel2.TabIndex = 61;
+            // 
+            // dooryHexbox
+            // 
+            this.dooryHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.dooryHexbox.Decimal = false;
+            this.dooryHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.dooryHexbox.HexValue = 0;
+            this.dooryHexbox.Location = new System.Drawing.Point(117, 198);
+            this.dooryHexbox.MaxLength = 2;
+            this.dooryHexbox.MaxValue = 255;
+            this.dooryHexbox.MinValue = 0;
+            this.dooryHexbox.Name = "dooryHexbox";
+            this.dooryHexbox.Size = new System.Drawing.Size(44, 20);
+            this.dooryHexbox.TabIndex = 142;
+            this.dooryHexbox.Text = "00";
+            this.dooryHexbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.dooryHexbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // doorxHexbox
+            // 
+            this.doorxHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.doorxHexbox.Decimal = false;
+            this.doorxHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.doorxHexbox.HexValue = 0;
+            this.doorxHexbox.Location = new System.Drawing.Point(67, 198);
+            this.doorxHexbox.MaxLength = 2;
+            this.doorxHexbox.MaxValue = 255;
+            this.doorxHexbox.MinValue = 0;
+            this.doorxHexbox.Name = "doorxHexbox";
+            this.doorxHexbox.Size = new System.Drawing.Size(44, 20);
+            this.doorxHexbox.TabIndex = 141;
+            this.doorxHexbox.Text = "00";
+            this.doorxHexbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.doorxHexbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // facedownCheckbox
+            // 
+            this.facedownCheckbox.AutoSize = true;
+            this.facedownCheckbox.Location = new System.Drawing.Point(210, 55);
+            this.facedownCheckbox.Name = "facedownCheckbox";
+            this.facedownCheckbox.Size = new System.Drawing.Size(79, 17);
+            this.facedownCheckbox.TabIndex = 140;
+            this.facedownCheckbox.Text = "Face down";
+            this.facedownCheckbox.UseVisualStyleBackColor = true;
+            this.facedownCheckbox.CheckedChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_FloorSel
             // 
@@ -1242,23 +1297,6 @@
             this.EntranceProperties_DungeonID.Text = "00";
             this.EntranceProperties_DungeonID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.EntranceProperties_DungeonID.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
-            // EntranceProperties_Exit
-            // 
-            this.EntranceProperties_Exit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.EntranceProperties_Exit.Decimal = false;
-            this.EntranceProperties_Exit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.EntranceProperties_Exit.HexValue = 0;
-            this.EntranceProperties_Exit.Location = new System.Drawing.Point(228, 198);
-            this.EntranceProperties_Exit.MaxLength = 2;
-            this.EntranceProperties_Exit.MaxValue = 255;
-            this.EntranceProperties_Exit.MinValue = 0;
-            this.EntranceProperties_Exit.Name = "EntranceProperties_Exit";
-            this.EntranceProperties_Exit.Size = new System.Drawing.Size(49, 20);
-            this.EntranceProperties_Exit.TabIndex = 135;
-            this.EntranceProperties_Exit.Text = "00";
-            this.EntranceProperties_Exit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.EntranceProperties_Exit.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_CameraTriggerY
             // 
@@ -1640,31 +1678,13 @@
             // doorCheckbox
             // 
             this.doorCheckbox.AutoSize = true;
-            this.doorCheckbox.Location = new System.Drawing.Point(118, 55);
+            this.doorCheckbox.Location = new System.Drawing.Point(99, 55);
             this.doorCheckbox.Name = "doorCheckbox";
             this.doorCheckbox.Size = new System.Drawing.Size(69, 17);
             this.doorCheckbox.TabIndex = 105;
             this.doorCheckbox.Text = "Use door";
             this.doorCheckbox.UseVisualStyleBackColor = true;
             this.doorCheckbox.CheckedChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
-            // dooryTextbox
-            // 
-            this.dooryTextbox.Location = new System.Drawing.Point(131, 198);
-            this.dooryTextbox.Name = "dooryTextbox";
-            this.dooryTextbox.Size = new System.Drawing.Size(44, 20);
-            this.dooryTextbox.TabIndex = 104;
-            this.dooryTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.dooryTextbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
-            // 
-            // doorxTextbox
-            // 
-            this.doorxTextbox.Location = new System.Drawing.Point(68, 198);
-            this.doorxTextbox.Name = "doorxTextbox";
-            this.doorxTextbox.Size = new System.Drawing.Size(44, 20);
-            this.doorxTextbox.TabIndex = 103;
-            this.doorxTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.doorxTextbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // label27
             // 
@@ -1831,15 +1851,6 @@
             this.entranceProperty_bg.UseVisualStyleBackColor = true;
             this.entranceProperty_bg.CheckStateChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
             // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(198, 202);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(24, 13);
-            this.label39.TabIndex = 20;
-            this.label39.Text = "Exit";
-            // 
             // label22
             // 
             this.label22.AutoSize = true;
@@ -1880,7 +1891,7 @@
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 289);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 294);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -1893,7 +1904,7 @@
             this.objectstabPage.Controls.Add(this.searchTextbox);
             this.objectstabPage.Location = new System.Drawing.Point(4, 22);
             this.objectstabPage.Name = "objectstabPage";
-            this.objectstabPage.Size = new System.Drawing.Size(292, 664);
+            this.objectstabPage.Size = new System.Drawing.Size(292, 670);
             this.objectstabPage.TabIndex = 4;
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
@@ -1905,13 +1916,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 54);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 610);
+            this.panel1.Size = new System.Drawing.Size(292, 616);
             this.panel1.TabIndex = 1;
             // 
             // objectViewer1
             // 
             this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
             this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.Margin = new System.Windows.Forms.Padding(6);
             this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
             this.objectViewer1.Name = "objectViewer1";
             this.objectViewer1.Size = new System.Drawing.Size(292, 380);
@@ -1954,10 +1966,9 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.customPanel1);
-            this.tabPage4.Controls.Add(this.searchspriteTextbox);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(292, 664);
+            this.tabPage4.Size = new System.Drawing.Size(292, 670);
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1966,10 +1977,11 @@
             // 
             this.customPanel1.AutoScroll = true;
             this.customPanel1.Controls.Add(this.panel4);
+            this.customPanel1.Controls.Add(this.searchspriteTextbox);
             this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Location = new System.Drawing.Point(0, 0);
             this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 644);
+            this.customPanel1.Size = new System.Drawing.Size(292, 670);
             this.customPanel1.TabIndex = 2;
             // 
             // panel4
@@ -1977,15 +1989,16 @@
             this.panel4.AutoScroll = true;
             this.panel4.Controls.Add(this.spritesView1);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Location = new System.Drawing.Point(0, 20);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(292, 644);
+            this.panel4.Size = new System.Drawing.Size(292, 650);
             this.panel4.TabIndex = 24;
             // 
             // spritesView1
             // 
             this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
             this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Margin = new System.Windows.Forms.Padding(6);
             this.spritesView1.Name = "spritesView1";
             this.spritesView1.Size = new System.Drawing.Size(292, 374);
             this.spritesView1.TabIndex = 0;
@@ -2007,7 +2020,7 @@
             this.edit8x8.Controls.Add(this.groupBox1);
             this.edit8x8.Location = new System.Drawing.Point(4, 22);
             this.edit8x8.Name = "edit8x8";
-            this.edit8x8.Size = new System.Drawing.Size(292, 664);
+            this.edit8x8.Size = new System.Drawing.Size(292, 670);
             this.edit8x8.TabIndex = 11;
             this.edit8x8.Text = "8x8 tiles";
             this.edit8x8.UseVisualStyleBackColor = true;
@@ -2019,7 +2032,7 @@
             this.edit8x8Panel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.edit8x8Panel.Location = new System.Drawing.Point(0, 0);
             this.edit8x8Panel.Name = "edit8x8Panel";
-            this.edit8x8Panel.Size = new System.Drawing.Size(292, 460);
+            this.edit8x8Panel.Size = new System.Drawing.Size(292, 466);
             this.edit8x8Panel.TabIndex = 2;
             // 
             // editBox8x8
@@ -2037,7 +2050,7 @@
             this.groupBox1.Controls.Add(this.edit8x8myCheckbox);
             this.groupBox1.Controls.Add(this.edit8x8mxCheckbox);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 460);
+            this.groupBox1.Location = new System.Drawing.Point(0, 466);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(292, 204);
             this.groupBox1.TabIndex = 1;
@@ -2281,13 +2294,14 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(300, 49);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 690);
+            this.splitter1.Size = new System.Drawing.Size(3, 696);
             this.splitter1.TabIndex = 15;
             this.splitter1.TabStop = false;
             // 
             // headerGroupbox
             // 
             this.headerGroupbox.BackColor = System.Drawing.SystemColors.Control;
+            this.headerGroupbox.Controls.Add(this.overlayPanel);
             this.headerGroupbox.Controls.Add(this.selectedGroupbox);
             this.headerGroupbox.Controls.Add(this.roomHeaderPanel);
             this.headerGroupbox.Controls.Add(this.litCheckbox);
@@ -2303,6 +2317,64 @@
             this.headerGroupbox.TabIndex = 0;
             this.headerGroupbox.TabStop = false;
             this.headerGroupbox.Text = "Room header";
+            // 
+            // overlayPanel
+            // 
+            this.overlayPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.overlayPanel.Controls.Add(this.overlayCombobox);
+            this.overlayPanel.Controls.Add(this.label39);
+            this.overlayPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.overlayPanel.Location = new System.Drawing.Point(507, 16);
+            this.overlayPanel.Name = "overlayPanel";
+            this.overlayPanel.Size = new System.Drawing.Size(363, 50);
+            this.overlayPanel.TabIndex = 22;
+            this.overlayPanel.Visible = false;
+            // 
+            // overlayCombobox
+            // 
+            this.overlayCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayCombobox.BackColor = System.Drawing.SystemColors.Window;
+            this.overlayCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.overlayCombobox.FormattingEnabled = true;
+            this.overlayCombobox.Items.AddRange(new object[] {
+            "Holes 0x00",
+            "Holes 0x01",
+            "Holes 0x02",
+            "Holes 0x03",
+            "Holes 0x04",
+            "Holes 0x05",
+            "Holes 0x06",
+            "Holes 0x07",
+            "Holes 0x08",
+            "Holes 0x09",
+            "Holes 0x0A",
+            "Holes 0x0B",
+            "Holes 0x0C",
+            "Holes 0x0D",
+            "Holes 0x0E",
+            "Holes 0x0F",
+            "Holes 0x10",
+            "Holes 0x11",
+            "Holes 0x12",
+            "Dam Water flood overlay"});
+            this.overlayCombobox.Location = new System.Drawing.Point(6, 23);
+            this.overlayCombobox.Name = "overlayCombobox";
+            this.overlayCombobox.Size = new System.Drawing.Size(348, 21);
+            this.overlayCombobox.TabIndex = 8;
+            this.overlayCombobox.SelectedIndexChanged += new System.EventHandler(this.overlayCombobox_SelectedIndexChanged);
+            // 
+            // label39
+            // 
+            this.label39.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label39.AutoSize = true;
+            this.label39.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label39.Location = new System.Drawing.Point(3, 8);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(94, 13);
+            this.label39.TabIndex = 9;
+            this.label39.Text = "Overlay Selected :";
             // 
             // selectedGroupbox
             // 
@@ -2795,7 +2867,7 @@
             // litCheckbox
             // 
             this.litCheckbox.AutoSize = true;
-            this.litCheckbox.Location = new System.Drawing.Point(618, 46);
+            this.litCheckbox.Location = new System.Drawing.Point(514, 46);
             this.litCheckbox.Name = "litCheckbox";
             this.litCheckbox.Size = new System.Drawing.Size(61, 17);
             this.litCheckbox.TabIndex = 19;
@@ -2806,8 +2878,6 @@
             // 
             // doorselectPanel
             // 
-            this.doorselectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.doorselectPanel.BackColor = System.Drawing.SystemColors.Control;
             this.doorselectPanel.Controls.Add(this.comboBox2);
             this.doorselectPanel.Controls.Add(this.label25);
@@ -2845,8 +2915,6 @@
             // 
             // potitemobjectPanel
             // 
-            this.potitemobjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.potitemobjectPanel.Controls.Add(this.selecteditemobjectCombobox);
             this.potitemobjectPanel.Controls.Add(this.label31);
             this.potitemobjectPanel.Location = new System.Drawing.Point(508, 16);
@@ -2909,8 +2977,6 @@
             // 
             // spritepropertyPanel
             // 
-            this.spritepropertyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.spritepropertyPanel.Controls.Add(this.spriteoverlordCheckbox);
             this.spritepropertyPanel.Controls.Add(this.label26);
             this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
@@ -2925,7 +2991,7 @@
             // spriteoverlordCheckbox
             // 
             this.spriteoverlordCheckbox.AutoSize = true;
-            this.spriteoverlordCheckbox.Location = new System.Drawing.Point(79, 28);
+            this.spriteoverlordCheckbox.Location = new System.Drawing.Point(181, 28);
             this.spriteoverlordCheckbox.Name = "spriteoverlordCheckbox";
             this.spriteoverlordCheckbox.Size = new System.Drawing.Size(66, 17);
             this.spriteoverlordCheckbox.TabIndex = 16;
@@ -2965,9 +3031,9 @@
             "None",
             "Small key",
             "Big key"});
-            this.comboBox1.Location = new System.Drawing.Point(174, 26);
+            this.comboBox1.Location = new System.Drawing.Point(76, 26);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(125, 21);
+            this.comboBox1.Size = new System.Drawing.Size(89, 21);
             this.comboBox1.TabIndex = 8;
             this.comboBox1.Text = "None";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
@@ -2977,7 +3043,7 @@
             this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(171, 10);
+            this.label23.Location = new System.Drawing.Point(73, 10);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(49, 13);
             this.label23.TabIndex = 9;
@@ -2985,8 +3051,6 @@
             // 
             // collisionMapPanel
             // 
-            this.collisionMapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.collisionMapPanel.BackColor = System.Drawing.SystemColors.Control;
             this.collisionMapPanel.Controls.Add(this.tileTypeCombobox);
             this.collisionMapPanel.Controls.Add(this.collisionMapLabel);
@@ -3034,7 +3098,7 @@
             this.editorsTabControl.Controls.Add(this.NamingEditor);
             this.editorsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.editorsTabControl.Enabled = false;
-            this.editorsTabControl.Location = new System.Drawing.Point(0, 739);
+            this.editorsTabControl.Location = new System.Drawing.Point(0, 745);
             this.editorsTabControl.Name = "editorsTabControl";
             this.editorsTabControl.SelectedIndex = 0;
             this.editorsTabControl.Size = new System.Drawing.Size(1177, 22);
@@ -3125,10 +3189,10 @@
             this.testToolStripMenuItem,
             this.roomToolStripMenuItem,
             this.dungeonViewToolStripMenuItem,
+            this.naviguateToolStripMenuItem,
             this.overworldToolStripMenuItem,
             this.areaToolStripMenuItem,
             this.overworldViewToolStripMenuItem,
-            this.naviguateToolStripMenuItem,
             this.windowToolStripMenuItem,
             this.multiplayerToolStripMenuItem,
             this.jPDebugToolStripMenuItem,
@@ -3382,7 +3446,8 @@
             this.saveSettingsToolStripMenuItem,
             this.loadNamesFileToolStripMenuItem,
             this.memoryManagementToolStripMenuItem,
-            this.pluginsToolStripMenuItem});
+            this.pluginsToolStripMenuItem,
+            this.toolStripMenuItem8});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -3412,11 +3477,17 @@
             // 
             // pluginsToolStripMenuItem
             // 
-            this.pluginsToolStripMenuItem.Enabled = false;
             this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
             this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.pluginsToolStripMenuItem.Text = "ROM Patches";
             this.pluginsToolStripMenuItem.Click += new System.EventHandler(this.pluginsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(233, 22);
+            this.toolStripMenuItem8.Text = "Import player sprite .zspr";
+            this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
             // 
             // testToolStripMenuItem
             // 
@@ -3426,7 +3497,7 @@
             this.testToolStripMenuItem.Enabled = false;
             this.testToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
             this.testToolStripMenuItem.Text = "Test";
             // 
             // runToolStripMenuItem
@@ -3473,77 +3544,77 @@
             // gotoRoomToolStripMenuItem
             // 
             this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
-            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.gotoRoomToolStripMenuItem.Text = "Go to Room";
             this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.GotoRoomToolStripMenuItem_Click_1);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(214, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(213, 22);
             this.toolStripMenuItem2.Text = "Dungeons Properties";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.DungeonsPropertiesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(213, 22);
             this.toolStripMenuItem1.Text = "Advanced Chest Editor";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.AdvancedChestEditorToolStripMenuItem_Click);
             // 
             // removeMaskObjectsToolStripMenuItem
             // 
             this.removeMaskObjectsToolStripMenuItem.Name = "removeMaskObjectsToolStripMenuItem";
-            this.removeMaskObjectsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.removeMaskObjectsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.removeMaskObjectsToolStripMenuItem.Text = "Remove Mask Objects";
             this.removeMaskObjectsToolStripMenuItem.Click += new System.EventHandler(this.RemoveMasksObjectsToolStripMenuItem_Click);
             // 
             // printRoomObjectsToolStripMenuItem1
             // 
             this.printRoomObjectsToolStripMenuItem1.Name = "printRoomObjectsToolStripMenuItem1";
-            this.printRoomObjectsToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
+            this.printRoomObjectsToolStripMenuItem1.Size = new System.Drawing.Size(213, 22);
             this.printRoomObjectsToolStripMenuItem1.Text = "Print Room Objects";
             this.printRoomObjectsToolStripMenuItem1.Click += new System.EventHandler(this.PrintRoomObjectsToolStripMenuItem_Click);
             // 
             // clearSelectedRoomToolStripMenuItem
             // 
             this.clearSelectedRoomToolStripMenuItem.Name = "clearSelectedRoomToolStripMenuItem";
-            this.clearSelectedRoomToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.clearSelectedRoomToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.clearSelectedRoomToolStripMenuItem.Text = "Clear Selected Room";
             this.clearSelectedRoomToolStripMenuItem.Click += new System.EventHandler(this.ClearSelectedRoomToolStripMenuItem_Click);
             // 
             // clearAllRoomsToolStripMenuItem
             // 
             this.clearAllRoomsToolStripMenuItem.Name = "clearAllRoomsToolStripMenuItem";
-            this.clearAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.clearAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.clearAllRoomsToolStripMenuItem.Text = "Clear All Rooms";
             this.clearAllRoomsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllRoomsToolStripMenuItem_Click);
             // 
             // exportAsASMToolStripMenuItem
             // 
             this.exportAsASMToolStripMenuItem.Name = "exportAsASMToolStripMenuItem";
-            this.exportAsASMToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.exportAsASMToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.exportAsASMToolStripMenuItem.Text = "Export As Binary";
             this.exportAsASMToolStripMenuItem.Click += new System.EventHandler(this.ExportAsASMToolStripMenuItem_Click);
             // 
             // exportAllRoomsToolStripMenuItem
             // 
             this.exportAllRoomsToolStripMenuItem.Name = "exportAllRoomsToolStripMenuItem";
-            this.exportAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.exportAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.exportAllRoomsToolStripMenuItem.Text = "Export All Rooms";
             this.exportAllRoomsToolStripMenuItem.Click += new System.EventHandler(this.ExportAllRoomsToolStripMenuItem_Click);
             // 
             // exportSpritesAsBinaryToolStripMenuItem
             // 
             this.exportSpritesAsBinaryToolStripMenuItem.Name = "exportSpritesAsBinaryToolStripMenuItem";
-            this.exportSpritesAsBinaryToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.exportSpritesAsBinaryToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.exportSpritesAsBinaryToolStripMenuItem.Text = "Export Sprites As Binary";
             this.exportSpritesAsBinaryToolStripMenuItem.Click += new System.EventHandler(this.ExportSpritesAsBinaryToolStripMenuItem_Click);
             // 
             // importRoomToolStripMenuItem
             // 
             this.importRoomToolStripMenuItem.Name = "importRoomToolStripMenuItem";
-            this.importRoomToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.importRoomToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.importRoomToolStripMenuItem.Text = "Import Room";
             this.importRoomToolStripMenuItem.Click += new System.EventHandler(this.ImportRoomToolStripMenuItem_Click);
             // 
@@ -3552,41 +3623,41 @@
             this.showRoomsInHexToolStripMenuItem.CheckOnClick = true;
             this.showRoomsInHexToolStripMenuItem.Enabled = false;
             this.showRoomsInHexToolStripMenuItem.Name = "showRoomsInHexToolStripMenuItem";
-            this.showRoomsInHexToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.showRoomsInHexToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.showRoomsInHexToolStripMenuItem.Text = "Display Room IDs in Hex";
             this.showRoomsInHexToolStripMenuItem.Click += new System.EventHandler(this.ShowRoomsInHexToolStripMenuItem_Click);
             // 
             // selectedObjectInHexToolStripMenuItem
             // 
             this.selectedObjectInHexToolStripMenuItem.Name = "selectedObjectInHexToolStripMenuItem";
-            this.selectedObjectInHexToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.selectedObjectInHexToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.selectedObjectInHexToolStripMenuItem.Text = "Display Object Data in Hex";
             // 
             // autoDoorsToolStripMenuItem
             // 
             this.autoDoorsToolStripMenuItem.Name = "autoDoorsToolStripMenuItem";
-            this.autoDoorsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.autoDoorsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.autoDoorsToolStripMenuItem.Text = "Auto sort Doors";
             this.autoDoorsToolStripMenuItem.Click += new System.EventHandler(this.AutoDoorButton_Click_1);
             // 
             // exportSelectedRoomsToolStripMenuItem
             // 
             this.exportSelectedRoomsToolStripMenuItem.Name = "exportSelectedRoomsToolStripMenuItem";
-            this.exportSelectedRoomsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.exportSelectedRoomsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.exportSelectedRoomsToolStripMenuItem.Text = "Export Dungeon";
             this.exportSelectedRoomsToolStripMenuItem.Click += new System.EventHandler(this.exportSelectedRoomsToolStripMenuItem_Click);
             // 
             // importDungeonToolStripMenuItem
             // 
             this.importDungeonToolStripMenuItem.Name = "importDungeonToolStripMenuItem";
-            this.importDungeonToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.importDungeonToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.importDungeonToolStripMenuItem.Text = "Import Dungeon";
             this.importDungeonToolStripMenuItem.Click += new System.EventHandler(this.importDungeonToolStripMenuItem_Click);
             // 
             // propertiesToolStripMenuItem
             // 
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.propertiesToolStripMenuItem.Text = "ZS Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
@@ -3625,7 +3696,7 @@
             // 
             this.textSpriteToolStripMenuItem.CheckOnClick = true;
             this.textSpriteToolStripMenuItem.Name = "textSpriteToolStripMenuItem";
-            this.textSpriteToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.textSpriteToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.textSpriteToolStripMenuItem.Text = "Show Sprite Names";
             this.textSpriteToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3633,7 +3704,7 @@
             // 
             this.textChestItemToolStripMenuItem.CheckOnClick = true;
             this.textChestItemToolStripMenuItem.Name = "textChestItemToolStripMenuItem";
-            this.textChestItemToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.textChestItemToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.textChestItemToolStripMenuItem.Text = "Show Chest Item Names";
             this.textChestItemToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3641,7 +3712,7 @@
             // 
             this.textPotItemToolStripMenuItem.CheckOnClick = true;
             this.textPotItemToolStripMenuItem.Name = "textPotItemToolStripMenuItem";
-            this.textPotItemToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.textPotItemToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.textPotItemToolStripMenuItem.Text = "Show Secret Item Names";
             this.textPotItemToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3655,7 +3726,7 @@
             this.x64ToolStripMenuItem,
             this.x256ToolStripMenuItem});
             this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
-            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showGridToolStripMenuItem.Text = "Show Grid";
             this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showGridToolStripMenuItem_Click);
             // 
@@ -3663,7 +3734,7 @@
             // 
             this.x8ToolStripMenuItem.CheckOnClick = true;
             this.x8ToolStripMenuItem.Name = "x8ToolStripMenuItem";
-            this.x8ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.x8ToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.x8ToolStripMenuItem.Text = "8x8";
             this.x8ToolStripMenuItem.Click += new System.EventHandler(this.X8ToolStripMenuItem_Click);
             // 
@@ -3671,7 +3742,7 @@
             // 
             this.x16ToolStripMenuItem.CheckOnClick = true;
             this.x16ToolStripMenuItem.Name = "x16ToolStripMenuItem";
-            this.x16ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.x16ToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.x16ToolStripMenuItem.Text = "16x16";
             this.x16ToolStripMenuItem.Click += new System.EventHandler(this.X8ToolStripMenuItem_Click);
             // 
@@ -3679,7 +3750,7 @@
             // 
             this.x32ToolStripMenuItem.CheckOnClick = true;
             this.x32ToolStripMenuItem.Name = "x32ToolStripMenuItem";
-            this.x32ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.x32ToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.x32ToolStripMenuItem.Text = "32x32";
             this.x32ToolStripMenuItem.Click += new System.EventHandler(this.X8ToolStripMenuItem_Click);
             // 
@@ -3687,7 +3758,7 @@
             // 
             this.x64ToolStripMenuItem.CheckOnClick = true;
             this.x64ToolStripMenuItem.Name = "x64ToolStripMenuItem";
-            this.x64ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.x64ToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.x64ToolStripMenuItem.Text = "64x64";
             this.x64ToolStripMenuItem.Click += new System.EventHandler(this.X8ToolStripMenuItem_Click);
             // 
@@ -3695,7 +3766,7 @@
             // 
             this.x256ToolStripMenuItem.CheckOnClick = true;
             this.x256ToolStripMenuItem.Name = "x256ToolStripMenuItem";
-            this.x256ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.x256ToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.x256ToolStripMenuItem.Text = "256x256";
             this.x256ToolStripMenuItem.Click += new System.EventHandler(this.X8ToolStripMenuItem_Click);
             // 
@@ -3705,7 +3776,7 @@
             this.showBG2ToolStripMenuItem.CheckOnClick = true;
             this.showBG2ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showBG2ToolStripMenuItem.Name = "showBG2ToolStripMenuItem";
-            this.showBG2ToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showBG2ToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showBG2ToolStripMenuItem.Text = "Show Layer 2";
             this.showBG2ToolStripMenuItem.Click += new System.EventHandler(this.showBG2ToolStripMenuItem_Click);
             // 
@@ -3715,7 +3786,7 @@
             this.showBG1ToolStripMenuItem.CheckOnClick = true;
             this.showBG1ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showBG1ToolStripMenuItem.Name = "showBG1ToolStripMenuItem";
-            this.showBG1ToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showBG1ToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showBG1ToolStripMenuItem.Text = "Show Layer 1";
             this.showBG1ToolStripMenuItem.Click += new System.EventHandler(this.showBG1ToolStripMenuItem_Click);
             // 
@@ -3725,7 +3796,7 @@
             this.unselectedBGTransparentToolStripMenuItem.CheckOnClick = true;
             this.unselectedBGTransparentToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.unselectedBGTransparentToolStripMenuItem.Name = "unselectedBGTransparentToolStripMenuItem";
-            this.unselectedBGTransparentToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.unselectedBGTransparentToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.unselectedBGTransparentToolStripMenuItem.Text = "Display Unselected Layer Translucently";
             this.unselectedBGTransparentToolStripMenuItem.Click += new System.EventHandler(this.unselectedBGTransparentToolStripMenuItem_Click);
             // 
@@ -3734,7 +3805,7 @@
             this.darkThemeToolStripMenuItem.CheckOnClick = true;
             this.darkThemeToolStripMenuItem.Enabled = false;
             this.darkThemeToolStripMenuItem.Name = "darkThemeToolStripMenuItem";
-            this.darkThemeToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.darkThemeToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.darkThemeToolStripMenuItem.Text = "Dark Theme";
             this.darkThemeToolStripMenuItem.Click += new System.EventHandler(this.DarkThemeToolStripMenuItem_Click);
             // 
@@ -3742,7 +3813,7 @@
             // 
             this.rightSideToolboxToolStripMenuItem.CheckOnClick = true;
             this.rightSideToolboxToolStripMenuItem.Name = "rightSideToolboxToolStripMenuItem";
-            this.rightSideToolboxToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.rightSideToolboxToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.rightSideToolboxToolStripMenuItem.Text = "Show Entrance Properties Beneath";
             this.rightSideToolboxToolStripMenuItem.Click += new System.EventHandler(this.rightSideToolboxToolStripMenuItem_Click);
             // 
@@ -3752,7 +3823,7 @@
             this.hideSpritesToolStripMenuItem.CheckOnClick = true;
             this.hideSpritesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.hideSpritesToolStripMenuItem.Name = "hideSpritesToolStripMenuItem";
-            this.hideSpritesToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.hideSpritesToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.hideSpritesToolStripMenuItem.Text = "Show Sprites";
             this.hideSpritesToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3762,7 +3833,7 @@
             this.hideItemsToolStripMenuItem.CheckOnClick = true;
             this.hideItemsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.hideItemsToolStripMenuItem.Name = "hideItemsToolStripMenuItem";
-            this.hideItemsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.hideItemsToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.hideItemsToolStripMenuItem.Text = "Show Items";
             this.hideItemsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3772,7 +3843,7 @@
             this.hideChestItemsToolStripMenuItem.CheckOnClick = true;
             this.hideChestItemsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.hideChestItemsToolStripMenuItem.Name = "hideChestItemsToolStripMenuItem";
-            this.hideChestItemsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.hideChestItemsToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.hideChestItemsToolStripMenuItem.Text = "Show Chest Items";
             this.hideChestItemsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3782,7 +3853,7 @@
             this.showDoorIDsToolStripMenuItem.CheckOnClick = true;
             this.showDoorIDsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showDoorIDsToolStripMenuItem.Name = "showDoorIDsToolStripMenuItem";
-            this.showDoorIDsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showDoorIDsToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showDoorIDsToolStripMenuItem.Text = "Show Door Index";
             this.showDoorIDsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3792,7 +3863,7 @@
             this.showChestsIDsToolStripMenuItem.CheckOnClick = true;
             this.showChestsIDsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showChestsIDsToolStripMenuItem.Name = "showChestsIDsToolStripMenuItem";
-            this.showChestsIDsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showChestsIDsToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showChestsIDsToolStripMenuItem.Text = "Show Chest Index";
             this.showChestsIDsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3800,7 +3871,7 @@
             // 
             this.disableEntranceGFXToolStripMenuItem.CheckOnClick = true;
             this.disableEntranceGFXToolStripMenuItem.Name = "disableEntranceGFXToolStripMenuItem";
-            this.disableEntranceGFXToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.disableEntranceGFXToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.disableEntranceGFXToolStripMenuItem.Text = "Hide Entrance GFX";
             this.disableEntranceGFXToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             // 
@@ -3808,7 +3879,7 @@
             // 
             this.xScreenToolStripMenuItem.CheckOnClick = true;
             this.xScreenToolStripMenuItem.Name = "xScreenToolStripMenuItem";
-            this.xScreenToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.xScreenToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.xScreenToolStripMenuItem.Text = "2X Zoom";
             this.xScreenToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             this.xScreenToolStripMenuItem.Click += new System.EventHandler(this.XScreenToolStripMenuItem_Click);
@@ -3819,27 +3890,23 @@
             this.showBG2MaskOutlineToolStripMenuItem.CheckOnClick = true;
             this.showBG2MaskOutlineToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showBG2MaskOutlineToolStripMenuItem.Name = "showBG2MaskOutlineToolStripMenuItem";
-            this.showBG2MaskOutlineToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showBG2MaskOutlineToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showBG2MaskOutlineToolStripMenuItem.Text = "Outline Layer Masks";
             this.showBG2MaskOutlineToolStripMenuItem.Click += new System.EventHandler(this.ShowBG2MaskOutlineToolStripMenuItem_Click);
             // 
             // entranceCameraToolStripMenuItem
             // 
-            this.entranceCameraToolStripMenuItem.Checked = true;
             this.entranceCameraToolStripMenuItem.CheckOnClick = true;
-            this.entranceCameraToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.entranceCameraToolStripMenuItem.Name = "entranceCameraToolStripMenuItem";
-            this.entranceCameraToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.entranceCameraToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.entranceCameraToolStripMenuItem.Text = "Show Entrance Camera Box";
             this.entranceCameraToolStripMenuItem.Click += new System.EventHandler(this.EntranceCameraToolStripMenuItem_Click);
             // 
             // entrancePositionToolStripMenuItem
             // 
-            this.entrancePositionToolStripMenuItem.Checked = true;
             this.entrancePositionToolStripMenuItem.CheckOnClick = true;
-            this.entrancePositionToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.entrancePositionToolStripMenuItem.Name = "entrancePositionToolStripMenuItem";
-            this.entrancePositionToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.entrancePositionToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.entrancePositionToolStripMenuItem.Text = "Show Entrance Position";
             this.entrancePositionToolStripMenuItem.Click += new System.EventHandler(this.EntrancePositionToolStripMenuItem_Click);
             // 
@@ -3849,7 +3916,7 @@
             this.invisibleObjectsTextToolStripMenuItem.CheckOnClick = true;
             this.invisibleObjectsTextToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.invisibleObjectsTextToolStripMenuItem.Name = "invisibleObjectsTextToolStripMenuItem";
-            this.invisibleObjectsTextToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.invisibleObjectsTextToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.invisibleObjectsTextToolStripMenuItem.Text = "Show Text for Invisible Objects";
             // 
             // showMapIndexInHexToolStripMenuItem
@@ -3859,7 +3926,7 @@
             this.showMapIndexInHexToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showMapIndexInHexToolStripMenuItem.Enabled = false;
             this.showMapIndexInHexToolStripMenuItem.Name = "showMapIndexInHexToolStripMenuItem";
-            this.showMapIndexInHexToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showMapIndexInHexToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showMapIndexInHexToolStripMenuItem.Text = "Display Map IDs in Hex";
             this.showMapIndexInHexToolStripMenuItem.Click += new System.EventHandler(this.ShowMapIndexInHexToolStripMenuItem_Click);
             // 
@@ -3869,10 +3936,97 @@
             this.showStairIndexToolStripMenuItem.CheckOnClick = true;
             this.showStairIndexToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showStairIndexToolStripMenuItem.Name = "showStairIndexToolStripMenuItem";
-            this.showStairIndexToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.showStairIndexToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.showStairIndexToolStripMenuItem.Text = "Show Stair Index";
             this.showStairIndexToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.HideSpritesToolStripMenuItem_CheckStateChanged);
             this.showStairIndexToolStripMenuItem.Click += new System.EventHandler(this.ShowStairIndexToolStripMenuItem_Click);
+            // 
+            // naviguateToolStripMenuItem
+            // 
+            this.naviguateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.moveToRightToolStripMenuItem,
+            this.moveToLeftToolStripMenuItem,
+            this.moveToUpToolStripMenuItem,
+            this.moveToDownToolStripMenuItem,
+            this.toolStripSeparator8,
+            this.openRightRoomToolStripMenuItem,
+            this.openLeftRoomToolStripMenuItem,
+            this.openUpRoomToolStripMenuItem,
+            this.openDownRoomToolStripMenuItem});
+            this.naviguateToolStripMenuItem.Enabled = false;
+            this.naviguateToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.naviguateToolStripMenuItem.Name = "naviguateToolStripMenuItem";
+            this.naviguateToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.naviguateToolStripMenuItem.Text = "Navigate";
+            // 
+            // moveToRightToolStripMenuItem
+            // 
+            this.moveToRightToolStripMenuItem.Enabled = false;
+            this.moveToRightToolStripMenuItem.Name = "moveToRightToolStripMenuItem";
+            this.moveToRightToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Right)));
+            this.moveToRightToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToRightToolStripMenuItem.Text = "Move 1 Room to the East";
+            // 
+            // moveToLeftToolStripMenuItem
+            // 
+            this.moveToLeftToolStripMenuItem.Enabled = false;
+            this.moveToLeftToolStripMenuItem.Name = "moveToLeftToolStripMenuItem";
+            this.moveToLeftToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Left)));
+            this.moveToLeftToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToLeftToolStripMenuItem.Text = "Move 1 Room to the West";
+            // 
+            // moveToUpToolStripMenuItem
+            // 
+            this.moveToUpToolStripMenuItem.Enabled = false;
+            this.moveToUpToolStripMenuItem.Name = "moveToUpToolStripMenuItem";
+            this.moveToUpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Up)));
+            this.moveToUpToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToUpToolStripMenuItem.Text = "Move 1 Room to the North";
+            // 
+            // moveToDownToolStripMenuItem
+            // 
+            this.moveToDownToolStripMenuItem.Enabled = false;
+            this.moveToDownToolStripMenuItem.Name = "moveToDownToolStripMenuItem";
+            this.moveToDownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Down)));
+            this.moveToDownToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.moveToDownToolStripMenuItem.Text = "Move 1 Room to the South";
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(274, 6);
+            // 
+            // openRightRoomToolStripMenuItem
+            // 
+            this.openRightRoomToolStripMenuItem.Name = "openRightRoomToolStripMenuItem";
+            this.openRightRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
+            this.openRightRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openRightRoomToolStripMenuItem.Text = "Open Room to the East";
+            this.openRightRoomToolStripMenuItem.Click += new System.EventHandler(this.openRightRoomToolStripMenuItem_Click);
+            // 
+            // openLeftRoomToolStripMenuItem
+            // 
+            this.openLeftRoomToolStripMenuItem.Name = "openLeftRoomToolStripMenuItem";
+            this.openLeftRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
+            this.openLeftRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openLeftRoomToolStripMenuItem.Text = "Open Room to the West";
+            this.openLeftRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenLeftRoomToolStripMenuItem_Click);
+            // 
+            // openUpRoomToolStripMenuItem
+            // 
+            this.openUpRoomToolStripMenuItem.Name = "openUpRoomToolStripMenuItem";
+            this.openUpRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
+            this.openUpRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openUpRoomToolStripMenuItem.Text = "Open Room to the North";
+            this.openUpRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenUpRoomToolStripMenuItem_Click);
+            // 
+            // openDownRoomToolStripMenuItem
+            // 
+            this.openDownRoomToolStripMenuItem.Name = "openDownRoomToolStripMenuItem";
+            this.openDownRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
+            this.openDownRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.openDownRoomToolStripMenuItem.Text = "Open Room to the South";
+            this.openDownRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenDownRoomToolStripMenuItem_Click);
             // 
             // overworldToolStripMenuItem
             // 
@@ -3890,7 +4044,9 @@
             this.toolStripMenuItem7,
             this.clearDWTilesToolStripMenuItem,
             this.copyLWToDWToolStripMenuItem,
-            this.showTiles32CountToolStripMenuItem});
+            this.showTiles32CountToolStripMenuItem,
+            this.showUniqueTile32ToolStripMenuItem,
+            this.setUnusedTiles16ToToolStripMenuItem});
             this.overworldToolStripMenuItem.Enabled = false;
             this.overworldToolStripMenuItem.Name = "overworldToolStripMenuItem";
             this.overworldToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
@@ -3904,7 +4060,7 @@
             this.zeldaSavedToolStripMenuItem,
             this.agahDeadToolStripMenuItem});
             this.clearSpritesToolStripMenuItem.Name = "clearSpritesToolStripMenuItem";
-            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearSpritesToolStripMenuItem.Text = "Clear All Sprites";
             // 
             // saveZeldaToolStripMenuItem
@@ -3931,63 +4087,63 @@
             // clearItemsToolStripMenuItem
             // 
             this.clearItemsToolStripMenuItem.Name = "clearItemsToolStripMenuItem";
-            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearItemsToolStripMenuItem.Text = "Clear All Items";
             this.clearItemsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWItemsToolStripMenuItem_Click);
             // 
             // clearEntrancesToolStripMenuItem
             // 
             this.clearEntrancesToolStripMenuItem.Name = "clearEntrancesToolStripMenuItem";
-            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearEntrancesToolStripMenuItem.Text = "Clear All Entrances";
             this.clearEntrancesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWEntrancesToolStripMenuItem_Click);
             // 
             // clearAllHolesToolStripMenuItem
             // 
             this.clearAllHolesToolStripMenuItem.Name = "clearAllHolesToolStripMenuItem";
-            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearAllHolesToolStripMenuItem.Text = "Clear All Holes";
             this.clearAllHolesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWHolesToolStripMenuItem_Click);
             // 
             // clearExitsToolStripMenuItem
             // 
             this.clearExitsToolStripMenuItem.Name = "clearExitsToolStripMenuItem";
-            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearExitsToolStripMenuItem.Text = "Clear All Exits";
             this.clearExitsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOWExitsToolStripMenuItem_Click);
             // 
             // clearAllOverlaysToolStripMenuItem
             // 
             this.clearAllOverlaysToolStripMenuItem.Name = "clearAllOverlaysToolStripMenuItem";
-            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearAllOverlaysToolStripMenuItem.Text = "Clear All Overlays";
             this.clearAllOverlaysToolStripMenuItem.Click += new System.EventHandler(this.ClearAllOverworldOverlaysToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(184, 22);
             this.toolStripMenuItem6.Text = "Export All Areas";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.ExportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(184, 22);
             this.toolStripMenuItem5.Text = "Import All Areas";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.ImportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(184, 22);
             this.toolStripMenuItem9.Text = "Export All Tiles";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.ExportAllTilesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(184, 22);
             this.toolStripMenuItem10.Text = "Import All Tiles";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.ImportAllTilesToolStripMenuItem_Click);
             // 
@@ -3995,29 +4151,45 @@
             // 
             this.toolStripMenuItem7.Enabled = false;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(184, 22);
             this.toolStripMenuItem7.Text = "Import from ROM";
             // 
             // clearDWTilesToolStripMenuItem
             // 
             this.clearDWTilesToolStripMenuItem.Name = "clearDWTilesToolStripMenuItem";
-            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.clearDWTilesToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.clearDWTilesToolStripMenuItem.Text = "Clear DW Tiles";
             this.clearDWTilesToolStripMenuItem.Click += new System.EventHandler(this.ClearDWTilesToolStripMenuItem_Click);
             // 
             // copyLWToDWToolStripMenuItem
             // 
             this.copyLWToDWToolStripMenuItem.Name = "copyLWToDWToolStripMenuItem";
-            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.copyLWToDWToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.copyLWToDWToolStripMenuItem.Text = "Copy LW to DW";
             this.copyLWToDWToolStripMenuItem.Click += new System.EventHandler(this.CopyLWToDWToolStripMenuItem_Click);
             // 
             // showTiles32CountToolStripMenuItem
             // 
             this.showTiles32CountToolStripMenuItem.Name = "showTiles32CountToolStripMenuItem";
-            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.showTiles32CountToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.showTiles32CountToolStripMenuItem.Text = "Show Tiles32 Count";
             this.showTiles32CountToolStripMenuItem.Click += new System.EventHandler(this.ShowTiles32CountToolStripMenuItem_Click);
+            // 
+            // showUniqueTile32ToolStripMenuItem
+            // 
+            this.showUniqueTile32ToolStripMenuItem.CheckOnClick = true;
+            this.showUniqueTile32ToolStripMenuItem.Name = "showUniqueTile32ToolStripMenuItem";
+            this.showUniqueTile32ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.showUniqueTile32ToolStripMenuItem.Text = "Show Unique Tile32";
+            this.showUniqueTile32ToolStripMenuItem.Click += new System.EventHandler(this.showUniqueTile32ToolStripMenuItem_Click);
+            // 
+            // setUnusedTiles16ToToolStripMenuItem
+            // 
+            this.setUnusedTiles16ToToolStripMenuItem.CheckOnClick = true;
+            this.setUnusedTiles16ToToolStripMenuItem.Name = "setUnusedTiles16ToToolStripMenuItem";
+            this.setUnusedTiles16ToToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.setUnusedTiles16ToToolStripMenuItem.Text = "Show unused Tiles16";
+            this.setUnusedTiles16ToToolStripMenuItem.Click += new System.EventHandler(this.setUnusedTiles16ToToolStripMenuItem_Click);
             // 
             // areaToolStripMenuItem
             // 
@@ -4043,7 +4215,7 @@
             this.zeldaSavedToolStripMenuItem1,
             this.agahDeadToolStripMenuItem1});
             this.clearSpritesToolStripMenuItem1.Name = "clearSpritesToolStripMenuItem1";
-            this.clearSpritesToolStripMenuItem1.Size = new System.Drawing.Size(257, 22);
+            this.clearSpritesToolStripMenuItem1.Size = new System.Drawing.Size(256, 22);
             this.clearSpritesToolStripMenuItem1.Text = "Clear Area Sprites";
             // 
             // saveZeldaToolStripMenuItem1
@@ -4070,49 +4242,49 @@
             // clearItemsToolStripMenuItem1
             // 
             this.clearItemsToolStripMenuItem1.Name = "clearItemsToolStripMenuItem1";
-            this.clearItemsToolStripMenuItem1.Size = new System.Drawing.Size(257, 22);
+            this.clearItemsToolStripMenuItem1.Size = new System.Drawing.Size(256, 22);
             this.clearItemsToolStripMenuItem1.Text = "Clear Area Items";
             this.clearItemsToolStripMenuItem1.Click += new System.EventHandler(this.ClearAllAreaItemsToolStripMenuItem_Click);
             // 
             // clearEntrancesToolStripMenuItem1
             // 
             this.clearEntrancesToolStripMenuItem1.Name = "clearEntrancesToolStripMenuItem1";
-            this.clearEntrancesToolStripMenuItem1.Size = new System.Drawing.Size(257, 22);
+            this.clearEntrancesToolStripMenuItem1.Size = new System.Drawing.Size(256, 22);
             this.clearEntrancesToolStripMenuItem1.Text = "Clear Area Entrances";
             this.clearEntrancesToolStripMenuItem1.Click += new System.EventHandler(this.ClearAllAreaEntrancesToolStripMenuItem_Click);
             // 
             // clearHolesToolStripMenuItem
             // 
             this.clearHolesToolStripMenuItem.Name = "clearHolesToolStripMenuItem";
-            this.clearHolesToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.clearHolesToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.clearHolesToolStripMenuItem.Text = "Clear Area Holes";
             this.clearHolesToolStripMenuItem.Click += new System.EventHandler(this.ClearAllAreaHolesToolStripMenuItem_Click);
             // 
             // clearExitsToolStripMenuItem1
             // 
             this.clearExitsToolStripMenuItem1.Name = "clearExitsToolStripMenuItem1";
-            this.clearExitsToolStripMenuItem1.Size = new System.Drawing.Size(257, 22);
+            this.clearExitsToolStripMenuItem1.Size = new System.Drawing.Size(256, 22);
             this.clearExitsToolStripMenuItem1.Text = "Clear Area Exits";
             this.clearExitsToolStripMenuItem1.Click += new System.EventHandler(this.ClearAllAreaExitsToolStripMenuItem_Click);
             // 
             // clearOverlaysToolStripMenuItem
             // 
             this.clearOverlaysToolStripMenuItem.Name = "clearOverlaysToolStripMenuItem";
-            this.clearOverlaysToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.clearOverlaysToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.clearOverlaysToolStripMenuItem.Text = "Clear Area Overlays";
             this.clearOverlaysToolStripMenuItem.Click += new System.EventHandler(this.ClearAllAreaOverlaysToolStripMenuItem_Click);
             // 
             // exportOverlayAsASMToolStripMenuItem
             // 
             this.exportOverlayAsASMToolStripMenuItem.Name = "exportOverlayAsASMToolStripMenuItem";
-            this.exportOverlayAsASMToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.exportOverlayAsASMToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.exportOverlayAsASMToolStripMenuItem.Text = "Export overlay as ASM in clipboard";
             this.exportOverlayAsASMToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAsASMToolStripMenuItem_Click);
             // 
             // exportOverlayAnimationAsASMInClipboardToolStripMenuItem
             // 
             this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Name = "exportOverlayAnimationAsASMInClipboardToolStripMenuItem";
-            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Text = "Export overlay Animation";
             this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem.Click += new System.EventHandler(this.exportOverlayAnimationAsASMInClipboardToolStripMenuItem_Click);
             // 
@@ -4217,21 +4389,21 @@
             // x8ToolStripMenuItem1
             // 
             this.x8ToolStripMenuItem1.Name = "x8ToolStripMenuItem1";
-            this.x8ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
+            this.x8ToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
             this.x8ToolStripMenuItem1.Text = "8x8";
             this.x8ToolStripMenuItem1.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
             // 
             // x16ToolStripMenuItem1
             // 
             this.x16ToolStripMenuItem1.Name = "x16ToolStripMenuItem1";
-            this.x16ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
+            this.x16ToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
             this.x16ToolStripMenuItem1.Text = "16x16";
             this.x16ToolStripMenuItem1.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
             // 
             // x32ToolStripMenuItem1
             // 
             this.x32ToolStripMenuItem1.Name = "x32ToolStripMenuItem1";
-            this.x32ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
+            this.x32ToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
             this.x32ToolStripMenuItem1.Text = "32x32";
             this.x32ToolStripMenuItem1.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
             // 
@@ -4240,7 +4412,7 @@
             this.noneToolStripMenuItem.Checked = true;
             this.noneToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.noneToolStripMenuItem.Text = "None";
             this.noneToolStripMenuItem.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
             // 
@@ -4273,93 +4445,6 @@
             this.showOverlayTextsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showOverlayTextsToolStripMenuItem.Text = "Show Overlay Texts";
             this.showOverlayTextsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
-            // 
-            // naviguateToolStripMenuItem
-            // 
-            this.naviguateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.moveToRightToolStripMenuItem,
-            this.moveToLeftToolStripMenuItem,
-            this.moveToUpToolStripMenuItem,
-            this.moveToDownToolStripMenuItem,
-            this.toolStripSeparator8,
-            this.openRightRoomToolStripMenuItem,
-            this.openLeftRoomToolStripMenuItem,
-            this.openUpRoomToolStripMenuItem,
-            this.openDownRoomToolStripMenuItem});
-            this.naviguateToolStripMenuItem.Enabled = false;
-            this.naviguateToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.naviguateToolStripMenuItem.Name = "naviguateToolStripMenuItem";
-            this.naviguateToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
-            this.naviguateToolStripMenuItem.Text = "Navigate";
-            // 
-            // moveToRightToolStripMenuItem
-            // 
-            this.moveToRightToolStripMenuItem.Enabled = false;
-            this.moveToRightToolStripMenuItem.Name = "moveToRightToolStripMenuItem";
-            this.moveToRightToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Right)));
-            this.moveToRightToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToRightToolStripMenuItem.Text = "Move 1 Room to the East";
-            // 
-            // moveToLeftToolStripMenuItem
-            // 
-            this.moveToLeftToolStripMenuItem.Enabled = false;
-            this.moveToLeftToolStripMenuItem.Name = "moveToLeftToolStripMenuItem";
-            this.moveToLeftToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Left)));
-            this.moveToLeftToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToLeftToolStripMenuItem.Text = "Move 1 Room to the West";
-            // 
-            // moveToUpToolStripMenuItem
-            // 
-            this.moveToUpToolStripMenuItem.Enabled = false;
-            this.moveToUpToolStripMenuItem.Name = "moveToUpToolStripMenuItem";
-            this.moveToUpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Up)));
-            this.moveToUpToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToUpToolStripMenuItem.Text = "Move 1 Room to the North";
-            // 
-            // moveToDownToolStripMenuItem
-            // 
-            this.moveToDownToolStripMenuItem.Enabled = false;
-            this.moveToDownToolStripMenuItem.Name = "moveToDownToolStripMenuItem";
-            this.moveToDownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Down)));
-            this.moveToDownToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.moveToDownToolStripMenuItem.Text = "Move 1 Room to the South";
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(274, 6);
-            // 
-            // openRightRoomToolStripMenuItem
-            // 
-            this.openRightRoomToolStripMenuItem.Name = "openRightRoomToolStripMenuItem";
-            this.openRightRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
-            this.openRightRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openRightRoomToolStripMenuItem.Text = "Open Room to the East";
-            this.openRightRoomToolStripMenuItem.Click += new System.EventHandler(this.openRightRoomToolStripMenuItem_Click);
-            // 
-            // openLeftRoomToolStripMenuItem
-            // 
-            this.openLeftRoomToolStripMenuItem.Name = "openLeftRoomToolStripMenuItem";
-            this.openLeftRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
-            this.openLeftRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openLeftRoomToolStripMenuItem.Text = "Open Room to the West";
-            this.openLeftRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenLeftRoomToolStripMenuItem_Click);
-            // 
-            // openUpRoomToolStripMenuItem
-            // 
-            this.openUpRoomToolStripMenuItem.Name = "openUpRoomToolStripMenuItem";
-            this.openUpRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
-            this.openUpRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openUpRoomToolStripMenuItem.Text = "Open Room to the North";
-            this.openUpRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenUpRoomToolStripMenuItem_Click);
-            // 
-            // openDownRoomToolStripMenuItem
-            // 
-            this.openDownRoomToolStripMenuItem.Name = "openDownRoomToolStripMenuItem";
-            this.openDownRoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
-            this.openDownRoomToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openDownRoomToolStripMenuItem.Text = "Open Room to the South";
-            this.openDownRoomToolStripMenuItem.Click += new System.EventHandler(this.OpenDownRoomToolStripMenuItem_Click);
             // 
             // windowToolStripMenuItem
             // 
@@ -4465,47 +4550,63 @@
             this.saveMapsOnlyToolStripMenuItem,
             this.saveVRAMAsPngToolStripMenuItem,
             this.moveRoomsToOtherROMToolStripMenuItem,
-            this.exportImageMapMultipleROMsToolStripMenuItem});
+            this.exportImageMapMultipleROMsToolStripMenuItem,
+            this.generatePaletteToolStripMenuItem,
+            this.useExpandedOWPaletteToolStripMenuItem});
             this.ExperimentalToolStripMenuItem1.Enabled = false;
             this.ExperimentalToolStripMenuItem1.Name = "ExperimentalToolStripMenuItem1";
-            this.ExperimentalToolStripMenuItem1.Size = new System.Drawing.Size(135, 20);
+            this.ExperimentalToolStripMenuItem1.Size = new System.Drawing.Size(134, 20);
             this.ExperimentalToolStripMenuItem1.Text = "Experimental Features";
             this.ExperimentalToolStripMenuItem1.Visible = false;
             // 
             // flipMapHorizontallyToolStripMenuItem
             // 
             this.flipMapHorizontallyToolStripMenuItem.Name = "flipMapHorizontallyToolStripMenuItem";
-            this.flipMapHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.flipMapHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.flipMapHorizontallyToolStripMenuItem.Text = "Flip Map Horizontally";
             this.flipMapHorizontallyToolStripMenuItem.Click += new System.EventHandler(this.flipMapHorizontallyToolStripMenuItem_Click);
             // 
             // saveMapsOnlyToolStripMenuItem
             // 
             this.saveMapsOnlyToolStripMenuItem.Name = "saveMapsOnlyToolStripMenuItem";
-            this.saveMapsOnlyToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.saveMapsOnlyToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.saveMapsOnlyToolStripMenuItem.Text = "Save Maps Only";
             this.saveMapsOnlyToolStripMenuItem.Click += new System.EventHandler(this.SaveMapsOnlyToolStripMenuItem_Click);
             // 
             // saveVRAMAsPngToolStripMenuItem
             // 
             this.saveVRAMAsPngToolStripMenuItem.Name = "saveVRAMAsPngToolStripMenuItem";
-            this.saveVRAMAsPngToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.saveVRAMAsPngToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.saveVRAMAsPngToolStripMenuItem.Text = "Save VRAM as PNG";
             this.saveVRAMAsPngToolStripMenuItem.Click += new System.EventHandler(this.SaveVRAMAsPngToolStripMenuItem_Click);
             // 
             // moveRoomsToOtherROMToolStripMenuItem
             // 
             this.moveRoomsToOtherROMToolStripMenuItem.Name = "moveRoomsToOtherROMToolStripMenuItem";
-            this.moveRoomsToOtherROMToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.moveRoomsToOtherROMToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.moveRoomsToOtherROMToolStripMenuItem.Text = "Move Rooms to Another ROM…";
             this.moveRoomsToOtherROMToolStripMenuItem.Click += new System.EventHandler(this.MoveRoomsToOtherROMToolStripMenuItem_Click);
             // 
             // exportImageMapMultipleROMsToolStripMenuItem
             // 
             this.exportImageMapMultipleROMsToolStripMenuItem.Name = "exportImageMapMultipleROMsToolStripMenuItem";
-            this.exportImageMapMultipleROMsToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.exportImageMapMultipleROMsToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.exportImageMapMultipleROMsToolStripMenuItem.Text = "Export Image Map (Multiple ROMs)";
             this.exportImageMapMultipleROMsToolStripMenuItem.Click += new System.EventHandler(this.ExportImageMapMultipleROMsToolStripMenuItem_Click);
+            // 
+            // generatePaletteToolStripMenuItem
+            // 
+            this.generatePaletteToolStripMenuItem.Name = "generatePaletteToolStripMenuItem";
+            this.generatePaletteToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.generatePaletteToolStripMenuItem.Text = "Generate Palette";
+            this.generatePaletteToolStripMenuItem.Click += new System.EventHandler(this.generatePaletteToolStripMenuItem_Click);
+            // 
+            // useExpandedOWPaletteToolStripMenuItem
+            // 
+            this.useExpandedOWPaletteToolStripMenuItem.Name = "useExpandedOWPaletteToolStripMenuItem";
+            this.useExpandedOWPaletteToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.useExpandedOWPaletteToolStripMenuItem.Text = "Use Expanded OW Palette";
+            this.useExpandedOWPaletteToolStripMenuItem.Click += new System.EventHandler(this.useExpandedOWPaletteToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -4557,7 +4658,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(267, 543);
+            this.panel3.Size = new System.Drawing.Size(268, 549);
             this.panel3.TabIndex = 64;
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
@@ -4567,7 +4668,7 @@
             this.warningLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.warningLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.warningLabel.ForeColor = System.Drawing.Color.OrangeRed;
-            this.warningLabel.Location = new System.Drawing.Point(0, 530);
+            this.warningLabel.Location = new System.Drawing.Point(0, 536);
             this.warningLabel.MinimumSize = new System.Drawing.Size(280, 0);
             this.warningLabel.Name = "warningLabel";
             this.warningLabel.Size = new System.Drawing.Size(280, 13);
@@ -4630,7 +4731,7 @@
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.Padding = new System.Drawing.Point(3, 3);
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(603, 20);
+            this.tabControl2.Size = new System.Drawing.Size(602, 20);
             this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl2.TabIndex = 17;
             this.tabControl2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawOnTab);
@@ -4659,8 +4760,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.panel3);
             this.splitContainer1.Panel2MinSize = 267;
-            this.splitContainer1.Size = new System.Drawing.Size(874, 543);
-            this.splitContainer1.SplitterDistance = 603;
+            this.splitContainer1.Size = new System.Drawing.Size(874, 549);
+            this.splitContainer1.SplitterDistance = 602;
             this.splitContainer1.TabIndex = 23;
             // 
             // customPanel3
@@ -4671,7 +4772,7 @@
             this.customPanel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.customPanel3.Location = new System.Drawing.Point(0, 20);
             this.customPanel3.Name = "customPanel3";
-            this.customPanel3.Size = new System.Drawing.Size(603, 523);
+            this.customPanel3.Size = new System.Drawing.Size(602, 529);
             this.customPanel3.TabIndex = 19;
             // 
             // networkBgWorker
@@ -4705,7 +4806,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1177, 761);
+            this.ClientSize = new System.Drawing.Size(1177, 767);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.headerGroupbox);
             this.Controls.Add(this.splitter1);
@@ -4724,6 +4825,8 @@
             this.SizeChanged += new System.EventHandler(this.DungeonMain_SizeChanged);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DungeonMain_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.DungeonMain_DragEnter);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DungeonMain_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DungeonMain_KeyUp);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.nothingselectedcontextMenu.ResumeLayout(false);
@@ -4744,8 +4847,8 @@
             this.objectstabPage.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
             this.customPanel1.ResumeLayout(false);
+            this.customPanel1.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.edit8x8.ResumeLayout(false);
             this.edit8x8Panel.ResumeLayout(false);
@@ -4755,6 +4858,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.edit8x8palettebox)).EndInit();
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
+            this.overlayPanel.ResumeLayout(false);
+            this.overlayPanel.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
             this.selectedGroupbox.PerformLayout();
             this.roomHeaderPanel.ResumeLayout(false);
@@ -4924,7 +5029,6 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label label40;
         public System.Windows.Forms.CheckBox entranceProperty_bg;
         private CustomPanel panel1;
@@ -5068,8 +5172,6 @@
         public System.Windows.Forms.RadioButton entranceProperty_quadbl;
         public System.Windows.Forms.RadioButton entranceProperty_quadtl;
         private System.Windows.Forms.CheckBox doorCheckbox;
-        public System.Windows.Forms.TextBox dooryTextbox;
-        public System.Windows.Forms.TextBox doorxTextbox;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TabControl tabControl2;
@@ -5149,7 +5251,6 @@
 		private System.Windows.Forms.Label label41;
 		private System.Windows.Forms.Label label38;
 		private Gui.ExtraForms.Hexbox EntranceProperties_RoomID;
-		private Gui.ExtraForms.Hexbox EntranceProperties_Exit;
 		private Gui.ExtraForms.Hexbox EntranceProperties_Blockset;
 		private Gui.ExtraForms.Hexbox EntranceProperties_Music;
 		private Gui.ExtraForms.Hexbox EntranceProperties_DungeonID;
@@ -5189,6 +5290,17 @@
         public System.Windows.Forms.Label warningLabel;
         private System.Windows.Forms.ToolStripMenuItem exportOverlayAnimationAsASMInClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showOverlayTextsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showUniqueTile32ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setUnusedTiles16ToToolStripMenuItem;
+        private System.Windows.Forms.CheckBox facedownCheckbox;
+        private Gui.ExtraForms.Hexbox doorxHexbox;
+        private Gui.ExtraForms.Hexbox dooryHexbox;
+        private System.Windows.Forms.ToolStripMenuItem generatePaletteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useExpandedOWPaletteToolStripMenuItem;
+        public System.Windows.Forms.Panel overlayPanel;
+        public System.Windows.Forms.ComboBox overlayCombobox;
+        public System.Windows.Forms.Label label39;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
     }
 }
 

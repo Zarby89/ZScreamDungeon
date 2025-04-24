@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZScream</AssemblyName>
@@ -18,7 +18,7 @@
     </NuGetPackageImportStamp>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
-    <PublishUrl>C:\Users\adamo\Desktop\zscream\ZS3.2.1\</PublishUrl>
+    <PublishUrl>C:\Users\adamo\Desktop\zscream\ZS3.2.4Beta\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -51,7 +51,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\Version3.2.3.1\</OutputPath>
+    <OutputPath>bin\Release\Version3.2.4\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -153,6 +153,7 @@
     <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Data\SongAddress.cs" />
     <Compile Include="Data\SpriteProperty.cs" />
+    <Compile Include="DungeonOverlays.cs" />
     <Compile Include="Gui\AddDirectoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -293,6 +294,12 @@
     <Compile Include="Gui\ExtraForms\SearchTilesForm.Designer.cs">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\ZsprImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ZsprImporter.Designer.cs">
+      <DependentUpon>ZsprImporter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ZSSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -383,6 +390,12 @@
     <Compile Include="Gui\MainTabs\SpriteEditor.Designer.cs">
       <DependentUpon>SpriteEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\NoteAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\NoteAdd.Designer.cs">
+      <DependentUpon>NoteAdd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\PaletteEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -448,13 +461,16 @@
     <Compile Include="OWSceneModes\EntranceMode.cs" />
     <Compile Include="OWSceneModes\ExitMode.cs" />
     <Compile Include="OWSceneModes\ItemMode.cs" />
+    <Compile Include="OWSceneModes\NoteMode.cs" />
     <Compile Include="OWSceneModes\OverlayAnimationMode.cs" />
+    <Compile Include="OWSceneModes\OWNote.cs" />
     <Compile Include="OWSceneModes\SpriteMode.cs" />
     <Compile Include="OWSceneModes\OverlayMode.cs" />
     <Compile Include="OWSceneModes\TileMode.cs" />
     <Compile Include="OWSceneModes\GravestoneMode.cs" />
     <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Point3D.cs" />
+    <Compile Include="PointeredImage.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Gui\RoomMover.cs">
       <SubType>Form</SubType>
@@ -560,6 +576,7 @@
     <Compile Include="Data\TilePos.cs" />
     <Compile Include="Data\TileUndo.cs" />
     <Compile Include="Data\TransportOW.cs" />
+    <Compile Include="T32UniqueCounter.cs" />
     <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Gui\WhirlpoolForm.cs">
@@ -650,6 +667,9 @@
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ZsprImporter.resx">
+      <DependentUpon>ZsprImporter.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ZSSettings.resx">
       <DependentUpon>ZSSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -701,6 +721,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\SpriteEditor.resx">
       <DependentUpon>SpriteEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\NoteAdd.resx">
+      <DependentUpon>NoteAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PaletteEditor.resx">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
@@ -796,11 +819,25 @@
     <Content Include="DefaultNames.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="expandedEntrances.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HardwareRegisters.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="newgraves.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
     <Content Include="Resources\damageclass.png" />
+    <None Include="Resources\lwimage.png" />
+    <None Include="Resources\dwimage.png" />
+    <None Include="Resources\swimage.png" />
+    <None Include="Resources\lwimage1.png" />
+    <None Include="Resources\dwimage1.png" />
+    <None Include="Resources\swimage1.png" />
+    <None Include="Resources\Pen1.png" />
+    <Content Include="ZS ROM MAP.txt" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -808,6 +845,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ZS_Patches\Misc\Big Bomb Requirements.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZS_Patches\Misc\HoleOverlayFix.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ZS_Patches\Misc\IntroSkip.asm">

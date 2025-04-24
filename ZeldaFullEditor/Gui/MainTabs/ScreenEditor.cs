@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
@@ -26,6 +27,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private byte[] mapdata = new byte[64 * 64];
         private byte[] dwmapdata = new byte[64 * 64];
         private int swordX = 0;
+
+        public OverworldEditor oweditor;
 
         public IntPtr dungmaptiles8Ptr = Marshal.AllocHGlobal(0x8000);
         public Bitmap dungmaptiles8Bitmap;
@@ -109,14 +112,39 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private bool showBG2Grid = false;
         private bool showBG3Grid = false;
 
+        Bitmap tempOW;
+
         public ScreenEditor()
         {
             InitializeComponent();
             overworldCombobox.SelectedIndex = 0;
         }
 
+        public void CreateTempOWBitmap()
+        {
+            tempOW = new Bitmap(4096, 4096);
+            Graphics g = Graphics.FromImage(tempOW);
+            for (int i = 0; i < 64; i++)
+            {
+                int x = (i % 8) * 512;
+                int y = (i / 8) * 512;
+
+                int k = this.oweditor.scene.ow.AllMaps[i].ParentID;
+                g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k]), new Rectangle(x, y, 512, 512));
+            }
+
+            for (int i = 0; i < 64; i++)
+            {
+                int x = (i % 8) * 512;
+                int y = (i / 8) * 512;
+
+                g.DrawImage(this.oweditor.scene.ow.AllMaps[i].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+            }
+        }
+
         public void Init()
         {
+            
             triforceVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
             crystalVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
 
@@ -2217,6 +2245,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     ROM.Write(Constants.dungeonMap_tile16Exp + i, ROM.DATA[Constants.dungeonMap_tile16 + i], WriteType.DungeonMap);
                 }
 
+                // TODO: Move this to an actual ASM file?
                 // Replace all these address by JSRs
                 // 0x56652
                 // 0x566B6
@@ -2280,10 +2309,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             for (int d = 0; d < 14; d++) // For all dungeons !
             {
-                // Needs to write floors data
-                int floors;
-
-                floors = (dungmaps[d].NumberOfFloors << 4) | dungmaps[d].NumberOfBasements;
+                // Need to write floors data:
+                int floors = (dungmaps[d].NumberOfFloors << 4) | dungmaps[d].NumberOfBasements;
 
                 ROM.WriteShort(Constants.dungeonMap_floors + (d * 2), floors, WriteType.DungeonMap);
                 ROM.WriteShort(Constants.dungeonMap_bossrooms + (d * 2), dungmaps[d].BossRoom, WriteType.DungeonMap);
@@ -2291,35 +2318,36 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 bool searchBoss = true;
                 if (dungmaps[d].BossRoom == 0x000F)
                 {
-                    // TODO: Magic number.
+                    // TODO: Move these numbers to constants.
                     ROM.WriteShort(0x56E79 + (d * 2), 0xFFFF, WriteType.DungeonMap);
                     searchBoss = false;
                 }
 
-                // Write that dungeon pointer
+                // Write the dungeon pointer.
                 ROM.WriteShort(Constants.dungeonMap_rooms_ptr + (d * 2), Utils.PcToSnes(pos));
 
-                for (int f = 0; f < dungmaps[d].NumberOfFloors + dungmaps[d].NumberOfBasements; f++) // For all floors in that dungeon
+                for (int f = 0; f < dungmaps[d].NumberOfFloors + dungmaps[d].NumberOfBasements; f++) // For all floors in that dungeon:
                 {
-                    for (int r = 0; r < 25; r++) // For all rooms on that floor
+                    for (int r = 0; r < 25; r++) // For all rooms on that floor:
                     {
                         if (searchBoss)
                         {
                             if (dungmaps[d].BossRoom == dungmaps[d].FloorRooms[f][r])
                             {
-                                // TODO: Magic number.
+                                // TODO: Move these numbers to constants.
                                 ROM.WriteShort(0x56E79 + (d * 2), f, WriteType.DungeonMap);
                                 searchBoss = false;
                             }
                         }
 
                         ROM.Write(pos, dungmaps[d].FloorRooms[f][r], WriteType.DungeonMap);
-                        pos++; // Increment position at each write
+                        pos++; // Increment position at each write.
 
+                        // TODO: Move these numbers to constants.
                         if (pos >= 0x575D9 && pos <= 0x57620)
                         {
                             pos = 0x57621;
-                            f = 50; // Restart the room since it was in reserved space
+                            f = 50; // Restart the room since it was in reserved space.
                             d -= 1;
                             searchBoss = false;
 
@@ -2328,25 +2356,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     }
                 }
 
-                // When it is done with the floors ROOMS do the gfx
+                // When it is done with the floors ROOMS do the gfx:
 
-                // Write that dungeon gfx pointer
+                // Write the dungeon gfx pointer
                 ROM.WriteShort(Constants.dungeonMap_gfx_ptr + (d * 2), Utils.PcToSnes(pos));
-                for (int f = 0; f < dungmaps[d].NumberOfFloors + dungmaps[d].NumberOfBasements; f++) // For all floors in that dungeon
+                for (int f = 0; f < dungmaps[d].NumberOfFloors + dungmaps[d].NumberOfBasements; f++) // For all floors in that dungeon:
                 {
-                    for (int r = 0; r < 25; r++) // For all rooms on that floor
+                    for (int r = 0; r < 25; r++) // For all rooms on that floor:
                     {
                         if (dungmaps[d].FloorGFX[f][r] != 0xFF)
                         {
                             // ROM.DATA[pos] = dungmaps[d].FloorGfx[f][r];
                             ROM.Write(pos, dungmaps[d].FloorGFX[f][r], WriteType.DungeonMap);
-                            pos++; // Increment position at each write
+                            pos++; // Increment position at each write.
 
                             if (pos >= 0x575D9 && pos <= 0x57620)
                             {
                                 pos = 0x57621;
                                 ROM.WriteShort(Constants.dungeonMap_gfx_ptr + (d * 2), Utils.PcToSnes(pos), WriteType.DungeonMap);
-                                f = 50; // Restart the room since it was in reserved space
+                                f = 50; // Restart the room since it was in reserved space.
                                 d -= 1;
                                 searchBoss = false;
 
@@ -2356,8 +2384,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     }
                 }
 
-                // Protection here if we're over pointers location we need to decrease loop by one and continue further
-                if (pos >= 0x57CE0) // We reached the limit uh oh
+                // Protection here if we're over pointers location we need to decrease loop by one and continue further.
+                if (pos >= 0x57CE0) // We reached the limit uh oh.
                 {
                     return true;
                 }
@@ -2637,8 +2665,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         myClick = 256;
                     }
 
+
+                  
+
+
                     selectedMapIcon.X = (short)(mxClick - mxDist);
                     selectedMapIcon.Y = (short)(myClick - myDist);
+                    if (selectedMapIcon.X < 0) { selectedMapIcon.X = 0; }
+                    if (selectedMapIcon.Y < 0) { selectedMapIcon.Y = 0; }
+                    overworldpreviewPicturebox.Refresh();
                     mapPicturebox.Refresh();
                 }
             }
@@ -3180,9 +3215,19 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
         }
-
-        private void tabPage1_Click(object sender, EventArgs e)
+        
+        private void overworldpreviewPicturebox_Paint(object sender, PaintEventArgs e)
         {
+            if (selectedMapIcon != null)
+            {
+                int screenxpos = selectedMapIcon.X-8;
+                int screenypos = selectedMapIcon.Y-8;
+                screenxpos = screenxpos.Clamp(0, 4096);
+                screenypos = screenypos.Clamp(0, 4096);
+
+                e.Graphics.DrawImage(tempOW, new Rectangle(0, 0, 256, 256), new Rectangle(screenxpos*16, screenypos*16, 256, 256), GraphicsUnit.Pixel);
+                e.Graphics.FillRectangle(Brushes.Red, new Rectangle(128 - 4, 128 - 4, 8, 8));
+            }
         }
     }
 }

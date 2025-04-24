@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui.TextEditorExtra;
 
@@ -25,6 +26,7 @@ namespace ZeldaFullEditor
 		private const int DictionarySize = 0xEC8D9 - 0xEC7C7;
 		public const byte MessageTerminator = 0x7F;
 		public const byte NumberOfCharacters = 100;
+		private bool NeedRefresh = false;
 
 		readonly byte[] widthArray = new byte[NumberOfCharacters];
 		static readonly int defaultColor = 6;
@@ -50,11 +52,16 @@ namespace ZeldaFullEditor
 
 		public TextEditor()
 		{
+			
 			InitializeComponent();
 			TextCommandList.Items.AddRange(TextCommands);
 			SpecialsList.Items.AddRange(SpecialChars);
 			pictureBox1.MouseWheel += new MouseEventHandler(PictureBox1_MouseWheel);
-		}
+            textListbox.DrawItem += TextListbox_DrawItem;
+			textListbox.MeasureItem += TextListbox_MeasureItem;
+
+
+        }
 
 		public class TextElement
 		{
@@ -944,7 +951,9 @@ namespace ZeldaFullEditor
 			textListbox.EndUpdate();
 
 			textListbox.DisplayMember = "Text";
-			pictureBox2.Refresh();
+            
+
+            pictureBox2.Refresh();
 
 			SelectedTileID.Text = $"{selectedTile:X2}";
 			SelectedTileASCII.Text = ParseTextDataByte((byte) selectedTile);
@@ -952,12 +961,53 @@ namespace ZeldaFullEditor
 			GFX.CreateFontGfxData(ROM.DATA);
 		}
 
+		private void TextListbox_MeasureItem(object sender, MeasureItemEventArgs e)
+		{
+			e.ItemHeight = DisplayedMessages[e.Index].Height;
+		}
+
 		public static string AddNewLinesToCommands(string str)
 		{
 			return Regex.Replace(str, @"\[[123V]\]", "\r\n$0");
 		}
 
-		private void TextListbox_SelectedIndexChanged(object sender, EventArgs e)
+		SolidBrush bg1 = new SolidBrush(Color.FromArgb(255, 240, 240, 255));
+        SolidBrush bg2 = new SolidBrush(Color.FromArgb(255, 212, 212, 255));
+
+		Font boldFont = new Font("Microsoft Sans Serif", 8, FontStyle.Bold);
+        private void TextListbox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+			
+            string s = textListbox.Items[e.Index].ToString();
+			string id = s.Substring(0, 3);
+			string msg = s.Substring(6);
+            s = Regex.Replace(msg, @"\[[123V]\]", "\r\n");
+            if (textListbox.SelectedIndex != e.Index)
+			{
+
+				if ((e.Index & 0x01) == 0x01)
+				{
+					//e.DrawBackground();
+					e.Graphics.FillRectangle(bg1, e.Bounds);
+				}
+				else
+				{
+					//e.DrawBackground();
+					e.Graphics.FillRectangle(bg2, e.Bounds);
+                }
+			}
+			else
+			{
+				e.DrawBackground();
+			}
+            e.Graphics.DrawString(id, boldFont, new SolidBrush(e.ForeColor), new RectangleF(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
+            e.Graphics.DrawString(s, e.Font, new SolidBrush(e.ForeColor), new RectangleF(e.Bounds.X+32, e.Bounds.Y, e.Bounds.Width,e.Bounds.Height));
+
+            e.Graphics.DrawString(Constants.textsLocations[e.Index], boldFont, new SolidBrush(Color.DarkRed), new RectangleF(e.Bounds.X + 240, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
+
+        }
+
+        private void TextListbox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (textListbox.SelectedIndex == -1)
 			{
@@ -1437,6 +1487,7 @@ namespace ZeldaFullEditor
 			//if (!fromForm) 
 			//{
 			UpdateTextBox();
+			NeedRefresh = true;
 			//}
 		}
 
@@ -1564,13 +1615,14 @@ namespace ZeldaFullEditor
 
 		public void Delete()
 		{
+			/*
 			// Determine if any text is selected in the TextBox control.
 			if (textBox1.SelectionLength == 0)
 			{
 				// Clear all of the text in the textbox.
 				textBox1.Clear();
-			}
-		}
+			}*/
+        }
 
 		public void SelectAll()
 		{
@@ -1611,6 +1663,7 @@ namespace ZeldaFullEditor
 			{
 				// Copy the selected text to the Clipboard.
 				textBox1.Copy();
+				
 			}
 		}
 
@@ -1693,10 +1746,28 @@ namespace ZeldaFullEditor
 
 		private void TextBox1_Leave(object sender, EventArgs e)
 		{
+			if (!NeedRefresh)
+			{
+				return;
+			}
 			textListbox.BeginUpdate();
 			textListbox.DataSource = null;
 			textListbox.DataSource = DisplayedMessages;
 			textListbox.EndUpdate();
+			NeedRefresh = false;
 		}
-	}
+
+        private void textwrapButton_CheckStateChanged(object sender, EventArgs e)
+        {
+			if (textwrapButton.Checked)
+			{
+				textListbox.DrawMode = DrawMode.OwnerDrawVariable;
+            }
+			else
+			{
+				textListbox.DrawMode = DrawMode.Normal;
+            }
+			
+        }
+    }
 }

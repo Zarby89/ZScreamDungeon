@@ -64,8 +64,8 @@ namespace ZeldaFullEditor
         public RoomPotSaveEditor(byte id, ushort roomMapId, int x, int y, bool bg2)
         {
             this.ID = id;
-            this.X = x;
-            this.Y = y;
+            this.X = x.Clamp(0, 4080);
+            this.Y = y.Clamp(0, 4080);
             this.BG2 = bg2;
             this.RoomMapID = roomMapId;
 
@@ -81,7 +81,7 @@ namespace ZeldaFullEditor
         ///     Updates the item info when needed. Generally when moving items around in editor.
         /// </summary>
         /// <param name="roomMapId"> The dungeon room ID or overworld area ID where the item was moved to. </param>
-        public void UpdateMapStuff(short roomMapId)
+        public void UpdateMapStuff(short roomMapId, bool large)
         {
             this.RoomMapID = (ushort)roomMapId;
 
@@ -96,7 +96,16 @@ namespace ZeldaFullEditor
             this.GameX = (byte)(Math.Abs(this.X - (mapX * 512)) / 16);
             this.GameY = (byte)(Math.Abs(this.Y - (mapY * 512)) / 16);
 
-            Console.WriteLine("Item:      " + this.ID.ToString("X2") + " MapId: " + this.RoomMapID.ToString("X2") + " X: " + this.GameX + " Y: " + this.GameY);
+            this.GameX = this.GameX.Clamp(0, 63);
+            this.GameY = this.GameY.Clamp(0, 63);
+
+            if (!large)
+            {
+                this.GameX = this.GameX.Clamp(0, 31);
+                this.GameY = this.GameY.Clamp(0, 31);
+            }
+
+            Console.WriteLine("Item:      0x" + this.ID.ToString("X2") + " MapId: 0x" + this.RoomMapID.ToString("X2") + " X: " + this.GameX + " Y: " + this.GameY);
         }
 
         /// <summary>

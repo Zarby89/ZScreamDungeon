@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Text;
+using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
@@ -13,97 +14,97 @@ namespace ZeldaFullEditor
         ///     Gets or sets a 2 dimentional array containing the HUD palettes.
         ///     32 (0,0)
         /// </summary>
-        public static Color[][] HudPalettes { get; set; } = new Color[2][];
+        public static Color[][] HudPalettes { get; set; } = new Color[Constants.HudPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the main overworld palettes.
         ///     35 colors each, 7x5 (0,2 on grid)
         /// </summary>
-        public static Color[][] OverworldMainPalettes { get; set; } = new Color[6][];
+        public static Color[][] OverworldMainPalettes { get; set; } = new Color[Constants.OverworldMainPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the auxilary overworld palettes.
         ///     21 colors each, 7x3 (8,2 and 8,5 on grid)
         /// </summary>
-        public static Color[][] OverworldAuxPalettes { get; set; } = new Color[20][];
+        public static Color[][] OverworldAuxPalettes { get; set; } = new Color[Constants.OverworldAuxPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the animated overworld palettes.
         ///     7 colors each 7x1 (0,7 on grid)
         /// </summary>
-        public static Color[][] OverworldAnimatedPalettes { get; set; } = new Color[14][];
+        public static Color[][] OverworldAnimatedPalettes { get; set; } = new Color[Constants.OverworldAnimatedPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the global sprite palettes.
         ///     60 (1,9)
         /// </summary>
-        public static Color[][] GlobalSpritePalettes { get; set; } = new Color[2][];
+        public static Color[][] GlobalSpritePalettes { get; set; } = new Color[Constants.GlobalSpritePalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the armor palettes.
         ///     15
         /// </summary>
-        public static Color[][] ArmorPalettes { get; set; } = new Color[5][];
+        public static Color[][] ArmorPalettes { get; set; } = new Color[Constants.ArmorPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the sword palettes.
         ///     3
         /// </summary>
-        public static Color[][] SwordsPalettes { get; set; } = new Color[4][];
+        public static Color[][] SwordsPalettes { get; set; } = new Color[Constants.SwordsPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the first group of auxilary sprite palettes.
         ///     7
         /// </summary>
-        public static Color[][] SpritesAux1Palettes { get; set; } = new Color[12][];
+        public static Color[][] SpritesAux1Palettes { get; set; } = new Color[Constants.SpritesAux1PalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the second group of auxilary sprite palettes.
         ///     7
         /// </summary>
-        public static Color[][] SpritesAux2Palettes { get; set; } = new Color[11][];
+        public static Color[][] SpritesAux2Palettes { get; set; } = new Color[Constants.SpritesAux2PalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the third group of auxilary sprite palettes.
         ///     7
         /// </summary>
-        public static Color[][] SpritesAux3Palettes { get; set; } = new Color[24][];
+        public static Color[][] SpritesAux3Palettes { get; set; } = new Color[Constants.SpritesAux3PalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the shield palettes.
         ///     4
         /// </summary>
-        public static Color[][] ShieldsPalettes { get; set; } = new Color[3][];
+        public static Color[][] ShieldsPalettes { get; set; } = new Color[Constants.ShieldsPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the main dungeon palettes.
         ///     15*6
         /// </summary>
-        public static Color[][] DungeonsMainPalettes { get; set; } = new Color[20][];
+        public static Color[][] DungeonsMainPalettes { get; set; } = new Color[Constants.DungeonsMainPalettesMax][];
 
         /// <summary>
         ///      Gets or sets an containing the overworld background palettes.
         ///     8*20
         /// </summary>
-        public static Color[] OverworldBackgroundPalette { get; set; } = new Color[Constants.NumberOfOWMaps];
+        public static Color[] OverworldBackgroundPalette { get; set; } = new Color[Constants.OverworldBackgroundPaletteMax];
 
         /// <summary>
         ///      Gets or sets an array containing the overworld grass palettes.
         ///     3 hardcoded grass colors
         /// </summary>
-        public static Color[] OverworldGrassPalettes { get; set; } = new Color[3];
+        public static Color[] OverworldGrassPalettes { get; set; } = new Color[Constants.OverworldGrassPalettesMax];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the 3D object palettes.
         ///     15*6
         /// </summary>
-        public static Color[][] Object3DPalettes { get; set; } = new Color[2][];
+        public static Color[][] Object3DPalettes { get; set; } = new Color[Constants.Object3DPalettesMax][];
 
         /// <summary>
         ///      Gets or sets a 2 dimentional array containing the main overworld palettes.
         ///     16*8
         /// </summary>
-        public static Color[][] OverworldMiniMapPalettes { get; set; } = new Color[2][];
+        public static Color[][] OverworldMiniMapPalettes { get; set; } = new Color[Constants.OverworldMiniMapPalettesMax][];
 
         /// <summary>
         ///     Reads all paletted data from ROM and stores them into their appropriate arrays.
@@ -112,25 +113,25 @@ namespace ZeldaFullEditor
         public static void CreateAllPalettes(byte[] romData)
         {
             // 35 colors each, 7x5 (0,2 on grid).
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < OverworldMainPalettes.Length; i++)
             {
                 OverworldMainPalettes[i] = ReadPalette(romData, Constants.overworldPaletteMain + (i * (35 * 2)), 35);
             }
 
             // 21 colors each, 7x3 (8,2 and 8,5 on grid).
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < OverworldAuxPalettes.Length; i++)
             {
                 OverworldAuxPalettes[i] = ReadPalette(romData, Constants.overworldPaletteAuxialiary + (i * (21 * 2)), 21);
             }
 
             // 7 colors each 7x1 (0,7 on grid).
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < OverworldAnimatedPalettes.Length; i++)
             {
                 OverworldAnimatedPalettes[i] = ReadPalette(romData, Constants.overworldPaletteAnimated + (i * (7 * 2)), 7);
             }
 
             // 32 colors each 16x2 (0,0 on grid).
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < HudPalettes.Length; i++)
             {
                 HudPalettes[i] = ReadPalette(romData, Constants.hudPalettes + (i * 64), 32);
             }
@@ -146,37 +147,37 @@ namespace ZeldaFullEditor
 
             GlobalSpritePalettes[0] = ReadPalette(romData, Constants.globalSpritePalettesLW, 60);
             GlobalSpritePalettes[1] = ReadPalette(romData, Constants.globalSpritePalettesDW, 60);
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < ArmorPalettes.Length; i++)
             {
                 ArmorPalettes[i] = ReadPalette(romData, Constants.armorPalettes + (i * 30), 15);
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < SwordsPalettes.Length; i++)
             {
                 SwordsPalettes[i] = ReadPalette(romData, Constants.swordPalettes + (i * 6), 3);
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < ShieldsPalettes.Length; i++)
             {
                 ShieldsPalettes[i] = ReadPalette(romData, Constants.shieldPalettes + (i * 8), 4);
             }
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < SpritesAux1Palettes.Length; i++)
             {
                 SpritesAux1Palettes[i] = ReadPalette(romData, Constants.spritePalettesAux1 + (i * 14), 7);
             }
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < SpritesAux2Palettes.Length; i++)
             {
                 SpritesAux2Palettes[i] = ReadPalette(romData, Constants.spritePalettesAux2 + (i * 14), 7);
             }
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < SpritesAux3Palettes.Length; i++)
             {
                 SpritesAux3Palettes[i] = ReadPalette(romData, Constants.spritePalettesAux3 + (i * 14), 7);
             }
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < DungeonsMainPalettes.Length; i++)
             {
                 DungeonsMainPalettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
             }
@@ -188,7 +189,7 @@ namespace ZeldaFullEditor
             Object3DPalettes[0] = ReadPalette(romData, Constants.triforcePalette, 8);
             Object3DPalettes[1] = ReadPalette(romData, Constants.crystalPalette, 8);
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < OverworldMiniMapPalettes.Length; i++)
             {
                 OverworldMiniMapPalettes[i] = ReadPalette(romData, Constants.overworldMiniMapPalettes + (i * 256), 128);
             }
@@ -268,7 +269,7 @@ namespace ZeldaFullEditor
         /// </summary>
         /// <param name="romData"> The ROM to write to. </param>
         /// <returns> True if failed to write to ROM. </returns>
-        public static bool SavePalettesToROM(byte[] romData)
+        public static bool SavePalettesToROM(byte[] romData, int auxAddr = FG_ExpandedAuxOWPalettes, int mainAddr = FG_ExpandedMainOWPalettes)
         {
             WriteSinglePalette(romData, Constants.hardcodedGrassLW1, OverworldGrassPalettes[0]);
             WriteSinglePalette(romData, Constants.hardcodedGrassLW2, OverworldGrassPalettes[0]);
@@ -287,6 +288,21 @@ namespace ZeldaFullEditor
             for (int i = 0; i < 20; i++)
             {
                 WritePalette(romData, Constants.overworldPaletteAuxialiary + (i * (21 * 2)), OverworldAuxPalettes[i]);
+            }
+
+            if (UsingExpandedOWPalettes)
+            {
+                // 35 colors each, 7x5 (0,2 on grid).
+                for (int i = 0; i < OverworldMainPalettes.Length; i++)
+                {
+                    WritePalette(romData, mainAddr + (i * (35 * 2)), OverworldMainPalettes[i]);
+                }
+
+                // 21 colors each, 7x3 (8,2 and 8,5 on grid).
+                for (int i = 0; i < OverworldAuxPalettes.Length; i++)
+                {
+                    WritePalette(romData, auxAddr + (i * (21 * 2)), OverworldAuxPalettes[i]);
+                }
             }
 
             // 7 colors each 7x1 (0,7 on grid).
@@ -391,9 +407,7 @@ namespace ZeldaFullEditor
             romData[romPosition + 1] = (byte)(color >> 8);
         }
 
-        #region Unused
-
-        private static Color GetColorShade(Color col, byte shade)
+        public static Color GetColorShade(Color col, byte shade)
         {
             int r = col.R;
             int g = col.G;
@@ -413,106 +427,149 @@ namespace ZeldaFullEditor
             return Color.FromArgb(r * 8, g * 8, b * 8);
         }
 
-		private static string SavePalettesToAsm(byte[] romData)
+        // I'm leaving this here and not moving it to constants because this is FG specific and should not be used by anyone else.
+        private const int FG_ExpandedAuxOWPalettes = 0x165000;
+        private const int FG_ExpandedMainOWPalettes = 0x165500;
+        private static bool UsingExpandedOWPalettes = false;
+
+        public static void ReloadOWPalettesFromExpanded(byte[] romData, int auxAddr = FG_ExpandedAuxOWPalettes, int mainAddr = FG_ExpandedMainOWPalettes)
+        {
+            int startIndex = OverworldAuxPalettes.Length;
+            Color[][] oldAuxPalettes = OverworldAuxPalettes;
+
+            // Copy over the old palettes.
+            OverworldAuxPalettes = new Color[30][];
+            for (int i = 0; i < oldAuxPalettes.Length; i++)
+            {
+                OverworldAuxPalettes[i] = oldAuxPalettes[i];
+            }
+
+            // 21 colors each, 7x3 (8,2 and 8,5 on grid).
+            for (int i = startIndex; i < OverworldAuxPalettes.Length; i++)
+            {
+                OverworldAuxPalettes[i] = ReadPalette(romData, auxAddr + (i * 21 * 2), 21);
+            }
+
+            startIndex = OverworldMainPalettes.Length;
+            Color[][] oldMainPalettes = OverworldMainPalettes;
+
+            // Copy over the old palettes.
+            OverworldMainPalettes = new Color[10][];
+            for (int i = 0; i < oldMainPalettes.Length; i++)
+            {
+                OverworldMainPalettes[i] = oldMainPalettes[i];
+            }
+
+            // 35 colors each, 7x5 (0,2 on grid).
+            for (int i = startIndex; i < OverworldMainPalettes.Length; i++)
+            {
+                OverworldMainPalettes[i] = ReadPalette(romData, mainAddr + (i * 35 * 2), 35);
+            }
+
+            UsingExpandedOWPalettes = true;
+        }
+
+        #region Unused
+
+        private static string SavePalettesToAsm(byte[] romData)
 		{
 			var asmString = new StringBuilder();
 
-			WritePaletteAsm(OverworldGrassPalettes, 1, "Grass Color", Constants.hardcodedGrassLW1);
+			WritePaletteAsm(asmString, OverworldGrassPalettes, 1, "Grass Color", Constants.hardcodedGrassLW1);
 
 			// 35 colors each, 7x5 (0,2 on grid).
 			for (int i = 0; i < 6; i++)
 			{
-				WritePaletteAsm(OverworldMainPalettes[i], 7, $"Main Overworld {i:X2}", Constants.overworldPaletteMain + (i * (35 * 2)));
+				WritePaletteAsm(asmString, OverworldMainPalettes[i], 7, $"Main Overworld {i:X2}", Constants.overworldPaletteMain + (i * (35 * 2)));
 			}
 
 			// 21 colors each, 7x3 (8,2 and 8,5 on grid).
 			for (int i = 0; i < 20; i++)
 			{
-				WritePaletteAsm(OverworldAuxPalettes[i], 7, $"Overworld Aux Palettes {i:X2}", Constants.overworldPaletteAuxialiary + (i * (21 * 2)));
+				WritePaletteAsm(asmString, OverworldAuxPalettes[i], 7, $"Overworld Aux Palettes {i:X2}", Constants.overworldPaletteAuxialiary + (i * (21 * 2)));
 			}
 
 			// 7 colors each 7x1 (0,7 on grid).
 			for (int i = 0; i < 14; i++)
 			{
-				WritePaletteAsm(OverworldAnimatedPalettes[i], 7, $"Overworld Animated Palettes {i:X2}", Constants.overworldPaletteAnimated + (i * (7 * 2)));
+				WritePaletteAsm(asmString, OverworldAnimatedPalettes[i], 7, $"Overworld Animated Palettes {i:X2}", Constants.overworldPaletteAnimated + (i * (7 * 2)));
 			}
 
 			// 32 colors each 16x2 (0,0 on grid).
 			for (int i = 0; i < 2; i++)
 			{
-				WritePaletteAsm(HudPalettes[i], 16, $"Hud Palettes {i:X2}", Constants.hudPalettes + (i * 64));
+				WritePaletteAsm(asmString, HudPalettes[i], 16, $"Hud Palettes {i:X2}", Constants.hudPalettes + (i * 64));
 			}
 
-			WritePaletteAsm(GlobalSpritePalettes[0], 15, "LW Global Sprite Palettes ", Constants.globalSpritePalettesLW);
-			WritePaletteAsm(GlobalSpritePalettes[1], 15, "DW Global Sprite Palettes ", Constants.globalSpritePalettesDW);
+			WritePaletteAsm(asmString, GlobalSpritePalettes[0], 15, "LW Global Sprite Palettes ", Constants.globalSpritePalettesLW);
+			WritePaletteAsm(asmString, GlobalSpritePalettes[1], 15, "DW Global Sprite Palettes ", Constants.globalSpritePalettesDW);
 
 			for (int i = 0; i < 5; i++)
 			{
-				WritePaletteAsm(ArmorPalettes[i], 16, $"Mails Palettes / bunny / electrocuted {i:X2}", Constants.armorPalettes + (i * 30));
+				WritePaletteAsm(asmString, ArmorPalettes[i], 16, $"Mails Palettes / bunny / electrocuted {i:X2}", Constants.armorPalettes + (i * 30));
 			}
 
 			for (int i = 0; i < 4; i++)
 			{
-				WritePaletteAsm(SwordsPalettes[i], 3, $"Sword Palettes {i:X2}", Constants.swordPalettes + (i * 6));
+				WritePaletteAsm(asmString, SwordsPalettes[i], 3, $"Sword Palettes {i:X2}", Constants.swordPalettes + (i * 6));
 			}
 
 			for (int i = 0; i < 3; i++)
 			{
-				WritePaletteAsm(ShieldsPalettes[i], 4, $"Shield Palettes {i:X2}", Constants.shieldPalettes + (i * 8));
+				WritePaletteAsm(asmString, ShieldsPalettes[i], 4, $"Shield Palettes {i:X2}", Constants.shieldPalettes + (i * 8));
 			}
 
 			for (int i = 0; i < 12; i++)
 			{
-				WritePaletteAsm(SpritesAux1Palettes[i], 7, $"Sprite Aux1 Palettes {i:X2}", Constants.spritePalettesAux1 + (i * 14));
+				WritePaletteAsm(asmString, SpritesAux1Palettes[i], 7, $"Sprite Aux1 Palettes {i:X2}", Constants.spritePalettesAux1 + (i * 14));
 			}
 
 			for (int i = 0; i < 11; i++)
 			{
-				WritePaletteAsm(SpritesAux2Palettes[i], 7, $"Sprite Aux2 Palettes {i:X2}", Constants.spritePalettesAux2 + (i * 14));
+				WritePaletteAsm(asmString, SpritesAux2Palettes[i], 7, $"Sprite Aux2 Palettes {i:X2}", Constants.spritePalettesAux2 + (i * 14));
 			}
 
 			for (int i = 0; i < 24; i++)
 			{
-				WritePaletteAsm(SpritesAux3Palettes[i], 7, $"Sprite Aux3 Palettes {i:X2}", Constants.spritePalettesAux3 + (i * 14));
+				WritePaletteAsm(asmString, SpritesAux3Palettes[i], 7, $"Sprite Aux3 Palettes {i:X2}", Constants.spritePalettesAux3 + (i * 14));
 			}
 
 			for (int i = 0; i < 20; i++)
 			{
-				WritePaletteAsm(DungeonsMainPalettes[i], 15, $"Dungeon Palettes {i:X2}", Constants.dungeonMainPalettes + (i * 180));
+				WritePaletteAsm(asmString, DungeonsMainPalettes[i], 15, $"Dungeon Palettes {i:X2}", Constants.dungeonMainPalettes + (i * 180));
 			}
 
-			WritePaletteAsm(new Color[1] { OverworldGrassPalettes[0] }, 1, "Hardcoded LW Overworld Grass Palettes", Constants.hardcodedGrassLW1);
-			WritePaletteAsm(new Color[1] { OverworldGrassPalettes[1] }, 1, "Hardcoded DW Overworld Grass Palettes", Constants.hardcodedGrassDW1);
-			WritePaletteAsm(new Color[1] { OverworldGrassPalettes[2] }, 1, "Hardcoded SP Overworld Grass Palettes", Constants.hardcodedGrassSpecial);
+			WritePaletteAsm(asmString, new Color[1] { OverworldGrassPalettes[0] }, 1, "Hardcoded LW Overworld Grass Palettes", Constants.hardcodedGrassLW1);
+			WritePaletteAsm(asmString, new Color[1] { OverworldGrassPalettes[1] }, 1, "Hardcoded DW Overworld Grass Palettes", Constants.hardcodedGrassDW1);
+			WritePaletteAsm(asmString, new Color[1] { OverworldGrassPalettes[2] }, 1, "Hardcoded SP Overworld Grass Palettes", Constants.hardcodedGrassSpecial);
 
-			WritePaletteAsm(Object3DPalettes[0], 8, "Triforce Palette", Constants.triforcePalette);
-			WritePaletteAsm(Object3DPalettes[1], 8, "Crystal Palette", Constants.crystalPalette);
+			WritePaletteAsm(asmString, Object3DPalettes[0], 8, "Triforce Palette", Constants.triforcePalette);
+			WritePaletteAsm(asmString, Object3DPalettes[1], 8, "Crystal Palette", Constants.crystalPalette);
 
 			for (int i = 0; i < 2; i++)
 			{
-				WritePaletteAsm(OverworldMiniMapPalettes[i], 16, $"Overworld Mini Map Palettes {i:X2}", Constants.overworldMiniMapPalettes + (i * 256));
+				WritePaletteAsm(asmString, OverworldMiniMapPalettes[i], 16, $"Overworld Mini Map Palettes {i:X2}", Constants.overworldMiniMapPalettes + (i * 256));
 			}
 
 			return asmString.ToString();
-
-			void WritePaletteAsm(Color[] colors, int width, string comment, int romPosition)
-			{
-				asmString.AppendLine();
-				asmString.AppendLine();
-				asmString.AppendLine($"; {comment}");
-				asmString.AppendLine($"org ${romPosition.PcToSnes():X6}");
-
-				var colS = colors.Select(c => $"${c.ToSNESColor():X4}").ToList();
-
-				while (colS.Count > 0)
-				{
-					asmString.AppendLine($"\tdw {string.Join(", ", colS.Take(width))}");
-
-					colS.RemoveRange(0, width);
-				}
-			}
 		}
+        public static void WritePaletteAsm(StringBuilder asmString, Color[] colors, int width, string comment, int romPosition)
+        {
+            asmString.AppendLine();
+            asmString.AppendLine();
+            asmString.AppendLine($"; {comment}");
+            asmString.AppendLine($"org ${romPosition.PcToSnes():X6}");
 
-		#endregion
-	}
+            var colS = colors.Select(c => $"${c.ToSNESColor():X4}").ToList();
+
+            while (colS.Count > 0)
+            {
+                asmString.AppendLine($"\tdw {string.Join(", ", colS.Take(width))}");
+
+                colS.RemoveRange(0, width);
+            }
+        }
+
+        #endregion
+    }
 }

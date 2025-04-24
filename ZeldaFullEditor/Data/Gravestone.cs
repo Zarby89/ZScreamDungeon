@@ -39,8 +39,8 @@
         /// <param name="gfx"> The GFX index. </param>
         public Gravestone(ushort x, ushort y, ushort tilemapPos, ushort gfx)
         {
-            this.XTilePos = x;
-            this.YTilePos = y;
+            this.XTilePos = x.Clamp(0, 4088);
+            this.YTilePos = y.Clamp(0, 4088);
             this.TilemapPos = tilemapPos;
             this.GFX = gfx;
             this.UniqueID = ROM.uniqueGraveID++;
