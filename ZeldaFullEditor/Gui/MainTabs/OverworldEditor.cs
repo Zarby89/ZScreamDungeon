@@ -2926,7 +2926,8 @@ namespace ZeldaFullEditor.Gui
 
 
         }
-        int lastExitSelected = 0;
+
+        int lastExitSelected = -1;
         public void overworldexitsListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lastExitSelected != overworldexitsListbox.SelectedIndex)
