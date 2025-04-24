@@ -2811,11 +2811,6 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        private void mapUpDown_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void overworldexitsListbox_DoubleClick(object sender, EventArgs e)
         {
             exitModeButton.PerformClick();
@@ -2866,7 +2861,8 @@ namespace ZeldaFullEditor.Gui
                     {
                         scene.exitmode.lastselectedExit.DoorXEditor = 1;
                     }
-                        scene.exitmode.lastselectedExit.DoorType1 = (ushort)((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1);
+
+                    scene.exitmode.lastselectedExit.DoorType1 = (ushort)((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1);
                     scene.exitmode.lastselectedExit.DoorType2 = 0;
                 }
                 else if (sancdoorButton.Checked)
@@ -2875,6 +2871,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         scene.exitmode.lastselectedExit.DoorXEditor = 1;
                     }
+
                     scene.exitmode.lastselectedExit.DoorType2 = (ushort)((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1);
                     scene.exitmode.lastselectedExit.DoorType1 = 0;
                 }
@@ -2884,6 +2881,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         scene.exitmode.lastselectedExit.DoorXEditor = 1;
                     }
+
                     scene.exitmode.lastselectedExit.DoorType1 = (ushort)(((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1) + 0x8000);
                     scene.exitmode.lastselectedExit.DoorType2 = 0;
                 }
@@ -2893,6 +2891,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         scene.exitmode.lastselectedExit.DoorXEditor = 1;
                     }
+
                     scene.exitmode.lastselectedExit.DoorType2 = (ushort)(((scene.exitmode.lastselectedExit.DoorYEditor << 6) | (scene.exitmode.lastselectedExit.DoorXEditor & 0x3F) << 1) + 0x8000);
                     scene.exitmode.lastselectedExit.DoorType1 = 0;
                 }
@@ -2903,7 +2902,6 @@ namespace ZeldaFullEditor.Gui
                     scene.exitmode.lastselectedExit.DoorType2 = 0;
                     scene.exitmode.lastselectedExit.DoorType1 = 0;
                 }
-
 
                 scene.exitmode.lastselectedExit.UpdateMapStuff(scene.exitmode.lastselectedExit.MapID, overworld);
 
@@ -2923,54 +2921,62 @@ namespace ZeldaFullEditor.Gui
                 thumbnailBox.Refresh();
                 scene.Refresh();
             }
-
-
         }
 
-        int lastExitSelected = -1;
         public void overworldexitsListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lastExitSelected != overworldexitsListbox.SelectedIndex)
+            fromForm = true;
+            if (overworldexitsListbox.SelectedIndex != -1)
             {
-                fromForm = true;
-                if (overworldexitsListbox.SelectedIndex != -1)
+                ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
+
+                scene.exitmode.selectedExit = eow;
+                scene.exitmode.lastselectedExit = eow;
+                //scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+                scene.exitmode.ShowExitPreview();
+
+                owexit_room_property.HexValue = scene.exitmode.lastselectedExit.RoomID;
+                owexit_map_property.HexValue = scene.exitmode.lastselectedExit.MapID;
+                owexit_x_property.HexValue = scene.exitmode.lastselectedExit.PlayerX;
+                owexit_y_property.HexValue = scene.exitmode.lastselectedExit.PlayerY;
+                owexit_xcamera_property.HexValue = scene.exitmode.lastselectedExit.CameraX;
+                owexit_ycamera_property.HexValue = scene.exitmode.lastselectedExit.CameraY;
+                owexit_xscroll_property.HexValue = scene.exitmode.lastselectedExit.XScroll;
+                owexit_yscroll_property.HexValue = scene.exitmode.lastselectedExit.YScroll;
+                owexit_doorx_property.HexValue = scene.exitmode.lastselectedExit.DoorXEditor;
+                owexit_doory_property.HexValue = scene.exitmode.lastselectedExit.DoorYEditor;
+                nodoorradioButton.Checked = true;
+                if ((scene.exitmode.lastselectedExit.DoorType1 & 0x8000) != 0)
                 {
-                    ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
-
-                    scene.exitmode.selectedExit = eow;
-                    scene.exitmode.lastselectedExit = eow;
-                    //scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
-                    scene.exitmode.ShowExitPreview();
-
-                    owexit_room_property.HexValue = scene.exitmode.lastselectedExit.RoomID;
-                    owexit_map_property.HexValue = scene.exitmode.lastselectedExit.MapID;
-                    owexit_x_property.HexValue = scene.exitmode.lastselectedExit.PlayerX;
-                    owexit_y_property.HexValue = scene.exitmode.lastselectedExit.PlayerY;
-                    owexit_xcamera_property.HexValue = scene.exitmode.lastselectedExit.CameraX;
-                    owexit_ycamera_property.HexValue = scene.exitmode.lastselectedExit.CameraY;
-                    owexit_xscroll_property.HexValue = scene.exitmode.lastselectedExit.XScroll;
-                    owexit_yscroll_property.HexValue = scene.exitmode.lastselectedExit.YScroll;
-                    owexit_doorx_property.HexValue = scene.exitmode.lastselectedExit.DoorXEditor;
-                    owexit_doory_property.HexValue = scene.exitmode.lastselectedExit.DoorYEditor;
-                    nodoorradioButton.Checked = true;
-                    if ((scene.exitmode.lastselectedExit.DoorType1 & 0x8000) != 0) { bombdoorradioButton.Checked = true; }
-                    else if (scene.exitmode.lastselectedExit.DoorType1 != 0) { wooddoorradioButton.Checked = true; }
-                    else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x8000) != 0) { castledoorradioButton.Checked = true; }
-                    else if (scene.exitmode.lastselectedExit.DoorType2 != 0) { sancdoorButton.Checked = true; }
-
-                    string text = "Exit";
-
-                    if (scene.exitmode.lastselectedExit != null)
-                    {
-                        scene.owForm.SetSelectedObjectLabels(
-                            scene.exitmode.lastselectedExit.MapID,
-                            scene.exitmode.lastselectedExit.PlayerX,
-                            scene.exitmode.lastselectedExit.PlayerY);
-                    }
-                    scene.owForm.objectGroupbox.Text = text;
+                    bombdoorradioButton.Checked = true;
                 }
-                fromForm = false;
+                else if (scene.exitmode.lastselectedExit.DoorType1 != 0)
+                {
+                    wooddoorradioButton.Checked = true;
+                }
+                else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x8000) != 0)
+                {
+                    castledoorradioButton.Checked = true;
+                }
+                else if (scene.exitmode.lastselectedExit.DoorType2 != 0)
+                {
+                    sancdoorButton.Checked = true;
+                }
+
+                string text = "Exit";
+
+                if (scene.exitmode.lastselectedExit != null)
+                {
+                    scene.owForm.SetSelectedObjectLabels(
+                        scene.exitmode.lastselectedExit.MapID,
+                        scene.exitmode.lastselectedExit.PlayerX,
+                        scene.exitmode.lastselectedExit.PlayerY);
+                }
+
+                scene.owForm.objectGroupbox.Text = text;
             }
+
+            fromForm = false;
         }
 
         private void setPositionButton_Click(object sender, EventArgs e)
@@ -2987,7 +2993,6 @@ namespace ZeldaFullEditor.Gui
                 scene.selectedTileSizeX = 2;
                 scene.selectedTile[0] = 1865;
                 scene.selectedTile[1] = 1866;
-
             }
             else if ((scene.exitmode.lastselectedExit.DoorType2 & 0x8000) != 0) // Castle door
             {
