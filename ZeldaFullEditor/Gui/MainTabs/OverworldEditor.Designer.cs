@@ -918,6 +918,7 @@
             this.OWProperty_TileGFX7.TabIndex = 55;
             this.OWProperty_TileGFX7.Text = "00";
             this.OWProperty_TileGFX7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX7.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
             this.OWProperty_TileGFX7.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
             this.OWProperty_TileGFX7.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
             // 
