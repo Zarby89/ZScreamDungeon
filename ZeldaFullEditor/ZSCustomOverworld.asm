@@ -1072,8 +1072,9 @@ pushpc
 if !Func00EEBB == 1
 
 ; Zeros out the BG color when mirror warping from an area with the pyramid BG.
-; This is done to prevent a case where the black transparent color is faded to white
-; on top of the pyramid BG, resulting in a double faded effect on transparent tiles.
+; This is done to prevent a case where the black transparent color is faded to 
+; white on top of the pyramid BG, resulting in a double faded effect on
+; transparent tiles.
 org $00EEBB ; $006EBB
 Func00EEBB:
 {
