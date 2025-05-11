@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -322,7 +323,7 @@ namespace ZeldaFullEditor
                 int i = xx + (yy * 8);
                 if (!mapChecked[i])
                 {
-                    if (allMaps[i].LargeMap)
+                    if (allMaps[i].AreaSize)
                     {
                         mapChecked[i] = true;
                         allMaps[i].SetAsLargeMap((byte)i, 0);
@@ -1026,7 +1027,7 @@ namespace ZeldaFullEditor
 
                 addr = Utils.SnesToPc(addr);
 
-                if (this.AllMaps[i].LargeMap)
+                if (this.AllMaps[i].AreaSize != AreaSizeEnum.SmallArea)
                 {
                     if (this.AllMaps[i].ParentID != (byte)i)
                     {

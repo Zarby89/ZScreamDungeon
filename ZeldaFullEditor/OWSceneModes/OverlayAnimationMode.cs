@@ -72,7 +72,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             TilePos tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
                             TilePos tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());
 
-                            if (scene.ow.AllMaps[scene.selectedMap].LargeMap)
+                            if (scene.ow.AllMaps[scene.selectedMap].AreaSize)
                             {
                                 tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
                                 tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());

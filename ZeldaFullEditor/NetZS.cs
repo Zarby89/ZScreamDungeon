@@ -752,7 +752,7 @@ namespace ZeldaFullEditor.Properties
                 owmap.SpritePalette[state] = buffer.ReadByte();
                 form.overworldEditor.UpdateGUIProperties(owmap, state);
 
-                if (owmap.LargeMap)
+                if (owmap.AreaSize)
                 {
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].GFX = owmap.GFX;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].SpriteGFX = owmap.SpriteGFX;

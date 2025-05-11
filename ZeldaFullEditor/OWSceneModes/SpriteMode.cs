@@ -92,7 +92,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                 }
 
-                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].LargeMap;
+                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
                 scene.selectedFormSprite.updateMapStuff(mid, large);
                 int gs = scene.ow.GameState;
                 if (mid >= 64)
@@ -126,7 +126,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                 }
 
-                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].LargeMap;
+                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
 
                 if (scene.selectedFormSprite != null)
                 {
@@ -207,7 +207,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                 }
 
-                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].LargeMap;
+                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
                 scene.selectedFormSprite.updateMapStuff(mapID, large);
                 int gameState = scene.ow.GameState;
 
@@ -279,7 +279,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     int x = scene.ow.AllMaps[scene.selectedMap].ParentID % 8;
                     int y = scene.ow.AllMaps[scene.selectedMap].ParentID / 8;
 
-                    if (!scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].ParentID].LargeMap)
+                    if (!scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].ParentID].AreaSize)
                     {
                         scene.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
                     }

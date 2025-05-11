@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.OWSceneModes;
 using ZeldaFullEditor.Properties;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -485,13 +486,24 @@ namespace ZeldaFullEditor
             {
                 int x = this.ow.AllMaps[this.selectedMap].ParentID % 8;
                 int y = this.ow.AllMaps[this.selectedMap].ParentID / 8;
-                if (!this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
+                switch (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].AreaSize)
                 {
-                    this.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
-                }
-                else
-                {
-                    this.Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    case AreaSizeEnum.SmallArea:
+                    default:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                        break;
+
+                    case AreaSizeEnum.LargeArea:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                        break;
+
+                    case AreaSizeEnum.WideArea:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 1024, 512));
+                        break;
+
+                    case AreaSizeEnum.TallArea:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 512, 1024));
+                        break;
                 }
             }
             else
@@ -854,54 +866,55 @@ namespace ZeldaFullEditor
 
                 if (showLinkCamera)
                 {
-                    if (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].LargeMap)
+                    int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
+                    int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
+
+                    if (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].AreaSize)
                     {
-                        int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
-                        int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
-                        int camX = mouseX_Real = mouseX_Real - (mx*512) - 120;
-                        int camY = mouseY_Real = mouseY_Real - (my*512) - 104;
-                        if ((camX + 256) >= 1024)
+                        int camX = mouseX_Real = mouseX_Real - (mx * 512) - 120;
+                        int camY = mouseY_Real = mouseY_Real - (my * 512) - 104;
+                        if (camX + 256 >= 1024)
                         {
-                            camX = (1024 - 256);
+                            camX = 1024 - 256;
                         }
-                        if ((camX) < 0)
+                        if (camX < 0)
                         {
                             camX = 0;
                         }
 
                         if ((camY + 224) >= 1024)
                         {
-                            camY = (1024 - 224);
+                            camY = 1024 - 224;
                         }
-                        if ((camY) < 0)
+                        if (camY < 0)
                         {
                             camY = 0;
                         }
+
                         g.DrawRectangle(camPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
                     }
                     else
                     {
-                        int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
-                        int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
                         int camX = (mouseX_Real % 512) - 120;
                         int camY = (mouseY_Real % 512) - 104;
-                        if ((camX + 256) >= 512)
+                        if (camX + 256 >= 512)
                         {
-                            camX = (512 - 256);
+                            camX = 512 - 256;
                         }
-                        if ((camX) < 0)
+                        if (camX < 0)
                         {
                             camX = 0;
                         }
 
-                        if ((camY + 224) >= 512)
+                        if (camY + 224 >= 512)
                         {
-                            camY = (512 - 224);
+                            camY = 512 - 224;
                         }
-                        if ((camY) < 0)
+                        if (camY < 0)
                         {
                             camY = 0;
                         }
+
                         g.DrawRectangle(camPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
                     }
                 }
@@ -917,7 +930,7 @@ namespace ZeldaFullEditor
                     int my = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) / 8;
                     int mx = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) - (my * 8);
 
-                    if (this.ow.AllMaps[this.mapHover + offset].LargeMap)
+                    if (this.ow.AllMaps[this.mapHover + offset].AreaSize)
                     {
                         g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
                     }
@@ -1214,7 +1227,7 @@ namespace ZeldaFullEditor
                 if (this.owForm.gridDisplay != 0)
                 {
                     int gridsize = 512;
-                    if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
+                    if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].AreaSize)
                     {
                         gridsize = 1024;
                     }

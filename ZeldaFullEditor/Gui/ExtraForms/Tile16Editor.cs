@@ -594,7 +594,6 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        // TODO for kan ah fuck
         public void loadTilesNames()
         {
             tilesTypesNames[0x00] = "0x00 - Normal tile(no interaction)";

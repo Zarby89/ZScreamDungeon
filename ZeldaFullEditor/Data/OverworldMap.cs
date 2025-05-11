@@ -27,7 +27,7 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Gets a value indicating whether the map is part of a large area.
         /// </summary>
-        public bool LargeMap { get; internal set; } = false;
+        public AreaSizeEnum AreaSize { get; internal set; } = AreaSizeEnum.SmallArea;
 
         /// <summary>
         ///     Gets a value indicating what corner of a large area this map is.
@@ -179,19 +179,44 @@ namespace ZeldaFullEditor
             this.ParentID = index;
             this.LargeIndex = 0;
             this.GFXBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, this.GFXPointer);
-
             this.MessageID = (short)ROM.ReadShort(Constants.overworldMessages + (this.ParentID * 2));
 
-            if (index != 0x80)
+            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+
+            if (index < 0x80)
             {
-                if (index <= 128)
+                if (asmVersion < 0x03)
                 {
-                    this.LargeMap = ROM.DATA[Constants.overworldMapSize + (index & 0x3F)] != 0;
+                    // ASM version 3 was the implementation of Half areas, so if its not greater than 3 we need to swap the small and large area values.
+                    switch (ROM.DATA[Constants.overworldMapSize + (index & 0x3F)])
+                    {
+                        case 0:
+                        default:
+                            this.AreaSize = AreaSizeEnum.SmallArea;
+                            break;
+
+                        case 1:
+                            this.AreaSize = AreaSizeEnum.LargeArea;
+                            break;
+
+                        // These values shouldn't be possible at this point, but just in case.
+                        case 2:
+                            this.AreaSize = AreaSizeEnum.WideArea;
+                            break;
+
+                        case 3:
+                            this.AreaSize = AreaSizeEnum.TallArea;
+                            break;
+                    }
                 }
                 else
                 {
-                    this.LargeMap = index == 129 || index == 130 || index == 137 || index == 138;
+                    this.AreaSize = (AreaSizeEnum)ROM.DATA[Constants.overworldMapSize + (index & 0x3F)];
                 }
+            }
+            else
+            {
+                this.AreaSize = index == 0x81 || index == 0x82 || index == 0x89 || index == 0x81 ? AreaSizeEnum.LargeArea : AreaSizeEnum.SmallArea;
             }
 
             if (index < 64)
@@ -224,46 +249,52 @@ namespace ZeldaFullEditor
             }
             else
             {
-                // TODO: switch statement.
-                if (index == 0x94)
+                switch (index)
                 {
-                    this.ParentID = 128;
-                }
-                else if (index == 0x95)
-                {
-                    this.ParentID = 03;
-                }
-                else if (index == 0x96) // Pyramid bg use 0x5B map.
-                {
-                    this.ParentID = 0x5B;
-                }
-                else if (index == 0x97) // Pyramid bg use 0x5B map.
-                {
-                    this.ParentID = 0x00;
-                }
-                else if (index == 156)
-                {
-                    this.ParentID = 67;
-                }
-                else if (index == 157)
-                {
-                    this.ParentID = 0;
-                }
-                else if (index == 158)
-                {
-                    this.ParentID = 0;
-                }
-                else if (index == 159)
-                {
-                    this.ParentID = 44;
-                }
-                else if (index == 136)
-                {
-                    this.ParentID = 136;
-                }
-                else if (index == 129 || index == 130 || index == 137 || index == 138)
-                {
-                    this.ParentID = 129;
+                    case 0x94:
+                        this.ParentID = 0x80;
+                        break;
+
+                    case 0x95:
+                        this.ParentID = 0x03;
+                        break;
+
+                    case 0x96:
+                        // Pyramid BG use 0x5B map.
+                        this.ParentID = 0x5B;
+                        break;
+
+                    case 0x97:
+                        // Pyramid bg use 0x5B map.
+                        this.ParentID = 0x00;
+                        break;
+
+                    case 0x9C:
+                        this.ParentID = 0x43;
+                        break;
+
+                    case 0x9D:
+                        this.ParentID = 0x00;
+                        break;
+
+                    case 0x9E:
+                        this.ParentID = 0x00;
+                        break;
+
+                    case 0x9F:
+                        this.ParentID = 0x2C;
+                        break;
+
+                    case 0x88:
+                        this.ParentID = 0x88;
+                        break;
+
+                    case 0x81:
+                    case 0x82:
+                    case 0x89:
+                    case 0x8A:
+                        this.ParentID = 0x81;
+                        break;
                 }
 
                 this.MessageID = ROM.DATA[Constants.overworldMessages + this.ParentID];
@@ -286,7 +317,7 @@ namespace ZeldaFullEditor
                     this.GFX = 81;
                     this.AuxPalette = 0;
                 }
-                else // Pyramid bg use 0x5B map.
+                else // Pyramid BG use 0x5B map.
                 {
                     this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
                     this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
@@ -294,7 +325,6 @@ namespace ZeldaFullEditor
             }
 
             // If the custom overworld ASM has NOT already been applied, manually set the vanilla values.
-            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
             if (asmVersion == 0x00)
             {
                 // Set the main palette values.
@@ -566,36 +596,33 @@ namespace ZeldaFullEditor
         /// </summary>
         public void BuildMap()
         {
-            if (this.LargeMap)
+            if (this.AreaSize != AreaSizeEnum.SmallArea && this.ParentID != this.Index)
             {
-                if (this.ParentID != this.Index)
+                /*
+                    sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
+                    sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 64];
+                    sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
+                */
+
+                if (!this.FirstLoad)
                 {
-                    /*
-                        sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
-                        sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 64];
-                        sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
-                    */
-
-                    if (!this.FirstLoad)
+                    if (this.Index >= 0x80 && this.Index <= 0x8A && this.Index != 0x88)
                     {
-                        if (this.Index >= 0x80 && this.Index <= 0x8A && this.Index != 0x88)
-                        {
-                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
-                            this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
-                        }
-                        else if (this.Index == 0x88)
-                        {
-                            this.GFX = 81;
-                            this.AuxPalette = 0;
-                        }
-                        else
-                        {
-                            this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                            this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
-                        }
-
-                        this.FirstLoad = true;
+                        this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
+                        this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
                     }
+                    else if (this.Index == 0x88)
+                    {
+                        this.GFX = 0x51;
+                        this.AuxPalette = 0x00;
+                    }
+                    else
+                    {
+                        this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
+                        this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                    }
+
+                    this.FirstLoad = true;
                 }
             }
 
@@ -935,7 +962,7 @@ namespace ZeldaFullEditor
         public void SetAsLargeMap(byte parentIndex, byte largeIndex)
         {
             this.ParentID = parentIndex;
-            this.LargeMap = true;
+            this.AreaSize = true;
             this.LargeIndex = largeIndex;
         }
 
@@ -954,7 +981,7 @@ namespace ZeldaFullEditor
                 this.ParentID = (byte)parentIndex;
             }
 
-            this.LargeMap = false;
+            this.AreaSize = false;
             this.LargeIndex = 0;
         }
 
@@ -1195,6 +1222,15 @@ namespace ZeldaFullEditor
                 // TODO: Add exception message.
             }
         }
+
+        public enum AreaSizeEnum
+        {
+            SmallArea = 0,
+            LargeArea = 1,
+            WideArea = 2,
+            TallArea = 3,
+        }
+
 
         #region Unused
 

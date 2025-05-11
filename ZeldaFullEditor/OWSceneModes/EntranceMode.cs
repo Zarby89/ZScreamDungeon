@@ -87,7 +87,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         scene.ow.AllHoles[i].Y = (ushort)((myRightclick / 16) * 16).Clamp(0, 4080);
                         scene.ow.AllHoles[i].EntranceID = entranceID;
 
-                        bool large = scene.ow.AllMaps[mapID].LargeMap;
+                        bool large = scene.ow.AllMaps[mapID].AreaSize;
                         scene.ow.AllHoles[i].UpdateMapStuff(mapID, large);
 
                         found = i;
@@ -118,7 +118,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         scene.ow.AllEntrances[i].Y = (ushort)((myRightclick / 16) * 16).Clamp(0, 4080);
                         scene.ow.AllEntrances[i].EntranceID = entranceID;
 
-                        bool large = scene.ow.AllMaps[mapID].LargeMap;
+                        bool large = scene.ow.AllMaps[mapID].AreaSize;
                         scene.ow.AllEntrances[i].UpdateMapStuff(mapID, large);
 
                         found = i;
@@ -419,7 +419,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
-                    bool large = scene.ow.AllMaps[mapID].LargeMap;
+                    bool large = scene.ow.AllMaps[mapID].AreaSize;
                     selectedEntrance.UpdateMapStuff(mapID, large);
                     SendEntranceData(selectedEntrance);
                     selectedEntrance = null;
@@ -538,7 +538,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.ow.AllEntrances[i].X = ((mxRightclick / 16) * 16).Clamp(0, 4080);
                     scene.ow.AllEntrances[i].Y = ((myRightclick / 16) * 16).Clamp(0, 4080);
 
-                    bool large = scene.ow.AllMaps[mapID].LargeMap;
+                    bool large = scene.ow.AllMaps[mapID].AreaSize;
                     scene.ow.AllEntrances[i].UpdateMapStuff(mapID, large);
                     found = true;
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));

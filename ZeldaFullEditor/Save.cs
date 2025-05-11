@@ -1740,7 +1740,7 @@ namespace ZeldaFullEditor
                     continue; // Ignore that map we already checked it.
                 }
 
-                if (scene.ow.AllMaps[i].LargeMap) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
+                if (scene.ow.AllMaps[i].AreaSize) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
                 {
                     // Check 1
                     ROM.Write(Constants.overworldMapSize + i + 0, 0x20);
@@ -1834,7 +1834,7 @@ namespace ZeldaFullEditor
                         if ((i - 1) >= 0)
                         {
                             // If the area to the upper left is a large area.
-                            if (scene.ow.AllMaps[i - 1].LargeMap)
+                            if (scene.ow.AllMaps[i - 1].AreaSize)
                             {
                                 // If the area to the upper left is the top right of a large area:
                                 if (scene.ow.AllMaps[i - 1].LargeIndex == 1)
@@ -1861,7 +1861,7 @@ namespace ZeldaFullEditor
                     if ((i + 2) < 64)
                     {
                         // If the area to the upper right is a large area:
-                        if (scene.ow.AllMaps[i + 2].LargeMap)
+                        if (scene.ow.AllMaps[i + 2].AreaSize)
                         {
                             // If the area to the upper right is the top left of a large area:
                             if (scene.ow.AllMaps[i + 2].LargeIndex == 0)
@@ -1887,7 +1887,7 @@ namespace ZeldaFullEditor
                     if (i - 8 >= 0)
                     {
                         // If the area just above us to the bottom left is a large area:
-                        if (scene.ow.AllMaps[i - 8].LargeMap)
+                        if (scene.ow.AllMaps[i - 8].AreaSize)
                         {
                             // If the area just above us to the left is the bottom left of a large area:
                             if (scene.ow.AllMaps[i - 8].LargeIndex == 2)
@@ -1913,7 +1913,7 @@ namespace ZeldaFullEditor
                     if (i + 16 < 64)
                     {
                         // If the area just below us to the left is a large area:
-                        if (scene.ow.AllMaps[i + 16].LargeMap)
+                        if (scene.ow.AllMaps[i + 16].AreaSize)
                         {
                             // If the area just below us to the left is the top left of a large area:
                             if (scene.ow.AllMaps[i + 16].LargeIndex == 0)
@@ -1952,7 +1952,7 @@ namespace ZeldaFullEditor
                     if (i - 1 >= 0 && parentxPos != 0)
                     {
                         // If the area to the left is a large area.
-                        if (scene.ow.AllMaps[i - 1].LargeMap)
+                        if (scene.ow.AllMaps[i - 1].AreaSize)
                         {
                             // If the area to the left is the bottom right area of a large map.
                             if (scene.ow.AllMaps[i - 1].LargeIndex == 3)
@@ -1969,7 +1969,7 @@ namespace ZeldaFullEditor
                     if (i + 1 < 64 && parentxPos != 7)
                     {
                         // If the area to the right is a large area.
-                        if (scene.ow.AllMaps[i + 1].LargeMap)
+                        if (scene.ow.AllMaps[i + 1].AreaSize)
                         {
                             // If the area to the right is the bottom left area of a large map.
                             if (scene.ow.AllMaps[i + 1].LargeIndex == 2)
@@ -1986,7 +1986,7 @@ namespace ZeldaFullEditor
                     if (i - 8 >= 0)
                     {
                         // If the area just above us is a large area.
-                        if (scene.ow.AllMaps[i - 8].LargeMap)
+                        if (scene.ow.AllMaps[i - 8].AreaSize)
                         {
                             // If we are under the bottom right of the large area.
                             if (scene.ow.AllMaps[i - 8].LargeIndex == 3)
@@ -2003,7 +2003,7 @@ namespace ZeldaFullEditor
                     if (i + 8 < 64)
                     {
                         // If the area just below us is a large area.
-                        if (scene.ow.AllMaps[i + 8].LargeMap)
+                        if (scene.ow.AllMaps[i + 8].AreaSize)
                         {
                             // If we are on top of the top right of the large area.
                             if (scene.ow.AllMaps[i + 8].LargeIndex == 1)

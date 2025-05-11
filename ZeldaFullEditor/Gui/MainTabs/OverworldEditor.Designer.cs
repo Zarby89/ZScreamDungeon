@@ -66,6 +66,7 @@
             this.scratchPicturebox = new System.Windows.Forms.PictureBox();
             this.propertyTabpage = new System.Windows.Forms.TabPage();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
+            this.AreaSizeComboBox = new System.Windows.Forms.ComboBox();
             this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
             this.ambient4Box = new System.Windows.Forms.ComboBox();
             this.ambient3Box = new System.Windows.Forms.ComboBox();
@@ -649,6 +650,7 @@
             // 
             // mapGroupbox
             // 
+            this.mapGroupbox.Controls.Add(this.AreaSizeComboBox);
             this.mapGroupbox.Controls.Add(this.previewsheetPicturebox);
             this.mapGroupbox.Controls.Add(this.ambient4Box);
             this.mapGroupbox.Controls.Add(this.ambient3Box);
@@ -706,6 +708,20 @@
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
+            // 
+            // AreaSizeComboBox
+            // 
+            this.AreaSizeComboBox.FormattingEnabled = true;
+            this.AreaSizeComboBox.Items.AddRange(new object[] {
+            "0 Small Area",
+            "1 Large Area",
+            "2 Wide Area",
+            "3 Tall Area"});
+            this.AreaSizeComboBox.Location = new System.Drawing.Point(135, 239);
+            this.AreaSizeComboBox.Name = "AreaSizeComboBox";
+            this.AreaSizeComboBox.Size = new System.Drawing.Size(85, 21);
+            this.AreaSizeComboBox.TabIndex = 71;
+            this.AreaSizeComboBox.Text = "0 Small Area";
             // 
             // previewsheetPicturebox
             // 
@@ -2568,5 +2584,6 @@
         private ExtraForms.Hexbox owexit_xscroll_property;
         private ExtraForms.Hexbox owexit_xcamera_property;
         public System.Windows.Forms.ListBox overworldexitsListbox;
+        private System.Windows.Forms.ComboBox AreaSizeComboBox;
     }
 }

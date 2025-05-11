@@ -20,6 +20,7 @@ using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Gui.MainTabs;
 using ZeldaFullEditor.Properties;
+using static ZeldaFullEditor.OverworldMap;
 using static ZeldaFullEditor.Room_Object;
 
 namespace ZeldaFullEditor
@@ -139,7 +140,7 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Initializes a new instance of the <see cref="DungeonMain"/> class.
         /// </summary>
-        // TODO: KAN REFACTOR - Move some of the string lists into the constructor.
+        // TODO: Move some of the string lists into the constructor.
         public DungeonMain()
         {
             this.InitializeComponent();
@@ -2430,7 +2431,6 @@ namespace ZeldaFullEditor
                 Console.WriteLine(error.Fullerrdata.ToString());
             }
 
-			// TODO: KAN REFACTOR Remove these dumb &FFs.
 			data[Constants.startingentrance_room + 1] = (byte)((this.selectedEntrance.Room >> 8) & 0xFF);
             data[Constants.startingentrance_room] = (byte)(this.selectedEntrance.Room & 0xFF);
 
@@ -3161,7 +3161,7 @@ namespace ZeldaFullEditor
             chestEditorForm.ShowDialog();
         }
 
-		// TODO: KAN REFACTOR - alpha on unloaded rooms.
+		// TODO: Alpha on unloaded rooms.
 		private void MapPicturebox_Paint(object sender, PaintEventArgs e)
         {
             if (!this.projectLoaded)
@@ -3298,7 +3298,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        // TODO: KAN REFACTOR replace the string based room object association with accessible member variables to represent object properties.
+        // TODO: Replace the string based room object association with accessible member variables to represent object properties.
         private void RemoveMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<Room_Object> toRemove = new List<Room_Object>();
@@ -4428,7 +4428,6 @@ namespace ZeldaFullEditor
             }
         }
 
-		// TODO: KAN REFACTOR this is the worst goddamn function ever and it can be greatly optimized for speed, size, and readability with local functions
 		private void ExportMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int selectedMap = this.oweditor2.scene.selectedMap;
@@ -4467,7 +4466,8 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (this.oweditor2.scene.ow.AllMaps[this.oweditor2.scene.selectedMap].LargeMap)
+            // TODO: This may need to be updated to reflect the new area sizes, but I'm unsure how to do that, ask Zarby.
+            if (this.oweditor2.scene.ow.AllMaps[this.oweditor2.scene.selectedMap].AreaSize != AreaSizeEnum.SmallArea)
             {
                 Console.Write("Is large map");
                 selectedMap = this.oweditor2.scene.selectedMap + 1;
@@ -6574,11 +6574,21 @@ namespace ZeldaFullEditor
             colorpal.Entries[10 + (7 * 16)] = colorShade3;
 
             parentMap.GFXBitmap.Palette = colorpal;
-            if (parentMap.LargeMap)
+            switch (parentMap.AreaSize)
             {
-                overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 1].GFXBitmap.Palette = colorpal;
-                overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 8].GFXBitmap.Palette = colorpal;
-                overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 9].GFXBitmap.Palette = colorpal;
+                case AreaSizeEnum.LargeArea:
+                    overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 1].GFXBitmap.Palette = colorpal;
+                    overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 8].GFXBitmap.Palette = colorpal;
+                    overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 9].GFXBitmap.Palette = colorpal;
+                    break;
+
+                case AreaSizeEnum.WideArea:
+                    overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 1].GFXBitmap.Palette = colorpal;
+                    break;
+
+                case AreaSizeEnum.TallArea:
+                    overworldEditor.overworld.AllMaps[overworldEditor.scene.selectedMapParent + 8].GFXBitmap.Palette = colorpal;
+                    break;
             }
 
             overworldEditor.scene.Invalidate();

@@ -1,4 +1,5 @@
 ﻿using System;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -50,11 +51,14 @@ namespace ZeldaFullEditor
 
         public void updateMapStuff(byte mapID, Overworld ow)
         {
-            var large = 256;
+            AreaSizeEnum areaSize = ow.AllMaps[mapID].AreaSize;
+            int areaSizeX = 256;
+            int areaSizeY = 256;
 
             if (mapID < 128)
             {
-                large = ow.AllMaps[mapID].LargeMap ? 768 : 256;
+                areaSizeX = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.WideArea ? 768 : 256;
+                areaSizeY = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea ? 768 : 256;
             }
 
             this.MapID = mapID;
@@ -73,14 +77,14 @@ namespace ZeldaFullEditor
                 this.yScroll = (ushort)mapy;
             }
 
-            if (this.xScroll > mapx + large)
+            if (this.xScroll > mapx + areaSizeX)
             {
-                this.xScroll = (ushort)(mapx + large);
+                this.xScroll = (ushort)(mapx + areaSizeX);
             }
 
-            if (this.yScroll > mapy + large + 30)
+            if (this.yScroll > mapy + areaSizeY + 30)
             {
-                this.yScroll = (ushort)(mapy + large + 30);
+                this.yScroll = (ushort)(mapy + areaSizeY + 30);
             }
 
             this.cameraX = this.playerX;
@@ -90,18 +94,18 @@ namespace ZeldaFullEditor
             {
                 this.cameraX = (ushort)(mapx + 127);
             }
-            else if (this.cameraX > mapx + 127 + large)
+            else if (this.cameraX > mapx + 127 + areaSizeX)
             {
-                this.cameraX = (ushort)(mapx + 127 + large);
+                this.cameraX = (ushort)(mapx + 127 + areaSizeX);
             }
 
             if (this.cameraY < mapy + 111)
             {
                 this.cameraY = (ushort)(mapy + 111);
             }
-            else if (this.cameraY > mapy + 143 + large)
+            else if (this.cameraY > mapy + 143 + areaSizeY)
             {
-                this.cameraY = (ushort)(mapy + 143 + large);
+                this.cameraY = (ushort)(mapy + 143 + areaSizeY);
             }
 
             var vramXScroll = (ushort)(this.xScroll - mapx);

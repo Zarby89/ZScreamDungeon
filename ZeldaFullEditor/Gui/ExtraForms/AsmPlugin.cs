@@ -1,27 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using System.Xml.Linq;
 using ZeldaFullEditor.Data;
 using System.IO.Compression;
-using System.Threading;
 using System.Reflection;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
 {
-	// TODO KAN REFACTOR : magic strings everywhere
+	// TODO: Magic strings everywhere
 	public partial class AsmPlugin : Form
     {
         private byte[] bitmask = new byte[8] { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };

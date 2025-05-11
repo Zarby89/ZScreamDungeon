@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace ZeldaFullEditor
 {
 
-	// TODO KAN REFACTOR : add a field for SNES address
+	// TODO: Add a field for SNES address.
 	public partial class MovePointer : Form
     {
         public int address;
