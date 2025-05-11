@@ -955,22 +955,12 @@ namespace ZeldaFullEditor
         }
 
         /// <summary>
-        ///		Sets the given map to be a large map.
+        ///     Sets the size of the area.
         /// </summary>
-        /// <param name="parentIndex"> The index of the parent. </param>
-        /// <param name="largeIndex"> The large map index. 0 for top left, 1 for top right, 2 for bottom left, and 3 for bottom right. </param>
-        public void SetAsLargeMap(byte parentIndex, byte largeIndex)
-        {
-            this.ParentID = parentIndex;
-            this.AreaSize = true;
-            this.LargeIndex = largeIndex;
-        }
-
-        /// <summary>
-        ///		Sets the given map to be a small map.
-        /// </summary>
-        /// <param name="parentIndex"> The parent index to set the map to, You should generally not use this. </param>
-        public void SetAsSmallMap(byte? parentIndex = null)
+        /// <param name="areaSize"> The area size. </param>
+        /// <param name="parentIndex"> The parent area. If null, this area will be its own parent. </param>
+        /// <param name="largeIndex"> The position of this area relative to the parent. The top left is the parent. 0 - top left, 1 - top right, 2 - bottom left, 3 bottom right. </param>
+        public void SetAreaSize(AreaSizeEnum areaSize, byte? parentIndex = null, byte largeIndex = 0)
         {
             if (parentIndex == null)
             {
@@ -981,8 +971,8 @@ namespace ZeldaFullEditor
                 this.ParentID = (byte)parentIndex;
             }
 
-            this.AreaSize = false;
-            this.LargeIndex = 0;
+            this.LargeIndex = largeIndex;
+            this.AreaSize = areaSize;
         }
 
         private unsafe void BuildTiles16Gfx()

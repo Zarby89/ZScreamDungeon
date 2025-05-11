@@ -1153,7 +1153,7 @@ namespace ZeldaFullEditor
             {
                 if (i < 64) // LW[0]
                 {
-                    Sprite[] sprArray = scene.ow.AllSprites[0].Where(sprite => sprite.mapid == i).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[0].Where(sprite => sprite.MapID == i).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
@@ -1161,7 +1161,7 @@ namespace ZeldaFullEditor
                 }
                 else if (i >= 64 && i < 208) // LW & DW[1]
                 {
-                    Sprite[] sprArray = scene.ow.AllSprites[1].Where(sprite => sprite.mapid == (i - 64)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[1].Where(sprite => sprite.MapID == (i - 64)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
@@ -1169,7 +1169,7 @@ namespace ZeldaFullEditor
                 }
                 else if (i >= 208 && i < Constants.NumberOfOWSprites) // LW[2]
                 {
-                    Sprite[] sprArray = scene.ow.AllSprites[2].Where(sprite => sprite.mapid == (i - 208)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[2].Where(sprite => sprite.MapID == (i - 208)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);

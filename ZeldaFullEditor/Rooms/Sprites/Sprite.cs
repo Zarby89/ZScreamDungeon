@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
         public int sizeMap = 512;
         bool onOverworld = false;
         public bool preview = false;
-        public byte mapid = 0;
+        public byte MapID = 0;
         public int map_x = 0;
         public int map_y = 0;
         public int uniqueID = 0;
@@ -64,7 +64,7 @@ namespace ZeldaFullEditor
         public Sprite(byte mapid, byte id, byte x, byte y, int map_x, int map_y)
         {
             onOverworld = true;
-            this.mapid = mapid;
+            this.MapID = mapid;
             this.id = id;
             this.x = x;
             this.y = y;
@@ -1363,9 +1363,9 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void updateMapStuff(short mapId, bool large)
+        public void updateMapStuff(short mapId, AreaSizeEnum areaSize)
         {
-            this.mapid = (byte)mapId;
+            this.MapID = (byte)mapId;
 
             if (mapId >= 64)
             {
@@ -1382,13 +1382,23 @@ namespace ZeldaFullEditor
             this.y = this.y.Clamp(0, 63);
 
             // If we are on a large map:
-            if (!large)
+            switch (areaSize)
             {
-                this.x = this.x.Clamp(0, 31);
-                this.y = this.y.Clamp(0, 31);
+                case AreaSizeEnum.LargeArea:
+                    this.x = this.x.Clamp(0, 31);
+                    this.y = this.y.Clamp(0, 31);
+                    break;
+
+                case AreaSizeEnum.WideArea:
+                    this.y = this.y.Clamp(0, 31);
+                    break;
+
+                case AreaSizeEnum.TallArea:
+                    this.x = this.x.Clamp(0, 31);
+                    break;
             }
-            
-            Console.WriteLine("Sprite:    0x" + this.id.ToString("X2") + " MapId: 0x" + this.mapid.ToString("X2") + " X: " + this.x + " Y: " + this.y);
+
+            Console.WriteLine("Sprite:    0x" + this.id.ToString("X2") + " MapId: 0x" + this.MapID.ToString("X2") + " X: " + this.x + " Y: " + this.y);
         }
     }
 }

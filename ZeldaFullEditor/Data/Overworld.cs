@@ -297,21 +297,22 @@ namespace ZeldaFullEditor
         {
             OverworldMap[] allMaps = givenMaps;
 
-            for (int i = 128; i < 145; i++)
+            for (int i = 0x80; i < 0x91; i++)
             {
-                allMaps[i].SetAsSmallMap(0);
+                // TODO: Why are the parent areas for all of these 0x00?
+                allMaps[i].SetAreaSize(AreaSizeEnum.SmallArea, 0);
             }
 
-            allMaps[128].SetAsSmallMap();
-            allMaps[129].SetAsLargeMap(129, 0);
-            allMaps[130].SetAsLargeMap(129, 1);
-            allMaps[137].SetAsLargeMap(129, 2);
-            allMaps[138].SetAsLargeMap(129, 3);
+            allMaps[0x80].SetAreaSize(AreaSizeEnum.SmallArea);
+            allMaps[0x81].SetAreaSize(AreaSizeEnum.LargeArea, 0x81, 0);
+            allMaps[0x82].SetAreaSize(AreaSizeEnum.LargeArea, 0x81, 1);
+            allMaps[0x89].SetAreaSize(AreaSizeEnum.LargeArea, 0x81, 2);
+            allMaps[0x8A].SetAreaSize(AreaSizeEnum.LargeArea, 0x81, 3);
 
-            allMaps[136].SetAsSmallMap();
+            allMaps[0x88].SetAreaSize(AreaSizeEnum.SmallArea);
 
-            bool[] mapChecked = new bool[64];
-            for (int i = 0; i < 64; i++)
+            bool[] mapChecked = new bool[0x40];
+            for (int i = 0; i < 0x40; i++)
             {
                 mapChecked[i] = false;
             }
@@ -323,30 +324,57 @@ namespace ZeldaFullEditor
                 int i = xx + (yy * 8);
                 if (!mapChecked[i])
                 {
-                    if (allMaps[i].AreaSize)
+                    switch (allMaps[i].AreaSize)
                     {
-                        mapChecked[i] = true;
-                        allMaps[i].SetAsLargeMap((byte)i, 0);
-                        allMaps[i + 64].SetAsLargeMap((byte)(i + 64), 0);
+                        case AreaSizeEnum.SmallArea:
+                            mapChecked[i] = true;
+                            allMaps[i].SetAreaSize(AreaSizeEnum.SmallArea);
+                            allMaps[i + 64].SetAreaSize(AreaSizeEnum.SmallArea);
 
-                        mapChecked[i + 1] = true;
-                        allMaps[i + 1].SetAsLargeMap((byte)i, 1);
-                        allMaps[i + 65].SetAsLargeMap((byte)(i + 64), 1);
+                            break;
 
-                        mapChecked[i + 8] = true;
-                        allMaps[i + 8].SetAsLargeMap((byte)i, 2);
-                        allMaps[i + 72].SetAsLargeMap((byte)(i + 64), 2);
+                        case AreaSizeEnum.LargeArea:
+                            mapChecked[i] = true;
+                            allMaps[i].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 0);
+                            allMaps[i + 64].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 64), 0);
 
-                        mapChecked[i + 9] = true;
-                        allMaps[i + 9].SetAsLargeMap((byte)i, 3);
-                        allMaps[i + 73].SetAsLargeMap((byte)(i + 64), 3);
-                        xx++;
-                    }
-                    else
-                    {
-                        mapChecked[i] = true;
-                        allMaps[i].SetAsSmallMap();
-                        allMaps[i + 64].SetAsSmallMap();
+                            mapChecked[i + 1] = true;
+                            allMaps[i + 1].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 1);
+                            allMaps[i + 65].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 64), 1);
+
+                            mapChecked[i + 8] = true;
+                            allMaps[i + 8].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 2);
+                            allMaps[i + 72].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 64), 2);
+
+                            mapChecked[i + 9] = true;
+                            allMaps[i + 9].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 3);
+                            allMaps[i + 73].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 64), 3);
+
+                            xx++;
+                            break;
+
+                        case AreaSizeEnum.WideArea:
+                            mapChecked[i] = true;
+                            allMaps[i].SetAreaSize(AreaSizeEnum.WideArea, (byte)i, 0);
+                            allMaps[i + 64].SetAreaSize(AreaSizeEnum.WideArea, (byte)(i + 64), 0);
+
+                            mapChecked[i + 1] = true;
+                            allMaps[i + 1].SetAreaSize(AreaSizeEnum.WideArea, (byte)i, 1);
+                            allMaps[i + 65].SetAreaSize(AreaSizeEnum.WideArea, (byte)(i + 64), 1);
+
+                            xx++;
+                            break;
+
+                        case AreaSizeEnum.TallArea:
+                            mapChecked[i] = true;
+                            allMaps[i].SetAreaSize(AreaSizeEnum.TallArea, (byte)i, 0);
+                            allMaps[i + 64].SetAreaSize(AreaSizeEnum.TallArea, (byte)(i + 64), 0);
+
+                            mapChecked[i + 8] = true;
+                            allMaps[i + 8].SetAreaSize(AreaSizeEnum.TallArea, (byte)i, 2);
+                            allMaps[i + 72].SetAreaSize(AreaSizeEnum.TallArea, (byte)(i + 64), 2);
+
+                            break;
                     }
                 }
 

@@ -586,7 +586,7 @@ namespace ZeldaFullEditor.Properties
             }
 
             spr.id = sprid;
-            spr.mapid = buffer.ReadByte();
+            spr.MapID = buffer.ReadByte();
             spr.map_x = buffer.ReadInt();
             spr.map_y = buffer.ReadInt();
             spr.x = buffer.ReadByte();
@@ -728,8 +728,8 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // cmd id 12
             buffer.ReadByte(); // user id
             int map = buffer.ReadInt(); // unique id
-            bool largeCheck = buffer.ReadByte() == 1 ? true : false;
-            form.overworldEditor.UpdateLargeMap(map, largeCheck);
+            AreaSizeEnum oldAreaSize = form.overworldEditor.scene.ow.AllMaps[map].AreaSize;
+            form.overworldEditor.UpdateLargeMap(map, (AreaSizeEnum)buffer.ReadByte(), oldAreaSize);
         }
 
         private void ReceivedMapProperties(NetIncomingMessage im)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Lidgren.Network;
 using ZeldaFullEditor.Properties;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -52,7 +53,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 
                 foreach (Sprite spr in scene.ow.AllSprites[gs]) // TODO : Check if that need to be changed to LINQ mapid == maphover
                 {
-                    if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16 && spr.mapid == scene.selectedMapParent)
+                    if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16 && spr.MapID == scene.selectedMapParent)
                     {
                         selectedSprite = spr;
                     }
@@ -92,8 +93,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     mid = (byte)(scene.mapHover + scene.ow.WorldOffset);
                 }
 
-                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
-                scene.selectedFormSprite.updateMapStuff(mid, large);
+                scene.selectedFormSprite.updateMapStuff(mid, scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize);
                 int gs = scene.ow.GameState;
                 if (mid >= 64)
                 {
@@ -126,7 +126,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                 }
 
-                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
+                AreaSizeEnum large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
 
                 if (scene.selectedFormSprite != null)
                 {
@@ -207,8 +207,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                 }
 
-                bool large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
-                scene.selectedFormSprite.updateMapStuff(mapID, large);
+                scene.selectedFormSprite.updateMapStuff(mapID, scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize);
                 int gameState = scene.ow.GameState;
 
                 if (mapID >= 64)
@@ -279,14 +278,26 @@ namespace ZeldaFullEditor.OWSceneModes
                     int x = scene.ow.AllMaps[scene.selectedMap].ParentID % 8;
                     int y = scene.ow.AllMaps[scene.selectedMap].ParentID / 8;
 
-                    if (!scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].ParentID].AreaSize)
+                    int maxSizeX = 512;
+                    int maxSizeY = 512;
+
+                    switch (scene.ow.AllMaps[scene.ow.AllMaps[scene.selectedMap].ParentID].AreaSize)
                     {
-                        scene.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                        case AreaSizeEnum.LargeArea:
+                            maxSizeX = 1024;
+                            maxSizeY = 1024;
+                            break;
+
+                        case AreaSizeEnum.WideArea:
+                            maxSizeX = 1024;
+                            break;
+
+                        case AreaSizeEnum.TallArea:
+                            maxSizeY = 1024;
+                            break;
                     }
-                    else
-                    {
-                        scene.Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
-                    }
+
+                    scene.Invalidate(new Rectangle(x * 512, y * 512, maxSizeX, maxSizeY));
                 }
                 else
                 {
@@ -312,12 +323,12 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     Sprite spr = scene.ow.AllSprites[scene.ow.GameState][i];
 
-                    if (spr.mapid != scene.ow.AllMaps[scene.selectedMap].ParentID)
+                    if (spr.MapID != scene.ow.AllMaps[scene.selectedMap].ParentID)
                     {
                         continue;
                     }
 
-                    if (spr.mapid < 64 + scene.ow.WorldOffset && spr.mapid >= scene.ow.WorldOffset)
+                    if (spr.MapID < 64 + scene.ow.WorldOffset && spr.MapID >= scene.ow.WorldOffset)
                     {
                         /*
                         if (selectedEntrance != null)
@@ -353,7 +364,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     Sprite spr = scene.ow.AllSprites[scene.ow.GameState][i];
 
-                    if (spr.mapid < 64 + scene.ow.WorldOffset && spr.mapid >= scene.ow.WorldOffset)
+                    if (spr.MapID < 64 + scene.ow.WorldOffset && spr.MapID >= scene.ow.WorldOffset)
                     {
                         /*
                         if (selectedEntrance != null)
@@ -453,7 +464,7 @@ namespace ZeldaFullEditor.OWSceneModes
             buffer.Write((int)spr.uniqueID);
             buffer.Write((byte)scene.ow.GameState);
             buffer.Write((byte)spr.id);
-            buffer.Write((byte)spr.mapid);
+            buffer.Write((byte)spr.MapID);
             buffer.Write((int)spr.map_x);
             buffer.Write((int)spr.map_y);
             buffer.Write((byte)spr.x);

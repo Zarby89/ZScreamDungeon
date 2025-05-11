@@ -56,7 +56,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                         SendTileData((byte)(Control.ModifierKeys == Keys.Control ? 1 : 0));
 
-
                         for (int i = 0; i < scene.selectedTile.Length; i++)
                         {
                             superX = ((tileX + x) / 32);
@@ -69,14 +68,8 @@ namespace ZeldaFullEditor.OWSceneModes
                             scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
                             */
 
-                            TilePos tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
+                            TilePos tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - superMX), (byte)((scene.globalmouseTileDownY + y) - superMY), scene.selectedTile[i]);
                             TilePos tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());
-
-                            if (scene.ow.AllMaps[scene.selectedMap].AreaSize)
-                            {
-                                tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
-                                tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());
-                            }
 
                             if (Control.ModifierKeys == Keys.Control)
                             {
