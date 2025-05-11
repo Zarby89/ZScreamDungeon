@@ -87,8 +87,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         scene.ow.AllHoles[i].Y = (ushort)((myRightclick / 16) * 16).Clamp(0, 4080);
                         scene.ow.AllHoles[i].EntranceID = entranceID;
 
-                        bool large = scene.ow.AllMaps[mapID].AreaSize;
-                        scene.ow.AllHoles[i].UpdateMapStuff(mapID, large);
+                        scene.ow.AllHoles[i].UpdateMapStuff(mapID, scene.ow.AllMaps[mapID].AreaSize);
 
                         found = i;
                         selectedEntrance = scene.ow.AllHoles[i];
@@ -118,8 +117,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         scene.ow.AllEntrances[i].Y = (ushort)((myRightclick / 16) * 16).Clamp(0, 4080);
                         scene.ow.AllEntrances[i].EntranceID = entranceID;
 
-                        bool large = scene.ow.AllMaps[mapID].AreaSize;
-                        scene.ow.AllEntrances[i].UpdateMapStuff(mapID, large);
+                        scene.ow.AllEntrances[i].UpdateMapStuff(mapID, scene.ow.AllMaps[mapID].AreaSize);
 
                         found = i;
                         selectedEntrance = scene.ow.AllEntrances[i];
@@ -419,8 +417,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
-                    bool large = scene.ow.AllMaps[mapID].AreaSize;
-                    selectedEntrance.UpdateMapStuff(mapID, large);
+                    selectedEntrance.UpdateMapStuff(mapID, scene.ow.AllMaps[mapID].AreaSize);
                     SendEntranceData(selectedEntrance);
                     selectedEntrance = null;
                     scene.mouse_down = false;
@@ -538,8 +535,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.ow.AllEntrances[i].X = ((mxRightclick / 16) * 16).Clamp(0, 4080);
                     scene.ow.AllEntrances[i].Y = ((myRightclick / 16) * 16).Clamp(0, 4080);
 
-                    bool large = scene.ow.AllMaps[mapID].AreaSize;
-                    scene.ow.AllEntrances[i].UpdateMapStuff(mapID, large);
+                    scene.ow.AllEntrances[i].UpdateMapStuff(mapID, scene.ow.AllMaps[mapID].AreaSize);
                     found = true;
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 

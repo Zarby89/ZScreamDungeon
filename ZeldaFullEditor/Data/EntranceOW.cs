@@ -1,4 +1,5 @@
 ﻿using System;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -101,7 +102,7 @@ namespace ZeldaFullEditor
         ///     Updates certain entrance properties based on the given area map ID.
         /// </summary>
         /// <param name="mapID"> The ID of the area map. </param>
-        public void UpdateMapStuff(short mapID, bool large = false)
+        public void UpdateMapStuff(short mapID, AreaSizeEnum areaSize)
         {
             this.MapID = mapID;
 
@@ -120,10 +121,20 @@ namespace ZeldaFullEditor
             this.AreaY = this.AreaY.Clamp(0, 63);
 
             // If we are on a large map:
-            if (!large)
+            switch (areaSize)
             {
-                this.AreaX = this.AreaX.Clamp(0, 31);
-                this.AreaY = this.AreaY.Clamp(0, 31);
+                case AreaSizeEnum.LargeArea:
+                    this.AreaX = this.AreaX.Clamp(0, 31);
+                    this.AreaY = this.AreaY.Clamp(0, 31);
+                    break;
+
+                case AreaSizeEnum.WideArea:
+                    this.AreaY = this.AreaY.Clamp(0, 31);
+                    break;
+
+                case AreaSizeEnum.TallArea:
+                    this.AreaX = this.AreaX.Clamp(0, 31);
+                    break;
             }
 
             this.MapPos = (ushort)(((this.AreaY << 6) | (this.AreaX & 0x3F)) << 1);

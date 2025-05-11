@@ -97,8 +97,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                     }
 
-                    bool large = scene.ow.AllMaps[mapID].AreaSize;
-                    selectedItem.UpdateMapStuff(mapID, large);
+                    selectedItem.UpdateMapStuff(mapID, scene.ow.AllMaps[mapID].AreaSize);
                     lastselectedItem = selectedItem;
                     SendItemData(lastselectedItem);
                     selectedItem = null;

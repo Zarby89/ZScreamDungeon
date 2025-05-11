@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -2794,7 +2795,7 @@ namespace ZeldaFullEditor.Gui
                     scene.entranceMode.lastselectedEntrance.X = (ushort)owentrance_property_x.HexValue;
                     scene.entranceMode.lastselectedEntrance.Y = (ushort)owentrance_property_y.HexValue;
 
-                    scene.entranceMode.lastselectedEntrance.UpdateMapStuff(scene.exitmode.lastselectedExit.MapID);
+                    scene.entranceMode.lastselectedEntrance.UpdateMapStuff(scene.exitmode.lastselectedExit.MapID, this.scene.ow.AllMaps[scene.entranceMode.lastselectedEntrance.MapID].AreaSize);
                     string tname = "OW[" + owentrancesListbox.SelectedIndex.ToString("X2") + "] -> UW";
                     foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
                     {

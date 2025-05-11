@@ -1,4 +1,5 @@
 ﻿using System;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -81,7 +82,7 @@ namespace ZeldaFullEditor
         ///     Updates the item info when needed. Generally when moving items around in editor.
         /// </summary>
         /// <param name="roomMapId"> The dungeon room ID or overworld area ID where the item was moved to. </param>
-        public void UpdateMapStuff(short roomMapId, bool large)
+        public void UpdateMapStuff(short roomMapId, AreaSizeEnum areaSize)
         {
             this.RoomMapID = (ushort)roomMapId;
 
@@ -99,10 +100,21 @@ namespace ZeldaFullEditor
             this.GameX = this.GameX.Clamp(0, 63);
             this.GameY = this.GameY.Clamp(0, 63);
 
-            if (!large)
+            // If we are on a large map:
+            switch (areaSize)
             {
-                this.GameX = this.GameX.Clamp(0, 31);
-                this.GameY = this.GameY.Clamp(0, 31);
+                case AreaSizeEnum.LargeArea:
+                    this.GameX = this.GameX.Clamp(0, 31);
+                    this.GameY = this.GameY.Clamp(0, 31);
+                    break;
+
+                case AreaSizeEnum.WideArea:
+                    this.GameY = this.GameY.Clamp(0, 31);
+                    break;
+
+                case AreaSizeEnum.TallArea:
+                    this.GameX = this.GameX.Clamp(0, 31);
+                    break;
             }
 
             Console.WriteLine("Item:      0x" + this.ID.ToString("X2") + " MapId: 0x" + this.RoomMapID.ToString("X2") + " X: " + this.GameX + " Y: " + this.GameY);
