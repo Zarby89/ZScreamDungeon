@@ -183,43 +183,49 @@ namespace ZeldaFullEditor
 
             byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
 
-            if (index < 0x80)
+            switch (asmVersion)
             {
-                if (asmVersion < 0x03)
-                {
-                    // ASM version 3 was the implementation of Half areas, so if its not greater than 3 we need to swap the small and large area values.
-                    switch (ROM.DATA[Constants.overworldMapSize + (index & 0x3F)])
+                case 0:
+                case 1:
+                case 2:
+                    if (index < 0x80)
                     {
-                        case 0:
-                        default:
-                            this.AreaSize = AreaSizeEnum.SmallArea;
-                            break;
+                        // ASM version 3 was the implementation of Half areas, so if its not greater than 3 we need to swap the small and large area values.
+                        switch (ROM.DATA[Constants.overworldMapSize + (index & 0x3F)])
+                        {
+                            case 0:
+                            default:
+                                this.AreaSize = AreaSizeEnum.SmallArea;
+                                break;
 
-                        case 1:
-                            this.AreaSize = AreaSizeEnum.LargeArea;
-                            break;
+                            case 1:
+                                this.AreaSize = AreaSizeEnum.LargeArea;
+                                break;
 
-                        // These values shouldn't be possible at this point, but just in case.
-                        case 2:
-                            this.AreaSize = AreaSizeEnum.WideArea;
-                            break;
+                            // These values shouldn't be possible at this point, but just in case.
+                            case 2:
+                                this.AreaSize = AreaSizeEnum.WideArea;
+                                break;
 
-                        case 3:
-                            this.AreaSize = AreaSizeEnum.TallArea;
-                            break;
+                            case 3:
+                                this.AreaSize = AreaSizeEnum.TallArea;
+                                break;
+                        }
                     }
-                }
-                else
-                {
-                    this.AreaSize = (AreaSizeEnum)ROM.DATA[Constants.overworldMapSize + (index & 0x3F)];
-                }
-            }
-            else
-            {
-                this.AreaSize = index == 0x81 || index == 0x82 || index == 0x89 || index == 0x81 ? AreaSizeEnum.LargeArea : AreaSizeEnum.SmallArea;
+                    else
+                    {
+                        // Before ASM version 3, SW areas were also hardcoded.
+                        this.AreaSize = index == 0x81 || index == 0x82 || index == 0x89 || index == 0x81 ? AreaSizeEnum.LargeArea : AreaSizeEnum.SmallArea;
+                    }
+
+                    break;
+
+                case 3:
+                    this.AreaSize = (AreaSizeEnum)ROM.DATA[Constants.overworldScreenSize + index];
+                    break;
             }
 
-            if (index < 64)
+            if (index < 0x40)
             {
                 this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpriteset + this.ParentID];
                 this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 64];
@@ -234,7 +240,7 @@ namespace ZeldaFullEditor
                 this.Music[2] = ROM.DATA[Constants.overworldMusicMasterSword + this.ParentID];
                 this.Music[3] = ROM.DATA[Constants.overworldMusicAgahim + this.ParentID];
             }
-            else if (index < 128)
+            else if (index < 0x80)
             {
                 this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
                 this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];

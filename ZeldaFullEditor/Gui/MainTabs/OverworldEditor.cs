@@ -1290,48 +1290,55 @@ namespace ZeldaFullEditor.Gui
 
             int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
             this.SendLargeMapChanged(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex);
+
+            // TODO: Change this call to be from the combo box and not the old checkbox.
             this.UpdateLargeMap(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex, this.scene.ow.AllMaps[parentID].AreaSize);
         }
 
-        public void UpdateLargeMap(int mapID, AreaSizeEnum areaSize, AreaSizeEnum OldAreaSize)
+        public void UpdateLargeMap(int mapID, AreaSizeEnum newAreaSize, AreaSizeEnum oldAreaSize)
         {
-            if (areaSize == OldAreaSize)
+            if (newAreaSize == oldAreaSize)
             {
+                this.AreaSizeComboBox.SelectedIndex = (int)oldAreaSize;
+
                 return;
             }
 
-            // If we are trying to overlap large areas, fail.
-            int badCount = 0;
-            string badAreaString = string.Empty;
-
-            List<int> areasToCheck = new List<int>();
-
-            switch (areaSize)
+            List<int> areasToReset = new List<int>();
+            switch (oldAreaSize)
             {
                 case AreaSizeEnum.LargeArea:
-                    areasToCheck.Add(1);
-                    areasToCheck.Add(8);
-                    areasToCheck.Add(9);
+                    areasToReset.Add(1);
+                    areasToReset.Add(8);
+                    areasToReset.Add(9);
 
                     break;
 
                 case AreaSizeEnum.WideArea:
-                    areasToCheck.Add(1);
+                    areasToReset.Add(1);
 
                     break;
 
                 case AreaSizeEnum.TallArea:
-                    areasToCheck.Add(8);
+                    areasToReset.Add(8);
 
                     break;
             }
 
-            foreach (int area in areasToCheck)
+            // Check if we are able to change the area size. If we will end up overlapping another large area, then we cannot change the size.
+            int badCount = 0;
+            string badAreaString = string.Empty;
+
+            foreach (int area in areasToReset)
             {
-                if (this.scene.ow.AllMaps[mapID + area].AreaSize != AreaSizeEnum.SmallArea)
+                OverworldMap currentArea = this.scene.ow.AllMaps[mapID + area];
+                if (currentArea.AreaSize != AreaSizeEnum.SmallArea)
                 {
-                    badAreaString += (mapID + area).ToString("X2") + ", ";
-                    badCount++;
+                    if (currentArea.ParentID != this.scene.ow.AllMaps[mapID].ParentID)
+                    {
+                        badAreaString += (mapID + area).ToString("X2") + ", ";
+                        badCount++;
+                    }
                 }
             }
 
@@ -1354,424 +1361,286 @@ namespace ZeldaFullEditor.Gui
                     MessageBox.Show("Cannot make overlapping large area. Areas: " + badAreaString + " are already part of a large area.", "Bad Error", MessageBoxButtons.OK);
                 }
 
-                this.AreaSizeComboBox.SelectedIndex = (int)OldAreaSize;
+                this.AreaSizeComboBox.SelectedIndex = (int)oldAreaSize;
 
                 return;
             }
 
-            if (areaSize == AreaSizeEnum.LargeArea) // Large map
+            List<int> worlds = new List<int>() { 0x00 };
+            if (mapID < 0x40)
             {
-                this.scene.ow.AllMaps[mapID + 0x00].SetAreaSize(AreaSizeEnum.LargeArea, (byte)mapID, 0);
-                this.scene.ow.AllMaps[mapID + 0x01].SetAreaSize(AreaSizeEnum.LargeArea, (byte)mapID, 1);
-                this.scene.ow.AllMaps[mapID + 0x08].SetAreaSize(AreaSizeEnum.LargeArea, (byte)mapID, 2);
-                this.scene.ow.AllMaps[mapID + 0x09].SetAreaSize(AreaSizeEnum.LargeArea, (byte)mapID, 3);
-
-                List<int> mtable = new List<int>() { 0x00, 0x01, 0x08, 0x09 };
-
-                if (mapID < 0x40)
-                {
-                    // If we are in the light world, set the dark world opposite too.
-                    this.scene.ow.AllMaps[mapID + 0x40 + 0x00].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID + 0x40), 0);
-                    this.scene.ow.AllMaps[mapID + 0x40 + 0x01].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID + 0x40), 1);
-                    this.scene.ow.AllMaps[mapID + 0x40 + 0x08].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID + 0x40), 2);
-                    this.scene.ow.AllMaps[mapID + 0x40 + 0x09].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID + 0x40), 3);
-
-                    mtable = new List<int>() { 0x00, 0x01, 0x08, 0x09, 0x40, 0x40 + 0x01, 0x40 + 0x08, 0x40 + 0x09 };
-                }
-                else if (mapID >= 0x40 && mapID < 0x80)
-                {
-                    // If we are in the dark world, set the light world opposite too.
-                    this.scene.ow.AllMaps[mapID - 0x40 + 0x00].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID - 0x40), 0);
-                    this.scene.ow.AllMaps[mapID - 0x40 + 0x01].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID - 0x40), 1);
-                    this.scene.ow.AllMaps[mapID - 0x40 + 0x08].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID - 0x40), 2);
-                    this.scene.ow.AllMaps[mapID - 0x40 + 0x09].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(mapID - 0x40), 3);
-
-                    mtable = new List<int>() { 0x00, 0x01, 0x08, 0x09, -0x40, -0x40 + 0x01, -0x40 + 0x08, -0x40 + 0x09 };
-                }
-
-                this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps(this.scene.ow.AllMaps);
-
-                Console.WriteLine("Updating object locations…");
-
-                foreach (int offset in mtable)
-                {
-                    mapID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID + mtable[offset];
-
-                    foreach (EntranceOW entrance in this.scene.ow.AllEntrances.Where(x => x.MapID == mapID))
-                    {
-                        entrance.UpdateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, areaSize);
-                    }
-
-                    foreach (EntranceOW hole in this.scene.ow.AllHoles.Where(x => x.MapID == mapID))
-                    {
-                        hole.UpdateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, areaSize);
-                    }
-
-                    foreach (TransportOW transport in this.scene.ow.AllBirds.Where(x => x.MapID == mapID))
-                    {
-                        transport.updateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, this.scene.ow);
-                    }
-
-                    foreach (TransportOW transport in this.scene.ow.AllWhirlpools.Where(x => x.MapID == mapID))
-                    {
-                        transport.updateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, this.scene.ow);
-                    }
-
-                    foreach (ExitOW exit in this.scene.ow.AllExits.Where(x => x.MapID == mapID))
-                    {
-                        exit.UpdateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, this.scene.ow);
-                    }
-
-                    foreach (RoomPotSaveEditor item in this.scene.ow.AllItems.Where(x => x.RoomMapID == mapID))
-                    {
-                        item.UpdateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, areaSize);
-                    }
-
-                    foreach (Sprite sprite in this.scene.ow.AllSprites[0].Where(x => x.MapID == mapID))
-                    {
-                        sprite.updateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, areaSize);
-                    }
-
-                    foreach (Sprite sprite in this.scene.ow.AllSprites[1].Where(x => x.MapID == mapID))
-                    {
-                        sprite.updateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, areaSize);
-                    }
-
-                    foreach (Sprite sprite in this.scene.ow.AllSprites[2].Where(x => x.MapID == mapID))
-                    {
-                        sprite.updateMapStuff(this.scene.ow.AllMaps[mapID].ParentID, areaSize);
-                    }
-                }
-
-                Console.WriteLine("Done updating object locations ");
-            }
-            else // Small maps
-            {
-                this.scene.ow.AllMaps[mapID].SetAreaSize(AreaSizeEnum.SmallArea);
-                this.scene.ow.AllMaps[mapID + 1].SetAreaSize(AreaSizeEnum.SmallArea);
-                this.scene.ow.AllMaps[mapID + 8].SetAreaSize(AreaSizeEnum.SmallArea);
-                this.scene.ow.AllMaps[mapID + 9].SetAreaSize(AreaSizeEnum.SmallArea);
-
                 // If we are in the light world, set the dark world opposite too.
-                if (mapID < 0x40)
-                {
-                    this.scene.ow.AllMaps[mapID + 0x40].SetAreaSize(AreaSizeEnum.SmallArea);
-                    this.scene.ow.AllMaps[mapID + 0x40 + 1].SetAreaSize(AreaSizeEnum.SmallArea);
-                    this.scene.ow.AllMaps[mapID + 0x40 + 8].SetAreaSize(AreaSizeEnum.SmallArea);
-                    this.scene.ow.AllMaps[mapID + 0x40 + 9].SetAreaSize(AreaSizeEnum.SmallArea);
-                }
-
-                // If we are in the dark world, set the light world opposite too.
-                else if (mapID >= 0x40 && mapID < 0x80)
-                {
-                    this.scene.ow.AllMaps[mapID - 0x40].SetAreaSize(AreaSizeEnum.SmallArea);
-                    this.scene.ow.AllMaps[mapID - 0x40 + 1].SetAreaSize(AreaSizeEnum.SmallArea);
-                    this.scene.ow.AllMaps[mapID - 0x40 + 8].SetAreaSize(AreaSizeEnum.SmallArea);
-                    this.scene.ow.AllMaps[mapID - 0x40 + 9].SetAreaSize(AreaSizeEnum.SmallArea);
-                }
-
-                this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps(this.scene.ow.AllMaps);
-
-                Console.WriteLine("Updating object locations.");
-
-                List<int> mtable = new List<int>() { 0x00 };
-
-                if (mapID < 0x40)
-                {
-                    mtable.Add(0x40);
-                }
-                else if (mapID >= 0x40 && mapID < 0x80)
-                {
-                    mtable.Add(-0x40);
-                }
-
-                foreach (int offset in mtable)
-                {
-                    mapID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID + mtable[offset];
-
-                    int j = 0;
-                    // We are unchecking the large map box so all sprites on map00 are returning to other maps.
-                    foreach (EntranceOW entrance in this.scene.ow.AllEntrances.Where(x => x.MapID == mapID))
-                    {
-                        if (entrance.AreaX < 32)
-                        {
-                            if (entrance.AreaY < 32)
-                            {
-                                entrance.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, areaSize);
-                            }
-                            else
-                            {
-                                entrance.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, areaSize);
-                            }
-                        }
-                        else
-                        {
-                            if (entrance.AreaY < 32)
-                            {
-                                entrance.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, areaSize);
-                            }
-                            else
-                            {
-                                entrance.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, areaSize);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total entrances moved: " + j);
-
-                    j = 0;
-                    foreach (EntranceOW hole in this.scene.ow.AllHoles.Where(x => x.MapID == mapID))
-                    {
-                        if (hole.AreaX < 32)
-                        {
-                            if (hole.AreaY < 32)
-                            {
-                                hole.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, areaSize);
-                            }
-                            else
-                            {
-                                hole.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, areaSize);
-                            }
-                        }
-                        else
-                        {
-                            if (hole.AreaY < 32)
-                            {
-                                hole.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, areaSize);
-                            }
-                            else
-                            {
-                                hole.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, areaSize);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total holes moved: " + j);
-
-                    j = 0;
-                    foreach (TransportOW transport in this.scene.ow.AllBirds.Where(x => x.MapID == mapID))
-                    {
-                        if (transport.AreaX < 32)
-                        {
-                            if (transport.AreaY < 32)
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, this.scene.ow);
-                            }
-                            else
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, this.scene.ow);
-                            }
-                        }
-                        else
-                        {
-                            if (transport.AreaY < 32)
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, this.scene.ow);
-                            }
-                            else
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, this.scene.ow);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total brids moved: " + j);
-
-                    j = 0;
-                    foreach (TransportOW transport in this.scene.ow.AllWhirlpools.Where(x => x.MapID == mapID))
-                    {
-                        if (transport.AreaX < 32)
-                        {
-                            if (transport.AreaY < 32)
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, this.scene.ow);
-                            }
-                            else
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, this.scene.ow);
-                            }
-                        }
-                        else
-                        {
-                            if (transport.AreaY < 32)
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, this.scene.ow);
-                            }
-                            else
-                            {
-                                transport.updateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, this.scene.ow);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total whirlpools moved: " + j);
-
-                    j = 0;
-                    foreach (ExitOW exit in this.scene.ow.AllExits.Where(x => x.MapID == mapID))
-                    {
-                        if (exit.AreaX < 32)
-                        {
-                            if (exit.AreaY < 32)
-                            {
-                                exit.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, this.scene.ow);
-                            }
-                            else
-                            {
-                                exit.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, this.scene.ow);
-                            }
-                        }
-                        else
-                        {
-                            if (exit.AreaY < 32)
-                            {
-                                exit.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, this.scene.ow);
-                            }
-                            else
-                            {
-                                exit.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, this.scene.ow);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total exits moved: " + j);
-
-                    j = 0;
-                    foreach (RoomPotSaveEditor item in this.scene.ow.AllItems.Where(x => x.RoomMapID == mapID))
-                    {
-                        if (item.GameX < 32)
-                        {
-                            if (item.GameY < 32)
-                            {
-                                item.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, areaSize);
-                            }
-                            else
-                            {
-                                item.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, areaSize);
-                            }
-                        }
-                        else
-                        {
-                            if (item.GameY < 32)
-                            {
-                                item.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, areaSize);
-                            }
-                            else
-                            {
-                                item.UpdateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, areaSize);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total items moved: " + j);
-
-                    j = 0;
-                    foreach (Sprite sprite in this.scene.ow.AllSprites[0].Where(x => x.MapID == mapID))
-                    {
-                        if (sprite.x < 32)
-                        {
-                            if (sprite.y < 32)
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, areaSize);
-                            }
-                            else
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, areaSize);
-                            }
-                        }
-                        else
-                        {
-                            if (sprite.y < 32)
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, areaSize);
-                            }
-                            else
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, areaSize);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total sprites (0,1) moved: " + j);
-
-                    j = 0;
-                    foreach (Sprite sprite in this.scene.ow.AllSprites[1].Where(x => x.MapID == mapID))
-                    {
-                        if (sprite.x < 32)
-                        {
-                            if (sprite.y < 32)
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, areaSize);
-                            }
-                            else
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, areaSize);
-                            }
-                        }
-                        else
-                        {
-                            if (sprite.y < 32)
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, areaSize);
-                            }
-                            else
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, areaSize);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total sprites (2) moved: " + j);
-
-                    j = 0;
-                    foreach (Sprite sprite in this.scene.ow.AllSprites[2].Where(x => x.MapID == mapID))
-                    {
-                        if (sprite.x < 32)
-                        {
-                            if (sprite.y < 32)
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 0].Index, areaSize);
-                            }
-                            else
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 8].Index, areaSize);
-                            }
-                        }
-                        else
-                        {
-                            if (sprite.y < 32)
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 1].Index, areaSize);
-                            }
-                            else
-                            {
-                                sprite.updateMapStuff(this.scene.ow.AllMaps[mapID + 9].Index, areaSize);
-                            }
-                        }
-
-                        j++;
-                    }
-
-                    Console.WriteLine("Total sprites (3) moved: " + j);
-                }
-
-                Console.WriteLine("Done updating object locations.");
+                worlds.Add(0x40);
             }
+            else if (mapID >= 0x40 && mapID < 0x80)
+            {
+                // If we are in the dark world, set the light world opposite too.
+                worlds.Add(-0x40);
+            }
+
+            // Set the parent and old children area sizes to small just in case.
+            foreach (int world in worlds)
+            {
+                foreach (int area in areasToReset)
+                {
+                    this.scene.ow.AllMaps[mapID + world + area].SetAreaSize(AreaSizeEnum.SmallArea);
+                }
+            }
+
+            // Setup the areas that need to be added to the new parent area.
+            List<(int offset, int parentOffset)> areasToAdd = new List<(int, int)>();
+            switch (newAreaSize)
+            {
+                case AreaSizeEnum.SmallArea:
+                    areasToAdd.Add((0, 0));
+
+                    break;
+
+                case AreaSizeEnum.LargeArea:
+                    areasToAdd.Add((0, 0));
+                    areasToAdd.Add((1, 1));
+                    areasToAdd.Add((8, 2));
+                    areasToAdd.Add((9, 3));
+
+                    break;
+
+                case AreaSizeEnum.WideArea:
+                    areasToAdd.Add((0, 0));
+                    areasToAdd.Add((1, 1));
+
+                    break;
+
+                case AreaSizeEnum.TallArea:
+                    areasToAdd.Add((0, 0));
+                    areasToAdd.Add((8, 2));
+
+                    break;
+            }
+
+            // Set the parent and new children area sizes to the new size.
+            foreach (int world in worlds)
+            {
+                foreach ((int offset, int parentOffset) area in areasToAdd)
+                {
+                    this.scene.ow.AllMaps[mapID + world + area.offset].SetAreaSize(newAreaSize, (byte)(mapID + world), (byte)area.parentOffset);
+                }
+            }
+
+            // TODO: I don't think this is needed but double check.
+            //this.scene.ow.AllMaps = this.scene.ow.AssignLargeMaps(this.scene.ow.AllMaps);
+
+            Console.WriteLine("Updating object locations…");
+
+            // Move all of the overworld objects to their non parent areas.
+            if (oldAreaSize != AreaSizeEnum.SmallArea)
+            {
+                // If the area was a small one, there will not be any objects to move back.
+
+                foreach (int world in worlds)
+                {
+                    int currentArea = mapID + world;
+
+                    int movedObjectCount = 0;
+                    foreach (EntranceOW entrance in this.scene.ow.AllEntrances.Where(x => x.MapID == currentArea))
+                    {
+                        // If the AreaX is >= 32 we need to add 1.
+                        int pos = entrance.AreaX >= 32 ? 1 : 0;
+
+                        // If the AreaY is >= 32 we need to add 8.
+                        pos += entrance.AreaY >= 32 ? 8 : 0;
+
+                        entrance.UpdateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, newAreaSize);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total entrances moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (EntranceOW hole in this.scene.ow.AllHoles.Where(x => x.MapID == currentArea))
+                    {
+                        // If the AreaX is >= 32 we need to add 1.
+                        int pos = hole.AreaX >= 32 ? 1 : 0;
+
+                        // If the AreaY is >= 32 we need to add 8.
+                        pos += hole.AreaY >= 32 ? 8 : 0;
+
+                        hole.UpdateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, newAreaSize);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total holes moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (TransportOW bird in this.scene.ow.AllBirds.Where(x => x.MapID == currentArea))
+                    {
+                        // If the AreaX is >= 32 we need to add 1.
+                        int pos = bird.AreaX >= 32 ? 1 : 0;
+
+                        // If the AreaY is >= 32 we need to add 8.
+                        pos += bird.AreaY >= 32 ? 8 : 0;
+
+                        bird.updateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, this.scene.ow);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total brids moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (TransportOW whirlpool in this.scene.ow.AllWhirlpools.Where(x => x.MapID == currentArea))
+                    {
+                        // If the AreaX is >= 32 we need to add 1.
+                        int pos = whirlpool.AreaX >= 32 ? 1 : 0;
+
+                        // If the AreaY is >= 32 we need to add 8.
+                        pos += whirlpool.AreaY >= 32 ? 8 : 0;
+
+                        whirlpool.updateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, this.scene.ow);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total whirlpools moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (ExitOW exit in this.scene.ow.AllExits.Where(x => x.MapID == currentArea))
+                    {
+                        // If the AreaX is >= 32 we need to add 1.
+                        int pos = exit.AreaX >= 32 ? 1 : 0;
+
+                        // If the AreaY is >= 32 we need to add 8.
+                        pos += exit.AreaY >= 32 ? 8 : 0;
+
+                        exit.UpdateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, this.scene.ow);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total exits moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (RoomPotSaveEditor item in this.scene.ow.AllItems.Where(x => x.RoomMapID == currentArea))
+                    {
+                        // If the GameX is >= 32 we need to add 1.
+                        int pos = item.GameX >= 32 ? 1 : 0;
+
+                        // If the GameY is >= 32 we need to add 8.
+                        pos += item.GameY >= 32 ? 8 : 0;
+
+                        item.UpdateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, newAreaSize);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total items moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (Sprite sprite0 in this.scene.ow.AllSprites[0].Where(x => x.MapID == currentArea))
+                    {
+                        // If the x is >= 32 we need to add 1.
+                        int pos = sprite0.x >= 32 ? 1 : 0;
+
+                        // If the y is >= 32 we need to add 8.
+                        pos += sprite0.y >= 32 ? 8 : 0;
+
+                        sprite0.updateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, newAreaSize);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total sprites (0,1) moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (Sprite sprite1 in this.scene.ow.AllSprites[1].Where(x => x.MapID == currentArea))
+                    {
+                        // If the x is >= 32 we need to add 1.
+                        int pos = sprite1.x >= 32 ? 1 : 0;
+
+                        // If the y is >= 32 we need to add 8.
+                        pos += sprite1.y >= 32 ? 8 : 0;
+
+                        sprite1.updateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, newAreaSize);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total sprites (2) moved: " + movedObjectCount);
+
+                    movedObjectCount = 0;
+                    foreach (Sprite sprite2 in this.scene.ow.AllSprites[2].Where(x => x.MapID == currentArea))
+                    {
+                        // If the x is >= 32 we need to add 1.
+                        int pos = sprite2.x >= 32 ? 1 : 0;
+
+                        // If the y is >= 32 we need to add 8.
+                        pos += sprite2.y >= 32 ? 8 : 0;
+
+                        sprite2.updateMapStuff(this.scene.ow.AllMaps[currentArea + pos].Index, newAreaSize);
+
+                        movedObjectCount++;
+                    }
+
+                    Console.WriteLine("Total sprites (3) moved: " + movedObjectCount);
+                }
+            }
+
+            // Move all of the overworld objects to into the new parent area.
+            foreach (int world in worlds)
+            {
+                foreach (int offset in areasToAdd.Select(x => x.offset))
+                {
+                    int currentArea = mapID + world + offset;
+
+                    foreach (EntranceOW entrance in this.scene.ow.AllEntrances.Where(x => x.MapID == currentArea))
+                    {
+                        entrance.UpdateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, newAreaSize);
+                    }
+
+                    foreach (EntranceOW hole in this.scene.ow.AllHoles.Where(x => x.MapID == currentArea))
+                    {
+                        hole.UpdateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, newAreaSize);
+                    }
+
+                    foreach (TransportOW transport in this.scene.ow.AllBirds.Where(x => x.MapID == currentArea))
+                    {
+                        transport.updateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, this.scene.ow);
+                    }
+
+                    foreach (TransportOW transport in this.scene.ow.AllWhirlpools.Where(x => x.MapID == currentArea))
+                    {
+                        transport.updateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, this.scene.ow);
+                    }
+
+                    foreach (ExitOW exit in this.scene.ow.AllExits.Where(x => x.MapID == currentArea))
+                    {
+                        exit.UpdateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, this.scene.ow);
+                    }
+
+                    foreach (RoomPotSaveEditor item in this.scene.ow.AllItems.Where(x => x.RoomMapID == currentArea))
+                    {
+                        item.UpdateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, newAreaSize);
+                    }
+
+                    foreach (Sprite sprite in this.scene.ow.AllSprites[0].Where(x => x.MapID == currentArea))
+                    {
+                        sprite.updateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, newAreaSize);
+                    }
+
+                    foreach (Sprite sprite in this.scene.ow.AllSprites[1].Where(x => x.MapID == currentArea))
+                    {
+                        sprite.updateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, newAreaSize);
+                    }
+
+                    foreach (Sprite sprite in this.scene.ow.AllSprites[2].Where(x => x.MapID == currentArea))
+                    {
+                        sprite.updateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, newAreaSize);
+                    }
+                }
+            }
+
+            Console.WriteLine("Done updating object locations ");
         }
 
         /// <summary>
