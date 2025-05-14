@@ -241,7 +241,7 @@ PaletteData_owmain                         = $1BE6C8
 !Func0ED8AE = $01
 
 ; If 1, all of the default vanilla pool values will be applied. 00 by default.
-!UseVanillaPool = $00
+!UseVanillaPool = $01
 
 ; Use this var to disable all of the debug vars above.
 !AllOff = $00
@@ -383,10 +383,10 @@ Pool:
 
     ; This is a reserved value that ZS will write to when it has applied the
     ; ASM. That way the next time ZS loads the ROM it knows to read the custom
-    ; values instead of using the default ones. The current version is 02.
+    ; values instead of using the default ones. The current version is 03.
     org $288145 ; $140145
     .ZSAppliedASM ; 0x01
-        db $02
+        db $03
 
     ; When non 0 this will cause rain to appear on all areas in the beginning
     ; phase. Default is $FF.
@@ -1072,8 +1072,9 @@ pushpc
 if !Func00EEBB == 1
 
 ; Zeros out the BG color when mirror warping from an area with the pyramid BG.
-; This is done to prevent a case where the black transparent color is faded to white
-; on top of the pyramid BG, resulting in a double faded effect on transparent tiles.
+; This is done to prevent a case where the black transparent color is faded to 
+; white on top of the pyramid BG, resulting in a double faded effect on
+; transparent tiles.
 org $00EEBB ; $006EBB
 Func00EEBB:
 {

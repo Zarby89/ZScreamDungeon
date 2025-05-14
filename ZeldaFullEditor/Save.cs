@@ -1717,7 +1717,7 @@ namespace ZeldaFullEditor
             Console.WriteLine("\n");
             List<byte> checkedMap = new List<byte>();
 
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 int yPos = i / 8;
                 int xPos = i % 8;
@@ -1737,24 +1737,24 @@ namespace ZeldaFullEditor
 
                 if (checkedMap.Contains((byte)i))
                 {
-                    continue; // Ignore that map we already checked it.
+                    continue; // Ignore that map, we already checked it.
                 }
 
                 if (scene.ow.AllMaps[i].AreaSize) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
                 {
-                    // Check 1
+                    // Check 1 // won't be used anymore.
                     ROM.Write(Constants.overworldMapSize + i + 0, 0x20);
                     ROM.Write(Constants.overworldMapSize + i + 1, 0x20);
                     ROM.Write(Constants.overworldMapSize + i + 8, 0x20);
                     ROM.Write(Constants.overworldMapSize + i + 9, 0x20);
 
-                    // Check 2
+                    // Check 2 // won't be used anymore.
                     ROM.Write(Constants.overworldMapSizeHighByte + i + 0, 0x03);
                     ROM.Write(Constants.overworldMapSizeHighByte + i + 1, 0x03);
                     ROM.Write(Constants.overworldMapSizeHighByte + i + 8, 0x03);
                     ROM.Write(Constants.overworldMapSizeHighByte + i + 9, 0x03);
 
-                    // Check 3
+                    // Check 3 // write scene.ow.AllMaps[i].AreaSize here
                     // In this check we need to set a table for the DW too.
                     ROM.Write(Constants.overworldScreenSize + i + 0 + 00, 0x00);
                     ROM.Write(Constants.overworldScreenSize + i + 0 + 64, 0x00);
@@ -1768,7 +1768,7 @@ namespace ZeldaFullEditor
                     ROM.Write(Constants.overworldScreenSize + i + 9 + 00, 0x00);
                     ROM.Write(Constants.overworldScreenSize + i + 9 + 64, 0x00);
 
-                    // Check 4
+                    // Check 4 // won't be used anymore.
                     // This check needs to set a DW and SW table too.
                     // TODO: I'm not sure why the SW table needs to be the same here but its that way in vanilla.
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 0 + 0,   0x04);
@@ -1787,7 +1787,7 @@ namespace ZeldaFullEditor
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 64,  0x04);
                     ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 128, 0x04);
 
-                    // Check 5 and 6
+                    // Check 5 and 6 // Still needed and needs to have values changed for wide and tall areas.
                     ROM.WriteShort(Constants.transition_target_north + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
                     ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
 
@@ -1800,7 +1800,7 @@ namespace ZeldaFullEditor
                     ROM.WriteShort(Constants.transition_target_north + (i * 2) + 18, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
                     ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 18, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    // Check 7 and 8.
+                    // Check 7 and 8. // Still needed and needs to have values changed for wide and tall areas.
                     ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 00, parentxPos * 0x0200);
                     ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 00, parentyPos * 0x0200);
 
@@ -1813,7 +1813,7 @@ namespace ZeldaFullEditor
                     ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 18, parentxPos * 0x0200);
                     ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 18, parentyPos * 0x0200);
 
-                    // Check 9
+                    // Check 9 // Still needed and needs to have values changed for wide and tall areas.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, 0x0060); // Always 0x0060.
                     ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, 0x0060); // Always 0x0060.
 
@@ -1933,7 +1933,7 @@ namespace ZeldaFullEditor
                     checkedMap.Add((byte)(i + 8));
                     checkedMap.Add((byte)(i + 9));
                 }
-                else
+                else // Small maps
                 {
                     ROM.Write(Constants.overworldMapSize + i, 0x00);
                     ROM.Write(Constants.overworldMapSizeHighByte + i, 0x01);
@@ -2022,13 +2022,6 @@ namespace ZeldaFullEditor
                     checkedMap.Add((byte)i);
                 }
             }
-
-            // Change one of the calculation masks to save the offset so that we can just store it in the tables instead.
-            // This is done to allow link to move from one big area to another.
-            ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 0, 0x1F80);
-            ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 2, 0x1F80);
-            ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 4, 0x007F);
-            ROM.WriteShort(Constants.OverworldScreenTileMapChangeMask + 6, 0x007F);
 
             Console.WriteLine("Overworld parent map: \n");
             for (int i = 0; i < 8; i++)
