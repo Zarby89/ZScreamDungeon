@@ -228,6 +228,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
             }
         }
+
         public void ShowRoomPreview()
         {
             //scene.owForm.thumbnailBox.Visible = true;

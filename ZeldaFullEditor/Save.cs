@@ -8,6 +8,7 @@ using AsarCLR;
 using ZCompressLibrary;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.OWSceneModes;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -157,7 +158,7 @@ namespace ZeldaFullEditor
         /// <returns> True if there was an error saving. </returns>
         public bool SaveCustomCollision()
         {
-            Console.WriteLine("Saving Custom Collision");
+            Console.WriteLine("Applying Custom Collision ASM");
             /* Format:
                dw<offset> : db width, height
                dw < tile data >, ...
@@ -260,7 +261,7 @@ namespace ZeldaFullEditor
         /// <returns> True if there was an error saving. </returns>
         public bool SaveCustomOverworldASM(SceneOW scene, bool enableBGColor, bool enableMainPalette, bool enableMosaic, bool enableGFXGroups, bool enableSubscreenOverlay, bool enableAnimated)
         {
-            Console.WriteLine("Saving Custom Overworld ASM");
+            Console.WriteLine("Applying Custom Overworld ASM");
 
             // Set the enable/disable settings.
             if (enableBGColor)
@@ -361,7 +362,14 @@ namespace ZeldaFullEditor
             // TODO: handle differently in projects.
             if (File.Exists("ZSCustomOverworld.asm"))
             {
-                _ = Asar.patch("ZSCustomOverworld.asm", ref ROM.DATA);
+                if (Asar.patch("ZSCustomOverworld.asm", ref ROM.DATA))
+                {
+                    Console.WriteLine("Successfully applied ZS Custom Overworld ASM");
+                }
+                else
+                {
+                    UIText.CryAboutSaving("Error applying ASM file 'ZSCustomOverworld.asm'.\nSaving will continue but the ASM will not be applied.");
+                }
             }
             else
             {
@@ -378,11 +386,35 @@ namespace ZeldaFullEditor
             // TODO: Handle differently in projects.
             if (File.Exists("ExpandedEntrances.asm"))
             {
-                _ = Asar.patch("ExpandedEntrances.asm", ref ROM.DATA);
+                if (Asar.patch("ExpandedEntrances.asm", ref ROM.DATA))
+                {
+                    Console.WriteLine("Successfully applied Expanded Entrances ASM");
+                }
+                else
+                {
+                    UIText.CryAboutSaving("Error applying ASM file 'ExpandedEntrances.asm'.\nSaving will continue but the ASM will not be applied.");
+                }
             }
             else
             {
                 UIText.CryAboutSaving("Missing ASM file 'ExpandedEntrances.asm'.\nSaving will continue but the ASM will not be applied.");
+            }
+
+            // TODO: Handle differently in projects.
+            if (File.Exists("HalfAreas.asm"))
+            {
+                if (Asar.patch("HalfAreas.asm", ref ROM.DATA))
+                {
+                    Console.WriteLine("Successfully applied Half Areas ASM");
+                }
+                else
+                {
+                    UIText.CryAboutSaving("Error applying ASM file 'HalfAreas.asm'.\nSaving will continue but the ASM will not be applied.");
+                }
+            }
+            else
+            {
+                UIText.CryAboutSaving("Missing ASM file 'HalfAreas.asm'.\nSaving will continue but the ASM will not be applied.");
             }
 
             foreach (Asarerror error in Asar.geterrors())
@@ -1717,14 +1749,17 @@ namespace ZeldaFullEditor
             Console.WriteLine("\n");
             List<byte> checkedMap = new List<byte>();
 
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                int yPos = i / 8;
-                int xPos = i % 8;
-                int parentyPos = scene.ow.AllMaps[i].ParentID / 8;
-                int parentxPos = scene.ow.AllMaps[i].ParentID % 8;
+                ROM.Write(Constants.overworldScreenSize + i, (byte)scene.ow.AllMaps[i].AreaSize);
 
-                // Always write the map parent since it should not matter.
+                // If we've already checked all of the light world maps:
+                if (i >= 0x40)
+                {
+                    continue; // Ignore that map, we already checked it.
+                }
+
+                // Check 1: Write the map parent ID.
                 ROM.Write(Constants.overworldMapParentId + i, scene.ow.AllMaps[i].ParentID);
                 parentMapLine += scene.ow.AllMaps[i].ParentID.ToString("X2").PadLeft(2, '0') + " ";
 
@@ -1735,322 +1770,300 @@ namespace ZeldaFullEditor
                     parentMapLine = string.Empty;
                 }
 
-                if (checkedMap.Contains((byte)i))
+                // If we've already checked this map:
+                if (checkedMap.Contains((byte)(i + 0x00)))
                 {
                     continue; // Ignore that map, we already checked it.
                 }
 
-                if (scene.ow.AllMaps[i].AreaSize) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
+                // Everything after this point does not have a world specific table and only needs to be written for LW areas (at least for now).
+
+                int yPos = i / 8;
+                int xPos = i % 8;
+                int parentyPos = scene.ow.AllMaps[i].ParentID / 8;
+                int parentxPos = scene.ow.AllMaps[i].ParentID % 8;
+
+                switch (scene.ow.AllMaps[i].AreaSize) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
                 {
-                    // Check 1 // won't be used anymore.
-                    ROM.Write(Constants.overworldMapSize + i + 0, 0x20);
-                    ROM.Write(Constants.overworldMapSize + i + 1, 0x20);
-                    ROM.Write(Constants.overworldMapSize + i + 8, 0x20);
-                    ROM.Write(Constants.overworldMapSize + i + 9, 0x20);
+                    case AreaSizeEnum.LargeArea:
+                        // Check 5 and 6
+                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is used to reduce the int to 2 bytes.
+                        ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    // Check 2 // won't be used anymore.
-                    ROM.Write(Constants.overworldMapSizeHighByte + i + 0, 0x03);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i + 1, 0x03);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i + 8, 0x03);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i + 9, 0x03);
+                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 02, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 02, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    // Check 3 // write scene.ow.AllMaps[i].AreaSize here
-                    // In this check we need to set a table for the DW too.
-                    ROM.Write(Constants.overworldScreenSize + i + 0 + 00, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i + 0 + 64, 0x00);
+                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 16, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 16, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    ROM.Write(Constants.overworldScreenSize + i + 1 + 00, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i + 1 + 64, 0x00);
+                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 18, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 18, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                    ROM.Write(Constants.overworldScreenSize + i + 8 + 00, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i + 8 + 64, 0x00);
+                        // Check 7 and 8
+                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 00, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 00, parentyPos * 0x0200);
 
-                    ROM.Write(Constants.overworldScreenSize + i + 9 + 00, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i + 9 + 64, 0x00);
+                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 02, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 02, parentyPos * 0x0200);
 
-                    // Check 4 // won't be used anymore.
-                    // This check needs to set a DW and SW table too.
-                    // TODO: I'm not sure why the SW table needs to be the same here but its that way in vanilla.
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 0 + 0,   0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 0 + 64,  0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 0 + 128, 0x04);
+                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 16, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 16, parentyPos * 0x0200);
 
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 0,   0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 64,  0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 128, 0x04);
+                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 18, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 18, parentyPos * 0x0200);
 
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 0,   0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 64,  0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 128, 0x04);
+                        // Check 9
 
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 0,   0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 64,  0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 128, 0x04);
+                        // byScreen1 = Transitioning right.
+                        ushort[] byScreen1Large = { 0x0060, 0x0060, 0x0060, 0x0060 };
 
-                    // Check 5 and 6 // Still needed and needs to have values changed for wide and tall areas.
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        if (parentxPos != 0)
+                        {
+                            // If parentX != 0x00 then lower submaps = 0x1060.
+                            byScreen1Large[2] = 0x1060;
+                            byScreen1Large[3] = 0x1060;
 
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 02, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 02, (ushort)((parentxPos * 0x0200) - 0x0100));
+                            // Just to make sure where don't try to read outside of the array.
+                            if (i - 1 >= 0)
+                            {
+                                // If the area to the west of the top left quadrant is a large area:
+                                OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
+                                if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                                {
+                                    switch (westNeighbor.AreaSizeQuadrant)
+                                    {
+                                        // If the area to the west of the top left quadrant is the top right quadrant of a large area:
+                                        case 1:
+                                            byScreen1Large[2] = 0x0060;
+                                            break;
 
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 16, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 16, (ushort)((parentxPos * 0x0200) - 0x0100));
+                                        // If the area to the west of the top left quadrant is the bottom right quadrant of a large area:
+                                        case 3:
+                                            byScreen1Large[0] = 0xF060;
+                                            break;
+                                    }
+                                }
+                            }
+                        }
 
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 18, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west  + (i * 2) + 18, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, byScreen1Large[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, byScreen1Large[1]); // Will always be 0x0060.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, byScreen1Large[2]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 18, byScreen1Large[3]);
 
-                    // Check 7 and 8. // Still needed and needs to have values changed for wide and tall areas.
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 00, parentxPos * 0x0200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 00, parentyPos * 0x0200);
+                        // byScreen2 = Transitioning left.
+                        ushort[] byScreen2 = { 0x0080, 0x0080, 0x1080, 0x1080 };
 
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 02, parentxPos * 0x0200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 02, parentyPos * 0x0200);
-
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 16, parentxPos * 0x0200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 16, parentyPos * 0x0200);
-
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 18, parentxPos * 0x0200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 18, parentyPos * 0x0200);
-
-                    // Check 9 // Still needed and needs to have values changed for wide and tall areas.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, 0x0060); // Always 0x0060.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, 0x0060); // Always 0x0060.
-
-                    // If parentX == 0 then lower submaps == 0x0060 too.
-                    if (parentxPos == 0)
-                    {
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, 0x0060);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 18, 0x0060);
-                    }
-                    else
-                    {
-                        // Otherwise lower submaps == 0x1060.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, 0x1060);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 18, 0x1060);
-
-                        // If the area to the left is a large map, we don't need to add an offset to it. otherwise leave it the same.
                         // Just to make sure where don't try to read outside of the array.
-                        if ((i - 1) >= 0)
+                        if (i + 2 < 0x40)
                         {
-                            // If the area to the upper left is a large area.
-                            if (scene.ow.AllMaps[i - 1].AreaSize)
+                            OverworldMap eastNeighbor = scene.ow.AllMaps[i + 2];
+
+                            // If the area to the east of the top right quadrant is a large area:
+                            if (eastNeighbor.AreaSize == AreaSizeEnum.LargeArea)
                             {
-                                // If the area to the upper left is the top right of a large area:
-                                if (scene.ow.AllMaps[i - 1].LargeIndex == 1)
+                                switch (eastNeighbor.AreaSizeQuadrant)
                                 {
-                                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, 0x0060);
+                                    // If the area to the east of the top right quadrant is the top left quadrant of a large area:
+                                    case 0:
+                                        byScreen2[3] = 0x0080;
+                                        break;
+
+                                    // If the area to the east of the top right quadrant is the bottom left quadrant of a large area:
+                                    case 2:
+                                        byScreen2[1] = 0xF080;
+                                        break;
                                 }
-                                // If the area to the upper left is the bottom right of a large area:
-                                else if (scene.ow.AllMaps[i - 1].LargeIndex == 3)
+                            }
+                        }
+
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, byScreen2[0]); // Always 0x0080.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, byScreen2[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 16, byScreen2[2]); // Always 0x1080.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, byScreen2[3]);
+
+                        // byScreen3 = Transitioning down.
+                        ushort[] byScreen3 = { 0x1800, 0x1800, 0x1840, 0x1840 };
+
+                        // Just to make sure where don't try to read outside of the array.
+                        if (i - 8 >= 0)
+                        {
+                            OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
+
+                            // If the area to the north of the top left quadrant is the bottom left is a large area:
+                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            {
+                                switch (northNeighbor.AreaSizeQuadrant)
                                 {
-                                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, 0xF060);
+                                    // If the area to the north of the top left quadrant is the bottom left quadrant of a large area:
+                                    case 2:
+                                        byScreen3[1] = 0x1800;
+                                        break;
+
+                                    // If the area to the north of the top left quadrant is the bottom right quadrant of a large area:
+                                    case 3:
+                                        byScreen3[0] = 0x17C0;
+                                        break;
                                 }
                             }
                         }
-                    }
 
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, 0x0080); // Always 0x0080.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, 0x0080); // Always 0x0080.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, byScreen3[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, byScreen3[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3[2]); // Always 0x1840.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 18, byScreen3[3]); // Always 0x1840.
 
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 16, 0x1080); // Always 0x1080.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, 0x1080); // Always 0x1080.
+                        // byScreen4 = Transitioning up.
+                        ushort[] byScreen4 = { 0x2000, 0x2000, 0x2040, 0x2040 };
 
-                    // If the area to the right is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                    // Just to make sure where don't try to read outside of the array.
-                    if ((i + 2) < 64)
-                    {
-                        // If the area to the upper right is a large area:
-                        if (scene.ow.AllMaps[i + 2].AreaSize)
+                        // Just to make sure where don't try to read outside of the array.
+                        if (i + 16 < 0x40)
                         {
-                            // If the area to the upper right is the top left of a large area:
-                            if (scene.ow.AllMaps[i + 2].LargeIndex == 0)
+                            OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
+
+                            // If the area to the south of the bottom left quadrant is a large area:
+                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea)
                             {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, 0x0080);
-                            }
-                            // If the area to the upper right is the bottom left of a large area:
-                            else if (scene.ow.AllMaps[i + 2].LargeIndex == 2)
-                            {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, 0xF080);
+                                switch (southNeighbor.AreaSizeQuadrant)
+                                {
+                                    // If the area to the south of the bottom left quadrant is the top left quadrant of a large area:
+                                    case 0:
+                                        byScreen4[3] = 0x2000;
+                                        break;
+
+                                    // If the area to the south of the bottom left quadrant is the top right quadrant of a large area:
+                                    case 1:
+                                        byScreen4[2] = 0x1FC0;
+                                        break;
+                                }
                             }
                         }
-                    }
 
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, 0x1800); // Always 0x1800.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, 0x1800); // Always 0x1800.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, byScreen4[0]); // Always 0x2000.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, byScreen4[1]); // Always 0x2000.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, byScreen4[2]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, byScreen4[3]);
 
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, 0x1840); // Always 0x1840.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 18, 0x1840); // Always 0x1840.
+                        checkedMap.Add((byte)(i + 0));
+                        checkedMap.Add((byte)(i + 1));
+                        checkedMap.Add((byte)(i + 8));
+                        checkedMap.Add((byte)(i + 9));
 
-                    // If the area above is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                    // Just to make sure where don't try to read outside of the array.
-                    if (i - 8 >= 0)
-                    {
-                        // If the area just above us to the bottom left is a large area:
-                        if (scene.ow.AllMaps[i - 8].AreaSize)
+                        break;
+
+                    case AreaSizeEnum.SmallArea:
+                        ROM.WriteShort(Constants.transition_target_north + (i * 2), (ushort)((yPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_west + (i * 2), (ushort)((xPos * 0x0200) - 0x0100));
+
+                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), xPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), yPos * 0x0200);
+
+                        // byScreen1 = Transitioning right.
+                        ushort byScreen1Small = 0x0060;
+
+                        // Just to make sure where don't try to read outside of the array.
+                        if (parentxPos != 0)
                         {
-                            // If the area just above us to the left is the bottom left of a large area:
-                            if (scene.ow.AllMaps[i - 8].LargeIndex == 2)
+                            OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
+
+                            // If the area to the west is a large area.
+                            if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea)
                             {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, 0x1800);
-                            }
-                            // If the area just above us to the left is the bottom right of a large area:
-                            else if (scene.ow.AllMaps[i - 8].LargeIndex == 3)
-                            {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, 0x17C0);
+                                switch (westNeighbor.AreaSizeQuadrant)
+                                {
+                                    // If the area to the west is the bottom right quadrant of a large map.
+                                    case 3:
+                                        byScreen1Small = 0xF060;
+                                        break;
+                                }
                             }
                         }
-                    }
 
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, 0x2000); // Always 0x2000.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, 0x2000); // Always 0x2000.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2), byScreen1Small);
 
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, 0x2040); // Always 0x2040.
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, 0x2040); // Always 0x2040.
+                        // byScreen2 = Transitioning left.
+                        ushort byScreen2Small = 0x0040;
 
-                    // If the area below is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                    // Just to make sure where don't try to read outside of the array.
-                    if (i + 16 < 64)
-                    {
-                        // If the area just below us to the left is a large area:
-                        if (scene.ow.AllMaps[i + 16].AreaSize)
+                        // Just to make sure where don't try to read outside of the array.
+                        if (parentxPos >= 7)
                         {
-                            // If the area just below us to the left is the top left of a large area:
-                            if (scene.ow.AllMaps[i + 16].LargeIndex == 0)
+                            OverworldMap eastNeighbor = scene.ow.AllMaps[i + 1];
+
+                            // If the area to the right is a large area.
+                            if (eastNeighbor.AreaSize == AreaSizeEnum.LargeArea)
                             {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, 0x2000);
-                            }
-                            // If the area just below us to the left is the top right of a large area:
-                            else if (scene.ow.AllMaps[i + 16].LargeIndex == 1)
-                            {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, 0x1FC0);
+                                switch (eastNeighbor.AreaSizeQuadrant)
+                                {
+                                    // If the area to the right is the bottom left quadrant area of a large map.
+                                    case 2:
+                                        byScreen2Small = 0xF040;
+                                        break;
+                                }
                             }
                         }
-                    }
 
-                    checkedMap.Add((byte)i);
-                    checkedMap.Add((byte)(i + 1));
-                    checkedMap.Add((byte)(i + 8));
-                    checkedMap.Add((byte)(i + 9));
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2), byScreen2Small);
+
+                        // byScree3 = Transitioning down.
+                        ushort byScreen3Small = 0x1800;
+
+                        // If the area above is a large map, we don't need to add an offset to it. otherwise leave it the same.
+                        // Just to make sure where don't try to read outside of the array.
+                        if (i - 8 >= 0)
+                        {
+                            OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
+
+                            // If the area to the north is a large area.
+                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            {
+                                switch (northNeighbor.AreaSizeQuadrant)
+                                {
+                                    // If the area to the north is the bottom right quadrant of the large area.
+                                    case 3:
+                                        byScreen3Small = 0x17C0;
+                                        break;
+                                }
+                            }
+                        }
+
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2), byScreen3Small);
+
+                        // byScree4 = Transitioning up.
+                        ushort byScreen4Small = 0x1000;
+
+                        // If the area below is a large map, we don't need to add an offset to it. otherwise leave it the same.
+                        // Just to make sure where don't try to read outside of the array.
+                        if (i + 8 < 64)
+                        {
+                            OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
+
+                            // If the area to the south is a large area.
+                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            {
+                                // If the area to the south is the top right quadrant of the large area.
+                                switch (southNeighbor.AreaSizeQuadrant)
+                                {
+                                    case 1:
+                                        byScreen4Small = 0x0FC0;
+                                        break;
+                                }
+                            }
+                        }
+
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2), byScreen4Small);
+
+                        checkedMap.Add((byte)i);
+
+                        break;
                 }
-                else // Small maps
-                {
-                    ROM.Write(Constants.overworldMapSize + i, 0x00);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i, 0x01);
 
-                    ROM.Write(Constants.overworldScreenSize + i + 00, 0x01);
-                    ROM.Write(Constants.overworldScreenSize + i + 64, 0x01);
-
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 00, 0x02);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 64, 0x02);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 128, 0x02);
-
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2), 0x0060);
-
-                    // If the area to the left is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                    // Just to make sure where don't try to read outside of the array.
-                    if (i - 1 >= 0 && parentxPos != 0)
-                    {
-                        // If the area to the left is a large area.
-                        if (scene.ow.AllMaps[i - 1].AreaSize)
-                        {
-                            // If the area to the left is the bottom right area of a large map.
-                            if (scene.ow.AllMaps[i - 1].LargeIndex == 3)
-                            {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2), 0xF060);
-                            }
-                        }
-                    }
-
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2), 0x0040);
-
-                    // If the area to the right is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                    // Just to make sure where don't try to read outside of the array.
-                    if (i + 1 < 64 && parentxPos != 7)
-                    {
-                        // If the area to the right is a large area.
-                        if (scene.ow.AllMaps[i + 1].AreaSize)
-                        {
-                            // If the area to the right is the bottom left area of a large map.
-                            if (scene.ow.AllMaps[i + 1].LargeIndex == 2)
-                            {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2), 0xF040);
-                            }
-                        }
-                    }
-
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2), 0x1800);
-
-                    // If the area above is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                    // Just to make sure where don't try to read outside of the array.
-                    if (i - 8 >= 0)
-                    {
-                        // If the area just above us is a large area.
-                        if (scene.ow.AllMaps[i - 8].AreaSize)
-                        {
-                            // If we are under the bottom right of the large area.
-                            if (scene.ow.AllMaps[i - 8].LargeIndex == 3)
-                            {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2), 0x17C0);
-                            }
-                        }
-                    }
-
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2), 0x1000);
-
-                    // If the area below is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                    // Just to make sure where don't try to read outside of the array.
-                    if (i + 8 < 64)
-                    {
-                        // If the area just below us is a large area.
-                        if (scene.ow.AllMaps[i + 8].AreaSize)
-                        {
-                            // If we are on top of the top right of the large area.
-                            if (scene.ow.AllMaps[i + 8].LargeIndex == 1)
-                            {
-                                ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2), 0x0FC0);
-                            }
-                        }
-                    }
-
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2), (ushort)((yPos * 0x200) - 0xE0));
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2), (ushort)((xPos * 0x200) - 0x100));
-
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), xPos * 0x200);
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), yPos * 0x200);
-
-                    checkedMap.Add((byte)i);
-                }
+                // Completed vars for the current area.
             }
 
             Console.WriteLine("Overworld parent map: \n");
             for (int i = 0; i < 8; i++)
             {
                 Console.WriteLine(parentMap[i]);
-            }
-
-            Console.WriteLine("\nCheck 1: overworldMapSize \n");
-            for (int i = 0; i < 8; i++)
-            {
-                string temp = string.Empty;
-                for (int j = 0; j < 8; j++)
-                {
-                    temp += " " + ROM.DATA[Constants.overworldMapSize + j + (i * 8)].ToString("X2").PadLeft(2, '0');
-                }
-
-                Console.WriteLine(temp);
-            }
-
-            Console.WriteLine("\nCheck 2: overworldMapSizeHighByte \n");
-            for (int i = 0; i < 8; i++)
-            {
-                string temp = string.Empty;
-                for (int j = 0; j < 8; j++)
-                {
-                    temp += " " + ROM.DATA[Constants.overworldMapSizeHighByte + j + (i * 8)].ToString("X2").PadLeft(2, '0');
-                }
-
-                Console.WriteLine(temp);
             }
 
             Console.WriteLine("\nCheck 3: overworldScreenSize \n");
@@ -2065,20 +2078,8 @@ namespace ZeldaFullEditor
                 Console.WriteLine(temp);
             }
 
-            Console.WriteLine("\nCheck 4: OverworldScreenSizeForLoading \n");
-            for (int i = 0; i < 8; i++)
-            {
-                string temp = string.Empty;
-                for (int j = 0; j < 8; j++)
-                {
-                    temp += " " + ROM.DATA[Constants.OverworldScreenSizeForLoading + j + (i * 8)].ToString("X2").PadLeft(2, '0');
-                }
-
-                Console.WriteLine(temp);
-            }
-
             Console.WriteLine("\nCheck 5: transition_target_north \n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.transition_target_north + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.transition_target_north + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
@@ -2089,7 +2090,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 6: transition_target_west \n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.transition_target_west + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.transition_target_west + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
@@ -2100,7 +2101,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 7: overworldTransitionPositionX \n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.overworldTransitionPositionX + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.overworldTransitionPositionX + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
@@ -2111,7 +2112,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 8: overworldTransitionPositionY \n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.overworldTransitionPositionY + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.overworldTransitionPositionY + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
@@ -2123,7 +2124,7 @@ namespace ZeldaFullEditor
 
             Console.WriteLine("\nCheck 9:");
             Console.WriteLine("OverworldScreenTileMapChangeByScreen1 'Right'\n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
@@ -2134,7 +2135,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen2 'Left'\n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
@@ -2145,7 +2146,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen3 'Down'\n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
@@ -2156,7 +2157,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen4 'Up'\n");
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 

@@ -195,6 +195,8 @@ namespace ZeldaFullEditor
         public static readonly Pen Azure200Pen = new Pen(Azure200);
         public static readonly Brush Azure200Brush = new SolidBrush(Azure200);
 
+        public static readonly Pen CameraPen = new Pen(Color.Red, 2);
+
         // ===========================================================================================
         // GFX Related Variables
         // ===========================================================================================

@@ -1277,11 +1277,11 @@ namespace ZeldaFullEditor.Gui
         }
 
         /// <summary>
-        ///     Called when the largemap checkbox is clicke, upataes the world layout and then updates all of the sprites within that area.
+        ///     Called when the largemap combo box has its value changed. Upataes the world layout and then updates all of the sprites within that area.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void largemapCheckbox_Clicked(object sender, EventArgs e)
+        private void AreaSizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.propertiesChangedFromForm)
             {
@@ -1289,38 +1289,39 @@ namespace ZeldaFullEditor.Gui
             }
 
             int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
-            this.SendLargeMapChanged(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex);
-
-            // TODO: Change this call to be from the combo box and not the old checkbox.
-            this.UpdateLargeMap(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex, this.scene.ow.AllMaps[parentID].AreaSize);
+            bool success = this.UpdateLargeMap(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex, this.scene.ow.AllMaps[parentID].AreaSize);
+            if (success)
+            {
+                this.SendLargeMapChanged(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex);
+            }
         }
 
-        public void UpdateLargeMap(int mapID, AreaSizeEnum newAreaSize, AreaSizeEnum oldAreaSize)
+        public bool UpdateLargeMap(int mapID, AreaSizeEnum newAreaSize, AreaSizeEnum oldAreaSize)
         {
             if (newAreaSize == oldAreaSize)
             {
                 this.AreaSizeComboBox.SelectedIndex = (int)oldAreaSize;
 
-                return;
+                return false;
             }
 
-            List<int> areasToReset = new List<int>();
-            switch (oldAreaSize)
+            List<int> areasToCheck = new List<int>();
+            switch (newAreaSize)
             {
                 case AreaSizeEnum.LargeArea:
-                    areasToReset.Add(1);
-                    areasToReset.Add(8);
-                    areasToReset.Add(9);
+                    areasToCheck.Add(1);
+                    areasToCheck.Add(8);
+                    areasToCheck.Add(9);
 
                     break;
 
                 case AreaSizeEnum.WideArea:
-                    areasToReset.Add(1);
+                    areasToCheck.Add(1);
 
                     break;
 
                 case AreaSizeEnum.TallArea:
-                    areasToReset.Add(8);
+                    areasToCheck.Add(8);
 
                     break;
             }
@@ -1329,7 +1330,7 @@ namespace ZeldaFullEditor.Gui
             int badCount = 0;
             string badAreaString = string.Empty;
 
-            foreach (int area in areasToReset)
+            foreach (int area in areasToCheck)
             {
                 OverworldMap currentArea = this.scene.ow.AllMaps[mapID + area];
                 if (currentArea.AreaSize != AreaSizeEnum.SmallArea)
@@ -1363,7 +1364,7 @@ namespace ZeldaFullEditor.Gui
 
                 this.AreaSizeComboBox.SelectedIndex = (int)oldAreaSize;
 
-                return;
+                return false;
             }
 
             List<int> worlds = new List<int>() { 0x00 };
@@ -1376,6 +1377,27 @@ namespace ZeldaFullEditor.Gui
             {
                 // If we are in the dark world, set the light world opposite too.
                 worlds.Add(-0x40);
+            }
+
+            List<int> areasToReset = new List<int>();
+            switch (oldAreaSize)
+            {
+                case AreaSizeEnum.LargeArea:
+                    areasToReset.Add(1);
+                    areasToReset.Add(8);
+                    areasToReset.Add(9);
+
+                    break;
+
+                case AreaSizeEnum.WideArea:
+                    areasToReset.Add(1);
+
+                    break;
+
+                case AreaSizeEnum.TallArea:
+                    areasToReset.Add(8);
+
+                    break;
             }
 
             // Set the parent and old children area sizes to small just in case.
@@ -1641,6 +1663,8 @@ namespace ZeldaFullEditor.Gui
             }
 
             Console.WriteLine("Done updating object locations ");
+
+            return true;
         }
 
         /// <summary>
@@ -2316,7 +2340,6 @@ namespace ZeldaFullEditor.Gui
             scene.exitmode.selectedExit = eow;
             scene.exitmode.lastselectedExit = eow;
             scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
-
 
             if (eow.MapID < 0x40)
             {

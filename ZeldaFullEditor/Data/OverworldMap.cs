@@ -34,7 +34,7 @@ namespace ZeldaFullEditor
         ///     0 1
         ///     2 3
         /// </summary>
-        public byte LargeIndex { get; internal set; } = 0;
+        public byte AreaSizeQuadrant { get; internal set; } = 0;
 
         /// <summary>
         ///     Gets or sets the GFX index of the map.
@@ -177,52 +177,47 @@ namespace ZeldaFullEditor
             this.Index = index;
             this.overworld = overworld;
             this.ParentID = index;
-            this.LargeIndex = 0;
+            this.AreaSizeQuadrant = 0;
             this.GFXBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, this.GFXPointer);
             this.MessageID = (short)ROM.ReadShort(Constants.overworldMessages + (this.ParentID * 2));
 
             byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
 
-            switch (asmVersion)
+            if (asmVersion < 3)
             {
-                case 0:
-                case 1:
-                case 2:
-                    if (index < 0x80)
+                if (index < 0x80)
+                {
+                    // ASM version 3 was the implementation of Half areas, so if its not greater than 3 we need to swap the small and large area values.
+                    switch (ROM.DATA[Constants.overworldScreenSize + (index & 0x3F)])
                     {
-                        // ASM version 3 was the implementation of Half areas, so if its not greater than 3 we need to swap the small and large area values.
-                        switch (ROM.DATA[Constants.overworldMapSize + (index & 0x3F)])
-                        {
-                            case 0:
-                            default:
-                                this.AreaSize = AreaSizeEnum.SmallArea;
-                                break;
+                        case 0:
+                            this.AreaSize = AreaSizeEnum.LargeArea;
+                            break;
 
-                            case 1:
-                                this.AreaSize = AreaSizeEnum.LargeArea;
-                                break;
+                        case 1:
+                        default:
+                            this.AreaSize = AreaSizeEnum.SmallArea;
+                            break;
 
-                            // These values shouldn't be possible at this point, but just in case.
-                            case 2:
-                                this.AreaSize = AreaSizeEnum.WideArea;
-                                break;
+                        // These values shouldn't be possible at this point, but just in case.
+                        case 2:
+                            this.AreaSize = AreaSizeEnum.WideArea;
+                            break;
 
-                            case 3:
-                                this.AreaSize = AreaSizeEnum.TallArea;
-                                break;
-                        }
+                        case 3:
+                            this.AreaSize = AreaSizeEnum.TallArea;
+                            break;
                     }
-                    else
-                    {
-                        // Before ASM version 3, SW areas were also hardcoded.
-                        this.AreaSize = index == 0x81 || index == 0x82 || index == 0x89 || index == 0x81 ? AreaSizeEnum.LargeArea : AreaSizeEnum.SmallArea;
-                    }
-
-                    break;
-
-                case 3:
-                    this.AreaSize = (AreaSizeEnum)ROM.DATA[Constants.overworldScreenSize + index];
-                    break;
+                }
+                else
+                {
+                    // Before ASM version 3, SW areas were also hardcoded.
+                    this.AreaSize = index == 0x81 || index == 0x82 || index == 0x89 || index == 0x81 ? AreaSizeEnum.LargeArea : AreaSizeEnum.SmallArea;
+                }
+            }
+            else
+            {
+                this.AreaSize = (AreaSizeEnum)ROM.DATA[Constants.overworldScreenSize + index];
             }
 
             if (index < 0x40)
@@ -977,7 +972,7 @@ namespace ZeldaFullEditor
                 this.ParentID = (byte)parentIndex;
             }
 
-            this.LargeIndex = largeIndex;
+            this.AreaSizeQuadrant = largeIndex;
             this.AreaSize = areaSize;
         }
 

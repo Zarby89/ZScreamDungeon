@@ -297,8 +297,8 @@ namespace ZeldaFullEditor
         {
             OverworldMap[] allMaps = givenMaps;
 
-            bool[] mapChecked = new bool[0x40];
-            for (int i = 0; i < 0x40; i++)
+            bool[] mapChecked = new bool[0xA0];
+            for (int i = 0; i < 0xA0; i++)
             {
                 mapChecked[i] = false;
             }
