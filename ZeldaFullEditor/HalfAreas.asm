@@ -23,7 +23,10 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
-org $2A8000
+; NOTE: This is fitting into the same bank as the ZS OW ASM and may need to be
+; moved later if the ZS OW ASM changes.
+org $28A000 ; $142000
+
 pushpc
 
 ; This tells the game what each area's "parent" area is. For small areas this
