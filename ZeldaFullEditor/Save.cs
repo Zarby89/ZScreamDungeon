@@ -1872,9 +1872,9 @@ namespace ZeldaFullEditor
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
                             // If the area to the south is a large area.
-                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea || southNeighbor.AreaSize == AreaSizeEnum.WideArea)
                             {
-                                // If the area to the south is the top right quadrant of the large area.
+                                // If the area to the south is the top right quadrant of the large or wide area.
                                 switch (southNeighbor.AreaSizeQuadrant)
                                 {
                                     case 1:
@@ -1988,14 +1988,14 @@ namespace ZeldaFullEditor
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, byScreen2Large[3]);
 
                         // byScreen3 = Transitioning down.
-                        ushort[] byScreen3Large = { 0x1800, 0x1800, 0x1840, 0x1840 };
+                        ushort[] byScreen3Large = { 0x1800, 0x1840, 0x1800, 0x1840 };
 
                         // Just to make sure where don't try to read outside of the array.
                         if (i - 8 >= 0)
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
-                            // If the area to the north of the top left quadrant is the bottom left is a large area:
+                            // If the area to the north of the top left quadrant is a large area:
                             if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea)
                             {
                                 switch (northNeighbor.AreaSizeQuadrant)
@@ -2006,15 +2006,27 @@ namespace ZeldaFullEditor
                                         break;
                                 }
                             }
+
+                            // If the area to the north of the top left quadrant is a large area:
+                            if (northNeighbor.AreaSize == AreaSizeEnum.WideArea)
+                            {
+                                switch (northNeighbor.AreaSizeQuadrant)
+                                {
+                                    // If the area to the north of the top left quadrant is the left quadrant of a wide area:
+                                    case 0:
+                                        byScreen3Large[1] = 0x1800;
+                                        break;
+                                }
+                            }
                         }
 
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, byScreen3Large[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3Large[1]); // Always 0x1800.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, byScreen3Large[2]); // Always 0x1840.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3Large[1]); // Always 0x1840.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, byScreen3Large[2]); // Always 0x1800.
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 18, byScreen3Large[3]); // Always 0x1840.
 
                         // byScreen4 = Transitioning up.
-                        ushort[] byScreen4Large = { 0x2000, 0x2000, 0x2040, 0x2040 };
+                        ushort[] byScreen4Large = { 0x2000, 0x2040, 0x2000, 0x2040 };
 
                         // Just to make sure where don't try to read outside of the array.
                         if (i + 16 < 0x40)
@@ -2040,8 +2052,8 @@ namespace ZeldaFullEditor
                         }
 
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, byScreen4Large[0]); // Always 0x2000.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, byScreen4Large[1]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, byScreen4Large[2]); // Always 0x2000.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, byScreen4Large[1]); // Always 0x2040.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, byScreen4Large[2]);
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, byScreen4Large[3]);
 
                         checkedMap.Add((byte)(i + 0));
@@ -2095,7 +2107,7 @@ namespace ZeldaFullEditor
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, byScreen1Wide[1]); // Will always be 0x0060.
 
                         // byScreen2 = Transitioning left.
-                        ushort[] byScreen2Wide = { 0x0080, 0x0080};
+                        ushort[] byScreen2Wide = { 0x0080, 0x0080 };
 
                         // Just to make sure where don't try to read outside of the array.
                         if (i + 2 < 0x40)
@@ -2119,7 +2131,7 @@ namespace ZeldaFullEditor
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, byScreen2Wide[1]);
 
                         // byScreen3 = Transitioning down.
-                        ushort[] byScreen3Wide = { 0x1800, 0x1800};
+                        ushort[] byScreen3Wide = { 0x1800, 0x1840 };
 
                         // Just to make sure where don't try to read outside of the array.
                         if (i - 8 >= 0)
@@ -2131,7 +2143,12 @@ namespace ZeldaFullEditor
                             {
                                 switch (northNeighbor.AreaSizeQuadrant)
                                 {
-                                    // If the area to the north of the top left quadrant is the bottom right quadrant of a large area:
+                                    // If the area to the north of the left quadrant is the bottom left quadrant of a large area:
+                                    case 2:
+                                        byScreen3Wide[1] = 0x1800;
+                                        break;
+
+                                    // If the area to the north of the left quadrant is the bottom right quadrant of a large area:
                                     case 3:
                                         byScreen3Wide[0] = 0x17C0;
                                         break;
@@ -2143,26 +2160,21 @@ namespace ZeldaFullEditor
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3Wide[1]);
 
                         // byScreen4 = Transitioning up.
-                        ushort[] byScreen4Wide = { 0x2000, 0x2000};
+                        ushort[] byScreen4Wide = { 0x1000, 0x1000 };
 
                         // Just to make sure where don't try to read outside of the array.
                         if (i + 16 < 0x40)
                         {
-                            OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
+                            OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
-                            // If the area to the south of the bottom left quadrant is a large area:
+                            // If the area to the south of the left quadrant is a large area:
                             if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea)
                             {
                                 switch (southNeighbor.AreaSizeQuadrant)
                                 {
-                                    // If the area to the south of the bottom left quadrant is the top left quadrant of a large area:
-                                    case 0:
-                                        byScreen4Wide[3] = 0x2000;
-                                        break;
-
-                                    // If the area to the south of the bottom left quadrant is the top right quadrant of a large area:
+                                    // If the area to the south of the left quadrant is the top right quadrant of a large area:
                                     case 1:
-                                        byScreen4Wide[2] = 0x1FC0;
+                                        byScreen4Wide[1] = 0x1FC0;
                                         break;
                                 }
                             }

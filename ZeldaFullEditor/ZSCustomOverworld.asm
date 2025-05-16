@@ -3914,6 +3914,4 @@ pushpc
 ; ASM into their own code base.
 
 pullpc
-
-print "asdfsdfsdfsfsfsfsfsfsfsdfsd: ", pc
 pullpc

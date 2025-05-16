@@ -1611,7 +1611,8 @@ namespace ZeldaFullEditor.Gui
             // Move all of the overworld objects to into the new parent area.
             foreach (int world in worlds)
             {
-                foreach (int offset in areasToAdd.Select(x => x.offset))
+                List <int> temp = areasToAdd.Select(x => x.offset).ToList();
+                foreach (int offset in temp)
                 {
                     int currentArea = mapID + world + offset;
 

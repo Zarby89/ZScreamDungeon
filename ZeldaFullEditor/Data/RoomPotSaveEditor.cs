@@ -103,7 +103,7 @@ namespace ZeldaFullEditor
             // If we are on a large map:
             switch (areaSize)
             {
-                case AreaSizeEnum.LargeArea:
+                case AreaSizeEnum.SmallArea:
                     this.GameX = this.GameX.Clamp(0, 31);
                     this.GameY = this.GameY.Clamp(0, 31);
                     break;
