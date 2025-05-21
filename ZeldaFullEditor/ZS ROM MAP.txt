@@ -36,7 +36,7 @@ And an additional 3 banks at the end of the 2.0MB 0x1E8000 to 0x1FFFFF
 0x148000 - 0x14FFFF: 1 Bank
     Expanded Dungeon object data
 
-0x1E0000 - 1E07FFF: 1 Bank
+0x1E0000 - 0x1E7FFF: 1 Bank
     Custom ASM Patches
 
 0x1E8000 - 0x1EFFFF: 1 Bank
