@@ -1800,16 +1800,10 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
 
-                            // If the area to the west is a large area.
-                            if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the west is the bottom right quadrant of a large map.
+                            if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea && westNeighbor.AreaSizeQuadrant == 3)
                             {
-                                switch (westNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the west is the bottom right quadrant of a large map.
-                                    case 3:
-                                        byScreen1Small = 0xF060;
-                                        break;
-                                }
+                                byScreen1Small = 0xF060;
                             }
                         }
 
@@ -1823,16 +1817,10 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 1];
 
-                            // If the area to the right is a large area.
-                            if (eastNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the right is the bottom left quadrant area of a large map.
+                            if (eastNeighbor.AreaSize == AreaSizeEnum.LargeArea && eastNeighbor.AreaSizeQuadrant == 2)
                             {
-                                switch (eastNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the right is the bottom left quadrant area of a large map.
-                                    case 2:
-                                        byScreen2Small = 0xF040;
-                                        break;
-                                }
+                                byScreen2Small = 0xF040;
                             }
                         }
 
@@ -1847,16 +1835,10 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
-                            // If the area to the north is a large area.
-                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the north is the bottom right quadrant of the large area.
+                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea && northNeighbor.AreaSizeQuadrant == 3)
                             {
-                                switch (northNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the north is the bottom right quadrant of the large area.
-                                    case 3:
-                                        byScreen3Small = 0x17C0;
-                                        break;
-                                }
+                                byScreen3Small = 0x17C0;
                             }
                         }
 
@@ -1871,15 +1853,12 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
-                            // If the area to the south is a large or wide area.
+                            // If the area to the south is the top right quadrant of the large or wide area.
                             if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea || southNeighbor.AreaSize == AreaSizeEnum.WideArea)
                             {
-                                // If the area to the south is the top right quadrant of the large or wide area.
-                                switch (southNeighbor.AreaSizeQuadrant)
+                                if (southNeighbor.AreaSizeQuadrant == 1)
                                 {
-                                    case 1:
-                                        byScreen4Small = 0x0FC0;
-                                        break;
+                                    byScreen4Small = 0x0FC0;
                                 }
                             }
                         }
@@ -1933,35 +1912,18 @@ namespace ZeldaFullEditor
                             {
                                 OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
 
-                                // If the area to the west of the top left quadrant is a large area:
-                                if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                                // If the area to the west of the top left quadrant is a large or tall area:
+                                if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea || westNeighbor.AreaSize == AreaSizeEnum.TallArea)
                                 {
                                     switch (westNeighbor.AreaSizeQuadrant)
                                     {
-                                        // If the area to the west of the top left quadrant is the top right quadrant of a large area:
+                                        // If the area to the west of the top left quadrant is the top right quadrant of a large or tall area:
                                         case 1:
                                             byScreen1Large[2] = 0x0060;
                                             break;
 
-                                        // If the area to the west of the top left quadrant is the bottom right quadrant of a large area:
+                                        // If the area to the west of the top left quadrant is the bottom right quadrant of a large or tall area:
                                         case 3:
-                                            byScreen1Large[0] = 0xF060;
-                                            break;
-                                    }
-                                }
-
-                                // If the area to the west of the top left quadrant is a tall area:
-                                if (westNeighbor.AreaSize == AreaSizeEnum.TallArea)
-                                {
-                                    switch (westNeighbor.AreaSizeQuadrant)
-                                    {
-                                        // If the area to the west of the top left quadrant is the top quadrant of a tall area:
-                                        case 0:
-                                            byScreen1Large[2] = 0x0060;
-                                            break;
-
-                                        // If the area to the west of the top left quadrant is the bottom quadrant of a tall area:
-                                        case 2:
                                             byScreen1Large[0] = 0xF060;
                                             break;
                                     }
@@ -1970,9 +1932,9 @@ namespace ZeldaFullEditor
                         }
 
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, byScreen1Large[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, byScreen1Large[1]); // Will always be 0x0060.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, byScreen1Large[1]); // Always 0x0060.
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, byScreen1Large[2]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 18, byScreen1Large[3]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 18, byScreen1Large[3]); // Always 0x0060.
 
                         // byScreen2 = Transitioning left.
                         ushort[] byScreen2Large = { 0x0080, 0x0080, 0x1080, 0x1080 };
@@ -1982,36 +1944,19 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 2];
 
-                            // If the area to the east of the top right quadrant is a large area:
-                            if (eastNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the east of the top right quadrant is a large or tall area:
+                            if (eastNeighbor.AreaSize == AreaSizeEnum.LargeArea || eastNeighbor.AreaSize == AreaSizeEnum.TallArea)
                             {
                                 switch (eastNeighbor.AreaSizeQuadrant)
                                 {
-                                    // If the area to the east of the top right quadrant is the top left quadrant of a large area:
+                                    // If the area to the east of the top right quadrant is the top left quadrant of a large or tall area:
                                     case 0:
                                         byScreen2Large[3] = 0x0080;
                                         break;
 
-                                    // If the area to the east of the top right quadrant is the bottom left quadrant of a large area:
+                                    // If the area to the east of the top right quadrant is the bottom left quadrant of a large or tall area:
                                     case 2:
                                         byScreen2Large[1] = 0xF080;
-                                        break;
-                                }
-                            }
-
-                            // If the area to the east of the top right quadrant is a tall area:
-                            if (eastNeighbor.AreaSize == AreaSizeEnum.TallArea)
-                            {
-                                switch (eastNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the east of the top right quadrant is the bottom quadrant of a tall area:
-                                    case 2:
-                                        byScreen2Large[1] = 0xF080;
-                                        break;
-
-                                    // If the area to the east of the top right quadrant is the top quadrant of a tall area:
-                                    case 0:
-                                        byScreen2Large[3] = 0x0080;
                                         break;
                                 }
                             }
@@ -2030,16 +1975,10 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
-                            // If the area to the north of the top left quadrant is a large area:
-                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the north of the top left quadrant is the bottom right quadrant of a large area:
+                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea && northNeighbor.AreaSizeQuadrant == 3)
                             {
-                                switch (northNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the north of the top left quadrant is the bottom right quadrant of a large area:
-                                    case 3:
-                                        byScreen3Large[0] = 0x17C0;
-                                        break;
-                                }
+                                byScreen3Large[0] = 0x17C0;
                             }
 
                             // If the area to the north of the top left quadrant is a wide area:
@@ -2061,7 +2000,7 @@ namespace ZeldaFullEditor
                         }
 
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, byScreen3Large[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3Large[1]); // Always 0x1840.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3Large[1]);
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, byScreen3Large[2]); // Always 0x1800.
                         ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 18, byScreen3Large[3]); // Always 0x1840.
 
@@ -2073,29 +2012,17 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
 
-                            // If the area to the south of the bottom left quadrant is a large area:
-                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the south of the bottom left quadrant is a large or wide area:
+                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea || southNeighbor.AreaSize == AreaSizeEnum.WideArea)
                             {
                                 switch (southNeighbor.AreaSizeQuadrant)
                                 {
-                                    // If the area to the south of the bottom left quadrant is the top left quadrant of a large area:
+                                    // If the area to the south of the bottom left quadrant is the top left quadrant of a large or wide area:
                                     case 0:
                                         byScreen4Large[3] = 0x2000;
                                         break;
 
-                                    // If the area to the south of the bottom left quadrant is the top right quadrant of a large area:
-                                    case 1:
-                                        byScreen4Large[2] = 0x1FC0;
-                                        break;
-                                }
-                            }
-
-                            // If the area to the south of the bottom left quadrant is a wide area:
-                            if (southNeighbor.AreaSize == AreaSizeEnum.WideArea)
-                            {
-                                switch (southNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the south of the bottom left quadrant is the right quadrant of a wide area:
+                                    // If the area to the south of the bottom left quadrant is the top right quadrant of a large or wide area:
                                     case 1:
                                         byScreen4Large[2] = 0x1FC0;
                                         break;
@@ -2140,29 +2067,17 @@ namespace ZeldaFullEditor
                             // Just to make sure where don't try to read outside of the array.
                             if (i - 1 >= 0)
                             {
-                                // If the area to the west of the top left quadrant is a large area:
+                                // If the area to the west of the left quadrant is the bottom right quadrant of a large area:
                                 OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
-                                if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                                if (westNeighbor.AreaSize == AreaSizeEnum.LargeArea && westNeighbor.AreaSizeQuadrant == 3)
                                 {
-                                    switch (westNeighbor.AreaSizeQuadrant)
-                                    {
-                                        // If the area to the west of the left quadrant is the bottom right quadrant of a large area:
-                                        case 3:
-                                            byScreen1Wide[0] = 0xF060;
-                                            break;
-                                    }
+                                    byScreen1Wide[0] = 0xF060;
                                 }
 
-                                // If the area to the west of the top quadrant is a tall area:
-                                if (westNeighbor.AreaSize == AreaSizeEnum.TallArea)
+                                // If the area to the west of the left quadrant is the bottom quadrant of a tall area:
+                                if (westNeighbor.AreaSize == AreaSizeEnum.TallArea && westNeighbor.AreaSizeQuadrant == 2)
                                 {
-                                    switch (westNeighbor.AreaSizeQuadrant)
-                                    {
-                                        // If the area to the west of the left quadrant is the bottom quadrant of a tall area:
-                                        case 2:
-                                            byScreen1Wide[0] = 0xF060;
-                                            break;
-                                    }
+                                    byScreen1Wide[0] = 0xF060;
                                 }
                             }
                         }
@@ -2178,15 +2093,12 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 2];
 
-                            // If the area to the east of the top right quadrant is a large or tall area:
+                            // If the area to the east of the right quadrant is the bottom left quadrant of a large or tall area:
                             if (eastNeighbor.AreaSize == AreaSizeEnum.LargeArea || eastNeighbor.AreaSize == AreaSizeEnum.TallArea)
                             {
-                                switch (eastNeighbor.AreaSizeQuadrant)
+                                if (eastNeighbor.AreaSizeQuadrant == 2)
                                 {
-                                    // If the area to the east of the right quadrant is the bottom left quadrant of a large or tall area:
-                                    case 2:
-                                        byScreen2Wide[1] = 0xF080;
-                                        break;
+                                    byScreen2Wide[1] = 0xF080;
                                 }
                             }
                         }
@@ -2248,35 +2160,29 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
-                            // If the area to the south of the left quadrant is a large or wide area:
+                            // If the area to the south of the left quadrant is the top right quadrant of a large or wide area:
                             if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea || southNeighbor.AreaSize == AreaSizeEnum.WideArea)
                             {
-                                switch (southNeighbor.AreaSizeQuadrant)
+                                if (southNeighbor.AreaSizeQuadrant == 1)
                                 {
-                                    // If the area to the south of the left quadrant is the top right quadrant of a large or wide area:
-                                    case 1:
-                                        byScreen4Wide[0] = 0x0FC0;
-                                        break;
+                                    byScreen4Wide[0] = 0x0FC0;
                                 }
                             }
 
                             OverworldMap southNeighbor2 = scene.ow.AllMaps[i + 9];
 
-                            // If the area to the south of the right quadrant is a large, wide or tall area:
+                            // If the area to the south of the right quadrant is the top left quadrant of a large, wide, or tall area:
                             if (southNeighbor2.AreaSize == AreaSizeEnum.LargeArea || southNeighbor2.AreaSize == AreaSizeEnum.WideArea || southNeighbor2.AreaSize == AreaSizeEnum.TallArea)
                             {
-                                switch (southNeighbor2.AreaSizeQuadrant)
+                                if (southNeighbor2.AreaSizeQuadrant == 0)
                                 {
-                                    // If the area to the south of the right quadrant is the top left quadrant of a large, wide, or tall area:
-                                    case 0:
-                                        byScreen4Wide[1] = 0x1040;
-                                        break;
+                                    byScreen4Wide[1] = 0x1040;
                                 }
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, byScreen4Wide[0]); // Always 0x2000.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, byScreen4Wide[1]); // Always 0x2000.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, byScreen4Wide[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, byScreen4Wide[1]);
 
                         checkedMap.Add((byte)(i + 0));
                         checkedMap.Add((byte)(i + 1));
@@ -2329,28 +2235,16 @@ namespace ZeldaFullEditor
                                     }
                                 }
 
-                                // If the area to the west of the top quadrant is a wide area:
-                                if (westNeighbor.AreaSize == AreaSizeEnum.WideArea)
+                                // If the area to the west of the top quadrant is the left quadrant of a wide area:
+                                if (westNeighbor.AreaSize == AreaSizeEnum.WideArea && westNeighbor.AreaSizeQuadrant == 1)
                                 {
-                                    switch (westNeighbor.AreaSizeQuadrant)
-                                    {
-                                        // If the area to the west of the top quadrant is the left quadrant of a wide area:
-                                        case 1:
-                                            byScreen1Tall[1] = 0x0060;
-                                            break;
-                                    }
+                                    byScreen1Tall[1] = 0x0060;
                                 }
 
-                                // If the area to the west of the top quadrant is a tall area:
-                                if (westNeighbor.AreaSize == AreaSizeEnum.TallArea)
+                                // If the area to the west of the top quadrant is the bottom quadrant of a tall area:
+                                if (westNeighbor.AreaSize == AreaSizeEnum.TallArea && westNeighbor.AreaSizeQuadrant == 2)
                                 {
-                                    switch (westNeighbor.AreaSizeQuadrant)
-                                    {
-                                        // If the area to the west of the top quadrant is the bottom quadrant of a tall area:
-                                        case 2:
-                                            byScreen1Tall[0] = 0xF060;
-                                            break;
-                                    }
+                                    byScreen1Tall[0] = 0xF060;
                                 }
                             }
                         }
@@ -2383,35 +2277,29 @@ namespace ZeldaFullEditor
                                 }
                             }
 
-                            // If the area to the east of the top quadrant is a large or tall area:
+                            // If the area to the east of the top quadrant is the bottom left quadrant of a large or tall area:
                             if (eastNeighbor.AreaSize == AreaSizeEnum.TallArea || eastNeighbor.AreaSize == AreaSizeEnum.LargeArea)
                             {
-                                switch (eastNeighbor.AreaSizeQuadrant)
+                                if (eastNeighbor.AreaSizeQuadrant == 2)
                                 {
-                                    // If the area to the east of the top quadrant is the bottom left quadrant of a large or tall area:
-                                    case 2:
-                                        byScreen2Tall[0] = 0xF040;
-                                        break;
+                                    byScreen2Tall[0] = 0xF040;
                                 }
                             }
 
                             OverworldMap eastNeighbor2 = scene.ow.AllMaps[i + 9];
 
-                            // If the area to the east of the bottom quadrant is a large, wide, or tall area:
+                            // If the area to the east of the bottom quadrant is the top quadrant of a large, wide, or tall area:
                             if (eastNeighbor2.AreaSize == AreaSizeEnum.TallArea || eastNeighbor2.AreaSize == AreaSizeEnum.LargeArea || eastNeighbor2.AreaSize == AreaSizeEnum.WideArea)
                             {
-                                switch (eastNeighbor2.AreaSizeQuadrant)
+                                if (eastNeighbor2.AreaSizeQuadrant == 0)
                                 {
-                                    // If the area to the east of the bottom quadrant is the top quadrant of a large, wide, or tall area:
-                                    case 0:
-                                        byScreen2Tall[1] = 0x1040;
-                                        break;
+                                    byScreen2Tall[1] = 0x1040;
                                 }
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, byScreen2Tall[0]); // Always 0x0080.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 16, byScreen2Tall[1]); // Always 0x1080.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, byScreen2Tall[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 16, byScreen2Tall[1]);
 
                         // byScreen3 = Transitioning down.
                         ushort[] byScreen3Tall = { 0x1800, 0x1800 };
@@ -2421,28 +2309,16 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
-                            // If the area to the north of the top quadrant is a large area:
-                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the north of the top quadrant is the bottom right quadrant of a large area:
+                            if (northNeighbor.AreaSize == AreaSizeEnum.LargeArea && northNeighbor.AreaSizeQuadrant == 3)
                             {
-                                switch (northNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the north of the top quadrant is the bottom right quadrant of a large area:
-                                    case 3:
-                                        byScreen3Tall[0] = 0x17C0;
-                                        break;
-                                }
+                                byScreen3Tall[0] = 0x17C0;
                             }
 
-                            // If the area to the north of the top quadrant is a wide area:
-                            if (northNeighbor.AreaSize == AreaSizeEnum.WideArea)
+                            // If the area to the north of the top quadrant is the right quadrant of a wide area:
+                            if (northNeighbor.AreaSize == AreaSizeEnum.WideArea && northNeighbor.AreaSizeQuadrant == 1)
                             {
-                                switch (northNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the north of the top quadrant is the right quadrant of a wide area:
-                                    case 1:
-                                        byScreen3Tall[0] = 0x17C0;
-                                        break;
-                                }
+                                byScreen3Tall[0] = 0x17C0;
                             }
                         }
 
@@ -2457,28 +2333,16 @@ namespace ZeldaFullEditor
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
 
-                            // If the area to the south of the bottom quadrant is a large area:
-                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea)
+                            // If the area to the south of the bottom quadrant is the top right quadrant of a large area:
+                            if (southNeighbor.AreaSize == AreaSizeEnum.LargeArea && southNeighbor.AreaSizeQuadrant == 1)
                             {
-                                switch (southNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the south of the bottom quadrant is the top right quadrant of a large area:
-                                    case 1:
-                                        byScreen4Tall[1] = 0x1FC0;
-                                        break;
-                                }
+                                byScreen4Tall[1] = 0x1FC0;
                             }
 
-                            // If the area to the south of the bottom quadrant is a wide area:
-                            if (southNeighbor.AreaSize == AreaSizeEnum.WideArea)
+                            // If the area to the south of the bottom quadrant is the right quadrant of a wide area:
+                            if (southNeighbor.AreaSize == AreaSizeEnum.WideArea && southNeighbor.AreaSizeQuadrant == 1)
                             {
-                                switch (southNeighbor.AreaSizeQuadrant)
-                                {
-                                    // If the area to the south of the bottom quadrant is the right quadrant of a wide area:
-                                    case 1:
-                                        byScreen4Tall[1] = 0x1FC0;
-                                        break;
-                                }
+                                byScreen4Tall[1] = 0x1FC0;
                             }
                         }
 
