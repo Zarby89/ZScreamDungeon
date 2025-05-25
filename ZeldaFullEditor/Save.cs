@@ -1796,7 +1796,7 @@ namespace ZeldaFullEditor
                         ushort byScreen1Small = 0x0060;
 
                         // Just to make sure where don't try to read outside of the array.
-                        if (parentxPos != 0)
+                        if (parentxPos > 0)
                         {
                             OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
 
@@ -1813,7 +1813,7 @@ namespace ZeldaFullEditor
                         ushort byScreen2Small = 0x0040;
 
                         // Just to make sure where don't try to read outside of the array.
-                        if (parentxPos >= 7)
+                        if (parentxPos < 7)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 1];
 
