@@ -197,6 +197,13 @@ namespace ZeldaFullEditor
 
         public static readonly Pen CameraPen = new Pen(Color.Red, 2);
 
+        public static readonly Color DefaultLWBGColor = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+        public static readonly Color DefaultDWBGColor = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+        public static readonly Color DefaultSWBGColor = Color.FromArgb(0xFF, 0x30, 0x70, 0x30);
+        public static readonly Color TransparentColor = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+        public static readonly Color BlackColor = Color.FromArgb(0xFF, 0x00, 0x00, 0x00);
+        public static readonly Color DefaultCloudBGColor = Color.FromArgb(0xFF, 0x3B, 0x73, 0x73);
+
         // ===========================================================================================
         // GFX Related Variables
         // ===========================================================================================

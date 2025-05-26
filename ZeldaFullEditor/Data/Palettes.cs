@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Text;
-using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
@@ -196,47 +195,54 @@ namespace ZeldaFullEditor
 
             if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] == 0x00)
             {
-                // TODO: Magic colors.
                 // LW
                 int j = 0;
-                while (j < 64)
+                while (j < 0x40)
                 {
-                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+                    OverworldBackgroundPalette[j++] = Constants.DefaultLWBGColor;
                 }
 
                 // DW
-                while (j < 128)
+                while (j < 0x80)
                 {
-                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+                    OverworldBackgroundPalette[j++] = Constants.DefaultDWBGColor;
                 }
 
                 // SW
                 while (j < Constants.NumberOfOWMaps)
                 {
-                    OverworldBackgroundPalette[j++] = Color.FromArgb(0xFF, 0x30, 0x70, 0x30);
+                    OverworldBackgroundPalette[j++] = Constants.DefaultLWBGColor;
                 }
 
                 // Certain other areas start out with a BG color of black so that the subscreen overlay BGs look correct.
 
                 // LW Death Mountain
-                OverworldBackgroundPalette[0x03] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
-                OverworldBackgroundPalette[0x05] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
-                OverworldBackgroundPalette[0x07] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
-
+                OverworldBackgroundPalette[0x03] = Constants.TransparentColor;
+                OverworldBackgroundPalette[0x05] = Constants.TransparentColor;
+                OverworldBackgroundPalette[0x07] = Constants.TransparentColor;
+                
                 // DW Death Mountain
-                OverworldBackgroundPalette[0x43] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
-                OverworldBackgroundPalette[0x45] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
-                OverworldBackgroundPalette[0x47] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x43] = Constants.TransparentColor;
+                OverworldBackgroundPalette[0x45] = Constants.TransparentColor;
+                OverworldBackgroundPalette[0x47] = Constants.TransparentColor;
 
                 // The pyramid area
-                OverworldBackgroundPalette[0x5B] = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+                OverworldBackgroundPalette[0x5B] = Constants.TransparentColor;
 
-                // Under the bridge area
-                OverworldBackgroundPalette[0x94] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+                // SW areas
+                OverworldBackgroundPalette[0x80] = Constants.DefaultSWBGColor;
+                OverworldBackgroundPalette[0x81] = Constants.DefaultSWBGColor;
+                OverworldBackgroundPalette[0x82] = Constants.DefaultSWBGColor;
+                OverworldBackgroundPalette[0x88] = Constants.BlackColor;
+                OverworldBackgroundPalette[0x89] = Constants.DefaultSWBGColor;
+                OverworldBackgroundPalette[0x8A] = Constants.DefaultSWBGColor;
+                OverworldBackgroundPalette[0x93] = Constants.BlackColor;
+                OverworldBackgroundPalette[0x94] = Constants.DefaultSWBGColor;
+                OverworldBackgroundPalette[0x95] = Constants.DefaultCloudBGColor;
             }
             else
             {
-                OverworldBackgroundPalette = ReadPalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, 160);
+                OverworldBackgroundPalette = ReadPalette(romData, Constants.OverworldCustomAreaSpecificBGPalette, 0xA0);
             }
         }
 

@@ -567,6 +567,7 @@ namespace ZeldaFullEditor
                     UIText.CryAboutSaving("problem saving dungeons holes overlays (probably using too much space) try removing objects");
                     break;
                 }
+
                 // If we made it here, everything was fine.
                 badSave = false;
             }

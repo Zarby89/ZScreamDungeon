@@ -298,16 +298,23 @@ namespace ZeldaFullEditor
             OverworldMap[] allMaps = givenMaps;
 
             bool[] mapChecked = new bool[0xA0];
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < mapChecked.Length; i++)
             {
                 mapChecked[i] = false;
             }
 
             int xx = 0;
             int yy = 0;
+            int world = 0;
             while (true)
             {
-                int i = xx + (yy * 8);
+                int i = world + xx + (yy * 8);
+
+                if (i >= mapChecked.Length)
+                {
+                    break;
+                }
+
                 if (!mapChecked[i])
                 {
                     switch (allMaps[i].AreaSize)
@@ -315,26 +322,21 @@ namespace ZeldaFullEditor
                         case AreaSizeEnum.SmallArea:
                             mapChecked[i] = true;
                             allMaps[i].SetAreaSize(AreaSizeEnum.SmallArea);
-                            allMaps[i + 0x40].SetAreaSize(AreaSizeEnum.SmallArea);
 
                             break;
 
                         case AreaSizeEnum.LargeArea:
                             mapChecked[i] = true;
                             allMaps[i].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 0);
-                            allMaps[i + 0x40].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 0x40), 0);
 
                             mapChecked[i + 1] = true;
                             allMaps[i + 1].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 1);
-                            allMaps[i + 0x41].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 0x40), 1);
 
                             mapChecked[i + 8] = true;
                             allMaps[i + 8].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 2);
-                            allMaps[i + 0x48].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 0x40), 2);
 
                             mapChecked[i + 9] = true;
                             allMaps[i + 9].SetAreaSize(AreaSizeEnum.LargeArea, (byte)i, 3);
-                            allMaps[i + 0x49].SetAreaSize(AreaSizeEnum.LargeArea, (byte)(i + 0x40), 3);
 
                             xx++;
                             break;
@@ -342,11 +344,9 @@ namespace ZeldaFullEditor
                         case AreaSizeEnum.WideArea:
                             mapChecked[i] = true;
                             allMaps[i].SetAreaSize(AreaSizeEnum.WideArea, (byte)i, 0);
-                            allMaps[i + 0x40].SetAreaSize(AreaSizeEnum.WideArea, (byte)(i + 0x40), 0);
 
                             mapChecked[i + 1] = true;
                             allMaps[i + 1].SetAreaSize(AreaSizeEnum.WideArea, (byte)i, 1);
-                            allMaps[i + 0x41].SetAreaSize(AreaSizeEnum.WideArea, (byte)(i + 0x40), 1);
 
                             xx++;
                             break;
@@ -354,11 +354,9 @@ namespace ZeldaFullEditor
                         case AreaSizeEnum.TallArea:
                             mapChecked[i] = true;
                             allMaps[i].SetAreaSize(AreaSizeEnum.TallArea, (byte)i, 0);
-                            allMaps[i + 0x40].SetAreaSize(AreaSizeEnum.TallArea, (byte)(i + 0x40), 0);
 
                             mapChecked[i + 8] = true;
                             allMaps[i + 8].SetAreaSize(AreaSizeEnum.TallArea, (byte)i, 2);
-                            allMaps[i + 0x48].SetAreaSize(AreaSizeEnum.TallArea, (byte)(i + 0x40), 2);
 
                             break;
                     }
@@ -372,7 +370,9 @@ namespace ZeldaFullEditor
 
                     if (yy >= 8)
                     {
-                        break;
+                        yy = 0;
+
+                        world += 0x40;
                     }
                 }
             }

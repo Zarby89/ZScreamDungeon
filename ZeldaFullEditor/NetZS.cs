@@ -729,7 +729,7 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // user id
             int map = buffer.ReadInt(); // unique id
             AreaSizeEnum oldAreaSize = form.overworldEditor.scene.ow.AllMaps[map].AreaSize;
-            form.overworldEditor.UpdateLargeMap(map, (AreaSizeEnum)buffer.ReadByte(), oldAreaSize);
+            form.overworldEditor.UpdateAreaSize(map, (AreaSizeEnum)buffer.ReadByte(), oldAreaSize);
         }
 
         private void ReceivedMapProperties(NetIncomingMessage im)

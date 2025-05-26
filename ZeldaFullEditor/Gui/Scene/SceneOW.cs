@@ -913,20 +913,21 @@ namespace ZeldaFullEditor
             }
 
             int offset = 0;
-            if (this.selectedMap >= 128)
+            if (this.selectedMap >= 0x80)
             {
-                offset = 128;
+                offset = 0x80;
             }
 
             if ((this.mapHover + offset) < this.ow.AllMaps.Length)
             {
-                int my = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) / 8;
-                int mx = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) - (my * 8);
+                int parentID = this.ow.AllMaps[this.mapHover + offset].ParentID;
+                int my = (parentID - offset) / 8;
+                int mx = (parentID - offset) - (my * 8);
 
                 int maxSizeX = 512;
                 int maxSizeY = 512;
 
-                switch (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].AreaSize)
+                switch (this.ow.AllMaps[parentID].AreaSize)
                 {
                     case AreaSizeEnum.LargeArea:
                         maxSizeX = 1024;

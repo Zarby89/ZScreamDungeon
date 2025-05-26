@@ -66,8 +66,8 @@
             this.scratchPicturebox = new System.Windows.Forms.PictureBox();
             this.propertyTabpage = new System.Windows.Forms.TabPage();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
-            this.AreaSizeComboBox = new System.Windows.Forms.ComboBox();
             this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
+            this.AreaSizeComboBox = new System.Windows.Forms.ComboBox();
             this.ambient4Box = new System.Windows.Forms.ComboBox();
             this.ambient3Box = new System.Windows.Forms.ComboBox();
             this.ambient2Box = new System.Windows.Forms.ComboBox();
@@ -707,6 +707,16 @@
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
             // 
+            // previewsheetPicturebox
+            // 
+            this.previewsheetPicturebox.Location = new System.Drawing.Point(2, 513);
+            this.previewsheetPicturebox.Name = "previewsheetPicturebox";
+            this.previewsheetPicturebox.Size = new System.Drawing.Size(256, 64);
+            this.previewsheetPicturebox.TabIndex = 23;
+            this.previewsheetPicturebox.TabStop = false;
+            this.previewsheetPicturebox.Visible = false;
+            this.previewsheetPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewsheetPicturebox_Paint);
+            // 
             // AreaSizeComboBox
             // 
             this.AreaSizeComboBox.FormattingEnabled = true;
@@ -721,16 +731,6 @@
             this.AreaSizeComboBox.TabIndex = 71;
             this.AreaSizeComboBox.Text = "0 Small Area";
             this.AreaSizeComboBox.SelectedIndexChanged += new System.EventHandler(this.AreaSizeComboBox_SelectedIndexChanged);
-            // 
-            // previewsheetPicturebox
-            // 
-            this.previewsheetPicturebox.Location = new System.Drawing.Point(2, 513);
-            this.previewsheetPicturebox.Name = "previewsheetPicturebox";
-            this.previewsheetPicturebox.Size = new System.Drawing.Size(256, 64);
-            this.previewsheetPicturebox.TabIndex = 23;
-            this.previewsheetPicturebox.TabStop = false;
-            this.previewsheetPicturebox.Visible = false;
-            this.previewsheetPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewsheetPicturebox_Paint);
             // 
             // ambient4Box
             // 

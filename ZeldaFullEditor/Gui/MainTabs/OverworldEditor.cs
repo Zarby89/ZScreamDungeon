@@ -1289,14 +1289,14 @@ namespace ZeldaFullEditor.Gui
             }
 
             int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
-            bool success = this.UpdateLargeMap(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex, this.scene.ow.AllMaps[parentID].AreaSize);
+            bool success = this.UpdateAreaSize(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex, this.scene.ow.AllMaps[parentID].AreaSize);
             if (success)
             {
                 this.SendLargeMapChanged(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex);
             }
         }
 
-        public bool UpdateLargeMap(int mapID, AreaSizeEnum newAreaSize, AreaSizeEnum oldAreaSize)
+        public bool UpdateAreaSize(int mapID, AreaSizeEnum newAreaSize, AreaSizeEnum oldAreaSize)
         {
             if (newAreaSize == oldAreaSize)
             {
@@ -1896,7 +1896,7 @@ namespace ZeldaFullEditor.Gui
 
             if (UseAreaSpecificBgColor)
             {
-                for (int i = 0; i < 64; i++)
+                for (int i = 0; i < 0x40; i++)
                 {
                     int x = (i % 8) * 512;
                     int y = (i / 8) * 512;
@@ -1952,13 +1952,13 @@ namespace ZeldaFullEditor.Gui
 
             if (UseAreaSpecificBgColor)
             {
-                for (int i = 0; i < 64; i++)
+                for (int i = 0; i < 0x40; i++)
                 {
                     int x = (i % 8) * 512;
                     int y = (i / 8) * 512;
 
-                    int k = this.overworld.AllMaps[i].ParentID;
-                    g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k + 64]), new Rectangle(x, y, 512, 512));
+                    int k = this.overworld.AllMaps[i + 0x40].ParentID;
+                    g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k]), new Rectangle(x, y, 512, 512));
                 }
             }
             else
@@ -1966,12 +1966,12 @@ namespace ZeldaFullEditor.Gui
                 g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
             }
 
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 int x = (i % 8) * 512;
                 int y = (i / 8) * 512;
 
-                g.DrawImage(this.overworld.AllMaps[i + 64].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+                g.DrawImage(this.overworld.AllMaps[i + 0x40].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
             temp.Save("DW.png");
@@ -1981,13 +1981,14 @@ namespace ZeldaFullEditor.Gui
 
             if (UseAreaSpecificBgColor)
             {
-                for (int i = 0; i < 32; i++)
+                for (int i = 0; i < 0x20; i++)
                 {
                     int x = (i % 8) * 512;
                     int y = (i / 8) * 512;
 
-                    int k = this.overworld.AllMaps[i].ParentID;
-                    g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[k + 128]), new Rectangle(x, y, 512, 512));
+                    int k = this.overworld.AllMaps[i + 0x80].ParentID;
+                    SolidBrush tempBrush = new SolidBrush(Palettes.OverworldBackgroundPalette[k]);
+                    g.FillRectangle(tempBrush, new Rectangle(x, y, 512, 512));
                 }
             }
             else
@@ -1995,12 +1996,12 @@ namespace ZeldaFullEditor.Gui
                 g.FillRectangle(new SolidBrush(Palettes.OverworldGrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
             }
 
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < 0x20; i++)
             {
                 int x = (i % 8) * 512;
                 int y = (i / 8) * 512;
 
-                g.DrawImage(this.overworld.AllMaps[i + 128].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+                g.DrawImage(this.overworld.AllMaps[i + 0x80].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
             temp.Save("SP.png");

@@ -241,7 +241,7 @@ PaletteData_owmain                         = $1BE6C8
 !Func0ED8AE = $01
 
 ; If 1, all of the default vanilla pool values will be applied. 00 by default.
-!UseVanillaPool = $01
+!UseVanillaPool = $00
 
 ; Use this var to disable all of the debug vars above.
 !AllOff = $00
@@ -441,7 +441,7 @@ Pool:
     .MainPaletteTable ; 0xA0
         if !UseVanillaPool == 1
         ; LW
-        db $00, $00, $00, $02, $00, $20, $00, $20
+        db $00, $00, $00, $02, $00, $02, $00, $02
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00
         db $00, $00, $00, $00, $00, $00, $00, $00

@@ -1901,7 +1901,7 @@ namespace ZeldaFullEditor
                         // byScreen1 = Transitioning right.
                         ushort[] byScreen1Large = { 0x0060, 0x0060, 0x0060, 0x0060 };
 
-                        if (parentxPos != 0)
+                        if (parentxPos > 0)
                         {
                             // If parentX != 0x00 then lower submaps = 0x1060.
                             byScreen1Large[2] = 0x1060;
@@ -2062,7 +2062,7 @@ namespace ZeldaFullEditor
                         // byScreen1 = Transitioning right.
                         ushort[] byScreen1Wide = { 0x0060, 0x0060 };
 
-                        if (parentxPos != 0)
+                        if (parentxPos > 0)
                         {
                             // Just to make sure where don't try to read outside of the array.
                             if (i - 1 >= 0)
@@ -2209,7 +2209,7 @@ namespace ZeldaFullEditor
                         // byScreen1 = Transitioning right.
                         ushort[] byScreen1Tall = { 0x0060, 0x0060 };
 
-                        if (parentxPos != 0)
+                        if (parentxPos > 0)
                         {
                             // If parentX != 0x00 then lower submaps = 0x1060.
                             byScreen1Tall[1] = 0x1060;
