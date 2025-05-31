@@ -49,15 +49,15 @@ pushpc
 incsrc HardwareRegisters.asm
 
 ; Free RAM
-AnimatedTileGFXSet = $0FC0 ; [0x01]
-TransGFXModuleFrame = $0CF3 ; [0x01]
+AnimatedTileGFXSet         = $0FC0 ; [0x01]
+TransGFXModuleFrame        = $0CF3 ; [0x01]
 TransGFXModule_PriorSheets = $04CB ; [0x08] May use more in the future here.
-NewNMITarget1 = $04D3 ; [0x02]
-NewNMISource1 = $04D5 ; [0x02]
-NewNMICount1 = $04D7 ; [0x02]
-NewNMITarget2 = $04D9 ; [0x02]
-NewNMISource2 = $04DB ; [0x02]
-NewNMICount2 = $04DD ; [0x02]
+NewNMISource1              = $04D5 ; [0x02]
+NewNMITarget1              = $04D3 ; [0x02]
+NewNMICount1               = $04D7 ; [0x02]
+NewNMITarget2              = $04D9 ; [0x02]
+NewNMISource2              = $04DB ; [0x02]
+NewNMICount2               = $04DD ; [0x02]
 
 ; Hooks
 Sound_LoadLightWorldSongBank               = $008913
@@ -94,6 +94,8 @@ Tagalong_Init                              = $099EFC
 Sprite_ReinitWarpVortex                    = $09AF89
 Sprite_ResetAll                            = $09C44E
 Sprite_OverworldReloadAll                  = $09C499
+
+BirdTravel_LoadAmbientOverlay              = $0AB948
 
 Overworld_SetFixedColorAndScroll           = $0BFE70
 
@@ -192,6 +194,11 @@ PaletteData_owmain                         = $1BE6C8
 ; $02B3A1
 !Func02B3A1 = $01 
 
+; W6
+; Reset a var needed for whirpool GFX transfer.
+; $02B490
+!Func02B490 = $01 
+
 ; Controls overworld vertical subscreen movement for the pyramid BG.
 ; $02BC44
 !Func02BC44 = $01
@@ -259,6 +266,7 @@ if !AllOff == 1
 !Func02AF58 = $00
 !Func02B2D4 = $00
 !Func02B3A1 = $00 
+!Func02B490 = $00
 !Func02BC44 = $00
 !Func02C02D = $00
 !Func02C692 = $00 
@@ -2351,35 +2359,114 @@ pullpc
 NewOverworld_FinishTransGfx:
 {
     PHB : PHK : PLB
+
+    ; The whirlpool code resuses this code so don't do any of the custom stuff if
+    ; we are in the whirlpool module.
+    LDA.b $11 : CMP.b #$2E : BEQ .whirpool
+        LDA.w TransGFXModuleFrame : BNE .notFirstFrame
+            JSR.w CheckForChangeGraphicsTransitionLoad
+
+            ; Prep the new static gfx tile sets.
+            JSR.w LoadTransMainGFX
+
+            ; A check to see if we need to Prep the GFX in the buffer. 
+            ; Saves about a frame.
+            LDA.b $04 : BEQ .dontPrep
+                JSR.w PrepTransMainGFX
+
+            .dontPrep
+
+            ; Move on to next submodule.
+            INC.b $11
+
+        .notFirstFrame
+
+        LDA.b #$08 : STA.b $06
+
+        JSR.w BlockGFXCheck
+
+        ; If we haven't made it to frame 8, don't move on yet.
+        CPY.b #$08 : BCC .return
+            ; Move on to next submodule.
+            INC.b $11
+
+        .return
+
+        PLB
+
+        RTL
+
+    .whirpool
+
+    ; TODO: On the "second" frame, upload the animated tiles.
+    LDA.b $B0 : CMP.b #$08 : BEQ .loadAnimated
+        LDA.w TransGFXModuleFrame : BNE .notFirstFrame2
+            JSR.w CheckForChangeGraphicsTransitionLoad
+
+            ; Prep the new static gfx tile sets.
+            JSR.w LoadTransMainGFX
+
+            ; A check to see if we need to Prep the GFX in the buffer. 
+            ; Saves about a frame.
+            LDA.b $04 : BEQ .dontPrep2
+                JSR.w PrepTransMainGFX
+
+            .dontPrep2
+
+        .notFirstFrame2
+
+        LDA.b #$08 : STA.b $06
+
+        JSR.w BlockGFXCheck
+
+        ; If we haven't made it to frame 8, don't move on yet.
+        CPY.b #$08 : BCS .MoveOn
+            ; Don't move on to next submodule yet.
+            DEC.b $B0
+
+        .MoveOn
+
+        ; Move on to next submodule. This will get undone by the vanilla
+        ; whirlpool code because it shared the function with the OW
+        ; transition code which uses $11 as its module index but the
+        ; whirlpool uses $B0 instead.
+        INC.b $11
+
+        PLB
+
+        RTL
+
+    .loadAnimated
+
+    ; The NMI_DoUpdates function is never actually run while the whirpool is
+    ; happening. So we need to upload the animated tiles manually here while
+    ; the screen is still blue to cover up the change.
+
+    ; Set the bank for the source to $7E.
+    LDA.b #$7E : STA.w DMA.0_SourceAddrBank
+
+    REP #$20
+
+    LDA.w #DMA.0_TransferParameters : STA.w SNES.VRAMAddrReadWriteLow
+
+    LDA.w $0ADC : STA.w DMA.0_SourceAddrOffsetLow
     
-    LDA.w TransGFXModuleFrame : BNE .notFirstFrame
-        JSR.w CheckForChangeGraphicsTransitionLoad
+    ; Set the target VRAM address.
+    LDA.w $0134 : STA.w SNES.VRAMAddrReadWriteLow
+    
+    ; Transfer #$400 = 4 * 256 = 1024 bytes = 1 Kbyte
+    LDA.w #$0400 : STA.w DMA.0_TransferSizeLow
 
-        ; Prep the new static gfx tile sets.
-        JSR.w LoadTransMainGFX
+    SEP #$20
+    
+    ; Activate line 0.
+    LDA.b #$01 : STA.w SNES.DMAChannelEnable
 
-        ; A check to see if we need to Prep the GFX in the buffer. 
-        ; Saves about a frame.
-        LDA.b $04 : BEQ .dontPrep
-            JSR.w PrepTransMainGFX
-
-        .dontPrep
-
-        ; Move on to next submodule.
-        INC.b $11
-
-    .notFirstFrame
-
-    LDA.b #$08 : STA.b $06
-
-    JSR.w BlockGFXCheck
-
-    ; If we haven't made it to frame 8, don't move on yet.
-    LDA.w TransGFXModuleFrame : CMP.b #$08 : BCC .return
-        ; Move on to next submodule.
-        INC.b $11
-
-    .return
+    ; Move on to next submodule. This will get undone by the vanilla
+    ; whirlpool code because it shared the function with the OW
+    ; transition code which uses $11 as its module index but the
+    ; whirlpool uses $B0 instead.
+    INC.b $11
 
     PLB
 
@@ -3287,8 +3374,8 @@ InitColorLoad2:
     ; Set transparent color.
     STA.l $7EC300 : STA.l $7EC340
 
-    ; TODO: Based on the conditions as explained above, double check that this is not
-    ; needed for any of them.
+    ; TODO: Based on the conditions as explained above, double check that this is
+    ; not needed for any of them.
     ;STA.l $7EC500 : STA.l $7EC540
 
     INC.b $15
@@ -3897,6 +3984,32 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
 
     ; $005A3A Skip normal sheet load.
     JML $00DA3A
+}
+
+pushpc
+
+if !Func00E221 == 1
+
+org $02B490
+    JSL.l Whirlpool_LoadDestinationMapInterupt
+
+else
+
+org $02B490
+    JSL.l BirdTravel_LoadAmbientOverlay
+
+endif
+
+pullpc
+
+Whirlpool_LoadDestinationMapInterupt:
+{
+    ; Replaced code.
+    JSL.l BirdTravel_LoadAmbientOverlay
+
+    STZ.w TransGFXModuleFrame
+
+    RTL
 }
 
 pushpc
