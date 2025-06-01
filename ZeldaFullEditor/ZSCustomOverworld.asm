@@ -39,8 +39,6 @@
 ;     The BG color present in the under the bridge area.
 ;     The pyramid overlay only scrolling properly on area $5B.
 ; ==============================================================================
-
-; ==============================================================================
 ; Non-Expanded Space
 ; ==============================================================================
 
@@ -151,7 +149,7 @@ PaletteData_owmain                         = $1BE6C8
 !Func00D585 = $01
 
 ; Changes the InitTilesets function to call from the long tables.
-; $006221
+; $00E221
 !Func00E221 = $01
 
 ; Zeros out the BG color when mirror warping to the pyramid area.
@@ -289,22 +287,16 @@ endif
 ; these spots. We could potentially add these to a "repair ROM" asm feature.
 
 ; Main Palette loading routine.
-org $0ED5E7
+org $0ED5E7 ; $0755E7
     JSL.l Palette_OverworldBgAux3
 
 ; After leaving special areas like Zora's and the Master Sword area.
-org $02E94A
+org $02E94A ; $01694A
     JSL.l Overworld_LoadPalettes
 
 ; Repairs an old ZS call.
 org $02ABB8 ; $012BB8
     db $A9, $09, $80, $02
-
-; Some old but now unused addresses:
-; $028027
-; $029C0C
-; $029D1E
-; $029F82
 
 ; ==============================================================================
 ; Expanded Space
@@ -1182,25 +1174,25 @@ if !Func0283EE == 1
 ; Replaces a bunch of calls to a shared function.
 ; Intro_SetupScreen:
 org $028027 ; $010027
-    JSR.w PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+    JSR.w Overworld_LoadMusicIfNeeded
 
 warnpc $02802B
 
 ; Dungeon_LoadSongBankIfNeeded:
 org $029C0C ; $011C0C
-    JMP PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+    JMP Overworld_LoadMusicIfNeeded
 
 warnpc $029C0F
 
 ; Mirror_LoadMusic:
 org $029D1E ; $011D1E
-    JSR.w PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+    JSR.w Overworld_LoadMusicIfNeeded
 
 warnpc $029D21
 
 ; GanonEmerges_LoadPyramidArea:
 org $029F82 ; $011F82
-    JSR.w PreOverworld_LoadProperties_LoadMain_LoadMusicIfNeeded
+    JSR.w Overworld_LoadMusicIfNeeded
 
 warnpc $029F85
 
@@ -1346,10 +1338,13 @@ PreOverworld_LoadProperties_LoadMain:
         
     STZ.w $0402 : STZ.w $0403
 
-    ; Vanilla alternate entry point. Called in 4 different locations all of
-    ; which are overwritten above.
-    .LoadMusicIfNeeded
+    ; Bleeds into the next function
+}
 
+; Vanilla alternate entry point. Called in 4 different locations all of
+; which are overwritten above.
+Overworld_LoadMusicIfNeeded:
+{
     LDA.w $0136 : BEQ .no_music_load_needed
         SEI
         
@@ -3074,7 +3069,9 @@ if !Func0BFEB6 == 1
 ; to hide something but then just gets set a second later. So all this does in
 ; function is give the game a chance to hit NMI and flash a transparent color
 ; on screen when while warping from and area that has a different transparent
-; color set.
+; color set. The whole function is NOT overwritten so that the default BG color
+; values that get set here will retain their positions in ROM and can be changed
+; in ZS.
 org $0BFE70 ; $05FE70
     NOP : NOP
 
@@ -3346,7 +3343,7 @@ db $A5, $8A, $C9, $80, $00
 
 endif
 
-org $0ED652
+org $0ED652 ; $075652
 InitColorLoad2_Return:
 
 pullpc
@@ -3465,7 +3462,7 @@ org $008C8A ; $000C8A
 
 warnpc $008C8C ; $000C8C
 
-org $02ABB4
+org $02ABB4 ; $012BB4
     JSL.l NewPrepTransAuxGFX
 
 warnpc $02ABB8 ; $012BB8
@@ -3988,14 +3985,16 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
 
 pushpc
 
+; ==============================================================================
+
 if !Func00E221 == 1
 
-org $02B490
+org $02B490 ; $013490
     JSL.l Whirlpool_LoadDestinationMapInterupt
 
 else
 
-org $02B490
+org $02B490 ; $013490
     JSL.l BirdTravel_LoadAmbientOverlay
 
 endif
