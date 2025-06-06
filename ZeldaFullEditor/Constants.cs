@@ -318,10 +318,14 @@ namespace ZeldaFullEditor
         // all Large map would be :
         // 0000, 0000, 0400, 0400, 0800, 0800, 0C00, 0C00
 
-        public static int overworldMapParentId = 0x0125EC;
+        public static int overworldMapParentID = 0x0125EC;
+        public static int overworldMapParentIDExpanded = 0x140998;
 
         public static int overworldTransitionPositionY = 0x0128C4;
         public static int overworldTransitionPositionX = 0x012944;
+
+        public static int overworldTransitionPositionYExpanded = 0x140F38;
+        public static int overworldTransitionPositionXExpanded = 0x141078;
 
         public static int overworldScreenSize = 0x01788D;
 
@@ -331,12 +335,18 @@ namespace ZeldaFullEditor
         public static int OverworldScreenTileMapChangeByScreen3 = 0x012734;
         public static int OverworldScreenTileMapChangeByScreen4 = 0x0127B4;
 
-        public static int OverworldScreenTileMapChangeMask = 0x01262C;
+        public static int OverworldScreenTileMapChangeByScreen1Expanded = 0x140A38;
+        public static int OverworldScreenTileMapChangeByScreen2Expanded = 0x140B78;
+        public static int OverworldScreenTileMapChangeByScreen3Expanded = 0x140CB8;
+        public static int OverworldScreenTileMapChangeByScreen4Expanded = 0x140DF8;
 
         public static int OverworldMapDataOverflow = 0x130000;
 
         public static int transition_target_north = 0x013EE2;
         public static int transition_target_west = 0x013F62;
+
+        public static int transition_target_northExpanded = 0x1411B8;
+        public static int transition_target_westExpanded = 0x1412F8;
 
         public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, corresponds to the version number. 0 if not applied at all.
 

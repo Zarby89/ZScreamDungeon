@@ -187,7 +187,7 @@ namespace ZeldaFullEditor
             {
                 if (index < 0x80)
                 {
-                    // ASM version 3 was the implementation of Half areas, so if its not greater than 3 we need to swap the small and large area values.
+                    // ASM version 3 was the implementation of area size expansion, so if its not greater than 3 we need to swap the small and large area values.
                     switch (ROM.DATA[Constants.overworldScreenSize + (index & 0x3F)])
                     {
                         case 0:

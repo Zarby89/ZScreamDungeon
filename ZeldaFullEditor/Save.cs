@@ -400,23 +400,6 @@ namespace ZeldaFullEditor
                 UIText.CryAboutSaving("Missing ASM file 'ExpandedEntrances.asm'.\nSaving will continue but the ASM will not be applied.");
             }
 
-            // TODO: Handle differently in projects.
-            if (File.Exists("HalfAreas.asm"))
-            {
-                if (Asar.patch("HalfAreas.asm", ref ROM.DATA))
-                {
-                    Console.WriteLine("Successfully applied Half Areas ASM");
-                }
-                else
-                {
-                    UIText.CryAboutSaving("Error applying ASM file 'HalfAreas.asm'.\nSaving will continue but the ASM will not be applied.");
-                }
-            }
-            else
-            {
-                UIText.CryAboutSaving("Missing ASM file 'HalfAreas.asm'.\nSaving will continue but the ASM will not be applied.");
-            }
-
             foreach (Asarerror error in Asar.geterrors())
             {
                 Console.WriteLine(error.Fullerrdata.ToString());
@@ -1744,7 +1727,7 @@ namespace ZeldaFullEditor
         {
             string parentMapLine = string.Empty;
 
-            string[] parentMap = new string[8];
+            string[] parentMap = new string[0x14];
 
             Console.WriteLine("\n");
             List<byte> checkedMap = new List<byte>();
@@ -1753,14 +1736,8 @@ namespace ZeldaFullEditor
             {
                 ROM.Write(Constants.overworldScreenSize + i, (byte)scene.ow.AllMaps[i].AreaSize);
 
-                // If we've already checked all of the light world maps:
-                if (i >= 0x40)
-                {
-                    continue; // Ignore that map, we already checked it.
-                }
-
                 // Check 1: Write the map parent ID.
-                ROM.Write(Constants.overworldMapParentId + i, scene.ow.AllMaps[i].ParentID);
+                ROM.Write(Constants.overworldMapParentIDExpanded + i, scene.ow.AllMaps[i].ParentID);
                 parentMapLine += scene.ow.AllMaps[i].ParentID.ToString("X2").PadLeft(2, '0') + " ";
 
                 if ((i + 1) % 8 == 0)
@@ -1786,11 +1763,11 @@ namespace ZeldaFullEditor
                 switch (scene.ow.AllMaps[i].AreaSize) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
                 {
                     case AreaSizeEnum.SmallArea:
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2), (ushort)((yPos * 0x0200) - 0x00E0));
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2), (ushort)((xPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2), (ushort)((yPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2), (ushort)((xPos * 0x0200) - 0x0100));
 
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), xPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), yPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2), xPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2), yPos * 0x0200);
 
                         // byScreen1 = Transitioning right.
                         ushort byScreen1Small = 0x0060;
@@ -1807,7 +1784,7 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2), byScreen1Small);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2), byScreen1Small);
 
                         // byScreen2 = Transitioning left.
                         ushort byScreen2Small = 0x0040;
@@ -1824,7 +1801,7 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2), byScreen2Small);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2), byScreen2Small);
 
                         // byScree3 = Transitioning down.
                         ushort byScreen3Small = 0x1800;
@@ -1842,7 +1819,7 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2), byScreen3Small);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2), byScreen3Small);
 
                         // byScree4 = Transitioning up.
                         ushort byScreen4Small = 0x1000;
@@ -1863,7 +1840,7 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2), byScreen4Small);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2), byScreen4Small);
 
                         checkedMap.Add((byte)i);
 
@@ -1871,30 +1848,30 @@ namespace ZeldaFullEditor
 
                     case AreaSizeEnum.LargeArea:
                         // Check 5 and 6
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is used to reduce the int to 2 bytes.
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is used to reduce the int to 2 bytes.
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 02, (ushort)((parentyPos * 0x0200) - 0x00E0));
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 02, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 02, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 02, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 16, (ushort)((parentyPos * 0x0200) - 0x00E0));
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 16, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 16, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 16, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 18, (ushort)((parentyPos * 0x0200) - 0x00E0));
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 18, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 18, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 18, (ushort)((parentxPos * 0x0200) - 0x0100));
 
                         // Check 7 and 8
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 00, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 00, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 00, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 00, parentyPos * 0x0200);
 
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 02, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 02, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 02, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 02, parentyPos * 0x0200);
 
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 16, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 16, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 16, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 16, parentyPos * 0x0200);
 
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 18, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 18, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 18, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 18, parentyPos * 0x0200);
 
                         // Check 9
 
@@ -1931,10 +1908,10 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, byScreen1Large[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, byScreen1Large[1]); // Always 0x0060.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, byScreen1Large[2]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 18, byScreen1Large[3]); // Always 0x0060.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 00, byScreen1Large[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 02, byScreen1Large[1]); // Always 0x0060.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 16, byScreen1Large[2]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 18, byScreen1Large[3]); // Always 0x0060.
 
                         // byScreen2 = Transitioning left.
                         ushort[] byScreen2Large = { 0x0080, 0x0080, 0x1080, 0x1080 };
@@ -1962,10 +1939,10 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, byScreen2Large[0]); // Always 0x0080.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, byScreen2Large[1]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 16, byScreen2Large[2]); // Always 0x1080.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 18, byScreen2Large[3]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 00, byScreen2Large[0]); // Always 0x0080.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 02, byScreen2Large[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 16, byScreen2Large[2]); // Always 0x1080.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 18, byScreen2Large[3]);
 
                         // byScreen3 = Transitioning down.
                         ushort[] byScreen3Large = { 0x1800, 0x1840, 0x1800, 0x1840 };
@@ -1999,10 +1976,10 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, byScreen3Large[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3Large[1]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, byScreen3Large[2]); // Always 0x1800.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 18, byScreen3Large[3]); // Always 0x1840.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 00, byScreen3Large[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 02, byScreen3Large[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 16, byScreen3Large[2]); // Always 0x1800.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 18, byScreen3Large[3]); // Always 0x1840.
 
                         // byScreen4 = Transitioning up.
                         ushort[] byScreen4Large = { 0x2000, 0x2040, 0x2000, 0x2040 };
@@ -2030,10 +2007,10 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, byScreen4Large[0]); // Always 0x2000.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, byScreen4Large[1]); // Always 0x2040.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, byScreen4Large[2]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 18, byScreen4Large[3]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 00, byScreen4Large[0]); // Always 0x2000.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 02, byScreen4Large[1]); // Always 0x2040.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 16, byScreen4Large[2]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 18, byScreen4Large[3]);
 
                         checkedMap.Add((byte)(i + 0));
                         checkedMap.Add((byte)(i + 1));
@@ -2044,18 +2021,18 @@ namespace ZeldaFullEditor
 
                     case AreaSizeEnum.WideArea:
                         // Check 5 and 6
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is used to reduce the int to 2 bytes.
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is used to reduce the int to 2 bytes.
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 02, (ushort)((parentyPos * 0x0200) - 0x00E0));
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 02, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 02, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 02, (ushort)((parentxPos * 0x0200) - 0x0100));
 
                         // Check 7 and 8
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 00, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 00, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 00, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 00, parentyPos * 0x0200);
 
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 02, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 02, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 02, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 02, parentyPos * 0x0200);
 
                         // Check 9
 
@@ -2082,8 +2059,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, byScreen1Wide[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 02, byScreen1Wide[1]); // Will always be 0x0060.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 00, byScreen1Wide[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 02, byScreen1Wide[1]); // Will always be 0x0060.
 
                         // byScreen2 = Transitioning left.
                         ushort[] byScreen2Wide = { 0x0080, 0x0080 };
@@ -2103,8 +2080,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, byScreen2Wide[0]); // Always 0x0080.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 02, byScreen2Wide[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 00, byScreen2Wide[0]); // Always 0x0080.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 02, byScreen2Wide[1]);
 
                         // byScreen3 = Transitioning down.
                         ushort[] byScreen3Wide = { 0x1800, 0x1840 };
@@ -2149,8 +2126,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, byScreen3Wide[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 02, byScreen3Wide[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 00, byScreen3Wide[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 02, byScreen3Wide[1]);
 
                         // byScreen4 = Transitioning up.
                         ushort[] byScreen4Wide = { 0x1000, 0x1000 };
@@ -2181,8 +2158,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, byScreen4Wide[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 02, byScreen4Wide[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 00, byScreen4Wide[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 02, byScreen4Wide[1]);
 
                         checkedMap.Add((byte)(i + 0));
                         checkedMap.Add((byte)(i + 1));
@@ -2191,18 +2168,18 @@ namespace ZeldaFullEditor
 
                     case AreaSizeEnum.TallArea:
                         // Check 5 and 6
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is used to reduce the int to 2 bytes.
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 00, (ushort)((parentyPos * 0x0200) - 0x00E0)); // (ushort) is used to reduce the int to 2 bytes.
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 00, (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                        ROM.WriteShort(Constants.transition_target_north + (i * 2) + 16, (ushort)((parentyPos * 0x0200) - 0x00E0));
-                        ROM.WriteShort(Constants.transition_target_west + (i * 2) + 16, (ushort)((parentxPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2) + 16, (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2) + 16, (ushort)((parentxPos * 0x0200) - 0x0100));
 
                         // Check 7 and 8
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 00, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 00, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 00, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 00, parentyPos * 0x0200);
 
-                        ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2) + 16, parentxPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2) + 16, parentyPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2) + 16, parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2) + 16, parentyPos * 0x0200);
 
                         // Check 9
 
@@ -2249,8 +2226,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 00, byScreen1Tall[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 16, byScreen1Tall[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 00, byScreen1Tall[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 16, byScreen1Tall[1]);
 
                         // byScreen2 = Transitioning left.
                         ushort[] byScreen2Tall = { 0x0040, 0x0040 };
@@ -2298,8 +2275,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 00, byScreen2Tall[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 16, byScreen2Tall[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 00, byScreen2Tall[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 16, byScreen2Tall[1]);
 
                         // byScreen3 = Transitioning down.
                         ushort[] byScreen3Tall = { 0x1800, 0x1800 };
@@ -2322,8 +2299,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 00, byScreen3Tall[0]);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 16, byScreen3Tall[1]); // Always 0x1800.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 00, byScreen3Tall[0]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 16, byScreen3Tall[1]); // Always 0x1800.
 
                         // byScreen4 = Transitioning up.
                         ushort[] byScreen4Tall = { 0x2000, 0x2000 };
@@ -2346,8 +2323,8 @@ namespace ZeldaFullEditor
                             }
                         }
 
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 00, byScreen4Tall[0]); // Always 0x2000.
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 16, byScreen4Tall[1]);
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 00, byScreen4Tall[0]); // Always 0x2000.
+                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 16, byScreen4Tall[1]);
 
                         checkedMap.Add((byte)(i + 0));
                         checkedMap.Add((byte)(i + 8));
@@ -2359,14 +2336,24 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("Overworld parent map: \n");
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 0x14; i++)
             {
+                if (i % 0x08 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
                 Console.WriteLine(parentMap[i]);
             }
 
             Console.WriteLine("\nCheck 3: overworldScreenSize \n");
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 0x14; i++)
             {
+                if (i % 0x08 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
                 string temp = string.Empty;
                 for (int j = 0; j < 8; j++)
                 {
@@ -2377,9 +2364,14 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 5: transition_target_north \n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.transition_target_north + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.transition_target_north + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.transition_target_northExpanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.transition_target_northExpanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
@@ -2388,9 +2380,14 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 6: transition_target_west \n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.transition_target_west + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.transition_target_west + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.transition_target_westExpanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.transition_target_westExpanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
@@ -2399,9 +2396,14 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 7: overworldTransitionPositionX \n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.overworldTransitionPositionX + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.overworldTransitionPositionX + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.overworldTransitionPositionXExpanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.overworldTransitionPositionXExpanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
@@ -2410,9 +2412,14 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 8: overworldTransitionPositionY \n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.overworldTransitionPositionY + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.overworldTransitionPositionY + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.overworldTransitionPositionYExpanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.overworldTransitionPositionYExpanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
@@ -2422,9 +2429,14 @@ namespace ZeldaFullEditor
 
             Console.WriteLine("\nCheck 9:");
             Console.WriteLine("OverworldScreenTileMapChangeByScreen1 'Right'\n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen1Expanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
@@ -2433,9 +2445,14 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen2 'Left'\n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen2Expanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
@@ -2444,9 +2461,14 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen3 'Down'\n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen3Expanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
@@ -2455,9 +2477,14 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen4 'Up'\n");
-            for (int i = 0; i < 0x40; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
-                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4 + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
+                if (i % 0x40 == 0 && i != 0)
+                {
+                    Console.WriteLine(string.Empty);
+                }
+
+                Console.Write(ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2) + 1].ToString("X2").PadLeft(2, '0') + ROM.DATA[Constants.OverworldScreenTileMapChangeByScreen4Expanded + (i * 2)].ToString("X2").PadLeft(2, '0') + " ");
 
                 if (i % 8 == 7)
                 {
