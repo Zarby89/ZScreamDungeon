@@ -294,6 +294,12 @@
     <Compile Include="Gui\ExtraForms\SearchTilesForm.Designer.cs">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\TransportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\TransportForm.Designer.cs">
+      <DependentUpon>TransportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ZsprImporter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -579,10 +585,6 @@
     <Compile Include="T32UniqueCounter.cs" />
     <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Gui\WhirlpoolForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WhirlpoolForm.Designer.cs" />
     <Compile Include="WriteType.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
@@ -666,6 +668,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\TransportForm.resx">
+      <DependentUpon>TransportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ZsprImporter.resx">
       <DependentUpon>ZsprImporter.cs</DependentUpon>

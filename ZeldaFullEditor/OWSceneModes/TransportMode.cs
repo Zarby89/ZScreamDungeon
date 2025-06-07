@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Windows.Forms;
 using Lidgren.Network;
+using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
@@ -93,14 +96,14 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 for (int i = 0; i < 0x11; i++)
                 {
-                    TransportOW en = scene.ow.AllWhirlpools[i];
-                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 64 + scene.ow.WorldOffset)
+                    TransportOW transport = scene.ow.AllWhirlpools[i];
+                    if (transport.MapID >= scene.ow.WorldOffset && transport.MapID < 64 + scene.ow.WorldOffset)
                     {
-                        if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
+                        if (e.X >= transport.playerX && e.X < transport.playerX + 16 && e.Y >= transport.playerY && e.Y < transport.playerY + 16)
                         {
                             ContextMenuStrip menu = new ContextMenuStrip();
-                            menu.Items.Add("Whirlpool Properties");
-                            lastselectedTransport = en;
+                            menu.Items.Add("Transport Properties");
+                            lastselectedTransport = transport;
                             selectedTransport = null;
                             scene.mouse_down = false;
 
@@ -109,7 +112,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 menu.Items[0].Enabled = false;
                             }
 
-                            menu.Items[0].Click += exitProperty_Click;
+                            menu.Items[0].Click += TransportProperty_Click;
                             menu.Show(Cursor.Position);
                         }
                     }
@@ -119,15 +122,19 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        private void exitProperty_Click(object sender, EventArgs e)
+        private void TransportProperty_Click(object sender, EventArgs e)
         {
-            WhirlpoolForm wf = new WhirlpoolForm();
-            wf.textBox1.Text = lastselectedTransport.whirlpoolPos.ToString();
+            TransportForm transportForm = new TransportForm();
+            transportForm.mapDestinationBox.Text = lastselectedTransport.whirlpoolPos.ToString("X2");
+            transportForm.worldComboBox.SelectedIndex = lastselectedTransport.MapID / 0x40;
 
-            if (wf.ShowDialog() == DialogResult.OK)
+            if (transportForm.ShowDialog() == DialogResult.OK)
             {
-                ushort.TryParse(wf.textBox1.Text, out ushort v);
-                lastselectedTransport.whirlpoolPos = v;
+                lastselectedTransport.whirlpoolPos = (ushort)Int32.Parse(transportForm.mapDestinationBox.Text, NumberStyles.HexNumber);
+
+                int mapIDNoWorld = lastselectedTransport.MapID % 0x40;
+                lastselectedTransport.MapID = (ushort)(mapIDNoWorld + (0x40 * transportForm.worldComboBox.SelectedIndex));
+
                 SendTransportData(lastselectedTransport);
             }
         }
@@ -191,7 +198,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     TransportOW e = scene.ow.AllWhirlpools[i];
 
-                    if (e.MapID < 64 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
+                    if (e.MapID < 0x40 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
                     {
                         if (selectedTransport != null)
                         {
