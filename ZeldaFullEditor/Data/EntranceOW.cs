@@ -106,10 +106,8 @@ namespace ZeldaFullEditor
         {
             this.MapID = mapID;
 
-            if (mapID >= 64)
-            {
-                mapID -= 64;
-            }
+            // The map position need to be reguardless of the current world.
+            mapID %= 0x40;
 
             int mapX = mapID - ((mapID / 8) * 8);
             int mapY = mapID / 8;

@@ -126,11 +126,11 @@ namespace ZeldaFullEditor.OWSceneModes
                     mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                 }
 
-                AreaSizeEnum large = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
+                AreaSizeEnum areaSize = scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize;
 
                 if (scene.selectedFormSprite != null)
                 {
-                    scene.selectedFormSprite.updateMapStuff(mapID, large);
+                    scene.selectedFormSprite.updateMapStuff(mapID, areaSize);
                     int gameState = scene.ow.GameState;
 
                     if (mapID >= 64)
@@ -150,7 +150,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (selectedSprite != null)
                 {
-                    selectedSprite.updateMapStuff(mapID, large);
+                    selectedSprite.updateMapStuff(mapID, areaSize);
                     lastselectedSprite = selectedSprite;
                     SendSpriteData(selectedSprite);
                     selectedSprite = null;

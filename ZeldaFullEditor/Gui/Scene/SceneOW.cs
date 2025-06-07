@@ -913,7 +913,11 @@ namespace ZeldaFullEditor
             }
 
             int offset = 0;
-            if (this.selectedMap >= 0x80)
+            if (this.selectedMap >= 0x40 && this.selectedMap < 0x80)
+            {
+                offset = 0x40;
+            }
+            else if (this.selectedMap >= 0x80)
             {
                 offset = 0x80;
             }
@@ -1256,7 +1260,7 @@ namespace ZeldaFullEditor
                 }
 
                 int temp = this.selectedMap;
-                temp %= 64;
+                temp %= 0x40;
 
                 x = this.ow.AllMaps[temp].ParentID % 8;
                 y = this.ow.AllMaps[temp].ParentID / 8;

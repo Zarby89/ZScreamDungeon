@@ -1063,9 +1063,9 @@ namespace ZeldaFullEditor
         public bool SaveOWItems(SceneOW scene)
         {
             ROM.StartBlockLogWriting("Items OW DATA & Pointers", Constants.overworldItemsPointers);
-            var roomItems = new List<RoomPotSaveEditor>[128];
+            var roomItems = new List<RoomPotSaveEditor>[0x80];
 
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < 0x80; i++)
             {
                 roomItems[i] = new List<RoomPotSaveEditor>();
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
@@ -1083,11 +1083,11 @@ namespace ZeldaFullEditor
 
             int dataPos = Constants.overworldItemsPointers + 0x100;
 
-            int[] itemPointers = new int[128];
-            int[] itemPointersReuse = new int[128];
+            int[] itemPointers = new int[0x80];
+            int[] itemPointersReuse = new int[0x80];
             int emptyPointer = 0;
 
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < 0x80; i++)
             {
                 itemPointersReuse[i] = -1;
                 for (int ci = 0; ci < i; ci++)
@@ -1106,7 +1106,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < 0x80; i++)
             {
                 if (itemPointersReuse[i] == -1)
                 {
@@ -1747,27 +1747,25 @@ namespace ZeldaFullEditor
                     parentMapLine = string.Empty;
                 }
 
+                int parentyPos = (scene.ow.AllMaps[i].ParentID % 0x40) / 8;
+                int parentxPos = (scene.ow.AllMaps[i].ParentID % 0x40) % 8;
+
+                Console.WriteLine("Area: " + i.ToString("X2") + " X: " + parentxPos + " Y: " + parentyPos);
+
                 // If we've already checked this map:
-                if (checkedMap.Contains((byte)(i + 0x00)))
+                if (checkedMap.Contains((byte)i))
                 {
                     continue; // Ignore that map, we already checked it.
                 }
 
-                // Everything after this point does not have a world specific table and only needs to be written for LW areas (at least for now).
-
-                int yPos = i / 8;
-                int xPos = i % 8;
-                int parentyPos = scene.ow.AllMaps[i].ParentID / 8;
-                int parentxPos = scene.ow.AllMaps[i].ParentID % 8;
-
                 switch (scene.ow.AllMaps[i].AreaSize) // If it's large then save parent pos * 0x200 otherwise pos * 0x200.
                 {
                     case AreaSizeEnum.SmallArea:
-                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2), (ushort)((yPos * 0x0200) - 0x00E0));
-                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2), (ushort)((xPos * 0x0200) - 0x0100));
+                        ROM.WriteShort(Constants.transition_target_northExpanded + (i * 2), (ushort)((parentyPos * 0x0200) - 0x00E0));
+                        ROM.WriteShort(Constants.transition_target_westExpanded + (i * 2), (ushort)((parentxPos * 0x0200) - 0x0100));
 
-                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2), xPos * 0x0200);
-                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2), yPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionXExpanded + (i * 2), parentxPos * 0x0200);
+                        ROM.WriteShort(Constants.overworldTransitionPositionYExpanded + (i * 2), parentyPos * 0x0200);
 
                         // byScreen1 = Transitioning right.
                         ushort byScreen1Small = 0x0060;

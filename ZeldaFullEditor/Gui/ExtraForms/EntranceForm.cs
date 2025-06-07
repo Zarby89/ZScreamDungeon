@@ -42,7 +42,7 @@ namespace ZeldaFullEditor.Gui
 
             int.TryParse(textBox2.Text, out v); // Map Id
 
-            if (v > 128 || v < 0)
+            if (v > 0xA0 || v < 0)
             {
                 MessageBox.Show("Map ID is out of range; max value is 128");
                 return;

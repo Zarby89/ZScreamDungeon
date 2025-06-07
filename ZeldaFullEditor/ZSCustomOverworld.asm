@@ -4412,8 +4412,10 @@ OverworldHandleTransitions:
     LDA.b $30 : AND.w #$00FF : BEQ .noDeltaY
         LDA.b $67 : AND.w #$000C : STA.b $00
 
+        REP #$10
         LDA.b $8A : ASL : TAX
         LDA.b $20 : SEC : SBC.l Pool_OverworldTransitionPositionY, X
+        SEP #$10
 
         ; Transitioning up.
         LDY.b #$06 : LDX.b #$08
@@ -4433,8 +4435,10 @@ OverworldHandleTransitions:
 
         LDA.b $67 : AND.w #$0003 : STA.b $00
 
+        REP #$10
         LDA.b $8A : ASL : TAX
         LDA.b $22 : SEC : SBC.l Pool_OverworldTransitionPositionX, X
+        SEP #$10
 
         ; Transitioning left.
         LDY.b #$02 : LDX.b #$02
@@ -4458,7 +4462,6 @@ OverworldHandleTransitions:
 
     ; Triggers when Link finally reaches the edge of the screen and is moving
     ; in that direction.
-    ; $012A33
     .transition
 
     SEP #$20
@@ -4486,7 +4489,7 @@ OverworldHandleTransitions:
         ; 0x02 - Left
         ; 0x04 - Down
         ; 0x06 - Up
-        CLC : ADC.l .ByScreenAddresses, X : TAX
+        CLC : ADC.l OverworldScreenTileMapChange_ByScreenAddresses, X : TAX
         LDA.b $84 : CLC : ADC.l Pool_ByScreen1, X : STA.b $84
 
         LDA.b $04 : LSR : TAX
@@ -4562,12 +4565,6 @@ OverworldHandleTransitions:
         JSR.w Overworld_CgramAuxToMain
 
         RTS
-
-    .ByScreenAddresses
-    dw Pool_ByScreen1-Pool_ByScreen1
-    dw Pool_ByScreen2-Pool_ByScreen1
-    dw Pool_ByScreen3-Pool_ByScreen1
-    dw Pool_ByScreen4-Pool_ByScreen1
 }
 warnpc $02AB08 ; $012B08
 
@@ -4585,8 +4582,16 @@ OverworldScreenTileMapChange:
     else
     dw $0F80, $0F80, $003F, $003F
     endif
+
+    warnpc $02A634 ; $012634
+
+    .ByScreenAddresses
+    dw Pool_ByScreen1-Pool_ByScreen1
+    dw Pool_ByScreen2-Pool_ByScreen1
+    dw Pool_ByScreen3-Pool_ByScreen1
+    dw Pool_ByScreen4-Pool_ByScreen1
 }
-warnpc $02A634 ; $012634
+warnpc $02A63C ; $01263C
 
 ; ==============================================================================
 
@@ -4598,9 +4603,15 @@ org $02C0C3 ; $0140C3
 Overworld_SetCameraBounds_Interupt:
 {
     LDX.b $8A
-    LDA.w Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X : ASL : TAX
+    LDA.w Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X
+    AND.w #$00FF : ASL : TAX
+
+    REP #$10
+    LDA.b $8A : ASL : TAY
 
     JSL.l NewOverworld_SetCameraBounds
+
+    SEP #$10
 
     RTS
 }
