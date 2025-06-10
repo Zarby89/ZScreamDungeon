@@ -229,36 +229,38 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void onMouseMove(MouseEventArgs e)
         {
-            if (scene.mouse_down)
+            int mouseTileX = e.X.Clamp(0, 4080) / 16;
+            int mouseTileY = e.Y.Clamp(0, 4080) / 16;
+            int mapX = (mouseTileX / 32);
+            int mapY = (mouseTileY / 32);
+
+            scene.mapHover = mapX + (mapY * 8);
+
+            if (!scene.mouse_down)
             {
-                if (scene.selectedFormSprite != null)
+                return;
+            }
+
+            if (scene.selectedFormSprite != null)
+            {
+                scene.selectedFormSprite.map_x = (e.X / 16) * 16;
+                scene.selectedFormSprite.map_y = (e.Y / 16) * 16;
+
+                //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+            }
+
+            if (isLeftPress)
+            {
+                if (selectedSprite != null)
                 {
-                    scene.selectedFormSprite.map_x = (e.X / 16) * 16;
-                    scene.selectedFormSprite.map_y = (e.Y / 16) * 16;
+                    selectedSprite.map_x = (e.X / 16) * 16;
+                    selectedSprite.map_y = (e.Y / 16) * 16;
+
+                    // Prevent the sprite from moving outside of the map.
+                    selectedSprite.map_x = selectedSprite.map_x.Clamp(0, 4080);
+                    selectedSprite.map_y = selectedSprite.map_y.Clamp(0, 4080);
 
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-                }
-
-                if (isLeftPress)
-                {
-                    int mouseTileX = e.X.Clamp(0, 4080) / 16;
-                    int mouseTileY = e.Y.Clamp(0, 4080) / 16;
-                    int mapX = (mouseTileX / 32);
-                    int mapY = (mouseTileY / 32);
-
-                    scene.mapHover = mapX + (mapY * 8);
-
-                    if (selectedSprite != null)
-                    {
-                        selectedSprite.map_x = (e.X / 16) * 16;
-                        selectedSprite.map_y = (e.Y / 16) * 16;
-
-                        // Prevent the sprite from moving outside of the map.
-                        selectedSprite.map_x = selectedSprite.map_x.Clamp(0, 4080);
-                        selectedSprite.map_y = selectedSprite.map_y.Clamp(0, 4080);
-
-                        //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-                    }
                 }
             }
         }

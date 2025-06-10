@@ -46,17 +46,17 @@ namespace ZeldaFullEditor.OWSceneModes
         /// <param name="e"> Event args. </param>
         public void OnMouseMove(MouseEventArgs e)
         {
+            int mouseTileX = e.X / 16;
+            int mouseTileY = e.Y / 16;
+            int mapX = mouseTileX.Clamp(0, 4080) / 32;
+            int mapY = mouseTileY.Clamp(0, 4080) / 32;
+
+            int tempMapHover = mapX + (mapY * 8);
+
+            this.scene.mapHover = this.scene.ow.AllMaps[tempMapHover].ParentID;
+
             if (this.scene.mouse_down)
             {
-                int mouseTileX = e.X / 16;
-                int mouseTileY = e.Y / 16;
-                int mapX = mouseTileX.Clamp(0, 4080) / 32;
-                int mapY = mouseTileY.Clamp(0, 4080) / 32;
-
-                int tempMapHover = mapX + (mapY * 8);
-
-                this.scene.mapHover = this.scene.ow.AllMaps[tempMapHover].ParentID;
-
                 if (this.selectedGrave != null)
                 {
                     this.selectedGrave.XTilePos = (ushort)e.X.Clamp(0, 4088);

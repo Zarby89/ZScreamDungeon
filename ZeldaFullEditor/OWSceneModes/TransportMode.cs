@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Windows.Forms;
 using Lidgren.Network;
 using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Properties;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
@@ -48,36 +48,52 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void onMouseMove(MouseEventArgs e)
         {
-            if (scene.mouse_down)
+            int mouseTileX = e.X.Clamp(0, 4080) / 16;
+            int mouseTileY = e.Y.Clamp(0, 4080) / 16;
+            int mapX = mouseTileX / 32;
+            int mapY = mouseTileY / 32;
+
+            scene.mapHover = mapX + (mapY * 8);
+
+            if (selectedTransport == null || !scene.mouse_down)
             {
-                int mouseTileX = e.X.Clamp(0, 4080) / 16;
-                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
-                int mapX = mouseTileX / 32;
-                int mapY = mouseTileY / 32;
+                return;
+            }
 
-                scene.mapHover = mapX + (mapY * 8);
+            ushort x = (ushort)e.X.Clamp(0, 4088);
+            ushort y = (ushort)e.Y.Clamp(0, 4088);
 
-                if (selectedTransport != null)
+            if (scene.mapHover + scene.ow.WorldOffset >= 0xA0)
+            {
+                selectedTransport.playerY = (ushort)e.Y.Clamp(0, 2040);
+            }
+
+            if (scene.snapToGrid)
+            {
+                x = (ushort)((e.X / 8) * 8).Clamp(0, 4088);
+                y = (ushort)((e.Y / 8) * 8).Clamp(0, 4088);
+
+                if (scene.mapHover + scene.ow.WorldOffset >= 0xA0)
                 {
-                    selectedTransport.playerX = (ushort)e.X.Clamp(0, 4088);
-                    selectedTransport.playerY = (ushort)e.Y.Clamp(0, 4088);
-                    if (scene.snapToGrid)
-                    {
-                        selectedTransport.playerX = (ushort)((e.X / 8) * 8).Clamp(0, 4088);
-                        selectedTransport.playerY = (ushort)((e.Y / 8) * 8).Clamp(0, 4088);
-                    }
-
-                    byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;
-                    if (mapID == 255)
-                    {
-                        mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
-                    }
-
-                    selectedTransport.updateMapStuff(mapID, scene.ow);
-
-                    // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+                    y = (ushort)((e.Y / 8) * 8).Clamp(0, 2040);
                 }
             }
+
+            selectedTransport.playerX = x;
+            selectedTransport.playerY = y;
+
+            int childMapID = scene.mapHover + scene.ow.WorldOffset;
+            childMapID = childMapID.Clamp(0, 0x9F);
+            byte mapID = scene.ow.AllMaps[childMapID].ParentID;
+
+            if (mapID == 255)
+            {
+                mapID = (byte)childMapID;
+            }
+
+            selectedTransport.updateMapStuff(mapID, scene.ow);
+
+            // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
         public void onMouseUp(MouseEventArgs e)
@@ -132,8 +148,32 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 lastselectedTransport.whirlpoolPos = (ushort)Int32.Parse(transportForm.mapDestinationBox.Text, NumberStyles.HexNumber);
 
-                int mapIDNoWorld = lastselectedTransport.MapID % 0x40;
-                lastselectedTransport.MapID = (ushort)(mapIDNoWorld + (0x40 * transportForm.worldComboBox.SelectedIndex));
+                bool shifted = false;
+
+                // If the new map ID is greater than 0xA0, subtract the Y coordinate by 1 (mapID - 0x08) until it is < 0xA0.
+                int newMapID = (lastselectedTransport.MapID % 0x40) + (0x40 * transportForm.worldComboBox.SelectedIndex);
+                while (newMapID >= 0xA0)
+                {
+                    newMapID -= 0x08;
+
+                    lastselectedTransport.playerY -= 512;
+
+                    shifted = true;
+                }
+
+                if (shifted)
+                {
+                    AreaSizeEnum areaSize = scene.ow.AllMaps[lastselectedTransport.MapID].AreaSize;
+                    if (areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea)
+                    {
+                        lastselectedTransport.playerY -= 512; 
+                    }
+
+                    lastselectedTransport.playerX = lastselectedTransport.playerX.Clamp(0, 2040);
+                    lastselectedTransport.playerY = lastselectedTransport.playerY.Clamp(0, 2040);
+                }
+
+                lastselectedTransport.updateMapStuff((byte)newMapID, scene.ow);
 
                 SendTransportData(lastselectedTransport);
             }

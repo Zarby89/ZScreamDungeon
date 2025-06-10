@@ -206,22 +206,21 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
             }
 
-            
+
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
-
         public void onMouseMove(MouseEventArgs e)
         {
+            int mouseTileX = e.X.Clamp(0, 4080) / 16;
+            int mouseTileY = e.Y.Clamp(0, 4080) / 16;
+            int mapX = (mouseTileX / 32);
+            int mapY = (mouseTileY / 32);
+
+            scene.mapHover = mapX + (mapY * 8);
+
             if (scene.mouse_down && (mx != e.X || my != e.Y))
             {
-                int mouseTileX = e.X.Clamp(0, 4080) / 16;
-                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
-                int mapX = (mouseTileX / 32);
-                int mapY = (mouseTileY / 32);
-
-                scene.mapHover = mapX + (mapY * 8);
-
                 if (selectedExit != null)
                 {
                     selectedExit.PlayerX = (ushort)e.X.Clamp(0, 4088);

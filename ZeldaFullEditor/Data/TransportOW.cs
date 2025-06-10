@@ -55,11 +55,8 @@ namespace ZeldaFullEditor
             int areaSizeX = 256;
             int areaSizeY = 256;
 
-            if (mapID < 128)
-            {
-                areaSizeX = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.WideArea ? 768 : 256;
-                areaSizeY = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea ? 768 : 256;
-            }
+            areaSizeX = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.WideArea ? 768 : 256;
+            areaSizeY = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea ? 768 : 256;
 
             this.MapID = mapID;
             var mapx = (mapID & 7) << 9;
