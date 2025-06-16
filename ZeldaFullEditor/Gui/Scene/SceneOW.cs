@@ -314,14 +314,14 @@ namespace ZeldaFullEditor
 
             if (this.selectedMode == ObjectMode.Tile || this.selectedMode == ObjectMode.FillTile)
             {
-                text = "Selected Tile " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
+                this.tilemode.OnMouseUp(e);
+
+                text = "Selected Tile: " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
 
                 this.owForm.SetSelectedObjectLabels(
                         selectedTile[0].ToString("X4"),
                         (e.X / 16).ToString("X2"),
                         (e.Y / 16).ToString("X2"));
-
-                this.tilemode.OnMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.Overlay)
             {

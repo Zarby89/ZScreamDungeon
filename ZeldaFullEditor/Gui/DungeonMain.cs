@@ -348,49 +348,49 @@ namespace ZeldaFullEditor
                 // MUST BE CALLED BEFORE SAVEALLSPRITES.
                 if (this.saveSettingsArr[9] && save.SaveOWSprites(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("overworld sprites out of range");
+                    UIText.CryAboutSaving("There are too many Overworld sprites");
                     break;
                 }
 
                 if (this.saveSettingsArr[0] && save.SaveAllSprites())
                 {
-                    UIText.CryAboutSaving("there are too many sprites");
+                    UIText.CryAboutSaving("There are too many sprites");
                     break;
                 }
 
                 if (this.saveSettingsArr[1] && save.SaveAllPots())
                 {
-                    UIText.CryAboutSaving("there are too many pot items");
+                    UIText.CryAboutSaving("There are too many pot items");
                     break;
                 }
 
                 if (this.saveSettingsArr[2] && save.SaveAllChests())
                 {
-                    UIText.CryAboutSaving("there are too many chest items");
+                    UIText.CryAboutSaving("There are too many chest items");
                     break;
                 }
 
                 if (this.saveSettingsArr[3] && save.SaveAllObjects())
                 {
-                    UIText.CryAboutSaving("there are too many tiles objects");
+                    UIText.CryAboutSaving("There are too many tiles objects");
                     break;
                 }
 
                 if (this.saveSettingsArr[4] && save.SaveBlocks())
                 {
-                    UIText.CryAboutSaving("there are too many pushable blocks");
+                    UIText.CryAboutSaving("There are too many pushable blocks");
                     break;
                 }
 
                 if (this.saveSettingsArr[5] && save.SaveTorches())
                 {
-                    UIText.CryAboutSaving("there are too many torches");
+                    UIText.CryAboutSaving("There are too many torches");
                     break;
                 }
 
                 if (this.saveSettingsArr[6] && save.SaveAllPits())
                 {
-                    UIText.CryAboutSaving("there are too many pits with damage");
+                    UIText.CryAboutSaving("There are too many pits with damage");
                     break;
                 }
 
@@ -405,13 +405,13 @@ namespace ZeldaFullEditor
                     // Set entrances expansion Bytes
                     ROM.DATA[Constants.entrance_EXP] = 00;
                     ROM.DATA[Constants.entrance_EXP + 1] = 01;
-                    UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
+                    UIText.CryAboutSaving("Something with entrances ?? no idea why LUL");
                     break;
                 }
 
                 if (this.saveSettingsArr[10] && save.SaveOWItems(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("overworld items out of range");
+                    UIText.CryAboutSaving("Overworld items out of range");
                     break;
                 }
 
@@ -423,13 +423,13 @@ namespace ZeldaFullEditor
 
                 if (this.saveSettingsArr[12] && save.SaveOWTransports(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("overworld transports out of range");
+                    UIText.CryAboutSaving("Overworld transports out of range");
                     break;
                 }
 
                 if (this.saveSettingsArr[13] && save.SaveOWExits(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("overworld Exits or something IDK");
+                    UIText.CryAboutSaving("Overworld Exits or something IDK");
                     break;
                 }
 
@@ -443,7 +443,7 @@ namespace ZeldaFullEditor
 
                 if (this.saveSettingsArr[16] && save.SaveMapProperties(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("overworld map properties ???");
+                    UIText.CryAboutSaving("Overworld map properties ???");
                     break;
                 }
 
@@ -456,19 +456,19 @@ namespace ZeldaFullEditor
 
                 if (this.saveSettingsArr[23] && GfxGroups.SaveGroupsToROM())
                 {
-                    UIText.CryAboutSaving("problem saving GFX Groups");
+                    UIText.CryAboutSaving("Problem saving GFX Groups");
                     break;
                 }
 
                 if (this.saveSettingsArr[24] && Palettes.SavePalettesToROM(ROM.DATA))
                 {
-                    UIText.CryAboutSaving("problem saving palettes");
+                    UIText.CryAboutSaving("Problem saving palettes");
                     break;
                 }
 
                 if (this.saveSettingsArr[25] && save.SaveAllText(this.textEditor))
                 {
-                    UIText.CryAboutSaving("impossible to save text");
+                    UIText.CryAboutSaving("Impossible to save text");
                     break;
                 }
 
@@ -476,95 +476,95 @@ namespace ZeldaFullEditor
 
                 if (this.saveSettingsArr[28] && save.SaveCustomCollision())
                 {
-                    UIText.CryAboutSaving("there was an error saving the custom collision rectangles");
+                    UIText.CryAboutSaving("There was an error saving the custom collision rectangles");
                     break;
                 }
 
                 if (this.saveSettingsArr[31] && save.SaveMapOverlays(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("overworld map overlays ???");
+                    UIText.CryAboutSaving("Overworld map overlays ???");
                     break;
                 }
 
                 if (this.saveSettingsArr[32] && save.SaveOverworldMusic(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("overworld map tile types ???");
+                    UIText.CryAboutSaving("Overworld map tile types ???");
                     break;
                 }
 
                 if (this.saveSettingsArr[33] && save.SaveTitleScreen())
                 {
-                    UIText.CryAboutSaving("overworld title screen?");
+                    UIText.CryAboutSaving("Overworld title screen?");
                     break;
                 }
 
                 if (this.saveSettingsArr[34] && save.SaveOverworldMiniMap())
                 {
-                    UIText.CryAboutSaving("problem saving overworld Minimap?");
+                    UIText.CryAboutSaving("Problem saving overworld Minimap?");
                     break;
                 }
 
                 if (this.saveSettingsArr[35] && save.SaveOverworldTilesType(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
+                    UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
                     break;
                 }
 
                 if (this.saveSettingsArr[36] && save.SaveOverworldMaps(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("problem saving overworld maps");
+                    UIText.CryAboutSaving("Problem saving overworld maps");
                     break;
                 }
 
                 if (this.saveSettingsArr[37] && save.SaveGravestones(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("problem saving gravestones");
+                    UIText.CryAboutSaving("Problem saving gravestones");
                     break;
                 }
 
                 if (this.saveSettingsArr[38] && save.SaveDungeonMaps())
                 {
-                    UIText.CryAboutSaving("problem saving dungeon maps");
+                    UIText.CryAboutSaving("Problem saving dungeon maps");
                     break;
                 }
 
                 if (this.saveSettingsArr[39] && save.SaveTriforce())
                 {
-                    UIText.CryAboutSaving("problem saving triforce");
+                    UIText.CryAboutSaving("Problem saving triforce");
                     break;
                 }
 
                 if (this.saveSettingsArr[40] && save.SaveOverworldMessagesIDs(this.overworldEditor.scene))
                 {
-                    UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
+                    UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
                     break;
                 }
 
                 //DO NOT MOVE need to be before 45
                 if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
                 {
-                    UIText.CryAboutSaving("problem saving sprites properties");
+                    UIText.CryAboutSaving("Problem saving sprites properties");
                     return;
                 }
 
                 ROM.Write(Constants.DamageClass, DungeonsData.GlobalDamages);
                 if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
                 {    
-                    UIText.CryAboutSaving("problem saving sprites damages");
+                    UIText.CryAboutSaving("Problem saving sprites damages");
                     return;
                 }
 
                 // The mosaic byte is hardcoded to true on purpose for now.
                 if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44], this.saveSettingsArr[47]))
                 {
-                    UIText.CryAboutSaving("problem saving ZS Custom Overworld ASM");
+                    UIText.CryAboutSaving("Problem saving ZS Custom Overworld ASM");
                     break;
                 }
 
                 // The mosaic byte is hardcoded to true on purpose for now.
                 if (save.SaveDungeonHolesOverlay())
                 {
-                    UIText.CryAboutSaving("problem saving dungeons holes overlays (probably using too much space) try removing objects");
+                    UIText.CryAboutSaving("Problem saving dungeons holes overlays (probably using too much space) try removing objects");
                     break;
                 }
 

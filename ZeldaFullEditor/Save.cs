@@ -1192,6 +1192,8 @@ namespace ZeldaFullEditor
                 }
             }
 
+            // Look through all of the pointers that we have already established and see if there are any duplicates.
+            // If there are duplicates we can reuse the pointers.
             for (int i = 0; i < Constants.NumberOfOWSprites; i++)
             {
                 spritePointersReused[i] = -1;
@@ -1210,11 +1212,8 @@ namespace ZeldaFullEditor
                 }
             }
 
-            int dataPos = 0x4CB41;
-
-            // END OF OW SPRITES DATA = 0x4D62E
-            // mROM.Write(0x4CB41,0xFF); // empty sprite data
-            // 0x4CB42 // start of rooms data saves
+            // Start of area sprite data.
+            int dataPos = 0x04CB41;
 
             // Write sprite data if sprPointersReused[i] == -1
             for (int i = 0; i < Constants.NumberOfOWSprites; i++)
@@ -1238,10 +1237,13 @@ namespace ZeldaFullEditor
                 int SNESAddress = Utils.PcToSnes(spritePointers[i]);
                 ROM.WriteShort(Constants.overworldSpritesBegining + (i * 2), SNESAddress, true, "Sprite Pointer for map" + i.ToString("D3"));
             }
+
             ROM.spaceUsedOWSprites = dataPos;
-            if (dataPos >= 0x4D62E)
+            Console.WriteLine("Overworld Sprite end position: 0x" + dataPos.ToString("X6"));
+
+            // END OF OW SPRITES DATA.
+            if (dataPos >= 0x04D62E)
             {
-                Console.WriteLine("Position " + dataPos.ToString("X6"));
                 return true; // Error.
             }
 
@@ -1349,24 +1351,24 @@ namespace ZeldaFullEditor
         {
             ROM.StartBlockLogWriting("Map Properties", Constants.mapGfx);
 
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX);
                 ROM.Write(Constants.overworldSpriteset + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 64 + i, scene.ow.AllMaps[i].SpriteGFX[1], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].SpriteGFX[2], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldSpriteset + 0x40 + i, scene.ow.AllMaps[i].SpriteGFX[1], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldSpriteset + 0x80 + i, scene.ow.AllMaps[i].SpriteGFX[2], WriteType.SpriteSet);
                 ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
                 ROM.Write(Constants.overworldSpritePalette + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 64 + i, scene.ow.AllMaps[i].SpritePalette[1], WriteType.SpritePalette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].SpritePalette[2], WriteType.SpritePalette);
+                ROM.Write(Constants.overworldSpritePalette + 0x40 + i, scene.ow.AllMaps[i].SpritePalette[1], WriteType.SpritePalette);
+                ROM.Write(Constants.overworldSpritePalette + 0x80 + i, scene.ow.AllMaps[i].SpritePalette[2], WriteType.SpritePalette);
             }
 
-            for (int i = 64; i < 128; i++)
+            for (int i = 0x40; i < 0x80; i++)
             {
                 ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX);
-                ROM.Write(Constants.overworldSpriteset + 128 + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldSpriteset + 0x80 + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
                 ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
-                ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
+                ROM.Write(Constants.overworldSpritePalette + 0x80 + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
             }
 
             ROM.EndBlockLogWriting();

@@ -260,6 +260,9 @@ namespace ZeldaFullEditor
                 this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
                 this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
 
+                this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
+                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+
                 switch (index)
                 {
                     case 0x88:
@@ -707,10 +710,7 @@ namespace ZeldaFullEditor
                 previousSprPalId = ROM.DATA[Constants.overworldSpritePalette + this.ParentID - 1];
             }
 
-            if (this.AuxPalette >= 0xA3)
-            {
-                this.AuxPalette = 0xA3;
-            }
+            this.AuxPalette = this.AuxPalette.Clamp(0x00, 0xA3);
 
             byte pal1 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4)]; // aux1
             byte pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (this.AuxPalette * 4) + 1]; // aux2

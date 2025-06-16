@@ -1714,7 +1714,7 @@ PreOverworld_LoadProperties_LoadMain:
     STZ.b $EE   ; Reset Link layer to BG2
     STZ.w $0476 ; Another layer flag
         
-    INC.b $11 ; SCAWFUL: We should verify what submodule this is moving to.
+    INC.b $11 ; TODO: We should verify what submodule this is moving to.
     INC.b $16 ; NMI HUD Update flag
         
     STZ.w $0402 : STZ.w $0403
@@ -1832,7 +1832,7 @@ Func028632:
     
     JSL.l DecompOwAnimatedTiles
         
-    ; SCAWFUL: Verify the submodule ID being manipulated here.
+    ; TODO: Verify the submodule ID being manipulated here.
     LDA.b $11 : LSR : TAX
         
     LDA.l Credits_LoadScene_PrepGFX_sprite_gfx, X : STA.w $0AA3
@@ -2021,7 +2021,7 @@ CustomOverworld_LoadSubscreenOverlay_PostInit:
                     ; Clear TSQ PPU Register, to be handled in NMI.
                     STZ.b $1D
                             
-                    INC.b $11 ; SCAWFUL: Verify the submodule we are moving to.
+                    INC.b $11 ; TODO: Verify the submodule we are moving to.
                             
                     RTS
         
@@ -3373,7 +3373,7 @@ Func0AB8F5:
         
     JSL.l InitTilesets
         
-    ; SCAWFUL: Verify the interface submodule ID being used here.
+    ; TODO: Verify the interface submodule ID being used here.
     ; Provides context on where in the jump table we're at.
     INC.w $0200
         
@@ -4602,16 +4602,7 @@ if !Func02C0C3 == $01
 org $02C0C3 ; $0140C3
 Overworld_SetCameraBounds_Interupt:
 {
-    LDX.b $8A
-    LDA.w Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X
-    AND.w #$00FF : ASL : TAX
-
-    REP #$10
-    LDA.b $8A : ASL : TAY
-
     JSL.l NewOverworld_SetCameraBounds
-
-    SEP #$10
 
     RTS
 }
@@ -4640,6 +4631,13 @@ NewOverworld_SetCameraBounds:
 {
     PHB : PHK : PLB
 
+    LDX.b $8A
+    LDA.l Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X
+    AND.w #$00FF : ASL : TAX
+
+    REP #$10
+    LDA.b $8A : ASL : TAY
+
     LDA.w Pool_OverworldTransitionPositionY, Y
     STA.w $0600
 
@@ -4663,6 +4661,8 @@ NewOverworld_SetCameraBounds:
 
     CLC : ADC.w .trans_target_east_offset, X
     STA.w $0616
+
+    SEP #$10
 
     PLB
 
@@ -4766,9 +4766,6 @@ Overworld_LoadMapProperties_Interupt:
     LDA.l Pool_OverworldTransitionPositionY, X          : STA.w $0708
     LDA.l Pool_OverworldTransitionPositionX, X : LSR #3 : STA.w $070C
 
-    LDX.b $8A
-    LDA.l Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X
-    
     JSL.l AreaSizeCheck
 
     SEP #$30
@@ -4831,8 +4828,10 @@ AreaSizeCheck:
 {
     PHB : PHK : PLB
 
-    AND.w #$00FF : ASL : TAX
+    LDX.b $8A
+    LDA.l Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X
 
+    AND.w #$00FF : ASL : TAX
     LDA.w .YSize, X : STA.w $070A
     LDA.w .XSize, X : STA.w $070E
 
@@ -5027,6 +5026,79 @@ org $02F39B ; $01739B
     db $D0
 
 endif
+
+; ==============================================================================
+
+org $0ED61D ; $07561D
+Overworld_SetScreenBGColorCacheOnly:
+
+org $02DD8A ; $015D8A
+UnderworldExitData_overworld_id:
+
+org $02E94F ; $01694F
+LoadSpecialOverworld_Interupt:
+{
+    PLA : STA.b $A0
+
+    REP #$30
+
+    LDA.b $8A : AND.w #$00FF : ASL : TAX
+    LDA.l Pool_OverworldTransitionPositionY, X          : STA.w $0708
+    LDA.l Pool_OverworldTransitionPositionX, X : LSR #3 : STA.w $070C
+
+    JSL.l AreaSizeCheck
+
+    JSL.l NewOverworld_SetCameraBounds
+
+    SEP #$30
+
+    PLB
+
+    JSL.l Overworld_SetScreenBGColorCacheOnly
+
+    RTS
+}
+warnpc $02E9BC ; $0169BC
+
+; ==============================================================================
+
+org $0EDEE3 ; $075EE3
+SpecialOverworld_CheckForReturnTrigger:
+
+org $1BBBF4 ; $0DBBF4
+Overworld_Entrance:
+
+org $0EF582 ; $077582
+Overworld_DwDeathMountainPaletteAnimation:
+
+org $02A5D3 ; $0125D3
+Overworld_PlayerControl_Interupt:
+{
+    JSL.l Overworld_Entrance
+    JSL.l Overworld_DwDeathMountainPaletteAnimation
+    
+    ; If special outdoors mode skip this part.
+    LDA.b $10 : CMP.b #$0B : BNE .notSpecialOverworld
+        ; Checks for tiles that lead back to normal overworld.
+        JSL.l SpecialOverworld_CheckForReturnTrigger
+
+        LDA.b $11 : CMP.b #$24 : BEQ .return
+
+    .notSpecialOverworld
+
+    JSR.w OverworldHandleTransitions
+
+    .return
+
+    SEP #$20
+
+    RTS
+}
+warnpc $02A62C ; $01262C
+
+; TODO: TEST: DONT LEAVE IN:
+org $0EDED4 ; $075ED4
+dw $0080, $0080, $008B
 
 ; ==============================================================================
 
