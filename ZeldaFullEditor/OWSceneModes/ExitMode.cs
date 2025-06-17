@@ -100,6 +100,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         string tname = "Exit [" + i.ToString("X2") + "] -> From room " + scene.ow.AllExits[i].RoomID.ToString("X4");
                         scene.owForm.overworldexitsListbox.Items[i] = tname;
                     }
+
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                     break;
                 }
@@ -118,21 +119,21 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (e.Button == MouseButtons.Left)
             {
-                for (int i = 0; i < 78; i++)
+                foreach (ExitOW exit in scene.ow.AllExits)
                 {
-                    ExitOW en = scene.ow.AllExits[i];
-                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 64 + scene.ow.WorldOffset)
+                    if (exit.MapID >= scene.ow.WorldOffset && exit.MapID < 0x40 + scene.ow.WorldOffset)
                     {
-                        if (e.X >= en.PlayerX && e.X < en.PlayerX + 16 && e.Y >= en.PlayerY && e.Y < en.PlayerY + 16)
+                        if (e.X >= exit.PlayerX && e.X < exit.PlayerX + 16 && e.Y >= exit.PlayerY && e.Y < exit.PlayerY + 16)
                         {
                             if (!scene.mouse_down)
                             {
-                                selectedExit = en;
-                                lastselectedExit = en;
+                                selectedExit = exit;
+                                lastselectedExit = exit;
                                 mx = e.X;
                                 my = e.Y;
                                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                                 scene.mouse_down = true;
+
                                 break;
                             }
                         }
@@ -149,6 +150,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     if (scene.ow.AllExits[i] == lastselectedExit)
                     {
                         scene.owForm.overworldexitsListbox.SelectedIndex = i;
+
                         break;
                     }
                 }
@@ -206,7 +208,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
             }
 
-
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -263,10 +264,10 @@ namespace ZeldaFullEditor.OWSceneModes
                 bool clickedon = false;
                 ContextMenuStrip menu = new ContextMenuStrip();
 
-                for (int i = 0; i < 78; i++)
+                for (int i = 0; i < scene.ow.AllExits.Length; i++)
                 {
                     ExitOW en = scene.ow.AllExits[i];
-                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 64 + scene.ow.WorldOffset)
+                    if (en.MapID >= scene.ow.WorldOffset && en.MapID < 0x40 + scene.ow.WorldOffset)
                     {
                         if (e.X >= en.PlayerX && e.X < en.PlayerX + 16 && e.Y >= en.PlayerY && e.Y < en.PlayerY + 16)
                         {
@@ -333,7 +334,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.selectedTileSizeX = 2;
                     scene.selectedTile[0] = 1865;
                     scene.selectedTile[1] = 1866;
-
                 }
                 else if ((lastselectedExit.DoorType2 & 0x8000) != 0) // Castle door
                 {
@@ -367,8 +367,8 @@ namespace ZeldaFullEditor.OWSceneModes
                     break;
                 }
             }
-            scene.owForm.overworldexitsListbox_SelectedIndexChanged(null, null);
 
+            scene.owForm.overworldexitsListbox_SelectedIndexChanged(null, null);
 
             selectedExit = null;
             scene.mouse_down = false;
@@ -454,15 +454,14 @@ namespace ZeldaFullEditor.OWSceneModes
             }
             else
             {
-                for (int i = 0; i < 78; i++)
+                for (int i = 0; i < scene.ow.AllExits.Length; i++)
                 {
                     g.CompositingMode = CompositingMode.SourceOver;
                     ExitOW ex = scene.ow.AllExits[i];
 
-                    if (ex.MapID < 64 + scene.ow.WorldOffset && ex.MapID >= scene.ow.WorldOffset)
+                    if (ex.MapID < 0x40 + scene.ow.WorldOffset && ex.MapID >= scene.ow.WorldOffset)
                     {
                         Brush bgrBrush = Constants.LightGray200Brush;
-                        Brush fontBrush = Brushes.Black;
 
                         if (selectedExit == null)
                         {
@@ -481,6 +480,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
                                 g.DrawLine(Pens.Blue, ex.CameraX, ex.CameraY - 8, ex.CameraX, ex.CameraY + 8);
                                 g.CompositingMode = CompositingMode.SourceCopy;
+
                                 continue;
                             }
 

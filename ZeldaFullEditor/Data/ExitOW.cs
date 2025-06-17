@@ -197,15 +197,8 @@ namespace ZeldaFullEditor
             this.MapID = mapID;
 
             AreaSizeEnum areaSize = overworld.AllMaps[mapID].AreaSize;
-            int areaSizeX = 256;
-            int areaSizeY = 256;
-
-            // If map is large, areaSizeX or Y = 768, otherwise 256.
-            if (mapID < 128)
-            {
-                areaSizeX = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.WideArea ? 768 : 256;
-                areaSizeY = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea ? 768 : 256;
-            }
+            int areaSizeX = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.WideArea ? 768 : 256;
+            int areaSizeY = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea ? 768 : 256;
 
             int mapX = mapID - ((mapID / 8) * 8);
             int mapY = mapID / 8;

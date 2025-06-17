@@ -119,15 +119,19 @@ namespace ZeldaFullEditor.Gui
 
             for (int i = 0; i < overworld.AllExits.Length; i++)
             {
-                string tname = "Exit [" + i.ToString("X2") + "] -> From room " + overworld.AllExits[i].RoomID.ToString("X4");
-                if (overworld.AllExits[i].RoomID >= 320)
-                {
-                    tname += " Ending Cutscene";
-                }
-
+                string tname = "0x" + i.ToString("X2") + ": Area 0x" + overworld.AllExits[i].MapID.ToString("X2") + " Room 0x" + overworld.AllExits[i].RoomID.ToString("X4");
+                
                 if (overworld.AllExits[i].PlayerX == 0xFFFF)
                 {
                     tname += " DELETED";
+                }
+                else if (overworld.AllExits[i].RoomID == 0x0180 || overworld.AllExits[i].RoomID == 0x0181 || overworld.AllExits[i].RoomID == 0x0182)
+                {
+                    tname += " SW Exit";
+                }
+                else if (overworld.AllExits[i].RoomID >= 0x0140)
+                {
+                    tname += " Ending Cutscene";
                 }
 
                 overworldexitsListbox.Items.Add(tname);
@@ -2301,27 +2305,31 @@ namespace ZeldaFullEditor.Gui
         {
             exitModeButton.PerformClick();
 
-            ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
+            ExitOW exitOverworld = overworld.AllExits[overworldexitsListbox.SelectedIndex];
 
-            int xView = (eow.PlayerX - (splitContainer1.Panel2.Width / 2));
+            int xView = (exitOverworld.PlayerX - (splitContainer1.Panel2.Width / 2));
             xView = xView.Clamp(0, 4096 - splitContainer1.Panel2.Width);
 
-            int yView = (eow.PlayerY - (splitContainer1.Panel2.Height / 2));
+            int yView = (exitOverworld.PlayerY - (splitContainer1.Panel2.Height / 2));
             yView = yView.Clamp(0, 4096 - splitContainer1.Panel2.Width);
             splitContainer1.Panel2.AutoScrollPosition = new Point(xView, yView);
 
             scene.selectedMode = ObjectMode.Exits;
-            scene.exitmode.selectedExit = eow;
-            scene.exitmode.lastselectedExit = eow;
+            scene.exitmode.selectedExit = exitOverworld;
+            scene.exitmode.lastselectedExit = exitOverworld;
             scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
 
-            if (eow.MapID < 0x40)
+            if (exitOverworld.MapID < 0x40)
             {
-                this.SelectMapOffset(0);
+                this.SelectMapOffset(0x00);
             }
-            else if (eow.MapID >= 0x40)
+            else if (exitOverworld.MapID >= 0x40 && exitOverworld.MapID < 0x80)
             {
                 this.SelectMapOffset(0x40);
+            }
+            else if (exitOverworld.MapID >= 0x80)
+            {
+                this.SelectMapOffset(0x80);
             }
         }
 
@@ -2400,6 +2408,7 @@ namespace ZeldaFullEditor.Gui
                 {
                     tname += " DELETED";
                 }
+
                 scene.exitmode.ShowExitPreview();
                 overworldexitsListbox.Items[overworldexitsListbox.SelectedIndex] = tname;
                 
@@ -2413,10 +2422,10 @@ namespace ZeldaFullEditor.Gui
             fromForm = true;
             if (overworldexitsListbox.SelectedIndex != -1)
             {
-                ExitOW eow = overworld.AllExits[overworldexitsListbox.SelectedIndex];
+                ExitOW exitOverworld = overworld.AllExits[overworldexitsListbox.SelectedIndex];
 
-                scene.exitmode.selectedExit = eow;
-                scene.exitmode.lastselectedExit = eow;
+                scene.exitmode.selectedExit = exitOverworld;
+                scene.exitmode.lastselectedExit = exitOverworld;
                 //scene.exitmode.onMouseDown(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
                 scene.exitmode.ShowExitPreview();
 

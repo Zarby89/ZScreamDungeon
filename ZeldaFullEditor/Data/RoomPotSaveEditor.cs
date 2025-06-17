@@ -86,9 +86,9 @@ namespace ZeldaFullEditor
         {
             this.RoomMapID = (ushort)roomMapId;
 
-            if (roomMapId >= 64)
+            if (roomMapId >= 0x40)
             {
-                roomMapId -= 64;
+                roomMapId -= 0x40;
             }
 
             int mapX = roomMapId - ((roomMapId / 8) * 8);

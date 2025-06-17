@@ -379,6 +379,7 @@ namespace ZeldaFullEditor
                                                   // 105C2 Ending maps
                                                   // 105E2 Sprite Group Table for Ending
         public static int OWExitMapId = 0x015E28;
+        public static int OWExitSW = 0x075ED4;
         public static int OWExitVram = 0x015E77;
         public static int OWExitYScroll = 0x015F15;
         public static int OWExitXScroll = 0x015FB3;

@@ -5096,10 +5096,6 @@ Overworld_PlayerControl_Interupt:
 }
 warnpc $02A62C ; $01262C
 
-; TODO: TEST: DONT LEAVE IN:
-org $0EDED4 ; $075ED4
-dw $0080, $0080, $008B
-
 ; ==============================================================================
 
 ; TODO: Check HandleEdgeTransition_AdjustCameraBounds for possible needed changes.

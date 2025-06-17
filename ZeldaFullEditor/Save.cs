@@ -1016,7 +1016,7 @@ namespace ZeldaFullEditor
         {
             ROM.StartBlockLogWriting("OW Exits", Constants.OWExitMapId);
 
-            for (int i = 0; i < 78; i++)
+            for (int i = 0; i < scene.ow.AllExits.Length; i++)
             {
                 ROM.Write(Constants.OWExitMapId + i, (byte)(scene.ow.AllExits[i].MapID & 0xFF), WriteType.ExitProperties);
                 ROM.WriteShort(Constants.OWExitXScroll + (i * 2), scene.ow.AllExits[i].XScroll, WriteType.ExitProperties);
@@ -1029,6 +1029,22 @@ namespace ZeldaFullEditor
                 ROM.WriteShort(Constants.OWExitYPlayer + (i * 2), scene.ow.AllExits[i].PlayerY, WriteType.ExitProperties);
                 ROM.WriteShort(Constants.OWExitDoorType1 + (i * 2), scene.ow.AllExits[i].DoorType1, WriteType.ExitProperties);
                 ROM.WriteShort(Constants.OWExitDoorType2 + (i * 2), scene.ow.AllExits[i].DoorType2, WriteType.ExitProperties);
+
+                // Write to a special table that controls which areas can be exited from when using a SW exit.
+                switch (scene.ow.AllExits[i].RoomID)
+                {
+                    case 0x0180:
+                        ROM.Write(Constants.OWExitSW + 0, (byte)(scene.ow.AllExits[i].MapID & 0xFF), WriteType.ExitProperties);
+                        break;
+
+                    case 0x0181:
+                        ROM.Write(Constants.OWExitSW + 2, (byte)(scene.ow.AllExits[i].MapID & 0xFF), WriteType.ExitProperties);
+                        break;
+
+                    case 0x0182:
+                        ROM.Write(Constants.OWExitSW + 4, (byte)(scene.ow.AllExits[i].MapID & 0xFF), WriteType.ExitProperties);
+                        break;
+                }
             }
 
             ROM.EndBlockLogWriting();
