@@ -2055,7 +2055,7 @@ namespace ZeldaFullEditor.Gui
             buffer.Write((byte)map.GFX);
             buffer.Write((short)map.MessageID);
 
-            if (map.Index >= 64)
+            if (map.Index >= 0x40)
             {
                 buffer.Write((byte)0);
                 buffer.Write((byte)map.SpriteGFX[0]);

@@ -14,9 +14,10 @@ And an additional 3 banks at the end of the 2.0MB 0x1E8000 to 0x1FFFFF
 
 0x110000 - 0x117FFF: 1 Bank
     Default room header location
+    Seems to have been some old dungeon object data expansion but that has since been moved.
 
 0x118000 - 0x11FFFF: 1 Bank
-    Some sort of data but i can't figure out what.
+    Seems to have been some old dungeon object data expansion but that has since been moved.
 
 0x120000 - 0x127FFF: 1 Bank
     Expanded overlay data

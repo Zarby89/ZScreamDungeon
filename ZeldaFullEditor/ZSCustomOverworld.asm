@@ -89,7 +89,6 @@ Credits_LoadScene_PrepGFX_sprite_palette   = $0285F3 ; $0105F3
 DeleteCertainAncillaeStopDashing           = $028B0C ; $010B0C
 OWOverlay_HShift                           = $02A46D ; $01246D
 OWOverlay_VShift                           = $02A471 ; $012471
-OverworldScreenIDChange                    = $02A834 ; $012834
 Overworld_LoadMapProperties                = $02AB08 ; $012B08
 Overworld_FinishTransGfx_firstHalf_Retrun  = $02ABC5 ; $012BC5
 Overworld_LoadSubscreenAndSilenceSFX1      = $02AF19 ; $012F19
@@ -159,6 +158,9 @@ PaletteData_owmain                         = $1BE6C8 ; $0DE6C8
 ; Zeros out the BG color when mirror warping to the pyramid area.
 ; $00EEBB
 !Func00EEBB = $01
+
+; $007C67
+!Func00FC67 = $01
 
 ; BG scrolling for HC and the pyramid area.
 ; $00FF7C
@@ -269,6 +271,7 @@ if !AllOff == 1
 !Func00DA63 = $00
 !Func00E221 = $00
 !Func00EEBB = $00
+!Func00FC67 = $00
 !Func00FF7C = $00
 
 !Func0283EE = $00
@@ -1223,11 +1226,18 @@ warnpc $289438 ; $141438
 ; $0125EC-$01262C 0x0040 bytes unused here.
 ; Moved to expanded space.
 
+; All claimed
 ; $012634-$0126B3 0x0080 bytes unused here.
 ; $0126B4-$012733 0x0080 bytes unused here.
 ; $012734-$0127B3 0x0080 bytes unused here.
 ; $0127B4-$012833 0x0080 bytes unused here.
 ; Moved to expanded space.
+
+; All claimed
+; $012844-$012883 0x0040 bytes unused here.
+; $012884-$0128C4 0x0040 bytes unused here.
+; The vanilla purpose of these tables no longer matters, the values themeselves
+; don't reflect any actual data and its uses have been removed.
 
 ; $0128C4-$012943 0x0080 bytes unused here.
 ; Moved to expanded space.
@@ -1238,11 +1248,6 @@ warnpc $289438 ; $141438
 ; $013EE2-$013F61 0x0080 bytes unused here.
 ; $013F62-$013FE2 0x0080 bytes unused here.
 ; Moved to expanded space.
-
-; $012844-$012883 0x0040 bytes unused here.
-; $012884-$0128C4 0x0040 bytes unused here.
-; The vanilla purpose of these tables no longer matters, the values themeselves
-; don't reflect any actual data and its uses have been removed.
 
 ; $04C635-$04C6F5 0xC0 bytes unused here.
 ; This is for controlling the boundaries used by sprites to check if they should
@@ -1625,11 +1630,9 @@ PreOverworld_LoadProperties_LoadMain:
     JSR.w Overworld_LoadAreaPalettes
         
     LDX.b $8A
-        
     LDA.l $7EFD40, X : STA.b $00
-        
-    LDA.l OverworldPalettesScreenToSet, X 
-        
+    LDA.l OverworldPalettesScreenToSet_New, X 
+    
     ; Load some other palettes.
     JSL.l Overworld_LoadPalettes
 
@@ -1843,12 +1846,10 @@ Func028632:
 
     ; Load Palettes.
     JSR.w Overworld_LoadAreaPalettes
+
     PLA : STA.b $00
-        
     LDX.b $8A
-        
-    LDA.l OverworldPalettesScreenToSet, X
-        
+    LDA.l OverworldPalettesScreenToSet_New, X
     JSL.l Overworld_LoadPalettes
         
     LDA.b #$01 : STA.w $0AB2
@@ -4489,7 +4490,7 @@ OverworldHandleTransitions:
         ; 0x02 - Left
         ; 0x04 - Down
         ; 0x06 - Up
-        CLC : ADC.l OverworldScreenTileMapChange_ByScreenAddresses, X : TAX
+        CLC : ADC.l .ByScreenAddresses, X : TAX
         LDA.b $84 : CLC : ADC.l Pool_ByScreen1, X : STA.b $84
 
         LDA.b $04 : LSR : TAX
@@ -4560,7 +4561,7 @@ OverworldHandleTransitions:
         LDX.b $8A
         LDA.l $7EFD40, X : STA.b $00
 
-        LDA.l OverworldPalettesScreenToSet, X
+        LDA.l OverworldPalettesScreenToSet_New, X
         JSL.l Overworld_LoadPalettes
         JSR.w Overworld_CgramAuxToMain
 
@@ -4584,14 +4585,34 @@ OverworldScreenTileMapChange:
     endif
 
     warnpc $02A634 ; $012634
+}
 
-    .ByScreenAddresses
+OverworldScreenIDChange:
+{
+    dw $0002, $FFFE, $0010, $FFF0
+}
+
+OverworldMixedCoordsChange:
+{
+    dw $FFF0, $0010, $FFFE, $0002
+}
+warnpc $02A644 ; $012644
+
+; Update this address.
+org $02C098 ; $014098
+ADC.w OverworldMixedCoordsChange, Y
+
+pullpc
+
+OverworldHandleTransitions_ByScreenAddresses:
+{
     dw Pool_ByScreen1-Pool_ByScreen1
     dw Pool_ByScreen2-Pool_ByScreen1
     dw Pool_ByScreen3-Pool_ByScreen1
     dw Pool_ByScreen4-Pool_ByScreen1
 }
-warnpc $02A63C ; $01263C
+
+pushpc
 
 ; ==============================================================================
 
@@ -4733,10 +4754,31 @@ Hookshot_IsCollisionCheckFutile_Interupt:
 }
 warnpc $08FA81 ; $047A81
 
+org $00FC9C ; $007C9C
+GFX0AA2ValsOW:
+
 ; Change an old OverworldScreenSizeFlag use to set the X value instead.
-org $02AB1B ; $012B1B
+org $02AB0D ; $012B0D
 Overworld_LoadMapProperties_Interupt:
 {
+    CPX.b #$80 : BCS .inSW
+        ; $0AA3 is the sprite graphics index.
+        LDA.l $7EFCC0, X
+
+        BRA .write0AA3
+
+    .inSW
+
+    LDA.l Pool_LoadSpecialOverworld_GFX_0AA3_Temp-$80, X
+
+    .write0AA3
+
+    ; $0AA3 is the sprite graphics index.
+    STA.w $0AA3
+
+    ; $0AA2 is the secondary background graphics index.
+    LDA.l GFX0AA2ValsOW, X : STA.w $0AA2
+
     ; Code from vanilla that is still needed.
     LDA.w $0712 : STA.w $0714
 
@@ -4799,19 +4841,21 @@ db $07, $A5, $02, $38, $FF, $44, $A9, $02
 db $C9, $06, $00, $90, $05, $CD, $16, $07
 db $90, $06, $E2, $20, $7A, $FA, $38, $60
 
-org $02AB1B ; $012B1B
-db $8A, $29, $3F, $AA, $AD, $12, $07, $8D
-db $14, $07, $BF, $44, $A8, $02, $8D, $12
-db $07, $BF, $84, $A8, $02, $8D, $17, $07
-db $A0, $20, $A2, $00, $A5, $8A, $29, $40
-db $F0, $03, $C8, $A2, $08, $8C, $A1, $0A
-db $BF, $F4, $D8, $00, $8D, $A4, $0A, $C2
-db $30, $A5, $8A, $29, $BF, $00, $0A, $AA
-db $BF, $C4, $A8, $02, $8D, $08, $07, $BF
-db $44, $A9, $02, $4A, $4A, $4A, $8D, $0C
-db $07, $A9, $F0, $03, $AE, $12, $07, $D0
-db $03, $A9, $F0, $01, $8D, $0A, $07, $4A
-db $4A, $4A, $8D, $0E, $07, $E2, $30, $60
+org $02AB0D ; $012B0D
+db $BF, $C0, $FC, $7E, $8D, $A3, $0A, $BF
+db $9C, $FC, $00, $8D, $A2, $0A, $8A, $29
+db $3F, $AA, $AD, $12, $07, $8D, $14, $07
+db $BF, $44, $A8, $02, $8D, $12, $07, $BF
+db $84, $A8, $02, $8D, $17, $07, $A0, $20
+db $A2, $00, $A5, $8A, $29, $40, $F0, $03
+db $C8, $A2, $08, $8C, $A1, $0A, $BF, $F4
+db $D8, $00, $8D, $A4, $0A, $C2, $30, $A5
+db $8A, $29, $BF, $00, $0A, $AA, $BF, $C4
+db $A8, $02, $8D, $08, $07, $BF, $44, $A9
+db $02, $4A, $4A, $4A, $8D, $0C, $07, $A9
+db $F0, $03, $AE, $12, $07, $D0, $03, $A9
+db $F0, $01, $8D, $0A, $07, $4A, $4A, $4A
+db $8D, $0E, $07, $E2, $30, $60
 
 endif
 
@@ -5035,9 +5079,34 @@ Overworld_SetScreenBGColorCacheOnly:
 org $02DD8A ; $015D8A
 UnderworldExitData_overworld_id:
 
-org $02E94F ; $01694F
+org $02E6E1 ; $0166E1
+Pool_LoadSpecialOverworld_GFX_0AA3_Temp:
+
+org $02E701 ; $016701
+Pool_LoadSpecialOverworld_palette_prop_b_Temp:
+
+org $02E821 ; $016821
+Pool_LoadSpecialOverworld_GFX_0AA2:
+
+org $02E931 ; $016931
 LoadSpecialOverworld_Interupt:
 {
+    LDA.b $8A : SEC : SBC.b #$80 : TAX
+    ; GFX $0AA3
+    LDA.l Pool_LoadSpecialOverworld_GFX_0AA3_Temp, X : STA.w $0AA3
+
+    ; GFX $0AA2
+    LDA.l Pool_LoadSpecialOverworld_GFX_0AA2, X : STA.w $0AA2
+    
+    ; Palette property b
+    LDA.l Pool_LoadSpecialOverworld_palette_prop_b_Temp, X : STA.b $00
+
+    ; Property property a
+    LDX.b $8A
+    LDA.l OverworldPalettesScreenToSet_New, X
+
+    JSL.l Overworld_LoadPalettes
+
     PLA : STA.b $A0
 
     REP #$30
@@ -5095,6 +5164,83 @@ Overworld_PlayerControl_Interupt:
     RTS
 }
 warnpc $02A62C ; $01262C
+
+; NOTE: This overwrites the unused table found at $0125EC-$01262B
+
+; ==============================================================================
+
+if !Func00FC67 == $01
+
+org $00FC67 ; $007C67
+JSL.l Sprite_LoadGfxProperties_Interupt
+NOP : NOP : NOP
+
+org $09C635 ; $04C635
+OverworldPalettesScreenToSet_New:
+
+org $02AAFC ; $012AFC
+LDA.l OverworldPalettesScreenToSet_New, X
+
+org $02B0FB ; $0130FB
+LDA.l OverworldPalettesScreenToSet_New, X
+
+org $02B391 ; $013391
+LDA.l OverworldPalettesScreenToSet_New, X
+
+org $02B4CD ; $0134CD
+LDA.l OverworldPalettesScreenToSet_New, X
+
+org $02EAAB ; $016AAB
+LDA.l OverworldPalettesScreenToSet_New, X
+
+org $02ECE8 ; $016CE8
+LDA.l OverworldPalettesScreenToSet_New, X
+
+pullpc
+
+; TODO: Finish ZS side loading for this and test it to see if it actually works.
+
+Sprite_LoadGfxProperties_Interupt:
+{
+    LDX.w #$003E
+
+    .loop
+
+        LDA.l Pool_LoadSpecialOverworld_palette_prop_b_Temp, X : STA.l $7EFDC0, X
+    DEX #2 : BPL .loop
+
+    ; Replaced code.
+    LDY.w #$003E
+    LDA.l $7EF3C5
+
+    RTL
+}
+
+pushpc
+
+else
+
+org $00FC67 ; $007C67
+db $A0, $3E, $00, $AF, $C5, $F3, $7E
+
+endif
+
+; ==============================================================================
+
+; Remove the SW overworld item check.
+org $1BC8B1 ; $0DC8B1
+Overworld_RevealSecret_Interupt:
+{
+    NOP : NOP : NOP
+    NOP : NOP
+}
+warnpc $1BC8C3 ; $0DC8C3
+
+org $02A634 ; $012634
+Overworld_HandleOverlaysAndBombDoors_bombable_door_location_New:
+
+org $02EF64 ; $016F64
+LDA.l Overworld_HandleOverlaysAndBombDoors_bombable_door_location_New, X
 
 ; ==============================================================================
 

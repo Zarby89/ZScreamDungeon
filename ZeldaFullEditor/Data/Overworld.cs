@@ -1023,6 +1023,8 @@ namespace ZeldaFullEditor
             return allHoles;
         }
 
+        public int ItemPointerAddress = Constants.overworldItemsPointers;
+
         /// <summary>
         ///     Loads all overworld items from ROM.
         /// </summary>
@@ -1031,13 +1033,24 @@ namespace ZeldaFullEditor
         {
             var allItems = new List<RoomPotSaveEditor>();
 
-            int pointer = ROM.ReadLong(Constants.overworldItemsAddress);
-            int oointerPC = Utils.SnesToPc(pointer); // 1BC2F9 -> 0DC2F9
-            for (int i = 0; i < 128; i++)
+            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+
+            // Version 0x03 of the OW ASM added item support for the SW.
+            int maxOW = asmVersion >= 0x03 ? 0xA0 : 0x80;
+
+            int pointerSNES = ROM.ReadLong(Constants.overworldItemsAddress);
+            this.ItemPointerAddress = Utils.SnesToPc(pointerSNES); // 0x1BC2F9 -> 0x0DC2F9
+            for (int i = 0; i < maxOW; i++)
             {
-                int addr = (pointer & 0xFF0000) + // 1B
-                            (ROM.DATA[oointerPC + (i * 2) + 1] << 8) + // F9
-                            ROM.DATA[oointerPC + (i * 2)]; // 3C
+                if (i == 0x8B)
+                {
+                    Console.WriteLine("asdfasd");
+                }
+
+                int bank = ROM.DATA[Constants.overworldItemsAddressBank] & 0x7F;
+                int addr = (bank<<16) + // 1B
+                            (ROM.DATA[this.ItemPointerAddress + (i * 2) + 1] << 8) + // F9
+                            ROM.DATA[this.ItemPointerAddress + (i * 2)]; // 3C
 
                 addr = Utils.SnesToPc(addr);
 
@@ -1062,14 +1075,10 @@ namespace ZeldaFullEditor
 
                     int p = (((b2 & 0x1F) << 8) + b1) >> 1;
 
-                    int x = p % 64;
+                    int x = p % 0x40;
                     int y = p >> 6;
 
-                    int fakeID = i;
-                    if (fakeID >= 64)
-                    {
-                        fakeID -= 64;
-                    }
+                    int fakeID = i % 0x40;
 
                     int sy = fakeID / 8;
                     int sx = fakeID - (sy * 8);

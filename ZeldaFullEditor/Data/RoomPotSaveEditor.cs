@@ -70,8 +70,10 @@ namespace ZeldaFullEditor
             this.BG2 = bg2;
             this.RoomMapID = roomMapId;
 
-            int mapX = roomMapId - ((roomMapId / 8) * 8);
-            int mapY = roomMapId / 8;
+            int fakeID = roomMapId % 0x40;
+
+            int mapX = fakeID - ((fakeID / 8) * 8);
+            int mapY = fakeID / 8;
 
             this.GameX = (byte)(Math.Abs(x - (mapX * 512)) / 16);
             this.GameY = (byte)(Math.Abs(y - (mapY * 512)) / 16);
@@ -86,10 +88,7 @@ namespace ZeldaFullEditor
         {
             this.RoomMapID = (ushort)roomMapId;
 
-            if (roomMapId >= 0x40)
-            {
-                roomMapId -= 0x40;
-            }
+            roomMapId %= 0x40;
 
             int mapX = roomMapId - ((roomMapId / 8) * 8);
             int mapY = roomMapId / 8;

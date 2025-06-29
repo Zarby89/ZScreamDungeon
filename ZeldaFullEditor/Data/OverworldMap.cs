@@ -223,98 +223,120 @@ namespace ZeldaFullEditor
             if (index < 0x40)
             {
                 this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpriteset + this.ParentID];
-                this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 64];
-                this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
+                this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 0x40];
+                this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 0x80];
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                this.AuxPalette = ROM.DATA[Constants.overworldPalettesScreenToSetNew + this.ParentID];
                 this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID];
-                this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 64];
-                this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
+                this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 0x40];
+                this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 0x80];
 
                 this.Music[0] = ROM.DATA[Constants.overworldMusicBegining + this.ParentID];
                 this.Music[1] = ROM.DATA[Constants.overworldMusicZelda + this.ParentID];
                 this.Music[2] = ROM.DATA[Constants.overworldMusicMasterSword + this.ParentID];
                 this.Music[3] = ROM.DATA[Constants.overworldMusicAgahim + this.ParentID];
+
+                if (asmVersion < 3)
+                {
+                    this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                }
             }
             else if (index < 0x80)
             {
-                this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
-                this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
-                this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
+                this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 0x80];
+                this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 0x80];
+                this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 0x80];
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
-                this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
-                this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
-                this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
+                this.AuxPalette = ROM.DATA[Constants.overworldPalettesScreenToSetNew + this.ParentID];
+                this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 0x80];
+                this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 0x80];
+                this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 0x80];
 
-                this.Music[0] = ROM.DATA[Constants.overworldMusicDW + (this.ParentID - 64)];
+                this.Music[0] = ROM.DATA[Constants.overworldMusicDW + (this.ParentID - 0x40)];
+
+                if (asmVersion < 3)
+                {
+                    this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                }
             }
             else
             {
                 this.MessageID = ROM.DATA[Constants.overworldMessages + this.ParentID];
 
-                this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
-                this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
-                this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpriteset + this.ParentID + 128];
-                this.SpritePalette[0] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
-                this.SpritePalette[1] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
-                this.SpritePalette[2] = ROM.DATA[Constants.overworldSpritePalette + this.ParentID + 128];
+                this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroupExpandedTemp + this.ParentID - 0x80];
+                this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroupExpandedTemp + this.ParentID - 0x80];
+                this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroupExpandedTemp + this.ParentID - 0x80];
+                this.SpritePalette[0] = ROM.DATA[Constants.overworldSpecialSpritePaletteExpandedTemp + this.ParentID - 0x80];
+                this.SpritePalette[1] = ROM.DATA[Constants.overworldSpecialSpritePaletteExpandedTemp + this.ParentID - 0x80];
+                this.SpritePalette[2] = ROM.DATA[Constants.overworldSpecialSpritePaletteExpandedTemp + this.ParentID - 0x80];
 
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
+                this.AuxPalette = ROM.DATA[Constants.overworldPalettesScreenToSetNew + this.ParentID];
 
-                switch (index)
+                if (asmVersion < 3)
                 {
-                    case 0x88:
-                    case 0x93:
-                        this.GFX = 81;
-                        this.AuxPalette = 0;
+                    this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroup + this.ParentID - 0x80];
+                    this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroup + this.ParentID - 0x80];
+                    this.SpriteGFX[2] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroup + this.ParentID - 0x80];
+                    this.SpritePalette[0] = ROM.DATA[Constants.overworldSpecialSpritePalette + this.ParentID - 0x80];
+                    this.SpritePalette[1] = ROM.DATA[Constants.overworldSpecialSpritePalette + this.ParentID - 0x80];
+                    this.SpritePalette[2] = ROM.DATA[Constants.overworldSpecialSpritePalette + this.ParentID - 0x80];
 
-                        break;
+                    this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
 
-                    case 0x80:
-                    case 0x81:
-                    case 0x82:
-                    case 0x89:
-                    case 0x8A:
-                        this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
-                        this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+                    switch (index)
+                    {
+                        case 0x88:
+                        case 0x93:
+                            this.GFX = 81;
+                            this.AuxPalette = 0;
 
-                        break;
+                            break;
 
-                    case 0x94:
-                        // Make this the same GFX and the true master sword area.
-                        this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (0x80 - 128)];
-                        this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+                        case 0x80:
+                        case 0x81:
+                        case 0x82:
+                        case 0x89:
+                        case 0x8A:
+                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
+                            this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
 
-                        break;
+                            break;
 
-                    case 0x95:
-                        // Make this the same GFX and the LW death mountain areas.
-                        this.GFX = ROM.DATA[Constants.mapGfx + 0x03];
-                        this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x03];
+                        case 0x94:
+                            // Make this the same GFX and the true master sword area.
+                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (0x80 - 128)];
+                            this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
 
-                        break;
+                            break;
 
-                    case 0x96:
-                        // Make this the same GFX and the pyramid areas.
-                        this.GFX = ROM.DATA[Constants.mapGfx + 0x5B];
-                        this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x5B];
+                        case 0x95:
+                            // Make this the same GFX and the LW death mountain areas.
+                            this.GFX = ROM.DATA[Constants.mapGfx + 0x03];
+                            this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x03];
 
-                        break;
+                            break;
 
-                    case 0x9C:
-                        // Make this the same GFX and the DW death mountain areas.
-                        this.GFX = ROM.DATA[Constants.mapGfx + 0x43];
-                        this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x43];
+                        case 0x96:
+                            // Make this the same GFX and the pyramid areas.
+                            this.GFX = ROM.DATA[Constants.mapGfx + 0x5B];
+                            this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x5B];
 
-                        break;
+                            break;
 
-                    default:
-                        this.GFX = ROM.DATA[Constants.mapGfx + 0x00];
-                        this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x00];
+                        case 0x9C:
+                            // Make this the same GFX and the DW death mountain areas.
+                            this.GFX = ROM.DATA[Constants.mapGfx + 0x43];
+                            this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x43];
 
-                        break;
+                            break;
+
+                        default:
+                            this.GFX = ROM.DATA[Constants.mapGfx + 0x00];
+                            this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + 0x00];
+
+                            break;
+                    }
                 }
             }
 
@@ -352,7 +374,7 @@ namespace ZeldaFullEditor
                 switch (index)
                 {
                     case 0x00: // Leaving Skull Woods / Lost Woods
-                    case 0x40: 
+                    case 0x40:
                         this.Mosaic = (false, true, false, true);
 
                         break;
@@ -362,7 +384,7 @@ namespace ZeldaFullEditor
                     case 0x42:
                     case 0x4A:
                         this.Mosaic = (false, false, true, false);
-                        
+
                         break;
 
                     case 0x0F: // Going into Zora's Domain North
@@ -596,36 +618,6 @@ namespace ZeldaFullEditor
         /// </summary>
         public void BuildMap()
         {
-            if (this.AreaSize != AreaSizeEnum.SmallArea && this.ParentID != this.Index)
-            {
-                /*
-                    sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
-                    sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 64];
-                    sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
-                */
-
-                if (!this.FirstLoad)
-                {
-                    if (this.Index >= 0x80 && this.Index <= 0x8A && this.Index != 0x88)
-                    {
-                        this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
-                        this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
-                    }
-                    else if (this.Index == 0x88)
-                    {
-                        this.GFX = 0x51;
-                        this.AuxPalette = 0x00;
-                    }
-                    else
-                    {
-                        this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
-                        this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
-                    }
-
-                    this.FirstLoad = true;
-                }
-            }
-
             this.Buildtileset();
             this.BuildTiles16Gfx(); // Build on GFX.mapgfx16Ptr
             this.LoadPalette();

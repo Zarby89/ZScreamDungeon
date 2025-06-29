@@ -1367,10 +1367,7 @@ namespace ZeldaFullEditor
         {
             this.MapID = (byte)mapId;
 
-            if (mapId >= 0x40)
-            {
-                mapId -= 0x40;
-            }
+            mapId %= 0x40;
 
             int mx = mapId - ((mapId / 8) * 8);
             int my = (mapId / 8);

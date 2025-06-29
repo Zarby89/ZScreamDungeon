@@ -113,7 +113,7 @@ namespace ZeldaFullEditor
         public static void CryAboutSaving(string message = "OHNO")
         {
             MessageBox.Show(
-                $"Failed to save;\n{message}",
+                $"Failed to save:\n{message}",
                 "Bad Error",
                 MessageBoxButtons.OK);
         }

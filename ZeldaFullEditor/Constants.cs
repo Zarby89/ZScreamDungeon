@@ -251,8 +251,14 @@ namespace ZeldaFullEditor
         public static int overworldMapPaletteGroup = 0x075504;
         public static int overworldSpritePaletteGroup = 0x075580;
         public static int overworldSpriteset = 0x007A41;
+        public static int overworldSpecialSpriteGFXGroup = 0x016811;
         public static int overworldSpecialGFXGroup = 0x016821;
         public static int overworldSpecialPALGroup = 0x016831;
+        public static int overworldSpecialSpritePalette = 0x016841;
+
+        public static int overworldSpecialSpriteGFXGroupExpandedTemp = 0x0166E1;
+        public static int overworldSpecialSpritePaletteExpandedTemp = 0x016701;
+        public static int overworldPalettesScreenToSetNew = 0x04C635;
 
         public static int HudPalettesMax = 2;
         public static int OverworldMainPalettesMax = 6;
@@ -283,8 +289,12 @@ namespace ZeldaFullEditor
 
         public static int overworldItemsPointers = 0x0DC2F9;
         public static int overworldItemsAddress = 0x0DC8B9; // 1BC2F9
-        public static int overworldItemsBank = 0x0DC8BF;
-        public static int overworldItemsEndData = 0xD0C89C; // 0DC89E
+        public static int overworldItemsAddressBank = 0x0DC8BF;
+        public static int overworldItemsEndData = 0x0DC89C; // 0DC89E
+
+        public static int overworldBombDoorItemLocationsNew = 0x012644;
+        public static int overworldItemsPointersNew = 0x012784;
+        public static int overworldItemsStartDataNew = 0x0DC2F9;
 
         public static int mapGfx = 0x007C9C;
         public static int overlayPointers = 0x077664;

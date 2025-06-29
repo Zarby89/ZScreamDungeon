@@ -156,7 +156,7 @@ namespace ZeldaFullEditor
         ///     Saves the block data to ROM.
         /// </summary>
         /// <returns> True if there was an error saving. </returns>
-        public bool SaveCustomCollision()
+        public (bool, string) SaveCustomCollision()
         {
             Console.WriteLine("Applying Custom Collision ASM");
             /* Format:
@@ -172,6 +172,8 @@ namespace ZeldaFullEditor
             int data_pointer = Constants.customCollisionDataPosition; // @zarby: the actual data at 0x1283C0.
 
             Console.WriteLine(room_pointer + " " + data_pointer);
+
+            int lastRoom = -1;
 
             // for ( int i = 0; i < Constants.NumberOfRooms; i++ )
             foreach (Room room in this.AllRooms)
@@ -221,6 +223,19 @@ namespace ZeldaFullEditor
                     ROM.WriteLong(data_pointer, 0x00FFFF);
                     data_pointer += 2;
                 }
+
+                // Check if the data went past the end of the bank.
+                if (data_pointer >= 0x130000)
+                {
+                    lastRoom = room.index;
+
+                    break;
+                }
+            }
+
+            if (lastRoom > 0)
+            {
+                return (true, "Too much custom collision data. Stopped at room: " + lastRoom.ToString("X2"));
             }
 
             // TODO: Use this:
@@ -241,11 +256,10 @@ namespace ZeldaFullEditor
 
             foreach (Asarerror error in Asar.geterrors())
             {
-                Console.WriteLine(error.Fullerrdata.ToString());
-                return true;
+                return (true, error.Fullerrdata.ToString());
             }
 
-            return false;
+            return (false, string.Empty);
         }
 
         /// <summary>
@@ -1078,10 +1092,22 @@ namespace ZeldaFullEditor
 
         public bool SaveOWItems(SceneOW scene)
         {
-            ROM.StartBlockLogWriting("Items OW DATA & Pointers", Constants.overworldItemsPointers);
-            var roomItems = new List<RoomPotSaveEditor>[0x80];
+            ROM.StartBlockLogWriting("Items OW DATA & Pointers", scene.ow.ItemPointerAddress);
 
-            for (int i = 0; i < 0x80; i++)
+            // If the pointer location is the old vanilla one, update it to the new one.
+            if (scene.ow.ItemPointerAddress == Constants.overworldItemsPointers)
+            {
+                scene.ow.ItemPointerAddress = Constants.overworldItemsPointersNew;
+            }
+
+            // Write the new address of the pointers.
+            int pointerSNES = Utils.PcToSnes(scene.ow.ItemPointerAddress);
+            ROM.WriteLong(Constants.overworldItemsAddress, pointerSNES);
+            ROM.Write(Constants.overworldItemsAddressBank, (byte)(Utils.PcToSnes(Constants.overworldItemsStartDataNew)>>16));
+
+            var roomItems = new List<RoomPotSaveEditor>[0xA0];
+
+            for (int i = 0; i < 0xA0; i++)
             {
                 roomItems[i] = new List<RoomPotSaveEditor>();
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
@@ -1089,21 +1115,22 @@ namespace ZeldaFullEditor
                     if (item.RoomMapID == i)
                     {
                         roomItems[i].Add(item);
+
                         if (item.ID == 0x86)
                         {
-                            ROM.WriteShort(0x16DC5 + (i * 2), (item.GameX + (item.GameY * 64)) * 2);
+                            ROM.WriteShort(Constants.overworldBombDoorItemLocationsNew + (i * 2), (item.GameX + (item.GameY * 64)) * 2);
                         }
                     }
                 }
             }
 
-            int dataPos = Constants.overworldItemsPointers + 0x100;
+            int dataPos = Constants.overworldItemsStartDataNew;
 
-            int[] itemPointers = new int[0x80];
-            int[] itemPointersReuse = new int[0x80];
+            int[] itemPointers = new int[0xA0];
+            int[] itemPointersReuse = new int[0xA0];
             int emptyPointer = 0;
 
-            for (int i = 0; i < 0x80; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
                 itemPointersReuse[i] = -1;
                 for (int ci = 0; ci < i; ci++)
@@ -1122,10 +1149,15 @@ namespace ZeldaFullEditor
                 }
             }
 
-            for (int i = 0; i < 0x80; i++)
+            for (int i = 0; i < 0xA0; i++)
             {
                 if (itemPointersReuse[i] == -1)
                 {
+                    if (i == 0x8B)
+                    {
+                        Console.WriteLine("asdfasd");
+                    }
+
                     itemPointers[i] = dataPos;
                     foreach (RoomPotSaveEditor item in roomItems[i])
                     {
@@ -1153,9 +1185,10 @@ namespace ZeldaFullEditor
                 }
 
                 int snesaddr = Utils.PcToSnes(itemPointers[i]);
-                ROM.WriteShort(Constants.overworldItemsPointers + (i * 2), snesaddr, true, "Item Pointer for room" + i.ToString("D3"));
+                ROM.WriteShort(scene.ow.ItemPointerAddress + (i * 2), snesaddr, true, "Item Pointer for room" + i.ToString("D3"));
             }
 
+            // Make sure we don't go over the vanilla limit.
             if (dataPos > Constants.overworldItemsEndData)
             {
                 return true;
@@ -1369,11 +1402,15 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0x40; i++)
             {
-                ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX);
+                ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX); // TODO: The OW ASM probably removes the need to write this.
+
                 ROM.Write(Constants.overworldSpriteset + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
                 ROM.Write(Constants.overworldSpriteset + 0x40 + i, scene.ow.AllMaps[i].SpriteGFX[1], WriteType.SpriteSet);
                 ROM.Write(Constants.overworldSpriteset + 0x80 + i, scene.ow.AllMaps[i].SpriteGFX[2], WriteType.SpriteSet);
+
                 ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
+                ROM.Write(Constants.overworldPalettesScreenToSetNew + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
+
                 ROM.Write(Constants.overworldSpritePalette + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
                 ROM.Write(Constants.overworldSpritePalette + 0x40 + i, scene.ow.AllMaps[i].SpritePalette[1], WriteType.SpritePalette);
                 ROM.Write(Constants.overworldSpritePalette + 0x80 + i, scene.ow.AllMaps[i].SpritePalette[2], WriteType.SpritePalette);
@@ -1381,10 +1418,18 @@ namespace ZeldaFullEditor
 
             for (int i = 0x40; i < 0x80; i++)
             {
-                ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX);
+                ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX); // TODO: The OW ASM probably removes the need to write this.
                 ROM.Write(Constants.overworldSpriteset + 0x80 + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
                 ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
+                ROM.Write(Constants.overworldPalettesScreenToSetNew + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
                 ROM.Write(Constants.overworldSpritePalette + 0x80 + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
+            }
+
+            for (int i = 0x80; i < 0xA0; i++)
+            {
+                ROM.Write(Constants.overworldSpecialSpriteGFXGroupExpandedTemp - 0x80 + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
+                ROM.Write(Constants.overworldPalettesScreenToSetNew + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
+                ROM.Write(Constants.overworldSpecialSpritePaletteExpandedTemp - 0x80 + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
             }
 
             ROM.EndBlockLogWriting();
@@ -1484,12 +1529,7 @@ namespace ZeldaFullEditor
             return false;
         }
 
-        // ROM MAP
-        // 0x110000 (S:228000) are rooms header Length 0x12C0 (Always the same size).
-        // 120000 to 1343C0 (S:248000 to 26C3C0) are new overworld maps location always same size (fake compressed).
-        // 0x058000 (OLD MAP DATA) Now Used for Overlays data.
-
-        // 0x6452A  // HOOK Replaced Code : INC $15 : LDA.b #$03
+        // 0x06452A  // HOOK Replaced Code : INC $15 : LDA.b #$03
         // 1351C0 / 26D1C0 end of tilemap data where the jump code should be for DMA.
 
         /*

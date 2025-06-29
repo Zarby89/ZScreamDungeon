@@ -340,111 +340,157 @@ namespace ZeldaFullEditor
             // 29: load Over. sprites
             // 30: load Over. items
 
-            // Probably a dumb hack, but this do-while makes everything execute exactly once
-            // And allows us to break out on failure cleanly to terminate the routine.
-            bool badSave = true;
-            do
+            try
             {
                 // MUST BE CALLED BEFORE SAVEALLSPRITES.
-                if (this.saveSettingsArr[9] && save.SaveOWSprites(this.overworldEditor.scene))
+                if (this.saveSettingsArr[9])
                 {
-                    UIText.CryAboutSaving("There are too many Overworld sprites");
-                    break;
+                    if (save.SaveOWSprites(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("There are too many Overworld sprites");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[0] && save.SaveAllSprites())
+                if (this.saveSettingsArr[0] )
                 {
-                    UIText.CryAboutSaving("There are too many sprites");
-                    break;
+                    if (save.SaveAllSprites())
+                    {
+                        UIText.CryAboutSaving("There are too many sprites");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[1] && save.SaveAllPots())
+                if (this.saveSettingsArr[1])
                 {
-                    UIText.CryAboutSaving("There are too many pot items");
-                    break;
+                    if (save.SaveAllPots())
+                    {
+                        UIText.CryAboutSaving("There are too many pot items");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[2] && save.SaveAllChests())
+                if (this.saveSettingsArr[2])
                 {
-                    UIText.CryAboutSaving("There are too many chest items");
-                    break;
+                    if (save.SaveAllChests())
+                    {
+                        UIText.CryAboutSaving("There are too many chest items");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[3] && save.SaveAllObjects())
+                if (this.saveSettingsArr[3])
                 {
-                    UIText.CryAboutSaving("There are too many tiles objects");
-                    break;
+                    if (save.SaveAllObjects())
+                    {
+                        UIText.CryAboutSaving("There are too many tiles objects");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[4] && save.SaveBlocks())
+                if (this.saveSettingsArr[4])
                 {
-                    UIText.CryAboutSaving("There are too many pushable blocks");
-                    break;
+                    if (save.SaveBlocks())
+                    {
+                        UIText.CryAboutSaving("There are too many pushable blocks");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[5] && save.SaveTorches())
+                if (this.saveSettingsArr[5])
                 {
-                    UIText.CryAboutSaving("There are too many torches");
-                    break;
+                    if (save.SaveTorches())
+                    {
+                        UIText.CryAboutSaving("There are too many torches");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[6] && save.SaveAllPits())
+                if (this.saveSettingsArr[6])
                 {
-                    UIText.CryAboutSaving("There are too many pits with damage");
-                    break;
+                    if (save.SaveAllPits())
+                    {
+                        UIText.CryAboutSaving("There are too many pits with damage");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[7] && save.SaveRoomsHeaders())
+                if (this.saveSettingsArr[7])
                 {
-                    //UIText.CryAboutSaving("there are too many chest items);
-                    //break;
+                    if (save.SaveRoomsHeaders())
+                    {
+                        // TODO: Is this supposed to be commented out?
+                        //UIText.CryAboutSaving("there are too many chest items);
+                        //break;
+                    }
                 }
 
-                if (this.saveSettingsArr[8] && save.SaveEntrances(DungeonsData.Entrances, DungeonsData.StartingEntrances))
+                if (this.saveSettingsArr[8])
                 {
-                    // Set entrances expansion Bytes
-                    ROM.DATA[Constants.entrance_EXP] = 00;
-                    ROM.DATA[Constants.entrance_EXP + 1] = 01;
-                    UIText.CryAboutSaving("Something with entrances ?? no idea why LUL");
-                    break;
+                    if (save.SaveEntrances(DungeonsData.Entrances, DungeonsData.StartingEntrances))
+                    {
+                        // Set entrances expansion Bytes
+                        ROM.DATA[Constants.entrance_EXP] = 00;
+                        ROM.DATA[Constants.entrance_EXP + 1] = 01;
+                        UIText.CryAboutSaving("Something with entrances ?? no idea why LUL");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[10] && save.SaveOWItems(this.overworldEditor.scene))
+                if (this.saveSettingsArr[10])
                 {
-                    UIText.CryAboutSaving("Overworld items out of range");
-                    break;
+                    if (save.SaveOWItems(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Overworld items out of range");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[11] && save.SaveOWEntrances(this.overworldEditor.scene))
+                if (this.saveSettingsArr[11])
                 {
-                    UIText.CryAboutSaving("??, no idea why LUL");
-                    break;
+                    if (save.SaveOWEntrances(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("??, no idea why LUL");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[12] && save.SaveOWTransports(this.overworldEditor.scene))
+                if (this.saveSettingsArr[12])
                 {
-                    UIText.CryAboutSaving("Overworld transports out of range");
-                    break;
+                    if (save.SaveOWTransports(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Overworld transports out of range");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[13] && save.SaveOWExits(this.overworldEditor.scene))
+                if (this.saveSettingsArr[13])
                 {
-                    UIText.CryAboutSaving("Overworld Exits or something IDK");
-                    break;
+                    if (save.SaveOWExits(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Overworld Exits or something IDK");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[14] && this.overworldEditor.scene.SaveTiles())
+                if (this.saveSettingsArr[14])
                 {
-                    // No need for a message box here because its handeled within the SaveTiles() function itslef.
-                    break;
+                    if (this.overworldEditor.scene.SaveTiles())
+                    {
+                        // No need for a message box here because its handeled within the SaveTiles() function itslef.
+                        throw new Exception();
+                    }
                 }
 
                 // 15
 
-                if (this.saveSettingsArr[16] && save.SaveMapProperties(this.overworldEditor.scene))
+                if (this.saveSettingsArr[16])
                 {
-                    UIText.CryAboutSaving("Overworld map properties ???");
-                    break;
+                    if (save.SaveMapProperties(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Overworld map properties ???");
+                        throw new Exception();
+                    }
                 }
 
                 // 17
@@ -454,136 +500,182 @@ namespace ZeldaFullEditor
                 // 21
                 // 22
 
-                if (this.saveSettingsArr[23] && GfxGroups.SaveGroupsToROM())
+                if (this.saveSettingsArr[23])
                 {
-                    UIText.CryAboutSaving("Problem saving GFX Groups");
-                    break;
+                    if (GfxGroups.SaveGroupsToROM())
+                    {
+                        UIText.CryAboutSaving("Problem saving GFX Groups");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[24] && Palettes.SavePalettesToROM(ROM.DATA))
+                if (this.saveSettingsArr[24])
                 {
-                    UIText.CryAboutSaving("Problem saving palettes");
-                    break;
+                    if (Palettes.SavePalettesToROM(ROM.DATA))
+                    {
+                        UIText.CryAboutSaving("Problem saving palettes");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[25] && save.SaveAllText(this.textEditor))
+                if (this.saveSettingsArr[25])
                 {
-                    UIText.CryAboutSaving("Impossible to save text");
-                    break;
+                    if (save.SaveAllText(this.textEditor))
+                    {
+                        UIText.CryAboutSaving("Impossible to save text");
+                        throw new Exception();
+                    }
                 }
 
                 // 17
 
-                if (this.saveSettingsArr[28] && save.SaveCustomCollision())
+                if (this.saveSettingsArr[28])
                 {
-                    UIText.CryAboutSaving("There was an error saving the custom collision rectangles");
-                    break;
+                    (bool collisionFailed, string error) = save.SaveCustomCollision();
+                    if (collisionFailed)
+                    {
+                        UIText.CryAboutSaving(error);
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[31] && save.SaveMapOverlays(this.overworldEditor.scene))
+                if (this.saveSettingsArr[31])
                 {
-                    UIText.CryAboutSaving("Overworld map overlays ???");
-                    break;
+                    if (save.SaveMapOverlays(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Overworld map overlays ???");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[32] && save.SaveOverworldMusic(this.overworldEditor.scene))
+                if (this.saveSettingsArr[32])
                 {
-                    UIText.CryAboutSaving("Overworld map tile types ???");
-                    break;
+                    if (save.SaveOverworldMusic(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Overworld map tile types ???");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[33] && save.SaveTitleScreen())
+                if (this.saveSettingsArr[33])
                 {
-                    UIText.CryAboutSaving("Overworld title screen?");
-                    break;
+                    if (save.SaveTitleScreen())
+                    {
+                        UIText.CryAboutSaving("Overworld title screen?");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[34] && save.SaveOverworldMiniMap())
+                if (this.saveSettingsArr[34])
                 {
-                    UIText.CryAboutSaving("Problem saving overworld Minimap?");
-                    break;
+                    if (save.SaveOverworldMiniMap())
+                    {
+                        UIText.CryAboutSaving("Problem saving overworld Minimap?");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[35] && save.SaveOverworldTilesType(this.overworldEditor.scene))
+                if (this.saveSettingsArr[35])
                 {
-                    UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
-                    break;
+                    if (save.SaveOverworldTilesType(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[36] && save.SaveOverworldMaps(this.overworldEditor.scene))
+                if (this.saveSettingsArr[36])
                 {
-                    UIText.CryAboutSaving("Problem saving overworld maps");
-                    break;
+                    if (save.SaveOverworldMaps(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Problem saving overworld maps");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[37] && save.SaveGravestones(this.overworldEditor.scene))
+                if (this.saveSettingsArr[37])
                 {
-                    UIText.CryAboutSaving("Problem saving gravestones");
-                    break;
+                    if (save.SaveGravestones(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Problem saving gravestones");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[38] && save.SaveDungeonMaps())
+                if (this.saveSettingsArr[38])
                 {
-                    UIText.CryAboutSaving("Problem saving dungeon maps");
-                    break;
+                    if (save.SaveDungeonMaps())
+                    {
+                        UIText.CryAboutSaving("Problem saving dungeon maps");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[39] && save.SaveTriforce())
+                if (this.saveSettingsArr[39])
                 {
-                    UIText.CryAboutSaving("Problem saving triforce");
-                    break;
+                    if (save.SaveTriforce())
+                    {
+                        UIText.CryAboutSaving("Problem saving triforce");
+                        throw new Exception();
+                    }
                 }
 
-                if (this.saveSettingsArr[40] && save.SaveOverworldMessagesIDs(this.overworldEditor.scene))
+                if (this.saveSettingsArr[40])
                 {
-                    UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
-                    break;
+                    if (save.SaveOverworldMessagesIDs(this.overworldEditor.scene))
+                    {
+                        UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
+                        throw new Exception();
+                    }
                 }
 
-                //DO NOT MOVE need to be before 45
-                if (this.saveSettingsArr[46] && save.SaveSpritesProperties())
+                //DO NOT MOVE, this needs to be before 45.
+                if (this.saveSettingsArr[46])
                 {
-                    UIText.CryAboutSaving("Problem saving sprites properties");
-                    return;
+                    if (save.SaveSpritesProperties())
+                    {
+                        UIText.CryAboutSaving("Problem saving sprites properties");
+                        return;
+                    }
                 }
 
                 ROM.Write(Constants.DamageClass, DungeonsData.GlobalDamages);
-                if (this.saveSettingsArr[45] && save.SaveSpritesDamages())
-                {    
-                    UIText.CryAboutSaving("Problem saving sprites damages");
-                    return;
+                if (this.saveSettingsArr[45])
+                {
+                    if (save.SaveSpritesDamages())
+                    {
+                        UIText.CryAboutSaving("Problem saving sprites damages");
+                        return;
+                    }
                 }
 
                 // The mosaic byte is hardcoded to true on purpose for now.
                 if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44], this.saveSettingsArr[47]))
                 {
                     UIText.CryAboutSaving("Problem saving ZS Custom Overworld ASM");
-                    break;
+                    throw new Exception();
                 }
 
-                // The mosaic byte is hardcoded to true on purpose for now.
                 if (save.SaveDungeonHolesOverlay())
                 {
                     UIText.CryAboutSaving("Problem saving dungeons holes overlays (probably using too much space) try removing objects");
-                    break;
+                    throw new Exception();
                 }
 
                 // If we made it here, everything was fine.
-                badSave = false;
             }
-            while (false);
-
-            if (badSave)
+            catch (Exception)
             {
-                ROM.DATA = (byte[])romBackup.Clone(); // Restore previous rom data to prevent corrupting anything.
+                ROM.DATA = (byte[])romBackup.Clone(); // Restore previous ROM data to prevent corrupting anything.
                 return;
             }
 
+            // TODO: Why is this part outside of the rest of the save checks?
             ROM.Write(0x5D4E, 0x00, true, "Fix sprite sheet 123 (should not be read compressed)"); // Fix for the sprite sheet 123.
 
             if (this.gfxEditor.SaveAllGfx())
             {
-                ROM.DATA = (byte[])romBackup.Clone(); // Restore previous rom data to prevent corrupting anything.
+                ROM.DATA = (byte[])romBackup.Clone(); // Restore previous ROM data to prevent corrupting anything.
                 return;
             }
 
@@ -608,8 +700,6 @@ namespace ZeldaFullEditor
             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
             fs.Close();
         }
-
-        // TODO: Move more of the failure stuff here.
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {

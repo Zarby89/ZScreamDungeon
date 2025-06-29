@@ -32,7 +32,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
             foreach (RoomPotSaveEditor item in scene.ow.AllItems)
             {
-                if (item.RoomMapID >= 0 + (scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
+                if (item.RoomMapID >= 0 + (scene.ow.WorldOffset) && item.RoomMapID < (0x40 + scene.ow.WorldOffset))
                 {
                     if (e.X >= item.X && e.X <= item.X + 16 && e.Y >= item.Y && e.Y <= item.Y + 16)
                     {
@@ -134,7 +134,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
         private void addItem_Click(object sender, EventArgs e)
         {
-            RoomPotSaveEditor pitem = new RoomPotSaveEditor(0, 0, 0, 0, false);
+            RoomPotSaveEditor pitem = new RoomPotSaveEditor(0, (ushort)scene.ow.WorldOffset, 0, 0, false);
             scene.ow.AllItems.Add(pitem);
             selectedItem = pitem;
             lastselectedItem = selectedItem;
@@ -198,9 +198,8 @@ namespace ZeldaFullEditor.OWSceneModes
                         continue;
                     }
 
-                    if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
+                    if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (0x40 + scene.ow.WorldOffset))
                     {
-
                         bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
                         g.FillRectangle(bgrBrush, new Rectangle((item.X), (item.Y), 16, 16));
@@ -212,7 +211,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             nid = (byte)(((item.ID - 0x80) / 2) + 0x17);
                         }
 
-                        if (nid > ItemsNames.name.Length)
+                        if (nid >= ItemsNames.name.Length)
                         {
                             continue;
                         }
@@ -230,7 +229,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
-                    if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
+                    if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (0x40 + scene.ow.WorldOffset))
                     {
                         bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
@@ -243,7 +242,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             nid = (byte)(((item.ID - 0x80) / 2) + 0x17);
                         }
 
-                        if (nid > ItemsNames.name.Length)
+                        if (nid >= ItemsNames.name.Length)
                         {
                             continue;
                         }
