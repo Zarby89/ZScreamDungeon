@@ -200,6 +200,8 @@ namespace ZeldaFullEditor
             int areaSizeX = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.WideArea ? 768 : 256;
             int areaSizeY = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea ? 768 : 256;
 
+            mapID %= 0x40;
+
             int mapX = mapID - ((mapID / 8) * 8);
             int mapY = mapID / 8;
 
@@ -218,11 +220,6 @@ namespace ZeldaFullEditor
             if (areaSizeY == 256)
             {
                 this.AreaY = this.AreaY.Clamp(0, 31);
-            }
-
-            if (mapID >= 64)
-            {
-                mapID -= 64;
             }
 
             // mapx, mapy = "super map" position on the grid *512.

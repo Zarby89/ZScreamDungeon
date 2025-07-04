@@ -5146,19 +5146,27 @@ Overworld_PlayerControl_Interupt:
     JSL.l Overworld_Entrance
     JSL.l Overworld_DwDeathMountainPaletteAnimation
     
-    ; If special outdoors mode skip this part.
-    LDA.b $10 : CMP.b #$0B : BNE .notSpecialOverworld
+    ; If not in SW mode skip this part.
+    LDA.b $8A : CMP.b #$80 : BCC .notSpecialOverworld
         ; Checks for tiles that lead back to normal overworld.
         JSL.l SpecialOverworld_CheckForReturnTrigger
 
-        LDA.b $11 : CMP.b #$24 : BEQ .return
+        ; If $11 == 0x24, that means we did trigger a special overworld tile
+        LDA.b $11 : CMP.b #$24 : BNE .noSpecialTrigger
+            ; Tell the game we are in the SW mode.
+            LDA.b #$0B : STA.b $10
 
+            RTS
+
+        .noSpecialTrigger
     .notSpecialOverworld
 
     JSR.w OverworldHandleTransitions
 
     .return
 
+    ; TODO: I think this SEP is not needed but am too scared to comit to
+    ; removing it.
     SEP #$20
 
     RTS
