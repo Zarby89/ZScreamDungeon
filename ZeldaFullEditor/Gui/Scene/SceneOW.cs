@@ -1242,7 +1242,7 @@ namespace ZeldaFullEditor
             {
                 int gridSizeX = 512;
                 int gridSizeY = 512;
-
+                
                 switch (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].AreaSize)
                 {
                     case AreaSizeEnum.LargeArea:
@@ -1259,26 +1259,23 @@ namespace ZeldaFullEditor
                         break;
                 }
 
-                int temp = this.selectedMap;
-                temp %= 0x40;
+                int relativeMap = this.mapHover % 0x40;
 
-                x = this.ow.AllMaps[temp].ParentID % 8;
-                y = this.ow.AllMaps[temp].ParentID / 8;
+                x = this.ow.AllMaps[relativeMap].ParentID % 8;
+                y = this.ow.AllMaps[relativeMap].ParentID / 8;
 
                 for (int gx = 0; gx < (gridSizeX / this.owForm.gridDisplay); gx++)
                 {
-                    g.DrawLine(
-                        Constants.ThirdWhitePen1,
+                    g.DrawLine(Constants.ThirdWhitePen1,
                         new Point((x * 512) + (gx * this.owForm.gridDisplay), y * 512),
-                        new Point((x * 512) + (gx * this.owForm.gridDisplay), (y * 512) + gridSizeX));
+                        new Point((x * 512) + (gx * this.owForm.gridDisplay), (y * 512) + gridSizeY));
                 }
 
                 for (int gy = 0; gy < (gridSizeY / this.owForm.gridDisplay); gy++)
                 {
-                    g.DrawLine(
-                        Constants.ThirdWhitePen1,
+                    g.DrawLine(Constants.ThirdWhitePen1,
                         new Point((x * 512), (y * 512) + (gy * this.owForm.gridDisplay)),
-                        new Point((x * 512) + gridSizeY, (y * 512) + (gy * this.owForm.gridDisplay)));
+                        new Point((x * 512) + gridSizeX, (y * 512) + (gy * this.owForm.gridDisplay)));
                 }
             }
 
