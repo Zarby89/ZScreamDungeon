@@ -26,7 +26,7 @@ namespace ZeldaFullEditor.Gui
         public Bitmap scratchPadBitmap = new Bitmap(256, 3600);
         public ushort[,] scratchPadTiles = new ushort[16, 225];
 
-        public byte gridDisplay = 0;
+        public int gridDisplay = 0;
         private bool mouse_down = false;
 
         private bool selecting = false;

@@ -5283,31 +5283,43 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void X8ToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void GridSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.x8ToolStripMenuItem1.Checked = false;
-            this.x16ToolStripMenuItem1.Checked = false;
-            this.x32ToolStripMenuItem1.Checked = false;
-            this.noneToolStripMenuItem.Checked = false;
+            this.x8ToolStripMenuItemOW.Checked = false;
+            this.x16ToolStripMenuItemOW.Checked = false;
+            this.x32ToolStripMenuItemOW.Checked = false;
+            this.x256ToolStripMenuItemOW.Checked = false;
+            this.x512ToolStripMenuItemOW.Checked = false;
+            this.noneToolStripMenuItemOW.Checked = false;
 
-            if (sender == this.x8ToolStripMenuItem1)
+            if (sender == this.x8ToolStripMenuItemOW)
             {
-                this.x8ToolStripMenuItem1.Checked = true;
+                this.x8ToolStripMenuItemOW.Checked = true;
                 this.overworldEditor.gridDisplay = 8;
             }
-            else if (sender == this.x16ToolStripMenuItem1)
+            else if (sender == this.x16ToolStripMenuItemOW)
             {
-                this.x16ToolStripMenuItem1.Checked = true;
+                this.x16ToolStripMenuItemOW.Checked = true;
                 this.overworldEditor.gridDisplay = 16;
             }
-            else if (sender == this.x32ToolStripMenuItem1)
+            else if (sender == this.x32ToolStripMenuItemOW)
             {
-                this.x32ToolStripMenuItem1.Checked = true;
+                this.x32ToolStripMenuItemOW.Checked = true;
                 this.overworldEditor.gridDisplay = 32;
+            }
+            else if (sender == this.x256ToolStripMenuItemOW)
+            {
+                this.x256ToolStripMenuItemOW.Checked = true;
+                this.overworldEditor.gridDisplay = 256;
+            }
+            else if (sender == this.x512ToolStripMenuItemOW)
+            {
+                this.x512ToolStripMenuItemOW.Checked = true;
+                this.overworldEditor.gridDisplay = 512;
             }
             else
             {
-                this.noneToolStripMenuItem.Checked = true;
+                this.noneToolStripMenuItemOW.Checked = true;
                 this.overworldEditor.gridDisplay = 0;
             }
 
