@@ -818,7 +818,7 @@ Pool:
     db $42, $43, $44, $FF, $31, $32, $FF, $59 ; 0x7E
     db $42, $43, $44, $FF, $FF, $FF, $FF, $59 ; 0x7F
 
-        ; SW
+    ; SW
     db $3A, $3B, $3C, $FF, $47, $48, $FF, $5B ; 0x80
     db $3A, $3B, $3C, $FF, $47, $48, $FF, $5B ; 0x81
     db $3A, $3B, $3C, $FF, $47, $48, $FF, $5B ; 0x82
@@ -1249,6 +1249,7 @@ warnpc $289438 ; $141438
 ; $013F62-$013FE2 0x0080 bytes unused here.
 ; Moved to expanded space.
 
+; All claimed
 ; $04C635-$04C6F5 0xC0 bytes unused here.
 ; This is for controlling the boundaries used by sprites to check if they should
 ; be loaded. This is now unused in favor of just getting a value based on the 
@@ -1848,6 +1849,7 @@ Func028632:
     JSR.w Overworld_LoadAreaPalettes
 
     PLA : STA.b $00
+
     LDX.b $8A
     LDA.l OverworldPalettesScreenToSet_New, X
     JSL.l Overworld_LoadPalettes
@@ -5185,9 +5187,6 @@ NOP : NOP : NOP
 
 org $09C635 ; $04C635
 OverworldPalettesScreenToSet_New:
-
-org $02AAFC ; $012AFC
-LDA.l OverworldPalettesScreenToSet_New, X
 
 org $02B0FB ; $0130FB
 LDA.l OverworldPalettesScreenToSet_New, X

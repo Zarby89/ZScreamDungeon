@@ -294,10 +294,20 @@ namespace ZeldaFullEditor
                             break;
 
                         case 0x80:
+                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
+                            this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+
+                            break;
+
                         case 0x81:
                         case 0x82:
                         case 0x89:
                         case 0x8A:
+                            // The stupid vanilla value for Zora's Domain is wrong, see the second value in the table at $016811 in the dissasembly.
+                            this.SpriteGFX[0] = 0x0E;
+                            this.SpriteGFX[1] = 0x0E;
+                            this.SpriteGFX[2] = 0x0E;
+
                             this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
                             this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
 
