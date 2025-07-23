@@ -1036,7 +1036,7 @@ namespace ZeldaFullEditor
             byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
 
             // Version 0x03 of the OW ASM added item support for the SW.
-            int maxOW = asmVersion >= 0x03 ? 0xA0 : 0x80;
+            int maxOW = asmVersion >= 0x03 && asmVersion != 0xFF ? 0xA0 : 0x80;
 
             int pointerSNES = ROM.ReadLong(Constants.overworldItemsAddress);
             this.ItemPointerAddress = Utils.SnesToPc(pointerSNES); // 0x1BC2F9 -> 0x0DC2F9

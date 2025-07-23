@@ -183,7 +183,7 @@ namespace ZeldaFullEditor
 
             byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
 
-            if (asmVersion < 3)
+            if (asmVersion < 3 || asmVersion == 0xFF)
             {
                 if (index < 0x80)
                 {
@@ -236,7 +236,7 @@ namespace ZeldaFullEditor
                 this.Music[2] = ROM.DATA[Constants.overworldMusicMasterSword + this.ParentID];
                 this.Music[3] = ROM.DATA[Constants.overworldMusicAgahim + this.ParentID];
 
-                if (asmVersion < 3)
+                if (asmVersion < 3 || asmVersion == 0xFF)
                 {
                     this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 }
@@ -254,7 +254,7 @@ namespace ZeldaFullEditor
 
                 this.Music[0] = ROM.DATA[Constants.overworldMusicDW + (this.ParentID - 0x40)];
 
-                if (asmVersion < 3)
+                if (asmVersion < 3 || asmVersion == 0xFF)
                 {
                     this.AuxPalette = ROM.DATA[Constants.overworldMapPalette + this.ParentID];
                 }
@@ -273,7 +273,7 @@ namespace ZeldaFullEditor
                 this.GFX = ROM.DATA[Constants.mapGfx + this.ParentID];
                 this.AuxPalette = ROM.DATA[Constants.overworldPalettesScreenToSetNew + this.ParentID];
 
-                if (asmVersion < 3)
+                if (asmVersion < 3 || asmVersion == 0xFF)
                 {
                     this.SpriteGFX[0] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroup + this.ParentID - 0x80];
                     this.SpriteGFX[1] = ROM.DATA[Constants.overworldSpecialSpriteGFXGroup + this.ParentID - 0x80];
