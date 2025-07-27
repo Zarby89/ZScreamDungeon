@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
@@ -209,7 +210,41 @@ namespace ZeldaFullEditor.Gui
 
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
+
+            // This is the logic that determines how to highlight tiles when right clicking the tile8 box.
+            if (highlightedTile8)
+            {
+                e.Graphics.CompositingMode = CompositingMode.SourceOver;
+                ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out ushort selectedTile);
+
+                for (int i = 0; i < allTiles.Length; i++)
+                {
+                    int tileX = i % 8;
+                    int tileY = i / 8;
+                    if (selectedTile == allTiles[i].Tile0.id)
+                    {
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(80, 150, 0, 210)), new Rectangle((tileX * 2) * 16, (tileY * 2) * 16, 16, 16));
+                    }
+
+                    if (selectedTile == allTiles[i].Tile1.id)
+                    {
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(80, 150, 0, 210)), new Rectangle(((tileX * 2) * 16) + 16, (tileY * 2) * 16, 16, 16));
+                    }
+
+                    if (selectedTile == allTiles[i].Tile2.id)
+                    {
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(80, 150, 0, 210)), new Rectangle((tileX * 2) * 16, ((tileY * 2) * 16) + 16, 16, 16));
+                    }
+
+                    if (selectedTile == allTiles[i].Tile3.id)
+                    {
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(80, 150, 0, 210)), new Rectangle(((tileX * 2) * 16) + 16, ((tileY * 2) * 16) + 16, 16, 16));
+                    }
+                }
+            }
         }
+
+        public bool highlightedTile8 = false;
 
         /// <summary>
         /// Called when the tile 8 window is single left clicked
@@ -224,6 +259,30 @@ namespace ZeldaFullEditor.Gui
             if (tid < 512)
             {
                 tileTypeBox.SelectedIndex = (int)tempTiletype[tid];
+            }
+
+            if (e.Button == MouseButtons.Right)
+            {
+                highlightedTile8 = true;
+
+                pictureboxTile16.Refresh();
+            }
+
+            pictureboxTile8.Refresh();
+            fromForm = false;
+
+            updateTiles();
+        }
+
+        private void pictureboxTile8_MouseUp(object sender, MouseEventArgs e)
+        {
+            fromForm = true;
+
+            if (e.Button == MouseButtons.Right)
+            {
+                highlightedTile8 = false;
+
+                pictureboxTile16.Refresh();
             }
 
             pictureboxTile8.Refresh();
@@ -365,7 +424,7 @@ namespace ZeldaFullEditor.Gui
             }
 
             // When right clicked, get the select the tile 8 from the corrisponding quadrant of the tile 16
-            else
+            else if (e.Button == MouseButtons.Right)
             {
                 if (t8x == 0 && t8y == 0)
                 {
@@ -686,21 +745,24 @@ namespace ZeldaFullEditor.Gui
 
         private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            this.Close();
-
-            if (this.cancelClosing)
+            if (e.Button == MouseButtons.Left)
             {
-                this.cancelClosing = false;
+                this.Close();
 
-                return;
+                if (this.cancelClosing)
+                {
+                    this.cancelClosing = false;
+
+                    return;
+                }
+
+                this.scene.mainForm.editorsTabControl.SelectedIndex = 2;
+                this.scene.mainForm.gfxEditor.selectedSheet = this.scene.ow.AllMaps[this.scene.selectedMap].StaticGFX[(e.Y / 64)];
+                this.scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
+
+                this.scene.mainForm.gfxEditor.panel1.AutoScrollPosition = new Point(0, this.scene.mainForm.gfxEditor.selectedSheet * 64);
+                this.scene.mainForm.gfxEditor.panel1.Refresh();
             }
-
-            this.scene.mainForm.editorsTabControl.SelectedIndex = 2;
-            this.scene.mainForm.gfxEditor.selectedSheet = this.scene.ow.AllMaps[this.scene.selectedMap].StaticGFX[(e.Y / 64)];
-            this.scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
-
-            this.scene.mainForm.gfxEditor.panel1.AutoScrollPosition = new Point(0, this.scene.mainForm.gfxEditor.selectedSheet * 64);
-            this.scene.mainForm.gfxEditor.panel1.Refresh();
         }
 
         private void Tile16Editor_Shown(object sender, EventArgs e)

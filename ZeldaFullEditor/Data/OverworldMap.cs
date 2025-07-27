@@ -634,11 +634,11 @@ namespace ZeldaFullEditor
 
             int world = 0;
 
-            if (this.Index < 64)
+            if (this.Index < 0x40)
             {
                 this.TilesUsed = this.overworld.AllMapTile32LW;
             }
-            else if (this.Index < 128 && this.Index >= 64)
+            else if (this.Index < 0x80 && this.Index >= 0x40)
             {
                 this.TilesUsed = this.overworld.AllMapTile32DW;
                 world = 1;
@@ -649,8 +649,8 @@ namespace ZeldaFullEditor
                 world = 2;
             }
 
-            int superY = (this.Index - (world * 64)) / 8;
-            int superX = this.Index - (world * 64) - (superY * 8);
+            int superY = (this.Index - (world * 0x40)) / 8;
+            int superX = (this.Index - (world * 0x40)) - (superY * 8);
 
             for (int y = 0; y < 32; y++)
             {
@@ -682,8 +682,6 @@ namespace ZeldaFullEditor
         /// <param name="sourcePointer"> The source pointer. </param>
         public unsafe void CopyTile8bpp16(int x, int y, int tile, IntPtr destinationPointer, IntPtr sourcePointer)
         {
-            int sourceY = tile / 8;
-            int sourceX = tile - (sourceY * 8);
             int sourcePointerPosition = ((tile - ((tile / 8) * 8)) * 16) + ((tile / 8) * 2048); // (sourceX * 16) + (sourceY * 128);
             byte* sourcePtr = (byte*)sourcePointer.ToPointer();
 

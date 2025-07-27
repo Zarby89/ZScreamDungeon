@@ -398,13 +398,12 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 buffer.Write((ushort)scene.selectedTile[i]);
             }
+
             // write tiles
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
-
     }
 }

@@ -51,6 +51,7 @@ namespace ZeldaFullEditor.Gui
 
         Pen selectionPen = new Pen(Color.LimeGreen, 2);
         Brush unusedTile = new SolidBrush(Color.FromArgb(80, 255, 0, 0));
+        Brush highlightedTile = new SolidBrush(Color.FromArgb(80, 150, 0, 210));
 
         public OverworldEditor()
         {
@@ -401,31 +402,31 @@ namespace ZeldaFullEditor.Gui
 
         private void tilePictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (GFX.mapblockset16Bitmap != null)
+            if (GFX.mapblockset16Bitmap == null)
             {
-                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
-                e.Graphics.CompositingMode = CompositingMode.SourceCopy; // why was it over that's much slower than copy
-                e.Graphics.DrawImage(
-                    GFX.mapblockset16Bitmap,
-                    new Rectangle(0, 0, 256, 16384),
-                    new Rectangle(0, 0, 128, 8192),
-                    GraphicsUnit.Pixel);
+                return;
+            }
 
-                if (this.scene.selectedTile.Length > 0)
-                {
-                    int x = (this.scene.selectedTile[0] % 8) * 32;
-                    int y = (this.scene.selectedTile[0] / 8) * 32;
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+            e.Graphics.CompositingMode = CompositingMode.SourceCopy; // why was it over that's much slower than copy
+            e.Graphics.DrawImage(
+                GFX.mapblockset16Bitmap,
+                new Rectangle(0, 0, 256, 16384),
+                new Rectangle(0, 0, 128, 8192),
+                GraphicsUnit.Pixel);
 
-                    e.Graphics.DrawRectangle(selectionPen, new Rectangle(x, y, 32, 32));
-                    //selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}"; // do not put set label in paint wtf
-                }
+            if (this.scene.selectedTile.Length > 0)
+            {
+                int x = (this.scene.selectedTile[0] % 8) * 32;
+                int y = (this.scene.selectedTile[0] / 8) * 32;
 
-                if (!showUnusedTile16)
-                {
-                    return;
-                }
+                e.Graphics.DrawRectangle(selectionPen, new Rectangle(x, y, 32, 32));
+                //selectedTileLabel.Text = $"Selected tile: {scene.selectedTile[0]:X4}"; // do not put set label in paint wtf
+            }
 
+            if (showUnusedTile16)
+            {
                 e.Graphics.CompositingMode = CompositingMode.SourceOver; // why was it over that's much slower than copy
                 for (int i = 0; i < 4096; i++)
                 {
@@ -434,9 +435,15 @@ namespace ZeldaFullEditor.Gui
                         e.Graphics.FillRectangle(unusedTile, new Rectangle((i % 8) * 32, (i / 8) * 32, 32, 32));
                     }
                 }
-
-                //e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
             }
+
+            if (highlightedTile16)
+            {
+                e.Graphics.CompositingMode = CompositingMode.SourceOver;
+                e.Graphics.FillRectangle(highlightedTile, new Rectangle((scene.selectedTile[0] % 8) * 32, (scene.selectedTile[0] / 8) * 32, 32, 32));
+            }
+
+            //e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
         }
 
         public void AdjustTile16BoxScrollBar()
@@ -458,7 +465,9 @@ namespace ZeldaFullEditor.Gui
             //}
         }
 
-        private void tilePictureBox_MouseClick(object sender, MouseEventArgs e)
+        public bool highlightedTile16 = false;
+
+        private void tilePictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             this.scene.selectedTileSizeX = 1;
             this.scene.selectedTile = new ushort[1] { (ushort)((e.X / 32) + ((e.Y / 32) * 8)) };
@@ -466,6 +475,25 @@ namespace ZeldaFullEditor.Gui
             {
                 objectGroupbox.Text = "Selected Tile: " + scene.selectedTile[0].ToString("X4") + "   Selected Map " + scene.ow.AllMaps[scene.selectedMap].ParentID.ToString("X2");
                 this.SelectedObjectID.Text = scene.selectedTile[0].ToString("X4");
+            }
+
+            if (e.Button == MouseButtons.Right)
+            {
+                highlightedTile16 = true;
+
+                this.scene.Refresh();
+            }
+
+            this.tilePictureBox.Refresh();
+        }
+
+        private void tilePictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                highlightedTile16 = false;
+
+                this.scene.Refresh();
             }
 
             this.tilePictureBox.Refresh();

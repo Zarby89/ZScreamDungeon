@@ -178,7 +178,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             SendTileData();
 
-
                             int y = 0;
                             int x = 0;
                             ushort[] undotiles = new ushort[scene.selectedTile.Length];
@@ -635,7 +634,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
         private void SendTileData()
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer((short)(24 + (scene.selectedTile.Length * 2)));
             buffer.Write((byte)04); // tile data cmd
             buffer.Write((byte)NetZS.userID); // user id
@@ -644,16 +647,17 @@ namespace ZeldaFullEditor.OWSceneModes
             buffer.Write((int)scene.selectedTileSizeX);
             buffer.Write((byte)scene.ow.WorldOffset);
             buffer.Write((int)scene.selectedTile.Length);
+
             for (int i = 0; i < scene.selectedTile.Length; i++)
             {
                 buffer.Write((ushort)scene.selectedTile[i]);
             }
+
             // write tiles
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
 
         private void SendTileDataMove(int tileX, int tileY)
@@ -671,16 +675,17 @@ namespace ZeldaFullEditor.OWSceneModes
             buffer.Write((int)scene.selectedTileSizeX);
             buffer.Write((byte)scene.ow.WorldOffset); // tile data cmd
             buffer.Write((int)scene.selectedTile.Length);
+
             for (int i = 0; i < scene.selectedTile.Length; i++)
             {
                 buffer.Write((ushort)scene.selectedTile[i]);
             }
+
             // write tiles
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
     }
 }
