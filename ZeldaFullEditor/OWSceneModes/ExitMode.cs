@@ -224,13 +224,15 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedExit != null)
                 {
-                    selectedExit.PlayerX = (ushort)e.X.Clamp(0, 4088);
-                    selectedExit.PlayerY = (ushort)e.Y.Clamp(0, 4088);
-
                     if (scene.snapToGrid)
                     {
                         selectedExit.PlayerX = (ushort)((e.X / 8) * 8).Clamp(0, 4088);
                         selectedExit.PlayerY = (ushort)((e.Y / 8) * 8).Clamp(0, 4088);
+                    }
+                    else
+                    {
+                        selectedExit.PlayerX = (ushort)e.X.Clamp(0, 4088);
+                        selectedExit.PlayerY = (ushort)e.Y.Clamp(0, 4088);
                     }
 
                     byte mapID = scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID;

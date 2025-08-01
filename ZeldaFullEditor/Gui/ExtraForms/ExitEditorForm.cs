@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZeldaFullEditor;
 
 namespace ZeldaFullEditor
 {
@@ -24,7 +16,7 @@ namespace ZeldaFullEditor
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e) //OK Button
+        private void OkButtonClick(object sender, EventArgs e) //OK Button
         {
             editingExit.IsAutomatic = automaticcheckBox.Checked;
             if (!automaticcheckBox.Checked)
@@ -94,8 +86,8 @@ namespace ZeldaFullEditor
             roomUpDown.HexValue = editingExit.RoomID;
             mapUpDown.Value = editingExit.MapID;
 
-            int mapy = (editingExit.MapID / 8);
-            int mapx = editingExit.MapID - (mapy * 8);
+            int mapy = ((editingExit.MapID % 0x40) / 8);
+            int mapx = (editingExit.MapID % 0x40) - (mapy * 8);
 
             pixelMapx = ((mapx) * 512);
             pixelMapy = ((mapy) * 512);

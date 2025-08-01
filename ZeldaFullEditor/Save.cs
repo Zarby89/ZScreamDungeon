@@ -1030,6 +1030,14 @@ namespace ZeldaFullEditor
         {
             ROM.StartBlockLogWriting("OW Exits", Constants.OWExitMapId);
 
+            // ASM version 0x03 added SW support and the exit leading to Zora's Domain specifically needs to be updated because its camera values are incorrect.
+            // We only update it if it was a vanilla ROM though because we don't know if the user has already adjusted it or not.
+            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+            if (asmVersion == 0x00)
+            {
+                scene.ow.AllExits[0x4D].SpecialUpdatePosition(scene.ow);
+            }
+
             for (int i = 0; i < scene.ow.AllExits.Length; i++)
             {
                 ROM.Write(Constants.OWExitMapId + i, (byte)(scene.ow.AllExits[i].MapID & 0xFF), WriteType.ExitProperties);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
@@ -185,6 +186,16 @@ namespace ZeldaFullEditor
             this.ScrollModX,
             this.DoorType1,
             this.DoorType2);
+        }
+
+        public void SpecialUpdatePosition(Overworld overworld)
+        {
+            this.PlayerX = (ushort)((this.PlayerX / 8) * 8).Clamp(0, 4088);
+            this.PlayerY = (ushort)((this.PlayerY / 8) * 8).Clamp(0, 4088);
+
+            this.UpdateMapStuff(this.MapID, overworld);
+
+            this.YScroll = (ushort)(this.YScroll - 2);
         }
 
         /// <summary>
