@@ -340,6 +340,8 @@ namespace ZeldaFullEditor
             // 29: load Over. sprites
             // 30: load Over. items
 
+            bool knownException = false;
+
             try
             {
                 // MUST BE CALLED BEFORE SAVEALLSPRITES.
@@ -347,6 +349,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOWSprites(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many Overworld sprites");
                         throw new Exception();
                     }
@@ -356,6 +359,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveAllSprites())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many sprites");
                         throw new Exception();
                     }
@@ -365,6 +369,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveAllPots())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many pot items");
                         throw new Exception();
                     }
@@ -374,6 +379,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveAllChests())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many chest items");
                         throw new Exception();
                     }
@@ -383,6 +389,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveAllObjects())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many tiles objects");
                         throw new Exception();
                     }
@@ -392,6 +399,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveBlocks())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many pushable blocks");
                         throw new Exception();
                     }
@@ -401,6 +409,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveTorches())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many torches");
                         throw new Exception();
                     }
@@ -410,6 +419,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveAllPits())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("There are too many pits with damage");
                         throw new Exception();
                     }
@@ -420,6 +430,7 @@ namespace ZeldaFullEditor
                     if (save.SaveRoomsHeaders())
                     {
                         // TODO: Is this supposed to be commented out?
+                        //knownException = true;
                         //UIText.CryAboutSaving("there are too many chest items);
                         //break;
                     }
@@ -432,6 +443,7 @@ namespace ZeldaFullEditor
                         // Set entrances expansion Bytes
                         ROM.DATA[Constants.entrance_EXP] = 00;
                         ROM.DATA[Constants.entrance_EXP + 1] = 01;
+                        knownException = true;
                         UIText.CryAboutSaving("Something with entrances ?? no idea why LUL");
                         throw new Exception();
                     }
@@ -441,6 +453,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOWItems(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Overworld items out of range");
                         throw new Exception();
                     }
@@ -450,6 +463,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOWEntrances(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("??, no idea why LUL");
                         throw new Exception();
                     }
@@ -459,6 +473,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOWTransports(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Overworld transports out of range");
                         throw new Exception();
                     }
@@ -468,6 +483,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOWExits(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Overworld Exits or something IDK");
                         throw new Exception();
                     }
@@ -477,7 +493,8 @@ namespace ZeldaFullEditor
                 {
                     if (this.overworldEditor.scene.SaveTiles())
                     {
-                        // No need for a message box here because its handeled within the SaveTiles() function itslef.
+                        // No need for a message box here because its handeled within the SaveTiles() function itself.
+                        knownException = true;
                         throw new Exception();
                     }
                 }
@@ -488,6 +505,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveMapProperties(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Overworld map properties ???");
                         throw new Exception();
                     }
@@ -504,6 +522,7 @@ namespace ZeldaFullEditor
                 {
                     if (GfxGroups.SaveGroupsToROM())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving GFX Groups");
                         throw new Exception();
                     }
@@ -513,6 +532,7 @@ namespace ZeldaFullEditor
                 {
                     if (Palettes.SavePalettesToROM(ROM.DATA))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving palettes");
                         throw new Exception();
                     }
@@ -522,6 +542,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveAllText(this.textEditor))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Impossible to save text");
                         throw new Exception();
                     }
@@ -534,6 +555,7 @@ namespace ZeldaFullEditor
                     (bool collisionFailed, string error) = save.SaveCustomCollision();
                     if (collisionFailed)
                     {
+                        knownException = true;
                         UIText.CryAboutSaving(error);
                         throw new Exception();
                     }
@@ -543,6 +565,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveMapOverlays(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Overworld map overlays ???");
                         throw new Exception();
                     }
@@ -552,6 +575,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOverworldMusic(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Overworld map tile types ???");
                         throw new Exception();
                     }
@@ -561,6 +585,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveTitleScreen())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Overworld title screen?");
                         throw new Exception();
                     }
@@ -570,6 +595,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOverworldMiniMap())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving overworld Minimap?");
                         throw new Exception();
                     }
@@ -579,6 +605,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOverworldTilesType(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
                         throw new Exception();
                     }
@@ -588,6 +615,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOverworldMaps(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving overworld maps");
                         throw new Exception();
                     }
@@ -597,6 +625,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveGravestones(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving gravestones");
                         throw new Exception();
                     }
@@ -606,6 +635,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveDungeonMaps())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving dungeon maps");
                         throw new Exception();
                     }
@@ -615,6 +645,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveTriforce())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving triforce");
                         throw new Exception();
                     }
@@ -624,6 +655,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveOverworldMessagesIDs(this.overworldEditor.scene))
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving overworld map tiles Types ???");
                         throw new Exception();
                     }
@@ -634,6 +666,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveSpritesProperties())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving sprites properties");
                         return;
                     }
@@ -644,6 +677,7 @@ namespace ZeldaFullEditor
                 {
                     if (save.SaveSpritesDamages())
                     {
+                        knownException = true;
                         UIText.CryAboutSaving("Problem saving sprites damages");
                         return;
                     }
@@ -652,12 +686,14 @@ namespace ZeldaFullEditor
                 // The mosaic byte is hardcoded to true on purpose for now.
                 if (save.SaveCustomOverworldASM(this.overworldEditor.scene, this.saveSettingsArr[41], this.saveSettingsArr[42], true, this.saveSettingsArr[43], this.saveSettingsArr[44], this.saveSettingsArr[47]))
                 {
+                    knownException = true;
                     UIText.CryAboutSaving("Problem saving ZS Custom Overworld ASM");
                     throw new Exception();
                 }
 
                 if (save.SaveDungeonHolesOverlay())
                 {
+                    knownException = true;
                     UIText.CryAboutSaving("Problem saving dungeons holes overlays (probably using too much space) try removing objects");
                     throw new Exception();
                 }
@@ -667,6 +703,12 @@ namespace ZeldaFullEditor
             catch (Exception)
             {
                 ROM.DATA = (byte[])romBackup.Clone(); // Restore previous ROM data to prevent corrupting anything.
+
+                if (!knownException)
+                {
+                    UIText.CryAboutSaving("There was some unknown error while saving. Your progress has NOT been saved.");
+                }
+
                 return;
             }
 

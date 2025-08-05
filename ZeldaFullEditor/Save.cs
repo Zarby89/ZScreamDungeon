@@ -1816,7 +1816,7 @@ namespace ZeldaFullEditor
                 int parentyPos = (scene.ow.AllMaps[i].ParentID % 0x40) / 8;
                 int parentxPos = (scene.ow.AllMaps[i].ParentID % 0x40) % 8;
 
-                Console.WriteLine("Area: " + i.ToString("X2") + " X: " + parentxPos + " Y: " + parentyPos);
+                //Console.WriteLine("Area: " + i.ToString("X2") + " X: " + parentxPos + " Y: " + parentyPos);
 
                 // If we've already checked this map:
                 if (checkedMap.Contains((byte)i))
@@ -1871,8 +1871,8 @@ namespace ZeldaFullEditor
                         ushort byScreen3Small = 0x1800;
 
                         // If the area above is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i - 8 >= 0)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) - 8 >= 0)
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
@@ -1889,8 +1889,8 @@ namespace ZeldaFullEditor
                         ushort byScreen4Small = 0x1000;
 
                         // If the area below is a large map, we don't need to add an offset to it. otherwise leave it the same.
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i + 8 < 0x40)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) + 8 < 0x40 && i + 8 < 0xA0)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
@@ -1948,8 +1948,8 @@ namespace ZeldaFullEditor
                             byScreen1Large[2] = 0x1060;
                             byScreen1Large[3] = 0x1060;
 
-                            // Just to make sure where don't try to read outside of the array.
-                            if (i - 1 >= 0)
+                            // Just to make sure we don't try to read outside of the array.
+                            if ((i % 0x40) - 1 >= 0)
                             {
                                 OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
 
@@ -1980,8 +1980,8 @@ namespace ZeldaFullEditor
                         // byScreen2 = Transitioning left.
                         ushort[] byScreen2Large = { 0x0080, 0x0080, 0x1080, 0x1080 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i + 2 < 0x40)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) + 2 < 0x40 && i + 2 < 0xA0)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 2];
 
@@ -2011,8 +2011,8 @@ namespace ZeldaFullEditor
                         // byScreen3 = Transitioning down.
                         ushort[] byScreen3Large = { 0x1800, 0x1840, 0x1800, 0x1840 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i - 8 >= 0)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) - 8 >= 0)
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
@@ -2048,8 +2048,8 @@ namespace ZeldaFullEditor
                         // byScreen4 = Transitioning up.
                         ushort[] byScreen4Large = { 0x2000, 0x2040, 0x2000, 0x2040 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i + 16 < 0x40)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) + 16 < 0x40 && i + 16 < 0xA0)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
 
@@ -2105,8 +2105,8 @@ namespace ZeldaFullEditor
 
                         if (parentxPos > 0)
                         {
-                            // Just to make sure where don't try to read outside of the array.
-                            if (i - 1 >= 0)
+                            // Just to make sure we don't try to read outside of the array.
+                            if ((i % 0x40) - 1 >= 0)
                             {
                                 // If the area to the west of the left quadrant is the bottom right quadrant of a large area:
                                 OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
@@ -2129,8 +2129,8 @@ namespace ZeldaFullEditor
                         // byScreen2 = Transitioning left.
                         ushort[] byScreen2Wide = { 0x0080, 0x0080 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i + 2 < 0x40)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) + 2 < 0x40 && i + 2 < 0xA0)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 2];
 
@@ -2150,8 +2150,8 @@ namespace ZeldaFullEditor
                         // byScreen3 = Transitioning down.
                         ushort[] byScreen3Wide = { 0x1800, 0x1840 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i - 8 >= 0)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) - 8 >= 0)
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
@@ -2196,8 +2196,8 @@ namespace ZeldaFullEditor
                         // byScreen4 = Transitioning up.
                         ushort[] byScreen4Wide = { 0x1000, 0x1000 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i + 8 < 0x40)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) + 8 < 0x40 && i + 8 < 0xA0)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
@@ -2255,8 +2255,8 @@ namespace ZeldaFullEditor
                             // If parentX != 0x00 then lower submaps = 0x1060.
                             byScreen1Tall[1] = 0x1060;
 
-                            // Just to make sure where don't try to read outside of the array.
-                            if (i - 1 >= 0)
+                            // Just to make sure we don't try to read outside of the array.
+                            if ((i % 0x40) - 1 >= 0)
                             {
                                 // If the area to the west of the top quadrant is a large area:
                                 OverworldMap westNeighbor = scene.ow.AllMaps[i - 1];
@@ -2296,8 +2296,8 @@ namespace ZeldaFullEditor
                         // byScreen2 = Transitioning left.
                         ushort[] byScreen2Tall = { 0x0040, 0x0040 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i + 1 < 0x40)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) + 1 < 0x40 && i + 1 < 0xA0)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 1];
 
@@ -2345,8 +2345,8 @@ namespace ZeldaFullEditor
                         // byScreen3 = Transitioning down.
                         ushort[] byScreen3Tall = { 0x1800, 0x1800 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i - 8 >= 0)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) - 8 >= 0)
                         {
                             OverworldMap northNeighbor = scene.ow.AllMaps[i - 8];
 
@@ -2369,8 +2369,8 @@ namespace ZeldaFullEditor
                         // byScreen4 = Transitioning up.
                         ushort[] byScreen4Tall = { 0x2000, 0x2000 };
 
-                        // Just to make sure where don't try to read outside of the array.
-                        if (i + 16 < 0x40)
+                        // Just to make sure we don't try to read outside of the array.
+                        if ((i % 0x40) + 16 < 0x40 && i + 16 < 0xA0)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
 
@@ -2397,6 +2397,7 @@ namespace ZeldaFullEditor
                 }
 
                 // Completed vars for the current area.
+                Console.WriteLine("Completed Area vars for: " + i.ToString("X2"));
             }
 
             Console.WriteLine("Overworld parent map: \n");

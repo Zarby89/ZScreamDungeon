@@ -96,7 +96,6 @@ namespace ZeldaFullEditor.Data
             List<byte> objectsBytes = new List<byte>();
             for (int i = 0; i < overlays.Length; i++)
             {
-
                 if (i == 0x13) // if it's water overlay then save pointer somewhere else
                 {
                     // write the new water position at the end
