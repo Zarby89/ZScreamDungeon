@@ -91,7 +91,7 @@ Credits_LoadScene_PrepGFX_sprite_palette   = $0285F3 ; $0105F3
 DeleteCertainAncillaeStopDashing           = $028B0C ; $010B0C
 OWOverlay_HShift                           = $02A46D ; $01246D
 OWOverlay_VShift                           = $02A471 ; $012471
-Overworld_HandleOverlaysAndBombDoors_bombable_door_location_New = $02A634 ; $012634
+Overworld_HandleOverlaysAndBombDoors_bombable_door_location_New = $02A644 ; $012644
 Overworld_LoadMapProperties                = $02AB08 ; $012B08
 Overworld_FinishTransGfx_firstHalf_Retrun  = $02ABC5 ; $012BC5
 Overworld_LoadSubscreenAndSilenceSFX1      = $02AF19 ; $012F19
@@ -4709,6 +4709,8 @@ OverworldMixedCoordsChange:
 }
 warnpc $02A644 ; $012644
 
+; The space after this is used for Overworld_HandleOverlaysAndBombDoors_bombable_door_location
+
 ; Update this address.
 org $02C098 ; $014098
 ADC.w OverworldMixedCoordsChange, Y
@@ -4826,7 +4828,7 @@ NewOverworld_SetCameraBounds:
     LDA.w Pool_OverworldTransitionPositionY, Y : STA.w $0600
     CLC : ADC.w .boundary_y_size, X            : STA.w $0602
     
-    LDA.w Pool_OverworldTransitionPositionX, Y :  STA.w $0604
+    LDA.w Pool_OverworldTransitionPositionX, Y : STA.w $0604
     CLC : ADC.w .boundary_x_size, X            : STA.w $0606
 
     LDA.w Pool_trans_target_north, Y          : STA.w $0610
@@ -5261,13 +5263,23 @@ LoadSpecialOverworld_Interupt:
 
     REP #$30
 
-    LDA.b $8A : AND.w #$00FF : ASL : TAX
-    LDA.l Pool_OverworldTransitionPositionY, X          : STA.w $0708
-    LDA.l Pool_OverworldTransitionPositionX, X : LSR #3 : STA.w $070C
+    LDA.b $A0 : CMP.w #$0180 : BEQ .SpecialCameraBounds
+                CMP.w #$0181 : BEQ .SpecialCameraBounds
+        LDA.b $8A : AND.w #$00FF : ASL : TAX
+        LDA.l Pool_OverworldTransitionPositionY, X          : STA.w $0708
+        LDA.l Pool_OverworldTransitionPositionX, X : LSR #3 : STA.w $070C
 
-    JSL.l AreaSizeCheck
+        JSL.l AreaSizeCheck
 
-    JSL.l NewOverworld_SetCameraBounds
+        JSL.l NewOverworld_SetCameraBounds
+
+        BRA .end
+
+    .SpecialCameraBounds
+
+    JSL.l SetupSpecialCameraBounds
+
+    .end
 
     SEP #$30
 
@@ -5302,6 +5314,69 @@ db $E2, $20, $68, $85, $A0, $AB, $22, $1D
 db $D6, $0E, $60
 
 endif
+
+pullpc
+
+SetupSpecialCameraBounds:
+{
+    PHB : PHK : PLB
+
+    LDA.w #$03F0 : STA.b $00
+
+    LDA.b $A0 : SEC : SBC.w #$0080 : AND.w #$003F : ASL : TAX
+    LDA.w .SpecialCamera600, X          : STA.w $0708
+    LDA.w .SpecialCamera70C, X : LSR #3 : STA.w $070C
+
+    LDA.b $00          : STA.w $070A
+    LDA.b $00 : LSR #3 : STA.w $070E
+
+    SEP #$10
+
+    LDA.w .SpecialCamera600, X : STA.w $0600
+    LDA.w .SpecialCamera602, X : STA.w $0602
+    LDA.w .SpecialCamera604, X : STA.w $0604
+    LDA.w .SpecialCamera606, X : STA.w $0606
+    LDA.w .SpecialCamera610, X : STA.w $0610
+    LDA.w .SpecialCamera612, X : STA.w $0612
+    LDA.w .SpecialCamera614, X : STA.w $0614
+    LDA.w .SpecialCamera616, X : STA.w $0616
+
+    PLB
+
+    RTL
+
+    ; These are the camera values that are used for the master sword area and
+    ; the area under the bridge.
+    .SpecialCamera600
+    dw $0000, $0000
+
+    .SpecialCamera602
+    dw $0120, $0020
+
+    .SpecialCamera604
+    dw $0000, $0100
+
+    .SpecialCamera606
+    dw $0000, $0100
+
+    .SpecialCamera610
+    dw $FF20, $FF20
+
+    .SpecialCamera612
+    dw $FFFC, $0100
+
+    .SpecialCamera614
+    dw $FF20, $FF20
+
+    .SpecialCamera616
+    dw $0004, $0104
+
+    .SpecialCamera70C
+    dw $0000, $0000
+}
+
+
+pushpc
 
 ; ==============================================================================
 
