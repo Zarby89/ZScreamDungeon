@@ -1959,6 +1959,7 @@ namespace ZeldaFullEditor
                                     switch (westNeighbor.AreaSizeQuadrant)
                                     {
                                         // If the area to the west of the top left quadrant is the top right quadrant of a large or tall area:
+                                        case 0:
                                         case 1:
                                             byScreen1Large[2] = 0x0060;
                                             break;
