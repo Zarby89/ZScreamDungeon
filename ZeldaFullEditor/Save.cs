@@ -1964,6 +1964,7 @@ namespace ZeldaFullEditor
                                             break;
 
                                         // If the area to the west of the top left quadrant is the bottom right quadrant of a large or tall area:
+                                        case 2:
                                         case 3:
                                             byScreen1Large[0] = 0xF060;
                                             break;
