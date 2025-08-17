@@ -2733,7 +2733,7 @@ namespace ZeldaFullEditor
                                     // │ 2│->│ 2│
                                     // └──┘  └──┘
                                     // A right transition from the bottom quadrant of a tall area to the bottom quadrant of a tall area.
-                                    case 1:
+                                    case 0:
                                         byScreen1Tall[1] = 0x0060;
                                         break;
 
@@ -2749,23 +2749,6 @@ namespace ZeldaFullEditor
                                         byScreen1Tall[0] = 0xF060;
                                         break;
                                 }
-                            }
-                        }
-
-                        // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 1 < 0x40 && i + 7 < 0xA0)
-                        {
-                            OverworldMap westNeighbor2 = scene.ow.AllMaps[i + 7];
-
-                            //       ┌──┐
-                            //       │ 0│
-                            // ┌──┐  ├──┤
-                            // │ 0│->│ 2│
-                            // └──┘  └──┘
-                            // A right transition from a small area to the bottom quadrant of a tall area.
-                            if (westNeighbor2.AreaSize == AreaSizeEnum.SmallArea)
-                            {
-                                byScreen1Tall[1] = 0x0060;
                             }
                         }
 
@@ -2803,14 +2786,13 @@ namespace ZeldaFullEditor
                                     // └──┘  
                                     // A left transition from the bottom left quadrant of a large area to the top quadrant of a tall area.
                                     case 2:
-                                        byScreen2Tall[0] = 0xF080; // byScreen2Tall[0] = 0xF040;
+                                        byScreen2Tall[0] = 0xF040;
                                         break;
                                 }
                             }
 
                             if (eastNeighbor.AreaSize == AreaSizeEnum.TallArea)
                             {
-
                                 switch (eastNeighbor.AreaSizeQuadrant)
                                 {
                                     // ┌──┐  ┌──┐
