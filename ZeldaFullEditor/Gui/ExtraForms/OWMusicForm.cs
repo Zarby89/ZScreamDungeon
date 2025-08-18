@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
@@ -16,64 +9,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         public byte[] musics = new byte[4];
         bool fromForm = false;
 
-        // TODO move to DefaultEntities
-        string[] musicNames = new string[]
-        {
-            "0x00 None",
-            "0x01 Title",
-            "0x02 World Map",
-            "0x03 Beginning",
-            "0x04 Rabbit",
-            "0x05 Forest",
-            "0x06 Intro",
-            "0x07 Town",
-            "0x08 Warp",
-            "0x09 Dark World",
-            "0x0A Mastersword",
-            "0x0B File Select",
-            "0x0C Soldier",
-            "0x0D Mountain",
-            "0x0E Shop",
-            "0x0F Fanfare"
-        };
-
-        string[] ambientNames = new string[]
-        {
-            "0x00 Nothing",
-            "0x01 Rain/Zora area",
-            "0x02 Quiet rain",
-            "0x03 More rain",
-            "0x04 Even more rain",
-            "0x05 Silence",
-            "0x06 Quiets ambient sound",
-            "0x07 Rumbling",
-            "0x08 Endless rumbling",
-            "0x09 DM wind/Telepathy",
-            "0x0A Quiet wind",
-            "0x0B Flute song",
-            "0x0C Flute again",
-            "0x0D Magic bat/Witch shroom",
-            "0x0E Short jingle",
-            "0x0F Crystal get/Save and quit",
-            "0x10 SQ sound",
-            "0x11 Choir melody",
-            "0x12 Choir countermelody",
-            "0x13 Lanmo/Blind swoosh",
-            "0x14 Another swoosh",
-            "0x15 Triforce door/Pyramid hole opening",
-            "0x16 VOMP",
-            "0x17 Flute again again",
-            "0x18 Why is there so much flute",
-            "0x19 Nothing",
-            "0x1A Nothing",
-            "0x1B All flute and no play",
-            "0x1C Makes flute a flutey flute",
-            "0x1D Some jingle",
-            "0x1E That broken jingle again",
-            "0x1F Crystal get again",
-            "0x20 Some other jingle"
-        };
-
         public OWMusicForm()
         {
             InitializeComponent();
@@ -81,15 +16,15 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         private void OWMusicForm_Load(object sender, EventArgs e)
         {
-            music1Box.Items.AddRange(musicNames);
-            music2Box.Items.AddRange(musicNames);
-            music3Box.Items.AddRange(musicNames);
-            music4Box.Items.AddRange(musicNames);
+            music1Box.Items.AddRange(Constants.musicNamesOW);
+            music2Box.Items.AddRange(Constants.musicNamesOW);
+            music3Box.Items.AddRange(Constants.musicNamesOW);
+            music4Box.Items.AddRange(Constants.musicNamesOW);
 
-            ambient1Box.Items.AddRange(ambientNames);
-            ambient2Box.Items.AddRange(ambientNames);
-            ambient3Box.Items.AddRange(ambientNames);
-            ambient4Box.Items.AddRange(ambientNames);
+            ambient1Box.Items.AddRange(Constants.ambientNamesOW);
+            ambient2Box.Items.AddRange(Constants.ambientNamesOW);
+            ambient3Box.Items.AddRange(Constants.ambientNamesOW);
+            ambient4Box.Items.AddRange(Constants.ambientNamesOW);
 
             fromForm = true;
             music1Box.SelectedIndex = musics[0] & 0x0F;
