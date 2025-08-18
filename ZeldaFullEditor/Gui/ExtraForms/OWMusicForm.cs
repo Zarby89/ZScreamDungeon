@@ -124,10 +124,15 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 ambient2Box.Enabled = false;
                 ambient3Box.Enabled = false;
                 ambient4Box.Enabled = false;
-                label1.Text = "";
-                label2.Text = "";
-                label3.Text = "";
-                label4.Text = "";
+            }
+            else
+            {
+                music2Box.Enabled = true;
+                music3Box.Enabled = true;
+                music4Box.Enabled = true;
+                ambient2Box.Enabled = true;
+                ambient3Box.Enabled = true;
+                ambient4Box.Enabled = true;
             }
         }
 

@@ -242,6 +242,15 @@ namespace ZeldaFullEditor.Gui
                 ambient3Box.Enabled = false;
                 ambient4Box.Enabled = false;
             }
+            else
+            {
+                music2Box.Enabled = true;
+                music3Box.Enabled = true;
+                music4Box.Enabled = true;
+                ambient2Box.Enabled = true;
+                ambient3Box.Enabled = true;
+                ambient4Box.Enabled = true;
+            }
         }
 
         private void ModeButton_Click(object sender, EventArgs e)
