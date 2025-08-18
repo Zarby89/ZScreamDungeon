@@ -2332,5 +2332,13 @@ namespace ZeldaFullEditor
             "", // 18E
             "", // 18F
         };
+
+        public static string PNGFolderName = "Images\\";
+        public static string DungeonSingleMapPNGName = "SingleRoom.png";
+        public static string DungeonMultipleMapPNGName = "MultipleRooms.png";
+        public static string VRAMPNGName = "VRAM.png";
+        public static string OWLWPNGName = "LW.png";
+        public static string OWDWPNGName = "DW.png";
+        public static string OWSWPNGName = "SW.png";
     }
 }

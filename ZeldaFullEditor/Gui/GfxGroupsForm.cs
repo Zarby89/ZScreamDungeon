@@ -142,13 +142,8 @@ namespace ZeldaFullEditor.Gui
             this.palette1Box.Text = GfxGroups.paletteGfx[(int)this.paletteUpDown.Value][0].ToString("X2");
             this.palette2Box.Text = GfxGroups.paletteGfx[(int)this.paletteUpDown.Value][1].ToString("X2");
             this.palette3Box.Text = GfxGroups.paletteGfx[(int)this.paletteUpDown.Value][2].ToString("X2");
-            this.palette4Box.Text = GfxGroups.paletteGfx[(int)this.paletteUpDown.Value][3].ToString("X2");
+            this.palette4Box.Text = GfxGroups.paletteGfx[(int)this.paletteUpDown.Value][3].ToString("X2"); // here
             this.editedFromForm = false;
-        }
-
-        private void main1Box_TextChanged(object sender, EventArgs e)
-        {
-            // TODO: Add something here?
         }
 
         private byte getTextBoxValue(TextBox tb) // Changed to hex
@@ -319,23 +314,25 @@ namespace ZeldaFullEditor.Gui
         {
             if (this.grayscaleRadioButton.Checked)
             {
-                ColorPalette cp = GFX.currentEditingfx16Bitmap.Palette;
+                ColorPalette colorPalette = GFX.currentEditingfx16Bitmap.Palette;
                 for (int i = 0; i < 16; i++)
                 {
-                    cp.Entries[i] = Color.FromArgb(i * 15, i * 15, i * 15);
+                    colorPalette.Entries[i] = Color.FromArgb(i * 15, i * 15, i * 15);
                 }
 
-                GFX.currentEditingfx16Bitmap.Palette = cp;
+                GFX.currentEditingfx16Bitmap.Palette = colorPalette;
             }
             else if (this.paletteRadioButton.Checked)
             {
-                ColorPalette cp = GFX.currentEditingfx16Bitmap.Palette;
+                this.createPalette();
+
+                ColorPalette colorPalette = GFX.currentEditingfx16Bitmap.Palette;
                 for (int i = 0; i < 16; i++)
                 {
-                    cp.Entries[i] = this.palettes[i + ((int)this.numericUpDown1.Value * 16)];
+                    colorPalette.Entries[i] = this.palettes[i + ((int)this.numericUpDown1.Value * 16)];
                 }
 
-                GFX.currentEditingfx16Bitmap.Palette = cp;
+                GFX.currentEditingfx16Bitmap.Palette = colorPalette;
             }
 
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
@@ -355,7 +352,6 @@ namespace ZeldaFullEditor.Gui
 
         private void createPalette()
         {
-
             for (int i = 0; i < 256; i++)
             {
                 this.palettes[i] = Color.Black;

@@ -1905,6 +1905,8 @@ namespace ZeldaFullEditor.Gui
 
         private void exportPNGToolStripButton_Click(object sender, EventArgs e)
         {
+            Directory.CreateDirectory(Constants.PNGFolderName);
+
             Bitmap temp = new Bitmap(4096, 4096);
             Graphics g = Graphics.FromImage(temp);
 
@@ -1959,7 +1961,7 @@ namespace ZeldaFullEditor.Gui
             }
             */
 
-            temp.Save("LW.png");
+            temp.Save(Constants.PNGFolderName + Constants.OWLWPNGName);
 
             temp = new Bitmap(4096, 4096);
             g = Graphics.FromImage(temp);
@@ -1988,7 +1990,7 @@ namespace ZeldaFullEditor.Gui
                 g.DrawImage(this.overworld.AllMaps[i + 0x40].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
-            temp.Save("DW.png");
+            temp.Save(Constants.PNGFolderName + Constants.OWDWPNGName);
 
             temp = new Bitmap(4096, 4096);
             g = Graphics.FromImage(temp);
@@ -2018,7 +2020,7 @@ namespace ZeldaFullEditor.Gui
                 g.DrawImage(this.overworld.AllMaps[i + 0x80].GFXBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
             }
 
-            temp.Save("SP.png");
+            temp.Save(Constants.PNGFolderName + Constants.OWSWPNGName);
         }
 
         public void UpdateBGColorVisibility(bool x)

@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -392,6 +392,7 @@
             this.showTransportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showEntranceExitPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showGravesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldOverlayVisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showGridToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.x8ToolStripMenuItemOW = new System.Windows.Forms.ToolStripMenuItem();
@@ -442,7 +443,6 @@
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
-            this.showGravesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -792,7 +792,7 @@
             this.toolStripButton1.Text = "Export Selected Rooms As PNG";
             this.toolStripButton1.ToolTipText = "Export map as png; Hold control and double click on the rooms you want to export." +
     "";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripButton1.Click += new System.EventHandler(this.ExportDungeonPNGToolStripClick);
             // 
             // debugToolStripButton
             // 
@@ -1887,13 +1887,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode7.Name = "EntranceNode";
-            treeNode7.Text = "Entrances";
-            treeNode8.Name = "StartingEntranceNode";
-            treeNode8.Text = "Spawn points";
+            treeNode1.Name = "EntranceNode";
+            treeNode1.Text = "Entrances";
+            treeNode2.Name = "StartingEntranceNode";
+            treeNode2.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8});
+            treeNode1,
+            treeNode2});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 294);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -4372,6 +4372,16 @@
             this.showEntranceExitPreviewToolStripMenuItem.Text = "Show Entrance/Exit Previews";
             this.showEntranceExitPreviewToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
             // 
+            // showGravesToolStripMenuItem
+            // 
+            this.showGravesToolStripMenuItem.Checked = true;
+            this.showGravesToolStripMenuItem.CheckOnClick = true;
+            this.showGravesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showGravesToolStripMenuItem.Name = "showGravesToolStripMenuItem";
+            this.showGravesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showGravesToolStripMenuItem.Text = "Show Graves";
+            this.showGravesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
+            // 
             // overworldOverlayVisibleToolStripMenuItem
             // 
             this.overworldOverlayVisibleToolStripMenuItem.CheckOnClick = true;
@@ -4819,16 +4829,6 @@
             // 
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
-            // 
-            // showGravesToolStripMenuItem
-            // 
-            this.showGravesToolStripMenuItem.Checked = true;
-            this.showGravesToolStripMenuItem.CheckOnClick = true;
-            this.showGravesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showGravesToolStripMenuItem.Name = "showGravesToolStripMenuItem";
-            this.showGravesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.showGravesToolStripMenuItem.Text = "Show Graves";
-            this.showGravesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
             // 
             // DungeonMain
             // 
