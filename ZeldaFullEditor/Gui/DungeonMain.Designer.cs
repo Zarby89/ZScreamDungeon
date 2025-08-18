@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -442,6 +442,7 @@
             this.loadTimer = new System.Windows.Forms.Timer(this.components);
             this.crc32timer = new System.Windows.Forms.Timer(this.components);
             this.exportPNGTimer = new System.Windows.Forms.Timer(this.components);
+            this.showGravesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1886,13 +1887,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode7.Name = "EntranceNode";
+            treeNode7.Text = "Entrances";
+            treeNode8.Name = "StartingEntranceNode";
+            treeNode8.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode7,
+            treeNode8});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 294);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -4299,6 +4300,7 @@
             this.showTransportsToolStripMenuItem,
             this.showItemsToolStripMenuItem,
             this.showEntranceExitPreviewToolStripMenuItem,
+            this.showGravesToolStripMenuItem,
             this.overworldOverlayVisibleToolStripMenuItem,
             this.showGridToolStripMenuItem1,
             this.useAreaSpecificBGColorToolStripMenuItem,
@@ -4818,6 +4820,16 @@
             this.exportPNGTimer.Interval = 2000;
             this.exportPNGTimer.Tick += new System.EventHandler(this.ExportPNGTimer_Tick);
             // 
+            // showGravesToolStripMenuItem
+            // 
+            this.showGravesToolStripMenuItem.Checked = true;
+            this.showGravesToolStripMenuItem.CheckOnClick = true;
+            this.showGravesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showGravesToolStripMenuItem.Name = "showGravesToolStripMenuItem";
+            this.showGravesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showGravesToolStripMenuItem.Text = "Show Graves";
+            this.showGravesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
+            // 
             // DungeonMain
             // 
             this.AllowDrop = true;
@@ -5321,6 +5333,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
         private System.Windows.Forms.ToolStripMenuItem x512ToolStripMenuItemOW;
         private System.Windows.Forms.ToolStripMenuItem x256ToolStripMenuItemOW;
+        private System.Windows.Forms.ToolStripMenuItem showGravesToolStripMenuItem;
     }
 }
 

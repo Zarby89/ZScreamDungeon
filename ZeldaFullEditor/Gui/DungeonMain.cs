@@ -5242,6 +5242,7 @@ namespace ZeldaFullEditor
             this.overworldEditor.scene.showFlute = this.showTransportsToolStripMenuItem.Checked;
             this.overworldEditor.scene.showItems = this.showItemsToolStripMenuItem.Checked;
             this.overworldEditor.scene.showOverlayText = this.showOverlayTextsToolStripMenuItem.Checked;
+            this.overworldEditor.scene.showGraves = this.showGravesToolStripMenuItem.Checked;
             this.overworldEditor.Refresh();
         }
 

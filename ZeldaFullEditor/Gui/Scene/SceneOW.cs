@@ -62,6 +62,7 @@ namespace ZeldaFullEditor
         public bool showSprites = true;
         public bool hideText = false;
         public bool showOverlayText = true;
+        public bool showGraves = true;
         public OverworldEditor owForm;
         public bool entrancePreview = false;
         private Point startingPoint = Point.Empty;
