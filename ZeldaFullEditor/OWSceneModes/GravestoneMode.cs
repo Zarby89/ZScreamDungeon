@@ -105,16 +105,21 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
+            if (!scene.showGraves)
+            {
+                return;
+            }
+
             Pen bgrBrush = Constants.Magenta200Pen;
             g.CompositingMode = CompositingMode.SourceOver;
 
             for (int i = 0; i < scene.ow.AllGraves.Length; i++)
             {
-                Gravestone e = scene.ow.AllGraves[i];
+                Gravestone grave = scene.ow.AllGraves[i];
 
                 if (selectedGrave != null)
                 {
-                    if (e == selectedGrave)
+                    if (grave == selectedGrave)
                     {
                         bgrBrush = Constants.MediumMint200Pen;
                         //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, "ID : " + i.ToString("X2"));
@@ -125,21 +130,22 @@ namespace ZeldaFullEditor.OWSceneModes
                     }
                 }
 
-                g.DrawRectangle(bgrBrush, new Rectangle(e.XTilePos, e.YTilePos, 32, 32));
-                scene.drawText(g, e.XTilePos + 8, e.YTilePos + 8, i.ToString("X2"));
+                g.DrawRectangle(bgrBrush, new Rectangle(grave.XTilePos, grave.YTilePos, 32, 32));
+                scene.drawText(g, grave.XTilePos + 8, grave.YTilePos + 8, i.ToString("X2"));
 
                 //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 40, e.tilemapPos.ToString("X4"));
                 if (i == 0x0D) // Stairs
                 {
-                    scene.drawText(g, e.XTilePos + 8, e.YTilePos + 16, "SPECIAL STAIRS");
+                    scene.drawText(g, grave.XTilePos + 8, grave.YTilePos + 16, "SPECIAL STAIRS");
                 }
 
                 if (i == 0x0E) // Hole
                 {
-                    scene.drawText(g, e.XTilePos + 8, e.YTilePos + 16, "SPECIAL HOLE");
+                    scene.drawText(g, grave.XTilePos + 8, grave.YTilePos + 16, "SPECIAL HOLE");
                 }
             }
         }
+
         private void SendGraveData(Gravestone gravestone)
         {
             if (!NetZS.connected)

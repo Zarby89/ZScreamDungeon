@@ -62,6 +62,7 @@ namespace ZeldaFullEditor
         public bool showSprites = true;
         public bool hideText = false;
         public bool showOverlayText = true;
+        public bool showGraves = true;
         public OverworldEditor owForm;
         public bool entrancePreview = false;
         private Point startingPoint = Point.Empty;
@@ -855,15 +856,20 @@ namespace ZeldaFullEditor
 
             g.CompositingMode = CompositingMode.SourceOver;
 
+            int MouseRealXScaled = (this.mouseX_Real / 16);
+            int MouseRealYScaled = (this.mouseY_Real / 16);
+
             if (this.selecting)
             {
-                g.DrawRectangle(Pens.White, new Rectangle(this.globalmouseTileDownX * 16, this.globalmouseTileDownY * 16, (((this.mouseX_Real / 16) - this.globalmouseTileDownX) * 16) + 16, (((this.mouseY_Real / 16) - this.globalmouseTileDownY) * 16) + 16));
+                int leftMost = this.globalmouseTileDownX <= MouseRealXScaled ? this.globalmouseTileDownX : MouseRealXScaled;
+                int topMost = this.globalmouseTileDownY <= MouseRealYScaled ? this.globalmouseTileDownY : MouseRealYScaled;
+                g.DrawRectangle(Pens.White, new Rectangle(leftMost * 16, topMost * 16, Math.Abs(((MouseRealXScaled - this.globalmouseTileDownX) * 16) + 16), Math.Abs(((MouseRealYScaled - this.globalmouseTileDownY) * 16) + 16)));
             }
 
             if (this.selectedMode == ObjectMode.OWDoor || this.selectedMode == ObjectMode.Tile)
             {
-                g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
+                g.DrawImage(this.tilesgfxBitmap, new Rectangle(MouseRealXScaled * 16, MouseRealYScaled * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                g.DrawRectangle(Pens.LightGreen, new Rectangle(MouseRealXScaled * 16, MouseRealYScaled * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
             }
 
             if (showLinkCamera)

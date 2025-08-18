@@ -833,18 +833,41 @@ namespace ZeldaFullEditor
             this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
 
             this.textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
+            this.activeScene.showSpriteText = Settings.Default.spriteText;
+
             this.textChestItemToolStripMenuItem.Checked = Settings.Default.chestText;
+            this.showChestText = Settings.Default.chestText;
+
             this.textPotItemToolStripMenuItem.Checked = Settings.Default.itemText;
+            this.showItemsText = Settings.Default.itemText;
+
             this.unselectedBGTransparentToolStripMenuItem.Checked = Settings.Default.transparentBG;
+            this.activeScene.canSelectUnselectedBG = Settings.Default.transparentBG;
+
             this.rightSideToolboxToolStripMenuItem.Checked = Settings.Default.rightToolbox;
+
             this.hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow;
+            this.showSprite = Settings.Default.spriteShow;
+
             this.hideItemsToolStripMenuItem.Checked = Settings.Default.itemsShow;
+            this.showItems = Settings.Default.itemsShow;
+
             this.hideChestItemsToolStripMenuItem.Checked = Settings.Default.chestitemShow;
+            this.showChest = Settings.Default.chestitemShow;
+
             this.showDoorIDsToolStripMenuItem.Checked = Settings.Default.dooridShow;
+            this.showDoorsIDs = Settings.Default.dooridShow;
+
             this.showChestsIDsToolStripMenuItem.Checked = Settings.Default.chestidShow;
+            this.showChestIDs = Settings.Default.chestidShow;
+
             this.disableEntranceGFXToolStripMenuItem.Checked = Settings.Default.disableentranceGfx;
+
             this.showBG2MaskOutlineToolStripMenuItem.Checked = Settings.Default.bg2maskShow;
+            this.activeScene.showBG2Outline = Settings.Default.bg2maskShow;
+
             this.entranceCameraToolStripMenuItem.Checked = Settings.Default.entranceCamera;
+
             this.entrancePositionToolStripMenuItem.Checked = Settings.Default.entrancePos;
 
             this.activeScene.Refresh();
@@ -3160,7 +3183,7 @@ namespace ZeldaFullEditor
             this.overworldEditor.scene.selectedDragSprite = new SelectedObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.subtype);
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void ExportDungeonPNGToolStripClick(object sender, EventArgs e)
         {
             // Check what's the higher map and the left most, we don't care about right bottom.
 
@@ -3172,6 +3195,8 @@ namespace ZeldaFullEditor
             int higherY = 0; // What we need to remove from the image to the right.
             Room savedRoom = this.activeScene.room;
             this.activeScene.forPreview = true;
+
+            Directory.CreateDirectory(Constants.PNGFolderName);
 
             if (this.selectedMapPng.Count > 0)
             {
@@ -3231,7 +3256,7 @@ namespace ZeldaFullEditor
                 }
 
                 // TODO: Better names so we can have more than 1 map.
-                bitmap2.Save("MapTest.png");
+                bitmap2.Save(Constants.PNGFolderName + Constants.DungeonMultipleMapPNGName);
                 bitmap.Dispose();
                 bitmap = null;
                 bitmap2.Dispose();
@@ -3240,8 +3265,14 @@ namespace ZeldaFullEditor
             else
             {
                 Bitmap bitmap = new Bitmap(512, 512);
-                this.activeScene.DrawToBitmap(bitmap, Constants.Rect_0_0_512_512);
-                bitmap.Save("singlemap.png");
+                using (Graphics graphics = Graphics.FromImage(bitmap))
+                {
+                    this.activeScene.DrawRoom();
+                    this.activeScene.Refresh();
+
+                    graphics.DrawImage(this.activeScene.tempBitmap, new Point(0, 0));
+                }
+                bitmap.Save(Constants.PNGFolderName + Constants.DungeonSingleMapPNGName);
             }
 
             this.activeScene.forPreview = false;
@@ -5091,7 +5122,9 @@ namespace ZeldaFullEditor
 
         private void SaveVRAMAsPngToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GFX.currentgfx16Bitmap.Save("vram.png");
+            Directory.CreateDirectory(Constants.PNGFolderName);
+
+            GFX.currentgfx16Bitmap.Save(Constants.PNGFolderName + Constants.VRAMPNGName);
         }
 
         private void Edit8x8palettebox_Paint(object sender, PaintEventArgs e)
@@ -5244,6 +5277,7 @@ namespace ZeldaFullEditor
             this.overworldEditor.scene.showFlute = this.showTransportsToolStripMenuItem.Checked;
             this.overworldEditor.scene.showItems = this.showItemsToolStripMenuItem.Checked;
             this.overworldEditor.scene.showOverlayText = this.showOverlayTextsToolStripMenuItem.Checked;
+            this.overworldEditor.scene.showGraves = this.showGravesToolStripMenuItem.Checked;
             this.overworldEditor.Refresh();
         }
 

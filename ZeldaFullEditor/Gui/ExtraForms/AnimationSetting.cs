@@ -56,6 +56,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                         bw.Write(tpos.x); // byte x;
                         bw.Write(tpos.y); // byte y;
                     }
+
                     bw.Write(frames[i].sfx1); // byte
                     bw.Write(frames[i].sfx2); // byte
                     bw.Write(frames[i].sfx3); // byte
@@ -100,12 +101,14 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                         byte ty = br.ReadByte();
                         scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i].Add(new TilePos(tx, ty, tid));
                     }
+
                     frames[i].sfx1 = br.ReadByte();
                     frames[i].sfx2 = br.ReadByte();
                     frames[i].sfx3 = br.ReadByte();
                     frames[i].wait = br.ReadByte();
                     frames[i].shake = br.ReadBoolean();
                 }
+
                 fromForm = true;
                 persistCheckbox.Checked = persist = br.ReadBoolean();
                 numberframeHexbox.HexValue = nbrFrames = br.ReadByte();

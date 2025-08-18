@@ -392,6 +392,7 @@
             this.showTransportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showEntranceExitPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showGravesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldOverlayVisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showGridToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.x8ToolStripMenuItemOW = new System.Windows.Forms.ToolStripMenuItem();
@@ -791,7 +792,7 @@
             this.toolStripButton1.Text = "Export Selected Rooms As PNG";
             this.toolStripButton1.ToolTipText = "Export map as png; Hold control and double click on the rooms you want to export." +
     "";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripButton1.Click += new System.EventHandler(this.ExportDungeonPNGToolStripClick);
             // 
             // debugToolStripButton
             // 
@@ -2691,7 +2692,7 @@
             this.RoomProperty_Floor2.HexValue = 0;
             this.RoomProperty_Floor2.Location = new System.Drawing.Point(190, 62);
             this.RoomProperty_Floor2.MaxLength = 2;
-            this.RoomProperty_Floor2.MaxValue = 255;
+            this.RoomProperty_Floor2.MaxValue = 15;
             this.RoomProperty_Floor2.MinValue = 0;
             this.RoomProperty_Floor2.Name = "RoomProperty_Floor2";
             this.RoomProperty_Floor2.Size = new System.Drawing.Size(49, 20);
@@ -2708,7 +2709,7 @@
             this.RoomProperty_Floor1.HexValue = 0;
             this.RoomProperty_Floor1.Location = new System.Drawing.Point(135, 62);
             this.RoomProperty_Floor1.MaxLength = 2;
-            this.RoomProperty_Floor1.MaxValue = 255;
+            this.RoomProperty_Floor1.MaxValue = 15;
             this.RoomProperty_Floor1.MinValue = 0;
             this.RoomProperty_Floor1.Name = "RoomProperty_Floor1";
             this.RoomProperty_Floor1.Size = new System.Drawing.Size(49, 20);
@@ -4299,6 +4300,7 @@
             this.showTransportsToolStripMenuItem,
             this.showItemsToolStripMenuItem,
             this.showEntranceExitPreviewToolStripMenuItem,
+            this.showGravesToolStripMenuItem,
             this.overworldOverlayVisibleToolStripMenuItem,
             this.showGridToolStripMenuItem1,
             this.useAreaSpecificBGColorToolStripMenuItem,
@@ -4369,6 +4371,16 @@
             this.showEntranceExitPreviewToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showEntranceExitPreviewToolStripMenuItem.Text = "Show Entrance/Exit Previews";
             this.showEntranceExitPreviewToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
+            // 
+            // showGravesToolStripMenuItem
+            // 
+            this.showGravesToolStripMenuItem.Checked = true;
+            this.showGravesToolStripMenuItem.CheckOnClick = true;
+            this.showGravesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showGravesToolStripMenuItem.Name = "showGravesToolStripMenuItem";
+            this.showGravesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showGravesToolStripMenuItem.Text = "Show Graves";
+            this.showGravesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
             // 
             // overworldOverlayVisibleToolStripMenuItem
             // 
@@ -5321,6 +5333,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
         private System.Windows.Forms.ToolStripMenuItem x512ToolStripMenuItemOW;
         private System.Windows.Forms.ToolStripMenuItem x256ToolStripMenuItemOW;
+        private System.Windows.Forms.ToolStripMenuItem showGravesToolStripMenuItem;
     }
 }
 

@@ -504,7 +504,7 @@ namespace ZeldaFullEditor
                 blocks[i] = GfxGroups.mainGfx[blockset][i];
                 if (i >= 6 && i <= 6)
                 {
-                    if (entrance_blockset != 0xFF) //3-6
+                    if (entrance_blockset != 0xFF && entrance_blockset < GfxGroups.roomGfx.Length) //3-6
                     {
                         // 6 is wrong for the entrance? -NOP need to fix that 
                         // TODO: Find why this is wrong - Thats because of the stairs need to find a workaround
