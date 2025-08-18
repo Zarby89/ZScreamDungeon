@@ -2691,7 +2691,7 @@
             this.RoomProperty_Floor2.HexValue = 0;
             this.RoomProperty_Floor2.Location = new System.Drawing.Point(190, 62);
             this.RoomProperty_Floor2.MaxLength = 2;
-            this.RoomProperty_Floor2.MaxValue = 255;
+            this.RoomProperty_Floor2.MaxValue = 15;
             this.RoomProperty_Floor2.MinValue = 0;
             this.RoomProperty_Floor2.Name = "RoomProperty_Floor2";
             this.RoomProperty_Floor2.Size = new System.Drawing.Size(49, 20);
@@ -2708,7 +2708,7 @@
             this.RoomProperty_Floor1.HexValue = 0;
             this.RoomProperty_Floor1.Location = new System.Drawing.Point(135, 62);
             this.RoomProperty_Floor1.MaxLength = 2;
-            this.RoomProperty_Floor1.MaxValue = 255;
+            this.RoomProperty_Floor1.MaxValue = 15;
             this.RoomProperty_Floor1.MinValue = 0;
             this.RoomProperty_Floor1.Name = "RoomProperty_Floor1";
             this.RoomProperty_Floor1.Size = new System.Drawing.Size(49, 20);
