@@ -812,7 +812,7 @@ namespace ZeldaFullEditor
             DungeonObjectData.Load();
 
             this.LoadPalettes();
-
+            panel3.Enabled = true;
             this.activeScene = new SceneUW(this);
             this.activeScene.Location = Constants.Point_0_0;
             this.activeScene.Size = new Size(512, 512);
