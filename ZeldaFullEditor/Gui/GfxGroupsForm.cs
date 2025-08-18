@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-    public partial class GfxGroupsForm : Panel
+    public partial class GfxGroupsForm : UserControl
     {
         DungeonMain mainForm;
 
@@ -21,13 +21,10 @@ namespace ZeldaFullEditor.Gui
         public GfxGroupsForm(DungeonMain mainForm)
         {
             this.InitializeComponent();
+            Utils.FixNumericUpDownMouseWheel(this);
+
             this.mainForm = mainForm;
             this.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.numericUpDown1.Hexadecimal = true;
-            this.paletteUpDown.Hexadecimal = true;
-            this.mainBlocksetUpDown.Hexadecimal = true;
-            this.spriteUpDown.Hexadecimal = true;
-            this.roomUpDown.Hexadecimal = true;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -329,7 +326,7 @@ namespace ZeldaFullEditor.Gui
                 ColorPalette colorPalette = GFX.currentEditingfx16Bitmap.Palette;
                 for (int i = 0; i < 16; i++)
                 {
-                    colorPalette.Entries[i] = this.palettes[i + ((int)this.numericUpDown1.Value * 16)];
+                    colorPalette.Entries[i] = this.palettes[i + ((int)this.PaletteTabIndexUpDown.Value * 16)];
                 }
 
                 GFX.currentEditingfx16Bitmap.Palette = colorPalette;

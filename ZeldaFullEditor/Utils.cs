@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -162,5 +163,23 @@ namespace ZeldaFullEditor
 			int i = 0;
 			return a.Select(s => $"{i++:X2} - {s}").ToArray();
 		}
-	}
+
+        // Put this in the constructor of any from after the this.InitializeComponent() to fix any NumericUpDown controlls that go up or down by more than one while scrolling.
+        // Credit to this mad lad: https://stackoverflow.com/a/51394134
+        public static void FixNumericUpDownMouseWheel(Control c)
+        {
+            foreach (var num in c.Controls.OfType<NumericUpDown>())
+                num.MouseWheel += FixNumericUpDownMouseWheelHandler;
+
+            foreach (var child in c.Controls.OfType<Control>())
+                FixNumericUpDownMouseWheel(child);
+        }
+
+        private static void FixNumericUpDownMouseWheelHandler(object sender, MouseEventArgs e)
+        {
+            ((HandledMouseEventArgs)e).Handled = true;
+            var self = (NumericUpDown)sender;
+            self.Value = Math.Max(Math.Min(self.Value + ((e.Delta > 0) ? self.Increment : -self.Increment), self.Maximum), self.Minimum);
+        }
+    }
 }

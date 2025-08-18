@@ -343,7 +343,7 @@
       <DependentUpon>GfxEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
