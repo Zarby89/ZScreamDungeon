@@ -662,7 +662,7 @@ namespace ZeldaFullEditor
             int roomX = superX * 512;
             int roomY = superY * 512;
 
-            if (mainForm.entranceCameraToolStripMenuItem.Checked)
+            if (mainForm.entranceCameraToolStripMenuItem.Checked || selectedMode == ObjectMode.EntrancePlacing)
             {
                 if (mainForm.selectedEntrance != null)
                 {
@@ -674,7 +674,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (mainForm.entrancePositionToolStripMenuItem.Checked)
+            if (mainForm.entrancePositionToolStripMenuItem.Checked || selectedMode == ObjectMode.EntrancePlacing)
             {
                 if (mainForm.selectedEntrance != null)
                 {

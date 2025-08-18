@@ -204,6 +204,8 @@ namespace ZeldaFullEditor
                 this.owForm.areaBGColorPictureBox.Refresh();
             }
 
+            owForm.mainForm.spritesView1.Refresh();
+
             this.owForm.BuildScratchTilesGfx();
             this.owForm.scratchPicturebox.Refresh();
         }

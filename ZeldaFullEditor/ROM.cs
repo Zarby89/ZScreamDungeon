@@ -10,6 +10,7 @@ namespace ZeldaFullEditor
 	public static class ROM
 	{
 		public static volatile byte[] DATA;
+		public static byte[] donkey;
 		public static byte[] DATA2;
 		public static byte[] TEMPDATA;
 		public static StringBuilder romLog = new StringBuilder();
@@ -122,7 +123,12 @@ namespace ZeldaFullEditor
 			return (DATA[addr + 2] << 16) | (DATA[addr + 1] << 8) | DATA[addr];
 		}
 
-		public static Tile16 ReadTile16(int addr)
+        public static int ReadLongD(int addr)
+        {
+            return (donkey[addr + 2] << 16) | (donkey[addr + 1] << 8) | donkey[addr];
+        }
+
+        public static Tile16 ReadTile16(int addr)
 		{
 			ushort t1 = (ushort) ((DATA[addr + 1] << 8) | DATA[addr]);
 			ushort t2 = (ushort) ((DATA[addr + 3] << 8) | DATA[addr + 2]);
@@ -136,7 +142,12 @@ namespace ZeldaFullEditor
 			return (ushort) ((DATA[addr + 1] << 8) | DATA[addr]);
 		}
 
-		public static short ReadRealShort(int addr)
+        public static ushort ReadShortD(int addr)
+        {
+            return (ushort)((donkey[addr + 1] << 8) | donkey[addr]);
+        }
+
+        public static short ReadRealShort(int addr)
 		{
 			return (short) ((DATA[addr + 1] << 8) | DATA[addr]);
 		}
@@ -146,7 +157,12 @@ namespace ZeldaFullEditor
 			return DATA[addr];
 		}
 
-		public static byte[] ReadBlock(int addr, int length)
+        public static byte ReadByteD(int addr)
+        {
+            return donkey[addr];
+        }
+
+        public static byte[] ReadBlock(int addr, int length)
 		{
 			byte[] arr = new byte[length];
 			Array.Copy(DATA, addr, arr, 0, length);

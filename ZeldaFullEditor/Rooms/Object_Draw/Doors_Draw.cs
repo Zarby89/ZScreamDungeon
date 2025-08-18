@@ -193,7 +193,7 @@ namespace ZeldaFullEditor
             }
             int tid = 0;
 
-            if (dtype == 0x0A)
+            if (dtype == 0x0A || dtype == 0x0C)
             {
                 tiles.Clear();
                 addTiles(80, Constants.tile_address + 0x2656);

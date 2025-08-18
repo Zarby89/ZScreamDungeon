@@ -136,15 +136,6 @@ namespace ZeldaFullEditor
                 HudPalettes[i] = ReadPalette(romData, Constants.hudPalettes + (i * 64), 32);
             }
 
-            /*
-            public static Color[][] globalSprite_Palettes = new Color[2][]; // 32 (1,9)
-            public static Color[][] armors_Palettes = new Color[5][]; // 15
-            public static Color[][] swords_Palettes = new Color[4][]; // 3
-            public static Color[][] spritesAux_Palettes = new Color[47][]; // 7
-            public static Color[][] shields_Palettes = new Color[3][]; // 4
-            public static Color[][] dungeonsMain_Palettes = new Color[20][]; // 15*6
-            */
-
             GlobalSpritePalettes[0] = ReadPalette(romData, Constants.globalSpritePalettesLW, 60);
             GlobalSpritePalettes[1] = ReadPalette(romData, Constants.globalSpritePalettesDW, 60);
             for (int i = 0; i < ArmorPalettes.Length; i++)

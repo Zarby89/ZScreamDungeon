@@ -1007,6 +1007,7 @@ namespace ZeldaFullEditor
             "SE Kill Enemy to Push Block",
             "Trigger Switch Chest",
             "Pull Lever Exploding Wall",
+
             "NW Kill Enemy for Chest",
             "NE Kill Enemy for Chest",
             "SW Kill Enemy for Chest",

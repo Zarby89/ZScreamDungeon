@@ -611,16 +611,20 @@ namespace ZeldaFullEditor
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ROM.donkey = File.ReadAllBytes("super_donkey_1.bin");
             var projectFile = new OpenFileDialog();
             projectFile.Filter = UIText.USROMType;
             projectFile.DefaultExt = UIText.ROMExtension;
 
             if (projectFile.ShowDialog() == DialogResult.OK)
             {
+               
                 this.LoadProject(projectFile.FileName);
                 this.openToolStripMenuItem.Enabled = false;
                 this.openfileButton.Enabled = false;
                 this.recentROMToolStripMenuItem.Enabled = false;
+                
+
             }
         }
 
@@ -2291,6 +2295,19 @@ namespace ZeldaFullEditor
             int x = e.X / 16;
             int y = yc / 16;
             short roomId = (short)(x + (y * 16));
+
+            if (ModifierKeys == Keys.Shift)
+            {
+                if (roomId < Constants.NumberOfRooms)
+                {
+                    for (int i = 0; i < 16; i++)
+                    {
+                        this.AddRoomTab((short)(roomId+i));
+                    }
+                    //loadRoomList(roomId);
+                }
+            }
+
 
             if (ModifierKeys == Keys.Control)
             {
@@ -6002,8 +6019,8 @@ namespace ZeldaFullEditor
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
                     BinaryWriter binaryWriter = new BinaryWriter(new FileStream(saveFile.FileName, FileMode.OpenOrCreate));
-                    binaryWriter.Write(opened_rooms.Count);
-                    foreach (Room room in opened_rooms)
+                    binaryWriter.Write(DungeonsData.AllRooms.Length);
+                    foreach (Room room in DungeonsData.AllRooms)
                     {
                         binaryWriter.Write(room.index);
                         byte[] roomObjects = room.getTilesBytes();
@@ -6168,6 +6185,7 @@ namespace ZeldaFullEditor
 
                     binaryReader.Close();
                 }
+
             }
         }
 
@@ -6609,6 +6627,70 @@ namespace ZeldaFullEditor
                 zsImporter.ShowDialog();
 
             }
+        }
+
+        private void checkAllTile16DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<int> checkedTile = new List<int>();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 3752; i++)
+            {
+                for (int j = 0; j < 3752; j++)
+                {
+                    if (i == j) { continue; }
+                    if (checkedTile.Contains(j)) { continue; }
+                    if (overworldEditor.overworld.Tile16List[j].Tile0.toShort() == overworldEditor.overworld.Tile16List[i].Tile0.toShort())
+                    {
+                        if (overworldEditor.overworld.Tile16List[j].Tile1.toShort() == overworldEditor.overworld.Tile16List[i].Tile1.toShort())
+                        {
+                            if (overworldEditor.overworld.Tile16List[j].Tile2.toShort() == overworldEditor.overworld.Tile16List[i].Tile2.toShort())
+                            {
+                                if (overworldEditor.overworld.Tile16List[j].Tile3.toShort() == overworldEditor.overworld.Tile16List[i].Tile3.toShort())
+                                {
+                                    if (j >= 0x0D40 || i >= 0x0D40)
+                                    {
+                                        sb.AppendLine("Tile " + j.ToString("X4") + " is matching tile " + i.ToString("X4") + " (ANIMATION)");
+                                    }
+                                    
+                                }
+                            }
+
+                        }
+                    }
+                }
+                checkedTile.Add(i);
+            }
+
+            File.WriteAllText("similartiles.txt", sb.ToString());
+        }
+
+        private void objectAddressesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int id = 0; id < 0xFF; id++)
+            {
+                int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
+                sb.AppendLine("Object ID " + id.ToString("X2") + "  PC:" + pos.ToString("X6") + "  SNES:" + Utils.PcToSnes(pos).ToString("X6"));
+            }
+            sb.AppendLine("");
+            for (int id = 0; id < 0x40; id++)
+            {
+                int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype2_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype2_tiles + ((id & 0xFF) * 2)]);
+                sb.AppendLine("Object ID 1" + id.ToString("X2") + "  PC:" + pos.ToString("X6") + "  SNES:" + Utils.PcToSnes(pos).ToString("X6"));
+            }
+            sb.AppendLine("");
+            for (int id = 0; id < 0x7F; id++)
+            {
+                int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + ((id & 0xFF) * 2)]);
+                sb.AppendLine("Object ID F" + (id+0x80).ToString("X2") + "  PC:" + pos.ToString("X6") + "  SNES:" + Utils.PcToSnes(pos).ToString("X6"));
+            }
+
+            File.WriteAllText("AllObjectPos.txt", sb.ToString());
+        }
+
+        private void exportAllRoomsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

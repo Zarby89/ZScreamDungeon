@@ -11,7 +11,7 @@
         E_Kill_Enemy_to_Open,
         N_Kill_Enemy_to_Open,
         S_Kill_Enemy_to_Open,
-        Clear_Quadrant_to_Open,
+        //Clear_Quadrant_to_Open,
         Clear_Room_to_Open,
         NW_Push_Block_to_Open,
         NE_Push_Block_to_Open,
@@ -88,7 +88,8 @@
 
         Light_Torches_to_get_Chest,
 
-        Kill_boss_Again
+        Kill_boss_Again,
+        TEMPVALUE
     }
 
     public enum EffectKey

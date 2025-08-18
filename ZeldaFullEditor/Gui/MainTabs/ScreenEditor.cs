@@ -156,7 +156,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             int triforceFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.triforceFacesPointer) + 0x090000);
             int crystalFacePos = Utils.SnesToPc(ROM.ReadShort(Constants.crystalFacesPointer) + 0x090000);
-
+            /*
             // Triforce
             for (int i = 0; i < ROM.DATA[Constants.triforceVerticesCount]; i++)
             {
@@ -196,12 +196,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     datac[j] = (sbyte)ROM.DATA[crystalFacePos + j];
                 }
-
+            
                 crystalFacePos += csize + 1;
 
                 crystalface3Ds[i] = new Face3D(datac);
             }
-
+            */
             tiles8Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, tiles8Ptr);
             dungmaptiles8Bitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, dungmaptiles8Ptr);
             dungmaptiles16Bitmap = new Bitmap(256, 192, 256, PixelFormat.Format8bppIndexed, dungmaptiles16Ptr);
