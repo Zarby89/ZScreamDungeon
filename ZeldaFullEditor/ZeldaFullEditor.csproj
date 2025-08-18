@@ -263,7 +263,7 @@
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\CGRamViewer.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\CGRamViewer.Designer.cs">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
@@ -350,7 +350,7 @@
       <DependentUpon>GfxEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
@@ -446,7 +446,7 @@
       <DependentUpon>MessageAsBytes.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\VramViewer.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\VramViewer.Designer.cs">
       <DependentUpon>VramViewer.cs</DependentUpon>
