@@ -668,7 +668,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.X, e.Y, 16, 16));
                         g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.X, e.Y, 16, 16));
-                        scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
+
+                        if (DungeonsData.Entrances[e.EntranceID].Room >= 0 && DungeonsData.Entrances[e.EntranceID].Room < DungeonsData.AllRooms.Length)
+                        {
+                            scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
+                        }
                     }
                 }
 
@@ -689,7 +693,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.X, e.Y, 16, 16));
                         g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.X, e.Y, 16, 16));
-                        scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
+
+                        if (DungeonsData.Entrances[e.EntranceID].Room >= 0 && DungeonsData.Entrances[e.EntranceID].Room < DungeonsData.AllRooms.Length)
+                        {
+                            scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
+                        }
                     }
                 }
 
