@@ -299,7 +299,7 @@ namespace ZeldaFullEditor
                 {
                     if (room.has_changed)
                     {
-                        foreach (TabPage tabPage in this.tabControl2.TabPages)
+                        foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
                         {
                             tabPage.Text = tabPage.Text.Trim('*');
                         }
@@ -760,7 +760,7 @@ namespace ZeldaFullEditor
 
         public void CheckAnyChanges()
         {
-            foreach (TabPage p in this.tabControl2.TabPages)
+            foreach (TabPage p in this.DunRoomTabControl.TabPages)
             {
                 if ((p.Tag as Room).has_changed)
                 {
@@ -908,7 +908,7 @@ namespace ZeldaFullEditor
             this.AddRoomTab(260);
             DungeonOverlays.LoadOverlays();
 
-            this.TabControl2_SelectedIndexChanged(this.tabControl2.TabPages[0], new EventArgs());
+            this.TabControl2_SelectedIndexChanged(this.DunRoomTabControl.TabPages[0], new EventArgs());
             this.EnableProjectButtons();
             foreach (ToolStripMenuItem menuItem in this.menuStrip1.Items)
             {
@@ -2325,11 +2325,11 @@ namespace ZeldaFullEditor
             {
                 // Display message error room already opened
                 //MessageBox.Show("That room is already opened !");
-                foreach (TabPage tabPage in this.tabControl2.TabPages)
+                foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
                 {
                     if ((tabPage.Tag as Room).index == roomId)
                     {
-                        this.tabControl2.SelectTab(tabPage);
+                        this.DunRoomTabControl.SelectTab(tabPage);
 
                         break;
 
@@ -2362,9 +2362,9 @@ namespace ZeldaFullEditor
 
                 TabPage tabPage = new TabPage(tn);
                 tabPage.Tag = room;
-                this.tabControl2.TabPages.Add(tabPage);
+                this.DunRoomTabControl.TabPages.Add(tabPage);
                 //objectsListbox.ClearSelected();
-                this.tabControl2.SelectedTab = tabPage;
+                this.DunRoomTabControl.SelectedTab = tabPage;
 
                 if (!this.visibleEntranceGFX)
                 {
@@ -2386,9 +2386,9 @@ namespace ZeldaFullEditor
                 this.spritesView1.updateSize();
             }
 
-            if (this.tabControl2.TabPages.Count > 0)
+            if (this.DunRoomTabControl.TabPages.Count > 0)
             {
-                this.tabControl2.Visible = true;
+                this.DunRoomTabControl.Visible = true;
                 activeScene.Refresh();
             }
 
@@ -2953,11 +2953,11 @@ namespace ZeldaFullEditor
         {
             if (NetZS.connected)
             {
-                this.closeRoom((this.tabControl2.TabPages[i].Tag as Room).index);
-                this.tabControl2.TabPages.RemoveAt(i);
-                if (this.tabControl2.TabPages.Count == 0)
+                this.closeRoom((this.DunRoomTabControl.TabPages[i].Tag as Room).index);
+                this.DunRoomTabControl.TabPages.RemoveAt(i);
+                if (this.DunRoomTabControl.TabPages.Count == 0)
                 {
-                    this.tabControl2.Visible = false;
+                    this.DunRoomTabControl.Visible = false;
                     this.activeScene.Clear();
                     this.activeScene.room = null;
                     this.activeScene.Refresh();
@@ -2966,33 +2966,33 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if ((this.tabControl2.TabPages[i].Tag as Room).has_changed)
+            if ((this.DunRoomTabControl.TabPages[i].Tag as Room).has_changed)
             {
                 switch (UIText.WarnAboutSaving(UIText.RoomWarning))
                 {
                     case DialogResult.Yes:
-                        DungeonsData.AllRooms[(this.tabControl2.TabPages[i].Tag as Room).index] = (Room)(this.tabControl2.TabPages[i].Tag as Room).Clone();
-                        this.closeRoom((this.tabControl2.TabPages[i].Tag as Room).index);
-                        this.tabControl2.TabPages.RemoveAt(i);
+                        DungeonsData.AllRooms[(this.DunRoomTabControl.TabPages[i].Tag as Room).index] = (Room)(this.DunRoomTabControl.TabPages[i].Tag as Room).Clone();
+                        this.closeRoom((this.DunRoomTabControl.TabPages[i].Tag as Room).index);
+                        this.DunRoomTabControl.TabPages.RemoveAt(i);
 
                         // TODO: This needs to be made a function.
-                        if (this.tabControl2.TabPages.Count == 0)
+                        if (this.DunRoomTabControl.TabPages.Count == 0)
                         {
                             this.activeScene.Clear();
-                            this.tabControl2.Visible = false;
+                            this.DunRoomTabControl.Visible = false;
                             this.activeScene.Refresh();
                         }
 
                         break;
 
                     case DialogResult.No:
-                        this.closeRoom((this.tabControl2.TabPages[i].Tag as Room).index);
-                        this.tabControl2.TabPages.RemoveAt(i);
+                        this.closeRoom((this.DunRoomTabControl.TabPages[i].Tag as Room).index);
+                        this.DunRoomTabControl.TabPages.RemoveAt(i);
 
-                        if (this.tabControl2.TabPages.Count == 0)
+                        if (this.DunRoomTabControl.TabPages.Count == 0)
                         {
                             this.activeScene.Clear();
-                            this.tabControl2.Visible = false;
+                            this.DunRoomTabControl.Visible = false;
                             this.activeScene.Refresh();
                         }
 
@@ -3001,18 +3001,18 @@ namespace ZeldaFullEditor
             }
             else
             {
-                this.closeRoom((this.tabControl2.TabPages[i].Tag as Room).index);
-                this.tabControl2.TabPages.RemoveAt(i);
-                if (this.tabControl2.TabPages.Count == 0)
+                this.closeRoom((this.DunRoomTabControl.TabPages[i].Tag as Room).index);
+                this.DunRoomTabControl.TabPages.RemoveAt(i);
+                if (this.DunRoomTabControl.TabPages.Count == 0)
                 {
-                    this.tabControl2.Visible = false;
+                    this.DunRoomTabControl.Visible = false;
                     this.activeScene.Clear();
                     this.activeScene.room = null;
                     this.activeScene.Refresh();
                 }
             }
 
-            this.tabControl2.Refresh();
+            this.DunRoomTabControl.Refresh();
         }
 
         private void TabControl2_MouseClick(object sender, MouseEventArgs e)
@@ -3022,9 +3022,9 @@ namespace ZeldaFullEditor
 
         private void TabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.tabControl2.TabPages.Count > 0)
+            if (this.DunRoomTabControl.TabPages.Count > 0)
             {
-                this.activeScene.room = this.tabControl2.TabPages[this.tabControl2.SelectedIndex].Tag as Room;
+                this.activeScene.room = this.DunRoomTabControl.TabPages[this.DunRoomTabControl.SelectedIndex].Tag as Room;
                 this.activeScene.updateRoomInfos(this);
 
                 if (DungeonsData.UndoRoom[this.activeScene.room.index].Count > 0)
@@ -3381,12 +3381,12 @@ namespace ZeldaFullEditor
             {
                 yoff = (i >= 256) ? 8 : 0;
 
-                foreach (TabPage tabPage in this.tabControl2.TabPages)
+                foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
                 {
                     if ((tabPage.Tag as Room).index == (short)i)
                     {
                         e.Graphics.DrawRectangle(
-                                new Pen((this.tabControl2.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
+                                new Pen((this.DunRoomTabControl.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
                                 new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
                     }
                 }
@@ -3429,9 +3429,9 @@ namespace ZeldaFullEditor
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (this.tabControl2.SelectedIndex != -1)
+            if (this.DunRoomTabControl.SelectedIndex != -1)
             {
-                this.tabControl2.TabPages.RemoveAt(this.tabControl2.SelectedIndex);
+                this.DunRoomTabControl.TabPages.RemoveAt(this.DunRoomTabControl.SelectedIndex);
             }
         }
 
@@ -3747,7 +3747,7 @@ namespace ZeldaFullEditor
             if (this.tpHotTracked == e.Index || e.State == DrawItemState.Selected)
             {
                 graphics.FillRectangle(solidBrush, e.Bounds);
-                graphics.DrawString(this.tabControl2.TabPages[e.Index].Text, font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
+                graphics.DrawString(this.DunRoomTabControl.TabPages[e.Index].Text, font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
 
                 if (this.tpHotTrackedToClose == e.Index)
                 {
@@ -3763,7 +3763,7 @@ namespace ZeldaFullEditor
             else
             {
                 graphics.FillRectangle(brush, e.Bounds);
-                graphics.DrawString(this.tabControl2.TabPages[e.Index].Text, font, Brushes.Black, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
+                graphics.DrawString(this.DunRoomTabControl.TabPages[e.Index].Text, font, Brushes.Black, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
             }
 
             brush.Dispose();
@@ -3773,13 +3773,13 @@ namespace ZeldaFullEditor
         private void TabControl2_MouseMove(object sender, MouseEventArgs e)
         {
             this.tpHotTrackedToClose = -1;
-            for (int i = 0; i < this.tabControl2.TabPages.Count; i++)
+            for (int i = 0; i < this.DunRoomTabControl.TabPages.Count; i++)
             {
-                Rectangle itemRect = this.tabControl2.GetTabRect(i);
+                Rectangle itemRect = this.DunRoomTabControl.GetTabRect(i);
 
                 if (itemRect.Contains(e.Location))
                 {
-                    Rectangle xRect = this.tabControl2.GetTabRect(i);
+                    Rectangle xRect = this.DunRoomTabControl.GetTabRect(i);
                     xRect.X += 30;
                     xRect.Width = 16;
 
@@ -3795,7 +3795,7 @@ namespace ZeldaFullEditor
 
             if (this.lasttpHotTracked != this.tpHotTracked || this.tpHotTrackedToCloseLast != this.tpHotTrackedToClose)
             {
-                this.tabControl2.Refresh();
+                this.DunRoomTabControl.Refresh();
             }
 
             this.tpHotTrackedToCloseLast = this.tpHotTrackedToClose;
@@ -3808,7 +3808,7 @@ namespace ZeldaFullEditor
             this.lasttpHotTracked = -2;
             this.tpHotTrackedToClose = -1;
             this.tpHotTrackedToCloseLast = -2;
-            this.tabControl2.Refresh();
+            this.DunRoomTabControl.Refresh();
         }
 
         private void TabControl2_MouseEnter(object sender, EventArgs e)
@@ -3817,16 +3817,16 @@ namespace ZeldaFullEditor
             this.lasttpHotTracked = -2;
             this.tpHotTrackedToClose = -1;
             this.tpHotTrackedToCloseLast = -2;
-            this.tabControl2.Refresh();
+            this.DunRoomTabControl.Refresh();
         }
 
         private void TabControl2_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Middle)
             {
-                for (int i = 0; i < this.tabControl2.TabCount; i++)
+                for (int i = 0; i < this.DunRoomTabControl.TabCount; i++)
                 {
-                    Rectangle r = this.tabControl2.GetTabRect(i);
+                    Rectangle r = this.DunRoomTabControl.GetTabRect(i);
                     if (r.Contains(e.Location))
                     {
                         this.CloseTab(i);
@@ -3838,10 +3838,10 @@ namespace ZeldaFullEditor
                 if (this.tpHotTrackedToClose != -1)
                 {
                     int ctab = this.tpHotTrackedToClose;
-                    if (this.tpHotTrackedToClose == this.tabControl2.SelectedIndex)
+                    if (this.tpHotTrackedToClose == this.DunRoomTabControl.SelectedIndex)
                     {
                         this.tpHotTrackedToClose = -1;
-                        this.tabControl2.SelectedIndex = 0;
+                        this.DunRoomTabControl.SelectedIndex = 0;
                     }
 
                     this.CloseTab(ctab);
@@ -4235,7 +4235,7 @@ namespace ZeldaFullEditor
                 this.toolboxPanel.Visible = true;
                 this.customPanel3.Visible = true;
                 this.headerGroupbox.Visible = true;
-                this.tabControl2.Visible = true;
+                this.DunRoomTabControl.Visible = true;
 
                 this.roomToolStripMenuItem.Visible = true;
                 this.dungeonViewToolStripMenuItem.Visible = true;
@@ -4262,7 +4262,7 @@ namespace ZeldaFullEditor
                 this.toolboxPanel.Visible = false;
                 this.customPanel3.Visible = false;
                 this.headerGroupbox.Visible = false;
-                this.tabControl2.Visible = false;
+                this.DunRoomTabControl.Visible = false;
 
                 this.roomToolStripMenuItem.Visible = false;
                 this.dungeonViewToolStripMenuItem.Visible = false;
@@ -5095,7 +5095,7 @@ namespace ZeldaFullEditor
 
         private void ShowRoomsInHexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TabPage tabPage in this.tabControl2.TabPages)
+            foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
             {
                 if (this.showRoomsInHexToolStripMenuItem.Checked)
                 {
@@ -6481,12 +6481,12 @@ namespace ZeldaFullEditor
 
         private void tabControl2_ControlAdded(object sender, ControlEventArgs e)
         {
-            tabControl2.Size = new Size(1, (tabControl2.RowCount * 20));
+            DunRoomTabControl.Size = new Size(1, (DunRoomTabControl.RowCount * 20));
         }
 
         private void tabControl2_ControlRemoved(object sender, ControlEventArgs e)
         {
-            tabControl2.Size = new Size(1, (tabControl2.RowCount * 20));
+            DunRoomTabControl.Size = new Size(1, (DunRoomTabControl.RowCount * 20));
         }
 
         private void exportOverlayAsASMToolStripMenuItem_Click(object sender, EventArgs e)

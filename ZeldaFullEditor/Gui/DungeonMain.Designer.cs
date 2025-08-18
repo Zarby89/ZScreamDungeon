@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -439,7 +439,7 @@
             this.maphoverCheckbox = new System.Windows.Forms.CheckBox();
             this.mapInfosLabel = new System.Windows.Forms.Label();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.DunRoomTabControl = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
             this.networkBgWorker = new System.ComponentModel.BackgroundWorker();
@@ -1891,13 +1891,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 294);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -4798,31 +4798,31 @@
             this.thumbnailBox.Visible = false;
             this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.ThumbnailBox_Paint);
             // 
-            // tabControl2
+            // DunRoomTabControl
             // 
-            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl2.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.tabControl2.HotTrack = true;
-            this.tabControl2.ItemSize = new System.Drawing.Size(48, 18);
-            this.tabControl2.Location = new System.Drawing.Point(0, 0);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
-            this.tabControl2.Multiline = true;
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.Padding = new System.Drawing.Point(3, 3);
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(602, 20);
-            this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControl2.TabIndex = 17;
-            this.tabControl2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawOnTab);
-            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.TabControl2_SelectedIndexChanged);
-            this.tabControl2.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.TabControl2_Deselecting);
-            this.tabControl2.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.tabControl2_ControlAdded);
-            this.tabControl2.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.tabControl2_ControlRemoved);
-            this.tabControl2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseClick);
-            this.tabControl2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseDown);
-            this.tabControl2.MouseEnter += new System.EventHandler(this.TabControl2_MouseEnter);
-            this.tabControl2.MouseLeave += new System.EventHandler(this.TabControl2_MouseLeave);
-            this.tabControl2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseMove);
+            this.DunRoomTabControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DunRoomTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.DunRoomTabControl.HotTrack = true;
+            this.DunRoomTabControl.ItemSize = new System.Drawing.Size(48, 18);
+            this.DunRoomTabControl.Location = new System.Drawing.Point(0, 0);
+            this.DunRoomTabControl.Margin = new System.Windows.Forms.Padding(0);
+            this.DunRoomTabControl.Multiline = true;
+            this.DunRoomTabControl.Name = "DunRoomTabControl";
+            this.DunRoomTabControl.Padding = new System.Drawing.Point(3, 3);
+            this.DunRoomTabControl.SelectedIndex = 0;
+            this.DunRoomTabControl.Size = new System.Drawing.Size(602, 20);
+            this.DunRoomTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.DunRoomTabControl.TabIndex = 17;
+            this.DunRoomTabControl.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawOnTab);
+            this.DunRoomTabControl.SelectedIndexChanged += new System.EventHandler(this.TabControl2_SelectedIndexChanged);
+            this.DunRoomTabControl.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.TabControl2_Deselecting);
+            this.DunRoomTabControl.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.tabControl2_ControlAdded);
+            this.DunRoomTabControl.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.tabControl2_ControlRemoved);
+            this.DunRoomTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseClick);
+            this.DunRoomTabControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseDown);
+            this.DunRoomTabControl.MouseEnter += new System.EventHandler(this.TabControl2_MouseEnter);
+            this.DunRoomTabControl.MouseLeave += new System.EventHandler(this.TabControl2_MouseLeave);
+            this.DunRoomTabControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseMove);
             // 
             // splitContainer1
             // 
@@ -4833,7 +4833,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.customPanel3);
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl2);
+            this.splitContainer1.Panel1.Controls.Add(this.DunRoomTabControl);
             // 
             // splitContainer1.Panel2
             // 
@@ -5253,7 +5253,7 @@
         private System.Windows.Forms.CheckBox doorCheckbox;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabControl DunRoomTabControl;
         private CustomPanel customPanel3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem memoryManagementToolStripMenuItem;
