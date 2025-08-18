@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace ZeldaFullEditor.Gui
 {
-    public partial class VramViewer : Panel
+    public partial class VramViewer : UserControl
     {
         public PictureBox vramBox = new PictureBox();
 
