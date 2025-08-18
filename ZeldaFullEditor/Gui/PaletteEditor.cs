@@ -1027,6 +1027,17 @@ namespace ZeldaFullEditor.Gui
             {
                 if ((e.X / 16) < selectedX && ((e.Y / 16) * selectedX) < selectedPalette.Length)
                 {
+
+
+                    selectedIndex = (e.X / 16) + ((e.Y / 16) * selectedX);
+                    fromForm = true;
+                    redHex.HexValue = selectedPalette[selectedIndex].R / 8;
+                    greenHex.HexValue = selectedPalette[selectedIndex].G / 8;
+                    blueHex.HexValue = selectedPalette[selectedIndex].B / 8;
+                    selectedColorPanel.BackColor = Color.FromArgb(redHex.HexValue * 8, greenHex.HexValue * 8, blueHex.HexValue * 8);
+                    fromForm = false;
+
+
                     int cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
                     tempIndex = cindex;
                     tempColor = selectedPalette[cindex];
@@ -1043,14 +1054,7 @@ namespace ZeldaFullEditor.Gui
             }
             else
             {
-
                 selectedIndex = (e.X / 16) + ((e.Y / 16) * selectedX);
-                fromForm = true;
-                redHex.HexValue = selectedPalette[selectedIndex].R / 8;
-                greenHex.HexValue = selectedPalette[selectedIndex].G / 8;
-                blueHex.HexValue = selectedPalette[selectedIndex].B / 8;
-                selectedColorPanel.BackColor = Color.FromArgb(redHex.HexValue * 8, greenHex.HexValue * 8, blueHex.HexValue * 8);
-                fromForm = false;
 
                 int cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
                 if (cindex != -1)

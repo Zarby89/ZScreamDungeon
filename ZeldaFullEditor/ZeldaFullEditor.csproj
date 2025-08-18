@@ -843,6 +843,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
+    <None Include="Resources\arrow_Up_16xLG.png" />
+    <None Include="Resources\arrow_Next_16xMD.png" />
+    <None Include="Resources\arrow_Next_16xLG.png" />
+    <None Include="Resources\arrow_previous_16xLG.png" />
+    <None Include="Resources\arrow_Down_16xLG.png" />
     <Content Include="Resources\damageclass.png" />
     <None Include="Resources\lwimage.png" />
     <None Include="Resources\dwimage.png" />
