@@ -145,6 +145,7 @@
     <Compile Include="Data\AsmPropertyType.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DungeonMap.cs" />
+    <Compile Include="Data\DungeonObjectData.cs" />
     <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
@@ -219,6 +220,12 @@
     <Compile Include="Data\EntranceOW.cs" />
     <Compile Include="Data\ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
+    <Compile Include="Gui\ExtraForms\DungeonObjEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\DungeonObjEditor.Designer.cs">
+      <DependentUpon>DungeonObjEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -621,6 +628,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\DungeonObjEditor.resx">
+      <DependentUpon>DungeonObjEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx">
       <DependentUpon>EntranceForm.cs</DependentUpon>

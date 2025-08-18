@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -169,11 +170,11 @@ namespace ZeldaFullEditor
 
             for (int s = 0; s < Size + 6; s++)
             {
-                draw_tile(tiles[0], ((s)) * 8, (0 - s) * 8);
-                draw_tile(tiles[1], ((s)) * 8, (1 - s) * 8);
-                draw_tile(tiles[2], ((s)) * 8, (2 - s) * 8);
-                draw_tile(tiles[3], ((s)) * 8, (3 - s) * 8);
-                draw_tile(tiles[4], ((s)) * 8, (4 - s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], ((s)) * 8, (0 - s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][1], ((s)) * 8, (1 - s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][2], ((s)) * 8, (2 - s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][3], ((s)) * 8, (3 - s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][4], ((s)) * 8, (4 - s) * 8);
             }
         }
 
@@ -181,11 +182,11 @@ namespace ZeldaFullEditor
         {
             for (int s = 0; s < Size + 6; s++)
             {
-                draw_tile(tiles[0], ((s)) * 8, (0 + s) * 8);
-                draw_tile(tiles[1], ((s)) * 8, (1 + s) * 8);
-                draw_tile(tiles[2], ((s)) * 8, (2 + s) * 8);
-                draw_tile(tiles[3], ((s)) * 8, (3 + s) * 8);
-                draw_tile(tiles[4], ((s)) * 8, (4 + s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], ((s)) * 8, (0 + s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][1], ((s)) * 8, (1 + s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][2], ((s)) * 8, (2 + s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][3], ((s)) * 8, (3 + s) * 8);
+                draw_tile(DungeonObjectData.tiles[id][4], ((s)) * 8, (4 + s) * 8);
             }
         }
 

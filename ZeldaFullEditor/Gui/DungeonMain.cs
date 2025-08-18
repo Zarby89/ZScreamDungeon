@@ -809,6 +809,8 @@ namespace ZeldaFullEditor
                 Array.Copy(this.netZS.romData, 0, ROM.DATA, 0, this.netZS.romData.Length);
             }
 
+            DungeonObjectData.Load();
+
             this.LoadPalettes();
 
             this.activeScene = new SceneUW(this);
