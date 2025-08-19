@@ -5002,23 +5002,23 @@ namespace ZeldaFullEditor
 
             byte f = (byte)(room.floor1 << 4); // How can it be null oO ?
             int pos = Constants.tile_address + f;
-            //??
+            addTiles(8, pos);//??
 
             for (int xx = 0; xx < sizex + 1; xx++)
             {
                 for (int yy = 0; yy < sizey + 1; yy++)
                 {
-                    draw_tile(DungeonObjectData.tiles[id][0], (xx * 4) * 8, (yy * 4) * 8); draw_tile(DungeonObjectData.tiles[id][1], ((xx * 4) + 1) * 8, (yy * 4) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][2], ((xx * 4) + 2) * 8, (yy * 4) * 8); draw_tile(DungeonObjectData.tiles[id][3], ((xx * 4) + 3) * 8, (yy * 4) * 8);
+                    draw_tile(tiles[0], (xx * 4) * 8, (yy * 4) * 8); draw_tile(tiles[1], ((xx * 4) + 1) * 8, (yy * 4) * 8);
+                    draw_tile(tiles[2], ((xx * 4) + 2) * 8, (yy * 4) * 8); draw_tile(tiles[3], ((xx * 4) + 3) * 8, (yy * 4) * 8);
 
-                    draw_tile(DungeonObjectData.tiles[id][4], (xx * 4) * 8, ((yy * 4) + 1) * 8); draw_tile(DungeonObjectData.tiles[id][5], ((xx * 4) + 1) * 8, ((yy * 4) + 1) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][6], ((xx * 4) + 2) * 8, ((yy * 4) + 1) * 8); draw_tile(DungeonObjectData.tiles[id][7], ((xx * 4) + 3) * 8, ((yy * 4) + 1) * 8);
+                    draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 1) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 1) * 8);
+                    draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 1) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 1) * 8);
 
-                    draw_tile(DungeonObjectData.tiles[id][0], (xx * 4) * 8, ((yy * 4) + 2) * 8); draw_tile(DungeonObjectData.tiles[id][1], ((xx * 4) + 1) * 8, ((yy * 4) + 2) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][2], ((xx * 4) + 2) * 8, ((yy * 4) + 2) * 8); draw_tile(DungeonObjectData.tiles[id][3], ((xx * 4) + 3) * 8, ((yy * 4) + 2) * 8);
+                    draw_tile(tiles[0], (xx * 4) * 8, ((yy * 4) + 2) * 8); draw_tile(tiles[1], ((xx * 4) + 1) * 8, ((yy * 4) + 2) * 8);
+                    draw_tile(tiles[2], ((xx * 4) + 2) * 8, ((yy * 4) + 2) * 8); draw_tile(tiles[3], ((xx * 4) + 3) * 8, ((yy * 4) + 2) * 8);
 
-                    draw_tile(DungeonObjectData.tiles[id][4], (xx * 4) * 8, ((yy * 4) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][5], ((xx * 4) + 1) * 8, ((yy * 4) + 3) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][6], ((xx * 4) + 2) * 8, ((yy * 4) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][7], ((xx * 4) + 3) * 8, ((yy * 4) + 3) * 8);
+                    draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 3) * 8);
+                    draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 3) * 8);
                 }
             }
         }
@@ -5303,11 +5303,11 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             addTiles(24, pos); // ??
             pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2)]);
-            
+            addTiles(4, pos);
             offsetX = -8;
             LimitClass = DungeonLimits.MovingWalls;
 
-		}
+        }
 
         public override void Draw()
         {
@@ -5315,27 +5315,27 @@ namespace ZeldaFullEditor
 
             int sizey = ((Size >> 2) & 0x03);
             int sizex = ((Size) & 0x03);
-            draw_tile(DungeonObjectData.tiles[id][0], ((sizex * 8) + 8) * 8, (0) * 8); draw_tile(DungeonObjectData.tiles[id][3], ((sizex * 8) + 9) * 8, (0) * 8); draw_tile(DungeonObjectData.tiles[id][6], ((sizex * 8) + 10) * 8, (0) * 8);
-            draw_tile(DungeonObjectData.tiles[id][1], ((sizex * 8) + 8) * 8, (1) * 8); draw_tile(DungeonObjectData.tiles[id][4], ((sizex * 8) + 9) * 8, (1) * 8); draw_tile(DungeonObjectData.tiles[id][7], ((sizex * 8) + 10) * 8, (1) * 8);
-            draw_tile(DungeonObjectData.tiles[id][2], ((sizex * 8) + 8) * 8, (2) * 8); draw_tile(DungeonObjectData.tiles[id][5], ((sizex * 8) + 9) * 8, (2) * 8); draw_tile(DungeonObjectData.tiles[id][8], ((sizex * 8) + 10) * 8, (2) * 8);
+            draw_tile(tiles[0], ((sizex * 8) + 8) * 8, (0) * 8); draw_tile(tiles[3], ((sizex * 8) + 9) * 8, (0) * 8); draw_tile(tiles[6], ((sizex * 8) + 10) * 8, (0) * 8);
+            draw_tile(tiles[1], ((sizex * 8) + 8) * 8, (1) * 8); draw_tile(tiles[4], ((sizex * 8) + 9) * 8, (1) * 8); draw_tile(tiles[7], ((sizex * 8) + 10) * 8, (1) * 8);
+            draw_tile(tiles[2], ((sizex * 8) + 8) * 8, (2) * 8); draw_tile(tiles[5], ((sizex * 8) + 9) * 8, (2) * 8); draw_tile(tiles[8], ((sizex * 8) + 10) * 8, (2) * 8);
 
-            draw_tile(DungeonObjectData.tiles[id][15], ((sizex * 8) + 8) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][18], ((sizex * 8) + 9) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][21], ((sizex * 8) + 10) * 8, ((0 + 13) + sizey * 4) * 8);
-            draw_tile(DungeonObjectData.tiles[id][16], ((sizex * 8) + 8) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][19], ((sizex * 8) + 9) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][22], ((sizex * 8) + 10) * 8, ((1 + 13) + sizey * 4) * 8);
-            draw_tile(DungeonObjectData.tiles[id][17], ((sizex * 8) + 8) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][20], ((sizex * 8) + 9) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][23], ((sizex * 8) + 10) * 8, ((2 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[15], ((sizex * 8) + 8) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[18], ((sizex * 8) + 9) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[21], ((sizex * 8) + 10) * 8, ((0 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[16], ((sizex * 8) + 8) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[19], ((sizex * 8) + 9) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[22], ((sizex * 8) + 10) * 8, ((1 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[17], ((sizex * 8) + 8) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[20], ((sizex * 8) + 9) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[23], ((sizex * 8) + 10) * 8, ((2 + 13) + sizey * 4) * 8);
 
             for (int xx = 0; xx < 4 + (sizex * 4); xx++)
             {
                 for (int yy = 0; yy < 8 + (sizey * 2); yy++)
                 {
-                    draw_tile(DungeonObjectData.tiles[id][24], ((xx * 2)) * 8, (yy * 2) * 8); draw_tile(DungeonObjectData.tiles[id][25], ((xx * 2) + 1) * 8, (yy * 2) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][26], ((xx * 2)) * 8, ((yy * 2) + 1) * 8); draw_tile(DungeonObjectData.tiles[id][27], ((xx * 2) + 1) * 8, ((yy * 2) + 1) * 8);
+                    draw_tile(tiles[24], ((xx * 2)) * 8, (yy * 2) * 8); draw_tile(tiles[25], ((xx * 2) + 1) * 8, (yy * 2) * 8);
+                    draw_tile(tiles[26], ((xx * 2)) * 8, ((yy * 2) + 1) * 8); draw_tile(tiles[27], ((xx * 2) + 1) * 8, ((yy * 2) + 1) * 8);
                 }
             }
 
             for (int yy = 0; yy < 5 + (sizey * 2); yy++)
             {
-                draw_tile(DungeonObjectData.tiles[id][9], ((sizex * 8) + 8) * 8, ((yy * 2) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][10], ((sizex * 8) + 9) * 8, ((yy * 2) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][11], ((sizex * 8) + 10) * 8, ((yy * 2) + 3) * 8);
-                draw_tile(DungeonObjectData.tiles[id][12], ((sizex * 8) + 8) * 8, ((yy * 2) + 4) * 8); draw_tile(DungeonObjectData.tiles[id][13], ((sizex * 8) + 9) * 8, ((yy * 2) + 4) * 8); draw_tile(DungeonObjectData.tiles[id][14], ((sizex * 8) + 10) * 8, ((yy * 2) + 4) * 8);
+                draw_tile(tiles[9], ((sizex * 8) + 8) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[10], ((sizex * 8) + 9) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[11], ((sizex * 8) + 10) * 8, ((yy * 2) + 3) * 8);
+                draw_tile(tiles[12], ((sizex * 8) + 8) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[13], ((sizex * 8) + 9) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[14], ((sizex * 8) + 10) * 8, ((yy * 2) + 4) * 8);
             }
         }
     }
@@ -5351,10 +5351,10 @@ namespace ZeldaFullEditor
             addTiles(24, pos); // ??
                                // Ceiling tiles
             pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2)]);
-            
+            addTiles(4, pos);
             LimitClass = DungeonLimits.MovingWalls;
 
-		}
+        }
 
         public override void Draw()
         {
@@ -5363,31 +5363,32 @@ namespace ZeldaFullEditor
             int sizey = ((Size >> 2) & 0x03);
             int sizex = ((Size) & 0x03);
 
-            draw_tile(DungeonObjectData.tiles[id][0], (0) * 8, (0) * 8); draw_tile(DungeonObjectData.tiles[id][3], (1) * 8, (0) * 8); draw_tile(DungeonObjectData.tiles[id][6], (2) * 8, (0) * 8);
-            draw_tile(DungeonObjectData.tiles[id][1], (0) * 8, (1) * 8); draw_tile(DungeonObjectData.tiles[id][4], (1) * 8, (1) * 8); draw_tile(DungeonObjectData.tiles[id][7], (2) * 8, (1) * 8);
-            draw_tile(DungeonObjectData.tiles[id][2], (0) * 8, (2) * 8); draw_tile(DungeonObjectData.tiles[id][5], (1) * 8, (2) * 8); draw_tile(DungeonObjectData.tiles[id][8], (2) * 8, (2) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8); draw_tile(tiles[6], (2) * 8, (0) * 8);
+            draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8); draw_tile(tiles[7], (2) * 8, (1) * 8);
+            draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8); draw_tile(tiles[8], (2) * 8, (2) * 8);
 
-            draw_tile(DungeonObjectData.tiles[id][15], (0) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][18], (1) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][21], (2) * 8, ((0 + 13) + sizey * 4) * 8);
-            draw_tile(DungeonObjectData.tiles[id][16], (0) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][19], (1) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][22], (2) * 8, ((1 + 13) + sizey * 4) * 8);
-            draw_tile(DungeonObjectData.tiles[id][17], (0) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][20], (1) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(DungeonObjectData.tiles[id][23], (2) * 8, ((2 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[15], (0) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[18], (1) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[21], (2) * 8, ((0 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[16], (0) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[19], (1) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[22], (2) * 8, ((1 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[17], (0) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[20], (1) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[23], (2) * 8, ((2 + 13) + sizey * 4) * 8);
 
             for (int xx = 0; xx < 4 + (sizex * 4); xx++)
             {
                 for (int yy = 0; yy < 8 + (sizey * 2); yy++)
                 {
-                    draw_tile(DungeonObjectData.tiles[id][24], ((xx * 2) + 3) * 8, (yy * 2) * 8); draw_tile(DungeonObjectData.tiles[id][25], ((xx * 2) + 4) * 8, (yy * 2) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][26], ((xx * 2) + 3) * 8, ((yy * 2) + 1) * 8); draw_tile(DungeonObjectData.tiles[id][27], ((xx * 2) + 4) * 8, ((yy * 2) + 1) * 8);
+                    draw_tile(tiles[24], ((xx * 2) + 3) * 8, (yy * 2) * 8); draw_tile(tiles[25], ((xx * 2) + 4) * 8, (yy * 2) * 8);
+                    draw_tile(tiles[26], ((xx * 2) + 3) * 8, ((yy * 2) + 1) * 8); draw_tile(tiles[27], ((xx * 2) + 4) * 8, ((yy * 2) + 1) * 8);
                 }
             }
 
             for (int yy = 0; yy < 5 + (sizey * 2); yy++)
             {
-                draw_tile(DungeonObjectData.tiles[id][9], (0) * 8, ((yy * 2) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][10], (1) * 8, ((yy * 2) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][11], (2) * 8, ((yy * 2) + 3) * 8);
-                draw_tile(DungeonObjectData.tiles[id][12], (0) * 8, ((yy * 2) + 4) * 8); draw_tile(DungeonObjectData.tiles[id][13], (1) * 8, ((yy * 2) + 4) * 8); draw_tile(DungeonObjectData.tiles[id][14], (2) * 8, ((yy * 2) + 4) * 8);
+                draw_tile(tiles[9], (0) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[10], (1) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[11], (2) * 8, ((yy * 2) + 3) * 8);
+                draw_tile(tiles[12], (0) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[13], (1) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[14], (2) * 8, ((yy * 2) + 4) * 8);
             }
 
         }
     }
+
 
     [Serializable]
     public class object_CF : Room_Object
@@ -5732,23 +5733,23 @@ namespace ZeldaFullEditor
             byte f = (byte)(room.floor2 << 4);
             int pos = Constants.tile_address + f;
             tiles.Clear();
-            // ??
+            addTiles(8, pos);// ??
 
             for (int xx = 0; xx < sizex + 1; xx++)
             {
                 for (int yy = 0; yy < sizey + 1; yy++)
                 {
-                    draw_tile(DungeonObjectData.tiles[id][0], (xx * 4) * 8, (yy * 4) * 8); draw_tile(DungeonObjectData.tiles[id][1], ((xx * 4) + 1) * 8, (yy * 4) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][2], ((xx * 4) + 2) * 8, (yy * 4) * 8); draw_tile(DungeonObjectData.tiles[id][3], ((xx * 4) + 3) * 8, (yy * 4) * 8);
+                    draw_tile(tiles[0], (xx * 4) * 8, (yy * 4) * 8); draw_tile(tiles[1], ((xx * 4) + 1) * 8, (yy * 4) * 8);
+                    draw_tile(tiles[2], ((xx * 4) + 2) * 8, (yy * 4) * 8); draw_tile(tiles[3], ((xx * 4) + 3) * 8, (yy * 4) * 8);
 
-                    draw_tile(DungeonObjectData.tiles[id][4], (xx * 4) * 8, ((yy * 4) + 1) * 8); draw_tile(DungeonObjectData.tiles[id][5], ((xx * 4) + 1) * 8, ((yy * 4) + 1) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][6], ((xx * 4) + 2) * 8, ((yy * 4) + 1) * 8); draw_tile(DungeonObjectData.tiles[id][7], ((xx * 4) + 3) * 8, ((yy * 4) + 1) * 8);
+                    draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 1) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 1) * 8);
+                    draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 1) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 1) * 8);
 
-                    draw_tile(DungeonObjectData.tiles[id][0], (xx * 4) * 8, ((yy * 4) + 2) * 8); draw_tile(DungeonObjectData.tiles[id][1], ((xx * 4) + 1) * 8, ((yy * 4) + 2) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][2], ((xx * 4) + 2) * 8, ((yy * 4) + 2) * 8); draw_tile(DungeonObjectData.tiles[id][3], ((xx * 4) + 3) * 8, ((yy * 4) + 2) * 8);
+                    draw_tile(tiles[0], (xx * 4) * 8, ((yy * 4) + 2) * 8); draw_tile(tiles[1], ((xx * 4) + 1) * 8, ((yy * 4) + 2) * 8);
+                    draw_tile(tiles[2], ((xx * 4) + 2) * 8, ((yy * 4) + 2) * 8); draw_tile(tiles[3], ((xx * 4) + 3) * 8, ((yy * 4) + 2) * 8);
 
-                    draw_tile(DungeonObjectData.tiles[id][4], (xx * 4) * 8, ((yy * 4) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][5], ((xx * 4) + 1) * 8, ((yy * 4) + 3) * 8);
-                    draw_tile(DungeonObjectData.tiles[id][6], ((xx * 4) + 2) * 8, ((yy * 4) + 3) * 8); draw_tile(DungeonObjectData.tiles[id][7], ((xx * 4) + 3) * 8, ((yy * 4) + 3) * 8);
+                    draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 3) * 8);
+                    draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 3) * 8);
                 }
             }
         }
