@@ -28,7 +28,7 @@ namespace ZeldaFullEditor.Gui
         Color tempColor;
         int tempIndex = -1;
         bool fromForm = false;
-        ColorDialog cd = new ColorDialog();
+        ColorDialog colorDialog = new ColorDialog();
 
         DungeonMain mainForm;
         Color[] selectedPalette = null;
@@ -37,6 +37,8 @@ namespace ZeldaFullEditor.Gui
         public PaletteEditor(DungeonMain mainForm)
         {
             this.InitializeComponent();
+            Utils.FixNumericUpDownMouseWheel(this);
+
             this.mainForm = mainForm;
 
             this.HudPal = new Color[Constants.HudPalettesMax][];
@@ -220,19 +222,48 @@ namespace ZeldaFullEditor.Gui
             // TODO: Add something here?
         }
 
-        private void restoreallButton_Click(object sender, EventArgs e)
+        private void RestoreAllButton_Click(object sender, EventArgs e)
         {
             // Restore temp of all palettes.
             if (MessageBox.Show("Are you sure you want to restore all palettes " +
                 "to the last applied values?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 this.RestoreallPalettes();
+
+                fromForm = true;
+                redHex.Value = selectedPalette[selectedIndex].R / 8;
+                greenHex.Value = selectedPalette[selectedIndex].G / 8;
+                blueHex.Value = selectedPalette[selectedIndex].B / 8;
+                selectedColorPanel.BackColor = Color.FromArgb((int)redHex.Value * 8, (int)greenHex.Value * 8, (int)blueHex.Value * 8);
+                fromForm = false;
+
+                for (int i = 0; i < mainForm.overworldEditor.overworld.AllMaps.Length; i++)
+                {
+                    mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
+                }
+
+                mainForm.overworldEditor.scene.Refresh();
             }
         }
 
-        private void restoreselButton_Click(object sender, EventArgs e)
+        private void RestoreSelectedlButton_Click(object sender, EventArgs e)
         {
-            this.restoreSelected();
+            this.RestoreSelected();
+
+            fromForm = true;
+            redHex.Value = selectedPalette[selectedIndex].R / 8;
+            greenHex.Value = selectedPalette[selectedIndex].G / 8;
+            blueHex.Value = selectedPalette[selectedIndex].B / 8;
+            selectedColorPanel.BackColor = Color.FromArgb((int)redHex.Value * 8, (int)greenHex.Value * 8, (int)blueHex.Value * 8);
+            fromForm = false;
+
+            for (int i = 0; i < mainForm.overworldEditor.overworld.AllMaps.Length; i++)
+            {
+                mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
+            }
+
+            mainForm.overworldEditor.scene.Refresh();
+
             this.refreshallGfx();
 
             // Restore the temp selected palette only.
@@ -645,7 +676,7 @@ namespace ZeldaFullEditor.Gui
             palettePicturebox.Refresh();
         }
 
-        private void restoreSelected()
+        private void RestoreSelected()
         {
             if (palettesTreeView.SelectedNode is null)
             {
@@ -1027,59 +1058,53 @@ namespace ZeldaFullEditor.Gui
             {
                 if ((e.X / 16) < selectedX && ((e.Y / 16) * selectedX) < selectedPalette.Length)
                 {
-
-
                     selectedIndex = (e.X / 16) + ((e.Y / 16) * selectedX);
                     fromForm = true;
-                    redHex.HexValue = selectedPalette[selectedIndex].R / 8;
-                    greenHex.HexValue = selectedPalette[selectedIndex].G / 8;
-                    blueHex.HexValue = selectedPalette[selectedIndex].B / 8;
-                    selectedColorPanel.BackColor = Color.FromArgb(redHex.HexValue * 8, greenHex.HexValue * 8, blueHex.HexValue * 8);
+                    redHex.Value = selectedPalette[selectedIndex].R / 8;
+                    greenHex.Value = selectedPalette[selectedIndex].G / 8;
+                    blueHex.Value = selectedPalette[selectedIndex].B / 8;
+                    selectedColorPanel.BackColor = Color.FromArgb((int)redHex.Value * 8, (int)greenHex.Value * 8, (int)blueHex.Value * 8);
                     fromForm = false;
-
 
                     int cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
                     tempIndex = cindex;
                     tempColor = selectedPalette[cindex];
                     selectedPalette[cindex] = Color.Fuchsia;
-
-                    for (int i = 0; i < 159; i++)
-                    {
-                        mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
-                    }
-
-                    mainForm.overworldEditor.scene.Refresh();
-                    refreshallGfx();
                 }
             }
             else
             {
                 selectedIndex = (e.X / 16) + ((e.Y / 16) * selectedX);
+                fromForm = true;
+                redHex.Value = selectedPalette[selectedIndex].R / 8;
+                greenHex.Value = selectedPalette[selectedIndex].G / 8;
+                blueHex.Value = selectedPalette[selectedIndex].B / 8;
+                selectedColorPanel.BackColor = Color.FromArgb((int)redHex.Value * 8, (int)greenHex.Value * 8, (int)blueHex.Value * 8);
+                fromForm = false;
 
                 int cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
                 if (cindex != -1)
                 {
-                    cd.Color = selectedPalette[cindex];
-                    cd.FullOpen = true;
-                    if (cd.ShowDialog() == DialogResult.OK)
+                    colorDialog.Color = selectedPalette[cindex];
+                    colorDialog.FullOpen = true;
+                    if (colorDialog.ShowDialog() == DialogResult.OK)
                     {
-                        selectedPalette[cindex] = cd.Color;
-                        redHex.HexValue = cd.Color.R / 8;
-                        greenHex.HexValue = cd.Color.G / 8;
-                        blueHex.HexValue = cd.Color.B / 8;
-                        selectedColorPanel.BackColor = cd.Color;
+                        selectedPalette[cindex] = colorDialog.Color;
+                        redHex.Value = colorDialog.Color.R / 8;
+                        greenHex.Value = colorDialog.Color.G / 8;
+                        blueHex.Value = colorDialog.Color.B / 8;
+                        selectedColorPanel.BackColor = colorDialog.Color;
                     }
-
-                    for (int i = 0; i < 159; i++)
-                    {
-                        mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
-                    }
-
-                    refreshallGfx();
                 }
-
-
             }
+
+            for (int i = 0; i < mainForm.overworldEditor.overworld.AllMaps.Length; i++)
+            {
+                mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
+            }
+
+            mainForm.overworldEditor.scene.Refresh();
+            refreshallGfx();
         }
 
         private void palettePicturebox_MouseUp(object sender, MouseEventArgs e)
@@ -1108,20 +1133,38 @@ namespace ZeldaFullEditor.Gui
 
             if (cindex != -1)
             {
-                cd.Color = selectedPalette[cindex];
-                if (cd.ShowDialog() == DialogResult.OK)
+                colorDialog.Color = selectedPalette[cindex];
+                if (colorDialog.ShowDialog() == DialogResult.OK)
                 {
-                    selectedPalette[cindex] = cd.Color;
-                    redHex.HexValue = cd.Color.R / 8;
-                    greenHex.HexValue = cd.Color.G / 8;
-                    blueHex.HexValue = cd.Color.B / 8;
-                    selectedColorPanel.BackColor = cd.Color;
+                    selectedPalette[cindex] = colorDialog.Color;
+                    redHex.Value = colorDialog.Color.R / 8;
+                    greenHex.Value = colorDialog.Color.G / 8;
+                    blueHex.Value = colorDialog.Color.B / 8;
+                    selectedColorPanel.BackColor = colorDialog.Color;
                 }
 
                 for (int i = 0; i < 159; i++)
                 {
                     mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
                 }
+
+                refreshallGfx();
+            }
+        }
+
+        private void RGBHexBoxChanged(object sender, EventArgs e)
+        {
+            if (!fromForm)
+            {
+                selectedPalette[selectedIndex] = Color.FromArgb(((int)redHex.Value).Clamp(0, 31) * 8, ((int)greenHex.Value).Clamp(0, 31) * 8, ((int)blueHex.Value).Clamp(0, 31) * 8);
+                selectedColorPanel.BackColor = Color.FromArgb(((int)redHex.Value).Clamp(0, 31) * 8, ((int)greenHex.Value).Clamp(0, 31) * 8, ((int)blueHex.Value).Clamp(0, 31) * 8);
+
+                for (int i = 0; i < mainForm.overworldEditor.overworld.AllMaps.Length; i++)
+                {
+                    mainForm.overworldEditor.overworld.AllMaps[i].LoadPalette();
+                }
+
+                mainForm.overworldEditor.scene.Refresh();
 
                 refreshallGfx();
             }
@@ -1556,20 +1599,6 @@ namespace ZeldaFullEditor.Gui
                 
                 fs.Close();
                 refreshallGfx();
-            }
-        }
-
-        private void redHex_TextChanged(object sender, EventArgs e)
-        {
-            if (!fromForm)
-            {
-                selectedPalette[selectedIndex] = Color.FromArgb(redHex.HexValue*8, greenHex.HexValue*8, blueHex.HexValue*8);
-                selectedColorPanel.BackColor = Color.FromArgb(redHex.HexValue*8, greenHex.HexValue*8, blueHex.HexValue*8);
-                refreshallGfx();
-            }
-            else
-            {
-
             }
         }
     }

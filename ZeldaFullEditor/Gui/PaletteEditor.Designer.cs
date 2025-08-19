@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Hud");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Overworld Main");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Overworld Aux");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Overworld Animated");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Dungeon Main");
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Global Sprites");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Sprites Aux1");
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Sprites Aux2");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Sprites Aux3");
-            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("Shields");
-            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("Swords");
-            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("Armors");
-            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("Overworld Grass");
-            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("3D Objects");
-            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("OverworldMaps");
+            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("Hud");
+            System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Overworld Main");
+            System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("Overworld Aux");
+            System.Windows.Forms.TreeNode treeNode34 = new System.Windows.Forms.TreeNode("Overworld Animated");
+            System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("Dungeon Main");
+            System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("Global Sprites");
+            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("Sprites Aux1");
+            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("Sprites Aux2");
+            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("Sprites Aux3");
+            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("Shields");
+            System.Windows.Forms.TreeNode treeNode41 = new System.Windows.Forms.TreeNode("Swords");
+            System.Windows.Forms.TreeNode treeNode42 = new System.Windows.Forms.TreeNode("Armors");
+            System.Windows.Forms.TreeNode treeNode43 = new System.Windows.Forms.TreeNode("Overworld Grass");
+            System.Windows.Forms.TreeNode treeNode44 = new System.Windows.Forms.TreeNode("3D Objects");
+            System.Windows.Forms.TreeNode treeNode45 = new System.Windows.Forms.TreeNode("OverworldMaps");
             this.applyButton = new System.Windows.Forms.Button();
             this.restoreallButton = new System.Windows.Forms.Button();
             this.restoreselButton = new System.Windows.Forms.Button();
@@ -53,9 +53,6 @@
             this.palettesTreeView = new System.Windows.Forms.TreeView();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.selectedColorPanel = new System.Windows.Forms.Panel();
-            this.redHex = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.greenHex = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-            this.blueHex = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.hexbox1 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.hexbox2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.hexbox3 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -64,7 +61,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.greenHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.blueHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.redHex = new System.Windows.Forms.NumericUpDown();
+            this.greenHex = new System.Windows.Forms.NumericUpDown();
+            this.blueHex = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.redHex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.greenHex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueHex)).BeginInit();
             this.SuspendLayout();
             // 
             // applyButton
@@ -85,7 +88,7 @@
             this.restoreallButton.TabIndex = 3;
             this.restoreallButton.Text = "Restore All";
             this.restoreallButton.UseVisualStyleBackColor = true;
-            this.restoreallButton.Click += new System.EventHandler(this.restoreallButton_Click);
+            this.restoreallButton.Click += new System.EventHandler(this.RestoreAllButton_Click);
             // 
             // restoreselButton
             // 
@@ -95,7 +98,7 @@
             this.restoreselButton.TabIndex = 4;
             this.restoreselButton.Text = "Restore Select.";
             this.restoreselButton.UseVisualStyleBackColor = true;
-            this.restoreselButton.Click += new System.EventHandler(this.restoreselButton_Click);
+            this.restoreselButton.Click += new System.EventHandler(this.RestoreSelectedlButton_Click);
             // 
             // button1
             // 
@@ -142,52 +145,52 @@
             this.palettesTreeView.Dock = System.Windows.Forms.DockStyle.Left;
             this.palettesTreeView.Location = new System.Drawing.Point(0, 0);
             this.palettesTreeView.Name = "palettesTreeView";
-            treeNode16.Name = "HudPal";
-            treeNode16.Text = "Hud";
-            treeNode17.Name = "OverworldMainPal";
-            treeNode17.Text = "Overworld Main";
-            treeNode18.Name = "OverworldAuxPal";
-            treeNode18.Text = "Overworld Aux";
-            treeNode19.Name = "OverworldAnimatedPal";
-            treeNode19.Text = "Overworld Animated";
-            treeNode20.Name = "DungeonMainPal";
-            treeNode20.Text = "Dungeon Main";
-            treeNode21.Name = "GlobalSpritesPal";
-            treeNode21.Text = "Global Sprites";
-            treeNode22.Name = "SpritesAux1Pal";
-            treeNode22.Text = "Sprites Aux1";
-            treeNode23.Name = "SpritesAux2Pal";
-            treeNode23.Text = "Sprites Aux2";
-            treeNode24.Name = "SpritesAux3Pal";
-            treeNode24.Text = "Sprites Aux3";
-            treeNode25.Name = "ShieldsPal";
-            treeNode25.Text = "Shields";
-            treeNode26.Name = "SwordsPal";
-            treeNode26.Text = "Swords";
-            treeNode27.Name = "ArmorsPal";
-            treeNode27.Text = "Armors";
-            treeNode28.Name = "OverworldGrassPal";
-            treeNode28.Text = "Overworld Grass";
-            treeNode29.Name = "Objects3DPal";
-            treeNode29.Text = "3D Objects";
-            treeNode30.Name = "OverworldMapsPal";
-            treeNode30.Text = "OverworldMaps";
+            treeNode31.Name = "HudPal";
+            treeNode31.Text = "Hud";
+            treeNode32.Name = "OverworldMainPal";
+            treeNode32.Text = "Overworld Main";
+            treeNode33.Name = "OverworldAuxPal";
+            treeNode33.Text = "Overworld Aux";
+            treeNode34.Name = "OverworldAnimatedPal";
+            treeNode34.Text = "Overworld Animated";
+            treeNode35.Name = "DungeonMainPal";
+            treeNode35.Text = "Dungeon Main";
+            treeNode36.Name = "GlobalSpritesPal";
+            treeNode36.Text = "Global Sprites";
+            treeNode37.Name = "SpritesAux1Pal";
+            treeNode37.Text = "Sprites Aux1";
+            treeNode38.Name = "SpritesAux2Pal";
+            treeNode38.Text = "Sprites Aux2";
+            treeNode39.Name = "SpritesAux3Pal";
+            treeNode39.Text = "Sprites Aux3";
+            treeNode40.Name = "ShieldsPal";
+            treeNode40.Text = "Shields";
+            treeNode41.Name = "SwordsPal";
+            treeNode41.Text = "Swords";
+            treeNode42.Name = "ArmorsPal";
+            treeNode42.Text = "Armors";
+            treeNode43.Name = "OverworldGrassPal";
+            treeNode43.Text = "Overworld Grass";
+            treeNode44.Name = "Objects3DPal";
+            treeNode44.Text = "3D Objects";
+            treeNode45.Name = "OverworldMapsPal";
+            treeNode45.Text = "OverworldMaps";
             this.palettesTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode16,
-            treeNode17,
-            treeNode18,
-            treeNode19,
-            treeNode20,
-            treeNode21,
-            treeNode22,
-            treeNode23,
-            treeNode24,
-            treeNode25,
-            treeNode26,
-            treeNode27,
-            treeNode28,
-            treeNode29,
-            treeNode30});
+            treeNode31,
+            treeNode32,
+            treeNode33,
+            treeNode34,
+            treeNode35,
+            treeNode36,
+            treeNode37,
+            treeNode38,
+            treeNode39,
+            treeNode40,
+            treeNode41,
+            treeNode42,
+            treeNode43,
+            treeNode44,
+            treeNode45});
             this.palettesTreeView.Size = new System.Drawing.Size(200, 274);
             this.palettesTreeView.TabIndex = 0;
             this.palettesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.palettesTreeView_AfterSelect);
@@ -211,51 +214,6 @@
             this.selectedColorPanel.Name = "selectedColorPanel";
             this.selectedColorPanel.Size = new System.Drawing.Size(51, 47);
             this.selectedColorPanel.TabIndex = 9;
-            // 
-            // redHex
-            // 
-            this.redHex.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.redHex.Decimal = false;
-            this.redHex.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.redHex.HexValue = 0;
-            this.redHex.Location = new System.Drawing.Point(263, 151);
-            this.redHex.MaxLength = 2;
-            this.redHex.MaxValue = 31;
-            this.redHex.MinValue = 0;
-            this.redHex.Name = "redHex";
-            this.redHex.Size = new System.Drawing.Size(37, 20);
-            this.redHex.TabIndex = 10;
-            this.redHex.TextChanged += new System.EventHandler(this.redHex_TextChanged);
-            // 
-            // greenHex
-            // 
-            this.greenHex.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.greenHex.Decimal = false;
-            this.greenHex.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.greenHex.HexValue = 0;
-            this.greenHex.Location = new System.Drawing.Point(306, 151);
-            this.greenHex.MaxLength = 2;
-            this.greenHex.MaxValue = 31;
-            this.greenHex.MinValue = 0;
-            this.greenHex.Name = "greenHex";
-            this.greenHex.Size = new System.Drawing.Size(37, 20);
-            this.greenHex.TabIndex = 11;
-            this.greenHex.TextChanged += new System.EventHandler(this.redHex_TextChanged);
-            // 
-            // blueHex
-            // 
-            this.blueHex.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.blueHex.Decimal = false;
-            this.blueHex.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.blueHex.HexValue = 0;
-            this.blueHex.Location = new System.Drawing.Point(349, 151);
-            this.blueHex.MaxLength = 2;
-            this.blueHex.MaxValue = 31;
-            this.blueHex.MinValue = 0;
-            this.blueHex.Name = "blueHex";
-            this.blueHex.Size = new System.Drawing.Size(37, 20);
-            this.blueHex.TabIndex = 12;
-            this.blueHex.TextChanged += new System.EventHandler(this.redHex_TextChanged);
             // 
             // hexbox1
             // 
@@ -296,7 +254,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(274, 137);
+            this.label1.Location = new System.Drawing.Point(260, 137);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(15, 13);
             this.label1.TabIndex = 13;
@@ -305,7 +263,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(317, 137);
+            this.label2.Location = new System.Drawing.Point(303, 137);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 13);
             this.label2.TabIndex = 14;
@@ -314,7 +272,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(359, 137);
+            this.label3.Location = new System.Drawing.Point(346, 137);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(14, 13);
             this.label3.TabIndex = 15;
@@ -333,6 +291,7 @@
             this.greenHexbox.Name = "greenHexbox";
             this.greenHexbox.Size = new System.Drawing.Size(37, 20);
             this.greenHexbox.TabIndex = 11;
+            this.greenHexbox.Text = "00";
             // 
             // blueHexbox
             // 
@@ -347,18 +306,61 @@
             this.blueHexbox.Name = "blueHexbox";
             this.blueHexbox.Size = new System.Drawing.Size(37, 20);
             this.blueHexbox.TabIndex = 12;
+            this.blueHexbox.Text = "00";
+            // 
+            // redHex
+            // 
+            this.redHex.Hexadecimal = true;
+            this.redHex.Location = new System.Drawing.Point(263, 152);
+            this.redHex.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.redHex.Name = "redHex";
+            this.redHex.Size = new System.Drawing.Size(37, 20);
+            this.redHex.TabIndex = 16;
+            this.redHex.ValueChanged += new System.EventHandler(this.RGBHexBoxChanged);
+            // 
+            // greenHex
+            // 
+            this.greenHex.Hexadecimal = true;
+            this.greenHex.Location = new System.Drawing.Point(306, 152);
+            this.greenHex.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.greenHex.Name = "greenHex";
+            this.greenHex.Size = new System.Drawing.Size(37, 20);
+            this.greenHex.TabIndex = 17;
+            this.greenHex.ValueChanged += new System.EventHandler(this.RGBHexBoxChanged);
+            // 
+            // blueHex
+            // 
+            this.blueHex.Hexadecimal = true;
+            this.blueHex.Location = new System.Drawing.Point(349, 152);
+            this.blueHex.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.blueHex.Name = "blueHex";
+            this.blueHex.Size = new System.Drawing.Size(37, 20);
+            this.blueHex.TabIndex = 18;
+            this.blueHex.ValueChanged += new System.EventHandler(this.RGBHexBoxChanged);
             // 
             // PaletteEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.blueHex);
             this.Controls.Add(this.greenHex);
             this.Controls.Add(this.redHex);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.selectedColorPanel);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -374,6 +376,9 @@
             this.Load += new System.EventHandler(this.PaletteEditor_Load);
             this.VisibleChanged += new System.EventHandler(this.PaletteEditor_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.redHex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.greenHex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueHex)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -390,9 +395,6 @@
         private System.Windows.Forms.Button button4;
         public System.Windows.Forms.TreeView palettesTreeView;
         private System.Windows.Forms.Panel selectedColorPanel;
-        private ExtraForms.Hexbox redHex;
-        private ExtraForms.Hexbox greenHex;
-        private ExtraForms.Hexbox blueHex;
         private ExtraForms.Hexbox hexbox1;
         private ExtraForms.Hexbox hexbox2;
         private ExtraForms.Hexbox hexbox3;
@@ -401,5 +403,8 @@
         private System.Windows.Forms.Label label3;
         private ExtraForms.Hexbox greenHexbox;
         private ExtraForms.Hexbox blueHexbox;
+        private System.Windows.Forms.NumericUpDown redHex;
+        private System.Windows.Forms.NumericUpDown greenHex;
+        private System.Windows.Forms.NumericUpDown blueHex;
     }
 }
