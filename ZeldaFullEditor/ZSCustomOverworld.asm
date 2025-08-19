@@ -1242,8 +1242,8 @@ Pool:
 }
 warnpc $289438 ; $141438
 
-; $0125EC-$01262C 0x0040 bytes unused here.
-; Moved to expanded space.
+; Data in the vanilla ROM that has been moved. Some of the space might be
+; available for use later.
 
 ; All claimed
 ; $012634-$0126B3 0x0080 bytes unused here.
@@ -2179,7 +2179,7 @@ Overworld_ReloadSubscreenOverlay_Interupt:
 
     ; Check if we are in the beginning phase, if not, no rain.
     ; If $7EF3C5 >= 0x02.
-    LDA.l Pool_EnableBeginningRain : BEQ .noRain
+    LDA.l Pool_EnableBeginningRain : AND.w #$00FF : BEQ .noRain
         LDA.l $7EF3C5 : AND.w #$00FF : CMP.w #$0002 : BCS .noRain
             ; The rain overlay.
             LDX.w #$009F
