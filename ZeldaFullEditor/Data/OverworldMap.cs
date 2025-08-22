@@ -702,11 +702,21 @@ namespace ZeldaFullEditor
         /// </summary>
         public void LoadPalette()
         {
+            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+
             int previousPalId = 0;
             int previousSprPalId = 0;
             if (this.Index > 0)
             {
-                previousPalId = ROM.DATA[Constants.overworldMapPalette + this.ParentID - 1];
+                if (asmVersion < 3 || asmVersion == 0xFF)
+                {
+                    previousPalId = ROM.DATA[Constants.overworldMapPalette + this.ParentID - 1];
+                }
+                else
+                {
+                    previousPalId = ROM.DATA[Constants.overworldPalettesScreenToSetNew + this.ParentID - 1];
+                }
+                
                 previousSprPalId = ROM.DATA[Constants.overworldSpritePalette + this.ParentID - 1];
             }
 

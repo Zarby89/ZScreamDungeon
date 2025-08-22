@@ -330,19 +330,19 @@ namespace ZeldaFullEditor
         public static int overworldMapParentID = 0x0125EC;
         public static int overworldMapParentIDExpanded = 0x140998;
 
-        public static int overworldTransitionPositionY = 0x0128C4;
-        public static int overworldTransitionPositionX = 0x012944;
+        public static int overworldTransitionPositionY = 0x0128C4; // Now unused.
+        public static int overworldTransitionPositionX = 0x012944; // Now unused.
 
         public static int overworldTransitionPositionYExpanded = 0x140F38;
         public static int overworldTransitionPositionXExpanded = 0x141078;
 
         public static int overworldScreenSize = 0x01788D;
 
-        public static int OverworldScreenSizeForLoading = 0x04C635;
-        public static int OverworldScreenTileMapChangeByScreen1 = 0x012634;
-        public static int OverworldScreenTileMapChangeByScreen2 = 0x0126B4;
-        public static int OverworldScreenTileMapChangeByScreen3 = 0x012734;
-        public static int OverworldScreenTileMapChangeByScreen4 = 0x0127B4;
+        public static int OverworldScreenSizeForLoading = 0x04C635; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen1 = 0x012634; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen2 = 0x0126B4; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen3 = 0x012734; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen4 = 0x0127B4; // Now unused.
 
         public static int OverworldScreenTileMapChangeByScreen1Expanded = 0x140A38;
         public static int OverworldScreenTileMapChangeByScreen2Expanded = 0x140B78;

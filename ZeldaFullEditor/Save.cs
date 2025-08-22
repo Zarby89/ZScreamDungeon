@@ -1117,6 +1117,9 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0xA0; i++)
             {
+                // Zero out this table for the sake of being able to read it in hex.
+                ROM.WriteShort(Constants.overworldBombDoorItemLocationsNew + (i * 2), 0);
+
                 roomItems[i] = new List<RoomPotSaveEditor>();
                 foreach (RoomPotSaveEditor item in scene.ow.AllItems)
                 {
@@ -1416,7 +1419,6 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.overworldSpriteset + 0x40 + i, scene.ow.AllMaps[i].SpriteGFX[1], WriteType.SpriteSet);
                 ROM.Write(Constants.overworldSpriteset + 0x80 + i, scene.ow.AllMaps[i].SpriteGFX[2], WriteType.SpriteSet);
 
-                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
                 ROM.Write(Constants.overworldPalettesScreenToSetNew + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
 
                 ROM.Write(Constants.overworldSpritePalette + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
@@ -1428,7 +1430,6 @@ namespace ZeldaFullEditor
             {
                 ROM.Write(Constants.mapGfx + i, scene.ow.AllMaps[i].GFX, WriteType.GFX); // TODO: The OW ASM probably removes the need to write this.
                 ROM.Write(Constants.overworldSpriteset + 0x80 + i, scene.ow.AllMaps[i].SpriteGFX[0], WriteType.SpriteSet);
-                ROM.Write(Constants.overworldMapPalette + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
                 ROM.Write(Constants.overworldPalettesScreenToSetNew + i, scene.ow.AllMaps[i].AuxPalette, WriteType.Palette);
                 ROM.Write(Constants.overworldSpritePalette + 0x80 + i, scene.ow.AllMaps[i].SpritePalette[0], WriteType.SpritePalette);
             }

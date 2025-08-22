@@ -91,7 +91,6 @@ Credits_LoadScene_PrepGFX_sprite_palette   = $0285F3 ; $0105F3
 DeleteCertainAncillaeStopDashing           = $028B0C ; $010B0C
 OWOverlay_HShift                           = $02A46D ; $01246D
 OWOverlay_VShift                           = $02A471 ; $012471
-Overworld_HandleOverlaysAndBombDoors_bombable_door_location_New = $02A644 ; $012644
 Overworld_LoadMapProperties                = $02AB08 ; $012B08
 Overworld_FinishTransGfx_firstHalf_Retrun  = $02ABC5 ; $012BC5
 Overworld_LoadSubscreenAndSilenceSFX1      = $02AF19 ; $012F19
@@ -1120,8 +1119,11 @@ Pool:
     dw $1000, $1000, $1000, $1000, $1000, $1000, $1000, $1000
     endif
 
+    ; UNUSED:
+    ; The table OverworldTransitionPositionY found at $0128C4 was moved
+    ; here and the original 0x80 bytes are currently unused.
     org $288F38 ; $140F38
-    .OverworldTransitionPositionY
+    .OverworldTransitionPositionY_New
     if !UseVanillaPool > 0
     ; LW
     dw $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000
@@ -1150,8 +1152,11 @@ Pool:
     dw $0600, $0600, $0600, $0600, $0600, $0600, $0600, $0600
     endif
 
+    ; UNUSED:
+    ; The table OverworldTransitionPositionX found at 012944 was moved
+    ; here and the original 0x80 bytes are currently unused.
     org $289078 ; $141078
-    .OverworldTransitionPositionX
+    .OverworldTransitionPositionX_New
     if !UseVanillaPool > 0
     ; LW
     dw $0000, $0000, $0400, $0600, $0600, $0A00, $0A00, $0E00
@@ -1180,8 +1185,10 @@ Pool:
     dw $0000, $0200, $0400, $0600, $0800, $0A00, $0C00, $0E00
     endif
 
+    ; The original trans_target_north table was moved here from $013EE2
+    ; The original 0x0080 bytes space is currently unused.
     org $2891B8 ; $1411B8
-    .trans_target_north
+    .trans_target_north_new
     if !UseVanillaPool > 0
     ; LW
     dw $FF20, $FF20, $FF20, $FF20, $FF20, $FF20, $FF20, $FF20
@@ -1210,8 +1217,10 @@ Pool:
     dw $0520, $0520, $0520, $0520, $0520, $0520, $0520, $0520
     endif
 
+    ; The original trans_target_west table was moved here from $013F62
+    ; The original 0x0080 bytes space is currently unused.
     org $2892F8 ; $1412F8
-    .trans_target_west
+    .trans_target_west_new
     if !UseVanillaPool > 0
     ; LW
     dw $FF00, $FF00, $0300, $0500, $0500, $0900, $0900, $0D00
@@ -1241,44 +1250,6 @@ Pool:
     endif
 }
 warnpc $289438 ; $141438
-
-; Data in the vanilla ROM that has been moved. Some of the space might be
-; available for use later.
-
-; All claimed
-; $012634-$0126B3 0x0080 bytes unused here.
-; $0126B4-$012733 0x0080 bytes unused here.
-; $012734-$0127B3 0x0080 bytes unused here.
-; $0127B4-$012833 0x0080 bytes unused here.
-; Moved to expanded space.
-
-; All claimed
-; $012844-$012883 0x0040 bytes unused here.
-; $012884-$0128C4 0x0040 bytes unused here.
-; The vanilla purpose of these tables no longer matters, the values themeselves
-; don't reflect any actual data and its uses have been removed.
-
-; $0128C4-$012943 0x0080 bytes unused here.
-; Moved to expanded space.
-
-; $012944-$0129C4 0x0080 bytes unused here.
-; Moved to expanded space.
-
-; $013EE2-$013F61 0x0080 bytes unused here.
-; $013F62-$013FE2 0x0080 bytes unused here.
-; Moved to expanded space.
-
-; All claimed
-; $04C635-$04C6F5 0xC0 bytes unused here.
-; This is for controlling the boundaries used by sprites to check if they should
-; be loaded. This is now unused in favor of just getting a value based on the 
-; size of the area. This space can be used for expansion later.
-
-; The $0712 check at $01408D just above Overworld_SetCameraBounds is now unused.
-; The $0712 check at $0165AA in Overworld_LoadNewScreenProperties is now unused.
-
-; $007D1C-$007DA3 DATA 0x88 bytes unused here.
-; Was moved somewhere else.
 
 ; ==============================================================================
 ; Start of function space.
@@ -4518,7 +4489,7 @@ OverworldHandleTransitions:
 
         REP #$10
         LDA.b $8A : ASL : TAX
-        LDA.b $20 : SEC : SBC.l Pool_OverworldTransitionPositionY, X
+        LDA.b $20 : SEC : SBC.l Pool_OverworldTransitionPositionY_New, X
         SEP #$10
 
         ; Transitioning up.
@@ -4543,7 +4514,7 @@ OverworldHandleTransitions:
 
         REP #$10
         LDA.b $8A : ASL : TAX
-        LDA.b $22 : SEC : SBC.l Pool_OverworldTransitionPositionX, X
+        LDA.b $22 : SEC : SBC.l Pool_OverworldTransitionPositionX_New, X
         SEP #$10
 
         ; Transitioning left.
@@ -4694,22 +4665,44 @@ OverworldScreenTileMapChange:
     else
     dw $0F80, $0F80, $003F, $003F
     endif
-
-    warnpc $02A634 ; $012634
 }
+warnpc $02A634 ; $012634
 
+; This table was moved from its original location at $012834 to make more
+; space for the bigger tables down below. Replaces a few bytes from
+; OverworldScreenTileMapChange_ByScreen1.
+org $02A634 ; $012634
 OverworldScreenIDChange:
 {
     dw $0002, $FFFE, $0010, $FFF0
 }
+warnpc $02A63C ; $01263C
 
+; This table was moved from its original location at $01283C to make more
+; space for the bigger tables down below. This now replaces a few bytes from
+; OverworldScreenTileMapChange_ByScreen1.
+org $02A63C ; $01263C
 OverworldMixedCoordsChange:
 {
     dw $FFF0, $0010, $FFFE, $0002
 }
 warnpc $02A644 ; $012644
 
-; The space after this is used for Overworld_HandleOverlaysAndBombDoors_bombable_door_location
+; This table was moved from its original location at $016DC5. This now replaces
+; OverworldScreenTileMapChange_ByScreen1, OverworldScreenTileMapChange_ByScreen2
+; and part of OverworldScreenTileMapChange_ByScreen3.
+org $02A644 ; $012644
+Overworld_HandleOverlaysAndBombDoors_bombable_door_location_New:
+
+; This table was moved from its original location at $0DC2F9. This now replaces
+; part of OverworldScreenTileMapChange_ByScreen3 and all of the following
+; OverworldScreenTileMapChange_ByScreen4,
+; OverworldScreenIDChange, OverworldMixedCoordsChange,
+; OverworldScreenSizeFlag, and OverworldScreenSizeHighByte.
+; The bytes of space at $0DC2F9 is now unused. The references to this table are
+; updated by ZS itself.
+org $02A784 ; $012784
+OverworldData_HiddenItems_New:
 
 ; Update this address.
 org $02C098 ; $014098
@@ -4825,16 +4818,16 @@ NewOverworld_SetCameraBounds:
     REP #$10
 
     LDA.b $8A : ASL : TAY
-    LDA.w Pool_OverworldTransitionPositionY, Y : STA.w $0600
+    LDA.w Pool_OverworldTransitionPositionY_New, Y : STA.w $0600
     CLC : ADC.w .boundary_y_size, X            : STA.w $0602
     
-    LDA.w Pool_OverworldTransitionPositionX, Y : STA.w $0604
+    LDA.w Pool_OverworldTransitionPositionX_New, Y : STA.w $0604
     CLC : ADC.w .boundary_x_size, X            : STA.w $0606
 
-    LDA.w Pool_trans_target_north, Y          : STA.w $0610
+    LDA.w Pool_trans_target_north_new, Y          : STA.w $0610
     CLC : ADC.w .trans_target_south_offset, X : STA.w $0612
 
-    LDA.w Pool_trans_target_west, Y          : STA.w $0614
+    LDA.w Pool_trans_target_west_new, Y          : STA.w $0614
     CLC : ADC.w .trans_target_east_offset, X : STA.w $0616
 
     SEP #$10
@@ -4856,6 +4849,11 @@ NewOverworld_SetCameraBounds:
     .trans_target_east_offset
     dw $0300, $0500, $0500, $0300
 }
+
+; NOTE: UNUSED:
+; The $0712 check at $01408D in OverworldScrollTransition and at $0165AA
+; in Overworld_LoadNewScreenProperties are now unused because of the
+; new Overworld_SetCameraBounds function.
 
 pushpc
 
@@ -4882,7 +4880,7 @@ Hookshot_IsCollisionCheckFutile_Interupt:
 {
     LDA.w $0C72, X : AND.w #$0002 : BNE .moving_horizontally
         LDX.w $0700
-        LDA.b $00 : SEC : SBC.l Pool_OverworldTransitionPositionY, X
+        LDA.b $00 : SEC : SBC.l Pool_OverworldTransitionPositionY_New, X
         CMP.w #$0004 : BCC .off_screen
             CMP.w $0716 : BCS .off_screen
                 BRA .not_at_screen_edge
@@ -4890,7 +4888,7 @@ Hookshot_IsCollisionCheckFutile_Interupt:
     .moving_horizontally
         
     LDX.w $0700
-    LDA.b $02 : SEC : SBC.l Pool_OverworldTransitionPositionX, X
+    LDA.b $02 : SEC : SBC.l Pool_OverworldTransitionPositionX_New, X
     CMP.w #$0006 : BCC .off_screen
         CMP.w $0716 : BCC .not_at_screen_edge
         
@@ -5030,8 +5028,8 @@ AreaSizeCheck:
     PHB : PHK : PLB
 
     LDA.b $8A : ASL : TAX
-    LDA.l Pool_OverworldTransitionPositionY, X          : STA.w $0708
-    LDA.l Pool_OverworldTransitionPositionX, X : LSR #3 : STA.w $070C
+    LDA.l Pool_OverworldTransitionPositionY_New, X          : STA.w $0708
+    LDA.l Pool_OverworldTransitionPositionX_New, X : LSR #3 : STA.w $070C
 
     LDX.b $8A
     LDA.l Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X
@@ -5071,6 +5069,15 @@ LoadOverworldSprites_Interupt:
     .skip
 }
 warnpc $09C4DA ; $04C4DA
+
+; The table OverworldScreenSizeForLoading which is located at $04C635 and
+; used by the vanilla LoadOverworldSprites function is no longer needed for
+; its original purpose. This is for controlling the boundaries used by sprites
+; to check if they should be loaded. This is now unused in favor of just
+; getting a value based on the size of the area. Its 0xC0 bytes of space is
+; now used by OverworldPalettesScreenToSet_New which was moved here from is
+; original loaction at $007D1C. The old 0x88 bytes of space at $007D1C is
+; now unused.
 
 else 
 
@@ -5266,8 +5273,8 @@ LoadSpecialOverworld_Interupt:
     LDA.b $A0 : CMP.w #$0180 : BEQ .SpecialCameraBounds
                 CMP.w #$0181 : BEQ .SpecialCameraBounds
         LDA.b $8A : AND.w #$00FF : ASL : TAX
-        LDA.l Pool_OverworldTransitionPositionY, X          : STA.w $0708
-        LDA.l Pool_OverworldTransitionPositionX, X : LSR #3 : STA.w $070C
+        LDA.l Pool_OverworldTransitionPositionY_New, X          : STA.w $0708
+        LDA.l Pool_OverworldTransitionPositionX_New, X : LSR #3 : STA.w $070C
 
         JSL.l AreaSizeCheck
 
@@ -5374,7 +5381,6 @@ SetupSpecialCameraBounds:
     .SpecialCamera70C
     dw $0000, $0000
 }
-
 
 pushpc
 
