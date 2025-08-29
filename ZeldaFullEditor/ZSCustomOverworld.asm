@@ -21,6 +21,9 @@
 ;      already present in the vanilla game.
 ;    • The ability to have "wide" (2x1) and "tall" (1x2) areas that were not
 ;      present in the vanilla game.
+;    • The ability to use the other previously unused "secial world" areas 
+;      as if they were a normal area. Including the use of items, entrances, exits
+;      whirlpools, bird transports, overworld transitions
 ;    • Fixes several bugs present in the vanilla game that prevent certain normal
 ;      overworld transitions such as "staggered" layouts or transitions in the
 ;      middle of 2 large areas that are next to each other. See the diagrams in
@@ -48,6 +51,8 @@
 ;     • The bridge overlay present in the under the bridge area.
 ;     • The BG color present in the under the bridge area.
 ;     • The pyramid overlay only scrolling properly on area $5B.
+;     • The smaller camera boundaries present in the master sword area and the
+;       area under the bridge.
 ; ==============================================================================
 ; Non-Expanded Space
 ; ==============================================================================
@@ -57,15 +62,23 @@ pushpc
 incsrc HardwareRegisters.asm
 
 ; Free RAM
-AnimatedTileGFXSet         = $0FC0 ; [0x01]
-TransGFXModuleFrame        = $0CF3 ; [0x01]
-TransGFXModule_PriorSheets = $04CB ; [0x08] May use more in the future here.
-NewNMISource1              = $04D5 ; [0x02]
-NewNMITarget1              = $04D3 ; [0x02]
-NewNMICount1               = $04D7 ; [0x02]
-NewNMITarget2              = $04D9 ; [0x02]
-NewNMISource2              = $04DB ; [0x02]
-NewNMICount2               = $04DD ; [0x02]
+
+TransGFXModule_PriorSheets = $04CB   ; [0x08] May use more in the future here.
+NewNMISource1              = $04D5   ; [0x02]
+NewNMITarget1              = $04D3   ; [0x02]
+NewNMICount1               = $04D7   ; [0x02]
+NewNMITarget2              = $04D9   ; [0x02]
+NewNMISource2              = $04DB   ; [0x02]
+NewNMICount2               = $04DD   ; [0x02]
+OWCameraBoundsS            = $0716   ; [0x02]
+OWCameraBoundsE            = $0718   ; [0x02]
+TransGFXModuleFrame        = $0CF3   ; [0x01]
+AnimatedTileGFXSet         = $0FC0   ; [0x01]
+ExpandedSpritePalArray     = $7EFDC0 ; [0x40]
+
+; $0716 is not actually free, but labled as such for the sake of organization.
+; $0718 is free RAM and took the horizontal responsibility away from $0716.
+; ($0716 is labled as OWCameraBoundsSE in the disassembly).
 
 ; Hooks
 Sound_LoadLightWorldSongBank               = $008913 ; $000913
@@ -331,7 +344,7 @@ endif
 ; Fixing old hooks:
 ; ==============================================================================
 
-; TODO: Eventually remove these? I'm not sure. If anyone uses an old ZS on their
+; TODO: Eventually remove these? I'm not sure. If anyone used an old ZS on their
 ; ROM these will need to be fixed but also could block people from hooking into
 ; these spots. We could potentially add these to a "repair ROM" asm feature.
 
@@ -925,7 +938,7 @@ Pool:
     ; For tall areas this is the top area in the 1x2 grid.
     ; In vanilla, this table was shared for all 3 worlds.
     org $288998 ; $140998
-    .Overworld_ActualScreenID
+    .Overworld_ActualScreenID_New
     
     if !UseVanillaPool > 0
     ; LW
@@ -1000,7 +1013,7 @@ Pool:
     ; These values or for the area you are going to, not the one coming from.
 
     org $288A38 ; $140A38
-    .ByScreen1 ; Transitioning right
+    .ByScreen1_New ; Transitioning right
     if !UseVanillaPool > 0
     ; LW
     dw $0060, $0060, $0060, $0060, $0060, $0060, $0060, $0060
@@ -1030,7 +1043,7 @@ Pool:
     endif
 
     org $288B78 ; $140B78
-    .ByScreen2 ; Transitioning left
+    .ByScreen2_New ; Transitioning left
     if !UseVanillaPool > 0
     ; LW
     dw $0080, $0080, $0040, $0080, $0080, $0080, $0080, $0040
@@ -1060,7 +1073,7 @@ Pool:
     endif
 
     org $288CB8 ; $140CB8
-    .ByScreen3 ; Transitioning down
+    .ByScreen3_New ; Transitioning down
     if !UseVanillaPool > 0
     ; LW
     dw $1800, $1840, $1800, $1800, $1840, $1800, $1840, $1800
@@ -1090,7 +1103,7 @@ Pool:
     endif
 
     org $288DF8 ; $140DF8
-    .ByScreen4 ; Transitioning up
+    .ByScreen4_New ; Transitioning up
     if !UseVanillaPool > 0
     ; LW
     dw $2000, $2040, $1000, $2000, $2040, $2000, $2040, $1000
@@ -1727,7 +1740,9 @@ PreOverworld_LoadProperties_Interupt:
     STZ.b $EE   ; Reset Link layer to BG2
     STZ.w $0476 ; Another layer flag
         
-    INC.b $11 ; TODO: We should verify what submodule this is moving to.
+    ; Move to Overworld_LoadSubscreenAndSilenceSFX1 which is the 1st
+    ; submodule of Module_PreOverworld.
+    INC.b $11
     INC.b $16 ; NMI HUD Update flag
         
     STZ.w $0402 : STZ.w $0403
@@ -1844,10 +1859,10 @@ Credits_LoadScene_Overworld_PrepGFX_Interupt:
     JSL.l ReadAnimatedTable : DEC : TAY
     JSL.l DecompOwAnimatedTiles
         
-    ; TODO: Verify the submodule ID being manipulated here.
+    ; The current scene of the Module_EndSequence module. Example: 0x04 is
+    ; the shot of kakariko and 0x06 is the shot of the desert palace.
     LDA.b $11 : LSR : TAX
-    LDA.l Credits_LoadScene_PrepGFX_sprite_gfx, X : STA.w $0AA3
-        
+    LDA.l Credits_LoadScene_PrepGFX_sprite_gfx, X     : STA.w $0AA3
     LDA.l Credits_LoadScene_PrepGFX_sprite_palette, X : PHA
         
     JSL.l InitTilesets
@@ -2082,7 +2097,7 @@ Overworld_ReloadSubscreenOverlay_Interupt:
                 .masterSwordRecieved
 
                 ; TODO: Write a patch to change what overlay is loaded here?
-                BRA .noSubscreenOverlay 
+                BRA .noSubscreenOverlay
         
             .notMasterSwordArea
 
@@ -2106,8 +2121,10 @@ Overworld_ReloadSubscreenOverlay_Interupt:
                         
                     ; Clear TSQ PPU Register, to be handled in NMI.
                     STZ.b $1D
-                            
-                    INC.b $11 ; TODO: Verify the submodule we are moving to.
+
+                    ; Submodule 0x18 (Module09_18:) of Module 0x0B
+                    ; (Overworld Mode (special overworld))
+                    INC.b $11
                             
                     RTS
         
@@ -2814,7 +2831,7 @@ NewOverworld_FinishTransGfx:
 
     .whirpool
 
-    ; TODO: On the "second" frame, upload the animated tiles.
+    ; On the "second" frame, upload the animated tiles.
     LDA.b $B0 : CMP.b #$08 : BEQ .loadAnimated
         LDA.w TransGFXModuleFrame : BNE .notFirstFrame2
             JSR.w CheckForChangeGraphicsTransitionLoad
@@ -3397,7 +3414,7 @@ if !Func0AB8F5 == 1
 
 ; Loads different animated tiles when returning from bird travel.
 org $0AB8F5 ; $0538F5
-Func0AB8F5:
+BirdTravel_LoadTargetArea_Interupt:
 {
     JSL.l ReadAnimatedTable : STA.w AnimatedTileGFXSet
     DEC                     : TAY
@@ -3411,8 +3428,7 @@ Func0AB8F5:
         
     JSL.l InitTilesets
         
-    ; TODO: Verify the interface submodule ID being used here.
-    ; Provides context on where in the jump table we're at.
+    ; Move to the next submodule (BirdTravel_LoadAmbientOverlay) the next frame.
     INC.w $0200
         
     STZ.b $B2
@@ -3497,7 +3513,7 @@ org $0BFE70 ; $05FE70
     NOP : NOP
 
 ; Loads different special transparent colors and overlay speeds based on the
-; overlay during transition and under other certain cases. TOOD: Exact cases need
+; overlay during transition and under other certain cases. TODO: Exact cases need
 ; to be investigated. When leaving dungeon.
 org $0BFEB6 ; $05FEB6
 Overworld_LoadBGColorAndSubscreenOverlay:
@@ -3878,6 +3894,9 @@ org $00D673 ; $005673
 
 warnpc $00D677 ; $005677
 
+org $00D677 ; $005677
+LoadTransAuxGFX_return:
+
 org $008C8A ; $000C8A
     dw NMI_UpdateChr_Bg2HalfAndAnimated
 
@@ -3967,8 +3986,8 @@ NewLoadTransAuxGFX:
             ; Replaced code:
             LDA.b #$60 : STA.b $01
 
-            ; TODO: Add proper lable.
-            JML.l $00D677 ; $005677 Return to regular code.
+            ; Return to regular code.
+            JML.l LoadTransAuxGFX_return
 
     .notNormalLoad
 
@@ -4501,14 +4520,14 @@ OverworldHandleTransitions:
             LDY.b #$04
             LDX.b #$04
 
-            CMP.w $0716 : BCS .checkDirection
+            CMP.w OWCameraBoundsS : BCS .checkDirection
 
     .noDeltaY
 
     ; Check if Link is moving right/left.
     LDA.b $31 : AND.w #$00FF : BEQ .noDeltaX
         ; Add an offset to the X position.
-        LDA.w $0718 : CLC : ADC.w #$0004 : STA.b $02
+        LDA.w OWCameraBoundsE : CLC : ADC.w #$0004 : STA.b $02
 
         LDA.b $67 : AND.w #$0003 : STA.b $00
 
@@ -4569,7 +4588,7 @@ OverworldHandleTransitions:
         ; 0x04 - Down
         ; 0x06 - Up
         CLC : ADC.l .ByScreenAddresses, X : TAX
-        LDA.b $84 : CLC : ADC.l Pool_ByScreen1, X : STA.b $84
+        LDA.b $84 : CLC : ADC.l Pool_ByScreen1_New, X : STA.b $84
 
         LDA.b $04 : LSR : TAX
 
@@ -4578,10 +4597,11 @@ OverworldHandleTransitions:
         LDA.b $8A : PHA
 
         ; Set the OW area number.
-        LDA.l Pool_Overworld_ActualScreenID, X : STA.b $8A
-                                                 STA.w $040A
-                                                 TAX
+        LDA.l Pool_Overworld_ActualScreenID_New, X : STA.b $8A
+                                                     STA.w $040A
+                                                     TAX
 
+        ; HARDCODED: Bunny music.
         LDA.l $7EF3CA : BEQ .lightWorld
             ; Check for moon pearl.
             LDA.l $7EF357 : BEQ .noMusicChange
@@ -4765,10 +4785,10 @@ pullpc
 
 OverworldHandleTransitions_ByScreenAddresses:
 {
-    dw Pool_ByScreen1-Pool_ByScreen1
-    dw Pool_ByScreen2-Pool_ByScreen1
-    dw Pool_ByScreen3-Pool_ByScreen1
-    dw Pool_ByScreen4-Pool_ByScreen1
+    dw Pool_ByScreen1_New-Pool_ByScreen1_New
+    dw Pool_ByScreen2_New-Pool_ByScreen1_New
+    dw Pool_ByScreen3_New-Pool_ByScreen1_New
+    dw Pool_ByScreen4_New-Pool_ByScreen1_New
 }
 
 pushpc
@@ -4819,15 +4839,15 @@ NewOverworld_SetCameraBounds:
 
     LDA.b $8A : ASL : TAY
     LDA.w Pool_OverworldTransitionPositionY_New, Y : STA.w $0600
-    CLC : ADC.w .boundary_y_size, X            : STA.w $0602
+    CLC : ADC.w .boundary_y_size, X                : STA.w $0602
     
     LDA.w Pool_OverworldTransitionPositionX_New, Y : STA.w $0604
-    CLC : ADC.w .boundary_x_size, X            : STA.w $0606
+    CLC : ADC.w .boundary_x_size, X                : STA.w $0606
 
-    LDA.w Pool_trans_target_north_new, Y          : STA.w $0610
+    LDA.w Pool_trans_target_north_new, Y      : STA.w $0610
     CLC : ADC.w .trans_target_south_offset, X : STA.w $0612
 
-    LDA.w Pool_trans_target_west_new, Y          : STA.w $0614
+    LDA.w Pool_trans_target_west_new, Y      : STA.w $0614
     CLC : ADC.w .trans_target_east_offset, X : STA.w $0616
 
     SEP #$10
@@ -4859,8 +4879,8 @@ pushpc
 
 ; ==============================================================================
 
-; This changes how OverworldScreenSizeHighByte is used. Using $0718 which is
-; free RAM to be the new X boundary check.
+; This changes how OverworldScreenSizeHighByte is used. Using OWCameraBoundsE
+; ($0718) which is free RAM to be the new X boundary check.
 
 if !Func02E598 == $01
 
@@ -4874,7 +4894,11 @@ org $02EADC ; $016ADC
     NOP
 warnpc $02EAE1 ; $016AE1
 
-; Change a hookshot check to use the X value.
+; This function returns carry set if the hookshot is off screen when used.
+; It's only use is to prevent the hookshot from interacting with anything
+; that is offscreen.
+; Changed to use the new x value and the new OverworldTransitionPositionX and Y
+; tables.
 org $08FA49 ; $047A49
 Hookshot_IsCollisionCheckFutile_Interupt:
 {
@@ -4882,7 +4906,7 @@ Hookshot_IsCollisionCheckFutile_Interupt:
         LDX.w $0700
         LDA.b $00 : SEC : SBC.l Pool_OverworldTransitionPositionY_New, X
         CMP.w #$0004 : BCC .off_screen
-            CMP.w $0716 : BCS .off_screen
+            CMP.w OWCameraBoundsS : BCS .off_screen
                 BRA .not_at_screen_edge
         
     .moving_horizontally
@@ -4890,13 +4914,14 @@ Hookshot_IsCollisionCheckFutile_Interupt:
     LDX.w $0700
     LDA.b $02 : SEC : SBC.l Pool_OverworldTransitionPositionX_New, X
     CMP.w #$0006 : BCC .off_screen
-        CMP.w $0716 : BCC .not_at_screen_edge
+        CMP.w OWCameraBoundsE : BCC .not_at_screen_edge
         
     .off_screen
 
     SEP #$20
         
-    PLY : PLX
+    PLY
+    PLX
         
     SEC
         
@@ -5017,8 +5042,8 @@ pullpc
 
 Copy0716:
 {
-    LDA.b #$E4 : STA.w $0716
-                 STA.w $0718
+    LDA.b #$E4 : STA.w OWCameraBoundsS
+                 STA.w OWCameraBoundsE
 
     RTL
 }
@@ -5270,6 +5295,8 @@ LoadSpecialOverworld_Interupt:
 
     REP #$30
 
+    ; These 2 exits need the special smaller camera bounds instead of the usual
+    ; ones. Such as the master sword area being half of a small area.
     LDA.b $A0 : CMP.w #$0180 : BEQ .SpecialCameraBounds
                 CMP.w #$0181 : BEQ .SpecialCameraBounds
         LDA.b $8A : AND.w #$00FF : ASL : TAX
@@ -5472,7 +5499,11 @@ Sprite_LoadGfxProperties_Interupt:
 
     .loop
 
-        LDA.l Pool_LoadSpecialOverworld_palette_prop_b, X : STA.l $7EFDC0, X
+        ; The free RAM used here is right after $7EFD40 which is where
+        ; vanilla stores the sprite palettes for the LW and DW. Very convenient
+        ; for our needs, we don't even have to update the read.
+        LDA.l Pool_LoadSpecialOverworld_palette_prop_b, X
+        STA.l ExpandedSpritePalArray, X
     DEX : DEX : BPL .loop
 
     ; Replaced code.
