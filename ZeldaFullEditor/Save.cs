@@ -1447,6 +1447,7 @@ namespace ZeldaFullEditor
 
         /// <summary>
         ///     Saves OW overlay data to ROM.
+        ///     TODO: The manually programed ASM here should probably be moved to an ASM file.
         /// </summary>
         /// <param name="scene"> The overworl</param>
         /// <returns> True if there was an error saving</returns>
@@ -1474,25 +1475,25 @@ namespace ZeldaFullEditor
             };
 
             // Pointers
-            ROM.Write(0x77657, newOverlayCode, true, "New Overlay Code");
+            ROM.Write(Constants.overlayCodeStart, newOverlayCode, true, "New Overlay Code");
 
-            int ptrStart = 0x77657 + 0x20;
+            int ptrStart = Constants.overlayCodeStart + 0x20;
             int snesptrstart = Utils.PcToSnes(ptrStart);
 
             // 10, 16
-            ROM.WriteLong(0x77657 + 10, snesptrstart, true, "Overlay Pointerp1");
-            ROM.WriteLong(0x77657 + 16, snesptrstart + 2, true, "Overlay Pointerp2");
+            ROM.WriteLong(Constants.overlayCodeStart + 10, snesptrstart, true, "Overlay Pointerp1");
+            ROM.WriteLong(Constants.overlayCodeStart + 16, snesptrstart + 2, true, "Overlay Pointerp2");
 
-            int peaAddr = Utils.PcToSnes(0x77657 + 27);
+            int peaAddr = Utils.PcToSnes(Constants.overlayCodeStart + 27);
 
-            ROM.WriteShort(0x77657 + 23, peaAddr, true, "Pea Addr (don't ask)");
+            ROM.WriteShort(Constants.overlayCodeStart + 23, peaAddr, true, "Pea Addr (don't ask)");
 
             // TODO : Optimize that routine to be smaller.
 
             // 0x058000
             int pos = Constants.ExpandedOverlaySpace;
-            int ptrPos = 0x77657 + 32;
-            for (int i = 0; i < 128; i++)
+            int ptrPos = Constants.overlayCodeStart + 32;
+            for (int i = 0; i < scene.ow.AllOverlays.Length; i++)
             {
                 int snesaddr = Utils.PcToSnes(pos);
                 ROM.WriteLong(ptrPos, snesaddr, true, "Overlay actual Pointers");

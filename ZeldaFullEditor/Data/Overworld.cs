@@ -104,7 +104,7 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Gets or sets an array of all overlays.
         /// </summary>
-        public OverlayData[] AllOverlays { get; set; } = new OverlayData[128];
+        public OverlayData[] AllOverlays { get; set; } = new OverlayData[0xA0];
 
         /// <summary>
         ///     Gets or sets a list of 3 separate lists of sprites, one for each phase of the game.
@@ -1100,16 +1100,25 @@ namespace ZeldaFullEditor
         private OverlayData[] LoadOverlays()
         {
             /*
-                0x7765B: ;Original byte = 0x0A
+                0x07765B: ;Original byte = 0x0A
                 22 9C 87 00 EA ;JSL long jump table
             */
 
             var allOverlays = new OverlayData[this.AllOverlays.Length];
 
+            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+            int maxOW = asmVersion >= 0x03 && asmVersion != 0xFF ? this.AllOverlays.Length : 0x80;
+
+            // Even if the overlays for the SW areas don't exist, still create an OverlayData object for them.
             for (int index = 0; index < this.AllOverlays.Length; index++)
             {
                 allOverlays[index] = new OverlayData();
+            }
 
+            bool error = false;
+
+            for (int index = 0; index < maxOW; index++)
+            {
                 // OverlayPointers.
                 Console.WriteLine($"MapIndex Overlay: {index:X2}");
 
@@ -1123,6 +1132,14 @@ namespace ZeldaFullEditor
                     address = Utils.SnesToPc((ROM.DATA[Constants.overlayData2 + 2 + (index * 3)] << 16) + (ROM.DATA[Constants.overlayData2 + 1 + (index * 3)] << 8) + ROM.DATA[Constants.overlayData2 + (index * 3)]);
 
                     // Load New Address.
+                }
+
+                if (address >= ROM.DATA.Length)
+                {
+                    error = true;
+                    Console.WriteLine($"Error detected while tring to load Overlay: {index:X2}");
+
+                    continue;
                 }
 
                 /*
@@ -1230,6 +1247,8 @@ namespace ZeldaFullEditor
                     }
                     else
                     {
+                        error = true;
+
                         Console.WriteLine($"MapIndex Overlay: {index:X2} Might not have been loaded properly");
                         break;
                     }
@@ -1245,6 +1264,11 @@ namespace ZeldaFullEditor
 					}
 					*/
                 }
+            }
+
+            if (error)
+            {
+                UIText.GenericError("Warning:\nAn error was detected while loading overworld overlays. Saving may cause some overlay data to be lost.");
             }
 
             return allOverlays;

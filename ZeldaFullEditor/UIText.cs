@@ -118,6 +118,14 @@ namespace ZeldaFullEditor
                 MessageBoxButtons.OK);
         }
 
+        public static void GenericError(string message = "OHNO")
+        {
+            MessageBox.Show(
+                $"{message}",
+                "Bad Error",
+                MessageBoxButtons.OK);
+        }
+
         public static void WarnAboutMissingFile(string message)
         {
             MessageBox.Show(

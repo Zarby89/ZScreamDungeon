@@ -1072,50 +1072,54 @@ namespace ZeldaFullEditor
             if (this.selectedMode == ObjectMode.Overlay)
             {
                 int mid = this.ow.AllMaps[this.selectedMap].ParentID;
-                int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
-                int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
-                if (showOverlayText)
+
+                if (mid < this.ow.AllOverlays.Length)
                 {
-                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 64, "Selected Map : " + this.selectedMap.ToString("X2"));
-                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
-                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
-                }
-
-                for (int i = 0; i < this.ow.AllOverlays[mid].TileDataList.Count; i++)
-                {
-                    int xo = this.ow.AllOverlays[mid].TileDataList[i].x * 16;
-                    int yo = this.ow.AllOverlays[mid].TileDataList[i].y * 16;
-                    int to = this.ow.AllOverlays[mid].TileDataList[i].tileId;
-                    int toy = (to / 8) * 16;
-                    int tox = (to % 8) * 16;
-                    g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
-
-                    // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-                    byte detect = this.compareTilePos(this.ow.AllOverlays[mid].TileDataList[i], this.ow.AllOverlays[mid].TileDataList.ToArray());
-
-                    if (detect == 0)
+                    int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
+                    int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
+                    if (showOverlayText)
                     {
-                        g.DrawRectangle(Pens.White, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 64, "Selected Map : " + this.selectedMap.ToString("X2"));
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
+                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
                     }
 
-                    if ((detect & 0x01) != 0x01)
+                    for (int i = 0; i < this.ow.AllOverlays[mid].TileDataList.Count; i++)
                     {
-                        g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
-                    }
+                        int xo = this.ow.AllOverlays[mid].TileDataList[i].x * 16;
+                        int yo = this.ow.AllOverlays[mid].TileDataList[i].y * 16;
+                        int to = this.ow.AllOverlays[mid].TileDataList[i].tileId;
+                        int toy = (to / 8) * 16;
+                        int tox = (to % 8) * 16;
+                        g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
 
-                    if ((detect & 0x02) != 0x02)
-                    {
-                        g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
-                    }
+                        // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                        byte detect = this.compareTilePos(this.ow.AllOverlays[mid].TileDataList[i], this.ow.AllOverlays[mid].TileDataList.ToArray());
 
-                    if ((detect & 0x04) != 0x04)
-                    {
-                        g.DrawLine(Pens.White, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
-                    }
+                        if (detect == 0)
+                        {
+                            g.DrawRectangle(Pens.White, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
+                        }
 
-                    if ((detect & 0x08) != 0x08)
-                    {
-                        g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                        if ((detect & 0x01) != 0x01)
+                        {
+                            g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
+                        }
+
+                        if ((detect & 0x02) != 0x02)
+                        {
+                            g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
+                        }
+
+                        if ((detect & 0x04) != 0x04)
+                        {
+                            g.DrawLine(Pens.White, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                        }
+
+                        if ((detect & 0x08) != 0x08)
+                        {
+                            g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                        }
                     }
                 }
 

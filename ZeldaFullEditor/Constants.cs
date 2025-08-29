@@ -300,6 +300,7 @@ namespace ZeldaFullEditor
         public static int overlayPointersBank = 0x0E;
         public static int overlayData1 = 0x077676;
         public static int overlayData2 = 0x077677;
+        public static int overlayCodeStart = 0x077657;
 
         public static int ExpandedOverlaySpace = 0x120000;
 
