@@ -1113,9 +1113,9 @@ namespace ZeldaFullEditor
             ROM.WriteLong(Constants.overworldItemsAddress, pointerSNES);
             ROM.Write(Constants.overworldItemsAddressBank, (byte)(Utils.PcToSnes(Constants.overworldItemsStartDataNew)>>16));
 
-            var roomItems = new List<RoomPotSaveEditor>[0xA0];
+            var roomItems = new List<RoomPotSaveEditor>[Constants.NumberOfOWMaps];
 
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < roomItems.Length; i++)
             {
                 // Zero out this table for the sake of being able to read it in hex.
                 ROM.WriteShort(Constants.overworldBombDoorItemLocationsNew + (i * 2), 0);
@@ -1137,11 +1137,11 @@ namespace ZeldaFullEditor
 
             int dataPos = Constants.overworldItemsStartDataNew;
 
-            int[] itemPointers = new int[0xA0];
-            int[] itemPointersReuse = new int[0xA0];
+            int[] itemPointers = new int[Constants.NumberOfOWMaps];
+            int[] itemPointersReuse = new int[Constants.NumberOfOWMaps];
             int emptyPointer = 0;
 
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 itemPointersReuse[i] = -1;
                 for (int ci = 0; ci < i; ci++)
@@ -1160,7 +1160,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (itemPointersReuse[i] == -1)
                 {
@@ -1226,7 +1226,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < Constants.NumberOfOWSprites; i++) // For each pointers.
             {
-                if (i < 64) // LW[0]
+                if (i < 0x40) // LW[0]
                 {
                     Sprite[] sprArray = scene.ow.AllSprites[0].Where(sprite => sprite.MapID == i).ToArray();
                     foreach (Sprite spr in sprArray)
@@ -1234,17 +1234,17 @@ namespace ZeldaFullEditor
                         allSprites[i].Add(spr);
                     }
                 }
-                else if (i >= 64 && i < 208) // LW & DW[1]
+                else if (i >= 0x40 && i < 0xD0) // LW & DW[1]
                 {
-                    Sprite[] sprArray = scene.ow.AllSprites[1].Where(sprite => sprite.MapID == (i - 64)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[1].Where(sprite => sprite.MapID == (i - 0x40)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
                     }
                 }
-                else if (i >= 208 && i < Constants.NumberOfOWSprites) // LW[2]
+                else if (i >= 0xD0 && i < Constants.NumberOfOWSprites) // LW[2]
                 {
-                    Sprite[] sprArray = scene.ow.AllSprites[2].Where(sprite => sprite.MapID == (i - 208)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[2].Where(sprite => sprite.MapID == (i - 0xD0)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
@@ -1562,7 +1562,8 @@ namespace ZeldaFullEditor
         {
             ROM.StartBlockLogWriting("Overworld Messages IDs", Constants.overworldMessages);
 
-            for (int i = 0; i < 128; i++)
+            // TODO: Update this to go up to 0xA0.
+            for (int i = 0; i < 0x80; i++)
             {
                 ROM.WriteShort(Constants.overworldMessages + (i * 2), scene.ow.AllMaps[i].MessageID, true, "OW Message ID for map " + i.ToString("D3"));
             }
@@ -1614,14 +1615,14 @@ namespace ZeldaFullEditor
 
         public bool SaveOverworldMaps(SceneOW scene)
         {
-            for (int i = 0; i < 160; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 this.mapPointers1id[i] = -1;
                 this.mapPointers2id[i] = -1;
             }
 
             int pos = 0x058000;
-            for (int i = 0; i < 160; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 int npos = 0;
                 byte[]
@@ -1800,7 +1801,7 @@ namespace ZeldaFullEditor
             Console.WriteLine("\n");
             List<byte> checkedMap = new List<byte>();
 
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 ROM.Write(Constants.overworldScreenSize + i, (byte)scene.ow.AllMaps[i].AreaSize);
 
@@ -1954,7 +1955,7 @@ namespace ZeldaFullEditor
                         ushort byScreen2Small = 0x0040;
 
                         // Just to make sure where don't try to read outside of the array.
-                        if ((i % 0x40) + 1 < 0x40 && i + 1 < 0xA0)
+                        if ((i % 0x40) + 1 < 0x40 && i + 1 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 1];
 
@@ -2026,7 +2027,7 @@ namespace ZeldaFullEditor
                         ushort byScreen4Small = 0x1000;
 
                         // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 8 < 0x40 && i + 8 < 0xA0)
+                        if ((i % 0x40) + 8 < 0x40 && i + 8 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
@@ -2169,7 +2170,7 @@ namespace ZeldaFullEditor
                         ushort[] byScreen2Large = { 0x0080, 0x0080, 0x1080, 0x1080 };
 
                         // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 2 < 0x40 && i + 2 < 0xA0)
+                        if ((i % 0x40) + 2 < 0x40 && i + 2 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 2];
 
@@ -2326,7 +2327,7 @@ namespace ZeldaFullEditor
                         ushort[] byScreen4Large = { 0x2000, 0x2040, 0x2000, 0x2040 };
 
                         // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 16 < 0x40 && i + 16 < 0xA0)
+                        if ((i % 0x40) + 16 < 0x40 && i + 16 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
 
@@ -2471,7 +2472,7 @@ namespace ZeldaFullEditor
                         ushort[] byScreen2Wide = { 0x0080, 0x0080 };
 
                         // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 2 < 0x40 && i + 2 < 0xA0)
+                        if ((i % 0x40) + 2 < 0x40 && i + 2 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 2];
 
@@ -2589,7 +2590,7 @@ namespace ZeldaFullEditor
                         ushort[] byScreen4Wide = { 0x1000, 0x1040 };
 
                         // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 8 < 0x40 && i + 8 < 0xA0)
+                        if ((i % 0x40) + 8 < 0x40 && i + 8 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 8];
 
@@ -2761,7 +2762,7 @@ namespace ZeldaFullEditor
                         ushort[] byScreen2Tall = { 0x0040, 0x1040 };
 
                         // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 1 < 0x40 && i + 1 < 0xA0)
+                        if ((i % 0x40) + 1 < 0x40 && i + 1 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap eastNeighbor = scene.ow.AllMaps[i + 1];
 
@@ -2873,7 +2874,7 @@ namespace ZeldaFullEditor
                         ushort[] byScreen4Tall = { 0x2000, 0x2000 };
 
                         // Just to make sure we don't try to read outside of the array.
-                        if ((i % 0x40) + 16 < 0x40 && i + 16 < 0xA0)
+                        if ((i % 0x40) + 16 < 0x40 && i + 16 < Constants.NumberOfOWMaps)
                         {
                             OverworldMap southNeighbor = scene.ow.AllMaps[i + 16];
 
@@ -2952,7 +2953,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 5: transition_target_north \n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {
@@ -2968,7 +2969,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 6: transition_target_west \n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {
@@ -2984,7 +2985,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 7: overworldTransitionPositionX \n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {
@@ -3000,7 +3001,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nCheck 8: overworldTransitionPositionY \n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {
@@ -3017,7 +3018,7 @@ namespace ZeldaFullEditor
 
             Console.WriteLine("\nCheck 9:");
             Console.WriteLine("OverworldScreenTileMapChangeByScreen1 'Right'\n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {
@@ -3033,7 +3034,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen2 'Left'\n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {
@@ -3049,7 +3050,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen3 'Down'\n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {
@@ -3065,7 +3066,7 @@ namespace ZeldaFullEditor
             }
 
             Console.WriteLine("\nOverworldScreenTileMapChangeByScreen4 'Up'\n");
-            for (int i = 0; i < 0xA0; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 if (i % 0x40 == 0 && i != 0)
                 {

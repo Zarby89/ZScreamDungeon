@@ -79,7 +79,7 @@ namespace ZeldaFullEditor
         ///     Gets or sets a 2D array of all light world area tile maps.
         ///     32 maps * (32*32 tiles).
         /// </summary>
-        public ushort[,] AllMapTile32SP { get; set; } = new ushort[512, 512];
+        public ushort[,] AllMapTile32SW { get; set; } = new ushort[512, 512];
 
         /// <summary>
         ///     Gets or sets a list of all overworld maps.
@@ -104,7 +104,7 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Gets or sets an array of all overlays.
         /// </summary>
-        public OverlayData[] AllOverlays { get; set; } = new OverlayData[0xA0];
+        public OverlayData[] AllOverlays { get; set; } = new OverlayData[Constants.NumberOfOWMaps];
 
         /// <summary>
         ///     Gets or sets a list of 3 separate lists of sprites, one for each phase of the game.
@@ -157,7 +157,7 @@ namespace ZeldaFullEditor
         ///     Initializes a new instance of the <see cref="Overworld"/> class.
         /// </summary>
 
-        public OverlayAnimationData[] AllAnimationOverlays { get; set; } = new OverlayAnimationData[128];
+        public OverlayAnimationData[] AllAnimationOverlays { get; set; } = new OverlayAnimationData[Constants.NumberOfOWMaps];
 
         public bool[] usedTiles16 = new bool[Constants.NumberOfMap16Ex];
 
@@ -181,14 +181,14 @@ namespace ZeldaFullEditor
             (ushort[,] tilesLW, ushort[,] tilesDW, ushort[,] tilesSP) = this.DecompressAllMapTiles();
             this.AllMapTile32LW = tilesLW;
             this.AllMapTile32DW = tilesDW;
-            this.AllMapTile32SP = tilesSP;
+            this.AllMapTile32SW = tilesSP;
 
             this.AllOverlays = this.LoadOverlays();
-            this.AllAnimationOverlays = new OverlayAnimationData[128]; // one for each map
-            for (int i = 0; i < 128; i++)
+            this.AllAnimationOverlays = new OverlayAnimationData[this.AllAnimationOverlays.Length]; // one for each map
+            for (int i = 0; i < AllAnimationOverlays.Length; i++)
             {
                 AllAnimationOverlays[i] = new OverlayAnimationData();
-                for (int j = 0; j < 255; j++)
+                for (int j = 0; j < AllAnimationOverlays[i].FramesList.Length; j++)
                 {
                     AllAnimationOverlays[i].FramesList[j] = new List<TilePos>();
                 }
@@ -203,7 +203,7 @@ namespace ZeldaFullEditor
                 this.AllMaps[i] = new OverworldMap((byte)i, this);
             }
 
-            this.AllMaps = this.AssignLargeMaps(this.AllMaps);
+            this.AllMaps = this.AssignMapSizes(this.AllMaps);
 
             this.AllExits = this.LoadExits();
             this.AllEntrances = this.LoadEntrances();
@@ -289,15 +289,15 @@ namespace ZeldaFullEditor
         }
 
         /// <summary>
-        ///     Loads all maps from ROM to see if they are a large area or not.
+        ///     Loads all maps from ROM to see what size they are.
         /// </summary>
         /// <param name="givenMaps"> The maps to update. </param>
         /// <returns> An array of overworld areas. </returns>
-        public OverworldMap[] AssignLargeMaps(OverworldMap[] givenMaps)
+        public OverworldMap[] AssignMapSizes(OverworldMap[] givenMaps)
         {
             OverworldMap[] allMaps = givenMaps;
 
-            bool[] mapChecked = new bool[0xA0];
+            bool[] mapChecked = new bool[Constants.NumberOfOWMaps];
             for (int i = 0; i < mapChecked.Length; i++)
             {
                 mapChecked[i] = false;
@@ -403,17 +403,17 @@ namespace ZeldaFullEditor
             for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 ushort[,] tilesused;
-                if (i < 64)
+                if (i < 0x40)
                 {
                     tilesused = this.AllMapTile32LW;
                 }
-                else if (i < 128 && i >= 64)
+                else if (i < 0x80 && i >= 0x40)
                 {
                     tilesused = this.AllMapTile32DW;
                 }
                 else
                 {
-                    tilesused = this.AllMapTile32SP;
+                    tilesused = this.AllMapTile32SW;
                 }
 
                 for (int y = 0; y < 32; y += 2)
@@ -849,14 +849,14 @@ namespace ZeldaFullEditor
                         {
                             /* map16tiles[npos] = new Tile32(tiles32[tpos].tile0, tiles32[tpos].tile1, tiles32[tpos].tile2, tiles32[tpos].tile3); */
 
-                            if (i < 64)
+                            if (i < 0x40)
                             {
                                 allMapTile32_LW[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = this.UniqueTile32List[tpos].Tile0;
                                 allMapTile32_LW[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = this.UniqueTile32List[tpos].Tile1;
                                 allMapTile32_LW[(x * 2) + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.UniqueTile32List[tpos].Tile2;
                                 allMapTile32_LW[(x * 2) + 1 + (sx * 32), (y * 2) + 1 + (sy * 32)] = this.UniqueTile32List[tpos].Tile3;
                             }
-                            else if (i < 128 && i >= 64)
+                            else if (i < 0x80 && i >= 0x40)
                             {
                                 allMapTile32_DW[(x * 2) + (sx * 32), (y * 2) + (sy * 32)] = this.UniqueTile32List[tpos].Tile0;
                                 allMapTile32_DW[(x * 2) + 1 + (sx * 32), (y * 2) + (sy * 32)] = this.UniqueTile32List[tpos].Tile1;
@@ -1036,17 +1036,12 @@ namespace ZeldaFullEditor
             byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
 
             // Version 0x03 of the OW ASM added item support for the SW.
-            int maxOW = asmVersion >= 0x03 && asmVersion != 0xFF ? 0xA0 : 0x80;
+            int maxOW = asmVersion >= 0x03 && asmVersion != 0xFF ? Constants.NumberOfOWMaps : 0x80;
 
             int pointerSNES = ROM.ReadLong(Constants.overworldItemsAddress);
             this.ItemPointerAddress = Utils.SnesToPc(pointerSNES); // 0x1BC2F9 -> 0x0DC2F9
             for (int i = 0; i < maxOW; i++)
             {
-                if (i == 0x8B)
-                {
-                    Console.WriteLine("asdfasd");
-                }
-
                 int bank = ROM.DATA[Constants.overworldItemsAddressBank] & 0x7F;
                 int addr = (bank<<16) + // 1B
                             (ROM.DATA[this.ItemPointerAddress + (i * 2) + 1] << 8) + // F9
@@ -1289,7 +1284,7 @@ namespace ZeldaFullEditor
             */
 
             var allSprites = new List<Sprite>[3] { new List<Sprite>(), new List<Sprite>(), new List<Sprite>() };
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 0x40; i++)
             {
                 if (this.AllMaps[i].ParentID == i)
                 {
@@ -1319,7 +1314,8 @@ namespace ZeldaFullEditor
                 }
             }
 
-            for (int i = 0; i < 144; i++)
+            // TODO: Expand this to 0xA0.
+            for (int i = 0; i < 0x90; i++)
             {
                 if (this.AllMaps[i].ParentID == i)
                 {
@@ -1337,13 +1333,13 @@ namespace ZeldaFullEditor
                         }
 
                         int editorMapIndex = i;
-                        if (editorMapIndex >= 128)
+                        if (editorMapIndex >= 0x80)
                         {
-                            editorMapIndex = i - 128;
+                            editorMapIndex = i - 0x80;
                         }
-                        else if (editorMapIndex >= 64)
+                        else if (editorMapIndex >= 0x40)
                         {
-                            editorMapIndex = i - 64;
+                            editorMapIndex = i - 0x40;
                         }
 
                         int mapY = editorMapIndex / 8;
@@ -1374,13 +1370,13 @@ namespace ZeldaFullEditor
                         }
 
                         int editorMapIndex = i;
-                        if (editorMapIndex >= 128)
+                        if (editorMapIndex >= 0x80)
                         {
-                            editorMapIndex = i - 128;
+                            editorMapIndex = i - 0x80;
                         }
-                        else if (editorMapIndex >= 64)
+                        else if (editorMapIndex >= 0x40)
                         {
-                            editorMapIndex = i - 64;
+                            editorMapIndex = i - 0x40;
                         }
 
                         int mapY = editorMapIndex / 8;
@@ -1432,17 +1428,17 @@ namespace ZeldaFullEditor
             {
                 BinaryReader bw = new BinaryReader(new FileStream(path + "\\map" + i.ToString(), FileMode.Open, FileAccess.Read));
                 ushort[,] tilesused;
-                if (i < 64)
+                if (i < 0x40)
                 {
                     tilesused = this.AllMapTile32LW;
                 }
-                else if (i < 128 && i >= 64)
+                else if (i < 0x80 && i >= 0x40)
                 {
                     tilesused = this.AllMapTile32DW;
                 }
                 else
                 {
-                    tilesused = this.AllMapTile32SP;
+                    tilesused = this.AllMapTile32SW;
                 }
 
                 for (int y = 0; y < 32; y++)
@@ -1511,17 +1507,17 @@ namespace ZeldaFullEditor
                 // TODO: file name in UIText.
                 BinaryWriter bw = new BinaryWriter(new FileStream(path + "\\map" + i.ToString(), FileMode.Create, FileAccess.Write));
                 ushort[,] tilesused;
-                if (i < 64)
+                if (i < 0x40)
                 {
                     tilesused = this.AllMapTile32LW;
                 }
-                else if (i < 128 && i >= 64)
+                else if (i < 0x80 && i >= 0x40)
                 {
                     tilesused = this.AllMapTile32DW;
                 }
                 else
                 {
-                    tilesused = this.AllMapTile32SP;
+                    tilesused = this.AllMapTile32SW;
                 }
 
                 for (int y = 0; y < 32; y++)
@@ -1626,7 +1622,7 @@ namespace ZeldaFullEditor
         }
 
         /*
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < 0x80; i++)
             {
                 byte m = entranceOWs[i].entranceId;
                 short s = (short)(entranceOWs[i].mapId);
@@ -1656,11 +1652,11 @@ namespace ZeldaFullEditor
             for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
                 TileInfo[,] tilesused;
-                if (i < 64)
+                if (i < 0x40)
                 {
                     tilesused = this.TempTile8ArrayLW;
                 }
-                else if (i < 128 && i >= 64)
+                else if (i < 0x80 && i >= 0x40)
                 {
                     tilesused = this.TempTile8ArrayDW;
                 }
@@ -1709,7 +1705,7 @@ namespace ZeldaFullEditor
                 alltilesIndexed.Add(tiles[i], (ushort)i);
             }
 
-            for (int i = 0; i < Constants.NumberOfOWMaps * 32 * 32; i++) // 163840 = numbers of 16x16 tiles (160 * (32*32))
+            for (int i = 0; i < Constants.NumberOfOWMaps * 32 * 32; i++) // 163840 = numbers of 16x16 tiles (0xA0 * (32*32))
             {
                 // Add all tiles32 from all maps. Convert all tiles32 non-unique ids into unique array of ids.
                 t16.Add(alltilesIndexed[alltiles8[i]]);

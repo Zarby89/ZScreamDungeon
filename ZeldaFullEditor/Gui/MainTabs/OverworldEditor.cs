@@ -525,17 +525,17 @@ namespace ZeldaFullEditor.Gui
         /// <param name="e"></param>
         private void dwButton_Click(object sender, EventArgs e)
         {
-            this.SelectMapOffset(64);
+            this.SelectMapOffset(0x40);
         }
 
         /// <summary>
-        /// Called when the SP button on the overworld editor form is clicked.
+        /// Called when the SW button on the overworld editor form is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void spButton_Click(object sender, EventArgs e)
         {
-            this.SelectMapOffset(128);
+            this.SelectMapOffset(0x80);
         }
 
         private void SelectMapOffset(int o)
@@ -1226,7 +1226,7 @@ namespace ZeldaFullEditor.Gui
 
                         if (i < 32)
                         {
-                            alltilesIndexed[this.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)]]++;
+                            alltilesIndexed[this.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)]]++;
                         }
                     }
                 }

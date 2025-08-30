@@ -294,7 +294,7 @@ namespace ZeldaFullEditor
                             break;
 
                         case 0x80:
-                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
+                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 0x80)];
                             this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
 
                             break;
@@ -308,14 +308,14 @@ namespace ZeldaFullEditor
                             this.SpriteGFX[1] = 0x0E;
                             this.SpriteGFX[2] = 0x0E;
 
-                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 128)];
+                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (this.ParentID - 0x80)];
                             this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
 
                             break;
 
                         case 0x94:
                             // Make this the same GFX and the true master sword area.
-                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (0x80 - 128)];
+                            this.GFX = ROM.DATA[Constants.overworldSpecialGFXGroup + (0x80 - 0x80)];
                             this.AuxPalette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
 
                             break;
@@ -645,7 +645,7 @@ namespace ZeldaFullEditor
             }
             else
             {
-                this.TilesUsed = this.overworld.AllMapTile32SP;
+                this.TilesUsed = this.overworld.AllMapTile32SW;
                 world = 2;
             }
 
@@ -732,12 +732,12 @@ namespace ZeldaFullEditor
             Color[] aux1, aux2, main, animated, hud, spr, spr2;
             Color bgr = Palettes.OverworldGrassPalettes[0];
 
-            if (pal1 == 255)
+            if (pal1 == 0xFF)
             {
                 pal1 = ROM.DATA[Constants.overworldMapPaletteGroup + (previousPalId * 4)];
             }
 
-            if (pal1 != 255)
+            if (pal1 != 0xFF)
             {
                 if (pal1 >= Palettes.OverworldAuxPalettes.Length)
                 {
@@ -751,12 +751,12 @@ namespace ZeldaFullEditor
                 aux1 = Palettes.OverworldAuxPalettes[0];
             }
 
-            if (pal2 == 255)
+            if (pal2 == 0xFF)
             {
                 pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (previousPalId * 4) + 1];
             }
 
-            if (pal2 != 255)
+            if (pal2 != 0xFF)
             {
                 if (pal2 >= Palettes.OverworldAuxPalettes.Length)
                 {
@@ -770,7 +770,7 @@ namespace ZeldaFullEditor
                 aux2 = Palettes.OverworldAuxPalettes[0];
             }
 
-            if (pal3 == 255)
+            if (pal3 == 0xFF)
             {
                 pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (previousPalId * 4) + 2];
             }
@@ -797,7 +797,7 @@ namespace ZeldaFullEditor
                     bgr = Palettes.OverworldGrassPalettes[1];
                 }
             }
-            else if (this.ParentID >= 128 && this.ParentID < Constants.NumberOfOWMaps)
+            else if (this.ParentID >= 0x80 && this.ParentID < Constants.NumberOfOWMaps)
             {
                 if (OverworldEditor.UseAreaSpecificBgColor)
                 {
@@ -834,12 +834,12 @@ namespace ZeldaFullEditor
             animated = Palettes.OverworldAnimatedPalettes[pal3];
 
             hud = Palettes.HudPalettes[0];
-            if (pal4 == 255)
+            if (pal4 == 0xFF)
             {
                 pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (previousSprPalId * 2)]; // spr3
             }
 
-            if (pal4 == 255)
+            if (pal4 == 0xFF)
             {
                 pal4 = 0;
             }
@@ -851,12 +851,12 @@ namespace ZeldaFullEditor
 
             spr = Palettes.SpritesAux3Palettes[pal4];
 
-            if (pal5 == 255)
+            if (pal5 == 0xFF)
             {
                 pal5 = ROM.DATA[Constants.overworldSpritePaletteGroup + (previousSprPalId * 2) + 1]; // spr3
             }
 
-            if (pal5 == 255)
+            if (pal5 == 0xFF)
             {
                 pal5 = 0;
             }

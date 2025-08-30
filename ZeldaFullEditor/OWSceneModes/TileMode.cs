@@ -119,7 +119,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, scene.tileBitmapPtr);
                 scene.tileBitmap.Palette = scene.ow.AllMaps[scene.ow.AllMaps[mapId].ParentID].GFXBitmap.Palette;
 
-                if (scene.selectedMap >= 160)
+                if (scene.selectedMap >= Constants.NumberOfOWMaps)
                 {
                     return;
                 }
@@ -247,7 +247,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, scene.tileBitmapPtr);
                 scene.tileBitmap.Palette = scene.ow.AllMaps[scene.ow.AllMaps[mapId].ParentID].GFXBitmap.Palette;
 
-                if (scene.selectedMap >= 160)
+                if (scene.selectedMap >= Constants.NumberOfOWMaps)
                 {
                     return;
                 }
@@ -257,8 +257,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.needRedraw = false;
                     return;
                 }
-
-
 
                 if (e.Button == MouseButtons.Left)
                 {
@@ -418,7 +416,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
             scene.mapHover = mapX + (mapY * 8);
 
-            if (scene.mapHover + scene.ow.WorldOffset >= 0xA0)
+            if (scene.mapHover + scene.ow.WorldOffset >= Constants.NumberOfOWMaps)
             {
                 return;
             }
@@ -578,7 +576,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             break;
                         }
 
-                        if (mapId < 0xA0)
+                        if (mapId < Constants.NumberOfOWMaps)
                         {
                             scene.ow.AllMaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
                         }
@@ -598,7 +596,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     return;
                 }
 
-                if (mapId < 0xA0)
+                if (mapId < Constants.NumberOfOWMaps)
                 {
                     scene.tilesgfxBitmap.Palette = scene.ow.AllMaps[mapId].GFXBitmap.Palette;
                 }

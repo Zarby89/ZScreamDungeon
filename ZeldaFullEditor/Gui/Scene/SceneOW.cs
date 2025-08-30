@@ -1021,7 +1021,7 @@ namespace ZeldaFullEditor
                     if (t32.x >= 8192)
                     {
                         //SW
-                        if (ow.WorldOffset != 128)
+                        if (ow.WorldOffset != 0x80)
                         {
                             continue;
                         }
@@ -1031,7 +1031,7 @@ namespace ZeldaFullEditor
                     else if (t32.x >= 4096)
                     {
                         // DW
-                        if (ow.WorldOffset != 64)
+                        if (ow.WorldOffset != 0x40)
                         {
                             continue;
                         }
@@ -1148,7 +1148,7 @@ namespace ZeldaFullEditor
                 {
                     if (ModifierKeys == Keys.Shift)
                     {
-                        for (int j = 0; j < 255; j++)
+                        for (int j = 0; j < this.ow.AllAnimationOverlays[mid].FramesList.Length; j++)
                         {
                             for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[j].Count; i++)
                             {

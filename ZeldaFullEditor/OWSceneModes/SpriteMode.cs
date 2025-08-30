@@ -403,10 +403,10 @@ namespace ZeldaFullEditor.OWSceneModes
             Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
             g.CompositingMode = CompositingMode.SourceOver;
 
-            for (int i = scene.ow.worldOffset; i < 64 + scene.ow.worldOffset; i++)
+            for (int i = scene.ow.worldOffset; i < 0x40 + scene.ow.worldOffset; i++)
             {
                 int gs = scene.ow.gameState;
-                if (i >= 64 && i <= 128)
+                if (i >= 0x40 && i <= 0x80)
                 {
                     gs = 0;
                 }

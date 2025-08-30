@@ -63,7 +63,7 @@ namespace ZeldaFullEditor.OWSceneModes
             ushort x = (ushort)e.X.Clamp(0, 4088);
             ushort y = (ushort)e.Y.Clamp(0, 4088);
 
-            if (scene.mapHover + scene.ow.WorldOffset >= 0xA0)
+            if (scene.mapHover + scene.ow.WorldOffset >= Constants.NumberOfOWMaps)
             {
                 selectedTransport.playerY = (ushort)e.Y.Clamp(0, 2040);
             }
@@ -73,7 +73,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 x = (ushort)((e.X / 8) * 8).Clamp(0, 4088);
                 y = (ushort)((e.Y / 8) * 8).Clamp(0, 4088);
 
-                if (scene.mapHover + scene.ow.WorldOffset >= 0xA0)
+                if (scene.mapHover + scene.ow.WorldOffset >= Constants.NumberOfOWMaps)
                 {
                     y = (ushort)((e.Y / 8) * 8).Clamp(0, 2040);
                 }
@@ -86,7 +86,7 @@ namespace ZeldaFullEditor.OWSceneModes
             childMapID = childMapID.Clamp(0, 0x9F);
             byte mapID = scene.ow.AllMaps[childMapID].ParentID;
 
-            if (mapID == 255)
+            if (mapID == 0xFF)
             {
                 mapID = (byte)childMapID;
             }
@@ -113,7 +113,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < 0x11; i++)
                 {
                     TransportOW transport = scene.ow.AllWhirlpools[i];
-                    if (transport.MapID >= scene.ow.WorldOffset && transport.MapID < 64 + scene.ow.WorldOffset)
+                    if (transport.MapID >= scene.ow.WorldOffset && transport.MapID < 0x40 + scene.ow.WorldOffset)
                     {
                         if (e.X >= transport.playerX && e.X < transport.playerX + 16 && e.Y >= transport.playerY && e.Y < transport.playerY + 16)
                         {
@@ -152,7 +152,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 // If the new map ID is greater than 0xA0, subtract the Y coordinate by 1 (mapID - 0x08) until it is < 0xA0.
                 int newMapID = (lastselectedTransport.MapID % 0x40) + (0x40 * transportForm.worldComboBox.SelectedIndex);
-                while (newMapID >= 0xA0)
+                while (newMapID >= Constants.NumberOfOWMaps)
                 {
                     newMapID -= 0x08;
 
@@ -194,7 +194,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         continue;
                     }
 
-                    if (e.MapID < 64 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
+                    if (e.MapID < 0x40 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
                     {
                         if (selectedTransport != null)
                         {
