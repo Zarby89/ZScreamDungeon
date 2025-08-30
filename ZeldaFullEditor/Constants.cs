@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
         public const int NumberOfMap16 = 3752; // 4096
         public const int NumberOfMap16Ex = 4096; // 4096
         public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
-        public const int NumberOfOWSprites = 352;
+        public const int NumberOfOWSpriteAreaPointers = NumberOfOWMaps * 3;
         public const int NumberOfColors = 3415; // 3143
         public const int Tile16EdiorBitmapSize = 0x2000;
         public const int Tile16EdiorBitmapSizex2 = Tile16EdiorBitmapSize * 2;
@@ -277,13 +277,21 @@ namespace ZeldaFullEditor
         public static int OverworldMiniMapPalettesMax = 2;
 
         public static int overworldSpritesBegining = 0x04C881;
-        public static int overworldSpritesAgahnim = 0x04CA21;
         public static int overworldSpritesZelda = 0x04C901;
+        public static int overworldSpritesAgahnim = 0x04CA21;
+        public static int overworldSpritesDataStart = 0x04CB41;
+        public static int overworldSpritesDataEnd = 0x04D62E;
+
+        // TODO: Change these addresses.
+        public static int overworldSpritesBeginingExpanded = 0x141438;
+        public static int overworldSpritesZeldaExpanded = 0x141578;
+        public static int overworldSpritesAgahnimExpanded = 0x1416B8;
+        public static int overworldSpritesDataStartExpanded = 0x04C881;
 
         /*
         public static int overworldSpritesBeginingEditor = 0x108100;
-        public static int overworldSpritesAgahnimEditor = 0x108180;
         public static int overworldSpritesZeldaEditor = 0x1082A0;
+        public static int overworldSpritesAgahnimEditor = 0x108180;
         */
 
         public static int overworldItemsPointers = 0x0DC2F9;

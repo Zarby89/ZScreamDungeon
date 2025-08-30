@@ -57,6 +57,12 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
+; TODO: Fix entrance overlays on SW
+; TODO: Jeimuzu's sprite bug
+; TODO: Entrance animation overlays on SW
+; TODO: Message IDs for SW
+; TODO: sprite pointers for areas 0x90-0x9F
+
 pushpc
 
 incsrc HardwareRegisters.asm
@@ -450,9 +456,9 @@ Pool:
     ; phase. Default is $FF.
     org $288146 ; $140146
     .EnableBeginningRain ; 0x01
-    if !UseVanillaPool > 0
+    ;if !UseVanillaPool > 0
     db $FF
-    endif
+    ;endif
 
     ; TODO: Add a place to change this in ZS. Once that is done add this to the 
     ; vanilla pool checks as well.
@@ -1261,14 +1267,23 @@ Pool:
     dw $FF00, $0100, $0300, $0500, $0700, $0900, $0B00, $0D00
     dw $FF00, $0100, $0300, $0500, $0700, $0900, $0B00, $0D00
     endif
+
+    org $289438 ; $141438
+    .Overworld_SpritePointers_state_0_New
+
+    org $289578 ; $141578
+    .Overworld_SpritePointers_state_1_New
+   
+    org $2896B8 ; $1416B8
+    .Overworld_SpritePointers_state_2_New
 }
-warnpc $289438 ; $141438
+warnpc $2897F8 ; $1417F8
 
 ; ==============================================================================
 ; Start of function space.
 ; ==============================================================================
 
-org $289450 ; $141450
+org $289800 ; $141800
 pushpc
 
 ; ==============================================================================
@@ -5086,14 +5101,43 @@ LoadOverworldSprites_Interupt:
     LDX.w $040A
     LDA.l Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X : TAY
 
-    JML.l GetSpriteLoadingAreaSize
+    LDA.w .xSize, Y : STA.w $0FB9
+                      STZ.w $0FB8 
 
-    ; These will be skipped over.
-    NOP : NOP : NOP : NOP 
+    LDA.w .ySize, Y : STA.w $0FBB
+                      STZ.w $0FBA
+
+    ; What phase are we in?
+    LDA.l $7EF3C5 : ASL : TAY
+
+    REP #$30
+
+    ; And then, what overworld area are we in?
+    TXA : ASL : CLC : ADC.w .phaseOffset, Y : TAX
+    
+    ; Get the overworld sprite pointer based on the overworld area and game phase.
+    LDA.l Pool_Overworld_SpritePointers_state_0_New, X : STA.b $00
+
+    SEP #$20
+
+    BRA .skip
+
+    .xSize
+    db $02, $04, $04, $02
+
+    .ySize
+    db $02, $04, $02, $04
+
+    .phaseOffset
+    dw $0000, $0000, $0140, $0280
+
+    ; We have some extra bytes of space here.
     NOP : NOP : NOP
+
+    org $09C50D ; $04C50D
     .skip
 }
-warnpc $09C4DA ; $04C4DA
+warnpc $09C50D ; $04C50D
 
 ; The table OverworldScreenSizeForLoading which is located at $04C635 and
 ; used by the vanilla LoadOverworldSprites function is no longer needed for
@@ -5109,34 +5153,15 @@ else
 org $09C4C7 ; $04C4C7
 db $AD, $0A, $04, $A8, $BE, $35, $C6, $8E
 db $B9, $0F, $9C, $B8, $0F, $8E, $BB, $0F
-db $9C, $BA, $0F
+db $9C, $BA, $0F, $C2, $30, $AD, $0A, $04
+db $0A, $A8, $E2, $20, $AF, $C5, $F3, $7E
+db $C9, $03, $F0, $0E, $C9, $02, $F0, $14
+db $B9, $81, $C8, $85, $00, $B9, $82, $C8
+db $80, $12, $B9, $21, $CA, $85, $00, $B9
+db $22, $CA, $80, $08, $B9, $01, $C9, $85
+db $00, $B9, $02, $C9
 
 endif
-
-pullpc
-
-GetSpriteLoadingAreaSize:
-{
-    PHB : PHK : PLB
-
-    LDX.w .xSize, Y : STX.w $0FB9
-                      STZ.w $0FB8 
-
-    LDX.w .ySize, Y : STX.w $0FBB
-                      STZ.w $0FBA
-
-    PLB
-
-    JML.l LoadOverworldSprites_Interupt_skip
-
-    .xSize
-    db $02, $04, $04, $02
-
-    .ySize
-    db $02, $04, $02, $04
-}
-
-pushpc
 
 ; ==============================================================================
 

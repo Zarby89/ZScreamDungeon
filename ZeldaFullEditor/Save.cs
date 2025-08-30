@@ -1213,20 +1213,20 @@ namespace ZeldaFullEditor
 
         public bool SaveOWSprites(SceneOW scene)
         {
-            ROM.StartBlockLogWriting("Sprites OW DATA & Pointers", Constants.overworldSpritesBegining);
-            var spritePointers = new int[Constants.NumberOfOWSprites];
-            var spritePointersReused = new int[Constants.NumberOfOWSprites];
-            var allSprites = new List<Sprite>[Constants.NumberOfOWSprites];
+            ROM.StartBlockLogWriting("Sprites OW DATA & Pointers", Constants.overworldSpritesBeginingExpanded);
+            var spritePointers = new int[Constants.NumberOfOWSpriteAreaPointers];
+            var spritePointersReused = new int[Constants.NumberOfOWSpriteAreaPointers];
+            var allSprites = new List<Sprite>[Constants.NumberOfOWSpriteAreaPointers];
 
-            for (int j = 0; j < Constants.NumberOfOWSprites; j++)
+            for (int j = 0; j < Constants.NumberOfOWSpriteAreaPointers; j++)
             {
                 spritePointersReused[j] = -1;
                 allSprites[j] = new List<Sprite>();
             }
 
-            for (int i = 0; i < Constants.NumberOfOWSprites; i++) // For each pointers.
+            for (int i = 0; i < Constants.NumberOfOWSpriteAreaPointers; i++) // For each pointers.
             {
-                if (i < 0x40) // LW[0]
+                if (i < 0xA0)
                 {
                     Sprite[] sprArray = scene.ow.AllSprites[0].Where(sprite => sprite.MapID == i).ToArray();
                     foreach (Sprite spr in sprArray)
@@ -1234,17 +1234,17 @@ namespace ZeldaFullEditor
                         allSprites[i].Add(spr);
                     }
                 }
-                else if (i >= 0x40 && i < 0xD0) // LW & DW[1]
+                else if (i >= 0xA0 && i < 0x0140)
                 {
-                    Sprite[] sprArray = scene.ow.AllSprites[1].Where(sprite => sprite.MapID == (i - 0x40)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[1].Where(sprite => sprite.MapID == (i - 0xA0)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
                     }
                 }
-                else if (i >= 0xD0 && i < Constants.NumberOfOWSprites) // LW[2]
+                else if (i >= 0x0140 && i < Constants.NumberOfOWSpriteAreaPointers)
                 {
-                    Sprite[] sprArray = scene.ow.AllSprites[2].Where(sprite => sprite.MapID == (i - 0xD0)).ToArray();
+                    Sprite[] sprArray = scene.ow.AllSprites[2].Where(sprite => sprite.MapID == (i - 0x0140)).ToArray();
                     foreach (Sprite spr in sprArray)
                     {
                         allSprites[i].Add(spr);
@@ -1254,10 +1254,10 @@ namespace ZeldaFullEditor
 
             // Look through all of the pointers that we have already established and see if there are any duplicates.
             // If there are duplicates we can reuse the pointers.
-            for (int i = 0; i < Constants.NumberOfOWSprites; i++)
+            for (int i = 0; i < Constants.NumberOfOWSpriteAreaPointers; i++)
             {
                 spritePointersReused[i] = -1;
-                for (int ci = 0; ci < Constants.NumberOfOWSprites; ci++)
+                for (int ci = 0; ci < Constants.NumberOfOWSpriteAreaPointers; ci++)
                 {
                     if (ci >= i)
                     {
@@ -1273,10 +1273,10 @@ namespace ZeldaFullEditor
             }
 
             // Start of area sprite data.
-            int dataPos = 0x04CB41;
+            int dataPos = Constants.overworldSpritesDataStartExpanded;
 
             // Write sprite data if sprPointersReused[i] == -1
-            for (int i = 0; i < Constants.NumberOfOWSprites; i++)
+            for (int i = 0; i < Constants.NumberOfOWSpriteAreaPointers; i++)
             {
                 if (spritePointersReused[i] == -1)
                 {
@@ -1295,14 +1295,14 @@ namespace ZeldaFullEditor
                 }
 
                 int SNESAddress = Utils.PcToSnes(spritePointers[i]);
-                ROM.WriteShort(Constants.overworldSpritesBegining + (i * 2), SNESAddress, true, "Sprite Pointer for map" + i.ToString("D3"));
+                ROM.WriteShort(Constants.overworldSpritesBeginingExpanded + (i * 2), SNESAddress, true, "Sprite Pointer for map" + i.ToString("D3"));
             }
 
             ROM.spaceUsedOWSprites = dataPos;
             Console.WriteLine("Overworld Sprite end position: 0x" + dataPos.ToString("X6"));
 
             // END OF OW SPRITES DATA.
-            if (dataPos >= 0x04D62E)
+            if (dataPos >= Constants.overworldSpritesDataEnd)
             {
                 return true; // Error.
             }

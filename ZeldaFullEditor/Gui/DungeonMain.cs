@@ -6463,7 +6463,7 @@ namespace ZeldaFullEditor
             }
 
             _ = stringBuilder.AppendLine("Pots items used : " + potItems + "  Size in bytes : 0x" + potItemsSize.ToString("X4") + " / " + maxSize);
-            _ = stringBuilder.AppendLine("Sprites used (UW) : " + spriteCount + "  Size (UW and OW) in bytes : 0x" + ((ROM.spaceUsedOWSprites + spriteSize + 0x250) - 0x04C881).ToString("X4") + " / 0x241D");
+            _ = stringBuilder.AppendLine("Sprites used (UW) : " + spriteCount + "  Size (UW and OW) in bytes : 0x" + ((ROM.spaceUsedOWSprites + spriteSize + 0x250) - Constants.overworldSpritesBeginingExpanded).ToString("X4") + " / 0x241D");
             _ = stringBuilder.AppendLine("*Note must save to see the right Size used for the sprites");
 
             string propertiesInfos = stringBuilder.ToString();

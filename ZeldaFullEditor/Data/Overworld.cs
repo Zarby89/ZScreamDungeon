@@ -1284,10 +1284,103 @@ namespace ZeldaFullEditor
             */
 
             var allSprites = new List<Sprite>[3] { new List<Sprite>(), new List<Sprite>(), new List<Sprite>() };
-            for (int i = 0; i < 0x40; i++)
+
+            // Version 0x03 of the OW ASM added sprite support for the SW.
+            byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+            if (asmVersion >= 0x03 && asmVersion != 0xFF)
             {
-                if (this.AllMaps[i].ParentID == i)
+                for (int i = 0; i < 0xA0; i++)
                 {
+                    if (this.AllMaps[i].ParentID != i)
+                    {
+                        continue;
+                    }
+
+                    // Beginning Sprites.
+                    int ptrPos = Constants.overworldSpritesBeginingExpanded + (i * 2);
+                    int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
+                    while (true)
+                    {
+                        byte b1 = ROM.DATA[spriteAddress];
+                        byte b2 = ROM.DATA[spriteAddress + 1];
+                        byte b3 = ROM.DATA[spriteAddress + 2];
+                        if (b1 == 0xFF)
+                        {
+                            break;
+                        }
+
+                        int worldOffset = i % 0x40;
+                        int mapY = worldOffset / 8;
+                        int mapX = worldOffset % 8;
+
+                        int realX = ((b2 & 0x3F) * 16) + (mapX * 512);
+                        int realY = ((b1 & 0x3F) * 16) + (mapY * 512);
+
+                        allSprites[0].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+
+                        spriteAddress += 3;
+                    }
+
+                    // Zelda Saved Sprites.
+                    ptrPos = Constants.overworldSpritesZeldaExpanded + (i * 2);
+                    spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
+                    while (true)
+                    {
+                        byte b1 = ROM.DATA[spriteAddress];
+                        byte b2 = ROM.DATA[spriteAddress + 1];
+                        byte b3 = ROM.DATA[spriteAddress + 2];
+                        if (b1 == 0xFF)
+                        {
+                            break;
+                        }
+
+                        int worldOffset = i % 0x40;
+                        int mapY = worldOffset / 8;
+                        int mapX = worldOffset % 8;
+
+                        int realX = ((b2 & 0x3F) * 16) + (mapX * 512);
+                        int realY = ((b1 & 0x3F) * 16) + (mapY * 512);
+
+                        allSprites[1].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+
+                        spriteAddress += 3;
+                    }
+
+                    // Agahnim Dead Sprites.
+                    ptrPos = Constants.overworldSpritesAgahnimExpanded + (i * 2);
+                    spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
+                    while (true)
+                    {
+                        byte b1 = ROM.DATA[spriteAddress];
+                        byte b2 = ROM.DATA[spriteAddress + 1];
+                        byte b3 = ROM.DATA[spriteAddress + 2];
+                        if (b1 == 0xFF)
+                        {
+                            break;
+                        }
+
+                        int worldOffset = i % 0x40;
+                        int mapY = worldOffset / 8;
+                        int mapX = worldOffset % 8;
+
+                        int realX = ((b2 & 0x3F) * 16) + (mapX * 512);
+                        int realY = ((b1 & 0x3F) * 16) + (mapY * 512);
+
+                        allSprites[2].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+
+                        spriteAddress += 3;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 0x40; i++)
+                {
+                    if (this.AllMaps[i].ParentID != i)
+                    {
+                        continue;
+                    }
+
                     // Beginning Sprites.
                     int ptrPos = Constants.overworldSpritesBegining + (i * 2);
                     int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
@@ -1312,13 +1405,14 @@ namespace ZeldaFullEditor
                         spriteAddress += 3;
                     }
                 }
-            }
 
-            // TODO: Expand this to 0xA0.
-            for (int i = 0; i < 0x90; i++)
-            {
-                if (this.AllMaps[i].ParentID == i)
+                for (int i = 0; i < 0x90; i++)
                 {
+                    if (this.AllMaps[i].ParentID != i)
+                    {
+                        continue;
+                    }
+
                     // Zelda Saved Sprites.
                     int ptrPos = Constants.overworldSpritesZelda + (i * 2);
                     int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
@@ -1352,13 +1446,10 @@ namespace ZeldaFullEditor
 
                         spriteAddress += 3;
                     }
-                }
 
-                // Agahnim Dead Sprites.
-                if (this.AllMaps[i].ParentID == i)
-                {
-                    int ptrPos = Constants.overworldSpritesAgahnim + (i * 2);
-                    int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
+                    // Agahnim Dead Sprites.
+                    ptrPos = Constants.overworldSpritesAgahnim + (i * 2);
+                    spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
                     while (true)
                     {
                         byte b1 = ROM.DATA[spriteAddress];

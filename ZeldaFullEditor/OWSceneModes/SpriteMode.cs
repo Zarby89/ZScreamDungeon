@@ -95,16 +95,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 scene.selectedFormSprite.updateMapStuff(mid, scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize);
                 int gs = scene.ow.GameState;
-                if (mid >= 64)
-                {
-                    if (gs == 0)
-                    {
-                        MessageBox.Show("Can't add sprite in rain state in the Dark World!");
-
-                        return;
-                    }
-                }
-
                 scene.ow.AllSprites[gs].Add(scene.selectedFormSprite);
                 selectedSprite = scene.ow.AllSprites[gs].Last();
                 scene.selectedFormSprite = null;
@@ -132,15 +122,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     scene.selectedFormSprite.updateMapStuff(mapID, areaSize);
                     int gameState = scene.ow.GameState;
-
-                    if (mapID >= 64)
-                    {
-                        if (gameState == 0)
-                        {
-                            MessageBox.Show("Can't add sprite in rain state in the Dark World!");
-                            return;
-                        }
-                    }
 
                     scene.ow.AllSprites[gameState].Add(scene.selectedFormSprite);
                     scene.selectedFormSprite = null;
@@ -209,15 +190,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 scene.selectedFormSprite.updateMapStuff(mapID, scene.ow.AllMaps[scene.ow.AllMaps[scene.mapHover + scene.ow.WorldOffset].ParentID].AreaSize);
                 int gameState = scene.ow.GameState;
-
-                if (mapID >= 64)
-                {
-                    if (gameState == 0)
-                    {
-                        MessageBox.Show("Can't add sprite in rain state in the Dark World!");
-                        return;
-                    }
-                }
 
                 scene.ow.AllSprites[gameState].Add(scene.selectedFormSprite);
                 selectedSprite = scene.ow.AllSprites[gameState].Last();
@@ -330,7 +302,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         continue;
                     }
 
-                    if (spr.MapID < 64 + scene.ow.WorldOffset && spr.MapID >= scene.ow.WorldOffset)
+                    if (spr.MapID < 0x40 + scene.ow.WorldOffset && spr.MapID >= scene.ow.WorldOffset)
                     {
                         /*
                         if (selectedEntrance != null)
@@ -366,7 +338,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     Sprite spr = scene.ow.AllSprites[scene.ow.GameState][i];
 
-                    if (spr.MapID < 64 + scene.ow.WorldOffset && spr.MapID >= scene.ow.WorldOffset)
+                    if (spr.MapID < 0x40 + scene.ow.WorldOffset && spr.MapID >= scene.ow.WorldOffset)
                     {
                         /*
                         if (selectedEntrance != null)
