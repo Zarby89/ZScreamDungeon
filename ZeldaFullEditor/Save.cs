@@ -1560,12 +1560,11 @@ namespace ZeldaFullEditor
 
         public bool SaveOverworldMessagesIDs(SceneOW scene)
         {
-            ROM.StartBlockLogWriting("Overworld Messages IDs", Constants.overworldMessages);
+            ROM.StartBlockLogWriting("Overworld Messages IDs", Constants.overworldMessagesExpanded);
 
-            // TODO: Update this to go up to 0xA0.
-            for (int i = 0; i < 0x80; i++)
+            for (int i = 0; i < Constants.NumberOfOWMaps; i++)
             {
-                ROM.WriteShort(Constants.overworldMessages + (i * 2), scene.ow.AllMaps[i].MessageID, true, "OW Message ID for map " + i.ToString("D3"));
+                ROM.WriteShort(Constants.overworldMessagesExpanded + (i * 2), scene.ow.AllMaps[i].MessageID, true, "OW Message ID for map " + i.ToString("D3"));
             }
 
             ROM.EndBlockLogWriting();
@@ -1575,7 +1574,7 @@ namespace ZeldaFullEditor
 
         public bool SaveOverworldMusic(SceneOW scene)
         {
-            ROM.StartBlockLogWriting("Overworld Musics IDs", Constants.overworldMessages);
+            ROM.StartBlockLogWriting("Overworld Musics IDs", Constants.overworldMusicBegining);
 
             for (int i = 0; i < 0x40; i++)
             {

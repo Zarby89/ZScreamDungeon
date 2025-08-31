@@ -179,12 +179,12 @@ namespace ZeldaFullEditor
             this.ParentID = index;
             this.AreaSizeQuadrant = 0;
             this.GFXBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, this.GFXPointer);
-            this.MessageID = (short)ROM.ReadShort(Constants.overworldMessages + (this.ParentID * 2));
-
             byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
 
             if (asmVersion < 3 || asmVersion == 0xFF)
             {
+                this.MessageID = (short)ROM.ReadShort(Constants.overworldMessages + (this.ParentID * 2));
+
                 if (index < 0x80)
                 {
                     // ASM version 3 was the implementation of area size expansion, so if its not greater than 3 we need to swap the small and large area values.
@@ -217,6 +217,7 @@ namespace ZeldaFullEditor
             }
             else
             {
+                this.MessageID = (short)ROM.ReadShort(Constants.overworldMessagesExpanded + (this.ParentID * 2));
                 this.AreaSize = (AreaSizeEnum)ROM.DATA[Constants.overworldScreenSize + index];
             }
 

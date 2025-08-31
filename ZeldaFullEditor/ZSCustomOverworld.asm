@@ -22,8 +22,10 @@
 ;    • The ability to have "wide" (2x1) and "tall" (1x2) areas that were not
 ;      present in the vanilla game.
 ;    • The ability to use the other previously unused "secial world" areas 
-;      as if they were a normal area. Including the use of items, entrances, exits
-;      whirlpools, bird transports, overworld transitions
+;      as if they were a normal area. Including the use of items, entrances,
+;      exits, whirlpools, bird transports, sign messages, overworld transitions, 
+;      overlays, and subscreen overlays.
+;    • The ability to have sprites on the DW and SW during phase 0.
 ;    • Fixes several bugs present in the vanilla game that prevent certain normal
 ;      overworld transitions such as "staggered" layouts or transitions in the
 ;      middle of 2 large areas that are next to each other. See the diagrams in
@@ -57,11 +59,7 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
-; TODO: Fix entrance overlays on SW
 ; TODO: Jeimuzu's sprite bug
-; TODO: Entrance animation overlays on SW
-; TODO: Message IDs for SW
-; TODO: sprite pointers for areas 0x90-0x9F
 
 pushpc
 
@@ -271,6 +269,9 @@ PaletteData_owmain                         = $1BE6C8 ; $0DE6C8
 ; $02E931
 !Func02E931 = $01
 
+; $03B518
+!Func07B518 = $01
+
 ; $04C4C7
 !Func09C4C7 = $01
 
@@ -332,6 +333,8 @@ if !AllOff == 1
 !Func02C692 = $00
 !Func02E598 = $00
 !Func02E931 = $00
+
+!Func07B518 = $00
 
 !Func09C4C7 = $00
 
@@ -1204,7 +1207,7 @@ Pool:
     dw $0000, $0200, $0400, $0600, $0800, $0A00, $0C00, $0E00
     endif
 
-    ; The original trans_target_north table was moved here from $013EE2
+    ; The original trans_target_north table was moved here from $013EE2.
     ; The original 0x0080 bytes space is currently unused.
     org $2891B8 ; $1411B8
     .trans_target_north_new
@@ -1236,7 +1239,7 @@ Pool:
     dw $0520, $0520, $0520, $0520, $0520, $0520, $0520, $0520
     endif
 
-    ; The original trans_target_west table was moved here from $013F62
+    ; The original trans_target_west table was moved here from $013F62.
     ; The original 0x0080 bytes space is currently unused.
     org $2892F8 ; $1412F8
     .trans_target_west_new
@@ -1268,22 +1271,129 @@ Pool:
     dw $FF00, $0100, $0300, $0500, $0700, $0900, $0B00, $0D00
     endif
 
+    ; The original Overworld_SpritePointers_state_0 table was moved here from 
+    ; $04C881. The original 0x0080 bytes space is currently unused.
     org $289438 ; $141438
     .Overworld_SpritePointers_state_0_New
+    if !UseVanillaPool > 0
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB42, $CB41, $CB5B, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB5F, $CB66, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB73, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
 
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    endif
+
+    ; The original Overworld_SpritePointers_state_1 table was moved here from 
+    ; $04C901. The original 0x0120 bytes space is currently unused.
     org $289578 ; $141578
     .Overworld_SpritePointers_state_1_New
+    if !UseVanillaPool > 0
+    dw $CF4C, $CB41, $CF7A, $CF84, $CB41, $CFA6, $CB41, $CFCE
+    dw $CB41, $CB41, $CFDE, $CB41, $CB41, $CB41, $CB41, $CFFD
+    dw $D013, $D020, $D02D, $D03A, $D041, $D051, $D05E, $D068
+    dw $D078, $CB41, $D0A0, $D0B3, $CB41, $D0DB, $D0EB, $CB41
+    dw $CB41, $CB41, $D125, $CB41, $CB41, $D12F, $CB41, $CB41
+    dw $D148, $CB41, $D152, $D168, $D175, $D17C, $D186, $D193
+    dw $D19D, $CB41, $D1E3, $D1F0, $D1FD, $D213, $CB41, $D259
+    dw $CB41, $CB41, $D26C, $D279, $D292, $CB41, $CB41, $D2A8
+
+    dw $CB7A, $CBB7, $CBB7, $CBC4, $CBCB, $CBCB, $CB41, $CBD5
+    dw $CB41, $CB41, $CBD9, $CB41, $CB41, $CB41, $CB41, $CBF5
+    dw $CC02, $CC12, $CC25, $CC35, $CC45, $CC5E, $CC74, $CC84
+    dw $CC9A, $CB41, $CCCE, $CCE1, $CB41, $CD03, $CD19, $CB41
+    dw $CB41, $CB41, $CD59, $CB41, $CB41, $CD6C, $CB41, $CB41
+    dw $CD7F, $CD83, $CD87, $CD8B, $CD9B, $CDAB, $CDBE, $CDD1
+    dw $CDE1, $CE06, $CE06, $CE16, $CE26, $CE3C, $CE7F, $CE7F
+    dw $CB41, $CB41, $CE92, $CE9F, $CEB2, $CB41, $CB41, $CEC5
+
+    dw $CEDB, $CEF4, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    endif
    
+    ; The original Overworld_SpritePointers_state_2 table was moved here from 
+    ; $04CA21. The original 0x0120 bytes space is currently unused.
     org $2896B8 ; $1416B8
     .Overworld_SpritePointers_state_2_New
+    if !UseVanillaPool > 0
+    dw $D2B8, $CB41, $D2E3, $D2E7, $CB41, $D315, $CB41, $D343
+    dw $CB41, $CB41, $D353, $CB41, $CB41, $CB41, $CB41, $D369
+    dw $D37F, $D38F, $D39C, $D3A9, $D3B6, $D3C9, $D3D9, $D3E3
+    dw $D3F3, $CB41, $D418, $D428, $CB41, $D447, $D454, $CB41
+    dw $CB41, $CB41, $D491, $CB41, $CB41, $D49B, $CB41, $CB41
+    dw $D4A8, $D4B8, $D4C2, $D4DE, $D4EE, $D4F5, $D502, $D515
+    dw $D51F, $CB41, $D55C, $D56F, $D57F, $D58F, $D5D5, $D5D5
+    dw $D5E5, $D5E5, $D5E5, $D5FE, $D611, $D621, $D621, $D621
+
+    dw $CB7A, $CBB7, $CBB7, $CBC4, $CBCB, $CBCB, $CB41, $CBD5
+    dw $CB41, $CB41, $CBD9, $CB41, $CB41, $CB41, $CB41, $CBF5
+    dw $CC02, $CC12, $CC25, $CC35, $CC45, $CC5E, $CC74, $CC84
+    dw $CC9A, $CB41, $CCCE, $CCE1, $CB41, $CD03, $CD19, $CB41
+    dw $CB41, $CB41, $CD59, $CB41, $CB41, $CD6C, $CB41, $CB41
+    dw $CD7F, $CD83, $CD87, $CD8B, $CD9B, $CDAB, $CDBE, $CDD1
+    dw $CDE1, $CE06, $CE06, $CE16, $CE26, $CE3C, $CE7F, $CE7F
+    dw $CB41, $CB41, $CE92, $CE9F, $CEB2, $CB41, $CB41, $CEC5
+
+    dw $CEDB, $CEF4, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
+    endif
+
+    ; The original Overworld_SignText table was moved here from 
+    ; $03F51D. The original 0x0120 bytes space is currently unused.
+    org $2897F8 ; $1417F8
+    .Overworld_SignText_New:
+    if !UseVanillaPool > 0
+    dw $00A7, $00A7, $0048, $0040, $0040, $00A7, $00A7, $00A7
+    dw $00A7, $00A7, $003C, $0040, $0040, $00A7, $00A7, $003E
+    dw $003D, $0049, $0042, $0042, $00A7, $00A7, $003F, $00B0
+    dw $003B, $003B, $00A7, $003B, $003B, $0044, $00A7, $00A7
+    dw $003B, $003B, $00A7, $003B, $003B, $0045, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $00A7, $00A7, $0041, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $0042, $00A7, $0046, $0046, $00A7
+    dw $00A7, $00A7, $0047, $0043, $00A7, $0046, $0046, $00A7
+
+    dw $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7
+    dw $00A7, $00A7, $00A8, $00A7, $00A7, $00A7, $00A7, $00A9
+    dw $00A7, $00AA, $00AB, $00A7, $00A7, $00A7, $00A7, $00B1
+    dw $00AF, $00AF, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7
+    dw $00AF, $00AF, $00A7, $00A7, $00A7, $00AC, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $00A7, $00A7, $00AD, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $00AE, $00A7, $00A7, $00A7, $00A7
+
+    dw $00AF, $00AF, $00A7, $00A7, $00A7, $00AC, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $00A7, $00A7, $00AD, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7
+    dw $00A7, $00A7, $00A7, $00AE, $00A7, $00A7, $00A7, $00A7
+    endif
 }
-warnpc $2897F8 ; $1417F8
+warnpc $289938 ; $141938
 
 ; ==============================================================================
 ; Start of function space.
 ; ==============================================================================
 
-org $289800 ; $141800
+org $289940 ; $141940
 pushpc
 
 ; ==============================================================================
@@ -3797,6 +3907,7 @@ org $0ED652 ; $075652
 InitColorLoad2_Return:
 
 pullpc
+
 InitColorLoad2:
 {
     PHB : PHK : PLB
@@ -3833,6 +3944,7 @@ InitColorLoad2:
 
     JML.l InitColorLoad2_Return
 }
+
 pushpc
 
 ; ==============================================================================
@@ -5516,6 +5628,28 @@ LDA.l OverworldPalettesScreenToSet_New, X
 org $02ECE8 ; $016CE8
 LDA.l OverworldPalettesScreenToSet_New, X
 
+else
+
+org $00FC67 ; $007C67
+db $A0, $3E, $00, $AF, $C5, $F3, $7E
+
+org $0286DB ; $0106DB
+db $BF, $1C, $FD, $00
+
+org $02B0FB ; $0130FB
+db $BF, $1C, $FD, $00
+
+org $02B4CD ; $0134CD
+db $BF, $1C, $FD, $00
+
+org $02EAAB ; $016AAB
+db $BF, $1C, $FD, $00
+
+org $02ECE8 ; $016CE8
+db $BF, $1C, $FD, $00
+
+endif
+
 pullpc
 
 Sprite_LoadGfxProperties_Interupt:
@@ -5539,28 +5673,6 @@ Sprite_LoadGfxProperties_Interupt:
 }
 
 pushpc
-
-else
-
-org $00FC67 ; $007C67
-db $A0, $3E, $00, $AF, $C5, $F3, $7E
-
-org $0286DB ; $0106DB
-db $BF, $1C, $FD, $00
-
-org $02B0FB ; $0130FB
-db $BF, $1C, $FD, $00
-
-org $02B4CD ; $0134CD
-db $BF, $1C, $FD, $00
-
-org $02EAAB ; $016AAB
-db $BF, $1C, $FD, $00
-
-org $02ECE8 ; $016CE8
-db $BF, $1C, $FD, $00
-
-endif
 
 ; ==============================================================================
 
@@ -5586,6 +5698,36 @@ org $02EF64 ; $016F64
 db $BF, $C5, $ED, $02
 
 endif
+
+; ==============================================================================
+
+if !Func07B518 == $01
+
+org $07B518 ; $03B518
+JSL Link_Read_Interupt
+
+else
+
+org $07B518 ; $03B518
+db $A8, $B9, $1D, $F5
+
+endif
+
+pullpc
+
+Link_Read_Interupt:
+{
+    PHB : PHK : PLB
+
+    TAY
+    LDA.w Pool_Overworld_SignText_New, Y
+
+    PLB
+
+    RTL
+}
+
+pushpc
 
 ; ==============================================================================
 

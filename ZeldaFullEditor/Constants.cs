@@ -314,6 +314,7 @@ namespace ZeldaFullEditor
 
         public static int overworldTilesType = 0x071459;
         public static int overworldMessages = 0x03F51D;
+        public static int overworldMessagesExpanded = 0x1417F8;
 
         public static int overworldMusicBegining = 0x014303; // 0x40
         public static int overworldMusicZelda = overworldMusicBegining + 0x40; // 0x40
