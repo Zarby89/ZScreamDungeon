@@ -10,6 +10,7 @@ namespace ZeldaFullEditor.OWSceneModes
     {
         SceneOW scene;
         public byte selectedFrame = 0;
+
         public OverlayAnimationMode(SceneOW scene)
         {
             this.scene = scene;
@@ -56,7 +57,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                         SendTileData((byte)(Control.ModifierKeys == Keys.Control ? 1 : 0));
 
-
                         for (int i = 0; i < scene.selectedTile.Length; i++)
                         {
                             superX = ((tileX + x) / 32);
@@ -69,14 +69,8 @@ namespace ZeldaFullEditor.OWSceneModes
                             scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
                             */
 
-                            TilePos tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
+                            TilePos tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - superMX), (byte)((scene.globalmouseTileDownY + y) - superMY), scene.selectedTile[i]);
                             TilePos tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());
-
-                            if (scene.ow.AllMaps[scene.selectedMap].LargeMap)
-                            {
-                                tp = new TilePos((byte)((scene.globalmouseTileDownX + x) - (superMX)), (byte)((scene.globalmouseTileDownY + y) - (superMY)), scene.selectedTile[i]);
-                                tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());
-                            }
 
                             if (Control.ModifierKeys == Keys.Control)
                             {
@@ -217,159 +211,163 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void OnMouseMove(MouseEventArgs e)
         {
-            if (scene.initialized)
+            if (!scene.initialized)
             {
-                scene.mouseX_Real = e.X;
-                scene.mouseY_Real = e.Y;
-                int mouseTileX = e.X.Clamp(0, 4080) / 16;
-                int mouseTileY = e.Y.Clamp(0, 4080) / 16;
-                int mapX = (mouseTileX / 32);
-                int mapY = (mouseTileY / 32);
+                return;
+            }
 
-                scene.mapHover = mapX + (mapY * 8);
+            scene.mouseX_Real = e.X;
+            scene.mouseY_Real = e.Y;
+            int mouseTileX = e.X.Clamp(0, 4080) / 16;
+            int mouseTileY = e.Y.Clamp(0, 4080) / 16;
+            int mapX = (mouseTileX / 32);
+            int mapY = (mouseTileY / 32);
 
-                if (scene.lastTileHoverX != mouseTileX || scene.lastTileHoverY != mouseTileY)
+            scene.mapHover = mapX + (mapY * 8);
+
+            if (scene.lastTileHoverX != mouseTileX || scene.lastTileHoverY != mouseTileY)
+            {
+                if (scene.mouse_down)
                 {
-                    if (scene.mouse_down)
+                    if (e.Button == MouseButtons.Left)
                     {
-                        if (e.Button == MouseButtons.Left)
+                        int tileX = (e.X / 16);
+                        int tileY = (e.Y / 16);
+                        if (tileX < 0) { tileX = 0; }
+                        if (tileY < 0) { tileY = 0; }
+                        if (tileX > 255) { tileX = 255; }
+                        if (tileY > 255) { tileY = 255; }
+                        int superX = (tileX / 32);
+                        int superY = (tileY / 32);
+                        int mapId = (superY * 8) + superX;
+                        scene.globalmouseTileDownX = tileX;
+                        scene.globalmouseTileDownY = tileY;
+                        int mid = scene.ow.AllMaps[scene.selectedMap].ParentID;
+                        int superMX = (mid % 8) * 32;
+                        int superMY = (mid / 8) * 32;
+
+                        SendTileDataMove(tileX, tileY, (byte)(Control.ModifierKeys == Keys.Control ? 1 : 0));
+
+                        if (scene.selectedTile.Length >= 1)
                         {
-                            int tileX = (e.X / 16);
-                            int tileY = (e.Y / 16);
-                            if (tileX < 0) { tileX = 0; }
-                            if (tileY < 0) { tileY = 0; }
-                            if (tileX > 255) { tileX = 255; }
-                            if (tileY > 255) { tileY = 255; }
-                            int superX = (tileX / 32);
-                            int superY = (tileY / 32);
-                            int mapId = (superY * 8) + superX;
-                            scene.globalmouseTileDownX = tileX;
-                            scene.globalmouseTileDownY = tileY;
-                            int mid = scene.ow.AllMaps[scene.selectedMap].ParentID;
-                            int superMX = (mid % 8) * 32;
-                            int superMY = (mid / 8) * 32;
+                            ushort[] undotiles = new ushort[scene.selectedTile.Length];
+                            int y = 0;
+                            int x = 0;
 
-
-                            SendTileDataMove(tileX, tileY, (byte)(Control.ModifierKeys == Keys.Control ? 1 : 0));
-
-                            if (scene.selectedTile.Length >= 1)
+                            for (int i = 0; i < scene.selectedTile.Length; i++)
                             {
-                                ushort[] undotiles = new ushort[scene.selectedTile.Length];
-                                int y = 0;
-                                int x = 0;
-
-                                for (int i = 0; i < scene.selectedTile.Length; i++)
+                                superX = ((tileX + x) / 32);
+                                superY = ((tileY + y) / 32);
+                                mapId = (superY * 8) + superX + scene.ow.WorldOffset;
+                                if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
                                 {
-                                    superX = ((tileX + x) / 32);
-                                    superY = ((tileY + y) / 32);
-                                    mapId = (superY * 8) + superX + scene.ow.WorldOffset;
-                                    if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
+                                    /*
+                                    undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
+                                    scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+                                    scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
+                                    */
+
+                                    TilePos tp = new TilePos((byte)(tileX - (superMX) + x), (byte)(tileY - (superMY) + y), scene.selectedTile[i]);
+                                    TilePos tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());
+                                    if (Control.ModifierKeys == Keys.Control)
                                     {
-                                        /*
-                                        undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
-                                        scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
-                                        scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
-                                        */
-
-                                        TilePos tp = new TilePos((byte)(tileX - (superMX) + x), (byte)(tileY - (superMY) + y), scene.selectedTile[i]);
-                                        TilePos tf = scene.compareTilePosT(tp, scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].ToArray());
-                                        if (Control.ModifierKeys == Keys.Control)
+                                        scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Remove(tf);
+                                        x++;
+                                        if (x >= scene.selectedTileSizeX)
                                         {
-                                            scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Remove(tf);
-                                            x++;
-                                            if (x >= scene.selectedTileSizeX)
-                                            {
-                                                y++;
-                                                x = 0;
-                                            }
-
-                                            continue;
+                                            y++;
+                                            x = 0;
                                         }
 
-                                        if (tf == null)
-                                        {
-                                            scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Add(tp);
-                                        }
-                                        else
-                                        {
-                                            scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Remove(tf);
-                                            scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Add(tp);
-                                        }
+                                        continue;
                                     }
 
-                                    x++;
-                                    if (x >= scene.selectedTileSizeX)
+                                    if (tf == null)
                                     {
-                                        y++;
-                                        x = 0;
+                                        scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Add(tp);
                                     }
+                                    else
+                                    {
+                                        scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Remove(tf);
+                                        scene.ow.AllAnimationOverlays[mid].FramesList[selectedFrame].Add(tp);
+                                    }
+                                }
+
+                                x++;
+                                if (x >= scene.selectedTileSizeX)
+                                {
+                                    y++;
+                                    x = 0;
                                 }
                             }
                         }
                     }
+                }
 
-                    scene.lastTileHoverX = mouseTileX;
-                    scene.lastTileHoverY = mouseTileY;
+                scene.lastTileHoverX = mouseTileX;
+                scene.lastTileHoverY = mouseTileY;
 
-                    // Refresh the tile preview
-                    if (scene.selectedTile.Length >= 1)
+                // Refresh the tile preview
+                if (scene.selectedTile.Length >= 1)
+                {
+                    int sX = (mouseTileX / 32);
+                    int sY = (mouseTileY / 32);
+                    int y = 0;
+                    int x = 0;
+                    int mapId = 0 + scene.ow.WorldOffset;
+
+                    for (int i = 0; i < scene.selectedTile.Length; i++)
                     {
-                        int sX = (mouseTileX / 32);
-                        int sY = (mouseTileY / 32);
-                        int y = 0;
-                        int x = 0;
-                        int mapId = 0 + scene.ow.WorldOffset;
-
-                        for (int i = 0; i < scene.selectedTile.Length; i++)
+                        if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
                         {
-                            if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
+                            sX = ((mouseTileX + x) / 32);
+                            sY = ((mouseTileY + y) / 32);
+                            mapId = (sY * 8) + sX + scene.ow.WorldOffset;
+
+                            if (mapId > 63 + scene.ow.WorldOffset)
                             {
-                                sX = ((mouseTileX + x) / 32);
-                                sY = ((mouseTileY + y) / 32);
-                                mapId = (sY * 8) + sX + scene.ow.WorldOffset;
-
-                                if (mapId > 63 + scene.ow.WorldOffset)
-                                {
-                                    break;
-                                }
-
-                                if (mapId <= 159)
-                                {
-                                    scene.ow.AllMaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
-                                }
+                                break;
                             }
 
-                            x++;
-                            if (x >= scene.selectedTileSizeX)
+                            if (mapId <= 159)
                             {
-                                y++;
-                                x = 0;
+                                scene.ow.AllMaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
                             }
                         }
 
-                        if (mapId > 63 + scene.ow.WorldOffset)
+                        x++;
+                        if (x >= scene.selectedTileSizeX)
                         {
-                            return;
+                            y++;
+                            x = 0;
                         }
-
-                        if (mapId <= 159)
-                        {
-                            scene.tilesgfxBitmap.Palette = scene.ow.AllMaps[mapId].GFXBitmap.Palette;
-                        }
-
-                        //scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
-                        //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-                        //this.Refresh();
-                        //this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
                     }
+
+                    if (mapId > 63 + scene.ow.WorldOffset)
+                    {
+                        return;
+                    }
+
+                    if (mapId <= 159)
+                    {
+                        scene.tilesgfxBitmap.Palette = scene.ow.AllMaps[mapId].GFXBitmap.Palette;
+                    }
+
+                    //scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
+                    //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+                    //this.Refresh();
+                    //this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
                 }
             }
         }
 
-
         private void SendTileData(byte deleting)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer((short)(24 + (scene.selectedTile.Length * 2)));
             buffer.Write((byte)16); // tile data cmd
             buffer.Write((byte)NetZS.userID); // user id
@@ -383,6 +381,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 buffer.Write((ushort)scene.selectedTile[i]);
             }
+
             // write tiles
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
@@ -392,7 +391,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
         private void SendTileDataMove(int tileX, int tileY, byte deleting)
         {
-            if (!NetZS.connected) { return; }
+            if (!NetZS.connected)
+            {
+                return;
+            }
+
             NetZSBuffer buffer = new NetZSBuffer((short)(24 + (scene.selectedTile.Length * 2)));
             buffer.Write((byte)17); // tile data cmd
             buffer.Write((byte)NetZS.userID); // user id
@@ -406,13 +409,12 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 buffer.Write((ushort)scene.selectedTile[i]);
             }
+
             // write tiles
             NetOutgoingMessage msg = NetZS.client.CreateMessage();
             msg.Write(buffer.buffer);
             NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             NetZS.client.FlushSendQueue();
-
         }
-
     }
 }

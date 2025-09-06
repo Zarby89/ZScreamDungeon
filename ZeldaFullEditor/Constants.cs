@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -39,12 +38,12 @@ namespace ZeldaFullEditor
         public const int LimitOfMap32 = 8864;
         public const int NumberOfRooms = 296;
 
-        public const int NumberOfOWMaps = 160;
+        public const int NumberOfOWMaps = 0xA0;
         public const int Map32PerScreen = 256;
         public const int NumberOfMap16 = 3752; // 4096
         public const int NumberOfMap16Ex = 4096; // 4096
         public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
-        public const int NumberOfOWSprites = 352;
+        public const int NumberOfOWSpriteAreaPointers = NumberOfOWMaps * 3;
         public const int NumberOfColors = 3415; // 3143
         public const int Tile16EdiorBitmapSize = 0x2000;
         public const int Tile16EdiorBitmapSizex2 = Tile16EdiorBitmapSize * 2;
@@ -195,6 +194,15 @@ namespace ZeldaFullEditor
         public static readonly Pen Azure200Pen = new Pen(Azure200);
         public static readonly Brush Azure200Brush = new SolidBrush(Azure200);
 
+        public static readonly Pen CameraPen = new Pen(Color.Red, 2);
+
+        public static readonly Color DefaultLWBGColor = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+        public static readonly Color DefaultDWBGColor = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+        public static readonly Color DefaultSWBGColor = Color.FromArgb(0xFF, 0x30, 0x70, 0x30);
+        public static readonly Color TransparentColor = Color.FromArgb(0x00, 0x00, 0x00, 0x00);
+        public static readonly Color BlackColor = Color.FromArgb(0xFF, 0x00, 0x00, 0x00);
+        public static readonly Color DefaultCloudBGColor = Color.FromArgb(0xFF, 0x3B, 0x73, 0x73);
+
         // ===========================================================================================
         // GFX Related Variables
         // ===========================================================================================
@@ -242,8 +250,14 @@ namespace ZeldaFullEditor
         public static int overworldMapPaletteGroup = 0x075504;
         public static int overworldSpritePaletteGroup = 0x075580;
         public static int overworldSpriteset = 0x007A41;
+        public static int overworldSpecialSpriteGFXGroup = 0x016811;
         public static int overworldSpecialGFXGroup = 0x016821;
         public static int overworldSpecialPALGroup = 0x016831;
+        public static int overworldSpecialSpritePalette = 0x016841;
+
+        public static int overworldSpecialSpriteGFXGroupExpandedTemp = 0x0166E1;
+        public static int overworldSpecialSpritePaletteExpandedTemp = 0x016701;
+        public static int overworldPalettesScreenToSetNew = 0x04C635;
 
         public static int HudPalettesMax = 2;
         public static int OverworldMainPalettesMax = 6;
@@ -263,36 +277,49 @@ namespace ZeldaFullEditor
         public static int OverworldMiniMapPalettesMax = 2;
 
         public static int overworldSpritesBegining = 0x04C881;
-        public static int overworldSpritesAgahnim = 0x04CA21;
         public static int overworldSpritesZelda = 0x04C901;
+        public static int overworldSpritesAgahnim = 0x04CA21;
+        public static int overworldSpritesDataStart = 0x04CB41;
+        public static int overworldSpritesDataEnd = 0x04D62E;
+
+        // TODO: Change these addresses.
+        public static int overworldSpritesBeginingExpanded = 0x141438;
+        public static int overworldSpritesZeldaExpanded = 0x141578;
+        public static int overworldSpritesAgahnimExpanded = 0x1416B8;
+        public static int overworldSpritesDataStartExpanded = 0x04C881;
 
         /*
         public static int overworldSpritesBeginingEditor = 0x108100;
-        public static int overworldSpritesAgahnimEditor = 0x108180;
         public static int overworldSpritesZeldaEditor = 0x1082A0;
+        public static int overworldSpritesAgahnimEditor = 0x108180;
         */
 
         public static int overworldItemsPointers = 0x0DC2F9;
         public static int overworldItemsAddress = 0x0DC8B9; // 1BC2F9
-        public static int overworldItemsBank = 0x0DC8BF;
-        public static int overworldItemsEndData = 0xD0C89C; // 0DC89E
+        public static int overworldItemsAddressBank = 0x0DC8BF;
+        public static int overworldItemsEndData = 0x0DC89C; // 0DC89E
+
+        public static int overworldBombDoorItemLocationsNew = 0x012644;
+        public static int overworldItemsPointersNew = 0x012784;
+        public static int overworldItemsStartDataNew = 0x0DC2F9;
 
         public static int mapGfx = 0x007C9C;
         public static int overlayPointers = 0x077664;
         public static int overlayPointersBank = 0x0E;
         public static int overlayData1 = 0x077676;
         public static int overlayData2 = 0x077677;
+        public static int overlayCodeStart = 0x077657;
 
         public static int ExpandedOverlaySpace = 0x120000;
 
         public static int overworldTilesType = 0x071459;
         public static int overworldMessages = 0x03F51D;
+        public static int overworldMessagesExpanded = 0x1417F8;
 
-        // TODO:
         public static int overworldMusicBegining = 0x014303; // 0x40
-        public static int overworldMusicZelda = 0x014303 + 0x40; // 0x40
-        public static int overworldMusicMasterSword = 0x014303 + 0x80; // 0x40
-        public static int overworldMusicAgahim = 0x014303 + 0xC0; // 0x40
+        public static int overworldMusicZelda = overworldMusicBegining + 0x40; // 0x40
+        public static int overworldMusicMasterSword = overworldMusicBegining + 0x80; // 0x40
+        public static int overworldMusicAgahim = overworldMusicBegining + 0xC0; // 0x40
         public static int overworldMusicDW = 0x014403; // 0x60
 
         public static int overworldEntranceAllowedTilesLeft = 0x0DB8C1;
@@ -309,25 +336,35 @@ namespace ZeldaFullEditor
         // all Large map would be :
         // 0000, 0000, 0400, 0400, 0800, 0800, 0C00, 0C00
 
-        public static int overworldMapParentId = 0x0125EC;
+        public static int overworldMapParentID = 0x0125EC;
+        public static int overworldMapParentIDExpanded = 0x140998;
 
-        public static int overworldTransitionPositionY = 0x0128C4;
-        public static int overworldTransitionPositionX = 0x012944;
+        public static int overworldTransitionPositionY = 0x0128C4; // Now unused.
+        public static int overworldTransitionPositionX = 0x012944; // Now unused.
+
+        public static int overworldTransitionPositionYExpanded = 0x140F38;
+        public static int overworldTransitionPositionXExpanded = 0x141078;
 
         public static int overworldScreenSize = 0x01788D;
 
-        public static int OverworldScreenSizeForLoading = 0x04C635;
-        public static int OverworldScreenTileMapChangeByScreen1 = 0x012634;
-        public static int OverworldScreenTileMapChangeByScreen2 = 0x0126B4;
-        public static int OverworldScreenTileMapChangeByScreen3 = 0x012734;
-        public static int OverworldScreenTileMapChangeByScreen4 = 0x0127B4;
+        public static int OverworldScreenSizeForLoading = 0x04C635; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen1 = 0x012634; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen2 = 0x0126B4; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen3 = 0x012734; // Now unused.
+        public static int OverworldScreenTileMapChangeByScreen4 = 0x0127B4; // Now unused.
 
-        public static int OverworldScreenTileMapChangeMask = 0x01262C;
+        public static int OverworldScreenTileMapChangeByScreen1Expanded = 0x140A38;
+        public static int OverworldScreenTileMapChangeByScreen2Expanded = 0x140B78;
+        public static int OverworldScreenTileMapChangeByScreen3Expanded = 0x140CB8;
+        public static int OverworldScreenTileMapChangeByScreen4Expanded = 0x140DF8;
 
         public static int OverworldMapDataOverflow = 0x130000;
 
         public static int transition_target_north = 0x013EE2;
         public static int transition_target_west = 0x013F62;
+
+        public static int transition_target_northExpanded = 0x1411B8;
+        public static int transition_target_westExpanded = 0x1412F8;
 
         public static int OverworldCustomASMHasBeenApplied = 0x140145; // 1 byte, corresponds to the version number. 0 if not applied at all.
 
@@ -360,6 +397,7 @@ namespace ZeldaFullEditor
                                                   // 105C2 Ending maps
                                                   // 105E2 Sprite Group Table for Ending
         public static int OWExitMapId = 0x015E28;
+        public static int OWExitSW = 0x075ED4;
         public static int OWExitVram = 0x015E77;
         public static int OWExitYScroll = 0x015F15;
         public static int OWExitXScroll = 0x015FB3;
@@ -1219,7 +1257,7 @@ namespace ZeldaFullEditor
              "Blue pegs ↕",
              "Orange pegs ↕",
              "Invisible floor ↕",
-             "Fake pots ↕",
+             "Pots ↕",
              "Hammer pegs ↕",
              "Nothing",
              "Nothing",
@@ -1258,7 +1296,7 @@ namespace ZeldaFullEditor
              "Orange pegs ↔",
              "Invisible floor ↔",
              "Fake pressure plates ↔",
-             "Fake pots ↔",
+             "Pots ↔",
              "Hammer pegs ↔",
              "Nothing",
              "Nothing",
@@ -1782,43 +1820,43 @@ namespace ZeldaFullEditor
 
 
         public static string[] musicNames = new string[]
-            {
-                "00_No Music",
-                "01_TriforceIntro",
-                "02_LightWorldOverture",
-                "03_Rain",
-                "04_BunnyTheme",
-                "05_LostWoods",
-                "06_LegendsTheme_Attract",
-                "07_KakarikoVillage",
-                "08_MirrorWarp",
-                "09_DarkWorld",
-                "0A_PullingTheMasterSword",
-                "0B_FairyTheme",
-                "0C_Fugitive",
-                "0D_SkullWoodsMarch",
-                "0E_MinigameTheme",
-                "0F_IntroFanfare",
-                "10_HyruleCastle",
-                "11_PendantDungeon",
-                "12_Cave",
-                "13_Fanfare",
-                "14_Sanctuary",
-                "15_Boss",
-                "16_CrystalDungeon",
-                "17_Shop",
-                "12_Cavea",
-                "19_ZeldaRescue",
-                "1A_CrystalMaiden",
-                "1B_BigFairy",
-                "1C_Suspense",
-                "1D_AgahnimEscapes",
-                "1E_MeetingGanon",
-                "1F_KingOfThieves",
-                "20_TriforceRoom",
-                "21_EndingTheme",
-                "22_Credits"
-            };
+        {
+            "00_No Music",
+            "01_TriforceIntro",
+            "02_LightWorldOverture",
+            "03_Rain",
+            "04_BunnyTheme",
+            "05_LostWoods",
+            "06_LegendsTheme_Attract",
+            "07_KakarikoVillage",
+            "08_MirrorWarp",
+            "09_DarkWorld",
+            "0A_PullingTheMasterSword",
+            "0B_FairyTheme",
+            "0C_Fugitive",
+            "0D_SkullWoodsMarch",
+            "0E_MinigameTheme",
+            "0F_IntroFanfare",
+            "10_HyruleCastle",
+            "11_PendantDungeon",
+            "12_Cave",
+            "13_Fanfare",
+            "14_Sanctuary",
+            "15_Boss",
+            "16_CrystalDungeon",
+            "17_Shop",
+            "12_Cavea",
+            "19_ZeldaRescue",
+            "1A_CrystalMaiden",
+            "1B_BigFairy",
+            "1C_Suspense",
+            "1D_AgahnimEscapes",
+            "1E_MeetingGanon",
+            "1F_KingOfThieves",
+            "20_TriforceRoom",
+            "21_EndingTheme",
+            "22_Credits"
+        };
 
 
         // TODO move to DefaultEntities
@@ -1846,41 +1884,38 @@ namespace ZeldaFullEditor
         {
             "0x00 Nothing",
             "0x01 Rain / Zora area",
-            "0x02 Quiet rain",
-            "0x03 More rain",
-            "0x04 Even more rain",
+            "0x02 Rain / Zora area (packaged with 0x01)",
+            "0x03 Rain",
+            "0x04 Rain (packaged with 0x03)",
             "0x05 Silence",
-            "0x06 Silence 2",
+            "0x06 Silence (packaged with 0x05)",
             "0x07 Rumbling",
-            "0x08 Endless rumbling",
+            "0x08 Rumbling (packaged with 0x08)",
             "0x09 Wind",
-            "0x0A Quiet wind",
-            "0x0B Flute song",
-            "0x0C Flute again",
-            "0x0D Magic bat/Witch shroom",
-            "0x0E Magic bat",
-            "0x0F Crystal get / Save and quit",
-            "0x10 SQ sound",
+            "0x0A Wind (packaged with 0x09)",
+            "0x0B Flute song by flute boy",
+            "0x0C Flute song by flute boy (packaged with 0x0B)",
+            "0x0D Magic jingle",
+            "0x0E Magic jingle (packaged with 0x0D)",
+            "0x0F Crystal / Save and quit",
+            "0x10 Crystal / Save and quit (packaged with 0x0F)",
             "0x11 Choir melody",
-            "0x12 Choir countermelody",
-            "0x13 Lanmo/Blind swoosh",
-            "0x14 Another swoosh",
-            "0x15 Triforce door/Pyramid hole opening",
-            "0x16 VOMP",
-            "0x17 Flute again again",
-            "0x18 Why is there so much flute",
-            "0x19 Nothing",
-            "0x1A Nothing",
-            "0x1B All flute and no play",
-            "0x1C Makes flute a flutey flute",
-            "0x1D Some jingle",
-            "0x1E That broken jingle again",
-            "0x1F Crystal get again",
-            "0x20 Crystal get again again"
+            "0x12 Choir countermelody (packaged with 0x11)",
+            "0x13 Large boss swoosh",
+            "0x14 Large boss swoosh (packaged with 0x13)",
+            "0x15 Triforce door / Pyramid hole opening",
+            "0x16 VOMP (packaged with 0x15)",
+            "0x17 Flute song for weathervane",
+            "0x18 Flute song for weathervane (packaged with 0x17)",
+            "0x19 Nothing (unused)",
+            "0x1A Nothing (unused; packaged with 0x19)",
+            "0x1B Flute song by flute boy duplicate (unused)",
+            "0x1C Flute song by flute boy duplicate (unused; packaged with 0x1B)",
+            "0x1D Magic jingle duplicate (unused)",
+            "0x1E Magic jingle duplicate (unused; packaged with 0x1D)",
+            "0x1F Crystal / Save and quit duplicate (unused)",
+            "0x20 Crystal / Save and quit duplicate (unused; packaged with 0x1F)"
         };
-
-
-
 
         public static string[] textsLocations = new string[]
         {
@@ -2305,5 +2340,13 @@ namespace ZeldaFullEditor
             "", // 18E
             "", // 18F
         };
+
+        public static string PNGFolderName = "Images\\";
+        public static string DungeonSingleMapPNGName = "SingleRoom.png";
+        public static string DungeonMultipleMapPNGName = "MultipleRooms.png";
+        public static string VRAMPNGName = "VRAM.png";
+        public static string OWLWPNGName = "LW.png";
+        public static string OWDWPNGName = "DW.png";
+        public static string OWSWPNGName = "SW.png";
     }
 }

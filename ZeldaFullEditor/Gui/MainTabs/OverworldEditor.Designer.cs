@@ -67,6 +67,7 @@
             this.propertyTabpage = new System.Windows.Forms.TabPage();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
             this.previewsheetPicturebox = new System.Windows.Forms.PictureBox();
+            this.AreaSizeComboBox = new System.Windows.Forms.ComboBox();
             this.ambient4Box = new System.Windows.Forms.ComboBox();
             this.ambient3Box = new System.Windows.Forms.ComboBox();
             this.ambient2Box = new System.Windows.Forms.ComboBox();
@@ -114,7 +115,6 @@
             this.OWProperty_BGGFX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.largemapCheckbox = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.musicButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -607,8 +607,9 @@
             this.tilePictureBox.TabStop = false;
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
             this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
-            this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
+            this.tilePictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseDown);
             this.tilePictureBox.MouseEnter += new System.EventHandler(this.tilePictureBox_MouseEnter);
+            this.tilePictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseUp);
             // 
             // scratchpadTab
             // 
@@ -650,6 +651,7 @@
             // mapGroupbox
             // 
             this.mapGroupbox.Controls.Add(this.previewsheetPicturebox);
+            this.mapGroupbox.Controls.Add(this.AreaSizeComboBox);
             this.mapGroupbox.Controls.Add(this.ambient4Box);
             this.mapGroupbox.Controls.Add(this.ambient3Box);
             this.mapGroupbox.Controls.Add(this.ambient2Box);
@@ -693,7 +695,6 @@
             this.mapGroupbox.Controls.Add(this.OWProperty_BGGFX);
             this.mapGroupbox.Controls.Add(this.areaBGColorPictureBox);
             this.mapGroupbox.Controls.Add(this.label7);
-            this.mapGroupbox.Controls.Add(this.largemapCheckbox);
             this.mapGroupbox.Controls.Add(this.button1);
             this.mapGroupbox.Controls.Add(this.musicButton);
             this.mapGroupbox.Controls.Add(this.label6);
@@ -716,6 +717,21 @@
             this.previewsheetPicturebox.TabStop = false;
             this.previewsheetPicturebox.Visible = false;
             this.previewsheetPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewsheetPicturebox_Paint);
+            // 
+            // AreaSizeComboBox
+            // 
+            this.AreaSizeComboBox.FormattingEnabled = true;
+            this.AreaSizeComboBox.Items.AddRange(new object[] {
+            "0 Small Area",
+            "1 Large Area",
+            "2 Wide Area",
+            "3 Tall Area"});
+            this.AreaSizeComboBox.Location = new System.Drawing.Point(50, 236);
+            this.AreaSizeComboBox.Name = "AreaSizeComboBox";
+            this.AreaSizeComboBox.Size = new System.Drawing.Size(85, 21);
+            this.AreaSizeComboBox.TabIndex = 71;
+            this.AreaSizeComboBox.Text = "0 Small Area";
+            this.AreaSizeComboBox.SelectedIndexChanged += new System.EventHandler(this.AreaSizeComboBox_SelectedIndexChanged);
             // 
             // ambient4Box
             // 
@@ -918,6 +934,7 @@
             this.OWProperty_TileGFX7.TabIndex = 55;
             this.OWProperty_TileGFX7.Text = "00";
             this.OWProperty_TileGFX7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_TileGFX7.TextChanged += new System.EventHandler(this.OverworldPropertyTextbox_TextChanged);
             this.OWProperty_TileGFX7.MouseEnter += new System.EventHandler(this.OWProperty_TileGFX0_MouseEnter);
             this.OWProperty_TileGFX7.MouseLeave += new System.EventHandler(this.OWProperty_TileGFX0_MouseLeave);
             // 
@@ -1318,17 +1335,6 @@
             this.label7.Size = new System.Drawing.Size(48, 13);
             this.label7.TabIndex = 15;
             this.label7.Text = "BG color";
-            // 
-            // largemapCheckbox
-            // 
-            this.largemapCheckbox.AutoSize = true;
-            this.largemapCheckbox.Location = new System.Drawing.Point(59, 241);
-            this.largemapCheckbox.Name = "largemapCheckbox";
-            this.largemapCheckbox.Size = new System.Drawing.Size(76, 17);
-            this.largemapCheckbox.TabIndex = 14;
-            this.largemapCheckbox.Text = "Large map";
-            this.largemapCheckbox.UseVisualStyleBackColor = true;
-            this.largemapCheckbox.Click += new System.EventHandler(this.largemapCheckbox_Clicked);
             // 
             // button1
             // 
@@ -2470,7 +2476,6 @@
         private ExtraForms.Hexbox OWProperty_BGGFX;
         public System.Windows.Forms.PictureBox areaBGColorPictureBox;
         private System.Windows.Forms.Label label7;
-        public System.Windows.Forms.CheckBox largemapCheckbox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button musicButton;
         private System.Windows.Forms.Label label6;
@@ -2568,5 +2573,6 @@
         private ExtraForms.Hexbox owexit_xscroll_property;
         private ExtraForms.Hexbox owexit_xcamera_property;
         public System.Windows.Forms.ListBox overworldexitsListbox;
+        private System.Windows.Forms.ComboBox AreaSizeComboBox;
     }
 }

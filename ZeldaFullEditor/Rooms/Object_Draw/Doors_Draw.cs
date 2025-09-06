@@ -166,7 +166,7 @@ namespace ZeldaFullEditor
 			}
 
             // 0x26,0x40,0x46,0x0C
-            if (dtype == 0x26 || dtype == 0x40 || dtype == 0x46 || dtype == 0x0C)
+            if (dtype == 0x26 || dtype == 0x40 || dtype == 0x46)
             {
                 Layer = LayerType.BG2;
             }
@@ -193,7 +193,7 @@ namespace ZeldaFullEditor
             }
             int tid = 0;
 
-            if (dtype == 0x0A)
+            if (dtype == 0x0A || dtype == 0x0C)
             {
                 tiles.Clear();
                 addTiles(80, Constants.tile_address + 0x2656);

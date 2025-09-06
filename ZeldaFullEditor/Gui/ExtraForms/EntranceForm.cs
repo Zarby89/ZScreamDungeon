@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
@@ -42,9 +35,9 @@ namespace ZeldaFullEditor.Gui
 
             int.TryParse(textBox2.Text, out v); // Map Id
 
-            if (v > 128 || v < 0)
+            if (v > 0x9F || v < 0)
             {
-                MessageBox.Show("Map ID is out of range; max value is 128");
+                MessageBox.Show("Map ID is out of range; max value is 0x9F");
                 return;
             }
 

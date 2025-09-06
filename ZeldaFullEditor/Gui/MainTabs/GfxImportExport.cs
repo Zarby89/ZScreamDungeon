@@ -313,7 +313,7 @@ namespace ZeldaFullEditor.Gui
 			e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, this.selectedPal * 16, 256, 16));
 		}
 
-        // TODO KAN REFACTOR - test and use this rewritten function
+        // TODO: Test and use this rewritten function.
         /*
 		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
         {

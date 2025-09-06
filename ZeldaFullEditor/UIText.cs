@@ -12,7 +12,7 @@ namespace ZeldaFullEditor
         // META
         // ===========================================================================================
         public const string APPNAME = "ZScream";
-        public const string VERSION = "3.2.4";
+        public const string VERSION = "3.2.5";
 
         public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
         public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
@@ -113,7 +113,15 @@ namespace ZeldaFullEditor
         public static void CryAboutSaving(string message = "OHNO")
         {
             MessageBox.Show(
-                $"Failed to save;\n{message}",
+                $"Failed to save:\n{message}",
+                "Bad Error",
+                MessageBoxButtons.OK);
+        }
+
+        public static void GenericError(string message = "OHNO")
+        {
+            MessageBox.Show(
+                $"{message}",
                 "Bad Error",
                 MessageBoxButtons.OK);
         }

@@ -905,11 +905,6 @@ namespace ZeldaFullEditor
 		}
 
 
-
-
-
-
-
 		public void InitializeOnOpen()
 		{
 			panel1.Enabled = true;
