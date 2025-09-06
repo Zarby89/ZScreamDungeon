@@ -24,7 +24,7 @@
 ;    • The ability to use the other previously unused "secial world" areas 
 ;      as if they were a normal area. Including the use of items, entrances,
 ;      exits, whirlpools, bird transports, sign messages, overworld transitions, 
-;      overlays, and subscreen overlays.
+;      entrance overlays, and subscreen overlays.
 ;    • The ability to have sprites on the DW and SW during phase 0.
 ;    • Fixes several bugs present in the vanilla game that prevent certain normal
 ;      overworld transitions such as "staggered" layouts or transitions in the
@@ -59,7 +59,7 @@
 ; Non-Expanded Space
 ; ==============================================================================
 
-; TODO: Jeimuzu's sprite bug
+; TODO: Entrance overlay SRM
 
 pushpc
 
@@ -269,6 +269,9 @@ PaletteData_owmain                         = $1BE6C8 ; $0DE6C8
 ; $02E931
 !Func02E931 = $01
 
+; $02EF44
+!Func02EF44 = $01
+
 ; $03B518
 !Func07B518 = $01
 
@@ -333,6 +336,7 @@ if !AllOff == 1
 !Func02C692 = $00
 !Func02E598 = $00
 !Func02E931 = $00
+!Func02EF44 = $00
 
 !Func07B518 = $00
 
@@ -5728,6 +5732,24 @@ Link_Read_Interupt:
 }
 
 pushpc
+
+; ==============================================================================
+
+if !Func02EF44 == $01
+
+; Remove a check so that entrance overlays can be used on the SW.
+org $02EF44 ; $016F44
+Overworld_LoadMapData_Interupt:
+{
+    NOP : NOP : NOP : NOP
+}
+
+else
+
+org $02EF44 ; $016F44
+db $E0, $80, $B0, $0C
+
+endif
 
 ; ==============================================================================
 
