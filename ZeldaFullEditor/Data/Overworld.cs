@@ -1263,7 +1263,7 @@ namespace ZeldaFullEditor
 
             if (error)
             {
-                UIText.GenericError("Warning:\nAn error was detected while loading overworld overlays. Saving may cause some overlay data to be lost.");
+                UIText.InternalError("Warning:\nAn error was detected while loading overworld overlays. Saving may cause some overlay data to be lost.");
             }
 
             return allOverlays;

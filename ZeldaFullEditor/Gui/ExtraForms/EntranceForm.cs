@@ -35,7 +35,7 @@ namespace ZeldaFullEditor.Gui
 
             int.TryParse(textBox2.Text, out v); // Map Id
 
-            if (v > 0x9F || v < 0)
+            if (v > Constants.NumberOfOWMaps - 1 || v < 0)
             {
                 MessageBox.Show("Map ID is out of range; max value is 0x9F");
                 return;

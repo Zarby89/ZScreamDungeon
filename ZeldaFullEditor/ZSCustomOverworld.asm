@@ -1593,7 +1593,7 @@ if !Func00EEBB == 1
 ; white on top of the pyramid BG, resulting in a double faded effect on
 ; transparent tiles.
 org $00EEBB ; $006EBB
-Palette_InitWhiteFilter_Interupt:
+Palette_InitWhiteFilter_Interrupt:
 {
     ; Check if we are currently in an area that is using an overlay.
     ; By this point $8A is already set to the area we are going to so flip the
@@ -1643,7 +1643,7 @@ if !Func00FF7C == 1
 
 ; Controls the BG scrolling for HC and the pyramid area.
 org $00FF7C ; $007F7C
-MirrorWarp_BuildDewavingHDMATable_Interupt:
+MirrorWarp_BuildDewavingHDMATable_Interrupt:
 {
     LDA.w $1C80 : ORA.w $1C90 : ORA.w $1CA0 : ORA.w $1CB0 : CMP.b $E2 : BNE .BRANCH_DELTA
         SEP #$30 ; Set A, X, and Y in 8bit mode.
@@ -1724,7 +1724,7 @@ warnpc $029F85
 ; Includes removing asm that plays music in certain areas and changing how
 ; animated tiles are loaded.
 org $0283EE ; $0103EE
-PreOverworld_LoadProperties_Interupt:
+PreOverworld_LoadProperties_Interrupt:
 {
     LDX.b #$F3
 
@@ -1982,7 +1982,7 @@ if !Func028632 == 1
 
 ; Changes a function that loads animated tiles under certain conditions.
 org $028632 ; $010632
-Credits_LoadScene_Overworld_PrepGFX_Interupt:
+Credits_LoadScene_Overworld_PrepGFX_Interrupt:
 {
     ; The decompression function increases it by 1 so subtract 1 here.
     JSL.l ReadAnimatedTable : DEC : TAY
@@ -2056,7 +2056,7 @@ if !Func029A37 == 1
 ; Changes part of a function that changes the sub mask color when leaving
 ; dungeons.
 org $029A37 ; $011A37
-Spotlight_ConfigureTableAndControl_Interupt:
+Spotlight_ConfigureTableAndControl_Interrupt:
 {
     LDA.b $10 : CMP.b #$09 : BEQ .dontPrepForDungeon
                 CMP.b #$0B : BEQ .dontPrepForDungeon
@@ -2181,7 +2181,7 @@ if !Func02AF58 == 1
 ; This also does not change the overlay for under the bridge because it shares
 ; an area with the master sword.
 org $02AF58 ; $012F58
-Overworld_ReloadSubscreenOverlay_Interupt:
+Overworld_ReloadSubscreenOverlay_Interrupt:
 {
     SEP #$20 ; Set A in 8bit mode.
 
@@ -2505,7 +2505,7 @@ if !Func02B391 == 1
 ; Handles activating the subscreen and special BG color when warping to an area
 ; with the pyramid BG.
 org $02B391 ; $013391
-MirrorWarp_LoadSpritesAndColors_Interupt:
+MirrorWarp_LoadSpritesAndColors_Interrupt:
 {
     LDA.l OverworldPalettesScreenToSet_New, X
     JSL.l Overworld_LoadPalettes
@@ -2586,7 +2586,7 @@ if !Func02BC44 == 1
 
 ; Controls overworld vertical subscreen movement for the pyramid BG.
 org $02BC44 ; $013C44
-Overworld_OperateCameraScroll_Interupt:
+Overworld_OperateCameraScroll_Interrupt:
 {
     ; Check for the pyramid BG.
     JSL.l ReadOverlayArray : CMP.w #$0096 : BNE .BRANCH_IOTA
@@ -2664,7 +2664,7 @@ if !Func02C02D == 1
 
 ; Changes how the pyramid BG scrolls durring transition.
 org $02C02D ; $01402D
-OverworldScrollTransition_Interupt:
+OverworldScrollTransition_Interrupt:
 {
     PHA
     JSL.l ReadOverlayArray2
@@ -3543,7 +3543,7 @@ if !Func0AB8F5 == 1
 
 ; Loads different animated tiles when returning from bird travel.
 org $0AB8F5 ; $0538F5
-BirdTravel_LoadTargetArea_Interupt:
+BirdTravel_LoadTargetArea_Interrupt:
 {
     JSL.l ReadAnimatedTable : STA.w AnimatedTileGFXSet
     DEC                     : TAY
@@ -3957,7 +3957,7 @@ if !Func0ED8AE == 1
 
 ; Resets the area special color after the screen flashes.
 org $0ED8AE ; $0758AE
-Palette_RestoreFixedColor_Interupt:
+Palette_RestoreFixedColor_Interrupt:
 {
     LDA.b $1B : BNE .noSpecialColor
         REP #$30 ; Set A, X, and Y in 16bit mode.
@@ -4019,7 +4019,7 @@ endif
 
 if !Func00D585 == 1
 
-; Interupts the vanilla LoadTransAuxGFX function
+; Interrupts the vanilla LoadTransAuxGFX function
 org $00D673 ; $005673
     JML.l NewLoadTransAuxGFX
 
@@ -4595,7 +4595,7 @@ pushpc
 if !Func00E221 == 1
 
 org $02B490 ; $013490
-    JSL.l Whirlpool_LoadDestinationMap_Interupt
+    JSL.l Whirlpool_LoadDestinationMap_Interrupt
 
 else
 
@@ -4606,7 +4606,7 @@ endif
 
 pullpc
 
-Whirlpool_LoadDestinationMap_Interupt:
+Whirlpool_LoadDestinationMap_Interrupt:
 {
     ; Replaced code.
     JSL.l BirdTravel_LoadAmbientOverlay
@@ -4931,7 +4931,7 @@ pushpc
 if !Func02C0C3 == $01
 
 org $02C0C3 ; $0140C3
-Overworld_SetCameraBounds_Interupt:
+Overworld_SetCameraBounds_Interrupt:
 {
     JSL.l NewOverworld_SetCameraBounds
 
@@ -5031,7 +5031,7 @@ warnpc $02EAE1 ; $016AE1
 ; Changed to use the new x value and the new OverworldTransitionPositionX and Y
 ; tables.
 org $08FA49 ; $047A49
-Hookshot_IsCollisionCheckFutile_Interupt:
+Hookshot_IsCollisionCheckFutile_Interrupt:
 {
     LDA.w $0C72, X : AND.w #$0002 : BNE .moving_horizontally
         LDX.w $0700
@@ -5066,7 +5066,7 @@ warnpc $08FA81 ; $047A81
 
 ; Change an old OverworldScreenSizeFlag use to set the X value instead.
 org $02AB0D ; $012B0D
-Overworld_LoadMapProperties_Interupt:
+Overworld_LoadMapProperties_Interrupt:
 {
     CPX.b #$80 : BCS .inSW
         ; $0AA3 is the sprite graphics index.
@@ -5212,7 +5212,7 @@ pushpc
 if !Func09C4C7 == $01
 
 org $09C4C7 ; $04C4C7
-LoadOverworldSprites_Interupt:
+LoadOverworldSprites_Interrupt:
 {
     LDX.w $040A
     LDA.l Pool_BufferAndBuildMap16Stripes_overworldScreenSize, X : TAY
@@ -5412,7 +5412,7 @@ endif
 if !Func02E931 == $01
 
 org $02E931 ; $016931
-LoadSpecialOverworld_Interupt:
+LoadSpecialOverworld_Interrupt:
 {
     LDA.b $8A : SEC : SBC.b #$80 : TAX
 
@@ -5557,7 +5557,7 @@ pushpc
 if !Func02A5D3 == $01
 
 org $02A5D3 ; $0125D3
-Overworld_PlayerControl_Interupt:
+Overworld_PlayerControl_Interrupt:
 {
     JSL.l Overworld_Entrance
     JSL.l Overworld_DwDeathMountainPaletteAnimation
@@ -5614,7 +5614,7 @@ endif
 if !Func00FC67 == $01
 
 org $00FC67 ; $007C67
-JSL.l Sprite_LoadGfxProperties_Interupt
+JSL.l Sprite_LoadGfxProperties_Interrupt
 NOP : NOP : NOP
 
 org $0286DB ; $0106DB
@@ -5656,7 +5656,7 @@ endif
 
 pullpc
 
-Sprite_LoadGfxProperties_Interupt:
+Sprite_LoadGfxProperties_Interrupt:
 {
     LDX.w #$003E
 
@@ -5684,7 +5684,7 @@ if !Func1BC8B1 == $01
 
 ; Remove the SW overworld item check.
 org $1BC8B4 ; $0DC8B4
-Overworld_RevealSecret_Interupt:
+Overworld_RevealSecret_Interrupt:
 {
     NOP : NOP
 }
@@ -5708,7 +5708,7 @@ endif
 if !Func07B518 == $01
 
 org $07B518 ; $03B518
-JSL Link_Read_Interupt
+JSL Link_Read_Interrupt
 
 else
 
@@ -5719,7 +5719,7 @@ endif
 
 pullpc
 
-Link_Read_Interupt:
+Link_Read_Interrupt:
 {
     PHB : PHK : PLB
 
@@ -5739,7 +5739,7 @@ if !Func02EF44 == $01
 
 ; Remove a check so that entrance overlays can be used on the SW.
 org $02EF44 ; $016F44
-Overworld_LoadMapData_Interupt:
+Overworld_LoadMapData_Interrupt:
 {
     NOP : NOP : NOP : NOP
 }
