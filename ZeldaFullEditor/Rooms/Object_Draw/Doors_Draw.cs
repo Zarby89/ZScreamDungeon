@@ -165,7 +165,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-            // 0x26,0x40,0x46,0x0C
+            // 0x26,0x40,0x46
             if (dtype == 0x26 || dtype == 0x40 || dtype == 0x46)
             {
                 Layer = LayerType.BG2;

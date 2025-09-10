@@ -118,7 +118,7 @@ namespace ZeldaFullEditor
                 MessageBoxButtons.OK);
         }
 
-        public static void GenericError(string message = "OHNO")
+        public static void InternalError(string message = "OHNO")
         {
             MessageBox.Show(
                 $"{message}",

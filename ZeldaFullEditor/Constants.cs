@@ -282,7 +282,6 @@ namespace ZeldaFullEditor
         public static int overworldSpritesDataStart = 0x04CB41;
         public static int overworldSpritesDataEnd = 0x04D62E;
 
-        // TODO: Change these addresses.
         public static int overworldSpritesBeginingExpanded = 0x141438;
         public static int overworldSpritesZeldaExpanded = 0x141578;
         public static int overworldSpritesAgahnimExpanded = 0x1416B8;
