@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Lidgren.Network;
 using ZeldaFullEditor.Data;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor.Properties
 {
@@ -585,7 +586,7 @@ namespace ZeldaFullEditor.Properties
             }
 
             spr.id = sprid;
-            spr.mapid = buffer.ReadByte();
+            spr.MapID = buffer.ReadByte();
             spr.map_x = buffer.ReadInt();
             spr.map_y = buffer.ReadInt();
             spr.x = buffer.ReadByte();
@@ -727,8 +728,8 @@ namespace ZeldaFullEditor.Properties
             buffer.ReadByte(); // cmd id 12
             buffer.ReadByte(); // user id
             int map = buffer.ReadInt(); // unique id
-            bool largeCheck = buffer.ReadByte() == 1 ? true : false;
-            form.overworldEditor.UpdateLargeMap(map, largeCheck);
+            AreaSizeEnum oldAreaSize = form.overworldEditor.scene.ow.AllMaps[map].AreaSize;
+            form.overworldEditor.UpdateAreaSize(map, (AreaSizeEnum)buffer.ReadByte(), oldAreaSize);
         }
 
         private void ReceivedMapProperties(NetIncomingMessage im)
@@ -752,26 +753,35 @@ namespace ZeldaFullEditor.Properties
                 owmap.SpritePalette[state] = buffer.ReadByte();
                 form.overworldEditor.UpdateGUIProperties(owmap, state);
 
-                if (owmap.LargeMap)
+                owmap.BuildMap();
+
+                if (owmap.AreaSize == AreaSizeEnum.WideArea || owmap.AreaSize == AreaSizeEnum.LargeArea)
                 {
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].GFX = owmap.GFX;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].SpriteGFX = owmap.SpriteGFX;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].AuxPalette = owmap.AuxPalette;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].SpritePalette = owmap.SpritePalette;
 
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].BuildMap();
+                }
+
+                if (owmap.AreaSize == AreaSizeEnum.TallArea || owmap.AreaSize == AreaSizeEnum.LargeArea)
+                {
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].GFX = owmap.GFX;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].SpriteGFX = owmap.SpriteGFX;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].AuxPalette = owmap.AuxPalette;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].SpritePalette = owmap.SpritePalette;
 
+                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].BuildMap();
+                }
+
+                if (owmap.AreaSize == AreaSizeEnum.LargeArea)
+                {
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].GFX = owmap.GFX;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].SpriteGFX = owmap.SpriteGFX;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].AuxPalette = owmap.AuxPalette;
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].SpritePalette = owmap.SpritePalette;
 
-                    owmap.BuildMap();
-                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 1].BuildMap();
-                    form.overworldEditor.scene.ow.AllMaps[owmap.Index + 8].BuildMap();
                     form.overworldEditor.scene.ow.AllMaps[owmap.Index + 9].BuildMap();
                 }
 

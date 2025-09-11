@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZScream</AssemblyName>
@@ -145,6 +145,7 @@
     <Compile Include="Data\AsmPropertyType.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DungeonMap.cs" />
+    <Compile Include="Data\DungeonObjectData.cs" />
     <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
@@ -219,6 +220,12 @@
     <Compile Include="Data\EntranceOW.cs" />
     <Compile Include="Data\ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
+    <Compile Include="Gui\ExtraForms\DungeonObjEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\DungeonObjEditor.Designer.cs">
+      <DependentUpon>DungeonObjEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -256,7 +263,7 @@
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\CGRamViewer.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\CGRamViewer.Designer.cs">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
@@ -293,6 +300,12 @@
     </Compile>
     <Compile Include="Gui\ExtraForms\SearchTilesForm.Designer.cs">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\TransportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\TransportForm.Designer.cs">
+      <DependentUpon>TransportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\ExtraForms\ZsprImporter.cs">
       <SubType>Form</SubType>
@@ -337,7 +350,7 @@
       <DependentUpon>GfxEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
@@ -433,7 +446,7 @@
       <DependentUpon>MessageAsBytes.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\VramViewer.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\VramViewer.Designer.cs">
       <DependentUpon>VramViewer.cs</DependentUpon>
@@ -579,10 +592,6 @@
     <Compile Include="T32UniqueCounter.cs" />
     <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Gui\WhirlpoolForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WhirlpoolForm.Designer.cs" />
     <Compile Include="WriteType.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
@@ -619,6 +628,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\DungeonObjEditor.resx">
+      <DependentUpon>DungeonObjEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx">
       <DependentUpon>EntranceForm.cs</DependentUpon>
@@ -666,6 +678,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\TransportForm.resx">
+      <DependentUpon>TransportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ZsprImporter.resx">
       <DependentUpon>ZsprImporter.cs</DependentUpon>
@@ -786,7 +801,6 @@
     <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include=".editorconfig" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -829,6 +843,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
+    <None Include="Resources\arrow_Up_16xLG.png" />
+    <None Include="Resources\arrow_Next_16xMD.png" />
+    <None Include="Resources\arrow_Next_16xLG.png" />
+    <None Include="Resources\arrow_previous_16xLG.png" />
+    <None Include="Resources\arrow_Down_16xLG.png" />
     <Content Include="Resources\damageclass.png" />
     <None Include="Resources\lwimage.png" />
     <None Include="Resources\dwimage.png" />

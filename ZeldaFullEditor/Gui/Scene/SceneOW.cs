@@ -5,10 +5,12 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.OWSceneModes;
 using ZeldaFullEditor.Properties;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -60,6 +62,7 @@ namespace ZeldaFullEditor
         public bool showSprites = true;
         public bool hideText = false;
         public bool showOverlayText = true;
+        public bool showGraves = true;
         public OverworldEditor owForm;
         public bool entrancePreview = false;
         private Point startingPoint = Point.Empty;
@@ -71,8 +74,6 @@ namespace ZeldaFullEditor
         public List<OWNote> owNotesList = new List<OWNote>();
 
         public bool lowEndMode = false;
-
-        Pen camPen = new Pen(Color.Red, 2);
 
         public SceneOW(OverworldEditor f, Overworld ow, DungeonMain mform)
         {
@@ -315,14 +316,14 @@ namespace ZeldaFullEditor
 
             if (this.selectedMode == ObjectMode.Tile || this.selectedMode == ObjectMode.FillTile)
             {
-                text = "Selected Tile " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
+                this.tilemode.OnMouseUp(e);
+
+                text = "Selected Tile: " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
 
                 this.owForm.SetSelectedObjectLabels(
                         selectedTile[0].ToString("X4"),
                         (e.X / 16).ToString("X2"),
                         (e.Y / 16).ToString("X2"));
-
-                this.tilemode.OnMouseUp(e);
             }
             else if (this.selectedMode == ObjectMode.Overlay)
             {
@@ -485,13 +486,24 @@ namespace ZeldaFullEditor
             {
                 int x = this.ow.AllMaps[this.selectedMap].ParentID % 8;
                 int y = this.ow.AllMaps[this.selectedMap].ParentID / 8;
-                if (!this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
+                switch (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].AreaSize)
                 {
-                    this.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
-                }
-                else
-                {
-                    this.Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    case AreaSizeEnum.SmallArea:
+                    default:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                        break;
+
+                    case AreaSizeEnum.LargeArea:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                        break;
+
+                    case AreaSizeEnum.WideArea:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 1024, 512));
+                        break;
+
+                    case AreaSizeEnum.TallArea:
+                        this.Invalidate(new Rectangle(x * 512, y * 512, 512, 1024));
+                        break;
                 }
             }
             else
@@ -788,256 +800,281 @@ namespace ZeldaFullEditor
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
             g.PixelOffsetMode = PixelOffsetMode.Half;
 
-            if (this.initialized)
+            if (!this.initialized)
             {
-                int x = 0;
-                int y = 0;
+                return;
+            }
 
-                for (int i = ow.WorldOffset; i < 64 + ow.WorldOffset; i++)
+            int x = 0;
+            int y = 0;
+
+            for (int i = ow.WorldOffset; i < 0x40 + ow.WorldOffset; i++)
+            {
+                if (i <= 0x9F)
                 {
-                    if (i <= 0x9F)
+                    ushort subscreenOverlay = ow.AllMaps[i].SubscreenOverlay;
+
+                    g.CompositingMode = CompositingMode.SourceCopy; // Why over?
+
+                    g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
+
+                    // Draw the base image (either a BG color or tilemap like the pyramid BG).
+                    if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
                     {
-                        ushort subscreenOverlay = ow.AllMaps[i].SubscreenOverlay;
-
-                        g.CompositingMode = CompositingMode.SourceCopy; // Why over?
-
-                        g.FillRectangle(new SolidBrush(Palettes.OverworldBackgroundPalette[ow.AllMaps[i].ParentID]), new RectangleF(x * 512, y * 512, 512, 512));
-
-                        // Draw the base image (either a BG color or tilemap like the pyramid BG).
-                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                        // everything that is not these 3 should be drawn on top.
+                        // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
+                        if (subscreenOverlay == 0x95 || subscreenOverlay == 0x96 || subscreenOverlay == 0x9C)
                         {
-                            // everything that is not these 3 should be drawn on top.
-                            // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
-                            if (subscreenOverlay == 0x95 || subscreenOverlay == 0x96 || subscreenOverlay == 0x9C)
-                            {
-                                g.DrawImage(ow.AllMaps[subscreenOverlay].GFXBitmap, new PointF(x * 512, y * 512));
-                            }
-                        }
-
-                        g.CompositingMode = CompositingMode.SourceOver;
-                        // Draw the actual tile maps.
-                        g.DrawImage(ow.AllMaps[i].GFXBitmap, new PointF(x * 512, y * 512));
-
-                        // Draw any subscreen overlays that go on top.
-                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
-                        {
-                            // everything that is not these 3 should be drawn on top.
-                            // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
-                            // 0x93 is the second triforce room, 0x94 is the second master sword/ bridge area, 0x97 is the first fog, 0x9D is the second fog, 0x9E is the tree canopy, 0x9F is the rain.
-                            if (subscreenOverlay != 0x95 && subscreenOverlay != 0x96 && subscreenOverlay != 0x9C && subscreenOverlay < 0xA0)
-                            {
-                                g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-                            }
+                            g.DrawImage(ow.AllMaps[subscreenOverlay].GFXBitmap, new PointF(x * 512, y * 512));
                         }
                     }
 
-                    x++;
-                    if (x >= 8)
+                    g.CompositingMode = CompositingMode.SourceOver;
+                    // Draw the actual tile maps.
+                    g.DrawImage(ow.AllMaps[i].GFXBitmap, new PointF(x * 512, y * 512));
+
+                    // Draw any subscreen overlays that go on top.
+                    if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
                     {
-                        x = 0;
-                        y++;
+                        // everything that is not these 3 should be drawn on top.
+                        // 0x95 is the sky BG, 0x96 is the pyramid BG, and 0x9C is the lava BG.
+                        // 0x93 is the second triforce room, 0x94 is the second master sword/ bridge area, 0x97 is the first fog, 0x9D is the second fog, 0x9E is the tree canopy, 0x9F is the rain.
+                        if (subscreenOverlay != 0x95 && subscreenOverlay != 0x96 && subscreenOverlay != 0x9C && subscreenOverlay < 0xA0)
+                        {
+                            g.DrawImage(this.ow.AllMaps[subscreenOverlay].GFXBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+                        }
                     }
                 }
 
-                g.CompositingMode = CompositingMode.SourceOver;
-
-                if (this.selecting)
+                x++;
+                if (x >= 8)
                 {
-                    g.DrawRectangle(Pens.White, new Rectangle(this.globalmouseTileDownX * 16, this.globalmouseTileDownY * 16, (((this.mouseX_Real / 16) - this.globalmouseTileDownX) * 16) + 16, (((this.mouseY_Real / 16) - this.globalmouseTileDownY) * 16) + 16));
+                    x = 0;
+                    y++;
+                }
+            }
+
+            g.CompositingMode = CompositingMode.SourceOver;
+
+            int MouseRealXScaled = (this.mouseX_Real / 16);
+            int MouseRealYScaled = (this.mouseY_Real / 16);
+
+            if (this.selecting)
+            {
+                int leftMost = this.globalmouseTileDownX <= MouseRealXScaled ? this.globalmouseTileDownX : MouseRealXScaled;
+                int topMost = this.globalmouseTileDownY <= MouseRealYScaled ? this.globalmouseTileDownY : MouseRealYScaled;
+                g.DrawRectangle(Pens.White, new Rectangle(leftMost * 16, topMost * 16, Math.Abs(((MouseRealXScaled - this.globalmouseTileDownX) * 16) + 16), Math.Abs(((MouseRealYScaled - this.globalmouseTileDownY) * 16) + 16)));
+            }
+
+            if (this.selectedMode == ObjectMode.OWDoor || this.selectedMode == ObjectMode.Tile)
+            {
+                g.DrawImage(this.tilesgfxBitmap, new Rectangle(MouseRealXScaled * 16, MouseRealYScaled * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                g.DrawRectangle(Pens.LightGreen, new Rectangle(MouseRealXScaled * 16, MouseRealYScaled * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
+            }
+
+            if (showLinkCamera)
+            {
+                int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
+                int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
+                int camX = mouseX_Real - (mx * 512) - 120;
+                int camY = mouseY_Real - (my * 512) - 104;
+
+                int maxSizeX = 512;
+                int maxSizeY = 512;
+
+                switch (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].AreaSize)
+                {
+                    case AreaSizeEnum.LargeArea:
+                        maxSizeX = 1024;
+                        maxSizeY = 1024;
+                        break;
+
+                    case AreaSizeEnum.WideArea:
+                        maxSizeX = 1024;
+                        break;
+
+                    case AreaSizeEnum.TallArea:
+                        maxSizeY = 1024;
+                        break;
                 }
 
-                if (this.selectedMode == ObjectMode.OWDoor || this.selectedMode == ObjectMode.Tile)
+                if (camX + 256 >= maxSizeX)
                 {
-                    g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                    g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
+                    camX = maxSizeX - 256;
+                }
+                if (camX < 0)
+                {
+                    camX = 0;
                 }
 
-                if (showLinkCamera)
+                if ((camY + 224) >= maxSizeY)
                 {
-                    if (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].LargeMap)
+                    camY = maxSizeY - 224;
+                }
+                if (camY < 0)
+                {
+                    camY = 0;
+                }
+
+                g.DrawRectangle(Constants.CameraPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
+            }
+
+            int offset = 0;
+            if (this.selectedMap >= 0x40 && this.selectedMap < 0x80)
+            {
+                offset = 0x40;
+            }
+            else if (this.selectedMap >= 0x80)
+            {
+                offset = 0x80;
+            }
+
+            if ((this.mapHover + offset) < this.ow.AllMaps.Length)
+            {
+                int parentID = this.ow.AllMaps[this.mapHover + offset].ParentID;
+                int my = (parentID - offset) / 8;
+                int mx = (parentID - offset) - (my * 8);
+
+                int maxSizeX = 512;
+                int maxSizeY = 512;
+
+                switch (this.ow.AllMaps[parentID].AreaSize)
+                {
+                    case AreaSizeEnum.LargeArea:
+                        maxSizeX = 1024;
+                        maxSizeY = 1024;
+                        break;
+
+                    case AreaSizeEnum.WideArea:
+                        maxSizeX = 1024;
+                        break;
+
+                    case AreaSizeEnum.TallArea:
+                        maxSizeY = 1024;
+                        break;
+                }
+
+                // This is what draws the orange overworld area boxes.
+                g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, maxSizeX, maxSizeY));
+            }
+
+            if (this.showExits)
+            {
+                this.exitmode.Draw(g);
+            }
+
+            if (this.showEntrances)
+            {
+                this.entranceMode.Draw(g);
+            }
+
+            if (this.showItems)
+            {
+                this.itemMode.Draw(g);
+            }
+
+            // TODO: Only draw the graves on the LW for now but this should be changed later.
+            if (this.ow.WorldOffset == 0)
+            {
+                this.gravestoneMode.Draw(g);
+            }
+
+            if (this.showSprites)
+            {
+                this.spriteMode.Draw(g);
+            }
+
+            if (this.showFlute)
+            {
+                this.transportMode.Draw(g);
+            }
+
+            if (this.showOverlayText)
+            {
+                this.noteMode.Draw(g);
+            }
+
+            if (this.entrancePreview)
+            {
+                if (selectedMode == ObjectMode.Entrances)
+                {
+                    if (this.entranceMode.selectedEntrance != null)
                     {
-                        int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
-                        int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
-                        int camX = mouseX_Real = mouseX_Real - (mx*512) - 120;
-                        int camY = mouseY_Real = mouseY_Real - (my*512) - 104;
-                        if ((camX + 256) >= 1024)
+                        g.DrawImage(this.owForm.tmpPreviewBitmap, this.entranceMode.selectedEntrance.X + 16, this.entranceMode.selectedEntrance.Y + 16);
+                    }
+                }
+                else if (selectedMode == ObjectMode.Exits)
+                {
+                    if (this.exitmode.selectedExit != null)
+                    {
+                        g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
+                    }
+                }
+            }
+
+            if (owForm.showUsedTile32)
+            {
+                foreach (T32UniqueCounter t32 in mainForm.tilesToDraw)
+                {
+                    byte alpha = (byte)(40 + t32.count);
+                    int offsetx = 0;
+                    if (t32.x >= 8192)
+                    {
+                        //SW
+                        if (ow.WorldOffset != 0x80)
                         {
-                            camX = (1024 - 256);
-                        }
-                        if ((camX) < 0)
-                        {
-                            camX = 0;
+                            continue;
                         }
 
-                        if ((camY + 224) >= 1024)
+                        offsetx = 8192;
+                    }
+                    else if (t32.x >= 4096)
+                    {
+                        // DW
+                        if (ow.WorldOffset != 0x40)
                         {
-                            camY = (1024 - 224);
+                            continue;
                         }
-                        if ((camY) < 0)
-                        {
-                            camY = 0;
-                        }
-                        g.DrawRectangle(camPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
+
+                        offsetx = 4096;
                     }
                     else
                     {
-                        int my = (this.ow.AllMaps[this.mapHover].ParentID) / 8;
-                        int mx = (this.ow.AllMaps[this.mapHover].ParentID) - (my * 8);
-                        int camX = (mouseX_Real % 512) - 120;
-                        int camY = (mouseY_Real % 512) - 104;
-                        if ((camX + 256) >= 512)
+                        // LW
+                        if (ow.WorldOffset != 0)
                         {
-                            camX = (512 - 256);
-                        }
-                        if ((camX) < 0)
-                        {
-                            camX = 0;
+                            continue;
                         }
 
-                        if ((camY + 224) >= 512)
-                        {
-                            camY = (512 - 224);
-                        }
-                        if ((camY) < 0)
-                        {
-                            camY = 0;
-                        }
-                        g.DrawRectangle(camPen, new Rectangle(camX + (mx * 512), camY + (my * 512), 256, 224));
+                        offsetx = 0;
                     }
-                }
 
-                int offset = 0;
-                if (this.selectedMap >= 128)
-                {
-                    offset = 128;
-                }
-
-                if ((this.mapHover + offset) < this.ow.AllMaps.Length)
-                {
-                    int my = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) / 8;
-                    int mx = (this.ow.AllMaps[this.mapHover + offset].ParentID - offset) - (my * 8);
-
-                    if (this.ow.AllMaps[this.mapHover + offset].LargeMap)
+                    if (alpha >= 160)
                     {
-                        g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
+                        alpha = 160;
+                    }
+
+                    if (t32.count == 1)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(150, 55, 255, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
+                    }
+                    else if (t32.count <= 5)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(150, 255, 255, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
                     }
                     else
                     {
-                        g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, 255, 0, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
                     }
                 }
+            }
 
-                if (this.showExits)
+            if (this.selectedMode == ObjectMode.Overlay)
+            {
+                int mid = this.ow.AllMaps[this.selectedMap].ParentID;
+
+                if (mid < this.ow.AllOverlays.Length)
                 {
-                    this.exitmode.Draw(g);
-                }
-
-                if (this.showEntrances)
-                {
-                    this.entranceMode.Draw(g);
-                }
-
-                if (this.showItems)
-                {
-                    this.itemMode.Draw(g);
-                }
-
-                // TODO: Only draw the graves on the LW for now but this should be changed later.
-                if (this.ow.WorldOffset == 0)
-                {
-                    this.gravestoneMode.Draw(g);
-                }
-
-                if (this.showSprites)
-                {
-                    this.spriteMode.Draw(g);
-                }
-
-                if (this.showFlute)
-                {
-                    this.transportMode.Draw(g);
-                }
-
-                if (this.showOverlayText)
-                {
-                    this.noteMode.Draw(g);
-                }
-
-                if (this.entrancePreview)
-                {
-                    if (selectedMode == ObjectMode.Entrances)
-                    {
-                        if (this.entranceMode.selectedEntrance != null)
-                        {
-                            g.DrawImage(this.owForm.tmpPreviewBitmap, this.entranceMode.selectedEntrance.X + 16, this.entranceMode.selectedEntrance.Y + 16);
-                        }
-                    }
-                    else if (selectedMode == ObjectMode.Exits)
-                    {
-                        if (this.exitmode.selectedExit != null)
-                        {
-                            g.DrawImage(this.owForm.tmpPreviewBitmap, this.exitmode.selectedExit.PlayerX + 16, this.exitmode.selectedExit.PlayerY + 16);
-                        }
-                    }
-                }
-
-                if (owForm.showUsedTile32)
-                {
-                    foreach (T32UniqueCounter t32 in mainForm.tilesToDraw)
-                    {
-                        byte alpha = (byte)(40 + t32.count);
-                        int offsetx = 0;
-                        if (t32.x >= 8192)
-                        {
-                            if (ow.WorldOffset != 128)
-                            {
-                                continue;
-                            }
-                            //SW
-                            offsetx = 8192;
-                        }
-                        else if (t32.x >= 4096)
-                        {
-                            // DW
-                            if (ow.WorldOffset != 64)
-                            {
-                                continue;
-                            }
-                            offsetx = 4096;
-                        }
-                        else
-                        {
-                            // LW
-                            if (ow.WorldOffset != 0)
-                            {
-                                continue;
-                            }
-                            offsetx = 0;
-                        }
-
-                        if (alpha >= 160)
-                        {
-                            alpha = 160;
-                        }
-
-                        if (t32.count == 1)
-                        {
-                            g.FillRectangle(new SolidBrush(Color.FromArgb(150, 55, 255, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
-                        }
-                        else if (t32.count <= 5)
-                        {
-                            g.FillRectangle(new SolidBrush(Color.FromArgb(150, 255, 255, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
-                        }
-                        else
-                        {
-                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, 255, 0, 0)), new Rectangle(t32.x - offsetx, t32.y, 32, 32));
-                        }
-                    }
-                }
-
-                if (this.selectedMode == ObjectMode.Overlay)
-                {
-                    int mid = this.ow.AllMaps[this.selectedMap].ParentID;
                     int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
                     int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
                     if (showOverlayText)
@@ -1084,167 +1121,193 @@ namespace ZeldaFullEditor
                             g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
                         }
                     }
-
-                    g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                    g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
-
-                    this.drawText(g, 4, 24, this.globalmouseTileDownX.ToString());
-                    this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
                 }
-                else if (this.selectedMode == ObjectMode.OverlayAnimation)
-                {
-                    int mid = this.ow.AllMaps[this.selectedMap].ParentID;
-                    int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
-                    int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
-                    if (showOverlayText)
-                    {
-                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 96, "use mouse wheel to change frame");
-                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 32, "use shift key to display the whole animation");
-                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 64, "Selected Frame (dec) : " + this.overlayAnimationMode.selectedFrame);
-                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
-                        this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
-                    }
 
-                    Pen p2 = new Pen(new SolidBrush(Color.FromArgb(255, 0, 0, 255)));
-                    if (overlayAnimationMode.selectedFrame != 0 || ModifierKeys == Keys.Shift)
+                g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
+
+                this.drawText(g, 4, 24, this.globalmouseTileDownX.ToString());
+                this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
+            }
+            else if (this.selectedMode == ObjectMode.OverlayAnimation)
+            {
+                int mid = this.ow.AllMaps[this.selectedMap].ParentID;
+                int msy = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) / 8;
+                int msx = (this.ow.AllMaps[this.selectedMap].ParentID - this.ow.WorldOffset) - (msy * 8);
+                if (showOverlayText)
+                {
+                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 96, "use mouse wheel to change frame");
+                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 32, "use shift key to display the whole animation");
+                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 64, "Selected Frame (dec) : " + this.overlayAnimationMode.selectedFrame);
+                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 80, "Selected Map PARENT : " + this.ow.AllMaps[this.selectedMap].ParentID.ToString("X2"));
+                    this.drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
+                }
+
+                Pen p2 = new Pen(new SolidBrush(Color.FromArgb(255, 0, 0, 255)));
+                if (overlayAnimationMode.selectedFrame != 0 || ModifierKeys == Keys.Shift)
+                {
+                    if (ModifierKeys == Keys.Shift)
                     {
-                        if (ModifierKeys == Keys.Shift)
+                        for (int j = 0; j < this.ow.AllAnimationOverlays[mid].FramesList.Length; j++)
                         {
-                            for (int j = 0; j < 255; j++)
+                            for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[j].Count; i++)
                             {
-                                for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[j].Count; i++)
-                                {
-                                    int xo = this.ow.AllAnimationOverlays[mid].FramesList[j][i].x * 16;
-                                    int yo = this.ow.AllAnimationOverlays[mid].FramesList[j][i].y * 16;
-                                    int to = this.ow.AllAnimationOverlays[mid].FramesList[j][i].tileId;
-                                    int toy = (to / 8) * 16;
-                                    int tox = (to % 8) * 16;
-                                    g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), tox, toy, 16, 16, GraphicsUnit.Pixel, ia);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Pen p = new Pen(new SolidBrush(Color.FromArgb(64, 0, 0, 255)));
-                            for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1].Count; i++)
-                            {
-                                int xo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].x * 16;
-                                int yo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].y * 16;
-                                int to = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].tileId;
+                                int xo = this.ow.AllAnimationOverlays[mid].FramesList[j][i].x * 16;
+                                int yo = this.ow.AllAnimationOverlays[mid].FramesList[j][i].y * 16;
+                                int to = this.ow.AllAnimationOverlays[mid].FramesList[j][i].tileId;
                                 int toy = (to / 8) * 16;
                                 int tox = (to % 8) * 16;
                                 g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), tox, toy, 16, 16, GraphicsUnit.Pixel, ia);
-
-                                // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-                                byte detect = this.compareTilePos(this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i], this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1].ToArray());
-
-                                if (detect == 0)
-                                {
-                                    g.DrawRectangle(p, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
-                                }
-
-                                if ((detect & 0x01) != 0x01)
-                                {
-                                    g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
-                                }
-
-                                if ((detect & 0x02) != 0x02)
-                                {
-                                    g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
-                                }
-
-                                if ((detect & 0x04) != 0x04)
-                                {
-                                    g.DrawLine(p, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
-                                }
-
-                                if ((detect & 0x08) != 0x08)
-                                {
-                                    g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
-                                }
                             }
                         }
                     }
-
-                    for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame].Count; i++)
+                    else
                     {
-                        int xo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].x * 16;
-                        int yo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].y * 16;
-                        int to = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].tileId;
-                        int toy = (to / 8) * 16;
-                        int tox = (to % 8) * 16;
-                        g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
-
-                        // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-                        byte detect = this.compareTilePos(this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i], this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame].ToArray());
-
-                        if (detect == 0)
+                        Pen p = new Pen(new SolidBrush(Color.FromArgb(64, 0, 0, 255)));
+                        for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1].Count; i++)
                         {
-                            g.DrawRectangle(p2, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
-                        }
+                            int xo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].x * 16;
+                            int yo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].y * 16;
+                            int to = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i].tileId;
+                            int toy = (to / 8) * 16;
+                            int tox = (to % 8) * 16;
+                            g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), tox, toy, 16, 16, GraphicsUnit.Pixel, ia);
 
-                        if ((detect & 0x01) != 0x01)
-                        {
-                            g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
-                        }
+                            // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                            byte detect = this.compareTilePos(this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1][i], this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame - 1].ToArray());
 
-                        if ((detect & 0x02) != 0x02)
-                        {
-                            g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
-                        }
+                            if (detect == 0)
+                            {
+                                g.DrawRectangle(p, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
+                            }
 
-                        if ((detect & 0x04) != 0x04)
-                        {
-                            g.DrawLine(p2, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
-                        }
+                            if ((detect & 0x01) != 0x01)
+                            {
+                                g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
+                            }
 
-                        if ((detect & 0x08) != 0x08)
-                        {
-                            g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                            if ((detect & 0x02) != 0x02)
+                            {
+                                g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
+                            }
+
+                            if ((detect & 0x04) != 0x04)
+                            {
+                                g.DrawLine(p, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                            }
+
+                            if ((detect & 0x08) != 0x08)
+                            {
+                                g.DrawLine(p, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                            }
                         }
                     }
-
-                    g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                    g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
-
-                    this.drawText(g, 4, 24, this.globalmouseTileDownX.ToString());
-                    this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
                 }
 
-                if (this.owForm.gridDisplay != 0)
+                for (int i = 0; i < this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame].Count; i++)
                 {
-                    int gridsize = 512;
-                    if (this.ow.AllMaps[this.ow.AllMaps[this.selectedMap].ParentID].LargeMap)
+                    int xo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].x * 16;
+                    int yo = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].y * 16;
+                    int to = this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i].tileId;
+                    int toy = (to / 8) * 16;
+                    int tox = (to % 8) * 16;
+                    g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
+
+                    // g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                    byte detect = this.compareTilePos(this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame][i], this.ow.AllAnimationOverlays[mid].FramesList[this.overlayAnimationMode.selectedFrame].ToArray());
+
+                    if (detect == 0)
                     {
-                        gridsize = 1024;
+                        g.DrawRectangle(p2, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
                     }
 
-                    int temp = this.selectedMap;
-                    temp %= 64;
-
-                    x = this.ow.AllMaps[temp].ParentID % 8;
-                    y = this.ow.AllMaps[temp].ParentID / 8;
-
-                    for (int gx = 0; gx < (gridsize / this.owForm.gridDisplay); gx++)
+                    if ((detect & 0x01) != 0x01)
                     {
-                        g.DrawLine(
-                            Constants.ThirdWhitePen1,
-                            new Point((x * 512) + (gx * this.owForm.gridDisplay), y * 512),
-                            new Point((x * 512) + (gx * this.owForm.gridDisplay), (y * 512) + gridsize));
+                        g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
                     }
 
-                    for (int gy = 0; gy < (gridsize / this.owForm.gridDisplay); gy++)
+                    if ((detect & 0x02) != 0x02)
                     {
-                        g.DrawLine(
-                            Constants.ThirdWhitePen1,
-                            new Point((x * 512), (y * 512) + (gy * this.owForm.gridDisplay)),
-                            new Point((x * 512) + gridsize, (y * 512) + (gy * this.owForm.gridDisplay)));
+                        g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
+                    }
+
+                    if ((detect & 0x04) != 0x04)
+                    {
+                        g.DrawLine(p2, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                    }
+
+                    if ((detect & 0x08) != 0x08)
+                    {
+                        g.DrawLine(p2, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
                     }
                 }
 
-                g.CompositingMode = CompositingMode.SourceCopy;
-                //hideText = false;
+                g.DrawImage(this.tilesgfxBitmap, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16), 0, 0, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                g.DrawRectangle(Pens.LightGreen, new Rectangle((this.mouseX_Real / 16) * 16, (this.mouseY_Real / 16) * 16, this.selectedTileSizeX * 16, (this.selectedTile.Length / this.selectedTileSizeX) * 16));
+
+                this.drawText(g, 4, 24, this.globalmouseTileDownX.ToString());
+                this.drawText(g, 4, 48, this.globalmouseTileDownY.ToString());
             }
+
+            // This is the logic that determines how to highlight tiles when right clicking the tile16 box.
+            if (owForm.highlightedTile16)
+            {
+                // Even though this only says the selected map it still shows it on all maps. No clue why but thats the way I wanted it to work anyway.
+                for (int j = 0; j < ow.AllMaps[selectedMap].TilesUsed.Length; j++)
+                {
+                    int tileX = j % 512;
+                    int tileY = j / 512;
+
+                    if (ow.AllMaps[selectedMap].TilesUsed[tileX, tileY] == selectedTile[0])
+                    {
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(80, 150, 0, 210)), new Rectangle(tileX * 16, tileY * 16, 16, 16));
+                    }
+                }
+            }
+
+            if (this.owForm.gridDisplay != 0)
+            {
+                int gridSizeX = 512;
+                int gridSizeY = 512;
+                
+                switch (this.ow.AllMaps[this.ow.AllMaps[this.mapHover].ParentID].AreaSize)
+                {
+                    case AreaSizeEnum.LargeArea:
+                        gridSizeX = 1024;
+                        gridSizeY = 1024;
+                        break;
+
+                    case AreaSizeEnum.WideArea:
+                        gridSizeX = 1024;
+                        break;
+
+                    case AreaSizeEnum.TallArea:
+                        gridSizeY = 1024;
+                        break;
+                }
+
+                int relativeMap = this.mapHover % 0x40;
+
+                x = this.ow.AllMaps[relativeMap].ParentID % 8;
+                y = this.ow.AllMaps[relativeMap].ParentID / 8;
+
+                for (int gx = 0; gx < (gridSizeX / this.owForm.gridDisplay); gx++)
+                {
+                    g.DrawLine(Constants.ThirdWhitePen1,
+                        new Point((x * 512) + (gx * this.owForm.gridDisplay), y * 512),
+                        new Point((x * 512) + (gx * this.owForm.gridDisplay), (y * 512) + gridSizeY));
+                }
+
+                for (int gy = 0; gy < (gridSizeY / this.owForm.gridDisplay); gy++)
+                {
+                    g.DrawLine(Constants.ThirdWhitePen1,
+                        new Point((x * 512), (y * 512) + (gy * this.owForm.gridDisplay)),
+                        new Point((x * 512) + gridSizeX, (y * 512) + (gy * this.owForm.gridDisplay)));
+                }
+            }
+
+            g.CompositingMode = CompositingMode.SourceCopy;
+            //hideText = false;
         }
 
         // 0 = none

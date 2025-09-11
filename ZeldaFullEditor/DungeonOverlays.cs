@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ZeldaFullEditor.Room_Object;
+﻿using System.Collections.Generic;
 
 namespace ZeldaFullEditor.Data
 {
@@ -11,11 +6,11 @@ namespace ZeldaFullEditor.Data
     {
         public static List<Room_Object> loadedOverlay = new List<Room_Object>();
         public static List<Room_Object>[] overlays = new List<Room_Object>[0x14];
+
         public static void LoadOverlays()
         {
             int pointer = ROM.ReadLong(Constants.DungeonOverlayLoadPtr); // pointer of ptrs list
             pointer = Utils.SnesToPc(pointer);
-
 
             for (int i = 0; i < 0x14; i++)
             {
@@ -26,6 +21,7 @@ namespace ZeldaFullEditor.Data
                 {
                     pointerdata = Utils.SnesToPc(ROM.ReadShort(Constants.DungeonOverlayWaterPtr1) + (ROM.ReadByte(Constants.DungeonOverlayWaterPtr1Bank) << 16));
                 }
+
                 int pos = pointerdata;
                 byte b1 = 0;
                 byte b2 = 0;
@@ -82,35 +78,24 @@ namespace ZeldaFullEditor.Data
                         overlays[i].Add(r);
                     }
                 }
-
-
             }
 
             loadedOverlay = overlays[0];
         }
 
-
         public static bool SaveOverlays()
         {
-
             // move the new pointer main pointer to 04EC1C instead of 04ECC0
             // no need to change anything else the load code will adapt to that pointer
             ROM.WriteLong(Constants.DungeonOverlayLoadPtr, Utils.PcToSnes(Constants.DungeonOverlayNewPosition));
             ROM.WriteLong(Constants.DungeonOverlayLoadPtr2, Utils.PcToSnes(Constants.DungeonOverlayNewPosition + 1));
 
-
-
-            int writingPtrPos = Constants.DungeonOverlayNewPosition; // +0x38 to skip the 0x12 pointers // with water
-            int writingDataPos = Constants.DungeonOverlayNewPosition + 0x38;
-
-
-
-
+            int writingPtrPos = Constants.DungeonOverlayNewPosition; // +0x39 to skip the 0x12 pointers // with water
+            int writingDataPos = Constants.DungeonOverlayNewPosition + 0x39;
 
             List<byte> objectsBytes = new List<byte>();
             for (int i = 0; i < overlays.Length; i++)
             {
-
                 if (i == 0x13) // if it's water overlay then save pointer somewhere else
                 {
                     // write the new water position at the end
@@ -147,6 +132,7 @@ namespace ZeldaFullEditor.Data
                     objectsBytes.Add(b2);
                     objectsBytes.Add(b3);
                 }
+
                 objectsBytes.Add(0xFF);
                 objectsBytes.Add(0xFF);
 
@@ -160,8 +146,6 @@ namespace ZeldaFullEditor.Data
             }
 
             return false;
-
-
         }
     }
 }

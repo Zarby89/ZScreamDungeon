@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
 
 namespace ZeldaFullEditor.Gui
 {
-    public partial class CGRamViewer : PictureBox
+    public partial class CGRamViewer : UserControl
     {
         public CGRamViewer()
         {
