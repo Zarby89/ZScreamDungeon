@@ -211,7 +211,6 @@
             this.Name = "AboutBox1";
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Load += new System.EventHandler(this.AboutBox1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

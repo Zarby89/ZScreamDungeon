@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Gui.ExtraForms;
-
-namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui
 {
     partial class GfxGroupsForm
     {
@@ -34,34 +32,34 @@ namespace ZeldaFullEditor.Gui
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
             this.mainGroupbox = new System.Windows.Forms.GroupBox();
-            this.main8Box = new Hexbox();
-            this.main7Box = new Hexbox();
-            this.main6Box = new Hexbox();
-            this.main5Box = new Hexbox();
-            this.main4Box = new Hexbox();
-            this.main3Box = new Hexbox();
-            this.main2Box = new Hexbox();
-            this.main1Box = new Hexbox();
+            this.main8Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.main7Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.main6Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.main5Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.main4Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.main3Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.main2Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.main1Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.mainBlocksetUpDown = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.roomTab = new System.Windows.Forms.TabPage();
             this.roomGroupbox = new System.Windows.Forms.GroupBox();
-            this.room4Box = new Hexbox();
-            this.room3Box = new Hexbox();
-            this.room2Box = new Hexbox();
-            this.room1Box = new Hexbox();
+            this.room4Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.room3Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.room2Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.room1Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.roomUpDown = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spriteTab = new System.Windows.Forms.TabPage();
             this.spritesGroupbox = new System.Windows.Forms.GroupBox();
-            this.sprite4Box = new Hexbox();
-            this.sprite3Box = new Hexbox();
-            this.sprite2Box = new Hexbox();
-            this.sprite1Box = new Hexbox();
+            this.sprite4Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.sprite3Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.sprite2Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.sprite1Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.spriteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -72,15 +70,15 @@ namespace ZeldaFullEditor.Gui
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.palette4Box = new Hexbox();
-            this.palette3Box = new Hexbox();
-            this.palette2Box = new Hexbox();
-            this.palette1Box = new Hexbox();
+            this.palette4Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.palette3Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.palette2Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.palette1Box = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.PaletteTabIndexUpDown = new System.Windows.Forms.NumericUpDown();
             this.paletteRadioButton = new System.Windows.Forms.RadioButton();
             this.grayscaleRadioButton = new System.Windows.Forms.RadioButton();
             this.cancelButton = new System.Windows.Forms.Button();
@@ -103,7 +101,7 @@ namespace ZeldaFullEditor.Gui
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaletteTabIndexUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -116,7 +114,7 @@ namespace ZeldaFullEditor.Gui
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(382, 288);
+            this.tabControl1.Size = new System.Drawing.Size(386, 292);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -130,7 +128,7 @@ namespace ZeldaFullEditor.Gui
             this.mainTab.Location = new System.Drawing.Point(4, 22);
             this.mainTab.Name = "mainTab";
             this.mainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mainTab.Size = new System.Drawing.Size(374, 262);
+            this.mainTab.Size = new System.Drawing.Size(378, 266);
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Main";
             this.mainTab.UseVisualStyleBackColor = true;
@@ -154,86 +152,135 @@ namespace ZeldaFullEditor.Gui
             // 
             // main8Box
             // 
+            this.main8Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main8Box.Decimal = false;
+            this.main8Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main8Box.HexValue = 0;
             this.main8Box.Location = new System.Drawing.Point(168, 45);
+            this.main8Box.MaxLength = 2;
+            this.main8Box.MaxValue = 223;
+            this.main8Box.MinValue = 0;
             this.main8Box.Name = "main8Box";
             this.main8Box.Size = new System.Drawing.Size(48, 20);
             this.main8Box.TabIndex = 7;
-            this.main8Box.MaxValue = 223;
-            this.main8Box.Digits = Hexbox.HexDigits.Two;
+            this.main8Box.Text = "00";
             this.main8Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main7Box
             // 
+            this.main7Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main7Box.Decimal = false;
+            this.main7Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main7Box.HexValue = 0;
             this.main7Box.Location = new System.Drawing.Point(114, 45);
+            this.main7Box.MaxLength = 2;
+            this.main7Box.MaxValue = 223;
+            this.main7Box.MinValue = 0;
             this.main7Box.Name = "main7Box";
             this.main7Box.Size = new System.Drawing.Size(48, 20);
-            this.main7Box.MaxValue = 223;
             this.main7Box.TabIndex = 6;
-            this.main7Box.Digits = Hexbox.HexDigits.Two;
+            this.main7Box.Text = "00";
             this.main7Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main6Box
             // 
+            this.main6Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main6Box.Decimal = false;
+            this.main6Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main6Box.HexValue = 0;
             this.main6Box.Location = new System.Drawing.Point(60, 45);
+            this.main6Box.MaxLength = 2;
+            this.main6Box.MaxValue = 223;
+            this.main6Box.MinValue = 0;
             this.main6Box.Name = "main6Box";
             this.main6Box.Size = new System.Drawing.Size(48, 20);
             this.main6Box.TabIndex = 5;
-            this.main6Box.MaxValue = 223;
-            this.main6Box.Digits = Hexbox.HexDigits.Two;
+            this.main6Box.Text = "00";
             this.main6Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main5Box
             // 
+            this.main5Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main5Box.Decimal = false;
+            this.main5Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main5Box.HexValue = 0;
             this.main5Box.Location = new System.Drawing.Point(6, 45);
+            this.main5Box.MaxLength = 2;
+            this.main5Box.MaxValue = 223;
+            this.main5Box.MinValue = 0;
             this.main5Box.Name = "main5Box";
             this.main5Box.Size = new System.Drawing.Size(48, 20);
             this.main5Box.TabIndex = 4;
-            this.main5Box.MaxValue = 223;
-            this.main5Box.Digits = Hexbox.HexDigits.Two;
+            this.main5Box.Text = "00";
             this.main5Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main4Box
             // 
+            this.main4Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main4Box.Decimal = false;
+            this.main4Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main4Box.HexValue = 0;
             this.main4Box.Location = new System.Drawing.Point(168, 19);
+            this.main4Box.MaxLength = 2;
+            this.main4Box.MaxValue = 223;
+            this.main4Box.MinValue = 0;
             this.main4Box.Name = "main4Box";
             this.main4Box.Size = new System.Drawing.Size(48, 20);
             this.main4Box.TabIndex = 3;
-            this.main4Box.MaxValue = 223;
-            this.main4Box.Digits = Hexbox.HexDigits.Two;
+            this.main4Box.Text = "00";
             this.main4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main3Box
             // 
+            this.main3Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main3Box.Decimal = false;
+            this.main3Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main3Box.HexValue = 0;
             this.main3Box.Location = new System.Drawing.Point(114, 19);
+            this.main3Box.MaxLength = 2;
+            this.main3Box.MaxValue = 223;
+            this.main3Box.MinValue = 0;
             this.main3Box.Name = "main3Box";
             this.main3Box.Size = new System.Drawing.Size(48, 20);
             this.main3Box.TabIndex = 2;
-            this.main3Box.MaxValue = 223;
-            this.main3Box.Digits = Hexbox.HexDigits.Two;
+            this.main3Box.Text = "00";
             this.main3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main2Box
             // 
+            this.main2Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main2Box.Decimal = false;
+            this.main2Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main2Box.HexValue = 0;
             this.main2Box.Location = new System.Drawing.Point(60, 19);
+            this.main2Box.MaxLength = 2;
+            this.main2Box.MaxValue = 223;
+            this.main2Box.MinValue = 0;
             this.main2Box.Name = "main2Box";
             this.main2Box.Size = new System.Drawing.Size(48, 20);
             this.main2Box.TabIndex = 1;
-            this.main2Box.MaxValue = 223;
-            this.main2Box.Digits = Hexbox.HexDigits.Two;
+            this.main2Box.Text = "00";
             this.main2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main1Box
             // 
+            this.main1Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.main1Box.Decimal = false;
+            this.main1Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.main1Box.HexValue = 0;
             this.main1Box.Location = new System.Drawing.Point(6, 19);
+            this.main1Box.MaxLength = 2;
+            this.main1Box.MaxValue = 223;
+            this.main1Box.MinValue = 0;
             this.main1Box.Name = "main1Box";
             this.main1Box.Size = new System.Drawing.Size(48, 20);
             this.main1Box.TabIndex = 0;
-            this.main1Box.MaxValue = 223;
-            this.main1Box.Digits = Hexbox.HexDigits.Two;
+            this.main1Box.Text = "00";
             this.main1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // mainBlocksetUpDown
             // 
+            this.mainBlocksetUpDown.Hexadecimal = true;
             this.mainBlocksetUpDown.Location = new System.Drawing.Point(116, 9);
             this.mainBlocksetUpDown.Maximum = new decimal(new int[] {
             36,
@@ -243,7 +290,6 @@ namespace ZeldaFullEditor.Gui
             this.mainBlocksetUpDown.Name = "mainBlocksetUpDown";
             this.mainBlocksetUpDown.Size = new System.Drawing.Size(118, 20);
             this.mainBlocksetUpDown.TabIndex = 9;
-            this.mainBlocksetUpDown.Increment = 0.33m;
             this.mainBlocksetUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
             // 
             // label2
@@ -259,7 +305,7 @@ namespace ZeldaFullEditor.Gui
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 222);
+            this.label1.Location = new System.Drawing.Point(3, 226);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(208, 39);
             this.label1.TabIndex = 11;
@@ -269,7 +315,7 @@ namespace ZeldaFullEditor.Gui
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox1.Location = new System.Drawing.Point(242, 9);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(128, 256);
             this.pictureBox1.TabIndex = 12;
@@ -286,7 +332,7 @@ namespace ZeldaFullEditor.Gui
             this.roomTab.Location = new System.Drawing.Point(4, 22);
             this.roomTab.Name = "roomTab";
             this.roomTab.Padding = new System.Windows.Forms.Padding(3);
-            this.roomTab.Size = new System.Drawing.Size(374, 262);
+            this.roomTab.Size = new System.Drawing.Size(378, 266);
             this.roomTab.TabIndex = 1;
             this.roomTab.Text = "Rooms";
             this.roomTab.UseVisualStyleBackColor = true;
@@ -306,50 +352,75 @@ namespace ZeldaFullEditor.Gui
             // 
             // room4Box
             // 
+            this.room4Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.room4Box.Decimal = false;
+            this.room4Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.room4Box.HexValue = 0;
             this.room4Box.Location = new System.Drawing.Point(168, 19);
+            this.room4Box.MaxLength = 2;
+            this.room4Box.MaxValue = 223;
+            this.room4Box.MinValue = 0;
             this.room4Box.Name = "room4Box";
             this.room4Box.Size = new System.Drawing.Size(48, 20);
             this.room4Box.TabIndex = 7;
+            this.room4Box.Text = "00";
             this.room4Box.Click += new System.EventHandler(this.allbox_click);
             this.room4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.room4Box.MaxValue = 223;
-            this.room4Box.Digits = Hexbox.HexDigits.Two;
             // 
             // room3Box
             // 
+            this.room3Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.room3Box.Decimal = false;
+            this.room3Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.room3Box.HexValue = 0;
             this.room3Box.Location = new System.Drawing.Point(114, 19);
+            this.room3Box.MaxLength = 2;
+            this.room3Box.MaxValue = 223;
+            this.room3Box.MinValue = 0;
             this.room3Box.Name = "room3Box";
             this.room3Box.Size = new System.Drawing.Size(48, 20);
             this.room3Box.TabIndex = 6;
+            this.room3Box.Text = "00";
             this.room3Box.Click += new System.EventHandler(this.allbox_click);
             this.room3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.room3Box.MaxValue = 223;
-            this.room3Box.Digits = Hexbox.HexDigits.Two;
             // 
             // room2Box
             // 
+            this.room2Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.room2Box.Decimal = false;
+            this.room2Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.room2Box.HexValue = 0;
             this.room2Box.Location = new System.Drawing.Point(60, 19);
+            this.room2Box.MaxLength = 2;
+            this.room2Box.MaxValue = 223;
+            this.room2Box.MinValue = 0;
             this.room2Box.Name = "room2Box";
             this.room2Box.Size = new System.Drawing.Size(48, 20);
             this.room2Box.TabIndex = 5;
+            this.room2Box.Text = "00";
             this.room2Box.Click += new System.EventHandler(this.allbox_click);
             this.room2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.room2Box.MaxValue = 223;
-            this.room2Box.Digits = Hexbox.HexDigits.Two;
             // 
             // room1Box
             // 
+            this.room1Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.room1Box.Decimal = false;
+            this.room1Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.room1Box.HexValue = 0;
             this.room1Box.Location = new System.Drawing.Point(6, 19);
+            this.room1Box.MaxLength = 2;
+            this.room1Box.MaxValue = 223;
+            this.room1Box.MinValue = 0;
             this.room1Box.Name = "room1Box";
             this.room1Box.Size = new System.Drawing.Size(48, 20);
             this.room1Box.TabIndex = 4;
+            this.room1Box.Text = "00";
             this.room1Box.Click += new System.EventHandler(this.allbox_click);
             this.room1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.room1Box.MaxValue = 223;
-            this.room1Box.Digits = Hexbox.HexDigits.Two;
             // 
             // roomUpDown
             // 
+            this.roomUpDown.Hexadecimal = true;
             this.roomUpDown.Location = new System.Drawing.Point(116, 9);
             this.roomUpDown.Maximum = new decimal(new int[] {
             81,
@@ -374,7 +445,7 @@ namespace ZeldaFullEditor.Gui
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 233);
+            this.label4.Location = new System.Drawing.Point(3, 237);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(254, 26);
             this.label4.TabIndex = 7;
@@ -384,7 +455,7 @@ namespace ZeldaFullEditor.Gui
             // pictureBox2
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox2.Location = new System.Drawing.Point(242, 9);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(128, 128);
             this.pictureBox2.TabIndex = 6;
@@ -400,7 +471,7 @@ namespace ZeldaFullEditor.Gui
             this.spriteTab.Controls.Add(this.pictureBox3);
             this.spriteTab.Location = new System.Drawing.Point(4, 22);
             this.spriteTab.Name = "spriteTab";
-            this.spriteTab.Size = new System.Drawing.Size(374, 262);
+            this.spriteTab.Size = new System.Drawing.Size(378, 266);
             this.spriteTab.TabIndex = 2;
             this.spriteTab.Text = "Sprites";
             this.spriteTab.UseVisualStyleBackColor = true;
@@ -416,56 +487,79 @@ namespace ZeldaFullEditor.Gui
             this.spritesGroupbox.Size = new System.Drawing.Size(223, 50);
             this.spritesGroupbox.TabIndex = 15;
             this.spritesGroupbox.TabStop = false;
-            
-
             this.spritesGroupbox.Text = "Values - 4 subset";
             // 
             // sprite4Box
             // 
+            this.sprite4Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.sprite4Box.Decimal = false;
+            this.sprite4Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.sprite4Box.HexValue = 0;
             this.sprite4Box.Location = new System.Drawing.Point(168, 19);
+            this.sprite4Box.MaxLength = 2;
+            this.sprite4Box.MaxValue = 255;
+            this.sprite4Box.MinValue = 0;
             this.sprite4Box.Name = "sprite4Box";
             this.sprite4Box.Size = new System.Drawing.Size(48, 20);
             this.sprite4Box.TabIndex = 7;
+            this.sprite4Box.Text = "00";
             this.sprite4Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.sprite4Box.MaxValue = 255;
-            this.sprite4Box.Digits = Hexbox.HexDigits.Two;
             // 
             // sprite3Box
             // 
+            this.sprite3Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.sprite3Box.Decimal = false;
+            this.sprite3Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.sprite3Box.HexValue = 0;
             this.sprite3Box.Location = new System.Drawing.Point(114, 19);
+            this.sprite3Box.MaxLength = 2;
+            this.sprite3Box.MaxValue = 255;
+            this.sprite3Box.MinValue = 0;
             this.sprite3Box.Name = "sprite3Box";
             this.sprite3Box.Size = new System.Drawing.Size(48, 20);
             this.sprite3Box.TabIndex = 6;
+            this.sprite3Box.Text = "00";
             this.sprite3Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.sprite3Box.MaxValue = 255;
-            this.sprite3Box.Digits = Hexbox.HexDigits.Two;
             // 
             // sprite2Box
             // 
+            this.sprite2Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.sprite2Box.Decimal = false;
+            this.sprite2Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.sprite2Box.HexValue = 0;
             this.sprite2Box.Location = new System.Drawing.Point(60, 19);
+            this.sprite2Box.MaxLength = 2;
+            this.sprite2Box.MaxValue = 255;
+            this.sprite2Box.MinValue = 0;
             this.sprite2Box.Name = "sprite2Box";
             this.sprite2Box.Size = new System.Drawing.Size(48, 20);
             this.sprite2Box.TabIndex = 5;
+            this.sprite2Box.Text = "00";
             this.sprite2Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.sprite2Box.MaxValue = 255;
-            this.sprite2Box.Digits = Hexbox.HexDigits.Two;
             // 
             // sprite1Box
             // 
+            this.sprite1Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.sprite1Box.Decimal = false;
+            this.sprite1Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.sprite1Box.HexValue = 0;
             this.sprite1Box.Location = new System.Drawing.Point(6, 19);
+            this.sprite1Box.MaxLength = 2;
+            this.sprite1Box.MaxValue = 255;
+            this.sprite1Box.MinValue = 0;
             this.sprite1Box.Name = "sprite1Box";
             this.sprite1Box.Size = new System.Drawing.Size(48, 20);
             this.sprite1Box.TabIndex = 4;
+            this.sprite1Box.Text = "00";
             this.sprite1Box.Click += new System.EventHandler(this.allbox_click);
             this.sprite1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.sprite1Box.MaxValue = 255;
-            this.sprite1Box.Digits = Hexbox.HexDigits.Two;
             // 
             // spriteUpDown
             // 
+            this.spriteUpDown.Hexadecimal = true;
             this.spriteUpDown.Location = new System.Drawing.Point(116, 9);
             this.spriteUpDown.Maximum = new decimal(new int[] {
             143,
@@ -475,7 +569,6 @@ namespace ZeldaFullEditor.Gui
             this.spriteUpDown.Name = "spriteUpDown";
             this.spriteUpDown.Size = new System.Drawing.Size(118, 20);
             this.spriteUpDown.TabIndex = 14;
-            this.spriteUpDown.Increment = 0.33m;
             this.spriteUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
             // 
             // label5
@@ -491,7 +584,7 @@ namespace ZeldaFullEditor.Gui
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 220);
+            this.label6.Location = new System.Drawing.Point(3, 224);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(357, 39);
             this.label6.TabIndex = 12;
@@ -500,7 +593,7 @@ namespace ZeldaFullEditor.Gui
             // pictureBox3
             // 
             this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox3.Location = new System.Drawing.Point(242, 9);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(128, 128);
             this.pictureBox3.TabIndex = 11;
@@ -515,7 +608,7 @@ namespace ZeldaFullEditor.Gui
             this.paletteTab.Controls.Add(this.pictureBox4);
             this.paletteTab.Location = new System.Drawing.Point(4, 22);
             this.paletteTab.Name = "paletteTab";
-            this.paletteTab.Size = new System.Drawing.Size(374, 262);
+            this.paletteTab.Size = new System.Drawing.Size(378, 266);
             this.paletteTab.TabIndex = 3;
             this.paletteTab.Text = "Palettes";
             this.paletteTab.UseVisualStyleBackColor = true;
@@ -575,50 +668,75 @@ namespace ZeldaFullEditor.Gui
             // 
             // palette4Box
             // 
+            this.palette4Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.palette4Box.Decimal = false;
+            this.palette4Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.palette4Box.HexValue = 0;
             this.palette4Box.Location = new System.Drawing.Point(169, 95);
+            this.palette4Box.MaxLength = 2;
+            this.palette4Box.MaxValue = 255;
+            this.palette4Box.MinValue = 0;
             this.palette4Box.Name = "palette4Box";
             this.palette4Box.Size = new System.Drawing.Size(48, 20);
             this.palette4Box.TabIndex = 7;
+            this.palette4Box.Text = "00";
             this.palette4Box.Click += new System.EventHandler(this.allbox_click);
             this.palette4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.palette4Box.MaxValue = 255;
-            this.palette4Box.Digits = Hexbox.HexDigits.Two;
             // 
             // palette3Box
             // 
+            this.palette3Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.palette3Box.Decimal = false;
+            this.palette3Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.palette3Box.HexValue = 0;
             this.palette3Box.Location = new System.Drawing.Point(169, 69);
+            this.palette3Box.MaxLength = 2;
+            this.palette3Box.MaxValue = 255;
+            this.palette3Box.MinValue = 0;
             this.palette3Box.Name = "palette3Box";
             this.palette3Box.Size = new System.Drawing.Size(48, 20);
             this.palette3Box.TabIndex = 6;
+            this.palette3Box.Text = "00";
             this.palette3Box.Click += new System.EventHandler(this.allbox_click);
             this.palette3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.palette3Box.MaxValue = 255;
-            this.palette3Box.Digits = Hexbox.HexDigits.Two;
             // 
             // palette2Box
             // 
+            this.palette2Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.palette2Box.Decimal = false;
+            this.palette2Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.palette2Box.HexValue = 0;
             this.palette2Box.Location = new System.Drawing.Point(169, 43);
+            this.palette2Box.MaxLength = 2;
+            this.palette2Box.MaxValue = 255;
+            this.palette2Box.MinValue = 0;
             this.palette2Box.Name = "palette2Box";
             this.palette2Box.Size = new System.Drawing.Size(48, 20);
             this.palette2Box.TabIndex = 5;
+            this.palette2Box.Text = "00";
             this.palette2Box.Click += new System.EventHandler(this.allbox_click);
             this.palette2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.palette2Box.MaxValue = 255;
-            this.palette2Box.Digits = Hexbox.HexDigits.Two;
             // 
             // palette1Box
             // 
+            this.palette1Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.palette1Box.Decimal = false;
+            this.palette1Box.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.palette1Box.HexValue = 0;
             this.palette1Box.Location = new System.Drawing.Point(169, 17);
+            this.palette1Box.MaxLength = 2;
+            this.palette1Box.MaxValue = 255;
+            this.palette1Box.MinValue = 0;
             this.palette1Box.Name = "palette1Box";
             this.palette1Box.Size = new System.Drawing.Size(48, 20);
             this.palette1Box.TabIndex = 4;
+            this.palette1Box.Text = "00";
             this.palette1Box.Click += new System.EventHandler(this.allbox_click);
             this.palette1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
-            this.palette1Box.MaxValue = 255;
-            this.palette1Box.Digits = Hexbox.HexDigits.Two;
             // 
             // paletteUpDown
             // 
+            this.paletteUpDown.Hexadecimal = true;
             this.paletteUpDown.Location = new System.Drawing.Point(116, 9);
             this.paletteUpDown.Maximum = new decimal(new int[] {
             71,
@@ -629,7 +747,6 @@ namespace ZeldaFullEditor.Gui
             this.paletteUpDown.Size = new System.Drawing.Size(118, 20);
             this.paletteUpDown.TabIndex = 19;
             this.paletteUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
-            this.paletteUpDown.Increment = 0.33m;
             // 
             // label7
             // 
@@ -643,7 +760,7 @@ namespace ZeldaFullEditor.Gui
             // pictureBox4
             // 
             this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox4.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox4.Location = new System.Drawing.Point(242, 9);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(128, 128);
             this.pictureBox4.TabIndex = 16;
@@ -652,30 +769,30 @@ namespace ZeldaFullEditor.Gui
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.numericUpDown1);
+            this.panel1.Controls.Add(this.PaletteTabIndexUpDown);
             this.panel1.Controls.Add(this.paletteRadioButton);
             this.panel1.Controls.Add(this.grayscaleRadioButton);
             this.panel1.Controls.Add(this.cancelButton);
             this.panel1.Controls.Add(this.okButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 288);
+            this.panel1.Location = new System.Drawing.Point(0, 292);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(382, 40);
+            this.panel1.Size = new System.Drawing.Size(386, 40);
             this.panel1.TabIndex = 1;
             // 
-            // numericUpDown1
+            // PaletteTabIndexUpDown
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(151, 17);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.PaletteTabIndexUpDown.Hexadecimal = true;
+            this.PaletteTabIndexUpDown.Location = new System.Drawing.Point(151, 17);
+            this.PaletteTabIndexUpDown.Maximum = new decimal(new int[] {
             15,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(61, 20);
-            this.numericUpDown1.TabIndex = 6;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.blocksetchanged);
-            this.numericUpDown1.Increment = 0.33m;
+            this.PaletteTabIndexUpDown.Name = "PaletteTabIndexUpDown";
+            this.PaletteTabIndexUpDown.Size = new System.Drawing.Size(61, 20);
+            this.PaletteTabIndexUpDown.TabIndex = 6;
+            this.PaletteTabIndexUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
             // 
             // paletteRadioButton
             // 
@@ -703,7 +820,7 @@ namespace ZeldaFullEditor.Gui
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(214, 6);
+            this.cancelButton.Location = new System.Drawing.Point(218, 6);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 1;
@@ -715,7 +832,7 @@ namespace ZeldaFullEditor.Gui
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(295, 6);
+            this.okButton.Location = new System.Drawing.Point(299, 6);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 0;
@@ -730,8 +847,8 @@ namespace ZeldaFullEditor.Gui
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Name = "GfxGroupsForm";
             this.Size = new System.Drawing.Size(386, 332);
-            this.Text = "Gfx Groups Form";
             this.VisibleChanged += new System.EventHandler(this.GfxGroupsForm_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
@@ -760,7 +877,7 @@ namespace ZeldaFullEditor.Gui
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaletteTabIndexUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -780,37 +897,37 @@ namespace ZeldaFullEditor.Gui
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown mainBlocksetUpDown;
         private System.Windows.Forms.GroupBox mainGroupbox;
-        private Hexbox main8Box;
-        private Hexbox main7Box;
-        private Hexbox main6Box;
-        private Hexbox main5Box;
-        private Hexbox main4Box;
-        private Hexbox main3Box;
-        private Hexbox main2Box;
-        private Hexbox main1Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main8Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main7Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main6Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main5Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main4Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main3Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main2Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox main1Box;
         private System.Windows.Forms.GroupBox roomGroupbox;
-        private Hexbox room4Box;
-        private Hexbox room3Box;
-        private Hexbox room2Box;
-        private Hexbox room1Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox room4Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox room3Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox room2Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox room1Box;
         private System.Windows.Forms.NumericUpDown roomUpDown;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.GroupBox spritesGroupbox;
-        private Hexbox sprite4Box;
-        private Hexbox sprite3Box;
-        private Hexbox sprite2Box;
-        private Hexbox sprite1Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox sprite4Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox sprite3Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox sprite2Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox sprite1Box;
         private System.Windows.Forms.NumericUpDown spriteUpDown;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.GroupBox groupBox1;
-        private Hexbox palette4Box;
-        private Hexbox palette3Box;
-        private Hexbox palette2Box;
-        private Hexbox palette1Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox palette4Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox palette3Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox palette2Box;
+        private ZeldaFullEditor.Gui.ExtraForms.Hexbox palette1Box;
         private System.Windows.Forms.NumericUpDown paletteUpDown;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.PictureBox pictureBox4;
@@ -818,7 +935,7 @@ namespace ZeldaFullEditor.Gui
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown PaletteTabIndexUpDown;
         private System.Windows.Forms.RadioButton paletteRadioButton;
         private System.Windows.Forms.RadioButton grayscaleRadioButton;
     }

@@ -4,11 +4,9 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
@@ -662,7 +660,7 @@ namespace ZeldaFullEditor
             int roomX = superX * 512;
             int roomY = superY * 512;
 
-            if (mainForm.entranceCameraToolStripMenuItem.Checked)
+            if (mainForm.entranceCameraToolStripMenuItem.Checked || selectedMode == ObjectMode.EntrancePlacing)
             {
                 if (mainForm.selectedEntrance != null)
                 {
@@ -674,7 +672,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (mainForm.entrancePositionToolStripMenuItem.Checked)
+            if (mainForm.entrancePositionToolStripMenuItem.Checked || selectedMode == ObjectMode.EntrancePlacing)
             {
                 if (mainForm.selectedEntrance != null)
                 {

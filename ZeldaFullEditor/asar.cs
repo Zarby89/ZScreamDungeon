@@ -85,11 +85,22 @@ namespace AsarCLR
         {
             try
             {
-                if (apiversion() < expectedapiversion || (apiversion() / 100) > (expectedapiversion / 100)) return false;
-                if (!asar_init()) return false;
+                if (apiversion() < expectedapiversion || (apiversion() / 100) > (expectedapiversion / 100))
+                {
+                    return false;
+                }
+
+                if (!asar_init())
+                {
+                    return false;
+                }
+
                 return true;
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -373,6 +384,7 @@ namespace AsarCLR
             public IntPtr name;
             public IntPtr contents;
         }
+
         /// <summary>
         /// Gets all Asar current defines. They're safe to keep for as long as you want.
         /// </summary>

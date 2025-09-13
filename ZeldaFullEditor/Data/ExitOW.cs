@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows.Forms;
+using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
@@ -186,6 +188,16 @@ namespace ZeldaFullEditor
             this.DoorType2);
         }
 
+        public void SpecialUpdatePosition(Overworld overworld)
+        {
+            this.PlayerX = (ushort)((this.PlayerX / 8) * 8).Clamp(0, 4088);
+            this.PlayerY = (ushort)((this.PlayerY / 8) * 8).Clamp(0, 4088);
+
+            this.UpdateMapStuff(this.MapID, overworld);
+
+            this.YScroll = (ushort)(this.YScroll - 2);
+        }
+
         /// <summary>
         ///     Updates certain exit properties based on the given area map ID.
         /// </summary>
@@ -195,17 +207,11 @@ namespace ZeldaFullEditor
         {
             this.MapID = mapID;
 
-            int large = 256;
-            int mapid = mapID;
+            AreaSizeEnum areaSize = overworld.AllMaps[mapID].AreaSize;
+            int areaSizeX = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.WideArea ? 768 : 256;
+            int areaSizeY = areaSize == AreaSizeEnum.LargeArea || areaSize == AreaSizeEnum.TallArea ? 768 : 256;
 
-            if (mapID < 128)
-            {
-                large = overworld.AllMaps[mapID].LargeMap ? 768 : 256;
-                if (overworld.AllMaps[mapID].ParentID != mapID)
-                {
-                    mapid = overworld.AllMaps[mapID].ParentID;
-                }
-            }
+            mapID %= 0x40;
 
             int mapX = mapID - ((mapID / 8) * 8);
             int mapY = mapID / 8;
@@ -216,21 +222,18 @@ namespace ZeldaFullEditor
             this.AreaX = this.AreaX.Clamp(0, 63);
             this.AreaY = this.AreaY.Clamp(0, 63);
 
-            // If we are on a large map:
-            if (!overworld.AllMaps[mapID].LargeMap)
+            // If we are on a small area, reduce the area sizes.
+            if (areaSizeX == 256)
             {
                 this.AreaX = this.AreaX.Clamp(0, 31);
+            }
+
+            if (areaSizeY == 256)
+            {
                 this.AreaY = this.AreaY.Clamp(0, 31);
             }
 
-            // If map is large, large = 768, otherwise 256.
-
             // mapx, mapy = "super map" position on the grid *512.
-            if (mapID >= 64)
-            {
-                mapID -= 64;
-            }
-
             int mapx = (mapID & 7) << 9;
             int mapy = (mapID & 56) << 6;
             if (this.IsAutomatic)
@@ -250,33 +253,36 @@ namespace ZeldaFullEditor
 				completly centered is -120 and -80.
 				*/
 
-                this.XScroll = (ushort)(this.PlayerX - 120); // 134.
-                this.YScroll = (ushort)(this.PlayerY - 80); // 78.
+                this.XScroll = (ushort)(this.PlayerX - 120);
+                this.YScroll = (ushort)(this.PlayerY - 80);
                 if (this.XScroll > 0xFF80)
                 {
                     XScroll = (ushort)mapx;
                 }
+
                 if (this.XScroll < mapx)
                 {
                     this.XScroll = (ushort)mapx;
                 }
+
                 if (this.YScroll > 0xFF80)
                 {
                     YScroll = (ushort)mapy;
                 }
+
                 if (this.YScroll < mapy)
                 {
                     this.YScroll = (ushort)mapy;
                 }
 
-                if (this.XScroll > mapx + large)
+                if (this.XScroll > mapx + areaSizeX)
                 {
-                    this.XScroll = (ushort)(mapx + large);
+                    this.XScroll = (ushort)(mapx + areaSizeX);
                 }
 
-                if (this.YScroll > mapy + large + 32)
+                if (this.YScroll > mapy + areaSizeY + 32)
                 {
-                    this.YScroll = (ushort)(mapy + large + 32);
+                    this.YScroll = (ushort)(mapy + areaSizeY + 32);
                 }
 
                 this.CameraX = (ushort)(this.PlayerX + 0x07);
@@ -292,14 +298,14 @@ namespace ZeldaFullEditor
                     this.CameraY = (ushort)(mapy + 111);
                 }
 
-                if (this.CameraX > mapx + 127 + large)
+                if (this.CameraX > mapx + 127 + areaSizeX)
                 {
-                    this.CameraX = (ushort)(mapx + 127 + large);
+                    this.CameraX = (ushort)(mapx + 127 + areaSizeX);
                 }
 
-                if (this.CameraY > mapy + 143 + large)
+                if (this.CameraY > mapy + 143 + areaSizeY)
                 {
-                    this.CameraY = (ushort)(mapy + 143 + large);
+                    this.CameraY = (ushort)(mapy + 143 + areaSizeY);
                 }
             }
 
@@ -308,7 +314,7 @@ namespace ZeldaFullEditor
 
             this.VRAMLocation = (ushort)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
 
-            Console.WriteLine("Exit:      0x" + this.RoomID.ToString("X2") + " MapId: 0x" + mapid.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY + " CameraX: " + this.CameraX + " CameraY: " + this.CameraY + " XScroll: " + this.XScroll + " YScroll: " + this.YScroll + " PlayerX: " + this.PlayerX + " PlayerY: " + this.PlayerY);
+            Console.WriteLine("Exit:      0x" + this.RoomID.ToString("X2") + " MapId: 0x" + mapID.ToString("X2") + " X: " + this.AreaX + " Y: " + this.AreaY + " CameraX: " + this.CameraX + " CameraY: " + this.CameraY + " XScroll: " + this.XScroll + " YScroll: " + this.YScroll + " PlayerX: " + this.PlayerX + " PlayerY: " + this.PlayerY);
         }
     }
 }

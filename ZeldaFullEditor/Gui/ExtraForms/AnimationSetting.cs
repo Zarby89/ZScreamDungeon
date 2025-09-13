@@ -56,6 +56,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                         bw.Write(tpos.x); // byte x;
                         bw.Write(tpos.y); // byte y;
                     }
+
                     bw.Write(frames[i].sfx1); // byte
                     bw.Write(frames[i].sfx2); // byte
                     bw.Write(frames[i].sfx3); // byte
@@ -83,201 +84,199 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         private void importzsaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = ".zsa ZS Animation (*.zsa)|*.zsa";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = ".zsa ZS Animation (*.zsa)|*.zsa";
 
-            if (ofd.ShowDialog() == DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                BinaryReader br = new BinaryReader(new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read));
-                for (int i = 0; i < 255; i++)
+                BinaryReader binaryReader = new BinaryReader(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
+                for (int i = 0; i < scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList.Length; i++)
                 {
-                    int tnbr = br.ReadInt32(); //int nbr of tiles in that frame
+                    int tnbr = binaryReader.ReadInt32(); // int nbr of tiles in that frame.
                     scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i].Clear();
                     for(int t = 0; t < tnbr; t++)
                     {
-                        ushort tid = br.ReadUInt16();
-                        byte tx = br.ReadByte();
-                        byte ty = br.ReadByte();
+                        ushort tid = binaryReader.ReadUInt16();
+                        byte tx = binaryReader.ReadByte();
+                        byte ty = binaryReader.ReadByte();
                         scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i].Add(new TilePos(tx, ty, tid));
                     }
-                    frames[i].sfx1 = br.ReadByte();
-                    frames[i].sfx2 = br.ReadByte();
-                    frames[i].sfx3 = br.ReadByte();
-                    frames[i].wait = br.ReadByte();
-                    frames[i].shake = br.ReadBoolean();
+
+                    frames[i].sfx1 = binaryReader.ReadByte();
+                    frames[i].sfx2 = binaryReader.ReadByte();
+                    frames[i].sfx3 = binaryReader.ReadByte();
+                    frames[i].wait = binaryReader.ReadByte();
+                    frames[i].shake = binaryReader.ReadBoolean();
                 }
+
                 fromForm = true;
-                persistCheckbox.Checked = persist = br.ReadBoolean();
-                numberframeHexbox.HexValue = nbrFrames = br.ReadByte();
+                persistCheckbox.Checked = persist = binaryReader.ReadBoolean();
+                numberframeHexbox.HexValue = nbrFrames = binaryReader.ReadByte();
                 fromForm = false;
                 listBox1.SelectedIndex = 0;
-                br.Close();
+
+                binaryReader.Close();
             }
         }
 
         private void generateASMInClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            sb.AppendLine(";===============================================");
-            sb.AppendLine("; Entrance Animation");
-            sb.AppendLine(";===============================================");
-            sb.AppendLine("; don't forget to set $C8 to zero (STZ.b $C8)");
-            sb.AppendLine("; don't forget to set $B0 to zero (STZ.b $B0)");
-            sb.AppendLine("");
-            sb.AppendLine("; Rename this into something unique");
-            sb.AppendLine("EntranceAnimation:");
-            sb.AppendLine("LDA.b $B0 ; Get animation state");
-            sb.AppendLine("ASL A");
-            sb.AppendLine("TAX ; x2");
-            sb.AppendLine("");
-            sb.AppendLine("JMP.w (.AnimationFrames, X)");
-            sb.AppendLine("");
-            sb.AppendLine(".AnimationFrames");
+            stringBuilder.AppendLine(";===============================================");
+            stringBuilder.AppendLine("; Entrance Animation");
+            stringBuilder.AppendLine(";===============================================");
+            stringBuilder.AppendLine("; don't forget to set $C8 to zero (STZ.b $C8)");
+            stringBuilder.AppendLine("; don't forget to set $B0 to zero (STZ.b $B0)");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("; Rename this into something unique");
+            stringBuilder.AppendLine("EntranceAnimation:");
+            stringBuilder.AppendLine("LDA.b $B0 ; Get animation state");
+            stringBuilder.AppendLine("ASL A");
+            stringBuilder.AppendLine("TAX ; x2");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("JMP.w (.AnimationFrames, X)");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine(".AnimationFrames");
             for (int i = 0; i <= nbrFrames; i++)
             {
-                sb.AppendLine("dw " + "Frame" + i.ToString());
+                stringBuilder.AppendLine("dw " + "Frame" + i.ToString());
             }
-            sb.AppendLine("");
-            sb.AppendLine(";===================================================");
-            sb.AppendLine("; Shake screen");
-            sb.AppendLine(";===================================================");
-            sb.AppendLine("; if you already have that function delete this one");
-            sb.AppendLine("ShakeScreen:");
-            sb.AppendLine("REP #$20");
-            sb.AppendLine("LDA.b $1A");
-            sb.AppendLine("AND.w #$0001");
-            sb.AppendLine("ASL A");
-            sb.AppendLine("TAX");
-            sb.AppendLine("");
-            sb.AppendLine("LDA.l $01C961, X");
-            sb.AppendLine("STA.w $011A");
-            sb.AppendLine("");
-            sb.AppendLine("LDA.l $01C965, X");
-            sb.AppendLine("STA.w $011C");
-            sb.AppendLine("");
-            sb.AppendLine(".exit");
-            sb.AppendLine("SEP #$20");
-            sb.AppendLine("RTS");
-            sb.AppendLine("");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine(";===================================================");
+            stringBuilder.AppendLine("; Shake screen");
+            stringBuilder.AppendLine(";===================================================");
+            stringBuilder.AppendLine("; if you already have that function delete this one");
+            stringBuilder.AppendLine("ShakeScreen:");
+            stringBuilder.AppendLine("REP #$20");
+            stringBuilder.AppendLine("LDA.b $1A");
+            stringBuilder.AppendLine("AND.w #$0001");
+            stringBuilder.AppendLine("ASL A");
+            stringBuilder.AppendLine("TAX");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("LDA.l $01C961, X");
+            stringBuilder.AppendLine("STA.w $011A");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("LDA.l $01C965, X");
+            stringBuilder.AppendLine("STA.w $011C");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine(".exit");
+            stringBuilder.AppendLine("SEP #$20");
+            stringBuilder.AppendLine("RTS");
+            stringBuilder.AppendLine("");
             for (int i = 0; i <= nbrFrames; i++)
             {
-                sb.AppendLine("Frame" + i.ToString() + ":");
+                stringBuilder.AppendLine("Frame" + i.ToString() + ":");
                 // here's where the fun begin
-                sb.AppendLine("LDA.b $C8 : BEQ .doInit ; Load the timer");
-                sb.AppendLine("JMP .notfirstframe");
-                sb.AppendLine(".doInit");
-                sb.AppendLine("; Init code for the frame here");
-                sb.AppendLine("REP #$30 ; 16 bit mode");
+                stringBuilder.AppendLine("LDA.b $C8 : BEQ .doInit ; Load the timer");
+                stringBuilder.AppendLine("JMP .notfirstframe");
+                stringBuilder.AppendLine(".doInit");
+                stringBuilder.AppendLine("; Init code for the frame here");
+                stringBuilder.AppendLine("REP #$30 ; 16 bit mode");
 
                 for (int t = 0; t < scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i].Count; t++)
                 {
                     ushort addr = (ushort)((scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i][t].x * 2) + (scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i][t].y * 128));
 
-                    sb.AppendLine("LDA.w #$" + scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i][t].tileId.ToString("X4"));
-                    sb.AppendLine("LDX.w #$" + (addr).ToString("X4"));
-                    sb.AppendLine("JSL $1BC97C ; Overworld_DrawMap16_Persist");
+                    stringBuilder.AppendLine("LDA.w #$" + scene.ow.AllAnimationOverlays[scene.selectedMapParent].FramesList[i][t].tileId.ToString("X4"));
+                    stringBuilder.AppendLine("LDX.w #$" + addr.ToString("X4"));
+                    stringBuilder.AppendLine("JSL $1BC97C ; Overworld_DrawMap16_Persist");
                 }
 
-                sb.AppendLine("SEP #$30 ; 8 bit mode");
-                sb.AppendLine("INC.b $14 ; Do tiles transfer");
+                stringBuilder.AppendLine("SEP #$30 ; 8 bit mode");
+                stringBuilder.AppendLine("INC.b $14 ; Do tiles transfer");
                 if (frames[i].sfx1 != 0) 
                 {
-                    sb.AppendLine("LDA.b #$" + frames[i].sfx1.ToString("X2") + " : " + " STA.w $012D");
+                    stringBuilder.AppendLine("LDA.b #$" + frames[i].sfx1.ToString("X2") + " : " + " STA.w $012D");
                 }
+
                 if (frames[i].sfx2 != 0)
                 {
-                    sb.AppendLine("LDA.b #$" + frames[i].sfx2.ToString("X2") + " : " + " STA.w $012E");
+                    stringBuilder.AppendLine("LDA.b #$" + frames[i].sfx2.ToString("X2") + " : " + " STA.w $012E");
                 }
+
                 if (frames[i].sfx3 != 0)
                 {
-                    sb.AppendLine("LDA.b #$" + frames[i].sfx3.ToString("X2") + " : " + " STA.w $012F");
+                    stringBuilder.AppendLine("LDA.b #$" + frames[i].sfx3.ToString("X2") + " : " + " STA.w $012F");
                 }
-                sb.AppendLine(".notfirstframe");
+
+                stringBuilder.AppendLine(".notfirstframe");
 
                 if (frames[i].shake)
                 {
-                    sb.AppendLine("JSR ShakeScreen ; make the screen shake");
+                    stringBuilder.AppendLine("JSR ShakeScreen ; make the screen shake");
                 }
 
                 if (frames[i].wait != 0)
                 {
-                    sb.AppendLine("INC.b $C8 : LDA.b $C8 : CMP.b #$" + frames[i].wait.ToString("X2") +" ; Load and compare timer");
-                    sb.AppendLine("BNE .wait");
-                    sb.AppendLine("INC.b $B0 ; increase frame");
-                    sb.AppendLine("STZ.b $C8 ; reset timer for next frame");
+                    stringBuilder.AppendLine("INC.b $C8 : LDA.b $C8 : CMP.b #$" + frames[i].wait.ToString("X2") +" ; Load and compare timer");
+                    stringBuilder.AppendLine("BNE .wait");
+                    stringBuilder.AppendLine("INC.b $B0 ; increase frame");
+                    stringBuilder.AppendLine("STZ.b $C8 ; reset timer for next frame");
 
                     if (i == nbrFrames)
                     {
-                        sb.AppendLine("STZ.w $04C6");
-                        sb.AppendLine("STZ.b $B0");
-                        sb.AppendLine("STZ.w $0710");
+                        stringBuilder.AppendLine("STZ.w $04C6");
+                        stringBuilder.AppendLine("STZ.b $B0");
+                        stringBuilder.AppendLine("STZ.w $0710");
 
-                        sb.AppendLine("STZ.w $02E4");
+                        stringBuilder.AppendLine("STZ.w $02E4");
 
-                        sb.AppendLine("STZ.w $0FC1");
+                        stringBuilder.AppendLine("STZ.w $0FC1");
 
-                        sb.AppendLine("STZ.w $011A");
-                        sb.AppendLine("STZ.w $011B");
-                        sb.AppendLine("STZ.w $011C");
-                        sb.AppendLine("STZ.w $011D");
+                        stringBuilder.AppendLine("STZ.w $011A");
+                        stringBuilder.AppendLine("STZ.w $011B");
+                        stringBuilder.AppendLine("STZ.w $011C");
+                        stringBuilder.AppendLine("STZ.w $011D");
                         if (persist)
                         {
-                            sb.AppendLine("; set the overlay");
-                            sb.AppendLine("LDX.b $8A");
+                            stringBuilder.AppendLine("; set the overlay");
+                            stringBuilder.AppendLine("LDX.b $8A");
 
-                            sb.AppendLine("LDA.l $7EF280,X");
-                            sb.AppendLine("ORA.b #$20");
-                            sb.AppendLine("STA.l $7EF280,X");
+                            stringBuilder.AppendLine("LDA.l $7EF280,X");
+                            stringBuilder.AppendLine("ORA.b #$20");
+                            stringBuilder.AppendLine("STA.l $7EF280,X");
                         }
                     }
 
-
-                    sb.AppendLine(".wait");
-                    
-
+                    stringBuilder.AppendLine(".wait");
                 }
                 else
                 {
-                    sb.AppendLine("INC.b $B0 ; increase frame");
-                    sb.AppendLine("STZ.b $C8 ; reset timer for next frame");
+                    stringBuilder.AppendLine("INC.b $B0 ; increase frame");
+                    stringBuilder.AppendLine("STZ.b $C8 ; reset timer for next frame");
 
                     if (i == nbrFrames)
                     {
-                        sb.AppendLine("STZ.w $04C6");
-                        sb.AppendLine("STZ.b $B0");
-                        sb.AppendLine("STZ.w $0710");
+                        stringBuilder.AppendLine("STZ.w $04C6");
+                        stringBuilder.AppendLine("STZ.b $B0");
+                        stringBuilder.AppendLine("STZ.w $0710");
 
-                        sb.AppendLine("STZ.w $02E4");
+                        stringBuilder.AppendLine("STZ.w $02E4");
 
-                        sb.AppendLine("STZ.w $0FC1");
+                        stringBuilder.AppendLine("STZ.w $0FC1");
 
-                        sb.AppendLine("STZ.w $011A");
-                        sb.AppendLine("STZ.w $011B");
-                        sb.AppendLine("STZ.w $011C");
-                        sb.AppendLine("STZ.w $011D");
+                        stringBuilder.AppendLine("STZ.w $011A");
+                        stringBuilder.AppendLine("STZ.w $011B");
+                        stringBuilder.AppendLine("STZ.w $011C");
+                        stringBuilder.AppendLine("STZ.w $011D");
 
                         if (persist)
                         {
-                            sb.AppendLine("; set the overlay");
-                            sb.AppendLine("LDX.b $8A");
+                            stringBuilder.AppendLine("; set the overlay");
+                            stringBuilder.AppendLine("LDX.b $8A");
 
-                            sb.AppendLine("LDA.l $7EF280,X");
-                            sb.AppendLine("ORA.b #$20");
-                            sb.AppendLine("STA.l $7EF280,X");
+                            stringBuilder.AppendLine("LDA.l $7EF280,X");
+                            stringBuilder.AppendLine("ORA.b #$20");
+                            stringBuilder.AppendLine("STA.l $7EF280,X");
                         }
                     }
                 }
 
-
-
-
-
-
-                sb.AppendLine("RTS");
+                stringBuilder.AppendLine("RTS");
             }
 
-            Clipboard.SetText(sb.ToString());
+            Clipboard.SetText(stringBuilder.ToString());
         }
 
         private void numberframeHexbox_TextChanged(object sender, EventArgs e)

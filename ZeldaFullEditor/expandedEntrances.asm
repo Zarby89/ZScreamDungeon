@@ -10,10 +10,10 @@
 pushpc
 
 org $02D99F ; DataBank change hook1
-    JSL NewEntrancesCodeChangeBank1
+    JSL.l NewEntrancesCodeChangeBank1
 
 org $02DACE ; DataBank change hook2
-    JSL NewEntrancesCodeChangeBank2
+    JSL.l NewEntrancesCodeChangeBank2
 
 ; No need to use expanded region for it!
 org $02DA64 ; Check if entrance is going down on the .Extra databyte
@@ -33,7 +33,7 @@ FacingEntrance:
 }
 
 org $0299B0
-    JSL NewFaceDownCheck
+    JSL.l NewFaceDownCheck
     BRA .skipuseless
 
 org $0299BA

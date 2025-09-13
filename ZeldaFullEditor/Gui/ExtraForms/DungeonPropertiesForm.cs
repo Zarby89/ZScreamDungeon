@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
@@ -37,7 +30,7 @@ namespace ZeldaFullEditor.Gui
             listBox1.Items.Add("Crystal 4 (Thieves)");
             listBox1.Items.Add("Agahnim 2");
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < properties.Length; i++)
             {
                 properties[i] = new DungeonProperty
                 (
@@ -53,9 +46,12 @@ namespace ZeldaFullEditor.Gui
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             changedFromForm = true;
-            startroomTextbox.Text = properties[listBox1.SelectedIndex].startroom.ToString();
-            endroomTextbox.Text = properties[listBox1.SelectedIndex].endroom.ToString();
-            bossroomTextbox.Text = properties[listBox1.SelectedIndex].bossroom.ToString();
+            startroomTextbox.HexValue = properties[listBox1.SelectedIndex].startroom;
+            endroomTextbox.HexValue = properties[listBox1.SelectedIndex].endroom;
+            bossroomTextbox.HexValue = properties[listBox1.SelectedIndex].bossroom;
+            startroomTextbox.Text = properties[listBox1.SelectedIndex].startroom.ToString("X3");
+            endroomTextbox.Text = properties[listBox1.SelectedIndex].endroom.ToString("X3");
+            bossroomTextbox.Text = properties[listBox1.SelectedIndex].bossroom.ToString("X3");
             changedFromForm = false;
         }
 
@@ -63,24 +59,15 @@ namespace ZeldaFullEditor.Gui
         {
             if (!changedFromForm)
             {
-                if (int.TryParse(startroomTextbox.Text, out int r))
-                {
-                    properties[listBox1.SelectedIndex].startroom = (byte)r;
-                }
-                if (int.TryParse(endroomTextbox.Text, out r))
-                {
-                    properties[listBox1.SelectedIndex].endroom = (byte)r;
-                }
-                if (int.TryParse(bossroomTextbox.Text, out r))
-                {
-                    properties[listBox1.SelectedIndex].bossroom = (short)r;
-                }
+                properties[listBox1.SelectedIndex].startroom = (byte)startroomTextbox.HexValue;
+                properties[listBox1.SelectedIndex].endroom = (byte)endroomTextbox.HexValue;
+                properties[listBox1.SelectedIndex].bossroom = (short)bossroomTextbox.HexValue;
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void SaveButtonClick(object sender, EventArgs e)
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < properties.Length; i++)
             {
                 ROM.Write(Constants.dungeons_startrooms + i, properties[i].startroom, WriteType.DungeonPrize);
                 ROM.Write(Constants.dungeons_endrooms + i, properties[i].endroom, WriteType.DungeonPrize);

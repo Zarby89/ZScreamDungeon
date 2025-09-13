@@ -373,7 +373,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             }
             else
             {
-
                 string regex = "[^0-9]";
                 this.Text = Regex.Replace(this.Text, regex, "0");
                 this.hexValue = int.Parse(this.Text);
