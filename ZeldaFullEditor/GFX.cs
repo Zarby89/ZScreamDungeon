@@ -13,9 +13,24 @@ namespace ZeldaFullEditor
     {
         public static IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
         public static Bitmap allgfxBitmap;
-
         public static IntPtr allgfx2bpp16Ptr = Marshal.AllocHGlobal((0x1000 * 10));
         public static Bitmap allgfx2bppBitmap;
+
+        // Expanded GFX that will push to ^^^^ depending on what is selected dungeon or OW
+
+        public static IntPtr allgfx16PtrExpOW = Marshal.AllocHGlobal((128 * 7136) / 2);
+        public static Bitmap allgfxBitmapExpOW;
+
+        public static IntPtr allgfx16PtrExpUW = Marshal.AllocHGlobal((128 * 7136) / 2);
+        public static Bitmap allgfxBitmapExpUW;
+
+        public static IntPtr allgfx2bpp16PtrExpOW = Marshal.AllocHGlobal((0x1000 * 10));
+        public static Bitmap allgfx2bppBitmapExpOW;
+
+        public static IntPtr allgfx2bpp16PtrExpUW = Marshal.AllocHGlobal((0x1000 * 10));
+        public static Bitmap allgfx2bppBitmapExpUW;
+
+
 
         public static StringBuilder DEBUGSB = new StringBuilder();
 
@@ -212,7 +227,12 @@ namespace ZeldaFullEditor
             roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg1Ptr);
             roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
             allgfxBitmap = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
+            allgfxBitmapExpOW = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, allgfx16PtrExpOW);
+            allgfxBitmapExpUW = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, allgfx16PtrExpUW);
             allgfx2bppBitmap = new Bitmap(128, 640, 64, PixelFormat.Format4bppIndexed, allgfx2bpp16Ptr);
+
+            allgfx2bppBitmapExpOW = new Bitmap(128, 640, 64, PixelFormat.Format4bppIndexed, allgfx2bpp16PtrExpOW);
+            allgfx2bppBitmapExpUW = new Bitmap(128, 640, 64, PixelFormat.Format4bppIndexed, allgfx2bpp16PtrExpUW);
             //allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
             currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
             currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
@@ -496,17 +516,32 @@ namespace ZeldaFullEditor
             {
                 byte* allgfx16Data = (byte*)allgfx16Ptr.ToPointer();
                 byte* allgfx2bpp16Data = (byte*)allgfx2bpp16Ptr.ToPointer();
-                //byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
+
+                byte* allgfx16DataExpOW = (byte*)allgfx16PtrExpOW.ToPointer();
+                byte* allgfx2bpp16DataExpOW = (byte*)allgfx2bpp16PtrExpOW.ToPointer();
+
+                byte* allgfx16DataExpUW = (byte*)allgfx16PtrExpUW.ToPointer();
+                byte* allgfx2bpp16DataExpUW = (byte*)allgfx2bpp16PtrExpUW.ToPointer();
 
                 for (int i = 0; i < 0x6F800; i++)
                 {
                     allgfx16Data[i] = newData[i];
+                    allgfx16DataExpOW[i] = newData[i]; // load OW from normal location
+                    allgfx16DataExpUW[i] = newData[i];
                 }
+                // TODO ADD CONDITION TO CHECK IF ROM HAS EXPANDED GFX THEN LOAD EXPUW FROM THERE
+
+
 
                 for (int i = 0; i < 0x0A000; i++)
                 {
                     allgfx2bpp16Data[i] = bpp2Data[i];
+                    allgfx2bpp16DataExpOW[i] = bpp2Data[i];
+                    allgfx2bpp16DataExpUW[i] = bpp2Data[i];
                 }
+                // TODO ADD CONDITION TO CHECK IF ROM HAS EXPANDED GFX THEN LOAD EXPUW FROM THERE
+
+
             }
         }
 

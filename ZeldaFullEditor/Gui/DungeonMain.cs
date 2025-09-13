@@ -4060,6 +4060,9 @@ namespace ZeldaFullEditor
 
             if (this.editorsTabControl.SelectedTab.Name == "dungeonPage")
             {
+
+                GFX.allgfx16Ptr = GFX.allgfx16PtrExpUW;
+
                 this.SetupPaletteForm();
 
                 this.customPanel1.Parent = tabPage4;
@@ -4125,6 +4128,7 @@ namespace ZeldaFullEditor
 
             if (this.editorsTabControl.SelectedTab.Name == "overworldPage")
             {
+                GFX.allgfx16Ptr = GFX.allgfx16PtrExpOW;
                 if (this.oweditor2 != null)
                 {
                     if (this.oweditor2.overworld.IsLoaded)

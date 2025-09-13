@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -10,12 +11,15 @@ namespace ZeldaFullEditor.Gui
     {
         DungeonMain mainForm;
         public int selectedSheet = 0;
-
+        bool expandedSelected = false;
         public PaletteEditor paletteForm = null;
         public GfxGroupsForm gfxGroupsForm = null;
 
-        byte[][] modifiedSheets = new byte[Constants.NumberOfSheets][];
-        byte[][] gfxSheets3bpp = new byte[Constants.NumberOfSheets][];
+        byte[][] gfxSheets3bppOW = new byte[Constants.NumberOfSheets][];
+        byte[][] gfxSheets3bppUW = new byte[Constants.NumberOfSheets][];
+        ushort[] gfxSheetsReusedOW = new ushort[Constants.NumberOfSheets]; // if != 0xFFFF reuse pointer from that sheet id
+        ushort[] gfxSheetsReusedUW = new ushort[Constants.NumberOfSheets]; // if != 0xFFFF reuse pointer from that sheet id
+        // if value > 223 it's from the UW array else from OW array
 
         int selectedPal = 0;
 
@@ -61,10 +65,12 @@ namespace ZeldaFullEditor.Gui
         private void allgfxPicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             this.selectedSheet = (e.Y / 64);
-            this.allgfxPicturebox.Refresh();
+
 
             int bitDepth = GFX.isbpp3[selectedSheet] ? 3 : 2;
-
+            expandedSelected = false;
+            allgfxPicturebox.Refresh();
+            allgfx2picturebox.Refresh();
             this.selectedLabel.Text = $"Selected sheet: {this.selectedSheet:X2} ({bitDepth}bpp)";
         }
 
@@ -72,101 +78,71 @@ namespace ZeldaFullEditor.Gui
         {
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-            e.Graphics.DrawImage(GFX.allgfxBitmap, Constants.Rect_0_0_256_14272, Constants.Rect_0_0_128_7136, GraphicsUnit.Pixel);
-            e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, this.selectedSheet * 64, 256, 64));
+            e.Graphics.DrawImage(GFX.allgfxBitmapExpOW, Constants.Rect_0_0_256_14272, Constants.Rect_0_0_128_7136, GraphicsUnit.Pixel);
+            if (expandedSelected == false)
+            {
+                e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, this.selectedSheet * 64, 256, 64));
+            }
             //2bpp debug
             //e.Graphics.DrawImage(GFX.allgfx2bppBitmap, new Rectangle(0, 0, 256, 896), new Rectangle(0, 0, 128, 448), GraphicsUnit.Pixel);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int csize = 0;
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "all *.bin |*.bin";
 
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                byte[] ndata = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ROM.DATA, GFX.GetPCGfxAddress(ROM.DATA, (byte)this.selectedSheet), 0x1000, ref csize);
-                FileStream fs = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-                fs.Write(ndata, 0, ndata.Length);
-                fs.Close();
-            }
-
-            byte[] sdata = new byte[Constants.UncompressedSheetSize];
-
-            unsafe
-            {
-                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                for (int i = 0; i < Constants.UncompressedSheetSize; i++)
-                {
-                    sdata[i] = gdata[(this.selectedSheet * Constants.UncompressedSheetSize) + i];
-                }
-            }
         }
 
-        /// <summary>
-        /// Saves all gfx.
-        /// </summary>
-        /// <returns> True if saving failed.  </returns>
         public bool SaveAllGfx()
         {
             unsafe
             {
-                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                byte* gdata2bpp = (byte*)GFX.allgfx2bpp16Ptr.ToPointer();
+                // Compare all 446 sheet to see if there's a matching one
+
+                byte* dataow = (byte*)GFX.allgfx16PtrExpOW.ToPointer();
+                byte* datauw = (byte*)GFX.allgfx16PtrExpUW.ToPointer();
+
+                byte* data2bppow = (byte*)GFX.allgfx2bpp16PtrExpOW.ToPointer();
+                byte* data2bppuw = (byte*)GFX.allgfx2bpp16PtrExpUW.ToPointer();
+
+                //byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                //byte* gdata2bpp = (byte*)GFX.allgfx2bpp16Ptr.ToPointer();
 
                 for (int i = 0; i < Constants.NumberOfSheets; i++)
                 {
-                    byte[] sdata = new byte[Constants.UncompressedSheetSize];
-                    byte[] sdata2bpp = new byte[0x1000];
+
+                    byte[] sdataow = new byte[Constants.UncompressedSheetSize];
+                    byte[] sdata2bppow = new byte[0x1000];
+
+                    byte[] sdatauw = new byte[Constants.UncompressedSheetSize];
+                    byte[] sdata2bppuw = new byte[0x1000];
+
 
 
                     for (int j = 0; j < Constants.UncompressedSheetSize; j++)
                     {
-                        sdata[j] = gdata[(i * Constants.UncompressedSheetSize) + j];
+                        sdataow[j] = dataow[(i * Constants.UncompressedSheetSize) + j];
+                        sdatauw[j] = datauw[(i * Constants.UncompressedSheetSize) + j];
                     }
 
                     if (GFX.isbpp3[i])
                     {
-                        if (this.modifiedSheets[i] != null)
-                        {
-                            this.gfxSheets3bpp[i] = this.modifiedSheets[i];
-                            this.modifiedSheets[i] = null;
-                        }
-                        else
-                        {
-                            this.gfxSheets3bpp[i] = GFX.pc4bppto3bppsnes(sdata);
-                        }
+                        this.gfxSheets3bppOW[i] = GFX.pc4bppto3bppsnes(sdataow);
+                        this.gfxSheets3bppUW[i] = GFX.pc4bppto3bppsnes(sdatauw);
                     }
                     else
                     {
                         for (int j = 0; j < 0x1000; j++)
                         {
-                            sdata2bpp[j] = gdata2bpp[(Array.IndexOf(GFX.bpp2SheetsIndex, (byte)i) * 0x1000) + j];
+                            sdata2bppow[j] = data2bppow[(Array.IndexOf(GFX.bpp2SheetsIndex, (byte)i) * 0x1000) + j];
+                            sdata2bppuw[j] = data2bppuw[(Array.IndexOf(GFX.bpp2SheetsIndex, (byte)i) * 0x1000) + j];
                         }
 
-                        if (this.modifiedSheets[i] != null)
-                        {
-
-                            // Console.WriteLine(i.ToString() + " Sheet has been modified");
-                            this.gfxSheets3bpp[i] = this.modifiedSheets[i];
-                            this.modifiedSheets[i] = null;
-                        }
-                        else
-                        {
-                            //gfxSheets3bpp[i] = GFX.pc4bppto2bppsnes(sdata);
-                            /*int compressedSize = 0;
-                            gfxSheets3bpp[i] = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ROM.DATA,
-                                GFX.GetPCGfxAddress(ROM.DATA, (byte)i),
-                                Constants.UncompressedSheetSize,
-                                ref compressedSize);*/
-                            this.gfxSheets3bpp[i] = GFX.pc4bppto2bppsnes(sdata2bpp);
-                        }
+                        this.gfxSheets3bppOW[i] = GFX.pc4bppto2bppsnes(sdata2bppow);
+                        this.gfxSheets3bppUW[i] = GFX.pc4bppto2bppsnes(sdata2bppuw);
                     }
                 }
             }
 
-            Console.WriteLine("Reached");
 
             if (this.recompressAllGfx())
             {
@@ -178,125 +154,225 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        /// <summary>
-        /// Recompresses all GFX.
-        /// </summary>
-        /// <returns> True if compressing failed. </returns>
         public bool recompressAllGfx()
         {
-            int gfxPointer1 = Utils.SnesToPc((ROM.DATA[Constants.gfx_1_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_1_pointer]));
-            int gfxPointer2 = Utils.SnesToPc((ROM.DATA[Constants.gfx_2_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_2_pointer]));
-            int gfxPointer3 = Utils.SnesToPc((ROM.DATA[Constants.gfx_3_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_3_pointer]));
-            int pos = 0x8B800;
-            int uPos = 0x87000;
+            /*byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
+            if (asmVersion > 0x02 && asmVersion != 0xFF)
+            {
+                // use hardcoded positions instead
+            }*/
+
+            // use hardcoded positions instead now in versions > 0x03 because pointers are changed
+            int gfxPointer1 = 0x004F80;
+            int gfxPointer2 = 0x00505F;
+            int gfxPointer3 = 0x00513E;
+
+            int pos = 0x08B800;
+            int uPos = 0x087000;
+
             bool bpp2;
+
+            int[] sheetSnesOWPtrs = new int[223];
+
+            bool expandedSpace = false;
 
             for (int i = 0; i < Constants.NumberOfSheets; i++)
             {
                 if (i < 115 || i > 126) // Not compressed
                 {
-                    bpp2 = false;
-                    if (!GFX.isbpp3[i])
+                    bpp2 = !GFX.isbpp3[i];
+
+                    int saddr = Utils.PcToSnes(pos);
+                    ROM.Write(gfxPointer3 + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
+                    ROM.Write(gfxPointer2 + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
+                    ROM.Write(gfxPointer1 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
+                    sheetSnesOWPtrs[i] = saddr; // save the pointers to reuse it in the UW sheets
+
+                    if (!bpp2)
                     {
-                        bpp2 = true;
+                        byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bppOW[i], 0, Constants.Uncompressed3BPPSize);
+                        if (cbytes == null)
+                        {
+                            return true;
+                        }
+
+                        int s = cbytes.Length;
+                        if (!expandedSpace)
+                        {
+                            if (pos + s >= Constants.maxGfx)
+                            {
+                                pos = Constants.GfxExp;
+                                // update the pointer too since it was set on previous addr
+                                saddr = Utils.PcToSnes(pos);
+                                ROM.Write(gfxPointer3 + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer2 + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer1 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
+                                sheetSnesOWPtrs[i] = saddr; // save the pointers to reuse it in the UW sheets
+                                expandedSpace = true;
+                            }
+                        }
+                        cbytes.CopyTo(ROM.DATA, pos);
+                        pos += s;
+
                     }
-
-                    if ((ROM.DATA[gfxPointer1 + i] & 0x7F) <= 0x20)
+                    else
                     {
-                        int saddr = Utils.PcToSnes(pos);
-                        ROM.Write(gfxPointer3 + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
-                        ROM.Write(gfxPointer2 + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
-                        ROM.Write(gfxPointer1 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
-                        if (!bpp2)
+                        byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bppOW[i], 0, Constants.UncompressedSheetSize);
+                        if (cbytes == null)
                         {
-                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bpp[i], 0, Constants.Uncompressed3BPPSize);
-                            if (cbytes == null)
-                            {
-                                return true;
-                            }
-
-                            int s = cbytes.Length;
-                            cbytes.CopyTo(ROM.DATA, pos);
-                            pos += s;
+                            return true;
                         }
-                        else
+
+                        int s = cbytes.Length;
+                        if (!expandedSpace)
                         {
-                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bpp[i], 0, Constants.UncompressedSheetSize);
-                            if (cbytes == null)
+                            if (pos + s >= Constants.maxGfx)
                             {
-                                return true;
+                                pos = Constants.GfxExp;
+                                // update the pointer too since it was set on previous addr
+                                saddr = Utils.PcToSnes(pos);
+                                ROM.Write(gfxPointer3 + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer2 + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer1 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
+                                sheetSnesOWPtrs[i] = saddr; // save the pointers to reuse it in the UW sheets
+                                expandedSpace = true;
                             }
-
-                            int s = cbytes.Length;
-                            cbytes.CopyTo(ROM.DATA, pos);
-                            pos += s;
                         }
-                    }
-                    else // Save it back in expanded data if it was already
-                    {
-                        if (!bpp2)
-                        {
-                            byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
-                            int addr = BitConverter.ToInt32(b, 0);
 
-                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bpp[i], 0, Constants.Uncompressed3BPPSize);
-                            if (cbytes == null)
-                            {
-                                return true;
-                            }
-
-                            int s = cbytes.Length;
-                            cbytes.CopyTo(ROM.DATA, Utils.SnesToPc(addr));
-                            //pos += s;
-                        }
-                        else
-                        {
-                            byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
-                            int addr = BitConverter.ToInt32(b, 0);
-
-                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bpp[i], 0, Constants.UncompressedSheetSize);
-                            if (cbytes == null)
-                            {
-                                return true;
-                            }
-
-                            int s = cbytes.Length;
-                            cbytes.CopyTo(ROM.DATA, Utils.SnesToPc(addr));
-                            //pos += s;
-                        }
+                        cbytes.CopyTo(ROM.DATA, pos);
+                        pos += s;
+                        
                     }
                 }
                 else
                 {
-                    if ((ROM.DATA[gfxPointer1 + i] & 0x7F) <= 0x20)
+                    for (int j = 0; j < Constants.Uncompressed3BPPSize; j++)
                     {
-                        for (int j = 0; j < Constants.Uncompressed3BPPSize; j++)
-                        {
-                            ROM.Write(uPos + j, this.gfxSheets3bpp[i][j], WriteType.GFX);
-                        }
-
-                        uPos += Constants.Uncompressed3BPPSize;
+                        ROM.Write(uPos + j, this.gfxSheets3bppOW[i][j], WriteType.GFX);
                     }
+
+                    uPos += Constants.Uncompressed3BPPSize;
+                    sheetSnesOWPtrs[i] = Utils.PcToSnes(uPos); // save the pointers to reuse it in the UW sheets
                 }
             }
 
-            /*
-            if (pos >= Constants.maxGfx)
-            {
-                MessageBox.Show("It is possible the gfx are overwriting data :( new gfx size is " + (pos - 0x8b800).ToString("X6"));
-            }
-            else
-            {
-                MessageBox.Show("Saved successfully total of remaining space for gfx : " + (Constants.maxGfx - pos).ToString("X6"));
-            }
-            */
 
-            this.infoLabel.Text = $"Compressed size: {pos - 0x8B800:X6}\r\nAvailable space: {Constants.maxGfx - pos:X6}";
+            //==================================== UW GFX Sheets ========================================
+
+            for (int i = 0; i < Constants.NumberOfSheets; i++)
+            {
+
+                bpp2 = !GFX.isbpp3[i];
+                int saddr = Utils.PcToSnes(pos);
+                if (ROM.ReadByte(0x150600 + i) == 00) // if gfx == 0 then it's reusing OW gfx ptr
+                {
+                    saddr = sheetSnesOWPtrs[i]; // use OW ptr instead
+                    ROM.Write((0x150100 + 0x1BE) + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
+                    ROM.Write((0x150100 + 0xDF) + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
+                    ROM.Write(0x150100 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
+                    continue; // continue since there's no data
+                }
+                else
+                {
+                    ROM.Write((0x150100 + 0x1BE) + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
+                    ROM.Write((0x150100 + 0xDF) + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
+                    ROM.Write(0x150100 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
+
+                }
+
+
+                if (i < 115 || i > 126) // Not compressed
+                {
+
+
+
+                    if (!bpp2)
+                    {
+                        byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bppUW[i], 0, Constants.Uncompressed3BPPSize);
+                        if (cbytes == null)
+                        {
+                            return true;
+                        }
+
+                        int s = cbytes.Length;
+                        if (!expandedSpace)
+                        {
+                            if (pos + s >= Constants.maxGfx)
+                            {
+                                pos = Constants.GfxExp;
+                                // update the pointer too since it was set on previous addr
+                                saddr = Utils.PcToSnes(pos);
+                                ROM.Write(gfxPointer3 + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer2 + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer1 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
+                                sheetSnesOWPtrs[i] = saddr; // save the pointers to reuse it in the UW sheets
+                                expandedSpace = true;
+                            }
+                        }
+                        cbytes.CopyTo(ROM.DATA, pos);
+                        pos += s;
+
+                    }
+                    else
+                    {
+                        byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(this.gfxSheets3bppUW[i], 0, Constants.UncompressedSheetSize);
+                        if (cbytes == null)
+                        {
+                            return true;
+                        }
+
+                        int s = cbytes.Length;
+                        if (!expandedSpace)
+                        {
+                            if (pos + s >= Constants.maxGfx)
+                            {
+                                pos = Constants.GfxExp;
+                                // update the pointer too since it was set on previous addr
+                                saddr = Utils.PcToSnes(pos);
+                                ROM.Write(gfxPointer3 + i, (byte)(saddr & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer2 + i, (byte)(saddr >> 8 & 0xFF), WriteType.GFXPTR);
+                                ROM.Write(gfxPointer1 + i, (byte)(saddr >> 16 & 0xFF), WriteType.GFXPTR);
+                                sheetSnesOWPtrs[i] = saddr; // save the pointers to reuse it in the UW sheets
+                                expandedSpace = true;
+                            }
+                        }
+
+                        cbytes.CopyTo(ROM.DATA, pos);
+                        pos += s;
+
+                    }
+                }
+                /*else
+                {
+                    for (int j = 0; j < Constants.Uncompressed3BPPSize; j++)
+                    {
+                        ROM.Write(uPos + j, this.gfxSheets3bppUW[i][j], WriteType.GFX);
+                    }
+
+                    uPos += Constants.Uncompressed3BPPSize;
+                }*/
+            }
+
+
+
+
+
+            if (expandedSpace)
+            {
+                if (pos >=  Constants.maxGfxExp)
+                {
+                    // Too much GFX !!!;
+                    Console.WriteLine("There was too much gfx !! we are at position " + pos.ToString("X6"));
+                    return true;
+                }
+            }
+
+            //this.infoLabel.Text = $"Compressed size: {pos - 0x8B800:X6}\r\nAvailable space: {Constants.maxGfx - pos:X6}";
 
             return false;
         }
 
-		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
+        private void palettePicturebox_Paint(object sender, PaintEventArgs e)
 		{
 			for (int i = 0; i < 256; i++)
 			{
@@ -313,30 +389,6 @@ namespace ZeldaFullEditor.Gui
 			e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, this.selectedPal * 16, 256, 16));
 		}
 
-        // TODO KAN REFACTOR - test and use this rewritten function
-        /*
-		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
-        {
-			ColorPalette source;
-
-			if (radioButton1.Checked)
-			{
-				source = GFX.roomBg1Bitmap.Palette;
-			}
-			else
-			{
-				source = GFX.mapgfx16Bitmap.Palette;
-			}
-
-			for (int i = 0; i < 256; i++)
-            {
-				e.Graphics.FillRectangle(new SolidBrush(source.Entries[i]), new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));
-			}
-
-            e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, selectedPal * 16, 256, 16));
-        }
-        */
-
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             this.palettePicturebox.Refresh();
@@ -351,7 +403,7 @@ namespace ZeldaFullEditor.Gui
                 rightSide = true;
             }
 
-            ColorPalette cp = GFX.allgfxBitmap.Palette;
+            ColorPalette cp = GFX.allgfxBitmapExpOW.Palette;
             for (int i = 0; i < 16; i++)
             {
                 if (this.radioButton1.Checked)
@@ -379,8 +431,10 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            GFX.allgfxBitmap.Palette = cp;
+            GFX.allgfxBitmapExpOW.Palette = cp;
+            GFX.allgfxBitmapExpUW.Palette = cp;
             this.allgfxPicturebox.Refresh();
+            this.allgfx2picturebox.Refresh();
             this.palettePicturebox.Refresh();
         }
 
@@ -417,7 +471,13 @@ namespace ZeldaFullEditor.Gui
                 byte[] sdata = new byte[Constants.UncompressedSheetSize];
                 unsafe
                 {
-                    byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                    
+                    byte* gdata = (byte*)GFX.allgfx16PtrExpOW.ToPointer();
+                    if (expandedSelected == true)
+                    {
+                        gdata = (byte*)GFX.allgfx16PtrExpUW.ToPointer();
+                    }
+
                     for (int i = 0; i < Constants.UncompressedSheetSize; i++)
                     {
                         sdata[i] = gdata[(this.selectedSheet * Constants.UncompressedSheetSize) + i];
@@ -427,10 +487,10 @@ namespace ZeldaFullEditor.Gui
                 byte[] pdata = new byte[64];
                 for (int i = 0; i < 16; i++)
                 {
-                    pdata[(i * 4) + 0] = GFX.allgfxBitmap.Palette.Entries[i].B;
-                    pdata[(i * 4) + 1] = GFX.allgfxBitmap.Palette.Entries[i].G;
-                    pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
-                    pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
+                    pdata[(i * 4) + 0] = GFX.allgfxBitmapExpOW.Palette.Entries[i].B;
+                    pdata[(i * 4) + 1] = GFX.allgfxBitmapExpOW.Palette.Entries[i].G;
+                    pdata[(i * 4) + 2] = GFX.allgfxBitmapExpOW.Palette.Entries[i].R;
+                    pdata[(i * 4) + 3] = GFX.allgfxBitmapExpOW.Palette.Entries[i].A;
                 }
 
                 ImgClipboard.SetImageDataWithPal(sdata, pdata);
@@ -450,10 +510,10 @@ namespace ZeldaFullEditor.Gui
                 byte[] pdata = new byte[64];
                 for (int i = 0; i < 16; i++)
                 {
-                    pdata[(i * 4) + 0] = GFX.allgfxBitmap.Palette.Entries[i].B;
-                    pdata[(i * 4) + 1] = GFX.allgfxBitmap.Palette.Entries[i].G;
-                    pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
-                    pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
+                    pdata[(i * 4) + 0] = GFX.allgfxBitmapExpOW.Palette.Entries[i].B;
+                    pdata[(i * 4) + 1] = GFX.allgfxBitmapExpOW.Palette.Entries[i].G;
+                    pdata[(i * 4) + 2] = GFX.allgfxBitmapExpOW.Palette.Entries[i].R;
+                    pdata[(i * 4) + 3] = GFX.allgfxBitmapExpOW.Palette.Entries[i].A;
                 }
 
                 ImgClipboard.SetImageDataWithPal(sdata, pdata, true);
@@ -502,7 +562,12 @@ namespace ZeldaFullEditor.Gui
                 {
                     if (GFX.isbpp3[selectedSheet])
                     {
-                        byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                        byte* gdata = (byte*)GFX.allgfx16PtrExpOW.ToPointer();
+                        if (expandedSelected)
+                        {
+                            gdata = (byte*)GFX.allgfx16PtrExpUW.ToPointer();
+                        }
+
                         byte* data = (byte*)bd.Scan0.ToPointer();
                         // One line is 512 - palette (32 bytes per palettes)
                         for (int i = 0; i < 8; i++)
@@ -526,8 +591,16 @@ namespace ZeldaFullEditor.Gui
                     }
                     else
                     {
-                        byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+
+                        byte* gdata = (byte*)GFX.allgfx16PtrExpOW.ToPointer();
                         byte* gdata2 = (byte*)GFX.allgfx2bpp16Ptr.ToPointer();
+                        if (expandedSelected)
+                        {
+                            gdata = (byte*)GFX.allgfx16PtrExpUW.ToPointer();
+                            gdata2 = (byte*)GFX.allgfx2bpp16PtrExpOW.ToPointer();
+                        }
+
+                        
                         byte* data = (byte*)bd.Scan0.ToPointer();
                         // One line is 512 - palette (32 bytes per palettes)
                         for (int i = 0; i < 4; i++)
@@ -555,12 +628,19 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
 
+                if (expandedSelected)
+                {
+                    ROM.Write(0x150600 + selectedSheet, 1);
+                }
+                
+
                 b.UnlockBits(bd);
                 this.mainForm.activeScene.room.reloadGfx();
                 this.mainForm.activeScene.DrawRoom();
                 this.mainForm.activeScene.Refresh();
                 this.allgfxPicturebox.Refresh();
-
+                this.allgfx2picturebox.Refresh();
+                
                 for (int i = 0; i < 159; i++)
                 {
                     this.mainForm.overworldEditor.overworld.AllMaps[i].NeedRefresh = true;
@@ -615,32 +695,29 @@ namespace ZeldaFullEditor.Gui
             Refresh();
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
+        private void allgfx2picturebox_MouseDown(object sender, MouseEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "all *.bin |*.bin";
+            this.selectedSheet = (e.Y / 64);
+            expandedSelected = true;
+            allgfx2picturebox.Refresh();
 
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
-                if (fs.Length > Constants.UncompressedSheetSize)
-                {
-                    if (MessageBox.Show("This graphics file is larger than expected. Do you wish to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
-                    {
-                        fs.Close();
-                        return;
-                    }
-                }
-
-                this.modifiedSheets[this.selectedSheet] = new byte[(int)fs.Length];
-                fs.Read(this.modifiedSheets[this.selectedSheet], 0, (int)fs.Length);
-                fs.Close();
-            }
+            int bitDepth = GFX.isbpp3[selectedSheet] ? 3 : 2;
+            
+            this.selectedLabel.Text = $"Selected sheet: {this.selectedSheet:X2} ({bitDepth}bpp)";
+            allgfxPicturebox.Refresh();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void allgfx2picturebox_Paint(object sender, PaintEventArgs e)
         {
-
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            e.Graphics.DrawImage(GFX.allgfxBitmapExpUW, Constants.Rect_0_0_256_14272, Constants.Rect_0_0_128_7136, GraphicsUnit.Pixel);
+            if (expandedSelected == true)
+            {
+                e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, this.selectedSheet * 64, 256, 64));
+            }
+            //2bpp debug
+            //e.Graphics.DrawImage(GFX.allgfx2bppBitmap, new Rectangle(0, 0, 256, 896), new Rectangle(0, 0, 128, 448), GraphicsUnit.Pixel);
         }
     }
 }
