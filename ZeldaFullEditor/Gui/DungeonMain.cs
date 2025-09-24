@@ -46,7 +46,8 @@ namespace ZeldaFullEditor
         public byte[] DoorIndex;
 
         public TextEditor textEditor = new TextEditor();
-        public OverworldEditor overworldEditor = new OverworldEditor();
+        public PrizePacksEditor prizePackEditor = new PrizePacksEditor();
+		public OverworldEditor overworldEditor = new OverworldEditor();
         private Object_Designer objDesigner = new Object_Designer();
         public GfxImportExport gfxEditor;
         private DungeonViewer dungeonViewer = new DungeonViewer();
@@ -561,11 +562,18 @@ namespace ZeldaFullEditor
                 }
 
                 // The mosaic byte is hardcoded to true on purpose for now.
-                if (save.SaveDungeonHolesOverlay())
+                if (save.SaveDungeonHolesOverlay()) {
+					UIText.CryAboutSaving("problem saving dungeons holes overlays (probably using too much space) try removing objects");
+					break;
+				}
+
+                if (save.SavePrizePacks())
                 {
-                    UIText.CryAboutSaving("problem saving dungeons holes overlays (probably using too much space) try removing objects");
-                    break;
-                }
+					UIText.CryAboutSaving("problem saving prize packs");
+					break;
+				}
+
+
                 // If we made it here, everything was fine.
                 badSave = false;
             }
@@ -864,6 +872,7 @@ namespace ZeldaFullEditor
             this.overworldEditor.InitOpen(this);
             this.screenEditor.oweditor = this.overworldEditor;
             this.textEditor.InitializeOnOpen();
+            this.prizePackEditor.Initialize();
             this.screenEditor.Init();
             // InitDungeonViewer();
             this.mapPicturebox.Refresh();
