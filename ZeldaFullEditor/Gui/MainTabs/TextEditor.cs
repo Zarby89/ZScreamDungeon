@@ -422,10 +422,7 @@ namespace ZeldaFullEditor
 					var message = new MessageData(
 						messageID++,
 						pos,
-						currentMessageRaw.ToString(),
-						tempBytesRaw.ToArray(),
-						currentMessageParsed.ToString(),
-						tempBytesParsed.ToArray());
+						currentMessageParsed.ToString());
 
 					ListOfTexts.Add(message);
 
@@ -1528,7 +1525,7 @@ namespace ZeldaFullEditor
 		{
 			if (textListbox.SelectedItem != null)
 			{
-				CurrentMessage.SetMessage(Regex.Replace(textBox1.Text, @"[\r\n]", string.Empty));
+				CurrentMessage.SetMessage(textBox1.Text);
 				DrawMessagePreview();
 				pictureBox1.Refresh();
 			}
@@ -1572,26 +1569,23 @@ namespace ZeldaFullEditor
 		// TODO: needs a rewrite.
 		private void ToolStripButton2_Click(object sender, EventArgs e)
 		{
-			/*
 			using (OpenFileDialog of = new OpenFileDialog())
 			{
 				of.DefaultExt = ".txt";
 				if (of.ShowDialog() == DialogResult.OK)
 				{
-					string[] alltexts = File.ReadAllLines(of.FileName);
-					for (int i = 0; i < alltexts.Length; i++)
-					{
-						if (alltexts[i].Length > 3)
-						{
-							int id = int.Parse(alltexts[i].Substring(0, 3));
-							listOfTexts[id] = new StringKey(alltexts[i].Substring(5, alltexts[i].Length - 5), new byte[] { });
+					var masterText = string.Concat(File.ReadAllLines(of.FileName));
+
+					var matches = Regex.Matches(masterText, @"%%% MESSAGE : (?<id>...) \| .*? %%%(?<text>[^%]+)", RegexOptions.Singleline);
+
+					foreach (Match msg in matches) {
+						if (int.TryParse(msg.Groups["id"].Value, NumberStyles.HexNumber, null, out int id)) {
+							var targMsg = ListOfTexts.FirstOrDefault(m => m.ID == id);
+							targMsg?.SetMessage(msg.Groups["text"].Value);
 						}
 					}
-
-					sortText();
 				}
 			}
-			*/
 		}
 
 		private void ToolStripButton1_Click(object sender, EventArgs e)
@@ -1603,7 +1597,7 @@ namespace ZeldaFullEditor
 				{
 					File.WriteAllLines(saveFileDialog.FileName,
 						ListOfTexts.Select(msg =>
-						$"{msg.ID:x3} : {msg.ContentsParsed}\r\n\r\n"));
+						$"%%% MESSAGE : {msg.ID:X3} | {Constants.textsLocations[msg.ID]} %%% \r\n{AddNewLinesToCommands(msg.ContentsParsed)}\r\n\r\n"));
 				}
 			}
 		}
