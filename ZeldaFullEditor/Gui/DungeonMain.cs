@@ -103,8 +103,10 @@ namespace ZeldaFullEditor
         private int lasttpHotTracked = -2;
 
         public int lastRoomID = -1;
+		private int HoveredRoom = -1;
+		private bool rightClickingRoom = false;
 
-        private OverworldEditor oweditor2;
+		private OverworldEditor oweditor2;
 
         private ushort[,] lwmdata = new ushort[512, 512];
         private ushort[,] dwmdata = new ushort[512, 512];
@@ -2026,12 +2028,10 @@ namespace ZeldaFullEditor
 
                 // ListView1
                 this.objectViewer1.items.AddRange(this.listoftilesobjects
-                    .Where(x => x != null)
-                    .Where(x => x.name.ToLower().Contains(searchText))
-                    .Where(x => Settings.Default.favoriteObjects[x.id] == "true")
+					.Where(x => (x?.name ?? "").ToLower().Contains(searchText))
+					.Where(x => Settings.Default.favoriteObjects[x.id] == "true")
                     .OrderBy(x => x.id)
-                    .Select(x => x) // ?
-                    .ToArray());
+                    );
 
                 this.panel1.VerticalScroll.Value = 0;
                 this.objectViewer1.Refresh();
@@ -2055,11 +2055,9 @@ namespace ZeldaFullEditor
 
                     // ListView1
                     this.objectViewer1.items.AddRange(this.listoftilesobjects
-                        .Where(x => x != null)
-                        .Where(x => x.name.ToLower().Contains(searchText))
-                        .OrderBy(x => x.id)
-                        .Select(x => x) // ?
-                        .ToArray());
+						.Where(x => (x?.name ?? "").ToLower().Contains(searchText))
+						.OrderBy(x => x.id)
+                        );
                     this.objectViewer1.updateSize();
                     this.panel1.VerticalScroll.Value = 0;
                     this.objectViewer1.Refresh();
@@ -2073,10 +2071,9 @@ namespace ZeldaFullEditor
             string searchText = this.searchspriteTextbox.Text.ToLower();
 
             this.spritesView1.items.AddRange(this.listofspritesobjects
-                .Where(x => x != null)
-                .Where(x => x.name.ToLower().Contains(searchText))
-                .OrderBy(x => x.id)
-                .ToArray());
+			   .Where(x => (x?.name ?? "").ToLower().Contains(searchText))
+				.OrderBy(x => x.id)
+                );
 
             this.customPanel1.VerticalScroll.Value = 0;
 
@@ -2288,57 +2285,24 @@ namespace ZeldaFullEditor
 
         private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
         {
-            if (e.Y >= 256 && e.Y <= 264)
-            {
-                return;
-            }
+			if (HoveredRoom == -1) {
+				return;
+			}
 
-            int yc = e.Y;
+			short roomId = (short) HoveredRoom;
 
-            if (e.Y > 256)
-            {
-                yc -= 8;
-            }
+			if (ModifierKeys == Keys.Control) {
+				if (selectedMapPng.Contains(roomId)) {
+					selectedMapPng.Remove(roomId);
+				} else {
+					selectedMapPng.Add(roomId);
+				}
+			} else {
+				AddRoomTab(roomId);
+			}
 
-            int x = e.X / 16;
-            int y = yc / 16;
-            short roomId = (short)(x + (y * 16));
-
-            if (ModifierKeys == Keys.Control)
-            {
-                // Check if map is already in.
-                short alreadyIn = -1;
-                foreach (short s in this.selectedMapPng)
-                {
-                    // If it was already in delete it.
-                    if (s == roomId)
-                    {
-                        alreadyIn = s;
-                    }
-                }
-
-                if (alreadyIn != -1)
-                {
-                    _ = this.selectedMapPng.Remove(alreadyIn);
-                }
-                else
-                {
-                    this.selectedMapPng.Add(roomId);
-                }
-
-                //loadRoomList(roomId);
-            }
-            else
-            {
-                if (roomId < Constants.NumberOfRooms)
-                {
-                    this.AddRoomTab(roomId);
-                    //loadRoomList(roomId);
-                }
-            }
-
-            this.mapPicturebox.Refresh();
-        }
+			mapPicturebox.Refresh();
+		}
 
         public void runtestButton_Click(object sender, EventArgs e)
         {
@@ -3189,7 +3153,19 @@ namespace ZeldaFullEditor
             chestEditorForm.ShowDialog();
         }
 
-		// TODO: KAN REFACTOR - alpha on unloaded rooms.
+		private static Pen SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, Settings.Default.SelectedRoomOutlineSize);
+		private static Pen OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, Settings.Default.OpenedRoomOutlineSize);
+		private static Pen ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+		private static Pen OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+
+		private static void updatePensColors() {
+			SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, Settings.Default.SelectedRoomOutlineSize);
+			OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, Settings.Default.OpenedRoomOutlineSize);
+			ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+			OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, Settings.Default.OpenedExportedRoomOutlineSize);
+		}
+
+
 		private void MapPicturebox_Paint(object sender, PaintEventArgs e)
         {
             if (!this.projectLoaded)
@@ -3197,63 +3173,56 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            int xd = 0;
-            int yd = 0;
-            int yoff;
-            e.Graphics.Clear(Color.Black);
-            for (int i = 0; i < Constants.NumberOfRooms; i++)
-            {
-                yoff = (i >= 256) ? 8 : 0;
+			int xd = 0;
+			int yd = 0;
+			int yoff = 0;
+			e.Graphics.Clear(SystemColors.ScrollBar);
 
-                if (DungeonsData.AllRooms[i].tilesObjects.Count > 0)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.AllRooms[i].palette)[4, 2]), new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
+			var selectedRoomID = (tabControl2.SelectedTab.Tag as Room)?.index ?? -999;
 
-                    foreach (short s in this.selectedMapPng)
-                    {
-                        if (s == i)
-                        {
-                            e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
-                        }
-                    }
-                }
+			for (int i = 0; i < Constants.NumberOfRooms; i++) {
+				var room = DungeonsData.AllRooms[i];
 
-                xd++;
-                if (xd == 16)
-                {
-                    yd++;
-                    xd = 0;
-                }
-            }
+				bool roomOpened = opened_rooms.Any(r => r.index == room.index);
 
-            for (int i = 0; i < 16; i++)
-            {
-                e.Graphics.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
-                e.Graphics.DrawLine(Pens.White, i * 16, 0, i * 16, 256);
+				int alpha = roomOpened ? 255 : (HoveredRoom == i) ? 210 : 140;
 
-                e.Graphics.DrawLine(Pens.White, i * 16, 264, i * 16, 312);
-            }
+				var boxColor = new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor));
 
-            for (int i = 0; i < 3; i++)
-            {
-                e.Graphics.DrawLine(Pens.White, 0, 264 + (i * 16), 256, 264 + (i * 16));
-            }
+				e.Graphics.FillRectangle(boxColor, new Rectangle(xd, yd + yoff, 16, 16));
+				e.Graphics.DrawRectangle(Pens.LightSlateGray, new Rectangle(xd, yd + yoff, 16, 16));
 
-            for (int i = 0; i < Constants.NumberOfRooms; i++)
-            {
-                yoff = (i >= 256) ? 8 : 0;
+				Pen outline;
 
-                foreach (TabPage tabPage in this.tabControl2.TabPages)
-                {
-                    if ((tabPage.Tag as Room).index == (short)i)
-                    {
-                        e.Graphics.DrawRectangle(
-                                new Pen((this.tabControl2.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
-                                new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
-                    }
-                }
-            }
-        }
+				if (selectedRoomID == room.index) {
+					outline = SelectedRoomOutline;
+				} else {
+					bool roomSelected = selectedMapPng.Contains(room.RoomID);
+					if (roomOpened) {
+						if (roomSelected) {
+							outline = OpenedExportedRoomOutline;
+						} else {
+							outline = OpenedRoomOutline;
+						}
+					} else if (roomSelected) {
+						outline = ExportedRoomOutline;
+					} else {
+						outline = null;
+					}
+				}
+
+				if (outline != null) {
+					e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
+				}
+
+				xd += 16;
+				if (xd == 16 * 16) {
+					yd += 16;
+					yoff = (yd > 15 * 16) ? 8 : 0;
+					xd = 0;
+				}
+			}
+		}
 
         private void HideSpritesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
@@ -3720,46 +3689,23 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void MapPicturebox_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                if (e.Y >= 256 && e.Y <= 264)
-                {
-                    return;
-                }
+		private void MapPicturebox_MouseDown(object sender, MouseEventArgs e) {
+			if (e.Button == MouseButtons.Right) {
+				rightClickingRoom = true;
+				RecalculateHoveredRoom(e);
+				RedrawPreviewRoom();
+			} else if (e.Button == MouseButtons.Middle) {
+				for (int i = 0; i < tabControl2.TabPages.Count; i++) {
+					if ((tabControl2.TabPages[i].Tag as Room).index == HoveredRoom) {
+						CloseTab(i);
+						break;
+					}
+				}
+			}
+			mapPicturebox.Refresh();
+		}
 
-                this.thumbnailBox.Visible = true;
-                int yc = e.Y;
-                if (e.Y > 256)
-                {
-                    yc -= 8;
-                }
-
-                int x = e.X / 16;
-                int y = yc / 16;
-                int roomId = x + (y * 16);
-                if (roomId > 295)
-                {
-                    return;
-                }
-
-                this.previewRoom = DungeonsData.AllRooms[roomId];
-                this.previewRoom.reloadGfx();
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(this.previewRoom.palette);
-                this.DrawRoom();
-                this.thumbnailBox.Refresh();
-
-                if (this.activeScene.room != null)
-                {
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(this.activeScene.room.palette);
-                    this.activeScene.room.reloadGfx();
-                    this.activeScene.DrawRoom();
-                }
-            }
-        }
-
-        public unsafe void ClearBgGfx()
+		public unsafe void ClearBgGfx()
         {
             byte* bg1data = (byte*)GFX.roomBg1Ptr.ToPointer();
             byte* bg2data = (byte*)GFX.roomBg2Ptr.ToPointer();
@@ -3931,61 +3877,78 @@ namespace ZeldaFullEditor
 
         private void MapPicturebox_MouseUp(object sender, MouseEventArgs e)
         {
-            this.thumbnailBox.Visible = false;
-        }
+			rightClickingRoom = false;
+			thumbnailBox.Visible = maphoverCheckbox.Checked;
+		}
 
-        private void MapPicturebox_MouseMove(object sender, MouseEventArgs e)
+		private void RecalculateHoveredRoom(MouseEventArgs e) {
+			HoveredRoom = -1;
+
+			int yc = e.Y;
+
+			if (yc >= 256) {
+				if (yc <= 264) {
+					return;
+				}
+
+				yc -= 8;
+			}
+
+			HoveredRoom = (e.X / 16) + (yc & ~0xF);
+
+			if (HoveredRoom >= Constants.NumberOfRooms) {
+				HoveredRoom = -1;
+			}
+		}
+
+		private void MapPicturebox_MouseMove(object sender, MouseEventArgs e) {
+			RecalculateHoveredRoom(e);
+
+			if (HoveredRoom == -1) {
+				thumbnailBox.Visible = false;
+				mapPicturebox.Refresh();
+				return;
+			}
+
+			if (lastRoomID != HoveredRoom) {
+				RedrawPreviewRoom();
+			}
+
+			lastRoomID = HoveredRoom;
+
+			mapPicturebox.Refresh();
+		}
+
+		private void RedrawPreviewRoom() {
+			if (HoveredRoom == -1) {
+				thumbnailBox.Visible = false;
+				return;
+			}
+
+			if (!(thumbnailBox.Visible = maphoverCheckbox.Checked | rightClickingRoom)) {
+				return;
+			}
+
+			previewRoom = DungeonsData.AllRooms[HoveredRoom];
+			previewRoom.reloadGfx();
+			GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.palette);
+			DrawRoom();
+			thumbnailBox.Refresh();
+
+			if (activeScene.room != null) {
+				GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+				activeScene.room.reloadGfx();
+				activeScene.DrawRoom();
+			}
+		}
+
+		private void MapPicturebox_MouseLeave(object sender, EventArgs e)
         {
-            if (this.maphoverCheckbox.Checked)
-            {
-                if (e.Y >= 256 && e.Y <= 264)
-                {
-                    this.thumbnailBox.Visible = false;
-
-                    return;
-                }
-
-                this.thumbnailBox.Visible = true;
-                int yc = 0;
-                if (e.Y >= 256)
-                {
-                    yc = 8;
-                }
-
-                int x = e.X / 16;
-                int y = (e.Y - yc) / 16;
-                int roomId = x + (y * 16);
-                if (roomId >= Constants.NumberOfRooms)
-                {
-                    this.thumbnailBox.Visible = false;
-
-                    return;
-                }
-
-                if (this.lastRoomID != roomId)
-                {
-                    this.previewRoom = DungeonsData.AllRooms[roomId];
-                    this.previewRoom.reloadGfx();
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(this.previewRoom.palette);
-                    this.DrawRoom();
-                    this.thumbnailBox.Refresh();
-
-                    if (this.activeScene.room != null)
-                    {
-                        GFX.loadedPalettes = GFX.LoadDungeonPalette(this.activeScene.room.palette);
-                        this.activeScene.room.reloadGfx();
-                        this.activeScene.DrawRoom();
-                    }
-                }
-
-                this.lastRoomID = roomId;
-            }
-        }
-
-        private void MapPicturebox_MouseLeave(object sender, EventArgs e)
-        {
-            this.thumbnailBox.Visible = false;
-        }
+			HoveredRoom = -1;
+			thumbnailBox.Visible = false;
+			rightClickingRoom = false;
+			mapPicturebox.Refresh();
+		}
 
         private void openRightRoomToolStripMenuItem_Click(object sender, EventArgs e)
         {

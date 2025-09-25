@@ -14,6 +14,7 @@ namespace ZeldaFullEditor
     {
         //List<SpriteName> stringtodraw = new List<SpriteName>();
         public int index;
+        public short RoomID => (short) index;
         int header_location;
         public bool has_changed = false;
         public string name;
@@ -31,8 +32,11 @@ namespace ZeldaFullEditor
         public bool onlyLayout = false;
 
         public string fromExported = "";
+		public Color RoomColor => GFX.LoadDungeonPalette(_palette)[4, 2];
+		public bool IsEmpty => tilesObjects.Count == 0;
 
-        private byte _layout;
+
+		private byte _layout;
         private byte _floor1;
         private byte _floor2;
         private byte _blockset;
