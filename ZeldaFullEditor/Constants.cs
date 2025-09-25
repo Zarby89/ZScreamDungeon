@@ -49,8 +49,10 @@ namespace ZeldaFullEditor
         public const int Tile16EdiorBitmapSize = 0x2000;
         public const int Tile16EdiorBitmapSizex2 = Tile16EdiorBitmapSize * 2;
 
-        // TODO zarby stop making magic numbers
-        public const int IDKZarby = 0x054727;
+        public const int VanillaROMSize = 0x10_0000;
+
+		// TODO zarby stop making magic numbers
+		public const int IDKZarby = 0x054727;
 
         public static byte[] FontSpacings = new byte[]
         {

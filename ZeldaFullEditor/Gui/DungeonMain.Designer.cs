@@ -223,6 +223,7 @@
 			this.RoomProperty_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.RoomProperty_Layout = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label16 = new System.Windows.Forms.Label();
+			this.uploadVanillaCopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.label15 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
@@ -293,6 +294,7 @@
 			this.loadNamesFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.applyFastROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
 			this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -3221,7 +3223,8 @@
             this.saveToolStripMenuItem,
             this.saveasToolStripMenuItem,
             this.saveToNewROMToolStripMenuItem,
-            this.buildROMwithASMToolStripMenuItem});
+            this.buildROMwithASMToolStripMenuItem,
+			this.uploadVanillaCopyToolStripMenuItem});
 			this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -3272,6 +3275,13 @@
 			this.buildROMwithASMToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
 			this.buildROMwithASMToolStripMenuItem.Text = "Build and Pre-patch ROM";
 			this.buildROMwithASMToolStripMenuItem.Click += new System.EventHandler(this.buildROMwithASMToolStripMenuItem_Click);
+			// 
+			// uploadVanillaCopyToolStripMenuItem
+			// 
+			this.uploadVanillaCopyToolStripMenuItem.Name = "uploadVanillaCopyToolStripMenuItem";
+			this.uploadVanillaCopyToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+			this.uploadVanillaCopyToolStripMenuItem.Text = "Upload Vanilla Copy…";
+			this.uploadVanillaCopyToolStripMenuItem.Click += new System.EventHandler(this.uploadVanillaCopyToolStripMenuItem_Click);
 			// 
 			// editToolStripMenuItem
 			// 
@@ -3455,7 +3465,8 @@
             this.loadNamesFileToolStripMenuItem,
             this.memoryManagementToolStripMenuItem,
             this.pluginsToolStripMenuItem,
-            this.toolStripMenuItem8});
+            this.toolStripMenuItem8,
+			this.applyFastROMToolStripMenuItem});
 			this.projectToolStripMenuItem.Enabled = false;
 			this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -3496,6 +3507,14 @@
 			this.toolStripMenuItem8.Size = new System.Drawing.Size(233, 22);
 			this.toolStripMenuItem8.Text = "Import player sprite .zspr";
 			this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
+			// 
+            // applyFastROMToolStripMenuItem
+            // 
+            this.applyFastROMToolStripMenuItem.Enabled = false;
+            this.applyFastROMToolStripMenuItem.Name = "applyFastROMToolStripMenuItem";
+            this.applyFastROMToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.applyFastROMToolStripMenuItem.Text = "Apply Fast ROM";
+            this.applyFastROMToolStripMenuItem.Click += new System.EventHandler(this.applyFastROMToolStripMenuItem_Click);
 			// 
 			// testToolStripMenuItem
 			// 
@@ -5346,7 +5365,9 @@
 		private System.Windows.Forms.ToolStripMenuItem saveToNewROMToolStripMenuItem;
 		private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem buildROMwithASMToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem uploadVanillaCopyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem applyFastROMToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem buildROMwithASMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportSelectedRoomsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importDungeonToolStripMenuItem;
         private System.Windows.Forms.TabPage SpriteEditor;

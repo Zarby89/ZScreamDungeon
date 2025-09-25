@@ -703,8 +703,9 @@ namespace ZeldaFullEditor
             this.openToolStripMenuItem.Enabled = false;
             this.openfileButton.Enabled = false;
             this.recentROMToolStripMenuItem.Enabled = false;
+			applyFastROMToolStripMenuItem.Enabled = true;
 
-            this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
+			this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
 
             this.textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
             this.textChestItemToolStripMenuItem.Checked = Settings.Default.chestText;
@@ -6638,5 +6639,31 @@ namespace ZeldaFullEditor
 
             }
         }
+
+		private void uploadVanillaCopyToolStripMenuItem_Click(object sender, EventArgs e) {
+			VanillaROM.SetVanillaROM();
+		}
+
+		private void applyFastROMToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (!VanillaROM.CheckForVanillaROM()) {
+				return;
+			}
+
+			int count = FastRomifier.Fastify(ROM.DATA);
+
+			if (count == 0) {
+				UIText.ShowNotice(
+					"No fastrom changes were performed.\r\n" +
+					"Perhaps your ROM has already been adjusted."
+				);
+			} else {
+
+				UIText.ShowNotice(
+					$"Successfully adjusted {count} known address{(count == 1 ? "" : "es")} for FastROM",
+					"Success"
+				);
+			}
+
+		}
 	}
 }
