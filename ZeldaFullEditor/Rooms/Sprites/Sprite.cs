@@ -101,6 +101,15 @@ namespace ZeldaFullEditor
             }
         }
 
+
+        public void DrawAsBox(bool picker = false) {
+			byte x = this.nx;
+			byte y = this.ny;
+			this.picker = picker;
+            // ZARBY TODO THIS PLEASE
+            // draw a 16x16 box with the sprite ID in the middle!!!!!
+		}
+
         public void Draw(bool picker = false)
         {
 

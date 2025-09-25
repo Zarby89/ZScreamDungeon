@@ -673,7 +673,33 @@ namespace ZeldaFullEditor
             objectInitialized = true;
         }
 
-        public void drawSprites(bool layer1 = true, bool layer2 = true)
+		public void drawSpritesAsBoxes(bool layer1 = true, bool layer2 = true) {
+			foreach (Sprite spr in sprites) {
+				if (!layer1) {
+					if (spr.layer == 0) {
+						continue;
+					}
+				}
+				if (!layer2) {
+					if (spr.layer == 1) {
+						continue;
+					}
+				}
+				//if (spr.id != 0xE4)
+				//{
+				spr.DrawAsBox();
+				//} // 1D big key
+				if (spr.keyDrop == 1) {
+					spr.DrawKey();
+				}
+				if (spr.keyDrop == 2) {
+					spr.DrawKey(true);
+				}
+			}
+		}
+
+
+		public void drawSprites(bool layer1 = true, bool layer2 = true)
         {
             foreach (Sprite spr in sprites)
             {

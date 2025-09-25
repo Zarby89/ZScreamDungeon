@@ -750,14 +750,6 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (mainForm.showSpriteText)
-            {
-                foreach (Sprite spr in room.sprites)
-                {
-                    drawText(g, spr.nx * 16, spr.ny * 16, spr.name);
-                }
-            }
-
             if (mainForm.showChestText)
             {
                 foreach (Chest c in room.chest_list)
@@ -766,7 +758,28 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (mainForm.showItemsText)
+
+
+
+            if (mainForm.showSprite > 0) {
+                int sprShowIndex = 0;
+                foreach (Sprite spr in room.sprites) {
+
+                    if (mainForm.showSpriteText) {
+                        drawText(g, spr.nx * 16, spr.ny * 16, spr.name);
+                    }
+
+                    if (mainForm.showSpriteIndexUW) {
+						if (!spr.IsOverlord) {
+							drawText(g, (spr.nx * 16) + 8, (spr.ny * 16) - 8, $"{sprShowIndex:X1}");
+							sprShowIndex++;
+						}
+					}
+                }
+            }
+
+
+			if (mainForm.showItemsText)
             {
                 foreach (PotItem c in room.pot_items)
                 {
@@ -1486,10 +1499,16 @@ namespace ZeldaFullEditor
             {
                 GFX.DrawBG2();
             }
-            if (mainForm.showSprite)
-            {
-                room.drawSprites();
-            }
+
+            switch (mainForm.showSprite) {
+                case 1:
+					room.drawSpritesAsBoxes();
+					break;
+
+                case 2:
+					room.drawSprites();
+					break;
+			}
             if (mainForm.showChest)
             {
                 drawChests();

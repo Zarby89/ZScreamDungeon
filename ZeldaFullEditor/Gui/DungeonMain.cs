@@ -77,8 +77,9 @@ namespace ZeldaFullEditor
         private List<Chest> listofchests = new List<Chest>();
 
         // Groups of options for the Scene.
-        public bool showSprite = true;
-
+        public int showSprite = 2;
+        public int showSpritePrev = 2;
+        public bool showSpriteIndexUW = false;
         public bool showChest = true;
         public bool showItems = true;
         public bool showDoorsIDs = true;
@@ -123,6 +124,7 @@ namespace ZeldaFullEditor
         int romID = 00;
 
         // TODO: Save this in a config file and load the values into this array on startup.
+        // TODO make this into a proper class with proper names so we know what things ACTUALLY ARE
         public bool[] saveSettingsArr = new bool[48]
         {
             true, true, true, true, true, true, true, true, true, true,
@@ -2515,6 +2517,25 @@ namespace ZeldaFullEditor
             }
         }
 
+        private void SpriteDisplayMenuItem_Click(object sender, EventArgs e) {
+			this.boxesToolStripMenuItem.Checked = false;
+			this.graphicsToolStripMenuItem.Checked = false;
+
+			(sender as ToolStripMenuItem).Checked = true;
+
+			if (this.boxesToolStripMenuItem.Checked) {
+				showSpritePrev = showSprite = 1;
+			}
+
+			if (this.graphicsToolStripMenuItem.Checked) {
+				showSpritePrev = showSprite = 2;
+			}
+
+			hideSpritesToolStripMenuItem.Checked = true;
+			this.activeScene.Refresh();
+		}
+
+
         private void X8ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.x8ToolStripMenuItem.Checked = false;
@@ -2529,23 +2550,19 @@ namespace ZeldaFullEditor
             {
                 this.gridSize = 8;
             }
-
-            if (this.x16ToolStripMenuItem.Checked)
+            else if (this.x16ToolStripMenuItem.Checked)
             {
                 this.gridSize = 16;
             }
-
-            if (this.x32ToolStripMenuItem.Checked)
+            else if (this.x32ToolStripMenuItem.Checked)
             {
                 this.gridSize = 32;
             }
-
-            if (this.x64ToolStripMenuItem.Checked)
+            else if (this.x64ToolStripMenuItem.Checked)
             {
                 this.gridSize = 64;
             }
-
-            if (this.x256ToolStripMenuItem.Checked)
+            else if (this.x256ToolStripMenuItem.Checked)
             {
                 this.gridSize = 256;
             }
@@ -2558,7 +2575,7 @@ namespace ZeldaFullEditor
         {
             this.propertiesChangedFromForm = prevent;
 
-            this.headerGroupbox.Text = "Room header - " + room.index.ToString("X2") + "  " + Room_Name.room_name[room.index];
+            this.headerGroupbox.Text = $"Room header - {room.index:X2} {Room_Name.room_name[room.index]}";
 
             this.roomProperty_bg2.SelectedIndex = (int)room.bg2;
             this.roomProperty_tag1.SelectedIndex = (int)room.tag1;
@@ -2597,7 +2614,8 @@ namespace ZeldaFullEditor
             this.propertiesChangedFromForm = false;
         }
 
-        public void UpdateRoomInfo()
+
+		public void UpdateRoomInfo()
         {
             if (!this.propertiesChangedFromForm && this.activeScene.room != null)
             {
@@ -3238,7 +3256,7 @@ namespace ZeldaFullEditor
 
         private void HideSpritesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
-            this.showSprite = this.hideSpritesToolStripMenuItem.Checked;
+            this.showSprite = this.hideSpritesToolStripMenuItem.Checked ? showSpritePrev : 0;
             this.showChest = this.hideChestItemsToolStripMenuItem.Checked;
             this.showItems = this.hideItemsToolStripMenuItem.Checked;
             this.showDoorsIDs = this.showDoorIDsToolStripMenuItem.Checked;
@@ -3248,6 +3266,7 @@ namespace ZeldaFullEditor
             this.showChestText = this.textChestItemToolStripMenuItem.Checked;
             this.showItemsText = this.textPotItemToolStripMenuItem.Checked;
             this.visibleEntranceGFX = this.disableEntranceGFXToolStripMenuItem.Checked;
+            this.showSpriteIndexUW = this.showSpriteIndexToolStripMenuItem.Checked;
             this.x2zoom = this.xScreenToolStripMenuItem.Checked;
 
             if (this.x2zoom)
@@ -6619,5 +6638,5 @@ namespace ZeldaFullEditor
 
             }
         }
-    }
+	}
 }
