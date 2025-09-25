@@ -364,14 +364,14 @@ namespace ZeldaFullEditor
                 ROM.WriteShort(Constants.entrance_cameraytriggerEXP + (entranceID * 2), this.CameraTriggerY, WriteType.EntranceProperties);
 
                 ROM.WriteShort(Constants.entrance_exitEXP + (entranceID * 2), this.Exit, WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_blocksetEXP + entranceID, (byte)(this.Blockset & 0xFF), WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_musicEXP + entranceID, (byte)(this.Music & 0xFF), WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_dungeonEXP + entranceID, (byte)(this.DungeonID & 0xFF), WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_doorEXP + entranceID, (byte)(this.Door & 0xFF), WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_floorEXP + entranceID, (byte)(this.Floor & 0xFF), WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_ladderbgEXP + entranceID, (byte)(this.LadderBG & 0xFF), WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_scrollingEXP + entranceID, (byte)(this.Scrolling & 0xFF), WriteType.EntranceProperties);
-                ROM.Write(Constants.entrance_scrollquadrantEXP + entranceID, (byte)(this.ScrollQuadrant & 0xFF), WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_blocksetEXP + entranceID, Blockset, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_musicEXP + entranceID, Music, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_dungeonEXP + entranceID, DungeonID, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_doorEXP + entranceID, Door, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_floorEXP + entranceID, Floor, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_ladderbgEXP + entranceID, LadderBG, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrollingEXP + entranceID, Scrolling, WriteType.EntranceProperties);
+                ROM.Write(Constants.entrance_scrollquadrantEXP + entranceID, ScrollQuadrant, WriteType.EntranceProperties);
 
                 ROM.Write(Constants.entrance_scrolledgeEXP + 0 + (entranceID * 8), this.CameraBoundaryQN, WriteType.EntranceProperties);
                 ROM.Write(Constants.entrance_scrolledgeEXP + 1 + (entranceID * 8), this.CameraBoundaryFN, WriteType.EntranceProperties);
@@ -401,14 +401,14 @@ namespace ZeldaFullEditor
                 ROM.WriteShort(Constants.startingentrance_cameraytrigger + (entranceID * 2), this.CameraTriggerY, WriteType.SpawnProperties);
                 ROM.WriteShort(Constants.startingentrance_exit + (entranceID * 2), this.Exit, WriteType.SpawnProperties);
 
-                ROM.Write(Constants.startingentrance_blockset + entranceID, (byte)(this.Blockset & 0xFF), WriteType.SpawnProperties);
-                ROM.Write(Constants.startingentrance_music + entranceID, (byte)(this.Music & 0xFF), WriteType.SpawnProperties);
-                ROM.Write(Constants.startingentrance_dungeon + entranceID, (byte)(this.DungeonID & 0xFF), WriteType.SpawnProperties);
-                ROM.Write(Constants.startingentrance_door + entranceID, (byte)(this.Door & 0xFF), WriteType.SpawnProperties);
-                ROM.Write(Constants.startingentrance_floor + entranceID, (byte)(this.Floor & 0xFF), WriteType.SpawnProperties);
-                ROM.Write(Constants.startingentrance_ladderbg + entranceID, (byte)(this.LadderBG & 0xFF), WriteType.SpawnProperties);
-                ROM.Write(Constants.startingentrance_scrolling + entranceID, (byte)(this.Scrolling & 0xFF), WriteType.SpawnProperties);
-                ROM.Write(Constants.startingentrance_scrollquadrant + entranceID, (byte)(this.ScrollQuadrant & 0xFF), WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_blockset + entranceID, Blockset, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_music + entranceID, Music, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_dungeon + entranceID, DungeonID, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_door + entranceID, Door, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_floor + entranceID, Floor, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_ladderbg + entranceID, LadderBG, WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrolling + entranceID, Scrolling , WriteType.SpawnProperties);
+                ROM.Write(Constants.startingentrance_scrollquadrant + entranceID, this.ScrollQuadrant, WriteType.SpawnProperties);
                 ROM.Write(Constants.startingentrance_scrolledge + 0 + (entranceID * 8), this.CameraBoundaryQN, WriteType.SpawnProperties);
                 ROM.Write(Constants.startingentrance_scrolledge + 1 + (entranceID * 8), this.CameraBoundaryFN, WriteType.SpawnProperties);
                 ROM.Write(Constants.startingentrance_scrolledge + 2 + (entranceID * 8), this.CameraBoundaryQS, WriteType.SpawnProperties);

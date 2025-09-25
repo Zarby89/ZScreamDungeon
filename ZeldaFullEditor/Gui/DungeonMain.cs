@@ -2442,40 +2442,40 @@ namespace ZeldaFullEditor
                 Console.WriteLine(error.Fullerrdata.ToString());
             }
 
-			// TODO: KAN REFACTOR Remove these dumb &FFs.
-			data[Constants.startingentrance_room + 1] = (byte)((this.selectedEntrance.Room >> 8) & 0xFF);
-            data[Constants.startingentrance_room] = (byte)(this.selectedEntrance.Room & 0xFF);
+			data[Constants.startingentrance_room + 1] = (byte) (selectedEntrance.Room >> 8);
+			data[Constants.startingentrance_room] = (byte) selectedEntrance.Room;
 
-            data[Constants.startingentrance_yposition + 1] = (byte)((this.selectedEntrance.YPosition >> 8) & 0xFF);
-            data[Constants.startingentrance_yposition] = (byte)(this.selectedEntrance.YPosition & 0xFF);
+			data[Constants.startingentrance_yposition + 1] = (byte) (selectedEntrance.YPosition >> 8);
+			data[Constants.startingentrance_yposition] = (byte) selectedEntrance.YPosition;
 
-            data[Constants.startingentrance_xposition + 1] = (byte)((this.selectedEntrance.XPosition >> 8) & 0xFF);
-            data[Constants.startingentrance_xposition] = (byte)(this.selectedEntrance.XPosition & 0xFF);
+			data[Constants.startingentrance_xposition + 1] = (byte) (selectedEntrance.XPosition >> 8);
+			data[Constants.startingentrance_xposition] = (byte) selectedEntrance.XPosition;
 
-            data[Constants.startingentrance_camerax + 1] = (byte)((this.selectedEntrance.CameraX >> 8) & 0xFF);
-            data[Constants.startingentrance_camerax] = (byte)(this.selectedEntrance.CameraX & 0xFF);
+			data[Constants.startingentrance_camerax + 1] = (byte) (selectedEntrance.CameraX >> 8);
+			data[Constants.startingentrance_camerax] = (byte) selectedEntrance.CameraX;
 
-            data[Constants.startingentrance_cameray + 1] = (byte)((this.selectedEntrance.CameraY >> 8) & 0xFF);
-            data[Constants.startingentrance_cameray] = (byte)(this.selectedEntrance.CameraY & 0xFF);
+			data[Constants.startingentrance_cameray + 1] = (byte) (selectedEntrance.CameraY >> 8);
+			data[Constants.startingentrance_cameray] = (byte) selectedEntrance.CameraY;
 
-            data[Constants.startingentrance_cameraxtrigger + 1] = (byte)((this.selectedEntrance.CameraTriggerX >> 8) & 0xFF);
-            data[Constants.startingentrance_cameraxtrigger] = (byte)(this.selectedEntrance.CameraTriggerX & 0xFF);
+			data[Constants.startingentrance_cameraxtrigger + 1] = (byte) (selectedEntrance.CameraTriggerX >> 8);
+			data[Constants.startingentrance_cameraxtrigger] = (byte) selectedEntrance.CameraTriggerX;
 
-            data[Constants.startingentrance_cameraytrigger + 1] = (byte)((this.selectedEntrance.CameraTriggerY >> 8) & 0xFF);
-            data[Constants.startingentrance_cameraytrigger] = (byte)(this.selectedEntrance.CameraTriggerY & 0xFF);
+			data[Constants.startingentrance_cameraytrigger + 1] = (byte) (selectedEntrance.CameraTriggerY >> 8);
+			data[Constants.startingentrance_cameraytrigger] = (byte) selectedEntrance.CameraTriggerY;
 
-            data[Constants.startingentrance_exit + 1] = (byte)((this.selectedEntrance.Exit >> 8) & 0xFF);
-            data[Constants.startingentrance_exit] = (byte)(this.selectedEntrance.Exit & 0xFF);
+			data[Constants.startingentrance_exit + 1] = (byte) (selectedEntrance.Exit >> 8);
+			data[Constants.startingentrance_exit] = (byte) selectedEntrance.Exit;
 
-            data[Constants.startingentrance_blockset] = (byte)(this.selectedEntrance.Blockset & 0xFF);
-            data[Constants.startingentrance_music] = (byte)(this.selectedEntrance.Music & 0xFF);
-            data[Constants.startingentrance_dungeon] = (byte)(this.selectedEntrance.DungeonID & 0xFF);
-            //data[Constants.startingentrance_door] = (byte)(selectedEntrance.Door & 0xFF);
-            data[Constants.startingentrance_floor] = (byte)(this.selectedEntrance.Floor & 0xFF);
-            data[Constants.startingentrance_ladderbg] = (byte)(this.selectedEntrance.LadderBG & 0xFF);
-            data[Constants.startingentrance_scrolling] = (byte)(this.selectedEntrance.Scrolling & 0xFF);
-            data[Constants.startingentrance_scrollquadrant] = (byte)(this.selectedEntrance.ScrollQuadrant & 0xFF);
-            data[Constants.startingentrance_scrolledge + 0] = this.selectedEntrance.CameraBoundaryQN; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+			data[Constants.startingentrance_blockset] = (byte) selectedEntrance.Blockset;
+			data[Constants.startingentrance_music] = (byte) selectedEntrance.Music;
+			data[Constants.startingentrance_dungeon] = (byte) selectedEntrance.DungeonID;
+
+			//data[Constants.startingentrance_door] = (byte)(selectedEntrance.Door );
+			data[Constants.startingentrance_floor] = (byte) (this.selectedEntrance.Floor);
+			data[Constants.startingentrance_ladderbg] = (byte) (this.selectedEntrance.LadderBG);
+			data[Constants.startingentrance_scrolling] = (byte) (this.selectedEntrance.Scrolling);
+			data[Constants.startingentrance_scrollquadrant] = (byte) (this.selectedEntrance.ScrollQuadrant);
+			data[Constants.startingentrance_scrolledge + 0] = this.selectedEntrance.CameraBoundaryQN; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
             data[Constants.startingentrance_scrolledge + 1] = this.selectedEntrance.CameraBoundaryFN;
             data[Constants.startingentrance_scrolledge + 2] = this.selectedEntrance.CameraBoundaryQS;
             data[Constants.startingentrance_scrolledge + 3] = this.selectedEntrance.CameraBoundaryFS;
@@ -4651,20 +4651,20 @@ namespace ZeldaFullEditor
                     FileStream fileStreamMap = new FileStream(saveFile.FileName, FileMode.OpenOrCreate, FileAccess.Write);
                     for (int i = 0; i < 64; i++)
                     {
-                        for (int y = 0; y < 32; y += 1)
+                        for (int y = 0; y < 32; y++)
                         {
-                            for (int x = 0; x < 32; x += 1)
+                            for (int x = 0; x < 32; x++)
                             {
-                                mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-                                mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+								mapArrayData[p++] = (byte) overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)];
+								mapArrayData[p++] = (byte) (overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] >> 8);
+								mapArrayData[p++] = (byte) overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)];
+								mapArrayData[p++] = (byte) (overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)] >> 8);
 
-                                if (i < 32)
+								if (i < 32)
                                 {
-                                    mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                    mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-                                }
+									mapArrayData[p++] = (byte) overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)];
+									mapArrayData[p++] = (byte) (overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] >> 8);
+								}
                             }
                         }
 
@@ -4700,9 +4700,9 @@ namespace ZeldaFullEditor
 
                     for (int i = 0; i < 64; i++)
                     {
-                        for (int y = 0; y < 32; y += 1)
+                        for (int y = 0; y < 32; y++)
                         {
-                            for (int x = 0; x < 32; x += 1)
+                            for (int x = 0; x < 32; x++)
                             {
                                 this.overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
                                 p += 2;
