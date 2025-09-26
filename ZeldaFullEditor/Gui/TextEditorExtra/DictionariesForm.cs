@@ -16,5 +16,5 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra
         {
             InitializeComponent();
         }
-    }
+	}
 }

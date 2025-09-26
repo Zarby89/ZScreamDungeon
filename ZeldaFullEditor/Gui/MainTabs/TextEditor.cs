@@ -140,6 +140,8 @@ namespace ZeldaFullEditor
 
 			public string Token { get; }
 
+			public int UsageCount { get; set; } = 0;
+
 			public DictionaryEntry(byte id, string contents)
 			{
 				Contents = contents;
@@ -1534,13 +1536,32 @@ namespace ZeldaFullEditor
 		private void Button4_Click(object sender, EventArgs e)
 		{
 			var dictionariesForm = new DictionariesForm();
-			dictionariesForm.listBox1.Items.Clear();
 
-			foreach (var dictEnt in AllDictionaries)
-			{
-				dictionariesForm.listBox1.Items.Insert(dictEnt.ID, dictEnt.ToPrettyString());
+			// reset counters
+			foreach (var dictEnt in AllDictionaries) {
+				dictEnt.UsageCount = 0;
 			}
 
+			foreach (var msg in ListOfTexts) {
+				var mlist = Regex.Matches(msg.RawString, @"\[D:(?<id>[\dA-F]{2})\]");
+
+				foreach (Match n in mlist) {
+					if (int.TryParse(n.Groups["id"].Value, NumberStyles.HexNumber, null, out int id)) {
+						var dictEnt = AllDictionaries.First(o => o.ID == id);
+						dictEnt.UsageCount++;
+					}
+				}
+			}
+
+			foreach (var dictEnt in AllDictionaries) {
+				var d = new ListViewItem($"{dictEnt.ID:X2}");
+				d.SubItems.Add($"{dictEnt.RealID:X2}");
+				d.SubItems.Add($"{dictEnt.UsageCount:d}");
+				d.SubItems.Add($"{dictEnt.Contents.Replace(" ", "[Space]")}");
+
+				dictionariesForm.DictionaryTable.Items.Add(d);
+			}
+			
 			dictionariesForm.ShowDialog();
 		}
 
