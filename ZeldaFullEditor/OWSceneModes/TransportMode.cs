@@ -136,7 +136,7 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (scene.lowEndMode)
             {
-                Brush bgrBrush = Constants.DarkMint200Brush;
+                Brush bgrBrush = Constants.DarkMint200;
                 g.CompositingMode = CompositingMode.SourceOver;
 
                 for (int i = 0; i < scene.ow.AllWhirlpools.Count; i++)
@@ -153,7 +153,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             if (e == selectedTransport)
                             {
-                                bgrBrush = Constants.Azure200Brush;
+                                bgrBrush = Constants.Azure200;
                                 scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.MapID.ToString());
 
                                 // scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
@@ -161,12 +161,12 @@ namespace ZeldaFullEditor.OWSceneModes
                             }
                             else
                             {
-                                bgrBrush = Constants.Goldenrod200Brush;
+                                bgrBrush = Constants.Goldenrod200;
                             }
                         }
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.playerX, e.playerY, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(e.playerX, e.playerY, 16, 16));
                         scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
 
                         /*
@@ -184,7 +184,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
             else
             {
-                Brush bgrBrush = Constants.DarkMint200Brush;
+                Brush bgrBrush = Constants.DarkMint200;
                 g.CompositingMode = CompositingMode.SourceOver;
 
                 for (int i = 0; i < scene.ow.AllWhirlpools.Count; i++)
@@ -197,7 +197,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             if (e == selectedTransport)
                             {
-                                bgrBrush = Constants.Azure200Brush;
+                                bgrBrush = Constants.Azure200;
                                 scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.MapID.ToString());
 
                                 // scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
@@ -205,12 +205,12 @@ namespace ZeldaFullEditor.OWSceneModes
                             }
                             else
                             {
-                                bgrBrush = Constants.Goldenrod200Brush;
+                                bgrBrush = Constants.Goldenrod200;
                             }
                         }
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.playerX, e.playerY, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(e.playerX, e.playerY, 16, 16));
                         scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
 
                         /*

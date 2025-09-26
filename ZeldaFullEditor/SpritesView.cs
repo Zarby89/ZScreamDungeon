@@ -46,7 +46,7 @@ namespace ZeldaFullEditor
 
                 if (selectedObject == o)
                 {
-                    e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 64));
+                    e.Graphics.FillRectangle(Constants.FifthBlue, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 64));
                 }
 
                 e.Graphics.DrawRectangle(Pens.LightGray, new Rectangle(xpos * 64 + (xpos * 4), ypos * 64 + (ypos * 4), 64, 64));

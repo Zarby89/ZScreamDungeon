@@ -594,7 +594,7 @@ namespace ZeldaFullEditor.Gui
             // TODO: Make new brushes.
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.DrawImage(GFX.currentfontgfx16Bitmap, Constants.Rect_0_0_340_102, Constants.Rect_0_0_170_51, GraphicsUnit.Pixel);
-            e.Graphics.FillRectangle(Constants.HalfRedBrush, Constants.Rect_336_0_4_102);
+            e.Graphics.FillRectangle(Constants.HalfRed, Constants.Rect_336_0_4_102);
         }
 
         private void textidTextbox_Click(object sender, EventArgs e)

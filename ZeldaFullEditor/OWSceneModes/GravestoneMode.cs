@@ -105,7 +105,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-            Pen bgrBrush = Constants.Magenta200Pen;
+            Pen bgrBrush = Constants.Magenta200;
             g.CompositingMode = CompositingMode.SourceOver;
 
             for (int i = 0; i < scene.ow.AllGraves.Length; i++)
@@ -116,12 +116,12 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (e == selectedGrave)
                     {
-                        bgrBrush = Constants.MediumMint200Pen;
+                        bgrBrush = Constants.MediumMint200;
                         //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, "ID : " + i.ToString("X2"));
                     }
                     else
                     {
-                        bgrBrush = Constants.Magenta200Pen;
+                        bgrBrush = Constants.Magenta200;
                     }
                 }
 

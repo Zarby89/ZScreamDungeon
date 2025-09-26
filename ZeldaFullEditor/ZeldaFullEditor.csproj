@@ -154,6 +154,7 @@
     <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Data\SongAddress.cs" />
     <Compile Include="Data\SpriteProperty.cs" />
+    <Compile Include="DrawingColor.cs" />
     <Compile Include="DungeonOverlays.cs" />
     <Compile Include="FastRomifier.cs" />
     <Compile Include="FastRomifier.data.cs" />

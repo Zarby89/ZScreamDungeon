@@ -1273,7 +1273,7 @@ namespace ZeldaFullEditor
 				GraphicsUnit.Pixel);
 
 			e.Graphics.FillRectangle(
-				Constants.HalfRedBrush,
+				Constants.HalfRed,
 				new Rectangle(344 - 8, 0, 4, pictureBox2.Height));
 		}
 

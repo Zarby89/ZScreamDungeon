@@ -202,10 +202,10 @@ namespace ZeldaFullEditor.OWSceneModes
                     if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
                     {
 
-                        bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
+                        bgrBrush = (selectedItem == item) ? Constants.Turquoise200 : Constants.Scarlet200;
 
                         g.FillRectangle(bgrBrush, new Rectangle((item.X), (item.Y), 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.X), (item.Y), 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle((item.X), (item.Y), 16, 16));
                         byte nid = item.ID;
 
                         if ((item.ID & 0x80) == 0x80)
@@ -233,10 +233,10 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     if (item.RoomMapID >= (0 + scene.ow.WorldOffset) && item.RoomMapID < (64 + scene.ow.WorldOffset))
                     {
-                        bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
+                        bgrBrush = (selectedItem == item) ? Constants.Turquoise200 : Constants.Scarlet200;
 
                         g.FillRectangle(bgrBrush, new Rectangle((item.X), (item.Y), 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.X), (item.Y), 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle((item.X), (item.Y), 16, 16));
                         byte nid = item.ID;
 
                         if ((item.ID & 0x80) == 0x80)

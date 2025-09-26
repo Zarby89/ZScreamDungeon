@@ -582,7 +582,7 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (scene.lowEndMode)
             {
-                Brush bgrBrush = Constants.Goldenrod200Brush;
+                Brush bgrBrush = Constants.Goldenrod200;
                 g.CompositingMode = CompositingMode.SourceOver;
 
                 for (int i = 0; i < scene.ow.AllEntrances.Length; i++)
@@ -599,19 +599,19 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             if (e == selectedEntrance)
                             {
-                                bgrBrush = Constants.Azure200Brush;
+                                bgrBrush = Constants.Azure200;
                                 scene.drawText(g, e.X - 1, e.Y + 26, "map : " + e.MapID.ToString());
                                 scene.drawText(g, e.X - 1, e.Y + 36, "entrance : " + e.EntranceID.ToString());
                                 scene.drawText(g, e.X - 1, e.Y + 46, "mpos : " + e.MapPos.ToString());
                             }
                             else
                             {
-                                bgrBrush = Constants.Goldenrod200Brush;
+                                bgrBrush = Constants.Goldenrod200;
                             }
                         }
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.X, e.Y, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.X, e.Y, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(e.X, e.Y, 16, 16));
                         scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
                     }
                 }
@@ -624,19 +624,19 @@ namespace ZeldaFullEditor.OWSceneModes
                         continue;
                     }
 
-                    bgrBrush = Constants.Charcoal200Brush;
+                    bgrBrush = Constants.Charcoal200;
                     if (e.MapID < 64 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
                     {
                         if (selectedEntrance != null)
                         {
                             if (e == selectedEntrance)
                             {
-                                bgrBrush = Constants.Azure200Brush;
+                                bgrBrush = Constants.Azure200;
                             }
                         }
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.X, e.Y, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.X, e.Y, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(e.X, e.Y, 16, 16));
                         scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
                     }
                 }
@@ -645,7 +645,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
             else
             {
-                Brush bgrBrush = Constants.Goldenrod200Brush;
+                Brush bgrBrush = Constants.Goldenrod200;
                 g.CompositingMode = CompositingMode.SourceOver;
 
                 for (int i = 0; i < scene.ow.AllEntrances.Length; i++)
@@ -658,19 +658,19 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             if (e == selectedEntrance)
                             {
-                                bgrBrush = Constants.Azure200Brush;
+                                bgrBrush = Constants.Azure200;
                                 scene.drawText(g, e.X - 1, e.Y + 26, "map : " + e.MapID.ToString());
                                 scene.drawText(g, e.X - 1, e.Y + 36, "entrance : " + e.EntranceID.ToString());
                                 scene.drawText(g, e.X - 1, e.Y + 46, "mpos : " + e.MapPos.ToString());
                             }
                             else
                             {
-                                bgrBrush = Constants.Goldenrod200Brush;
+                                bgrBrush = Constants.Goldenrod200;
                             }
                         }
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.X, e.Y, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.X, e.Y, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(e.X, e.Y, 16, 16));
                         scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
                     }
                 }
@@ -678,7 +678,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = 0; i < scene.ow.AllHoles.Length; i++)
                 {
                     EntranceOW e = scene.ow.AllHoles[i];
-                    bgrBrush = Constants.Charcoal200Brush;
+                    bgrBrush = Constants.Charcoal200;
 
                     if (e.MapID < 64 + scene.ow.WorldOffset && e.MapID >= scene.ow.WorldOffset)
                     {
@@ -686,12 +686,12 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             if (e == selectedEntrance)
                             {
-                                bgrBrush = Constants.Azure200Brush;
+                                bgrBrush = Constants.Azure200;
                             }
                         }
 
                         g.FillRectangle(bgrBrush, new Rectangle(e.X, e.Y, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.X, e.Y, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(e.X, e.Y, 16, 16));
                         scene.drawText(g, e.X - 1, e.Y + 9, e.EntranceID.ToString("X2") + " - " + DungeonsData.AllRooms[DungeonsData.Entrances[e.EntranceID].Room].name);
                     }
                 }

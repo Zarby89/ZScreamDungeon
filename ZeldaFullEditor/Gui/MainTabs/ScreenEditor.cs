@@ -922,7 +922,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 for (int gx = 0; gx < (gridsizeX / 16); gx++)
                 {
                     e.Graphics.DrawLine(
-                        Constants.ThirdGreenPen,
+                        Constants.ThirdGreen,
                         new Point(gx * 16, 0),
                         new Point(gx * 16, gridsizeY));
                 }
@@ -2131,11 +2131,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             for (int i = 0; i < 16; i++)
             {
-                e.Graphics.DrawLine(Constants.QuarterWhitePen, i * 32, 0, i * 32, 384);
+                e.Graphics.DrawLine(Constants.QuarterWhite, i * 32, 0, i * 32, 384);
 
                 if (i < 10)
                 {
-                    e.Graphics.DrawLine(Constants.QuarterWhitePen, 0, i * 32, 512, i * 32);
+                    e.Graphics.DrawLine(Constants.QuarterWhite, 0, i * 32, 512, i * 32);
                 }
             }
         }

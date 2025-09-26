@@ -213,11 +213,11 @@ namespace ZeldaFullEditor
                 {
                     if (selectedMode == ObjectMode.Spritemode)
                     {
-                        graphics.DrawRectangle(Constants.WhitePen, new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
+                        graphics.DrawRectangle(Constants.SolidWhite, new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
                     }
                     else
                     {
-                        graphics.DrawRectangle(Constants.WhitePen, new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
+                        graphics.DrawRectangle(Constants.SolidWhite, new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
                     }
                 }
 
