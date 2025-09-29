@@ -126,6 +126,7 @@ namespace ZeldaFullEditor
         
         public static byte[] bpp2SheetsIndex = new byte[] {0x71, 0x72, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE };
 
+        public static byte[] sheets4bpp = new byte[256];
 
         public static unsafe void DrawBG1()
         {

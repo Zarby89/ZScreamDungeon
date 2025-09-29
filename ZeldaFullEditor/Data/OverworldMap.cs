@@ -287,6 +287,7 @@ namespace ZeldaFullEditor
 
                     switch (index)
                     {
+
                         case 0x88:
                         case 0x93:
                             this.GFX = 81;
@@ -937,25 +938,27 @@ namespace ZeldaFullEditor
                     for (int j = 0; j < 2048; j++)
                     {
                         byte mapByte = allgfxData[j + (this.StaticGFX[i] * 2048)];
-                        switch (i)
+                        if (ZeldaFullEditor.GFX.sheets4bpp[this.StaticGFX[i]] == 0)
                         {
-                            case 0:
-                            case 3:
-                            case 4:
-                            case 5:
-                                mapByte += 0x88;
-                                break;
+                            switch (i)
+                            {
+                                case 0:
+                                case 3:
+                                case 4:
+                                case 5:
+                                    mapByte += 0x88;
+                                    break;
 
-                            // The first half of sheet 7 needs to load from the animated sheet.
-                            case 7:
-                                if (j < 1024)
-                                {
-                                    mapByte = allgfxData[j + (this.StaticGFX[16] * 2048)];
-                                }
+                                // The first half of sheet 7 needs to load from the animated sheet.
+                                case 7:
+                                    if (j < 1024)
+                                    {
+                                        mapByte = allgfxData[j + (this.StaticGFX[16] * 2048)];
+                                    }
 
-                                break;
+                                    break;
+                            }
                         }
-
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data.
                     }
                 }

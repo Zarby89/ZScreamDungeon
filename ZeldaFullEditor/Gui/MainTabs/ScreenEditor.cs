@@ -3152,6 +3152,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         }
                         else if (lines[i][0] == 'f')
                         {
+                            lines[i] = lines[i].TrimEnd(' ');
                             string[] vertex = lines[i].Split(' ');
                             databytesF.Add((byte)(vertex.Length - 1));
                             for (int j = 0; j < vertex.Length - 1; j++)

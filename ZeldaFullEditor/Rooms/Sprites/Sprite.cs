@@ -1190,6 +1190,16 @@ namespace ZeldaFullEditor
             // TODO: Add something here?
         }
 
+        public unsafe void drawSpriteTileSquare(int x, int y)
+        {
+            var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
+            byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
+
+            // then find a palette
+            
+
+
+        }
         public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
         {
             var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();

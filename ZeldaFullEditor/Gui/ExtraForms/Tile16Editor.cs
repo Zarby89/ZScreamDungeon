@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
@@ -20,6 +22,7 @@ namespace ZeldaFullEditor.Gui
 
         ushort searchedTile = 0xFFFF;
 
+
         Tile16 copiedTile;
 
         // TODO: Switch to entities.cs version, etc.
@@ -28,6 +31,8 @@ namespace ZeldaFullEditor.Gui
         private bool MadeChange = false;
         private bool cancelClosing = false;
 
+        Label[] sheetLabels = new Label[16];
+
         public Tile16Editor(SceneOW scene)
         {
             this.scene = scene;
@@ -35,6 +40,25 @@ namespace ZeldaFullEditor.Gui
 
             panel1.VerticalScroll.SmallChange = 32;
             panel1.VerticalScroll.LargeChange = 32;
+            byte[] sheets = new byte[8];
+            sheets[0] = scene.ow.AllMaps[scene.selectedMap].TileGFX0;
+            sheets[1] = scene.ow.AllMaps[scene.selectedMap].TileGFX1;
+            sheets[2] = scene.ow.AllMaps[scene.selectedMap].TileGFX2;
+            sheets[3] = scene.ow.AllMaps[scene.selectedMap].TileGFX3;
+            sheets[4] = scene.ow.AllMaps[scene.selectedMap].TileGFX4;
+            sheets[5] = scene.ow.AllMaps[scene.selectedMap].TileGFX5;
+            sheets[6] = scene.ow.AllMaps[scene.selectedMap].TileGFX6;
+            sheets[7] = scene.ow.AllMaps[scene.selectedMap].TileGFX7;
+
+            for (int i = 0; i<8; i++)
+            {
+                sheetLabels[i] = new Label();
+                sheetLabels[i].Text = sheets[i].ToString("X2");
+                sheetLabels[i].Font = sheetLabel.Font;
+                sheetLabels[i].Location = new Point(257, 28 + (i * 64));
+            }
+            panel2.Controls.AddRange(sheetLabels);
+
         }
 
         /// <summary>
@@ -527,6 +551,8 @@ namespace ZeldaFullEditor.Gui
 
         private void Tile16Editor_Load(object sender, EventArgs e)
         {
+
+
             for (int i = 0; i < 0xFF; i++)
             {
                 tilesTypesNames[i] = i.ToString("X2") + " - ????";
@@ -538,7 +564,7 @@ namespace ZeldaFullEditor.Gui
             {
                 tempTiletype[i] = scene.ow.AllTileTypes[i];
             }
-
+            tiletypesheetCombobox.SelectedIndex = 0;
             scene.ow.Tile16List.CopyTo(allTiles);
 
             unsafe
@@ -551,26 +577,59 @@ namespace ZeldaFullEditor.Gui
                     for (int j = 0; j < 2048; j++)
                     {
                         byte mapByte = allgfxData[j + (scene.ow.AllMaps[scene.selectedMap].StaticGFX[i] * 2048)];
-                        switch (i)
+                        if (GFX.sheets4bpp[scene.ow.AllMaps[scene.selectedMap].StaticGFX[i]] == 0)
                         {
-                            case 0:
-                            case 3:
-                            case 4:
-                            case 5:
-                                mapByte += 0x88;
-                                break;
+                            switch (i)
+                            {
+                                case 0:
+                                case 3:
+                                case 4:
+                                case 5:
+                                    mapByte += 0x88;
+                                    break;
 
-                            // The first half of sheet 7 needs to load from the animated sheet.
-                            case 7:
-                                if (j < 1024)
-                                {
-                                    mapByte = allgfxData[j + (scene.ow.AllMaps[scene.selectedMap].StaticGFX[16] * 2048)];
-                                }
+                                // The first half of sheet 7 needs to load from the animated sheet.
+                                case 7:
+                                    if (j < 1024)
+                                    {
+                                        mapByte = allgfxData[j + (scene.ow.AllMaps[scene.selectedMap].StaticGFX[16] * 2048)];
+                                    }
 
-                                break;
+                                    break;
+                            }
                         }
-
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < 0x2000; i++)
+            {
+                IndividualSheetsCollisionsData[i] = ROM.DATA[Constants.IndividualSheetsCollisions+i];
+            }
+            bool unused = true;
+            for (int i = 0; i < 32; i++)
+            {
+
+                if (IndividualSheetsCollisionsData[0x3A * 0x40 + i] != 0)
+                {
+                    unused = false;
+                }
+            }
+            if (unused)
+            {
+                if (MessageBox.Show("Your rom seems to be using old collisions do you want to convert them to newer collision?", "Converting", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    for (int j = 0; j < 0x80; j++)
+                    {
+                        for (int i = 0; i < 0x40; i++)
+                        {
+                            if ((gfxslotcollision[j] != 0xFF))
+                            {
+                                IndividualSheetsCollisionsData[(j * 0x40) + i] = ROM.DATA[Constants.overworldTilesType + (gfxslotcollision[j] * 0x40) + i];
+                            }
+                        }
                     }
                 }
             }
@@ -598,6 +657,11 @@ namespace ZeldaFullEditor.Gui
 
                 // Check all tiles that changed.
                 scene.ow.Tile16List[i] = allTiles[i];
+            }
+
+            for(int i = 0; i< 0x2000;i++)
+            {
+                ROM.DATA[Constants.IndividualSheetsCollisions + i] = IndividualSheetsCollisionsData[i]; 
             }
 
             if (NetZS.connected)
@@ -655,86 +719,13 @@ namespace ZeldaFullEditor.Gui
 
         public void loadTilesNames()
         {
-            tilesTypesNames[0x00] = "0x00 - Normal tile(no interaction)";
-            tilesTypesNames[0x01] = "0x01 - Blocked";
-            tilesTypesNames[0x02] = "0x02 - Blocked)";
-            tilesTypesNames[0x03] = "0x03 - Blocked";
-            tilesTypesNames[0x04] = "0x04 - Normal? Unknown";
-            tilesTypesNames[0x05] = "0x05 - Normal tile(no interaction)";
-            tilesTypesNames[0x06] = "0x06 - Normal tile(no interaction)";
-            tilesTypesNames[0x07] = "0x07 - Normal tile(no interaction)";
-
-            tilesTypesNames[0x08] = "0x08 - Deep Water";
-            tilesTypesNames[0x09] = "0x09 - Shallow Water";
-
-            tilesTypesNames[0x0C] = "0x0C - Moving Floor";
-            tilesTypesNames[0x0D] = "0x0D - Sprite Floor";
-
-            tilesTypesNames[0x1C] = "0x1C - Top of in room staircase";
-
-            tilesTypesNames[0x20] = "0x20 - Hole Tile";
-            tilesTypesNames[0x22] = "0x22 - Wooden steps(slow you down)";
-            tilesTypesNames[0x27] = "0x27 - (empty chest and maybe others)";
-
-            tilesTypesNames[0x28] = "0x28 - Ledge leading up";
-            tilesTypesNames[0x29] = "0x29 - Ledge leading down";
-            tilesTypesNames[0x2A] = "0x2A - Ledge leading left";
-            tilesTypesNames[0x2B] = "0x2B - Ledge leading right";
-            tilesTypesNames[0x2C] = "0x2C - Ledge leading up + left";
-            tilesTypesNames[0x2D] = "0x2D - Ledge leading down + left";
-            tilesTypesNames[0x2E] = "0x2E - Ledge leading up + right";
-            tilesTypesNames[0x2F] = "0x2F - Ledge leading down + right";
-
-            tilesTypesNames[0x40] = "0x40 - Grass Tile";
-            tilesTypesNames[0x44] = "0x44 - Cactus Tile";
-            tilesTypesNames[0x48] = "0x48 - aftermath tiles of picking things up?";
-            tilesTypesNames[0x4A] = "0x4A - aftermath tiles of picking things up?";
-            tilesTypesNames[0x4B] = "0x4B - Warp Tile";
-            tilesTypesNames[0x4C] = "0x4C - Certain mountain tiles?";
-            tilesTypesNames[0x4D] = "0x4D - Certain mountain tiles?";
-            tilesTypesNames[0x4E] = "0x4E - Certain mountain tiles?";
-            tilesTypesNames[0x4F] = "0x4F - Certain mountain tiles?";
-
-            tilesTypesNames[0x50] = "0x50 - bush";
-            tilesTypesNames[0x51] = "0x51 - off color bush";
-            tilesTypesNames[0x52] = "0x52 - small light rock";
-            tilesTypesNames[0x53] = "0x53 - small heavy rock";
-            tilesTypesNames[0x54] = "0x54 - sign";
-            tilesTypesNames[0x55] = "0x55 - large light rock";
-            tilesTypesNames[0x56] = "0x56 - large heavy rock";
-
-            tilesTypesNames[0x58] = "0x58 - Chest block";
-            tilesTypesNames[0x59] = "0x59 - Chest block";
-            tilesTypesNames[0x5A] = "0x5A - Chest block";
-            tilesTypesNames[0x5B] = "0x5B - Chest block";
-            tilesTypesNames[0x5C] = "0x5C - Chest block";
-            tilesTypesNames[0x5D] = "0x5D - Chest block";
-
-            tilesTypesNames[0x63] = "0x63 - Minigame chest tile";
-            tilesTypesNames[0xB0] = "0xB0 - Hole Tile or Somaria?";
-
-            tilesTypesNames[0xC0] = "0xC0 - Torch";
-            tilesTypesNames[0xC1] = "0xC1 - Torch";
-            tilesTypesNames[0xC2] = "0xC2 - Torch";
-            tilesTypesNames[0xC3] = "0xC3 - Torch";
-            tilesTypesNames[0xC4] = "0xC4 - Torch";
-            tilesTypesNames[0xC5] = "0xC5 - Torch";
-            tilesTypesNames[0xC6] = "0xC6 - Torch";
-            tilesTypesNames[0xC7] = "0xC7 - Torch";
-            tilesTypesNames[0xC8] = "0xC8 - Torch";
-            tilesTypesNames[0xC9] = "0xC9 - Torch";
-            tilesTypesNames[0xCA] = "0xCA - Torch";
-            tilesTypesNames[0xCB] = "0xCB - Torch";
-            tilesTypesNames[0xCC] = "0xCC - Torch";
-            tilesTypesNames[0xCD] = "0xCD - Torch";
-            tilesTypesNames[0xCE] = "0xCE - Torch";
-            tilesTypesNames[0xCF] = "0xCF - Torch";
-
-            tilesTypesNames[0xF0] = "0xF0 - Key door 1";
-            tilesTypesNames[0xF1] = "0xF1 - Key door 2";
+            tilesTypesNames = Constants.TileTypes;
+           
 
             tileTypeBox.Items.Clear();
             tileTypeBox.Items.AddRange(tilesTypesNames);
+            tiletypesheetCombobox.Items.Clear();
+            tiletypesheetCombobox.Items.AddRange(tilesTypesNames);
         }
 
         private void gridcheckBox_CheckedChanged(object sender, EventArgs e)
@@ -782,16 +773,11 @@ namespace ZeldaFullEditor.Gui
 
         private void Tile16CopyBtn_Click(object sender, EventArgs e)
         {
-            copiedTileLabel.Text = "Copied Tile: " + scene.selectedTile[0].ToString("X4");
-            copiedTile = allTiles[scene.selectedTile[0]];
         }
 
         private void Tile16PasteBtn_Click(object sender, EventArgs e)
         {
-            allTiles[scene.selectedTile[0]] = copiedTile;
 
-            BuildTiles16Gfx();
-            pictureboxTile16.Refresh();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -875,6 +861,281 @@ namespace ZeldaFullEditor.Gui
                     this.cancelClosing = true;
                     break;
             }
+        }
+
+        private void copyRangeButton_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("ZST16");
+            int starttileid = scene.selectedTile[0];
+            for (int i = 0; i < copyrangeUpdown.Value; i++)
+            {
+                sb.Append(allTiles[starttileid + i].Tile0.toShort().ToString("X4"));
+                sb.Append(allTiles[starttileid + i].Tile1.toShort().ToString("X4"));
+                sb.Append(allTiles[starttileid + i].Tile2.toShort().ToString("X4"));
+                sb.Append(allTiles[starttileid + i].Tile3.toShort().ToString("X4"));
+            }
+            Clipboard.SetText(sb.ToString());
+        }
+
+        private void pasteRangeButton_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsText())
+            {
+                string data = Clipboard.GetText();
+                int starttileid = scene.selectedTile[0];
+                if (data.StartsWith("ZST16"))
+                {
+                    data = data.Substring(5);
+                    for (int i = 0; i < data.Length / 16; i++)
+                    {
+
+                        allTiles[starttileid + i].Tile0 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16), 4), System.Globalization.NumberStyles.HexNumber));
+                        allTiles[starttileid + i].Tile1 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 4, 4), System.Globalization.NumberStyles.HexNumber));
+                        allTiles[starttileid + i].Tile2 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 8, 4), System.Globalization.NumberStyles.HexNumber));
+                        allTiles[starttileid + i].Tile3 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 12, 4), System.Globalization.NumberStyles.HexNumber));
+                    }
+                }
+            }
+            BuildTiles16Gfx();
+            pictureboxTile16.Refresh();
+        }
+        Color fColor = Color.FromArgb(200, 255, 200, 200);
+        Font f = new Font("Arial", 12, FontStyle.Regular);
+        private void collisionsheetPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+            ColorPalette cp = GFX.allgfxBitmap.Palette;
+            Color[] oldColors = new Color[8];
+            for(int i = 0; i< 8;i++)
+            {
+                oldColors[i] = cp.Entries[i];
+                cp.Entries[i] = Color.FromArgb(i * 32, i * 32, i * 32);
+            }
+            GFX.allgfxBitmap.Palette = cp;
+            e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0, 0, 512, 128), new Rectangle(0,(int)(selectedsheetUpDown.Value*32),128,32), GraphicsUnit.Pixel);
+            for (int i = 0; i < 8; i++)
+            {
+                cp.Entries[i] = oldColors[i];
+            }
+            GFX.allgfxBitmap.Palette = cp;
+            for(int i = 0; i< 4;i++)
+            {
+                e.Graphics.DrawLine(new Pen(new SolidBrush(fColor), 1),new Point(0,i*32), new Point(512,i*32));
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                e.Graphics.DrawLine(new Pen(new SolidBrush(fColor), 1), new Point(i * 32,0), new Point(i * 32, 128));
+            }
+
+
+            for (int i = 0; i < 0x40;i++)
+            {
+                e.Graphics.DrawString(IndividualSheetsCollisionsData[(int)(selectedsheetUpDown.Value*0x40)+i].ToString("X2") , f, new SolidBrush(fColor), 4+ ((i % 16)*32),4+ ((i / 16) * 32));
+            }
+
+        }
+        byte[] IndividualSheetsCollisionsData = new byte[0x2000];
+        private void selectedsheetUpDown_ValueChanged(object sender, EventArgs e)
+        {
+
+            
+            collisionsheetPicturebox.Invalidate();
+        }
+
+        byte[] gfxslotcollision = new byte[0x80]
+{
+    0xFF, // 0X00
+    0xFF, // 0X01
+    0xFF, // 0X02
+    0xFF, // 0X03
+    0xFF, // 0X04
+    0xFF, // 0X05
+    0xFF, // 0X06
+    0xFF, // 0X07
+    0xFF, // 0X08
+    0xFF, // 0X09
+    0xFF, // 0X0A
+    0xFF, // 0X0B
+    0xFF, // 0X0C
+    0xFF, // 0X0D
+    0xFF, // 0X0E
+    0xFF, // 0X0F
+    0xFF, // 0X10
+    0xFF, // 0X11
+    0xFF, // 0X12
+    0xFF, // 0X13
+    0xFF, // 0X14
+    0xFF, // 0X15
+    0xFF, // 0X16
+    0xFF, // 0X17
+    0xFF, // 0X18
+    0xFF, // 0X19
+    0xFF, // 0X1A
+    0xFF, // 0X1B
+    0xFF, // 0X1C
+    0xFF, // 0X1D
+    0xFF, // 0X1E
+    0xFF, // 0X1F
+    0xFF, // 0X20
+    0xFF, // 0X21
+    0xFF, // 0X22
+    0xFF, // 0X23
+    0xFF, // 0X24
+    0xFF, // 0X25
+    0xFF, // 0X26
+    0xFF, // 0X27
+    0xFF, // 0X28
+    0xFF, // 0X29
+    0xFF, // 0X2A
+0x04, // 0x2B
+0x05, // 0x2C
+0x04, // 0x2D
+0x05, // 0x2E
+0x04, // 0x2F
+
+0x05, // 0x30
+0x04, // 0x31
+0x05, // 0x32
+0x04, // 0x33
+0x05, // 0x34
+0x04, // 0x35
+0x05, // 0x36
+0x04, // 0x37
+0x05, // 0x38
+0x00, // 0x39 ; MENU
+0x00, // 0x3A
+0x01, // 0x3B
+0x02, // 0x3C
+0x03, // 0x3D
+0x06, // 0x3E
+0x06, // 0x3F
+
+0x00, // 0x40 ; LOGO
+0x00, // 0x41 ; LOGO
+0x00, // 0x42
+0x01, // 0x43
+0x02, // 0x44
+0x03, // 0x45
+0x00, // 0x46 ; TRIFORCE ROOM
+0x04, // 0x47
+0x05, // 0x48
+0x05, // 0x49
+0x05, // 0x4A
+0x05, // 0x4B
+0x05, // 0x4C
+0x05, // 0x4D
+0x05, // 0x4E
+0x05, // 0x4F
+
+0x04, // 0x50
+0x04, // 0x51
+0x04, // 0x52
+0x04, // 0x53
+0x05, // 0x54
+0x04, // 0x55
+0x04, // 0x56
+0x04, // 0x57
+0x07, // 0x58 ; ANIMATED
+0x07, // 0x59 ; ANIMATED
+0x07, // 0x5A ; ANIMATED
+0x07, // 0x5B ; ANIMATED
+0x07, // 0x5C ; ANIMATED
+0x07, // 0x5D ; ANIMATED
+0x07, // 0x5E ; ANIMATED
+0x07, // 0x5F ; ANIMATED
+
+0x04, // 0x60
+0xFF, // 0x61
+0xFF, // 0x62
+0xFF, // 0x63
+0xFF, // 0x64
+0xFF, // 0x65
+0xFF, // 0x66
+0xFF, // 0x67
+0xFF, // 0x68
+0xFF, // 0x69
+0xFF, // 0x6A
+0xFF, // 0x6B
+0xFF, // 0x6C
+0xFF, // 0x6D
+0xFF, // 0x6E
+0xFF, // 0x6F
+
+0xFF, // 0x70
+0xFF, // 0x71
+0xFF, // 0x72
+0xFF, // 0x73
+0xFF, // 0x74
+0xFF, // 0x75
+0xFF, // 0x76
+0xFF, // 0x77
+0xFF, // 0x78
+0xFF, // 0x79
+0xFF, // 0x7A
+0xFF, // 0x7B
+0xFF, // 0x7C
+0xFF, // 0x7D
+0xFF, // 0x7E
+0xFF, // 0x7F
+};
+
+        private void vanillacopycolButton_Click(object sender, EventArgs e)
+        {
+                if (MessageBox.Show("Are you sure you wanna use old collision it'll overwrite actual newer collisions", "Converting", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    for (int j = 0; j < 0x80; j++)
+                    {
+                        for (int i = 0; i < 0x40; i++)
+                        {
+                            if ((gfxslotcollision[j] != 0xFF))
+                            {
+                                IndividualSheetsCollisionsData[(j * 0x40) + i] = ROM.DATA[Constants.overworldTilesType + (gfxslotcollision[j] * 0x40) + i];
+                            }
+                        }
+                    }
+                }
+        }
+        int lastIndex = -1;
+        bool mdown = false;
+        private void collisionsheetPicturebox_MouseDown(object sender, MouseEventArgs e)
+        {
+            int index = (e.X/32) + ((e.Y/32)*16);
+            lastIndex = index;
+
+            IndividualSheetsCollisionsData[(int)(selectedsheetUpDown.Value * 0x40) + index] = (byte)tiletypesheetCombobox.SelectedIndex;
+            mdown = true;
+            collisionsheetPicturebox.Invalidate();
+
+        }
+
+        private void tiletypesheetCombobox_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void collisionsheetPicturebox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mdown)
+            {
+                int index = (e.X / 32) + ((e.Y / 32) * 16);
+                if (index != lastIndex)
+                {
+                    IndividualSheetsCollisionsData[(int)(selectedsheetUpDown.Value * 0x40) + index] = (byte)tiletypesheetCombobox.SelectedIndex;
+                    collisionsheetPicturebox.Invalidate();
+                }
+
+
+
+                lastIndex = index;
+            }
+        }
+
+        private void collisionsheetPicturebox_MouseUp(object sender, MouseEventArgs e)
+        {
+            mdown = false;
         }
     }
 }

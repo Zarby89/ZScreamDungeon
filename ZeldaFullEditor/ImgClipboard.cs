@@ -125,7 +125,7 @@ namespace ZeldaFullEditor
             //Marshal.FreeHGlobal(imgData);
         }
 
-        public static void SetImageDataWithPal(byte[] idata, byte[] palData, bool bpp2 = false) // or 63
+        public static void SetImageDataWithPal(byte[] idata, byte[] palData, bool bpp2 = false, bool bpp4 = false) // or 63
         {
             
             Clipboard.Clear();
@@ -133,22 +133,22 @@ namespace ZeldaFullEditor
             if (!bpp2)
             {
                
-                // Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
-                byte[] headerData = new byte[40] {
-                0x28, 0x00, 0x00, 0x00, // ? dib header
-                0x80, 0x00, 0x00, 0x00, // Width
-                0x28, 0x00, 0x00, 0x00, // Height
-                0x01, 0x00, // Planes
-                0x20, 0x00, // Bpp 
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x50, 0x00, 0x00, // Numbers of byte for the image (0x5000)
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00 // ??
-            };
+                    // Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
+                    byte[] headerData = new byte[40] {
+                    0x28, 0x00, 0x00, 0x00, // ? dib header
+                    0x80, 0x00, 0x00, 0x00, // Width
+                    0x28, 0x00, 0x00, 0x00, // Height
+                    0x01, 0x00, // Planes
+                    0x20, 0x00, // Bpp 
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x50, 0x00, 0x00, // Numbers of byte for the image (0x5000)
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00 // ??
+                };
 
-                Color[] pals = new Color[8];
+                Color[] pals = new Color[16];
                 unsafe
                 {
                     IntPtr imgData = Marshal.AllocHGlobal(0x5028);
@@ -157,9 +157,19 @@ namespace ZeldaFullEditor
                     {
                         imgdata[i] = headerData[i];
                     }
-                    for (int i = 0; i < 8; i++) // Colors Palettes
+                    if (bpp4)
                     {
-                        pals[i] = Color.FromArgb(palData[(i * 4) + 2], palData[(i * 4) + 1], palData[(i * 4)]);
+                        for (int i = 0; i < 16; i++) // Colors Palettes
+                        {
+                            pals[i] = Color.FromArgb(palData[(i * 4) + 2], palData[(i * 4) + 1], palData[(i * 4)]);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 8; i++) // Colors Palettes
+                        {
+                            pals[i] = Color.FromArgb(palData[(i * 4) + 2], palData[(i * 4) + 1], palData[(i * 4)]);
+                        }
                     }
 
                     int spos = 0x1000;
@@ -190,9 +200,12 @@ namespace ZeldaFullEditor
                             for (int j = 0; j < 8; j++) // each pixels
                             {
                                 v = p;
-                                if (p >= 8)
+                                if (!bpp4)
                                 {
-                                    v = p - 8;
+                                    if (p >= 8)
+                                    {
+                                        v = p - 8;
+                                    }
                                 }
 
                                 // 1 pixel

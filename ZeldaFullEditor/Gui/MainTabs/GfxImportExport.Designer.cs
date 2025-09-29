@@ -46,6 +46,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.selectedLabel = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.allgfxPicturebox)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -75,11 +77,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button5);
+            this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.paste24bpp);
             this.groupBox1.Controls.Add(this.copy24bpp);
             this.groupBox1.Location = new System.Drawing.Point(293, 321);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(256, 57);
+            this.groupBox1.Size = new System.Drawing.Size(256, 89);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Copy / Paste (Ctrl+C / Ctrl+V)";
@@ -106,7 +110,7 @@
             // 
             // pasteIndexed
             // 
-            this.pasteIndexed.Location = new System.Drawing.Point(399, 448);
+            this.pasteIndexed.Location = new System.Drawing.Point(399, 480);
             this.pasteIndexed.Name = "pasteIndexed";
             this.pasteIndexed.Size = new System.Drawing.Size(100, 23);
             this.pasteIndexed.TabIndex = 2;
@@ -116,7 +120,7 @@
             // 
             // copyIndexed
             // 
-            this.copyIndexed.Location = new System.Drawing.Point(293, 448);
+            this.copyIndexed.Location = new System.Drawing.Point(293, 480);
             this.copyIndexed.Name = "copyIndexed";
             this.copyIndexed.Size = new System.Drawing.Size(100, 23);
             this.copyIndexed.TabIndex = 0;
@@ -127,7 +131,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.infoLabel);
-            this.groupBox2.Location = new System.Drawing.Point(293, 384);
+            this.groupBox2.Location = new System.Drawing.Point(293, 416);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(256, 58);
             this.groupBox2.TabIndex = 3;
@@ -211,7 +215,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(293, 477);
+            this.button1.Location = new System.Drawing.Point(293, 509);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 11;
@@ -221,7 +225,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(399, 477);
+            this.button3.Location = new System.Drawing.Point(399, 509);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 23);
             this.button3.TabIndex = 12;
@@ -237,6 +241,26 @@
             this.selectedLabel.Size = new System.Drawing.Size(89, 13);
             this.selectedLabel.TabIndex = 13;
             this.selectedLabel.Text = "Sheet Selected : ";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(112, 48);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(100, 23);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "Paste 4bpp";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(6, 48);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(100, 23);
+            this.button5.TabIndex = 5;
+            this.button5.Text = "Copy32bpp 4bpp";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // GfxImportExport
             // 
@@ -288,5 +312,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label selectedLabel;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
     }
 }

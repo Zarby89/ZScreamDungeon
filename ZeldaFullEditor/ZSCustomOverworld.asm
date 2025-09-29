@@ -1391,15 +1391,72 @@ Pool:
     dw $00A7, $00A7, $00A7, $00AE, $00A7, $00A7, $00A7, $00A7
     endif
 }
-warnpc $289938 ; $141938
+
+
+IndividualSheetsCollisions: ; enough space for a total of 128 collision sheet
+skip $2000 ; 16x4 collisions map * 128 sheets of data
+
+Bpp4Sheets:
+skip $100
+db $FA, $FB, $FC, $FD, $FE, $FF, $DD
+warnpc $28BA38 ; $143A38
 
 ; ==============================================================================
 ; Start of function space.
 ; ==============================================================================
 
-org $289940 ; $141940
-pushpc
+org $00886E
+LDA.l $7EE800, X
 
+org $28BA40 ; $143A40
+NewCollisionLoad:
+;STZ.b $8B : STZ.w $040B
+;.NoReset
+PHX : PHY : PHP
+REP #$30 ; go in full16bit
+LDA.b $00 : PHA
+LDA.b $02 : PHA
+LDA.b $04 : PHA
+LDA.b $06 : PHA
+LDA.b $08 : PHA
+LDA.b $0A : PHA
+LDY.w #$0000 ; transfer offset
+
+;LDA.b $8A : ASL : ASL : ASL : DEC : TAX ; (map id * 8) - 1 since it's incremented in loop
+LDX.w #$FFFF
+.nextSheet
+LDA.w #$0020 : STA.b $00 ; nbr of bytes to transfer per sheet / 2
+INX
+LDA.w TransGFXModule_PriorSheets, X ; get sheet00 value
+AND.w #$00FF ; sheet value * 64
+XBA : LSR : LSR ; some boring math stuff
+CLC : ADC.w #(IndividualSheetsCollisions)
+STA.b $04 ; addr
+LDA.w #IndividualSheetsCollisions>>16 : STA.b $06 ; bank
+; Dest address
+LDA.w #$E800 : STA.b $07 ; addr
+LDA.w #$7E7E : STA.b $09 ; bank
+
+--
+LDA.b [$04]
+STA.b [$07], Y
+INC.b $04 : INC.b $04
+INY : INY
+DEC $00 : BNE --
+CPY.w #$0200 : BCC .nextSheet
+
+PLA : STA.b $0A
+PLA : STA.b $08
+PLA : STA.b $06
+PLA : STA.b $04
+PLA : STA.b $02
+PLA : STA.b $00
+PLP : PLY : PLX
+RTL
+
+
+
+pushpc
 ; ==============================================================================
 
 if !Func00D8D5 == 1
@@ -3113,6 +3170,7 @@ BlockGFXCheck:
 
     .twoReady
     
+    JSL NewCollisionLoad
     STY.w TransGFXModuleFrame
 
     RTS
@@ -4395,7 +4453,7 @@ InitTilesetsLongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet3, Y
 
     .notFF3
-    
+
     STA.l $7EC2F8
     STA.b $0A
     STA.w TransGFXModule_PriorSheets+3
@@ -4404,7 +4462,7 @@ InitTilesetsLongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet4, Y
 
     .notFF4
-    
+
     STA.l $7EC2F9
     STA.b $09
     STA.w TransGFXModule_PriorSheets+4
@@ -4413,7 +4471,7 @@ InitTilesetsLongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet5, Y
 
     .notFF5
-    
+
     STA.l $7EC2FA
     STA.b $08
     STA.w TransGFXModule_PriorSheets+5
@@ -4422,7 +4480,7 @@ InitTilesetsLongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
 
     .notFF6
-    
+
     STA.l $7EC2FB
     STA.b $07
     STA.w TransGFXModule_PriorSheets+6
@@ -4431,12 +4489,13 @@ InitTilesetsLongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet7, Y
 
     .notFF7
-    
+
     STA.b $06
     STA.w TransGFXModule_PriorSheets+7
 
     PLB
 
+    JSL NewCollisionLoad ; From Dungeon
     ; $006282 Skip normal sheet load.
     JML.l $00E282
 }
@@ -4484,6 +4543,7 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls:
 
     PLB
 
+    JSL NewCollisionLoad
     ; $005949 Skip normal sheet load.
     JML.l $00D949
 }
@@ -4542,7 +4602,6 @@ AnimateMirrorWarp_DecompressBackgroundsALongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet2, Y
 
     .notFF2
-    
     TAY
     STA.w TransGFXModule_PriorSheets+2
 
@@ -4576,7 +4635,6 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
 
     .notFF6
-    
     TAY
     STA.w TransGFXModule_PriorSheets+6
 
@@ -4797,7 +4855,6 @@ OverworldHandleTransitions:
         LDA.l OverworldPalettesScreenToSet_New, X
         JSL.l Overworld_LoadPalettes
         JSR.w Overworld_CgramAuxToMain
-
         RTS
 }
 warnpc $02AB08 ; $012B08
@@ -5175,7 +5232,6 @@ Copy0716:
 {
     LDA.b #$E4 : STA.w OWCameraBoundsS
                  STA.w OWCameraBoundsE
-
     RTL
 }
 

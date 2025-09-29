@@ -299,6 +299,13 @@ namespace ZeldaFullEditor
                 return;
             }
 
+            if (MX != last_mx || MY != last_my)
+            {
+                int addr = (MX/8) + ((MY/8)*64);
+                mainForm.label43.Text = "CursorPos " + " X:" + ((((MX) / 8) * 8) + ((room.index & 0x0F) * 512)).ToString("X4") + "  Y:" + (((MY / 8) * 8) + (((room.index & 0xF0)>>4) * 512)).ToString("X4") + " TilemapAddr:"+((0x7E2000 + addr)).ToString("X4");
+            }
+
+
             if (this.room.selectedObject.Count == 1)
             {
                 if (this.room.selectedObject[0] is Room_Object lastElement)
@@ -755,6 +762,7 @@ namespace ZeldaFullEditor
                 foreach (Sprite spr in room.sprites)
                 {
                     drawText(g, spr.nx * 16, spr.ny * 16, spr.name);
+                    
                 }
             }
 

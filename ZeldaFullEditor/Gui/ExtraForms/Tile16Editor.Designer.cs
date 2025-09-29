@@ -48,14 +48,25 @@
             this.tile16searchTextbox = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.tile16GroupBox = new System.Windows.Forms.GroupBox();
-            this.copiedTileLabel = new System.Windows.Forms.Label();
-            this.Tile16PasteBtn = new System.Windows.Forms.Button();
-            this.Tile16CopyBtn = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.copyrangeUpdown = new System.Windows.Forms.NumericUpDown();
+            this.pasteRangeButton = new System.Windows.Forms.Button();
+            this.copyRangeButton = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.tilewidthimportHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.collisionsheetPicturebox = new System.Windows.Forms.PictureBox();
+            this.showcollisionCheckbox = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.selectedsheetUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tiletypesheetCombobox = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.vanillacopycolButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.tiledrawsizeHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.tilewidthimportHexbox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            this.sheetLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -63,6 +74,10 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
             this.tile16GroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.copyrangeUpdown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.collisionsheetPicturebox)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedsheetUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureboxTile16
@@ -82,17 +97,18 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(275, 608);
+            this.panel1.Size = new System.Drawing.Size(275, 619);
             this.panel1.TabIndex = 1;
             // 
             // panel2
             // 
             this.panel2.AutoScroll = true;
+            this.panel2.Controls.Add(this.sheetLabel);
             this.panel2.Controls.Add(this.pictureboxTile8);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(275, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(274, 608);
+            this.panel2.Size = new System.Drawing.Size(299, 619);
             this.panel2.TabIndex = 2;
             // 
             // pictureboxTile8
@@ -118,7 +134,7 @@
             this.groupBox1.Controls.Add(this.mirrorXCheckbox);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(555, 12);
+            this.groupBox1.Location = new System.Drawing.Point(589, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 274);
             this.groupBox1.TabIndex = 3;
@@ -135,6 +151,7 @@
             // 
             // tileTypeBox
             // 
+            this.tileTypeBox.Enabled = false;
             this.tileTypeBox.FormattingEnabled = true;
             this.tileTypeBox.Location = new System.Drawing.Point(9, 237);
             this.tileTypeBox.Name = "tileTypeBox";
@@ -145,6 +162,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Enabled = false;
             this.label3.Location = new System.Drawing.Point(8, 221);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 13);
@@ -217,7 +235,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(680, 578);
+            this.saveButton.Location = new System.Drawing.Point(1252, 589);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 4;
@@ -229,7 +247,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(599, 578);
+            this.cancelButton.Location = new System.Drawing.Point(1171, 589);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -242,7 +260,7 @@
             this.gridcheckBox.AutoSize = true;
             this.gridcheckBox.Checked = true;
             this.gridcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gridcheckBox.Location = new System.Drawing.Point(555, 292);
+            this.gridcheckBox.Location = new System.Drawing.Point(589, 292);
             this.gridcheckBox.Name = "gridcheckBox";
             this.gridcheckBox.Size = new System.Drawing.Size(73, 17);
             this.gridcheckBox.TabIndex = 9;
@@ -252,7 +270,7 @@
             // 
             // tile16searchTextbox
             // 
-            this.tile16searchTextbox.Location = new System.Drawing.Point(555, 348);
+            this.tile16searchTextbox.Location = new System.Drawing.Point(589, 348);
             this.tile16searchTextbox.Name = "tile16searchTextbox";
             this.tile16searchTextbox.Size = new System.Drawing.Size(120, 20);
             this.tile16searchTextbox.TabIndex = 10;
@@ -260,7 +278,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(555, 315);
+            this.button3.Location = new System.Drawing.Point(589, 315);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(119, 27);
             this.button3.TabIndex = 11;
@@ -270,48 +288,71 @@
             // 
             // tile16GroupBox
             // 
-            this.tile16GroupBox.Controls.Add(this.copiedTileLabel);
-            this.tile16GroupBox.Controls.Add(this.Tile16PasteBtn);
-            this.tile16GroupBox.Controls.Add(this.Tile16CopyBtn);
-            this.tile16GroupBox.Location = new System.Drawing.Point(549, 374);
+            this.tile16GroupBox.Controls.Add(this.label6);
+            this.tile16GroupBox.Controls.Add(this.copyrangeUpdown);
+            this.tile16GroupBox.Controls.Add(this.pasteRangeButton);
+            this.tile16GroupBox.Controls.Add(this.copyRangeButton);
+            this.tile16GroupBox.Location = new System.Drawing.Point(583, 374);
             this.tile16GroupBox.Name = "tile16GroupBox";
-            this.tile16GroupBox.Size = new System.Drawing.Size(200, 85);
+            this.tile16GroupBox.Size = new System.Drawing.Size(200, 91);
             this.tile16GroupBox.TabIndex = 12;
             this.tile16GroupBox.TabStop = false;
             this.tile16GroupBox.Text = "Selected tile 16: ";
             // 
-            // copiedTileLabel
+            // label6
             // 
-            this.copiedTileLabel.AutoSize = true;
-            this.copiedTileLabel.Location = new System.Drawing.Point(12, 54);
-            this.copiedTileLabel.Name = "copiedTileLabel";
-            this.copiedTileLabel.Size = new System.Drawing.Size(66, 13);
-            this.copiedTileLabel.TabIndex = 14;
-            this.copiedTileLabel.Text = "Copied Tile: ";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 54);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(83, 13);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Number of tiles :";
             // 
-            // Tile16PasteBtn
+            // copyrangeUpdown
             // 
-            this.Tile16PasteBtn.Location = new System.Drawing.Point(103, 19);
-            this.Tile16PasteBtn.Name = "Tile16PasteBtn";
-            this.Tile16PasteBtn.Size = new System.Drawing.Size(91, 27);
-            this.Tile16PasteBtn.TabIndex = 13;
-            this.Tile16PasteBtn.Text = "Paste";
-            this.Tile16PasteBtn.UseVisualStyleBackColor = true;
-            this.Tile16PasteBtn.Click += new System.EventHandler(this.Tile16PasteBtn_Click);
+            this.copyrangeUpdown.Location = new System.Drawing.Point(103, 52);
+            this.copyrangeUpdown.Maximum = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            this.copyrangeUpdown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.copyrangeUpdown.Name = "copyrangeUpdown";
+            this.copyrangeUpdown.Size = new System.Drawing.Size(91, 20);
+            this.copyrangeUpdown.TabIndex = 17;
+            this.copyrangeUpdown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // Tile16CopyBtn
+            // pasteRangeButton
             // 
-            this.Tile16CopyBtn.Location = new System.Drawing.Point(6, 19);
-            this.Tile16CopyBtn.Name = "Tile16CopyBtn";
-            this.Tile16CopyBtn.Size = new System.Drawing.Size(91, 27);
-            this.Tile16CopyBtn.TabIndex = 12;
-            this.Tile16CopyBtn.Text = "Copy";
-            this.Tile16CopyBtn.UseVisualStyleBackColor = true;
-            this.Tile16CopyBtn.Click += new System.EventHandler(this.Tile16CopyBtn_Click);
+            this.pasteRangeButton.Location = new System.Drawing.Point(103, 19);
+            this.pasteRangeButton.Name = "pasteRangeButton";
+            this.pasteRangeButton.Size = new System.Drawing.Size(91, 27);
+            this.pasteRangeButton.TabIndex = 16;
+            this.pasteRangeButton.Text = "Paste Range";
+            this.pasteRangeButton.UseVisualStyleBackColor = true;
+            this.pasteRangeButton.Click += new System.EventHandler(this.pasteRangeButton_Click);
+            // 
+            // copyRangeButton
+            // 
+            this.copyRangeButton.Location = new System.Drawing.Point(6, 19);
+            this.copyRangeButton.Name = "copyRangeButton";
+            this.copyRangeButton.Size = new System.Drawing.Size(91, 27);
+            this.copyRangeButton.TabIndex = 15;
+            this.copyRangeButton.Text = "Copy Range";
+            this.copyRangeButton.UseVisualStyleBackColor = true;
+            this.copyRangeButton.Click += new System.EventHandler(this.copyRangeButton_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(549, 549);
+            this.button4.Location = new System.Drawing.Point(583, 555);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(200, 23);
             this.button4.TabIndex = 13;
@@ -320,25 +361,10 @@
             this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // tilewidthimportHexbox
-            // 
-            this.tilewidthimportHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.tilewidthimportHexbox.Decimal = true;
-            this.tilewidthimportHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.tilewidthimportHexbox.HexValue = 8;
-            this.tilewidthimportHexbox.Location = new System.Drawing.Point(549, 529);
-            this.tilewidthimportHexbox.MaxLength = 2;
-            this.tilewidthimportHexbox.MaxValue = 16;
-            this.tilewidthimportHexbox.MinValue = 0;
-            this.tilewidthimportHexbox.Name = "tilewidthimportHexbox";
-            this.tilewidthimportHexbox.Size = new System.Drawing.Size(200, 20);
-            this.tilewidthimportHexbox.TabIndex = 14;
-            this.tilewidthimportHexbox.Text = "8";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(552, 513);
+            this.label4.Location = new System.Drawing.Point(586, 519);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(205, 13);
             this.label4.TabIndex = 15;
@@ -347,11 +373,111 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(546, 462);
+            this.label5.Location = new System.Drawing.Point(580, 468);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 16;
             this.label5.Text = "Tile draw size";
+            // 
+            // collisionsheetPicturebox
+            // 
+            this.collisionsheetPicturebox.Location = new System.Drawing.Point(6, 43);
+            this.collisionsheetPicturebox.Name = "collisionsheetPicturebox";
+            this.collisionsheetPicturebox.Size = new System.Drawing.Size(512, 128);
+            this.collisionsheetPicturebox.TabIndex = 18;
+            this.collisionsheetPicturebox.TabStop = false;
+            this.collisionsheetPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.collisionsheetPicturebox_Paint);
+            this.collisionsheetPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.collisionsheetPicturebox_MouseDown);
+            this.collisionsheetPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.collisionsheetPicturebox_MouseMove);
+            this.collisionsheetPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.collisionsheetPicturebox_MouseUp);
+            // 
+            // showcollisionCheckbox
+            // 
+            this.showcollisionCheckbox.AutoSize = true;
+            this.showcollisionCheckbox.Checked = true;
+            this.showcollisionCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showcollisionCheckbox.Location = new System.Drawing.Point(668, 292);
+            this.showcollisionCheckbox.Name = "showcollisionCheckbox";
+            this.showcollisionCheckbox.Size = new System.Drawing.Size(94, 17);
+            this.showcollisionCheckbox.TabIndex = 19;
+            this.showcollisionCheckbox.Text = "Show Collision";
+            this.showcollisionCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.selectedsheetUpDown);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.tiletypesheetCombobox);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.vanillacopycolButton);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.collisionsheetPicturebox);
+            this.groupBox2.Location = new System.Drawing.Point(795, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(530, 274);
+            this.groupBox2.TabIndex = 20;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Individual Collision Sheet for Overworld";
+            // 
+            // selectedsheetUpDown
+            // 
+            this.selectedsheetUpDown.Hexadecimal = true;
+            this.selectedsheetUpDown.Location = new System.Drawing.Point(101, 16);
+            this.selectedsheetUpDown.Maximum = new decimal(new int[] {
+            127,
+            0,
+            0,
+            0});
+            this.selectedsheetUpDown.Name = "selectedsheetUpDown";
+            this.selectedsheetUpDown.Size = new System.Drawing.Size(80, 20);
+            this.selectedsheetUpDown.TabIndex = 25;
+            this.selectedsheetUpDown.ValueChanged += new System.EventHandler(this.selectedsheetUpDown_ValueChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 18);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(89, 13);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Selected Sheet : ";
+            // 
+            // tiletypesheetCombobox
+            // 
+            this.tiletypesheetCombobox.FormattingEnabled = true;
+            this.tiletypesheetCombobox.Location = new System.Drawing.Point(93, 177);
+            this.tiletypesheetCombobox.Name = "tiletypesheetCombobox";
+            this.tiletypesheetCombobox.Size = new System.Drawing.Size(425, 21);
+            this.tiletypesheetCombobox.TabIndex = 23;
+            this.tiletypesheetCombobox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tiletypesheetCombobox_MouseMove);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 180);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(81, 13);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Collision Type : ";
+            // 
+            // vanillacopycolButton
+            // 
+            this.vanillacopycolButton.Location = new System.Drawing.Point(134, 245);
+            this.vanillacopycolButton.Name = "vanillacopycolButton";
+            this.vanillacopycolButton.Size = new System.Drawing.Size(75, 23);
+            this.vanillacopycolButton.TabIndex = 20;
+            this.vanillacopycolButton.Text = "Copy!";
+            this.vanillacopycolButton.UseVisualStyleBackColor = true;
+            this.vanillacopycolButton.Click += new System.EventHandler(this.vanillacopycolButton_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 250);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(122, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Copy from old collisions: ";
             // 
             // tiledrawsizeHexbox
             // 
@@ -359,7 +485,7 @@
             this.tiledrawsizeHexbox.Decimal = true;
             this.tiledrawsizeHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
             this.tiledrawsizeHexbox.HexValue = 1;
-            this.tiledrawsizeHexbox.Location = new System.Drawing.Point(549, 478);
+            this.tiledrawsizeHexbox.Location = new System.Drawing.Point(583, 484);
             this.tiledrawsizeHexbox.MaxLength = 1;
             this.tiledrawsizeHexbox.MaxValue = 8;
             this.tiledrawsizeHexbox.MinValue = 1;
@@ -369,11 +495,39 @@
             this.tiledrawsizeHexbox.Text = "1";
             this.tiledrawsizeHexbox.TextChanged += new System.EventHandler(this.tiledrawsizeHexbox_TextChanged);
             // 
+            // tilewidthimportHexbox
+            // 
+            this.tilewidthimportHexbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tilewidthimportHexbox.Decimal = true;
+            this.tilewidthimportHexbox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+            this.tilewidthimportHexbox.HexValue = 8;
+            this.tilewidthimportHexbox.Location = new System.Drawing.Point(583, 535);
+            this.tilewidthimportHexbox.MaxLength = 2;
+            this.tilewidthimportHexbox.MaxValue = 16;
+            this.tilewidthimportHexbox.MinValue = 0;
+            this.tilewidthimportHexbox.Name = "tilewidthimportHexbox";
+            this.tilewidthimportHexbox.Size = new System.Drawing.Size(200, 20);
+            this.tilewidthimportHexbox.TabIndex = 14;
+            this.tilewidthimportHexbox.Text = "8";
+            // 
+            // sheetLabel
+            // 
+            this.sheetLabel.AutoSize = true;
+            this.sheetLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sheetLabel.Location = new System.Drawing.Point(257, 28);
+            this.sheetLabel.Name = "sheetLabel";
+            this.sheetLabel.Size = new System.Drawing.Size(21, 13);
+            this.sheetLabel.TabIndex = 1;
+            this.sheetLabel.Text = "00";
+            this.sheetLabel.Visible = false;
+            // 
             // Tile16Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(765, 608);
+            this.ClientSize = new System.Drawing.Size(1337, 619);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.showcollisionCheckbox);
             this.Controls.Add(this.tiledrawsizeHexbox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -396,12 +550,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile8)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
             this.tile16GroupBox.ResumeLayout(false);
             this.tile16GroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.copyrangeUpdown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.collisionsheetPicturebox)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedsheetUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -429,13 +589,24 @@
         private System.Windows.Forms.TextBox tile16searchTextbox;
         private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.GroupBox tile16GroupBox;
-		private System.Windows.Forms.Label copiedTileLabel;
-		private System.Windows.Forms.Button Tile16PasteBtn;
-		private System.Windows.Forms.Button Tile16CopyBtn;
         private System.Windows.Forms.Button button4;
         private ExtraForms.Hexbox tilewidthimportHexbox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private ExtraForms.Hexbox tiledrawsizeHexbox;
+        private System.Windows.Forms.NumericUpDown copyrangeUpdown;
+        private System.Windows.Forms.Button pasteRangeButton;
+        private System.Windows.Forms.Button copyRangeButton;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.PictureBox collisionsheetPicturebox;
+        private System.Windows.Forms.CheckBox showcollisionCheckbox;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button vanillacopycolButton;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox tiletypesheetCombobox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown selectedsheetUpDown;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label sheetLabel;
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Interop;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui.TextEditorExtra;
 
+
 namespace ZeldaFullEditor
 {
 	public partial class TextEditor : UserControl
@@ -59,7 +60,7 @@ namespace ZeldaFullEditor
 			pictureBox1.MouseWheel += new MouseEventHandler(PictureBox1_MouseWheel);
             textListbox.DrawItem += TextListbox_DrawItem;
 			textListbox.MeasureItem += TextListbox_MeasureItem;
-
+			
 
         }
 
