@@ -608,6 +608,7 @@
     <Compile Include="T32UniqueCounter.cs" />
     <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="VanillaROM.cs" />
     <Compile Include="WriteType.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />

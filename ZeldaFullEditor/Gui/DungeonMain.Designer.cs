@@ -321,6 +321,10 @@
 			this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.moveToUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.moveToDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.godownButton = new System.Windows.Forms.Button();
+			this.goleftButton = new System.Windows.Forms.Button();
+			this.gorightButton = new System.Windows.Forms.Button();
+			this.goupButton = new System.Windows.Forms.Button();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.openRightRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openLeftRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -338,8 +342,8 @@
 			this.clearAllOverlaysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
+			this.importAllTilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exportAllTilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearDWTilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.copyLWToDWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -362,6 +366,7 @@
 			this.showSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showEntrancesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showExitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showGravesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showTransportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showEntranceExitPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -800,7 +805,7 @@
 			this.toolStripButton1.Text = "Export Selected Rooms As PNG";
 			this.toolStripButton1.ToolTipText = "Export map as png; Hold control and double click on the rooms you want to export." +
     "";
-			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+			this.toolStripButton1.Click += new System.EventHandler(this.ExportDungeonPNGToolStripClick);
 			// 
 			// debugToolStripButton
 			// 
@@ -3521,8 +3526,8 @@
             this.clearAllOverlaysToolStripMenuItem,
             this.toolStripMenuItem6,
             this.toolStripMenuItem5,
-            this.toolStripMenuItem9,
-            this.toolStripMenuItem10,
+            this.exportAllTilesToolStripMenuItem,
+            this.importAllTilesToolStripMenuItem,
             this.toolStripMenuItem7,
             this.clearDWTilesToolStripMenuItem,
             this.copyLWToDWToolStripMenuItem,
@@ -3615,19 +3620,19 @@
 			this.toolStripMenuItem5.Text = "Import All Areas";
 			this.toolStripMenuItem5.Click += new System.EventHandler(this.ImportAllMapsToolStripMenuItem_Click);
 			// 
-			// toolStripMenuItem9
+			// exportAllTilesToolStripMenuItem
 			// 
-			this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-			this.toolStripMenuItem9.Size = new System.Drawing.Size(183, 22);
-			this.toolStripMenuItem9.Text = "Export All Tiles";
-			this.toolStripMenuItem9.Click += new System.EventHandler(this.ExportAllTilesToolStripMenuItem_Click);
+			this.exportAllTilesToolStripMenuItem.Name = "exportAllTilesToolStripMenuItem";
+			this.exportAllTilesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.exportAllTilesToolStripMenuItem.Text = "Export All Tiles";
+			this.exportAllTilesToolStripMenuItem.Click += new System.EventHandler(this.ExportAllTilesToolStripMenuItem_Click);
 			// 
-			// toolStripMenuItem10
+			// importAllTilesToolStripMenuItem
 			// 
-			this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-			this.toolStripMenuItem10.Size = new System.Drawing.Size(183, 22);
-			this.toolStripMenuItem10.Text = "Import All Tiles";
-			this.toolStripMenuItem10.Click += new System.EventHandler(this.ImportAllTilesToolStripMenuItem_Click);
+			this.importAllTilesToolStripMenuItem.Name = "importAllTilesToolStripMenuItem";
+			this.importAllTilesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.importAllTilesToolStripMenuItem.Text = "Import All Tiles";
+			this.importAllTilesToolStripMenuItem.Click += new System.EventHandler(this.ImportAllTilesToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem7
 			// 
@@ -3850,6 +3855,17 @@
 			this.showEntranceExitPreviewToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
 			this.showEntranceExitPreviewToolStripMenuItem.Text = "Show Entrance/Exit Previews";
 			this.showEntranceExitPreviewToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
+			// 
+			// showGravesToolStripMenuItem
+			// 
+			this.showGravesToolStripMenuItem.Checked = true;
+			this.showGravesToolStripMenuItem.CheckOnClick = true;
+			this.showGravesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.showGravesToolStripMenuItem.Name = "showGravesToolStripMenuItem";
+			this.showGravesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+			this.showGravesToolStripMenuItem.Text = "Show Graves";
+			this.showGravesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ShowSpritesToolStripMenuItem_CheckedChanged);
+			// 
 			// 
 			// overworldOverlayVisibleToolStripMenuItem
 			// 
@@ -4134,6 +4150,10 @@
 			// 
 			this.panel3.BackColor = System.Drawing.SystemColors.Control;
 			this.panel3.Controls.Add(this.warningLabel);
+			this.panel3.Controls.Add(this.godownButton);
+			this.panel3.Controls.Add(this.goleftButton);
+			this.panel3.Controls.Add(this.gorightButton);
+			this.panel3.Controls.Add(this.goupButton);
 			this.panel3.Controls.Add(this.mapPicturebox);
 			this.panel3.Controls.Add(this.maphoverCheckbox);
 			this.panel3.Controls.Add(this.mapInfosLabel);
@@ -4144,6 +4164,46 @@
 			this.panel3.Size = new System.Drawing.Size(268, 549);
 			this.panel3.TabIndex = 64;
 			this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
+			// 
+			// godownButton
+			// 
+			this.godownButton.Image = global::ZeldaFullEditor.Properties.Resources.arrow_Down_16xLG;
+			this.godownButton.Location = new System.Drawing.Point(115, 428);
+			this.godownButton.Name = "godownButton";
+			this.godownButton.Size = new System.Drawing.Size(23, 23);
+			this.godownButton.TabIndex = 68;
+			this.godownButton.UseVisualStyleBackColor = true;
+			this.godownButton.Click += new System.EventHandler(this.OpenDownRoomToolStripMenuItem_Click);
+			// 
+			// goleftButton
+			// 
+			this.goleftButton.Image = global::ZeldaFullEditor.Properties.Resources.arrow_previous_16xLG;
+			this.goleftButton.Location = new System.Drawing.Point(94, 407);
+			this.goleftButton.Name = "goleftButton";
+			this.goleftButton.Size = new System.Drawing.Size(23, 23);
+			this.goleftButton.TabIndex = 67;
+			this.goleftButton.UseVisualStyleBackColor = true;
+			this.goleftButton.Click += new System.EventHandler(this.OpenLeftRoomToolStripMenuItem_Click);
+			// 
+			// gorightButton
+			// 
+			this.gorightButton.Image = global::ZeldaFullEditor.Properties.Resources.arrow_Next_16xLG;
+			this.gorightButton.Location = new System.Drawing.Point(136, 407);
+			this.gorightButton.Name = "gorightButton";
+			this.gorightButton.Size = new System.Drawing.Size(23, 23);
+			this.gorightButton.TabIndex = 66;
+			this.gorightButton.UseVisualStyleBackColor = true;
+			this.gorightButton.Click += new System.EventHandler(this.openRightRoomToolStripMenuItem_Click);
+			// 
+			// goupButton
+			// 
+			this.goupButton.Image = global::ZeldaFullEditor.Properties.Resources.arrow_Up_16xLG;
+			this.goupButton.Location = new System.Drawing.Point(115, 386);
+			this.goupButton.Name = "goupButton";
+			this.goupButton.Size = new System.Drawing.Size(23, 23);
+			this.goupButton.TabIndex = 65;
+			this.goupButton.UseVisualStyleBackColor = true;
+			this.goupButton.Click += new System.EventHandler(this.OpenUpRoomToolStripMenuItem_Click);
 			// 
 			// warningLabel
 			// 
@@ -5295,8 +5355,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem exportAllTilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importAllTilesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
         private System.Windows.Forms.ToolStripMenuItem autoDoorsToolStripMenuItem;
 		private System.Windows.Forms.Label label30;
 		private System.Windows.Forms.GroupBox groupBox2;
@@ -5404,6 +5462,10 @@
 		private System.Windows.Forms.ToolStripMenuItem x512ToolStripMenuItemOW;
 		private System.Windows.Forms.ToolStripMenuItem showGravesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem x256ToolStripMenuItemOW;
+		private System.Windows.Forms.Button goupButton;
+		private System.Windows.Forms.Button gorightButton;
+		private System.Windows.Forms.Button goleftButton;
+		private System.Windows.Forms.Button godownButton;
 	}
 }
 

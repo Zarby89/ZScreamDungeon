@@ -856,8 +856,8 @@ namespace ZeldaFullEditor
 
             this.rightSideToolboxToolStripMenuItem.Checked = Settings.Default.rightToolbox;
 
-            this.hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow == 0;
-            this.showSprite = Settings.Default.spriteShow;
+            this.hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow;
+            this.showSprite = Settings.Default.spriteShow ? 2 : 0;
 
             this.hideItemsToolStripMenuItem.Checked = Settings.Default.itemsShow;
             this.showItems = Settings.Default.itemsShow;
@@ -3318,6 +3318,18 @@ namespace ZeldaFullEditor
             chestEditorForm.ShowDialog();
         }
 
+		private static Pen SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, Settings.Default.SelectedRoomOutlineSize);
+		private static Pen OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, Settings.Default.OpenedRoomOutlineSize);
+		private static Pen ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+		private static Pen OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+
+		private static void updatePensColors() {
+			SelectedRoomOutline = new Pen(Settings.Default.SelectedRoomOutline, Settings.Default.SelectedRoomOutlineSize);
+			OpenedRoomOutline = new Pen(Settings.Default.OpenedRoomOutline, Settings.Default.OpenedRoomOutlineSize);
+			ExportedRoomOutline = new Pen(Settings.Default.ExportedRoomOutline, Settings.Default.ExportedRoomOutlineSize);
+			OpenedExportedRoomOutline = new Pen(Settings.Default.OpenedExportedRoomOutline, Settings.Default.OpenedExportedRoomOutlineSize);
+		}
+
 		// TODO: KAN REFACTOR - alpha on unloaded rooms.
 		private void MapPicturebox_Paint(object sender, PaintEventArgs e)
         {
@@ -3333,57 +3345,49 @@ namespace ZeldaFullEditor
 
 			var selectedRoomID = (DunRoomTabControl.SelectedTab.Tag as Room)?.index ?? -999;
 
-            for (int i = 0; i < Constants.NumberOfRooms; i++) {
-                var room = DungeonsData.AllRooms[i];
+			for (int i = 0; i < Constants.NumberOfRooms; i++) {
+				var room = DungeonsData.AllRooms[i];
 
-                bool roomOpened = opened_rooms.Any(r => r.index == room.index);
+				bool roomOpened = opened_rooms.Any(r => r.index == room.index);
 
-                int alpha = roomOpened ? 255 : (HoveredRoom == i) ? 210 : 140;
+				int alpha = roomOpened ? 255 : (HoveredRoom == i) ? 210 : 140;
 
-                var boxColor = new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor));
+				var boxColor = new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor));
 
-                e.Graphics.FillRectangle(boxColor, new Rectangle(xd, yd + yoff, 16, 16));
-                e.Graphics.DrawRectangle(Pens.LightSlateGray, new Rectangle(xd, yd + yoff, 16, 16));
+				e.Graphics.FillRectangle(boxColor, new Rectangle(xd, yd + yoff, 16, 16));
+				e.Graphics.DrawRectangle(Pens.LightSlateGray, new Rectangle(xd, yd + yoff, 16, 16));
 
-                Pen outline;
+				Pen outline;
 
-                if (selectedRoomID == room.index) {
-                    outline = Settings.SelectedRoomOutline;
-                } else {
-                    bool roomSelected = selectedMapPng.Contains(room.RoomID);
-                    if (roomOpened) {
-                        if (roomSelected) {
-                            outline = OpenedExportedRoomOutline;
-                        } else {
-                            outline = OpenedRoomOutline;
-                        }
-                    } else if (roomSelected) {
-                        outline = ExportedRoomOutline;
-                    } else {
-                        outline = null;
-                    }
-                }
+				if (selectedRoomID == room.index) {
+					outline = SelectedRoomOutline;
+				} else {
+					bool roomSelected = selectedMapPng.Contains(room.RoomID);
+					if (roomOpened) {
+						if (roomSelected) {
+							outline = OpenedExportedRoomOutline;
+						} else {
+							outline = OpenedRoomOutline;
+						}
+					} else if (roomSelected) {
+						outline = ExportedRoomOutline;
+					} else {
+						outline = null;
+					}
+				}
 
-                if (outline != null) {
-                    e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
-                }
-            }
+				if (outline != null) {
+					e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
+				}
 
-            for (int i = 0; i < Constants.NumberOfRooms; i++)
-            {
-                yoff = (i >= 256) ? 8 : 0;
-
-                foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
-                {
-                    if ((tabPage.Tag as Room).index == (short)i)
-                    {
-                        e.Graphics.DrawRectangle(
-                                new Pen((this.DunRoomTabControl.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
-                                new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
-                    }
-                }
-            }
-        }
+				xd += 16;
+				if (xd == 16 * 16) {
+					yd += 16;
+					yoff = (yd > 15 * 16) ? 8 : 0;
+					xd = 0;
+				}
+			}
+		}
 
         private void HideSpritesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
@@ -5881,7 +5885,7 @@ namespace ZeldaFullEditor
                 this.networkBgWorker.RunWorkerAsync();
                 this.AddNetworkPanel();
 
-                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status.ToString()}";
+                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status}";
             }
         }
 
@@ -5922,7 +5926,7 @@ namespace ZeldaFullEditor
                 _ = NetZS.client.Connect(new IPEndPoint(NetUtility.Resolve(nf.ip), Convert.ToInt32(nf.port)));
                 this.networkBgWorker.RunWorkerAsync();
                 NetZS.connected = true;
-                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus.ToString()}";
+                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus}";
                 this.AddNetworkPanel();
             }
         }
@@ -5993,11 +5997,11 @@ namespace ZeldaFullEditor
 
             if (this.netZS.host)
             {
-                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status.ToString()}";
+                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status}";
             }
             else
             {
-                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus.ToString()}";
+                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus}";
             }
         }
 
@@ -6815,5 +6819,4 @@ namespace ZeldaFullEditor
 
 		}
 	}
-}
 }
