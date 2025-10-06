@@ -47,7 +47,8 @@ namespace ZeldaFullEditor
         public byte[] DoorIndex;
 
         public TextEditor textEditor = new TextEditor();
-        public OverworldEditor overworldEditor = new OverworldEditor();
+        public PrizePacksEditor prizePackEditor = new PrizePacksEditor();
+		public OverworldEditor overworldEditor = new OverworldEditor();
         private Object_Designer objDesigner = new Object_Designer();
         public GfxImportExport gfxEditor;
         private DungeonViewer dungeonViewer = new DungeonViewer();
@@ -77,8 +78,9 @@ namespace ZeldaFullEditor
         private List<Chest> listofchests = new List<Chest>();
 
         // Groups of options for the Scene.
-        public bool showSprite = true;
-
+        public int showSprite = 2;
+        public int showSpritePrev = 2;
+        public bool showSpriteIndexUW = false;
         public bool showChest = true;
         public bool showItems = true;
         public bool showDoorsIDs = true;
@@ -102,8 +104,10 @@ namespace ZeldaFullEditor
         private int lasttpHotTracked = -2;
 
         public int lastRoomID = -1;
+		private int HoveredRoom = -1;
+		private bool rightClickingRoom = false;
 
-        private OverworldEditor oweditor2;
+		private OverworldEditor oweditor2;
 
         private ushort[,] lwmdata = new ushort[512, 512];
         private ushort[,] dwmdata = new ushort[512, 512];
@@ -123,6 +127,7 @@ namespace ZeldaFullEditor
         int romID = 00;
 
         // TODO: Save this in a config file and load the values into this array on startup.
+        // TODO make this into a proper class with proper names so we know what things ACTUALLY ARE
         public bool[] saveSettingsArr = new bool[48]
         {
             true, true, true, true, true, true, true, true, true, true,
@@ -698,8 +703,12 @@ namespace ZeldaFullEditor
                     throw new Exception();
                 }
 
-                // If we made it here, everything was fine.
-            }
+				if (save.SavePrizePacks()) {
+					UIText.CryAboutSaving("problem saving prize packs");
+					break;
+				}
+				// If we made it here, everything was fine.
+			}
             catch (Exception)
             {
                 ROM.DATA = (byte[])romBackup.Clone(); // Restore previous ROM data to prevent corrupting anything.
@@ -829,8 +838,9 @@ namespace ZeldaFullEditor
             this.openToolStripMenuItem.Enabled = false;
             this.openfileButton.Enabled = false;
             this.recentROMToolStripMenuItem.Enabled = false;
+			applyFastROMToolStripMenuItem.Enabled = true;
 
-            this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
+			this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
 
             this.textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
             this.activeScene.showSpriteText = Settings.Default.spriteText;
@@ -1023,6 +1033,7 @@ namespace ZeldaFullEditor
             this.overworldEditor.InitOpen(this);
             this.screenEditor.oweditor = this.overworldEditor;
             this.textEditor.InitializeOnOpen();
+            this.prizePackEditor.Initialize();
             this.screenEditor.Init();
             // InitDungeonViewer();
             this.mapPicturebox.Refresh();
@@ -2173,12 +2184,10 @@ namespace ZeldaFullEditor
 
                 // ListView1
                 this.objectViewer1.items.AddRange(this.listoftilesobjects
-                    .Where(x => x != null)
-                    .Where(x => x.name.ToLower().Contains(searchText))
-                    .Where(x => Settings.Default.favoriteObjects[x.id] == "true")
+					.Where(x => (x?.name ?? "").ToLower().Contains(searchText))
+					.Where(x => Settings.Default.favoriteObjects[x.id] == "true")
                     .OrderBy(x => x.id)
-                    .Select(x => x) // ?
-                    .ToArray());
+                    );
 
                 this.panel1.VerticalScroll.Value = 0;
                 this.objectViewer1.Refresh();
@@ -2202,11 +2211,9 @@ namespace ZeldaFullEditor
 
                     // ListView1
                     this.objectViewer1.items.AddRange(this.listoftilesobjects
-                        .Where(x => x != null)
-                        .Where(x => x.name.ToLower().Contains(searchText))
-                        .OrderBy(x => x.id)
-                        .Select(x => x) // ?
-                        .ToArray());
+						.Where(x => (x?.name ?? "").ToLower().Contains(searchText))
+						.OrderBy(x => x.id)
+                        );
                     this.objectViewer1.updateSize();
                     this.panel1.VerticalScroll.Value = 0;
                     this.objectViewer1.Refresh();
@@ -2220,10 +2227,9 @@ namespace ZeldaFullEditor
             string searchText = this.searchspriteTextbox.Text.ToLower();
 
             this.spritesView1.items.AddRange(this.listofspritesobjects
-                .Where(x => x != null)
-                .Where(x => x.name.ToLower().Contains(searchText))
-                .OrderBy(x => x.id)
-                .ToArray());
+			   .Where(x => (x?.name ?? "").ToLower().Contains(searchText))
+				.OrderBy(x => x.id)
+                );
 
             this.customPanel1.VerticalScroll.Value = 0;
 
@@ -2435,57 +2441,24 @@ namespace ZeldaFullEditor
 
         private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
         {
-            if (e.Y >= 256 && e.Y <= 264)
-            {
-                return;
-            }
+			if (HoveredRoom == -1) {
+				return;
+			}
 
-            int yc = e.Y;
+			short roomId = (short) HoveredRoom;
 
-            if (e.Y > 256)
-            {
-                yc -= 8;
-            }
+			if (ModifierKeys == Keys.Control) {
+				if (selectedMapPng.Contains(roomId)) {
+					selectedMapPng.Remove(roomId);
+				} else {
+					selectedMapPng.Add(roomId);
+				}
+			} else {
+				AddRoomTab(roomId);
+			}
 
-            int x = e.X / 16;
-            int y = yc / 16;
-            short roomId = (short)(x + (y * 16));
-
-            if (ModifierKeys == Keys.Control)
-            {
-                // Check if map is already in.
-                short alreadyIn = -1;
-                foreach (short s in this.selectedMapPng)
-                {
-                    // If it was already in delete it.
-                    if (s == roomId)
-                    {
-                        alreadyIn = s;
-                    }
-                }
-
-                if (alreadyIn != -1)
-                {
-                    _ = this.selectedMapPng.Remove(alreadyIn);
-                }
-                else
-                {
-                    this.selectedMapPng.Add(roomId);
-                }
-
-                //loadRoomList(roomId);
-            }
-            else
-            {
-                if (roomId < Constants.NumberOfRooms)
-                {
-                    this.AddRoomTab(roomId);
-                    //loadRoomList(roomId);
-                }
-            }
-
-            this.mapPicturebox.Refresh();
-        }
+			mapPicturebox.Refresh();
+		}
 
         public void runtestButton_Click(object sender, EventArgs e)
         {
@@ -2589,39 +2562,41 @@ namespace ZeldaFullEditor
                 Console.WriteLine(error.Fullerrdata.ToString());
             }
 
+			// TODO: KAN REFACTOR Remove these dumb &FFs.
 			data[Constants.startingentrance_room + 1] = (byte)((this.selectedEntrance.Room >> 8) & 0xFF);
             data[Constants.startingentrance_room] = (byte)(this.selectedEntrance.Room & 0xFF);
 
-            data[Constants.startingentrance_yposition + 1] = (byte)((this.selectedEntrance.YPosition >> 8) & 0xFF);
-            data[Constants.startingentrance_yposition] = (byte)(this.selectedEntrance.YPosition & 0xFF);
+			data[Constants.startingentrance_yposition + 1] = (byte) (selectedEntrance.YPosition >> 8);
+			data[Constants.startingentrance_yposition] = (byte) selectedEntrance.YPosition;
 
-            data[Constants.startingentrance_xposition + 1] = (byte)((this.selectedEntrance.XPosition >> 8) & 0xFF);
-            data[Constants.startingentrance_xposition] = (byte)(this.selectedEntrance.XPosition & 0xFF);
+			data[Constants.startingentrance_xposition + 1] = (byte) (selectedEntrance.XPosition >> 8);
+			data[Constants.startingentrance_xposition] = (byte) selectedEntrance.XPosition;
 
-            data[Constants.startingentrance_camerax + 1] = (byte)((this.selectedEntrance.CameraX >> 8) & 0xFF);
-            data[Constants.startingentrance_camerax] = (byte)(this.selectedEntrance.CameraX & 0xFF);
+			data[Constants.startingentrance_camerax + 1] = (byte) (selectedEntrance.CameraX >> 8);
+			data[Constants.startingentrance_camerax] = (byte) selectedEntrance.CameraX;
 
-            data[Constants.startingentrance_cameray + 1] = (byte)((this.selectedEntrance.CameraY >> 8) & 0xFF);
-            data[Constants.startingentrance_cameray] = (byte)(this.selectedEntrance.CameraY & 0xFF);
+			data[Constants.startingentrance_cameray + 1] = (byte) (selectedEntrance.CameraY >> 8);
+			data[Constants.startingentrance_cameray] = (byte) selectedEntrance.CameraY;
 
-            data[Constants.startingentrance_cameraxtrigger + 1] = (byte)((this.selectedEntrance.CameraTriggerX >> 8) & 0xFF);
-            data[Constants.startingentrance_cameraxtrigger] = (byte)(this.selectedEntrance.CameraTriggerX & 0xFF);
+			data[Constants.startingentrance_cameraxtrigger + 1] = (byte) (selectedEntrance.CameraTriggerX >> 8);
+			data[Constants.startingentrance_cameraxtrigger] = (byte) selectedEntrance.CameraTriggerX;
 
-            data[Constants.startingentrance_cameraytrigger + 1] = (byte)((this.selectedEntrance.CameraTriggerY >> 8) & 0xFF);
-            data[Constants.startingentrance_cameraytrigger] = (byte)(this.selectedEntrance.CameraTriggerY & 0xFF);
+			data[Constants.startingentrance_cameraytrigger + 1] = (byte) (selectedEntrance.CameraTriggerY >> 8);
+			data[Constants.startingentrance_cameraytrigger] = (byte) selectedEntrance.CameraTriggerY;
 
-            data[Constants.startingentrance_exit + 1] = (byte)((this.selectedEntrance.Exit >> 8) & 0xFF);
-            data[Constants.startingentrance_exit] = (byte)(this.selectedEntrance.Exit & 0xFF);
+			data[Constants.startingentrance_exit + 1] = (byte) (selectedEntrance.Exit >> 8);
+			data[Constants.startingentrance_exit] = (byte) selectedEntrance.Exit;
 
-            data[Constants.startingentrance_blockset] = (byte)(this.selectedEntrance.Blockset & 0xFF);
-            data[Constants.startingentrance_music] = (byte)(this.selectedEntrance.Music & 0xFF);
-            data[Constants.startingentrance_dungeon] = (byte)(this.selectedEntrance.DungeonID & 0xFF);
-            //data[Constants.startingentrance_door] = (byte)(selectedEntrance.Door & 0xFF);
-            data[Constants.startingentrance_floor] = (byte)(this.selectedEntrance.Floor & 0xFF);
-            data[Constants.startingentrance_ladderbg] = (byte)(this.selectedEntrance.LadderBG & 0xFF);
-            data[Constants.startingentrance_scrolling] = (byte)(this.selectedEntrance.Scrolling & 0xFF);
-            data[Constants.startingentrance_scrollquadrant] = (byte)(this.selectedEntrance.ScrollQuadrant & 0xFF);
-            data[Constants.startingentrance_scrolledge + 0] = this.selectedEntrance.CameraBoundaryQN; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+			data[Constants.startingentrance_blockset] = (byte) selectedEntrance.Blockset;
+			data[Constants.startingentrance_music] = (byte) selectedEntrance.Music;
+			data[Constants.startingentrance_dungeon] = (byte) selectedEntrance.DungeonID;
+
+			//data[Constants.startingentrance_door] = (byte)(selectedEntrance.Door );
+			data[Constants.startingentrance_floor] = (byte) (this.selectedEntrance.Floor);
+			data[Constants.startingentrance_ladderbg] = (byte) (this.selectedEntrance.LadderBG);
+			data[Constants.startingentrance_scrolling] = (byte) (this.selectedEntrance.Scrolling);
+			data[Constants.startingentrance_scrollquadrant] = (byte) (this.selectedEntrance.ScrollQuadrant);
+			data[Constants.startingentrance_scrolledge + 0] = this.selectedEntrance.CameraBoundaryQN; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
             data[Constants.startingentrance_scrolledge + 1] = this.selectedEntrance.CameraBoundaryFN;
             data[Constants.startingentrance_scrolledge + 2] = this.selectedEntrance.CameraBoundaryQS;
             data[Constants.startingentrance_scrolledge + 3] = this.selectedEntrance.CameraBoundaryFS;
@@ -2664,6 +2639,25 @@ namespace ZeldaFullEditor
             }
         }
 
+        private void SpriteDisplayMenuItem_Click(object sender, EventArgs e) {
+			this.boxesToolStripMenuItem.Checked = false;
+			this.graphicsToolStripMenuItem.Checked = false;
+
+			(sender as ToolStripMenuItem).Checked = true;
+
+			if (this.boxesToolStripMenuItem.Checked) {
+				showSpritePrev = showSprite = 1;
+			}
+
+			if (this.graphicsToolStripMenuItem.Checked) {
+				showSpritePrev = showSprite = 2;
+			}
+
+			hideSpritesToolStripMenuItem.Checked = true;
+			this.activeScene.Refresh();
+		}
+
+
         private void X8ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.x8ToolStripMenuItem.Checked = false;
@@ -2678,23 +2672,19 @@ namespace ZeldaFullEditor
             {
                 this.gridSize = 8;
             }
-
-            if (this.x16ToolStripMenuItem.Checked)
+            else if (this.x16ToolStripMenuItem.Checked)
             {
                 this.gridSize = 16;
             }
-
-            if (this.x32ToolStripMenuItem.Checked)
+            else if (this.x32ToolStripMenuItem.Checked)
             {
                 this.gridSize = 32;
             }
-
-            if (this.x64ToolStripMenuItem.Checked)
+            else if (this.x64ToolStripMenuItem.Checked)
             {
                 this.gridSize = 64;
             }
-
-            if (this.x256ToolStripMenuItem.Checked)
+            else if (this.x256ToolStripMenuItem.Checked)
             {
                 this.gridSize = 256;
             }
@@ -2707,7 +2697,7 @@ namespace ZeldaFullEditor
         {
             this.propertiesChangedFromForm = prevent;
 
-            this.headerGroupbox.Text = "Room header - " + room.index.ToString("X2") + "  " + Room_Name.room_name[room.index];
+            this.headerGroupbox.Text = $"Room header - {room.index:X2} {Room_Name.room_name[room.index]}";
 
             this.roomProperty_bg2.SelectedIndex = (int)room.bg2;
             this.roomProperty_tag1.SelectedIndex = (int)room.tag1;
@@ -2746,7 +2736,8 @@ namespace ZeldaFullEditor
             this.propertiesChangedFromForm = false;
         }
 
-        public void UpdateRoomInfo()
+
+		public void UpdateRoomInfo()
         {
             if (!this.propertiesChangedFromForm && this.activeScene.room != null)
             {
@@ -3327,7 +3318,7 @@ namespace ZeldaFullEditor
             chestEditorForm.ShowDialog();
         }
 
-		// TODO: Alpha on unloaded rooms.
+		// TODO: KAN REFACTOR - alpha on unloaded rooms.
 		private void MapPicturebox_Paint(object sender, PaintEventArgs e)
         {
             if (!this.projectLoaded)
@@ -3335,58 +3326,58 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            int xd = 0;
-            int yd = 0;
-            int yoff;
-            e.Graphics.Clear(Color.Black);
+			int xd = 0;
+			int yd = 0;
+			int yoff = 0;
+			e.Graphics.Clear(SystemColors.ScrollBar);
+
+			var selectedRoomID = (tabControl2.SelectedTab.Tag as Room)?.index ?? -999;
+
+			for (int i = 0; i < Constants.NumberOfRooms; i++) {
+				var room = DungeonsData.AllRooms[i];
+
+				bool roomOpened = opened_rooms.Any(r => r.index == room.index);
+
+				int alpha = roomOpened ? 255 : (HoveredRoom == i) ? 210 : 140;
+
+				var boxColor = new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor));
+
+				e.Graphics.FillRectangle(boxColor, new Rectangle(xd, yd + yoff, 16, 16));
+				e.Graphics.DrawRectangle(Pens.LightSlateGray, new Rectangle(xd, yd + yoff, 16, 16));
+
+				Pen outline;
+
+				if (selectedRoomID == room.index) {
+					outline = SelectedRoomOutline;
+				} else {
+					bool roomSelected = selectedMapPng.Contains(room.RoomID);
+					if (roomOpened) {
+						if (roomSelected) {
+							outline = OpenedExportedRoomOutline;
+						} else {
+							outline = OpenedRoomOutline;
+						}
+					} else if (roomSelected) {
+						outline = ExportedRoomOutline;
+					} else {
+						outline = null;
+					}
+				}
+
+				if (outline != null) {
+					e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
+				}
+
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
                 yoff = (i >= 256) ? 8 : 0;
 
-                if (DungeonsData.AllRooms[i].tilesObjects.Count > 0)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.AllRooms[i].palette)[4, 2]), new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
-
-                    foreach (short s in this.selectedMapPng)
-                    {
-                        if (s == i)
-                        {
-                            e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
-                        }
-                    }
-                }
-
-                xd++;
-                if (xd == 16)
-                {
-                    yd++;
-                    xd = 0;
-                }
-            }
-
-            for (int i = 0; i < 16; i++)
-            {
-                e.Graphics.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
-                e.Graphics.DrawLine(Pens.White, i * 16, 0, i * 16, 256);
-
-                e.Graphics.DrawLine(Pens.White, i * 16, 264, i * 16, 312);
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                e.Graphics.DrawLine(Pens.White, 0, 264 + (i * 16), 256, 264 + (i * 16));
-            }
-
-            for (int i = 0; i < Constants.NumberOfRooms; i++)
-            {
-                yoff = (i >= 256) ? 8 : 0;
-
-                foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
+                foreach (TabPage tabPage in this.tabControl2.TabPages)
                 {
                     if ((tabPage.Tag as Room).index == (short)i)
                     {
                         e.Graphics.DrawRectangle(
-                                new Pen((this.DunRoomTabControl.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
+                                new Pen((this.tabControl2.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
                                 new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
                     }
                 }
@@ -3395,7 +3386,7 @@ namespace ZeldaFullEditor
 
         private void HideSpritesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
-            this.showSprite = this.hideSpritesToolStripMenuItem.Checked;
+            this.showSprite = this.hideSpritesToolStripMenuItem.Checked ? showSpritePrev : 0;
             this.showChest = this.hideChestItemsToolStripMenuItem.Checked;
             this.showItems = this.hideItemsToolStripMenuItem.Checked;
             this.showDoorsIDs = this.showDoorIDsToolStripMenuItem.Checked;
@@ -3405,6 +3396,7 @@ namespace ZeldaFullEditor
             this.showChestText = this.textChestItemToolStripMenuItem.Checked;
             this.showItemsText = this.textPotItemToolStripMenuItem.Checked;
             this.visibleEntranceGFX = this.disableEntranceGFXToolStripMenuItem.Checked;
+            this.showSpriteIndexUW = this.showSpriteIndexToolStripMenuItem.Checked;
             this.x2zoom = this.xScreenToolStripMenuItem.Checked;
 
             if (this.x2zoom)
@@ -3857,46 +3849,23 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void MapPicturebox_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                if (e.Y >= 256 && e.Y <= 264)
-                {
-                    return;
-                }
+		private void MapPicturebox_MouseDown(object sender, MouseEventArgs e) {
+			if (e.Button == MouseButtons.Right) {
+				rightClickingRoom = true;
+				RecalculateHoveredRoom(e);
+				RedrawPreviewRoom();
+			} else if (e.Button == MouseButtons.Middle) {
+				for (int i = 0; i < tabControl2.TabPages.Count; i++) {
+					if ((tabControl2.TabPages[i].Tag as Room).index == HoveredRoom) {
+						CloseTab(i);
+						break;
+					}
+				}
+			}
+			mapPicturebox.Refresh();
+		}
 
-                this.thumbnailBox.Visible = true;
-                int yc = e.Y;
-                if (e.Y > 256)
-                {
-                    yc -= 8;
-                }
-
-                int x = e.X / 16;
-                int y = yc / 16;
-                int roomId = x + (y * 16);
-                if (roomId > 295)
-                {
-                    return;
-                }
-
-                this.previewRoom = DungeonsData.AllRooms[roomId];
-                this.previewRoom.reloadGfx();
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(this.previewRoom.palette);
-                this.DrawRoom();
-                this.thumbnailBox.Refresh();
-
-                if (this.activeScene.room != null)
-                {
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(this.activeScene.room.palette);
-                    this.activeScene.room.reloadGfx();
-                    this.activeScene.DrawRoom();
-                }
-            }
-        }
-
-        public unsafe void ClearBgGfx()
+		public unsafe void ClearBgGfx()
         {
             byte* bg1data = (byte*)GFX.roomBg1Ptr.ToPointer();
             byte* bg2data = (byte*)GFX.roomBg2Ptr.ToPointer();
@@ -4068,61 +4037,78 @@ namespace ZeldaFullEditor
 
         private void MapPicturebox_MouseUp(object sender, MouseEventArgs e)
         {
-            this.thumbnailBox.Visible = false;
-        }
+			rightClickingRoom = false;
+			thumbnailBox.Visible = maphoverCheckbox.Checked;
+		}
 
-        private void MapPicturebox_MouseMove(object sender, MouseEventArgs e)
+		private void RecalculateHoveredRoom(MouseEventArgs e) {
+			HoveredRoom = -1;
+
+			int yc = e.Y;
+
+			if (yc >= 256) {
+				if (yc <= 264) {
+					return;
+				}
+
+				yc -= 8;
+			}
+
+			HoveredRoom = (e.X / 16) + (yc & ~0xF);
+
+			if (HoveredRoom >= Constants.NumberOfRooms) {
+				HoveredRoom = -1;
+			}
+		}
+
+		private void MapPicturebox_MouseMove(object sender, MouseEventArgs e) {
+			RecalculateHoveredRoom(e);
+
+			if (HoveredRoom == -1) {
+				thumbnailBox.Visible = false;
+				mapPicturebox.Refresh();
+				return;
+			}
+
+			if (lastRoomID != HoveredRoom) {
+				RedrawPreviewRoom();
+			}
+
+			lastRoomID = HoveredRoom;
+
+			mapPicturebox.Refresh();
+		}
+
+		private void RedrawPreviewRoom() {
+			if (HoveredRoom == -1) {
+				thumbnailBox.Visible = false;
+				return;
+			}
+
+			if (!(thumbnailBox.Visible = maphoverCheckbox.Checked | rightClickingRoom)) {
+				return;
+			}
+
+			previewRoom = DungeonsData.AllRooms[HoveredRoom];
+			previewRoom.reloadGfx();
+			GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.palette);
+			DrawRoom();
+			thumbnailBox.Refresh();
+
+			if (activeScene.room != null) {
+				GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+				activeScene.room.reloadGfx();
+				activeScene.DrawRoom();
+			}
+		}
+
+		private void MapPicturebox_MouseLeave(object sender, EventArgs e)
         {
-            if (this.maphoverCheckbox.Checked)
-            {
-                if (e.Y >= 256 && e.Y <= 264)
-                {
-                    this.thumbnailBox.Visible = false;
-
-                    return;
-                }
-
-                this.thumbnailBox.Visible = true;
-                int yc = 0;
-                if (e.Y >= 256)
-                {
-                    yc = 8;
-                }
-
-                int x = e.X / 16;
-                int y = (e.Y - yc) / 16;
-                int roomId = x + (y * 16);
-                if (roomId >= Constants.NumberOfRooms)
-                {
-                    this.thumbnailBox.Visible = false;
-
-                    return;
-                }
-
-                if (this.lastRoomID != roomId)
-                {
-                    this.previewRoom = DungeonsData.AllRooms[roomId];
-                    this.previewRoom.reloadGfx();
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(this.previewRoom.palette);
-                    this.DrawRoom();
-                    this.thumbnailBox.Refresh();
-
-                    if (this.activeScene.room != null)
-                    {
-                        GFX.loadedPalettes = GFX.LoadDungeonPalette(this.activeScene.room.palette);
-                        this.activeScene.room.reloadGfx();
-                        this.activeScene.DrawRoom();
-                    }
-                }
-
-                this.lastRoomID = roomId;
-            }
-        }
-
-        private void MapPicturebox_MouseLeave(object sender, EventArgs e)
-        {
-            this.thumbnailBox.Visible = false;
-        }
+			HoveredRoom = -1;
+			thumbnailBox.Visible = false;
+			rightClickingRoom = false;
+			mapPicturebox.Refresh();
+		}
 
         private void openRightRoomToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -4788,19 +4774,19 @@ namespace ZeldaFullEditor
                     FileStream fileStreamMap = new FileStream(saveFile.FileName, FileMode.OpenOrCreate, FileAccess.Write);
                     for (int i = 0; i < 64; i++)
                     {
-                        for (int y = 0; y < 32; y += 1)
+                        for (int y = 0; y < 32; y++)
                         {
-                            for (int x = 0; x < 32; x += 1)
+                            for (int x = 0; x < 32; x++)
                             {
-                                mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-                                mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+								mapArrayData[p++] = (byte) overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)];
+								mapArrayData[p++] = (byte) (overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] >> 8);
+								mapArrayData[p++] = (byte) overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)];
+								mapArrayData[p++] = (byte) (overworldEditor.overworld.AllMapTile32DW[x + (sx * 32), y + (sy * 32)] >> 8);
 
-                                if (i < 32)
+								if (i < 32)
                                 {
-                                    mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                    mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+                                    mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                    mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
                                 }
                             }
                         }
@@ -4837,9 +4823,9 @@ namespace ZeldaFullEditor
 
                     for (int i = 0; i < 64; i++)
                     {
-                        for (int y = 0; y < 32; y += 1)
+                        for (int y = 0; y < 32; y++)
                         {
-                            for (int x = 0; x < 32; x += 1)
+                            for (int x = 0; x < 32; x++)
                             {
                                 this.overworldEditor.overworld.AllMapTile32LW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
                                 p += 2;
@@ -6798,6 +6784,7 @@ namespace ZeldaFullEditor
             {
                 ZsprImporter zsImporter = new ZsprImporter(ofd.FileName);
                 zsImporter.ShowDialog();
+
             }
         }
     }

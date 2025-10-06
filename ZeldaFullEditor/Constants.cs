@@ -48,8 +48,10 @@ namespace ZeldaFullEditor
         public const int Tile16EdiorBitmapSize = 0x2000;
         public const int Tile16EdiorBitmapSizex2 = Tile16EdiorBitmapSize * 2;
 
-        // TODO zarby stop making magic numbers
-        public const int IDKZarby = 0x054727;
+        public const int VanillaROMSize = 0x10_0000;
+
+		// TODO zarby stop making magic numbers
+		public const int IDKZarby = 0x054727;
 
         public static byte[] FontSpacings = new byte[]
         {
@@ -108,59 +110,41 @@ namespace ZeldaFullEditor
         // ===========================================================================================
         public static readonly Font Arial7 = new Font("Arial", 7);
 
-        // ===========================================================================================
-        // Colors - colors we use for consistency and avoiding redundant instantiations
-        // ===========================================================================================
-        public static readonly Color HalfWhite = Color.FromArgb(128, 255, 255, 255);
-        public static readonly Pen HalfWhitePen = new Pen(HalfWhite);
+		// ===========================================================================================
+		// Colors - colors we use for consistency and avoiding redundant instantiations
+		// ===========================================================================================
+		public static readonly DrawingColor SolidWhite = new DrawingColor(255, 255, 255, 255);
+		public static readonly DrawingColor HalfWhite = new DrawingColor(128, 255, 255, 255);
+		public static readonly DrawingColor ThirdWhite = new DrawingColor(85, 255, 255, 255);
+		public static readonly DrawingColor White100 = new DrawingColor(100, 255, 255, 255);
+		public static readonly DrawingColor HalfRed = new DrawingColor(128, 255, 0, 0);
+		public static readonly DrawingColor ThirdGreen = new DrawingColor(100, 0, 200, 0);
+		public static readonly DrawingColor QuarterWhite = new DrawingColor(60, 255, 255, 255);
+		public static readonly DrawingColor FifthBlue = new DrawingColor(50, 0, 0, 255);
+		public static readonly DrawingColor Black200 = new DrawingColor(200, 0, 0, 0);
+		public static readonly DrawingColor Scarlet200 = new DrawingColor(200, 200, 0, 0);
+		public static readonly DrawingColor Turquoise200 = new DrawingColor(200, 0, 200, 200);
+		public static readonly DrawingColor VibrantMagenta200 = new DrawingColor(200, 255, 0, 255);
+		public static readonly DrawingColor Magenta200 = new DrawingColor(200, 222, 16, 145);
+		public static readonly DrawingColor MediumGray200 = new DrawingColor(200, 160, 160, 160);
+		public static readonly DrawingColor LightGray200 = new DrawingColor(200, 222, 222, 222);
+		public static readonly DrawingColor DarkMint200 = new DrawingColor(200, 48, 188, 142);
+		public static readonly DrawingColor MediumMint200 = new DrawingColor(200, 14, 224, 146);
+		public static readonly DrawingColor Charcoal200 = new DrawingColor(200, 32, 32, 32);
+		public static readonly DrawingColor Goldenrod200 = new DrawingColor(200, 255, 200, 16);
+		public static readonly DrawingColor Azure200 = new DrawingColor(200, 0, 55, 240);
 
-        public static readonly Color ThirdWhite = Color.FromArgb(85, 255, 255, 255);
-        public static readonly Pen ThirdWhitePen = new Pen(ThirdWhite);
-        public static readonly Pen ThirdWhitePen1 = new Pen(ThirdWhite, 1);
+        // specific pen strokes
+		public static readonly Pen Orange220Pen1 = new Pen(Color.FromArgb(220, Color.Orange), 1);
+		public static readonly Pen Red220Pen1 = new Pen(Color.FromArgb(220, Color.Red), 1);
+		public static readonly Pen White100Pen1 = new Pen((Color) White100, 1);
+		public static readonly Pen ThirdWhitePen1 = new Pen((Color) ThirdWhite, 1);
+		public static readonly Pen LimeGreenPen2 = new Pen(Brushes.LimeGreen, 2);
+		public static readonly Pen AquaPen2 = new Pen(Brushes.Aqua, 2);
+		public static readonly Pen BlackPen2 = new Pen(Brushes.Black, 2);
+		public static readonly Pen AzurePen2 = new Pen(Color.Azure, 2);
+		public static readonly Pen RedPen4 = new Pen(Color.Red, 2);
 
-        public static readonly Color White100 = Color.FromArgb(100, 255, 255, 255);
-        public static readonly Pen White100Pen = new Pen(White100);
-        public static readonly Pen White100Pen1 = new Pen(White100, 1);
-
-        public static readonly Color HalfRed = Color.FromArgb(128, 255, 0, 0);
-        public static readonly Pen HalfRedPen = new Pen(HalfRed);
-        public static readonly Brush HalfRedBrush = new SolidBrush(HalfRed);
-
-        public static readonly Color ThirdGreen = Color.FromArgb(100, 0, 200, 0);
-        public static readonly Pen ThirdGreenPen = new Pen(ThirdGreen);
-        public static readonly Brush ThirdGreenBrush = new SolidBrush(ThirdGreen);
-
-        public static readonly Color QuarterWhite = Color.FromArgb(60, 255, 255, 255);
-        public static readonly Pen QuarterWhitePen = new Pen(QuarterWhite);
-
-        public static readonly Color FifthBlue = Color.FromArgb(50, 0, 0, 255);
-        public static readonly Brush FifthBlueBrush = new SolidBrush(FifthBlue);
-
-        public static readonly Pen Orange220Pen1 = new Pen(Color.FromArgb(220, Color.Orange), 1);
-        public static readonly Pen Red220Pen1 = new Pen(Color.FromArgb(220, Color.Red), 1);
-
-        public static readonly Pen WhitePen = new Pen(Brushes.White);
-        public static readonly Pen LimeGreenPen2 = new Pen(Brushes.LimeGreen, 2);
-        public static readonly Pen AquaPen2 = new Pen(Brushes.Aqua, 2);
-        public static readonly Pen BlackPen2 = new Pen(Brushes.Black, 2);
-        public static readonly Pen AzurePen2 = new Pen(Color.Azure, 2);
-        public static readonly Pen RedPen4 = new Pen(Color.Red, 2);
-
-        public static readonly Color Black200 = Color.FromArgb(200, 0, 0, 0);
-        public static readonly Pen Black200Pen = new Pen(Black200);
-        public static readonly Brush Black200Brush = new SolidBrush(Black200);
-
-        public static readonly Color Scarlet200 = Color.FromArgb(200, 200, 0, 0);
-        public static readonly Pen Scarlet200Pen = new Pen(Scarlet200);
-        public static readonly Brush Scarlet200Brush = new SolidBrush(Scarlet200);
-
-        public static readonly Color Turquoise200 = Color.FromArgb(200, 0, 200, 200);
-        public static readonly Pen Turquoise200Pen = new Pen(Turquoise200);
-        public static readonly Brush Turquoise200Brush = new SolidBrush(Turquoise200);
-
-        public static readonly Color VibrantMagenta200 = Color.FromArgb(200, 255, 0, 255);
-        public static readonly Pen VibrantMagenta200Pen = new Pen(VibrantMagenta200);
-        public static readonly Brush VibrantMagenta200Brush = new SolidBrush(VibrantMagenta200);
 
         public static readonly Color Magenta200 = Color.FromArgb(200, 222, 16, 145);
         public static readonly Pen Magenta200Pen = new Pen(Magenta200);
@@ -1256,7 +1240,7 @@ namespace ZeldaFullEditor
              "Blue pegs ↕",
              "Orange pegs ↕",
              "Invisible floor ↕",
-             "Pots ↕",
+             "Fake pots ↕",
              "Hammer pegs ↕",
              "Nothing",
              "Nothing",
@@ -1295,7 +1279,7 @@ namespace ZeldaFullEditor
              "Orange pegs ↔",
              "Invisible floor ↔",
              "Fake pressure plates ↔",
-             "Pots ↔",
+             "Fake pots ↔",
              "Hammer pegs ↔",
              "Nothing",
              "Nothing",

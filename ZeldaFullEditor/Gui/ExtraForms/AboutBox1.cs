@@ -1,10 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
     partial class AboutBox1 : Form
 	{
+		// TODO KAN REFACTOR - remove all the hardcoded label text and use an array of strings in this file
 		public AboutBox1()
         {
             InitializeComponent();
@@ -14,17 +16,22 @@ namespace ZeldaFullEditor
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(UIText.GITHUB);
+            System.Diagnostics.Process.Start(UIText.GITHUB);
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(UIText.DISCORD);
+            System.Diagnostics.Process.Start(UIText.DISCORD);
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(UIText.ASAR);
+            System.Diagnostics.Process.Start(UIText.ASAR);
+        }
+
+        private void AboutBox1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

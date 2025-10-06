@@ -140,6 +140,8 @@ namespace ZeldaFullEditor
 
 			public string Token { get; }
 
+			public int UsageCount { get; set; } = 0;
+
 			public DictionaryEntry(byte id, string contents)
 			{
 				Contents = contents;
@@ -422,10 +424,7 @@ namespace ZeldaFullEditor
 					var message = new MessageData(
 						messageID++,
 						pos,
-						currentMessageRaw.ToString(),
-						tempBytesRaw.ToArray(),
-						currentMessageParsed.ToString(),
-						tempBytesParsed.ToArray());
+						currentMessageParsed.ToString());
 
 					ListOfTexts.Add(message);
 
@@ -1271,7 +1270,7 @@ namespace ZeldaFullEditor
 				GraphicsUnit.Pixel);
 
 			e.Graphics.FillRectangle(
-				Constants.HalfRedBrush,
+				Constants.HalfRed,
 				new Rectangle(344 - 8, 0, 4, pictureBox2.Height));
 		}
 
@@ -1523,7 +1522,7 @@ namespace ZeldaFullEditor
 		{
 			if (textListbox.SelectedItem != null)
 			{
-				CurrentMessage.SetMessage(Regex.Replace(textBox1.Text, @"[\r\n]", string.Empty));
+				CurrentMessage.SetMessage(textBox1.Text);
 				DrawMessagePreview();
 				pictureBox1.Refresh();
 			}
@@ -1532,13 +1531,32 @@ namespace ZeldaFullEditor
 		private void Button4_Click(object sender, EventArgs e)
 		{
 			var dictionariesForm = new DictionariesForm();
-			dictionariesForm.listBox1.Items.Clear();
 
-			foreach (var dictEnt in AllDictionaries)
-			{
-				dictionariesForm.listBox1.Items.Insert(dictEnt.ID, dictEnt.ToPrettyString());
+			// reset counters
+			foreach (var dictEnt in AllDictionaries) {
+				dictEnt.UsageCount = 0;
 			}
 
+			foreach (var msg in ListOfTexts) {
+				var mlist = Regex.Matches(msg.RawString, @"\[D:(?<id>[\dA-F]{2})\]");
+
+				foreach (Match n in mlist) {
+					if (int.TryParse(n.Groups["id"].Value, NumberStyles.HexNumber, null, out int id)) {
+						var dictEnt = AllDictionaries.First(o => o.ID == id);
+						dictEnt.UsageCount++;
+					}
+				}
+			}
+
+			foreach (var dictEnt in AllDictionaries) {
+				var d = new ListViewItem($"{dictEnt.ID:X2}");
+				d.SubItems.Add($"{dictEnt.RealID:X2}");
+				d.SubItems.Add($"{dictEnt.UsageCount:d}");
+				d.SubItems.Add($"{dictEnt.Contents.Replace(" ", "[Space]")}");
+
+				dictionariesForm.DictionaryTable.Items.Add(d);
+			}
+			
 			dictionariesForm.ShowDialog();
 		}
 
@@ -1567,26 +1585,23 @@ namespace ZeldaFullEditor
 		// TODO: needs a rewrite.
 		private void ToolStripButton2_Click(object sender, EventArgs e)
 		{
-			/*
 			using (OpenFileDialog of = new OpenFileDialog())
 			{
 				of.DefaultExt = ".txt";
 				if (of.ShowDialog() == DialogResult.OK)
 				{
-					string[] alltexts = File.ReadAllLines(of.FileName);
-					for (int i = 0; i < alltexts.Length; i++)
-					{
-						if (alltexts[i].Length > 3)
-						{
-							int id = int.Parse(alltexts[i].Substring(0, 3));
-							listOfTexts[id] = new StringKey(alltexts[i].Substring(5, alltexts[i].Length - 5), new byte[] { });
+					var masterText = string.Concat(File.ReadAllLines(of.FileName));
+
+					var matches = Regex.Matches(masterText, @"%%% MESSAGE : (?<id>...) \| .*? %%%(?<text>[^%]+)", RegexOptions.Singleline);
+
+					foreach (Match msg in matches) {
+						if (int.TryParse(msg.Groups["id"].Value, NumberStyles.HexNumber, null, out int id)) {
+							var targMsg = ListOfTexts.FirstOrDefault(m => m.ID == id);
+							targMsg?.SetMessage(msg.Groups["text"].Value);
 						}
 					}
-
-					sortText();
 				}
 			}
-			*/
 		}
 
 		private void ToolStripButton1_Click(object sender, EventArgs e)
@@ -1598,7 +1613,7 @@ namespace ZeldaFullEditor
 				{
 					File.WriteAllLines(saveFileDialog.FileName,
 						ListOfTexts.Select(msg =>
-						$"{msg.ID:x3} : {msg.ContentsParsed}\r\n\r\n"));
+						$"%%% MESSAGE : {msg.ID:X3} | {Constants.textsLocations[msg.ID]} %%% \r\n{AddNewLinesToCommands(msg.ContentsParsed)}\r\n\r\n"));
 				}
 			}
 		}

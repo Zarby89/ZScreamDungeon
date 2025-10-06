@@ -931,14 +931,35 @@ namespace ZeldaFullEditor
             return false; // False = no error.
         }
 
-        /// <summary>
-        ///		Tells the text editor to save all the texts.
-        ///
-        ///     Jared_Brian_: The check box save for the text editor was removed per redundancy.
-        /// </summary>
-        /// <param name="textEditor"> The text editor form. </param>
-        /// <returns> True if there was an error saving the text. </returns>
-        public bool SaveAllText(TextEditor textEditor)
+
+
+
+		public bool SavePrizePacks() {
+
+            ROM.Write2(Utils.SnesToPc(0x06FA5C), PrizePacks.PrizePackRarities);
+
+            int addr = Utils.SnesToPc(0x06FA72);
+
+			for (int i = 0; i < 7; i++) {
+				for (int j = 0; j < 7; j++) {
+                    ROM.Write2(addr++, PrizePacks.PrizePackPrizes[i, j]);
+				}
+			}
+
+			return true;
+        }
+
+
+
+
+		/// <summary>
+		///		Tells the text editor to save all the texts.
+		///
+		///     Jared_Brian_: The check box save for the text editor was removed per redundancy.
+		/// </summary>
+		/// <param name="textEditor"> The text editor form. </param>
+		/// <returns> True if there was an error saving the text. </returns>
+		public bool SaveAllText(TextEditor textEditor)
         {
             return textEditor.Save();
         }
@@ -1073,6 +1094,7 @@ namespace ZeldaFullEditor
 
             return false;
         }
+
 
         public bool SaveOWEntrances(SceneOW scene)
         {
