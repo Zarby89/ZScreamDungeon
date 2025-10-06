@@ -317,7 +317,7 @@ namespace ZeldaFullEditor
             }
 
             this.anychange = false;
-            //tabControl2.Refresh();
+            //DunRoomTabControl.Refresh();
             //sw.Stop();
             //Console.WriteLine("Saved all unsaved rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
@@ -696,16 +696,16 @@ namespace ZeldaFullEditor
                     throw new Exception();
                 }
 
-                if (save.SaveDungeonHolesOverlay())
-                {
-                    knownException = true;
-                    UIText.CryAboutSaving("Problem saving dungeons holes overlays (probably using too much space) try removing objects");
+                if (save.SaveDungeonHolesOverlay()) {
+					knownException = true;
+					UIText.CryAboutSaving("Problem saving dungeons holes overlays (probably using too much space) try removing objects");
                     throw new Exception();
                 }
 
 				if (save.SavePrizePacks()) {
+					knownException = true;
 					UIText.CryAboutSaving("problem saving prize packs");
-					break;
+					throw new Exception();
 				}
 				// If we made it here, everything was fine.
 			}
@@ -856,7 +856,7 @@ namespace ZeldaFullEditor
 
             this.rightSideToolboxToolStripMenuItem.Checked = Settings.Default.rightToolbox;
 
-            this.hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow;
+            this.hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow == 0;
             this.showSprite = Settings.Default.spriteShow;
 
             this.hideItemsToolStripMenuItem.Checked = Settings.Default.itemsShow;
@@ -918,7 +918,7 @@ namespace ZeldaFullEditor
             this.AddRoomTab(260);
             DungeonOverlays.LoadOverlays();
 
-            this.TabControl2_SelectedIndexChanged(this.DunRoomTabControl.TabPages[0], new EventArgs());
+            this.DunRoomTabControl_SelectedIndexChanged(this.DunRoomTabControl.TabPages[0], new EventArgs());
             this.EnableProjectButtons();
             foreach (ToolStripMenuItem menuItem in this.menuStrip1.Items)
             {
@@ -3006,12 +3006,12 @@ namespace ZeldaFullEditor
             this.DunRoomTabControl.Refresh();
         }
 
-        private void TabControl2_MouseClick(object sender, MouseEventArgs e)
+        private void DunRoomTabControl_MouseClick(object sender, MouseEventArgs e)
         {
             //loadRoomList(0);
         }
 
-        private void TabControl2_SelectedIndexChanged(object sender, EventArgs e)
+        private void DunRoomTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.DunRoomTabControl.TabPages.Count > 0)
             {
@@ -3331,53 +3331,54 @@ namespace ZeldaFullEditor
 			int yoff = 0;
 			e.Graphics.Clear(SystemColors.ScrollBar);
 
-			var selectedRoomID = (tabControl2.SelectedTab.Tag as Room)?.index ?? -999;
+			var selectedRoomID = (DunRoomTabControl.SelectedTab.Tag as Room)?.index ?? -999;
 
-			for (int i = 0; i < Constants.NumberOfRooms; i++) {
-				var room = DungeonsData.AllRooms[i];
+            for (int i = 0; i < Constants.NumberOfRooms; i++) {
+                var room = DungeonsData.AllRooms[i];
 
-				bool roomOpened = opened_rooms.Any(r => r.index == room.index);
+                bool roomOpened = opened_rooms.Any(r => r.index == room.index);
 
-				int alpha = roomOpened ? 255 : (HoveredRoom == i) ? 210 : 140;
+                int alpha = roomOpened ? 255 : (HoveredRoom == i) ? 210 : 140;
 
-				var boxColor = new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor));
+                var boxColor = new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor));
 
-				e.Graphics.FillRectangle(boxColor, new Rectangle(xd, yd + yoff, 16, 16));
-				e.Graphics.DrawRectangle(Pens.LightSlateGray, new Rectangle(xd, yd + yoff, 16, 16));
+                e.Graphics.FillRectangle(boxColor, new Rectangle(xd, yd + yoff, 16, 16));
+                e.Graphics.DrawRectangle(Pens.LightSlateGray, new Rectangle(xd, yd + yoff, 16, 16));
 
-				Pen outline;
+                Pen outline;
 
-				if (selectedRoomID == room.index) {
-					outline = SelectedRoomOutline;
-				} else {
-					bool roomSelected = selectedMapPng.Contains(room.RoomID);
-					if (roomOpened) {
-						if (roomSelected) {
-							outline = OpenedExportedRoomOutline;
-						} else {
-							outline = OpenedRoomOutline;
-						}
-					} else if (roomSelected) {
-						outline = ExportedRoomOutline;
-					} else {
-						outline = null;
-					}
-				}
+                if (selectedRoomID == room.index) {
+                    outline = Settings.SelectedRoomOutline;
+                } else {
+                    bool roomSelected = selectedMapPng.Contains(room.RoomID);
+                    if (roomOpened) {
+                        if (roomSelected) {
+                            outline = OpenedExportedRoomOutline;
+                        } else {
+                            outline = OpenedRoomOutline;
+                        }
+                    } else if (roomSelected) {
+                        outline = ExportedRoomOutline;
+                    } else {
+                        outline = null;
+                    }
+                }
 
-				if (outline != null) {
-					e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
-				}
+                if (outline != null) {
+                    e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
+                }
+            }
 
             for (int i = 0; i < Constants.NumberOfRooms; i++)
             {
                 yoff = (i >= 256) ? 8 : 0;
 
-                foreach (TabPage tabPage in this.tabControl2.TabPages)
+                foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
                 {
                     if ((tabPage.Tag as Room).index == (short)i)
                     {
                         e.Graphics.DrawRectangle(
-                                new Pen((this.tabControl2.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
+                                new Pen((this.DunRoomTabControl.SelectedTab == tabPage) ? Color.YellowGreen : Color.DarkGreen, 2),
                                 new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
                     }
                 }
@@ -3762,7 +3763,7 @@ namespace ZeldaFullEditor
             solidBrush.Dispose();
         }
 
-        private void TabControl2_MouseMove(object sender, MouseEventArgs e)
+        private void DunRoomTabControl_MouseMove(object sender, MouseEventArgs e)
         {
             this.tpHotTrackedToClose = -1;
             for (int i = 0; i < this.DunRoomTabControl.TabPages.Count; i++)
@@ -3781,7 +3782,7 @@ namespace ZeldaFullEditor
                         this.tpHotTrackedToClose = i;
                     }
 
-                    //tabControl2.TabPages[i].Refresh();
+                    //DunRoomTabControl.TabPages[i].Refresh();
                 }
             }
 
@@ -3794,7 +3795,7 @@ namespace ZeldaFullEditor
             this.lasttpHotTracked = this.tpHotTracked;
         }
 
-        private void TabControl2_MouseLeave(object sender, EventArgs e)
+        private void DunRoomTabControl_MouseLeave(object sender, EventArgs e)
         {
             this.tpHotTracked = -1;
             this.lasttpHotTracked = -2;
@@ -3803,7 +3804,7 @@ namespace ZeldaFullEditor
             this.DunRoomTabControl.Refresh();
         }
 
-        private void TabControl2_MouseEnter(object sender, EventArgs e)
+        private void DunRoomTabControl_MouseEnter(object sender, EventArgs e)
         {
             this.tpHotTracked = -1;
             this.lasttpHotTracked = -2;
@@ -3812,7 +3813,7 @@ namespace ZeldaFullEditor
             this.DunRoomTabControl.Refresh();
         }
 
-        private void TabControl2_MouseDown(object sender, MouseEventArgs e)
+        private void DunRoomTabControl_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Middle)
             {
@@ -3841,7 +3842,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void TabControl2_Deselecting(object sender, TabControlCancelEventArgs e)
+        private void DunRoomTabControl_Deselecting(object sender, TabControlCancelEventArgs e)
         {
             if (this.tpHotTrackedToClose != -1)
             {
@@ -3855,8 +3856,8 @@ namespace ZeldaFullEditor
 				RecalculateHoveredRoom(e);
 				RedrawPreviewRoom();
 			} else if (e.Button == MouseButtons.Middle) {
-				for (int i = 0; i < tabControl2.TabPages.Count; i++) {
-					if ((tabControl2.TabPages[i].Tag as Room).index == HoveredRoom) {
+				for (int i = 0; i < DunRoomTabControl.TabPages.Count; i++) {
+					if ((DunRoomTabControl.TabPages[i].Tag as Room).index == HoveredRoom) {
 						CloseTab(i);
 						break;
 					}
@@ -4834,7 +4835,7 @@ namespace ZeldaFullEditor
 
                                 if (i < 32)
                                 {
-                                    this.overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+                                    this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
                                     p += 2;
                                 }
                             }
@@ -6465,12 +6466,12 @@ namespace ZeldaFullEditor
             _ = zsPropForm.ShowDialog();
         }
 
-        private void tabControl2_ControlAdded(object sender, ControlEventArgs e)
+        private void DunRoomTabControl_ControlAdded(object sender, ControlEventArgs e)
         {
             DunRoomTabControl.Size = new Size(1, (DunRoomTabControl.RowCount * 20));
         }
 
-        private void tabControl2_ControlRemoved(object sender, ControlEventArgs e)
+        private void DunRoomTabControl_ControlRemoved(object sender, ControlEventArgs e)
         {
             DunRoomTabControl.Size = new Size(1, (DunRoomTabControl.RowCount * 20));
         }
@@ -6561,10 +6562,10 @@ namespace ZeldaFullEditor
                         overworldEditor.scene.ow.AllMapTile32DW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
 
                         ulong tilelong3 = new Tile32(
-                        overworldEditor.scene.ow.AllMapTile32SW[tilx + (sx * 32), tily + (sy * 32)],
-                        overworldEditor.scene.ow.AllMapTile32SW[tilx + 1 + (sx * 32), tily + (sy * 32)],
-                        overworldEditor.scene.ow.AllMapTile32SW[tilx + (sx * 32), tily + 1 + (sy * 32)],
-                        overworldEditor.scene.ow.AllMapTile32SW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + 1 + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + (sx * 32), tily + 1 + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SP[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
 
                         if (!drawnAlready.Contains(tilelong))
                         {
@@ -6660,7 +6661,7 @@ namespace ZeldaFullEditor
 
                         if (i < 32)
                         {
-                            alltilesIndexed[overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)]]++;
+                            alltilesIndexed[overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)]]++;
                         }
                     }
                 }
@@ -6787,5 +6788,32 @@ namespace ZeldaFullEditor
 
             }
         }
-    }
+
+		private void uploadVanillaCopyToolStripMenuItem_Click(object sender, EventArgs e) {
+			VanillaROM.SetVanillaROM();
+		}
+
+		private void applyFastROMToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (!VanillaROM.CheckForVanillaROM()) {
+				return;
+			}
+
+			int count = FastRomifier.Fastify(ROM.DATA);
+
+			if (count == 0) {
+				UIText.ShowNotice(
+					"No fastrom changes were performed.\r\n" +
+					"Perhaps your ROM has already been adjusted."
+				);
+			} else {
+
+				UIText.ShowNotice(
+					$"Successfully adjusted {count} known address{(count == 1 ? "" : "es")} for FastROM",
+					"Success"
+				);
+			}
+
+		}
+	}
+}
 }

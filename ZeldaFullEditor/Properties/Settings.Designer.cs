@@ -181,10 +181,10 @@ namespace ZeldaFullEditor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool spriteShow {
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int spriteShow {
             get {
-                return ((bool)(this["spriteShow"]));
+                return ((int)(this["spriteShow"]));
             }
             set {
                 this["spriteShow"] = value;

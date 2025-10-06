@@ -1226,7 +1226,7 @@ namespace ZeldaFullEditor.Gui
 
                         if (i < 32)
                         {
-                            alltilesIndexed[this.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)]]++;
+                            alltilesIndexed[this.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)]]++;
                         }
                     }
                 }

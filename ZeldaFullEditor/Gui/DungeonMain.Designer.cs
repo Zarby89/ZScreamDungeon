@@ -207,6 +207,7 @@
 			this.spriteoverlordCheckbox = new System.Windows.Forms.CheckBox();
 			this.label26 = new System.Windows.Forms.Label();
 			this.spritesubtypeUpDown = new System.Windows.Forms.NumericUpDown();
+			this.x256ToolStripMenuItemOW = new System.Windows.Forms.ToolStripMenuItem();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.label23 = new System.Windows.Forms.Label();
 			this.collisionMapPanel = new System.Windows.Forms.Panel();
@@ -366,10 +367,10 @@
 			this.showEntranceExitPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.overworldOverlayVisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showGridToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.x8ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.x16ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.x32ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.x8ToolStripMenuItemOW = new System.Windows.Forms.ToolStripMenuItem();
+			this.x16ToolStripMenuItemOW = new System.Windows.Forms.ToolStripMenuItem();
+			this.x32ToolStripMenuItemOW = new System.Windows.Forms.ToolStripMenuItem();
+			this.noneToolStripMenuItemOW = new System.Windows.Forms.ToolStripMenuItem();
 			this.useAreaSpecificBGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showScratchPadGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showOverlayTextsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -404,7 +405,7 @@
 			this.maphoverCheckbox = new System.Windows.Forms.CheckBox();
 			this.mapInfosLabel = new System.Windows.Forms.Label();
 			this.thumbnailBox = new System.Windows.Forms.PictureBox();
-			this.tabControl2 = new System.Windows.Forms.TabControl();
+			this.DunRoomTabControl = new System.Windows.Forms.TabControl();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.networkBgWorker = new System.ComponentModel.BackgroundWorker();
 			this.networkBgWorker2 = new System.ComponentModel.BackgroundWorker();
@@ -3860,43 +3861,43 @@
 			// showGridToolStripMenuItem1
 			// 
 			this.showGridToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.x8ToolStripMenuItem1,
-            this.x16ToolStripMenuItem1,
-            this.x32ToolStripMenuItem1,
-            this.noneToolStripMenuItem});
+            this.x8ToolStripMenuItemOW,
+            this.x16ToolStripMenuItemOW,
+            this.x32ToolStripMenuItemOW,
+            this.noneToolStripMenuItemOW});
 			this.showGridToolStripMenuItem1.Name = "showGridToolStripMenuItem1";
 			this.showGridToolStripMenuItem1.Size = new System.Drawing.Size(244, 22);
 			this.showGridToolStripMenuItem1.Text = "Show Grid";
 			// 
-			// x8ToolStripMenuItem1
+			// x8ToolStripMenuItemOW
 			// 
-			this.x8ToolStripMenuItem1.Name = "x8ToolStripMenuItem1";
-			this.x8ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
-			this.x8ToolStripMenuItem1.Text = "8x8";
-			this.x8ToolStripMenuItem1.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
+			this.x8ToolStripMenuItemOW.Name = "x8ToolStripMenuItemOW";
+			this.x8ToolStripMenuItemOW.Size = new System.Drawing.Size(104, 22);
+			this.x8ToolStripMenuItemOW.Text = "8x8";
+			this.x8ToolStripMenuItemOW.Click += new System.EventHandler(this.GridSizeToolStripMenuItem_Click);
 			// 
-			// x16ToolStripMenuItem1
+			// x16ToolStripMenuItemOW
 			// 
-			this.x16ToolStripMenuItem1.Name = "x16ToolStripMenuItem1";
-			this.x16ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
-			this.x16ToolStripMenuItem1.Text = "16x16";
-			this.x16ToolStripMenuItem1.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
+			this.x16ToolStripMenuItemOW.Name = "x16ToolStripMenuItemOW";
+			this.x16ToolStripMenuItemOW.Size = new System.Drawing.Size(104, 22);
+			this.x16ToolStripMenuItemOW.Text = "16x16";
+			this.x16ToolStripMenuItemOW.Click += new System.EventHandler(this.GridSizeToolStripMenuItem_Click);
 			// 
-			// x32ToolStripMenuItem1
+			// x32ToolStripMenuItemOW
 			// 
-			this.x32ToolStripMenuItem1.Name = "x32ToolStripMenuItem1";
-			this.x32ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
-			this.x32ToolStripMenuItem1.Text = "32x32";
-			this.x32ToolStripMenuItem1.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
+			this.x32ToolStripMenuItemOW.Name = "x32ToolStripMenuItemOW";
+			this.x32ToolStripMenuItemOW.Size = new System.Drawing.Size(104, 22);
+			this.x32ToolStripMenuItemOW.Text = "32x32";
+			this.x32ToolStripMenuItemOW.Click += new System.EventHandler(this.GridSizeToolStripMenuItem_Click);
 			// 
-			// noneToolStripMenuItem
+			// noneToolStripMenuItemOW
 			// 
-			this.noneToolStripMenuItem.Checked = true;
-			this.noneToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-			this.noneToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
-			this.noneToolStripMenuItem.Text = "None";
-			this.noneToolStripMenuItem.Click += new System.EventHandler(this.X8ToolStripMenuItem1_Click);
+			this.noneToolStripMenuItemOW.Checked = true;
+			this.noneToolStripMenuItemOW.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.noneToolStripMenuItemOW.Name = "noneToolStripMenuItemOW";
+			this.noneToolStripMenuItemOW.Size = new System.Drawing.Size(104, 22);
+			this.noneToolStripMenuItemOW.Text = "None";
+			this.noneToolStripMenuItemOW.Click += new System.EventHandler(this.GridSizeToolStripMenuItem_Click);
 			// 
 			// useAreaSpecificBGColorToolStripMenuItem
 			// 
@@ -4201,31 +4202,31 @@
 			this.thumbnailBox.Visible = false;
 			this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.ThumbnailBox_Paint);
 			// 
-			// tabControl2
+			// DunRoomTabControl
 			// 
-			this.tabControl2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tabControl2.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-			this.tabControl2.HotTrack = true;
-			this.tabControl2.ItemSize = new System.Drawing.Size(48, 18);
-			this.tabControl2.Location = new System.Drawing.Point(0, 0);
-			this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
-			this.tabControl2.Multiline = true;
-			this.tabControl2.Name = "tabControl2";
-			this.tabControl2.Padding = new System.Drawing.Point(3, 3);
-			this.tabControl2.SelectedIndex = 0;
-			this.tabControl2.Size = new System.Drawing.Size(602, 20);
-			this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-			this.tabControl2.TabIndex = 17;
-			this.tabControl2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawOnTab);
-			this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.TabControl2_SelectedIndexChanged);
-			this.tabControl2.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.TabControl2_Deselecting);
-			this.tabControl2.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.tabControl2_ControlAdded);
-			this.tabControl2.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.tabControl2_ControlRemoved);
-			this.tabControl2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseClick);
-			this.tabControl2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseDown);
-			this.tabControl2.MouseEnter += new System.EventHandler(this.TabControl2_MouseEnter);
-			this.tabControl2.MouseLeave += new System.EventHandler(this.TabControl2_MouseLeave);
-			this.tabControl2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TabControl2_MouseMove);
+			this.DunRoomTabControl.Dock = System.Windows.Forms.DockStyle.Top;
+			this.DunRoomTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+			this.DunRoomTabControl.HotTrack = true;
+			this.DunRoomTabControl.ItemSize = new System.Drawing.Size(48, 18);
+			this.DunRoomTabControl.Location = new System.Drawing.Point(0, 0);
+			this.DunRoomTabControl.Margin = new System.Windows.Forms.Padding(0);
+			this.DunRoomTabControl.Multiline = true;
+			this.DunRoomTabControl.Name = "DunRoomTabControl";
+			this.DunRoomTabControl.Padding = new System.Drawing.Point(3, 3);
+			this.DunRoomTabControl.SelectedIndex = 0;
+			this.DunRoomTabControl.Size = new System.Drawing.Size(602, 20);
+			this.DunRoomTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+			this.DunRoomTabControl.TabIndex = 17;
+			this.DunRoomTabControl.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawOnTab);
+			this.DunRoomTabControl.SelectedIndexChanged += new System.EventHandler(this.DunRoomTabControl_SelectedIndexChanged);
+			this.DunRoomTabControl.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.DunRoomTabControl_Deselecting);
+			this.DunRoomTabControl.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.DunRoomTabControl_ControlAdded);
+			this.DunRoomTabControl.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.DunRoomTabControl_ControlRemoved);
+			this.DunRoomTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DunRoomTabControl_MouseClick);
+			this.DunRoomTabControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DunRoomTabControl_MouseDown);
+			this.DunRoomTabControl.MouseEnter += new System.EventHandler(this.DunRoomTabControl_MouseEnter);
+			this.DunRoomTabControl.MouseLeave += new System.EventHandler(this.DunRoomTabControl_MouseLeave);
+			this.DunRoomTabControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DunRoomTabControl_MouseMove);
 			// 
 			// splitContainer1
 			// 
@@ -4236,7 +4237,7 @@
 			// splitContainer1.Panel1
 			// 
 			this.splitContainer1.Panel1.Controls.Add(this.customPanel3);
-			this.splitContainer1.Panel1.Controls.Add(this.tabControl2);
+			this.splitContainer1.Panel1.Controls.Add(this.DunRoomTabControl);
 			// 
 			// splitContainer1.Panel2
 			// 
@@ -5229,7 +5230,7 @@
         private System.Windows.Forms.ToolStripMenuItem x8ToolStripMenuItemOW;
         private System.Windows.Forms.ToolStripMenuItem x16ToolStripMenuItemOW;
         private System.Windows.Forms.ToolStripMenuItem x32ToolStripMenuItemOW;
-        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItemOW;
+        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItemOWOW;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripMenuItem lockoverworldToolStripItem;
         private System.Windows.Forms.PictureBox thumbnailBox;
@@ -5388,7 +5389,8 @@
         private System.Windows.Forms.ToolStripMenuItem useExpandedOWPaletteToolStripMenuItem;
         public System.Windows.Forms.Panel overlayPanel;
         public System.Windows.Forms.ComboBox overlayCombobox;
-        public System.Windows.Forms.Label label39;
+		private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItemOW;
+		public System.Windows.Forms.Label label39;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
 		public System.Windows.Forms.ToolStripMenuItem hideSpritesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem boxesToolStripMenuItem;
@@ -5399,6 +5401,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
 		private System.Windows.Forms.ToolStripMenuItem showSpriteIndexToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+		private System.Windows.Forms.ToolStripMenuItem x512ToolStripMenuItemOW;
+		private System.Windows.Forms.ToolStripMenuItem showGravesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem x256ToolStripMenuItemOW;
 	}
 }
 

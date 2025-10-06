@@ -145,39 +145,6 @@ namespace ZeldaFullEditor
 		public static readonly Pen AzurePen2 = new Pen(Color.Azure, 2);
 		public static readonly Pen RedPen4 = new Pen(Color.Red, 2);
 
-
-        public static readonly Color Magenta200 = Color.FromArgb(200, 222, 16, 145);
-        public static readonly Pen Magenta200Pen = new Pen(Magenta200);
-        public static readonly Brush Magenta200Brush = new SolidBrush(Magenta200);
-
-        public static readonly Color MediumGray200 = Color.FromArgb(200, 160, 160, 160);
-        public static readonly Pen MediumGray200Pen = new Pen(MediumGray200);
-        public static readonly Brush MediumGray200Brush = new SolidBrush(MediumGray200);
-
-        public static readonly Color LightGray200 = Color.FromArgb(200, 222, 222, 222);
-        public static readonly Pen LightGray200Pen = new Pen(LightGray200);
-        public static readonly Brush LightGray200Brush = new SolidBrush(LightGray200);
-
-        public static readonly Color DarkMint200 = Color.FromArgb(200, 48, 188, 142);
-        public static readonly Pen DarkMint200Pen = new Pen(DarkMint200);
-        public static readonly Brush DarkMint200Brush = new SolidBrush(DarkMint200);
-
-        public static readonly Color MediumMint200 = Color.FromArgb(200, 14, 224, 146);
-        public static readonly Pen MediumMint200Pen = new Pen(MediumMint200);
-        public static readonly Brush MediumMint200Brush = new SolidBrush(MediumMint200);
-
-        public static readonly Color Charcoal200 = Color.FromArgb(200, 32, 32, 32);
-        public static readonly Pen Charcoal200Pen = new Pen(Charcoal200);
-        public static readonly Brush Charcoal200Brush = new SolidBrush(Charcoal200);
-
-        public static readonly Color Goldenrod200 = Color.FromArgb(200, 255, 200, 16);
-        public static readonly Pen Goldenrod200Pen = new Pen(Goldenrod200);
-        public static readonly Brush Goldenrod200Brush = new SolidBrush(Goldenrod200);
-
-        public static readonly Color Azure200 = Color.FromArgb(200, 0, 55, 240);
-        public static readonly Pen Azure200Pen = new Pen(Azure200);
-        public static readonly Brush Azure200Brush = new SolidBrush(Azure200);
-
         public static readonly Pen CameraPen = new Pen(Color.Red, 2);
 
         public static readonly Color DefaultLWBGColor = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
