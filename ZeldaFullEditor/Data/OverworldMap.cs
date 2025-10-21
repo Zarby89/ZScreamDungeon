@@ -646,7 +646,7 @@ namespace ZeldaFullEditor
             }
             else
             {
-                this.TilesUsed = this.overworld.AllMapTile32SP;
+                this.TilesUsed = this.overworld.AllMapTile32SW;
                 world = 2;
             }
 

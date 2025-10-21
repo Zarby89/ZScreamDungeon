@@ -12,6 +12,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
@@ -1032,7 +1033,12 @@ namespace ZeldaFullEditor
             this.RefreshRecentsFiles();
             this.overworldEditor.InitOpen(this);
             this.screenEditor.oweditor = this.overworldEditor;
-            this.textEditor.InitializeOnOpen();
+
+            new Thread(() =>
+            {
+                this.textEditor.InitializeOnOpen();
+            }).Start();
+            
             this.prizePackEditor.Initialize();
             this.screenEditor.Init();
             // InitDungeonViewer();
@@ -3343,7 +3349,8 @@ namespace ZeldaFullEditor
 			int yoff = 0;
 			e.Graphics.Clear(SystemColors.ScrollBar);
 
-			var selectedRoomID = (DunRoomTabControl.SelectedTab.Tag as Room)?.index ?? -999;
+			var selectedRoomID = (DunRoomTabControl.SelectedTab?.Tag as Room)?.index ?? -999;
+
 
 			for (int i = 0; i < Constants.NumberOfRooms; i++) {
 				var room = DungeonsData.AllRooms[i];
@@ -4077,11 +4084,10 @@ namespace ZeldaFullEditor
 
 			if (lastRoomID != HoveredRoom) {
 				RedrawPreviewRoom();
-			}
+                mapPicturebox.Refresh();
+            }
 
 			lastRoomID = HoveredRoom;
-
-			mapPicturebox.Refresh();
 		}
 
 		private void RedrawPreviewRoom() {
@@ -4790,8 +4796,8 @@ namespace ZeldaFullEditor
 
 								if (i < 32)
                                 {
-                                    mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] & 0xFF);
-                                    mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+                                    mapArrayData[p++] = (byte)(this.overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                    mapArrayData[p++] = (byte)((this.overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
                                 }
                             }
                         }
@@ -4839,7 +4845,7 @@ namespace ZeldaFullEditor
 
                                 if (i < 32)
                                 {
-                                    this.overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
+                                    this.overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
                                     p += 2;
                                 }
                             }
@@ -6566,10 +6572,10 @@ namespace ZeldaFullEditor
                         overworldEditor.scene.ow.AllMapTile32DW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
 
                         ulong tilelong3 = new Tile32(
-                        overworldEditor.scene.ow.AllMapTile32SP[tilx + (sx * 32), tily + (sy * 32)],
-                        overworldEditor.scene.ow.AllMapTile32SP[tilx + 1 + (sx * 32), tily + (sy * 32)],
-                        overworldEditor.scene.ow.AllMapTile32SP[tilx + (sx * 32), tily + 1 + (sy * 32)],
-                        overworldEditor.scene.ow.AllMapTile32SP[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
+                        overworldEditor.scene.ow.AllMapTile32SW[tilx + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SW[tilx + 1 + (sx * 32), tily + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SW[tilx + (sx * 32), tily + 1 + (sy * 32)],
+                        overworldEditor.scene.ow.AllMapTile32SW[tilx + 1 + (sx * 32), tily + 1 + (sy * 32)]).GetLongValue();
 
                         if (!drawnAlready.Contains(tilelong))
                         {
@@ -6665,7 +6671,7 @@ namespace ZeldaFullEditor
 
                         if (i < 32)
                         {
-                            alltilesIndexed[overworldEditor.overworld.AllMapTile32SP[x + (sx * 32), y + (sy * 32)]]++;
+                            alltilesIndexed[overworldEditor.overworld.AllMapTile32SW[x + (sx * 32), y + (sy * 32)]]++;
                         }
                     }
                 }

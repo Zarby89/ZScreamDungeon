@@ -79,7 +79,7 @@ namespace ZeldaFullEditor
         ///     Gets or sets a 2D array of all light world area tile maps.
         ///     32 maps * (32*32 tiles).
         /// </summary>
-        public ushort[,] AllMapTile32SP { get; set; } = new ushort[512, 512];
+        public ushort[,] AllMapTile32SW { get; set; } = new ushort[512, 512];
 
         /// <summary>
         ///     Gets or sets a list of all overworld maps.
@@ -178,10 +178,10 @@ namespace ZeldaFullEditor
 
             this.UniqueTile32List = this.AssembleMap32Tiles();
             this.Tile16List = this.AssembleMap16Tiles();
-            (ushort[,] tilesLW, ushort[,] tilesDW, ushort[,] tilesSP) = this.DecompressAllMapTiles();
+            (ushort[,] tilesLW, ushort[,] tilesDW, ushort[,] tilesSW) = this.DecompressAllMapTiles();
             this.AllMapTile32LW = tilesLW;
             this.AllMapTile32DW = tilesDW;
-            this.AllMapTile32SP = tilesSP;
+            this.AllMapTile32SW = tilesSW;
 
             this.AllOverlays = this.LoadOverlays();
             this.AllAnimationOverlays = new OverlayAnimationData[this.AllAnimationOverlays.Length]; // one for each map
@@ -413,7 +413,7 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    tilesused = this.AllMapTile32SP;
+                    tilesused = this.AllMapTile32SW;
                 }
 
                 for (int y = 0; y < 32; y += 2)
@@ -1529,7 +1529,7 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    tilesused = this.AllMapTile32SP;
+                    tilesused = this.AllMapTile32SW;
                 }
 
                 for (int y = 0; y < 32; y++)
@@ -1608,7 +1608,7 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    tilesused = this.AllMapTile32SP;
+                    tilesused = this.AllMapTile32SW;
                 }
 
                 for (int y = 0; y < 32; y++)

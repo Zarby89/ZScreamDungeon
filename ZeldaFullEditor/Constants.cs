@@ -1207,7 +1207,7 @@ namespace ZeldaFullEditor
              "Blue pegs ↕",
              "Orange pegs ↕",
              "Invisible floor ↕",
-             "Fake pots ↕",
+             "Pots ↕",
              "Hammer pegs ↕",
              "Nothing",
              "Nothing",
