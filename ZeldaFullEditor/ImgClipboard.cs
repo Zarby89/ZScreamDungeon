@@ -40,9 +40,11 @@ namespace ZeldaFullEditor
 
         public static byte[] GetImageData()
         {
-            byte[] buff = new byte[0];
+            byte[] buffer = new byte[0];
             if (!OpenClipboard(IntPtr.Zero))
+            {
                 return null;
+            }
 
             IntPtr pointer = IntPtr.Zero;
 
@@ -50,24 +52,28 @@ namespace ZeldaFullEditor
             {
                 IntPtr handle = GetClipboardData(8); // CF_DIB
                 if (handle == IntPtr.Zero)
+                {
                     return null;
+                }
 
                 pointer = GlobalLock(handle);
                 if (pointer == IntPtr.Zero)
+                {
                     return null;
+                }
 
                 uint size = (uint)GlobalSize(handle);
-                buff = new byte[size];
+                buffer = new byte[size];
 
-                Marshal.Copy(pointer, buff, 0, (int)size);
+                Marshal.Copy(pointer, buffer, 0, (int)size);
                 for (int i = 0; i < 40; i++)
                 {
-                    Console.Write(buff[i].ToString("X2") + " ");
+                    Console.Write(buffer[i].ToString("X2") + " ");
                 }
             }
 
             CloseClipboard();
-            return buff;
+            return buffer;
         }
 
 
@@ -127,14 +133,12 @@ namespace ZeldaFullEditor
 
         public static void SetImageDataWithPal(byte[] idata, byte[] palData, bool bpp2 = false, bool bpp4 = false) // or 63
         {
-            
             Clipboard.Clear();
 
             if (!bpp2)
             {
-               
-                    // Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
-                    byte[] headerData = new byte[40] {
+                // Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
+                byte[] headerData = new byte[40] {
                     0x28, 0x00, 0x00, 0x00, // ? dib header
                     0x80, 0x00, 0x00, 0x00, // Width
                     0x28, 0x00, 0x00, 0x00, // Height
@@ -228,21 +232,20 @@ namespace ZeldaFullEditor
             }
             else
             {
-                
                 // Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
                 byte[] headerData = new byte[40] {
-                0x28, 0x00, 0x00, 0x00, // ? dib header
-                0x80, 0x00, 0x00, 0x00, // Width
-                0x48, 0x00, 0x00, 0x00, // Height
-                0x01, 0x00, // Planes
-                0x20, 0x00, // Bpp 
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x90, 0x00, 0x00, // Numbers of byte for the image (0x5000)
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00, // ??
-                0x00, 0x00, 0x00, 0x00 // ??
-            };
+                    0x28, 0x00, 0x00, 0x00, // ? dib header
+                    0x80, 0x00, 0x00, 0x00, // Width
+                    0x48, 0x00, 0x00, 0x00, // Height
+                    0x01, 0x00, // Planes
+                    0x20, 0x00, // Bpp 
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x90, 0x00, 0x00, // Numbers of byte for the image (0x5000)
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00, // ??
+                    0x00, 0x00, 0x00, 0x00 // ??
+                };
 
                 Color[] pals = new Color[8];
                 unsafe
@@ -306,12 +309,10 @@ namespace ZeldaFullEditor
                     //SetClipboardData(8, imgDataB);
 
                     CloseClipboard();
-
                 }
 
                 //Marshal.FreeHGlobal(imgData);
             }
-
         }
     }
 }

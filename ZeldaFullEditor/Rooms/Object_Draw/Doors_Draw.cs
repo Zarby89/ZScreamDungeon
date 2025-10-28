@@ -172,7 +172,6 @@ namespace ZeldaFullEditor
             }
             else if (dtype == 22 || dtype == 18)
             {
-
                 //tiles.Clear();
                 //addTiles(12, 0);//??
                 width = w * 8;
@@ -181,6 +180,7 @@ namespace ZeldaFullEditor
                 ny = Y;
                 ox = X;
                 oy = Y;
+
                 return;
             }
             else if (dtype == 0x0E)
@@ -191,6 +191,7 @@ namespace ZeldaFullEditor
                 h = 4;
                 Y -= 1;
             }
+
             int tid = 0;
 
             if (dtype == 0x0A || dtype == 0x0C)
@@ -210,9 +211,11 @@ namespace ZeldaFullEditor
                     for (int xx = 0; xx < w; xx++)
                     {
                         draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
+
                         tid++;
                     }
                 }
+
                 return;
             }
 

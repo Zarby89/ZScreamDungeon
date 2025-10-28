@@ -103,7 +103,6 @@ namespace ZeldaFullEditor
 
         public void Draw(bool picker = false)
         {
-
             byte x = this.nx;
             byte y = this.ny;
             this.picker = picker;
@@ -173,7 +172,10 @@ namespace ZeldaFullEditor
 
                 if (room != null)
                 {
-                    if (room.blocks[13] == 83) { p = 15; };
+                    if (room.blocks[13] == 83)
+                    {
+                        p = 15;
+                    };
                 }
 
                 drawSpriteTile((x * 16), (y * 16), 14, 28, p);
@@ -1185,21 +1187,14 @@ namespace ZeldaFullEditor
             boundingbox = new Rectangle((lowerX + (x * 16)), (lowerY + (y * 16)), width, height);
         }
 
-        public void update()
-        {
-            // TODO: Add something here?
-        }
-
         public unsafe void drawSpriteTileSquare(int x, int y)
         {
             var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
             byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
 
-            // then find a palette
-            
-
-
+            // TODO: then find a palette
         }
+
         public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
         {
             var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
@@ -1328,7 +1323,6 @@ namespace ZeldaFullEditor
                 }
             }
         }
-
 
         public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
         {

@@ -81,13 +81,13 @@ namespace ZeldaFullEditor.Gui
         private void button1_Click(object sender, EventArgs e)
         {
             int csize = 0;
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "all *.bin |*.bin";
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "all *.bin |*.bin";
 
-            if (sfd.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 byte[] ndata = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ROM.DATA, GFX.GetPCGfxAddress(ROM.DATA, (byte)this.selectedSheet), 0x1000, ref csize);
-                FileStream fs = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fs.Write(ndata, 0, ndata.Length);
                 fs.Close();
             }
@@ -119,7 +119,6 @@ namespace ZeldaFullEditor.Gui
                 {
                     byte[] sdata = new byte[Constants.UncompressedSheetSize];
                     byte[] sdata2bpp = new byte[0x1000];
-
 
                     for (int j = 0; j < Constants.UncompressedSheetSize; j++)
                     {
@@ -179,7 +178,7 @@ namespace ZeldaFullEditor.Gui
         }
 
         /// <summary>
-        /// Recompresses all GFX.
+        ///     Recompresses all GFX.
         /// </summary>
         /// <returns> True if compressing failed. </returns>
         public bool recompressAllGfx()
@@ -351,18 +350,18 @@ namespace ZeldaFullEditor.Gui
                 rightSide = true;
             }
 
-            ColorPalette cp = GFX.allgfxBitmap.Palette;
+            ColorPalette colorPalette = GFX.allgfxBitmap.Palette;
             for (int i = 0; i < 16; i++)
             {
                 if (this.radioButton1.Checked)
                 {
                     if (rightSide)
                     {
-                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + this.selectedPal * 16) + 8];
+                        colorPalette.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + this.selectedPal * 16) + 8];
                     }
                     else
                     {
-                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + this.selectedPal * 16)];
+                        colorPalette.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + this.selectedPal * 16)];
                     }
                 }
                 else
@@ -370,16 +369,16 @@ namespace ZeldaFullEditor.Gui
 
                     if (rightSide)
                     {
-                        cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + this.selectedPal * 16) + 8];
+                        colorPalette.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + this.selectedPal * 16) + 8];
                     }
                     else
                     {
-                        cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + this.selectedPal * 16)];
+                        colorPalette.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + this.selectedPal * 16)];
                     }
                 }
             }
 
-            GFX.allgfxBitmap.Palette = cp;
+            GFX.allgfxBitmap.Palette = colorPalette;
             this.allgfxPicturebox.Refresh();
             this.palettePicturebox.Refresh();
         }
@@ -475,27 +474,27 @@ namespace ZeldaFullEditor.Gui
             if (Clipboard.ContainsImage())
             {
                 bool is2bpp = false;
-                Bitmap b = (Bitmap)Clipboard.GetImage();
-                BitmapData bd;
+                Bitmap bitmap = (Bitmap)Clipboard.GetImage();
+                BitmapData bitmapData;
                 if (GFX.isbpp3[selectedSheet])
                 {
-                    if (b.Size.Width != 128 || (b.Size.Height != 40))
+                    if (bitmap.Size.Width != 128 || (bitmap.Size.Height != 40))
                     {
                         MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
                         return;
                     }
 
-                    bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    bitmapData = bitmap.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 }
                 else
                 {
-                    if (b.Size.Width != 128 || (b.Size.Height != 72))
+                    if (bitmap.Size.Width != 128 || (bitmap.Size.Height != 72))
                     {
                         MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
                         return;
                     }
 
-                    bd = b.LockBits(new Rectangle(0,0,128,72), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    bitmapData = bitmap.LockBits(new Rectangle(0,0,128,72), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 }
                 
                 unsafe
@@ -503,7 +502,7 @@ namespace ZeldaFullEditor.Gui
                     if (GFX.isbpp3[selectedSheet])
                     {
                         byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                        byte* data = (byte*)bd.Scan0.ToPointer();
+                        byte* data = (byte*)bitmapData.Scan0.ToPointer();
                         // One line is 512 - palette (32 bytes per palettes)
                         for (int i = 0; i < 8; i++)
                         {
@@ -528,7 +527,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
                         byte* gdata2 = (byte*)GFX.allgfx2bpp16Ptr.ToPointer();
-                        byte* data = (byte*)bd.Scan0.ToPointer();
+                        byte* data = (byte*)bitmapData.Scan0.ToPointer();
                         // One line is 512 - palette (32 bytes per palettes)
                         for (int i = 0; i < 4; i++)
                         {
@@ -548,6 +547,7 @@ namespace ZeldaFullEditor.Gui
                                 {
                                     gdata[pos + (this.selectedSheet * Constants.UncompressedSheetSize)] = mpix;
                                 }
+
                                 gdata2[(Array.IndexOf(GFX.bpp2SheetsIndex, (byte)this.selectedSheet) * 0x1000) + pos] = mpix;
                                 pos++;
                             }
@@ -555,7 +555,7 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
 
-                b.UnlockBits(bd);
+                bitmap.UnlockBits(bitmapData);
                 this.mainForm.activeScene.room.reloadGfx();
                 this.mainForm.activeScene.DrawRoom();
                 this.mainForm.activeScene.Refresh();
@@ -630,30 +630,28 @@ namespace ZeldaFullEditor.Gui
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "all *.bin |*.bin";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "all *.bin |*.bin";
 
-            if (ofd.ShowDialog() == DialogResult.OK)
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
             {
-                FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
-                if (fs.Length > Constants.UncompressedSheetSize)
-                {
-                    if (MessageBox.Show("This graphics file is larger than expected. Do you wish to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
-                    {
-                        fs.Close();
-                        return;
-                    }
-                }
-
-                this.modifiedSheets[this.selectedSheet] = new byte[(int)fs.Length];
-                fs.Read(this.modifiedSheets[this.selectedSheet], 0, (int)fs.Length);
-                fs.Close();
+                return;
             }
-        }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
+            FileStream fileStream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+            if (fileStream.Length > Constants.UncompressedSheetSize)
+            {
+                if (MessageBox.Show("This graphics file is larger than expected. Do you wish to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    fileStream.Close();
 
+                    return;
+                }
+            }
+
+            this.modifiedSheets[this.selectedSheet] = new byte[(int)fileStream.Length];
+            fileStream.Read(this.modifiedSheets[this.selectedSheet], 0, (int)fileStream.Length);
+            fileStream.Close();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -692,57 +690,62 @@ namespace ZeldaFullEditor.Gui
             if (!GFX.isbpp3[selectedSheet])
             {
                 MessageBox.Show("Cannot paste 4bpp on 2bpp sheet");
+
                 return;
             }
-            if (Clipboard.ContainsImage())
+
+            if (!Clipboard.ContainsImage())
             {
-                Bitmap b = (Bitmap)Clipboard.GetImage();
-                BitmapData bd;
-                if (b.Size.Width != 128 || (b.Size.Height != 40))
+                return;
+            }
+
+            Bitmap bitmap = (Bitmap)Clipboard.GetImage();
+            BitmapData bitmapData;
+            if (bitmap.Size.Width != 128 || (bitmap.Size.Height != 40))
+            {
+                MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+                return;
+            }
+
+            bitmapData = bitmap.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                byte* data = (byte*)bitmapData.Scan0.ToPointer();
+                // One line is 512 - palette (32 bytes per palettes)
+                for (int i = 0; i < 16; i++)
                 {
-                    MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
-                    return;
+                    this.palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
+                    //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
                 }
 
-                bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-
-                unsafe
+                int pos = 0; // Should be line where data start inverted
+                for (int y = 0; y < 32; y++) // for each line
                 {
-                        byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
-                        byte* data = (byte*)bd.Scan0.ToPointer();
-                        // One line is 512 - palette (32 bytes per palettes)
-                        for (int i = 0; i < 16; i++)
-                        {
-                            this.palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
-                            //Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i].G + " B: " + palettes[i].B);
-                        }
+                    for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
+                    {
+                        byte pix1 = matchPalette4bpp(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
+                        byte pix2 = matchPalette4bpp(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
+                        byte mpix = (byte)((pix1 << 4) + pix2);
+                        gdata[pos + (this.selectedSheet * Constants.UncompressedSheetSize)] = mpix;
 
-                        int pos = 0; // Should be line where data start inverted
-                        for (int y = 0; y < 32; y++) // for each line
-                        {
-                            for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
-                            {
-                                byte pix1 = matchPalette4bpp(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
-                                byte pix2 = matchPalette4bpp(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
-                                byte mpix = (byte)((pix1 << 4) + pix2);
-                                gdata[pos + (this.selectedSheet * Constants.UncompressedSheetSize)] = mpix;
-                                pos++;
-                            }
-                        }
+                        pos++;
+                    }
                 }
+            }
 
-                b.UnlockBits(bd);
-                this.mainForm.activeScene.room.reloadGfx();
-                this.mainForm.activeScene.DrawRoom();
-                this.mainForm.activeScene.Refresh();
-                this.allgfxPicturebox.Refresh();
+            bitmap.UnlockBits(bitmapData);
+            this.mainForm.activeScene.room.reloadGfx();
+            this.mainForm.activeScene.DrawRoom();
+            this.mainForm.activeScene.Refresh();
+            this.allgfxPicturebox.Refresh();
 
-                GFX.sheets4bpp[selectedSheet] = 1;
+            GFX.sheets4bpp[selectedSheet] = 1;
 
-                for (int i = 0; i < 159; i++)
-                {
-                    this.mainForm.overworldEditor.overworld.AllMaps[i].NeedRefresh = true;
-                }
+            for (int i = 0; i < 159; i++)
+            {
+                this.mainForm.overworldEditor.overworld.AllMaps[i].NeedRefresh = true;
             }
         }
     }

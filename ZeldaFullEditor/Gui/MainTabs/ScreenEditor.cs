@@ -144,7 +144,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
         public void Init()
         {
-            
             triforceVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
             crystalVertices = new Point3D[ROM.DATA[Constants.triforceVerticesCount]];
 
@@ -252,6 +251,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             cSide = 0;
                             rSide = true;
                             count++;
+
                             continue;
                         }
                     }
@@ -265,6 +265,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             cSide = 0;
                             rSide = false;
                             count++;
+
                             continue;
                         }
                     }
@@ -281,6 +282,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             cSide = 0;
                             rSide = true;
                             count++;
+
                             continue;
                         }
                     }
@@ -294,6 +296,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             cSide = 0;
                             rSide = false;
                             count++;
+
                             continue;
                         }
                     }
@@ -527,14 +530,19 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     for (int j = 0; j < 2048; j++)
                     {
                         byte mapByte = allgfxData[j + (staticgfx[i] * 2048)];
-                        switch (i)
+
+                        // 4bpp check
+                        if (GFX.sheets4bpp[staticgfx[i]] == 0)
                         {
-                            case 0:
-                            case 3:
-                            case 4:
-                            case 5:
-                                mapByte += 0x88;
-                                break;
+                            switch (i)
+                            {
+                                case 0:
+                                case 3:
+                                case 4:
+                                case 5:
+                                    mapByte += 0x88;
+                                    break;
+                            }
                         }
 
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
@@ -598,14 +606,19 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     for (int j = 0; j < 2048; j++)
                     {
                         byte mapByte = allgfxData[j + (staticgfx[i] * 2048)];
-                        switch (i)
+
+                        // 4bpp check
+                        if (GFX.sheets4bpp[staticgfx[i]] == 0)
                         {
-                            case 0:
-                            case 3:
-                            case 4:
-                            case 5:
-                                mapByte += 0x88;
-                                break;
+                            switch (i)
+                            {
+                                case 0:
+                                case 3:
+                                case 4:
+                                case 5:
+                                    mapByte += 0x88;
+                                    break;
+                            }
                         }
 
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
@@ -613,25 +626,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
             }
 
-            ColorPalette cp = GFX.OverworldMapBitmap.Palette;
+            ColorPalette colorPalette = GFX.OverworldMapBitmap.Palette;
             for (int i = 128; i < 256; i++)
             {
-                cp.Entries[i] = currentPalette[i];
+                colorPalette.Entries[i] = currentPalette[i];
             }
 
             for (int i = 0; i < 80; i++)
             {
-                cp.Entries[i + 32] = GFX.getColor(ROM.ReadRealShort(0xDE544 + (i * 2)));
+                colorPalette.Entries[i + 32] = GFX.getColor(ROM.ReadRealShort(0xDE544 + (i * 2)));
                 if ((i % 16) == 0)
                 {
-                    cp.Entries[i + 32] = Color.Transparent;
+                    colorPalette.Entries[i + 32] = Color.Transparent;
                 }
             }
         }
 
         public unsafe void updateTiles()
         {
-            byte p = palSelected;
+            byte palette = palSelected;
 
             // ushort tempTile = selectedTile;
             byte* destPtr = (byte*)tiles8Ptr.ToPointer();
@@ -645,7 +658,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     for (int x = 0; x < 4; x++)
                     {
-                        CopyTile(x, y, xx, yy, i, p, destPtr, srcPtr);
+                        CopyTile(x, y, xx, yy, i, palette, destPtr, srcPtr);
                     }
                 }
 
@@ -769,8 +782,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     if (tilesBgBuffer[xx + (yy * 32)] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
                     {
-                        TileInfo t = GFX.gettilesinfo(tilesBgBuffer[xx + (yy * 32)]);
-                        if (onlyPrior && !t.O)
+                        TileInfo tile = GFX.gettilesinfo(tilesBgBuffer[xx + (yy * 32)]);
+                        if (onlyPrior && !tile.O)
                         {
                             continue;
                         }
@@ -779,16 +792,16 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         {
                             for (var xl = 0; xl < 4; xl++)
                             {
-                                int mx = (xl * (1 - t.HS)) + ((3 - xl) * t.HS);
-                                int my = (yl * (1 - t.VS)) + ((7 - yl) * t.VS);
+                                int mx = (xl * (1 - tile.HS)) + ((3 - xl) * tile.HS);
+                                int my = (yl * (1 - tile.VS)) + ((7 - yl) * tile.VS);
 
-                                int ty = (t.id / 16) * 512;
-                                int tx = (t.id % 16) * 4;
+                                int ty = (tile.id / 16) * 512;
+                                int tx = (tile.id % 16) * 4;
                                 var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
 
                                 int index = (xx * 8) + (yy * 2048) + ((mx * 2) + (my * 256));
-                                ptr[index + t.HS ^ 1] = (byte)((pixel & 0x0F) + (t.palette * 16));
-                                ptr[index + t.HS] = (byte)(((pixel >> 4) & 0x0F) + (t.palette * 16));
+                                ptr[index + tile.HS ^ 1] = (byte)((pixel & 0x0F) + (tile.palette * 16));
+                                ptr[index + tile.HS] = (byte)(((pixel >> 4) & 0x0F) + (tile.palette * 16));
                             }
                         }
                     }
@@ -801,20 +814,20 @@ namespace ZeldaFullEditor.Gui.MainTabs
             var alltilesData = (byte*)GFX.currentTileScreengfx16Ptr.ToPointer();
             byte* ptr = (byte*)destPtr.ToPointer();
 
-            foreach (OAMTile t in oamData) // Prevent draw if tile == 0xFFFF since it 0 indexed
+            foreach (OAMTile oamTile in oamData) // Prevent draw if tile == 0xFFFF since it 0 indexed
             {
                 for (var yl = 0; yl < 16; yl++)
                 {
                     for (var xl = 0; xl < 8; xl++)
                     {
-                        int ty = (t.Tile / 16) * 512;
-                        int tx = (t.Tile % 16) * 4;
+                        int ty = (oamTile.Tile / 16) * 512;
+                        int tx = (oamTile.Tile % 16) * 4;
                         var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
 
-                        int index = (t.X + (xl * 2)) + (t.Y * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
+                        int index = (oamTile.X + (xl * 2)) + (oamTile.Y * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
 
-                        ptr[index + 1] = (byte)((pixel & 0x0F) + ((t.Palette + 8) * 16));
-                        ptr[index] = (byte)(((pixel >> 4) & 0x0F) + ((t.Palette + 8) * 16));
+                        ptr[index + 1] = (byte)((pixel & 0x0F) + ((oamTile.Palette + 8) * 16));
+                        ptr[index] = (byte)(((pixel >> 4) & 0x0F) + ((oamTile.Palette + 8) * 16));
                     }
                 }
             }

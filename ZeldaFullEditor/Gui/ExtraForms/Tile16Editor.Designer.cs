@@ -449,7 +449,6 @@
             this.tiletypesheetCombobox.Name = "tiletypesheetCombobox";
             this.tiletypesheetCombobox.Size = new System.Drawing.Size(425, 21);
             this.tiletypesheetCombobox.TabIndex = 23;
-            this.tiletypesheetCombobox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tiletypesheetCombobox_MouseMove);
             // 
             // label8
             // 

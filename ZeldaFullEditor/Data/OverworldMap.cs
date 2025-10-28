@@ -287,7 +287,6 @@ namespace ZeldaFullEditor
 
                     switch (index)
                     {
-
                         case 0x88:
                         case 0x93:
                             this.GFX = 81;
@@ -959,6 +958,7 @@ namespace ZeldaFullEditor
                                     break;
                             }
                         }
+
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data.
                     }
                 }

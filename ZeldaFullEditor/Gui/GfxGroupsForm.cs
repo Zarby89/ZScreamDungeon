@@ -287,10 +287,14 @@ namespace ZeldaFullEditor.Gui
                         byte mapByte = newPdata[d + (blocks[i] * 2048)];
                         if (main)
                         {
-                            if (i < 4)
+                            // 4bpp check
+                            if (GFX.sheets4bpp[blocks[i]] == 0)
                             {
-                                mapByte += 0x88;
-                            } // Last line of 6, first line of 7 ?
+                                if (i < 4)
+                                {
+                                    mapByte += 0x88;
+                                } // Last line of 6, first line of 7 ?
+                            }
                         }
 
                         sheetsData[d + (sheetPos * 2048)] = mapByte;

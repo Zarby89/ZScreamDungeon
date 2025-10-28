@@ -22,7 +22,6 @@ namespace ZeldaFullEditor.Gui
 
         ushort searchedTile = 0xFFFF;
 
-
         Tile16 copiedTile;
 
         // TODO: Switch to entities.cs version, etc.
@@ -32,6 +31,13 @@ namespace ZeldaFullEditor.Gui
         private bool cancelClosing = false;
 
         Label[] sheetLabels = new Label[16];
+
+        Color fColor = Color.FromArgb(200, 255, 200, 200);
+        Font f = new Font("Arial", 12, FontStyle.Regular);
+        byte[] IndividualSheetsCollisionsData = new byte[0x2000];
+
+        int lastIndex = -1;
+        bool mouseDown = false;
 
         public Tile16Editor(SceneOW scene)
         {
@@ -57,12 +63,12 @@ namespace ZeldaFullEditor.Gui
                 sheetLabels[i].Font = sheetLabel.Font;
                 sheetLabels[i].Location = new Point(257, 28 + (i * 64));
             }
-            panel2.Controls.AddRange(sheetLabels);
 
+            panel2.Controls.AddRange(sheetLabels);
         }
 
         /// <summary>
-        /// Called every frame? updates the appearance of the tile 8 window
+        ///     TODO: Called every frame? updates the appearance of the tile 8 window.
         /// </summary>
         public unsafe void updateTiles()
         {
@@ -148,8 +154,8 @@ namespace ZeldaFullEditor.Gui
 
         private void pictureboxTile8_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
             e.Graphics.DrawImage(GFX.editort16Bitmap, Constants.Rect_0_0_256_1024);
 
             if (gridcheckBox.Checked)
@@ -192,10 +198,10 @@ namespace ZeldaFullEditor.Gui
 
         private void pictureboxTile16_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.Default;
-            e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.CompositingQuality = CompositingQuality.Default;
+            e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
             e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f, 0f, 256.5f, Constants.Tile16EdiorBitmapSizex2), new RectangleF(0, 0, 128, Constants.Tile16EdiorBitmapSize), GraphicsUnit.Pixel);
             //e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
@@ -536,6 +542,7 @@ namespace ZeldaFullEditor.Gui
                 mx = 3 - x;
                 r = 1;
             }
+
             if (tile.V)
             {
                 my = 7 - y;
@@ -551,8 +558,6 @@ namespace ZeldaFullEditor.Gui
 
         private void Tile16Editor_Load(object sender, EventArgs e)
         {
-
-
             for (int i = 0; i < 0xFF; i++)
             {
                 tilesTypesNames[i] = i.ToString("X2") + " - ????";
@@ -564,6 +569,7 @@ namespace ZeldaFullEditor.Gui
             {
                 tempTiletype[i] = scene.ow.AllTileTypes[i];
             }
+
             tiletypesheetCombobox.SelectedIndex = 0;
             scene.ow.Tile16List.CopyTo(allTiles);
 
@@ -577,6 +583,8 @@ namespace ZeldaFullEditor.Gui
                     for (int j = 0; j < 2048; j++)
                     {
                         byte mapByte = allgfxData[j + (scene.ow.AllMaps[scene.selectedMap].StaticGFX[i] * 2048)];
+
+                        // 4bpp check
                         if (GFX.sheets4bpp[scene.ow.AllMaps[scene.selectedMap].StaticGFX[i]] == 0)
                         {
                             switch (i)
@@ -598,6 +606,7 @@ namespace ZeldaFullEditor.Gui
                                     break;
                             }
                         }
+
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
                     }
                 }
@@ -608,15 +617,16 @@ namespace ZeldaFullEditor.Gui
             {
                 IndividualSheetsCollisionsData[i] = ROM.DATA[Constants.IndividualSheetsCollisions+i];
             }
+
             bool unused = true;
             for (int i = 0; i < 32; i++)
             {
-
                 if (IndividualSheetsCollisionsData[0x3A * 0x40 + i] != 0)
                 {
                     unused = false;
                 }
             }
+
             if (unused)
             {
                 if (MessageBox.Show("Your rom seems to be using old collisions do you want to convert them to newer collision?", "Converting", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -673,10 +683,10 @@ namespace ZeldaFullEditor.Gui
                 for (int i = 0; i < zsnetTiles16ID.Count; i++)
                 {
                     buffer.Write(zsnetTiles16ID[i]);
-                    buffer.Write((ushort)zsnetTiles16[i].Tile0.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].Tile1.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].Tile2.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].Tile3.toShort());
+                    buffer.Write(zsnetTiles16[i].Tile0.toShort());
+                    buffer.Write(zsnetTiles16[i].Tile1.toShort());
+                    buffer.Write(zsnetTiles16[i].Tile2.toShort());
+                    buffer.Write(zsnetTiles16[i].Tile3.toShort());
                 }
 
                 NetOutgoingMessage msg = NetZS.client.CreateMessage();
@@ -721,7 +731,6 @@ namespace ZeldaFullEditor.Gui
         {
             tilesTypesNames = Constants.TileTypes;
            
-
             tileTypeBox.Items.Clear();
             tileTypeBox.Items.AddRange(tilesTypesNames);
             tiletypesheetCombobox.Items.Clear();
@@ -736,24 +745,26 @@ namespace ZeldaFullEditor.Gui
 
         private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left)
             {
-                this.Close();
-
-                if (this.cancelClosing)
-                {
-                    this.cancelClosing = false;
-
-                    return;
-                }
-
-                this.scene.mainForm.editorsTabControl.SelectedIndex = 2;
-                this.scene.mainForm.gfxEditor.selectedSheet = this.scene.ow.AllMaps[this.scene.selectedMap].StaticGFX[(e.Y / 64)];
-                this.scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
-
-                this.scene.mainForm.gfxEditor.panel1.AutoScrollPosition = new Point(0, this.scene.mainForm.gfxEditor.selectedSheet * 64);
-                this.scene.mainForm.gfxEditor.panel1.Refresh();
+                return;
             }
+
+            this.Close();
+
+            if (this.cancelClosing)
+            {
+                this.cancelClosing = false;
+
+                return;
+            }
+
+            this.scene.mainForm.editorsTabControl.SelectedIndex = 2;
+            this.scene.mainForm.gfxEditor.selectedSheet = this.scene.ow.AllMaps[this.scene.selectedMap].StaticGFX[(e.Y / 64)];
+            this.scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
+
+            this.scene.mainForm.gfxEditor.panel1.AutoScrollPosition = new Point(0, this.scene.mainForm.gfxEditor.selectedSheet * 64);
+            this.scene.mainForm.gfxEditor.panel1.Refresh();
         }
 
         private void Tile16Editor_Shown(object sender, EventArgs e)
@@ -771,65 +782,58 @@ namespace ZeldaFullEditor.Gui
             panel1.PerformLayout();
         }
 
-        private void Tile16CopyBtn_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void Tile16PasteBtn_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             
-            if (openFileDialog.ShowDialog() == DialogResult.OK) 
-            { 
-                BinaryReader br = new BinaryReader(new FileStream(openFileDialog.FileName,FileMode.Open,FileAccess.Read));
-                //br.ReadUInt16();
-                //allTiles[scene.selectedTile[0]].Tile0
-                int tstart = scene.selectedTile[0];
-                ushort[] tilemapdata = new ushort[(br.BaseStream.Length/2)];
-                int tilemapHeight = tilemapdata.Length / tilewidthimportHexbox.HexValue;
-                int tilemapWidth = tilewidthimportHexbox.HexValue;
-                for (int i = 0; i < tilemapdata.Length; i++)
-                { 
-                    tilemapdata[i] = br.ReadUInt16();
-                }
+            if (openFileDialog.ShowDialog() != DialogResult.OK) 
+            {
+                return;
+            }
 
-                br.Close();
+            BinaryReader binaryReader = new BinaryReader(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
+            //br.ReadUInt16();
+            //allTiles[scene.selectedTile[0]].Tile0
+            int tstart = scene.selectedTile[0];
+            ushort[] tilemapdata = new ushort[(binaryReader.BaseStream.Length / 2)];
+            int tilemapHeight = tilemapdata.Length / tilewidthimportHexbox.HexValue;
+            int tilemapWidth = tilewidthimportHexbox.HexValue;
+            for (int i = 0; i < tilemapdata.Length; i++)
+            {
+                tilemapdata[i] = binaryReader.ReadUInt16();
+            }
 
-                for (int h = 0; h < tilemapHeight/2; h++)
+            binaryReader.Close();
+
+            for (int height = 0; height < tilemapHeight / 2; height++)
+            {
+                for (int width = 0; width < tilemapWidth; width++)
                 {
-
-                    for (int i = 0; i < tilemapWidth; i++)
+                    if (width % 2 == 0)
                     {
-                        if (i % 2 == 0)
-                        {
-                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile0 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2))]);
-                        }
-                        else
-                        {
-                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile1 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2))]);
-                        }
+                        allTiles[tstart + (width / 2) + (height * (tilemapWidth / 2))].Tile0 = new TileInfo(tilemapdata[width + (height * (tilemapWidth * 2))]);
+                    }
+                    else
+                    {
+                        allTiles[tstart + (width / 2) + (height * (tilemapWidth / 2))].Tile1 = new TileInfo(tilemapdata[width + (height * (tilemapWidth * 2))]);
+                    }
 
-                        if (i % 2 == 0)
-                        {
-                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile2 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2)) + tilemapWidth]);
-                        }
-                        else
-                        {
-                            allTiles[tstart + (i / 2) + ((h) * (tilemapWidth/2))].Tile3 = new TileInfo(tilemapdata[i + ((h) * (tilemapWidth * 2)) + tilemapWidth]);
-                        }
+                    if (width % 2 == 0)
+                    {
+                        allTiles[tstart + (width / 2) + (height * (tilemapWidth / 2))].Tile2 = new TileInfo(tilemapdata[width + (height * (tilemapWidth * 2)) + tilemapWidth]);
+                    }
+                    else
+                    {
+                        allTiles[tstart + (width / 2) + (height * (tilemapWidth / 2))].Tile3 = new TileInfo(tilemapdata[width + (height * (tilemapWidth * 2)) + tilemapWidth]);
                     }
                 }
-                for (int j = 0; j < tilemapHeight / 2; j++)
+            }
+
+            for (int height = 0; height < tilemapHeight / 2; height++)
+            {
+                for (int width = 0; width < tilemapWidth / 2; width++)
                 {
-                    for (int i = 0; i < tilemapWidth / 2; i++)
-                    {
-                        scene.owForm.scratchPadTiles[i,j] = (ushort)(i + (j * 8));
-                    }
+                    scene.owForm.scratchPadTiles[width, height] = (ushort)(width + (height * 8));
                 }
             }
         }
@@ -865,17 +869,18 @@ namespace ZeldaFullEditor.Gui
 
         private void copyRangeButton_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("ZST16");
-            int starttileid = scene.selectedTile[0];
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("ZST16");
+            int startTileID = scene.selectedTile[0];
             for (int i = 0; i < copyrangeUpdown.Value; i++)
             {
-                sb.Append(allTiles[starttileid + i].Tile0.toShort().ToString("X4"));
-                sb.Append(allTiles[starttileid + i].Tile1.toShort().ToString("X4"));
-                sb.Append(allTiles[starttileid + i].Tile2.toShort().ToString("X4"));
-                sb.Append(allTiles[starttileid + i].Tile3.toShort().ToString("X4"));
+                stringBuilder.Append(allTiles[startTileID + i].Tile0.toShort().ToString("X4"));
+                stringBuilder.Append(allTiles[startTileID + i].Tile1.toShort().ToString("X4"));
+                stringBuilder.Append(allTiles[startTileID + i].Tile2.toShort().ToString("X4"));
+                stringBuilder.Append(allTiles[startTileID + i].Tile3.toShort().ToString("X4"));
             }
-            Clipboard.SetText(sb.ToString());
+
+            Clipboard.SetText(stringBuilder.ToString());
         }
 
         private void pasteRangeButton_Click(object sender, EventArgs e)
@@ -883,43 +888,44 @@ namespace ZeldaFullEditor.Gui
             if (Clipboard.ContainsText())
             {
                 string data = Clipboard.GetText();
-                int starttileid = scene.selectedTile[0];
+                int startTileID = scene.selectedTile[0];
                 if (data.StartsWith("ZST16"))
                 {
                     data = data.Substring(5);
                     for (int i = 0; i < data.Length / 16; i++)
                     {
-
-                        allTiles[starttileid + i].Tile0 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16), 4), System.Globalization.NumberStyles.HexNumber));
-                        allTiles[starttileid + i].Tile1 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 4, 4), System.Globalization.NumberStyles.HexNumber));
-                        allTiles[starttileid + i].Tile2 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 8, 4), System.Globalization.NumberStyles.HexNumber));
-                        allTiles[starttileid + i].Tile3 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 12, 4), System.Globalization.NumberStyles.HexNumber));
+                        allTiles[startTileID + i].Tile0 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16), 4), System.Globalization.NumberStyles.HexNumber));
+                        allTiles[startTileID + i].Tile1 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 4, 4), System.Globalization.NumberStyles.HexNumber));
+                        allTiles[startTileID + i].Tile2 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 8, 4), System.Globalization.NumberStyles.HexNumber));
+                        allTiles[startTileID + i].Tile3 = GFX.gettilesinfo(ushort.Parse(data.Substring((i * 16) + 12, 4), System.Globalization.NumberStyles.HexNumber));
                     }
                 }
             }
+
             BuildTiles16Gfx();
             pictureboxTile16.Refresh();
         }
-        Color fColor = Color.FromArgb(200, 255, 200, 200);
-        Font f = new Font("Arial", 12, FontStyle.Regular);
+
         private void collisionsheetPicturebox_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
-            ColorPalette cp = GFX.allgfxBitmap.Palette;
+            ColorPalette colorPalette = GFX.allgfxBitmap.Palette;
             Color[] oldColors = new Color[8];
             for(int i = 0; i< 8;i++)
             {
-                oldColors[i] = cp.Entries[i];
-                cp.Entries[i] = Color.FromArgb(i * 32, i * 32, i * 32);
+                oldColors[i] = colorPalette.Entries[i];
+                colorPalette.Entries[i] = Color.FromArgb(i * 32, i * 32, i * 32);
             }
-            GFX.allgfxBitmap.Palette = cp;
+
+            GFX.allgfxBitmap.Palette = colorPalette;
             e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0, 0, 512, 128), new Rectangle(0,(int)(selectedsheetUpDown.Value*32),128,32), GraphicsUnit.Pixel);
             for (int i = 0; i < 8; i++)
             {
-                cp.Entries[i] = oldColors[i];
+                colorPalette.Entries[i] = oldColors[i];
             }
-            GFX.allgfxBitmap.Palette = cp;
+
+            GFX.allgfxBitmap.Palette = colorPalette;
             for(int i = 0; i< 4;i++)
             {
                 e.Graphics.DrawLine(new Pen(new SolidBrush(fColor), 1),new Point(0,i*32), new Point(512,i*32));
@@ -930,195 +936,186 @@ namespace ZeldaFullEditor.Gui
                 e.Graphics.DrawLine(new Pen(new SolidBrush(fColor), 1), new Point(i * 32,0), new Point(i * 32, 128));
             }
 
-
             for (int i = 0; i < 0x40;i++)
             {
                 e.Graphics.DrawString(IndividualSheetsCollisionsData[(int)(selectedsheetUpDown.Value*0x40)+i].ToString("X2") , f, new SolidBrush(fColor), 4+ ((i % 16)*32),4+ ((i / 16) * 32));
             }
-
         }
-        byte[] IndividualSheetsCollisionsData = new byte[0x2000];
+
         private void selectedsheetUpDown_ValueChanged(object sender, EventArgs e)
         {
-
-            
             collisionsheetPicturebox.Invalidate();
         }
 
         byte[] gfxslotcollision = new byte[0x80]
-{
-    0xFF, // 0X00
-    0xFF, // 0X01
-    0xFF, // 0X02
-    0xFF, // 0X03
-    0xFF, // 0X04
-    0xFF, // 0X05
-    0xFF, // 0X06
-    0xFF, // 0X07
-    0xFF, // 0X08
-    0xFF, // 0X09
-    0xFF, // 0X0A
-    0xFF, // 0X0B
-    0xFF, // 0X0C
-    0xFF, // 0X0D
-    0xFF, // 0X0E
-    0xFF, // 0X0F
-    0xFF, // 0X10
-    0xFF, // 0X11
-    0xFF, // 0X12
-    0xFF, // 0X13
-    0xFF, // 0X14
-    0xFF, // 0X15
-    0xFF, // 0X16
-    0xFF, // 0X17
-    0xFF, // 0X18
-    0xFF, // 0X19
-    0xFF, // 0X1A
-    0xFF, // 0X1B
-    0xFF, // 0X1C
-    0xFF, // 0X1D
-    0xFF, // 0X1E
-    0xFF, // 0X1F
-    0xFF, // 0X20
-    0xFF, // 0X21
-    0xFF, // 0X22
-    0xFF, // 0X23
-    0xFF, // 0X24
-    0xFF, // 0X25
-    0xFF, // 0X26
-    0xFF, // 0X27
-    0xFF, // 0X28
-    0xFF, // 0X29
-    0xFF, // 0X2A
-0x04, // 0x2B
-0x05, // 0x2C
-0x04, // 0x2D
-0x05, // 0x2E
-0x04, // 0x2F
+        {
+            0xFF, // 0X00
+            0xFF, // 0X01
+            0xFF, // 0X02
+            0xFF, // 0X03
+            0xFF, // 0X04
+            0xFF, // 0X05
+            0xFF, // 0X06
+            0xFF, // 0X07
+            0xFF, // 0X08
+            0xFF, // 0X09
+            0xFF, // 0X0A
+            0xFF, // 0X0B
+            0xFF, // 0X0C
+            0xFF, // 0X0D
+            0xFF, // 0X0E
+            0xFF, // 0X0F
+            0xFF, // 0X10
+            0xFF, // 0X11
+            0xFF, // 0X12
+            0xFF, // 0X13
+            0xFF, // 0X14
+            0xFF, // 0X15
+            0xFF, // 0X16
+            0xFF, // 0X17
+            0xFF, // 0X18
+            0xFF, // 0X19
+            0xFF, // 0X1A
+            0xFF, // 0X1B
+            0xFF, // 0X1C
+            0xFF, // 0X1D
+            0xFF, // 0X1E
+            0xFF, // 0X1F
+            0xFF, // 0X20
+            0xFF, // 0X21
+            0xFF, // 0X22
+            0xFF, // 0X23
+            0xFF, // 0X24
+            0xFF, // 0X25
+            0xFF, // 0X26
+            0xFF, // 0X27
+            0xFF, // 0X28
+            0xFF, // 0X29
+            0xFF, // 0X2A
+            0x04, // 0x2B
+            0x05, // 0x2C
+            0x04, // 0x2D
+            0x05, // 0x2E
+            0x04, // 0x2F
 
-0x05, // 0x30
-0x04, // 0x31
-0x05, // 0x32
-0x04, // 0x33
-0x05, // 0x34
-0x04, // 0x35
-0x05, // 0x36
-0x04, // 0x37
-0x05, // 0x38
-0x00, // 0x39 ; MENU
-0x00, // 0x3A
-0x01, // 0x3B
-0x02, // 0x3C
-0x03, // 0x3D
-0x06, // 0x3E
-0x06, // 0x3F
+            0x05, // 0x30
+            0x04, // 0x31
+            0x05, // 0x32
+            0x04, // 0x33
+            0x05, // 0x34
+            0x04, // 0x35
+            0x05, // 0x36
+            0x04, // 0x37
+            0x05, // 0x38
+            0x00, // 0x39 ; MENU
+            0x00, // 0x3A
+            0x01, // 0x3B
+            0x02, // 0x3C
+            0x03, // 0x3D
+            0x06, // 0x3E
+            0x06, // 0x3F
 
-0x00, // 0x40 ; LOGO
-0x00, // 0x41 ; LOGO
-0x00, // 0x42
-0x01, // 0x43
-0x02, // 0x44
-0x03, // 0x45
-0x00, // 0x46 ; TRIFORCE ROOM
-0x04, // 0x47
-0x05, // 0x48
-0x05, // 0x49
-0x05, // 0x4A
-0x05, // 0x4B
-0x05, // 0x4C
-0x05, // 0x4D
-0x05, // 0x4E
-0x05, // 0x4F
+            0x00, // 0x40 ; LOGO
+            0x00, // 0x41 ; LOGO
+            0x00, // 0x42
+            0x01, // 0x43
+            0x02, // 0x44
+            0x03, // 0x45
+            0x00, // 0x46 ; TRIFORCE ROOM
+            0x04, // 0x47
+            0x05, // 0x48
+            0x05, // 0x49
+            0x05, // 0x4A
+            0x05, // 0x4B
+            0x05, // 0x4C
+            0x05, // 0x4D
+            0x05, // 0x4E
+            0x05, // 0x4F
 
-0x04, // 0x50
-0x04, // 0x51
-0x04, // 0x52
-0x04, // 0x53
-0x05, // 0x54
-0x04, // 0x55
-0x04, // 0x56
-0x04, // 0x57
-0x07, // 0x58 ; ANIMATED
-0x07, // 0x59 ; ANIMATED
-0x07, // 0x5A ; ANIMATED
-0x07, // 0x5B ; ANIMATED
-0x07, // 0x5C ; ANIMATED
-0x07, // 0x5D ; ANIMATED
-0x07, // 0x5E ; ANIMATED
-0x07, // 0x5F ; ANIMATED
+            0x04, // 0x50
+            0x04, // 0x51
+            0x04, // 0x52
+            0x04, // 0x53
+            0x05, // 0x54
+            0x04, // 0x55
+            0x04, // 0x56
+            0x04, // 0x57
+            0x07, // 0x58 ; ANIMATED
+            0x07, // 0x59 ; ANIMATED
+            0x07, // 0x5A ; ANIMATED
+            0x07, // 0x5B ; ANIMATED
+            0x07, // 0x5C ; ANIMATED
+            0x07, // 0x5D ; ANIMATED
+            0x07, // 0x5E ; ANIMATED
+            0x07, // 0x5F ; ANIMATED
 
-0x04, // 0x60
-0xFF, // 0x61
-0xFF, // 0x62
-0xFF, // 0x63
-0xFF, // 0x64
-0xFF, // 0x65
-0xFF, // 0x66
-0xFF, // 0x67
-0xFF, // 0x68
-0xFF, // 0x69
-0xFF, // 0x6A
-0xFF, // 0x6B
-0xFF, // 0x6C
-0xFF, // 0x6D
-0xFF, // 0x6E
-0xFF, // 0x6F
+            0x04, // 0x60
+            0xFF, // 0x61
+            0xFF, // 0x62
+            0xFF, // 0x63
+            0xFF, // 0x64
+            0xFF, // 0x65
+            0xFF, // 0x66
+            0xFF, // 0x67
+            0xFF, // 0x68
+            0xFF, // 0x69
+            0xFF, // 0x6A
+            0xFF, // 0x6B
+            0xFF, // 0x6C
+            0xFF, // 0x6D
+            0xFF, // 0x6E
+            0xFF, // 0x6F
 
-0xFF, // 0x70
-0xFF, // 0x71
-0xFF, // 0x72
-0xFF, // 0x73
-0xFF, // 0x74
-0xFF, // 0x75
-0xFF, // 0x76
-0xFF, // 0x77
-0xFF, // 0x78
-0xFF, // 0x79
-0xFF, // 0x7A
-0xFF, // 0x7B
-0xFF, // 0x7C
-0xFF, // 0x7D
-0xFF, // 0x7E
-0xFF, // 0x7F
-};
+            0xFF, // 0x70
+            0xFF, // 0x71
+            0xFF, // 0x72
+            0xFF, // 0x73
+            0xFF, // 0x74
+            0xFF, // 0x75
+            0xFF, // 0x76
+            0xFF, // 0x77
+            0xFF, // 0x78
+            0xFF, // 0x79
+            0xFF, // 0x7A
+            0xFF, // 0x7B
+            0xFF, // 0x7C
+            0xFF, // 0x7D
+            0xFF, // 0x7E
+            0xFF, // 0x7F
+        };
 
         private void vanillacopycolButton_Click(object sender, EventArgs e)
         {
-                if (MessageBox.Show("Are you sure you wanna use old collision it'll overwrite actual newer collisions", "Converting", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you wanna use old collision it'll overwrite actual newer collisions", "Converting", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            for (int j = 0; j < 0x80; j++)
+            {
+                for (int i = 0; i < 0x40; i++)
                 {
-                    for (int j = 0; j < 0x80; j++)
+                    if ((gfxslotcollision[j] != 0xFF))
                     {
-                        for (int i = 0; i < 0x40; i++)
-                        {
-                            if ((gfxslotcollision[j] != 0xFF))
-                            {
-                                IndividualSheetsCollisionsData[(j * 0x40) + i] = ROM.DATA[Constants.overworldTilesType + (gfxslotcollision[j] * 0x40) + i];
-                            }
-                        }
+                        IndividualSheetsCollisionsData[(j * 0x40) + i] = ROM.DATA[Constants.overworldTilesType + (gfxslotcollision[j] * 0x40) + i];
                     }
                 }
+            }
         }
-        int lastIndex = -1;
-        bool mdown = false;
+
         private void collisionsheetPicturebox_MouseDown(object sender, MouseEventArgs e)
         {
-            int index = (e.X/32) + ((e.Y/32)*16);
+            int index = (e.X/32) + ((e.Y/32) * 16);
             lastIndex = index;
 
             IndividualSheetsCollisionsData[(int)(selectedsheetUpDown.Value * 0x40) + index] = (byte)tiletypesheetCombobox.SelectedIndex;
-            mdown = true;
+            mouseDown = true;
             collisionsheetPicturebox.Invalidate();
-
-        }
-
-        private void tiletypesheetCombobox_MouseMove(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void collisionsheetPicturebox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mdown)
+            if (mouseDown)
             {
                 int index = (e.X / 32) + ((e.Y / 32) * 16);
                 if (index != lastIndex)
@@ -1127,15 +1124,13 @@ namespace ZeldaFullEditor.Gui
                     collisionsheetPicturebox.Invalidate();
                 }
 
-
-
                 lastIndex = index;
             }
         }
 
         private void collisionsheetPicturebox_MouseUp(object sender, MouseEventArgs e)
         {
-            mdown = false;
+            mouseDown = false;
         }
     }
 }
