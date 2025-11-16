@@ -115,7 +115,7 @@ namespace ZeldaFullEditor
         }
         */
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             Layer = LayerType.BG3;
             //allBgs = true;

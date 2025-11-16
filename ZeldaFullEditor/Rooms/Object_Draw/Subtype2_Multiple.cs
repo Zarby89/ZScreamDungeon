@@ -368,7 +368,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 

@@ -14,7 +14,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             if (this.Size == 0)
@@ -41,7 +41,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             if (this.Size == 0)
@@ -70,7 +70,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             if (this.Size == 0)
@@ -100,7 +100,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -125,7 +125,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -149,15 +149,35 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
+
+            // TODO: Christmas beta specific.
+            Tile[] rightHalfTiles = new Tile[4] { DungeonObjectData.tiles[id][4], DungeonObjectData.tiles[id][5], DungeonObjectData.tiles[id][6], DungeonObjectData.tiles[id][7] };
+            if (blockset == 0x16)
+            {
+                Tile temp = DungeonObjectData.tiles[id][4];
+                Tile temp1 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                temp = DungeonObjectData.tiles[id][5];
+                Tile temp2 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                temp = DungeonObjectData.tiles[id][6];
+                Tile temp3 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                temp = DungeonObjectData.tiles[id][7];
+                Tile temp4 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                rightHalfTiles = new Tile[4] { temp1, temp2, temp3, temp4 };
+            }
+
             for (int s = 0; s < Size + 1; s++)
             {
-                draw_tile(DungeonObjectData.tiles[id][0], ((s * 6)) * 8, (0) * 8); draw_tile(DungeonObjectData.tiles[id][4], (1 + (s * 6)) * 8, (0) * 8);
-                draw_tile(DungeonObjectData.tiles[id][1], ((s * 6)) * 8, (1) * 8); draw_tile(DungeonObjectData.tiles[id][5], (1 + (s * 6)) * 8, (1) * 8);
-                draw_tile(DungeonObjectData.tiles[id][2], ((s * 6)) * 8, (2) * 8); draw_tile(DungeonObjectData.tiles[id][6], (1 + (s * 6)) * 8, (2) * 8);
-                draw_tile(DungeonObjectData.tiles[id][3], ((s * 6)) * 8, (3) * 8); draw_tile(DungeonObjectData.tiles[id][7], (1 + (s * 6)) * 8, (3) * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], ((s * 6)) * 8, (0 * 8)); draw_tile(rightHalfTiles[0], (1 + (s * 6)) * 8, (0 * 8));
+                draw_tile(DungeonObjectData.tiles[id][1], ((s * 6)) * 8, (1 * 8)); draw_tile(rightHalfTiles[1], (1 + (s * 6)) * 8, (1 * 8));
+                draw_tile(DungeonObjectData.tiles[id][2], ((s * 6)) * 8, (2 * 8)); draw_tile(rightHalfTiles[2], (1 + (s * 6)) * 8, (2 * 8));
+                draw_tile(DungeonObjectData.tiles[id][3], ((s * 6)) * 8, (3 * 8)); draw_tile(rightHalfTiles[3], (1 + (s * 6)) * 8, (3 * 8));
             }
         }
     }
@@ -173,15 +193,35 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
+
+            // TODO: Christmas beta specific.
+            Tile[] rightHalfTiles = new Tile[4] { DungeonObjectData.tiles[id][4], DungeonObjectData.tiles[id][5], DungeonObjectData.tiles[id][6], DungeonObjectData.tiles[id][7] };
+            if (blockset == 0x16)
+            {
+                Tile temp = DungeonObjectData.tiles[id][4];
+                Tile temp1 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                temp = DungeonObjectData.tiles[id][5];
+                Tile temp2 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                temp = DungeonObjectData.tiles[id][6];
+                Tile temp3 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                temp = DungeonObjectData.tiles[id][7];
+                Tile temp4 = new Tile((ushort)(temp.id + 12), temp.palette, temp.Priority, false, temp.VFlip);
+
+                rightHalfTiles = new Tile[4] { temp1, temp2, temp3, temp4 };
+            }
+
             for (int s = 0; s < Size + 1; s++)
             {
-                draw_tile(DungeonObjectData.tiles[id][0], ((s * 6)) * 8, (0) * 8); draw_tile(DungeonObjectData.tiles[id][4], (1 + (s * 6)) * 8, (0) * 8);
-                draw_tile(DungeonObjectData.tiles[id][1], ((s * 6)) * 8, (1) * 8); draw_tile(DungeonObjectData.tiles[id][5], (1 + (s * 6)) * 8, (1) * 8);
-                draw_tile(DungeonObjectData.tiles[id][2], ((s * 6)) * 8, (2) * 8); draw_tile(DungeonObjectData.tiles[id][6], (1 + (s * 6)) * 8, (2) * 8);
-                draw_tile(DungeonObjectData.tiles[id][3], ((s * 6)) * 8, (3) * 8); draw_tile(DungeonObjectData.tiles[id][7], (1 + (s * 6)) * 8, (3) * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], ((s * 6)) * 8, (0 * 8)); draw_tile(rightHalfTiles[0], (1 + (s * 6)) * 8, (0 * 8));
+                draw_tile(DungeonObjectData.tiles[id][1], ((s * 6)) * 8, (1 * 8)); draw_tile(rightHalfTiles[1], (1 + (s * 6)) * 8, (1 * 8));
+                draw_tile(DungeonObjectData.tiles[id][2], ((s * 6)) * 8, (2 * 8)); draw_tile(rightHalfTiles[2], (1 + (s * 6)) * 8, (2 * 8));
+                draw_tile(DungeonObjectData.tiles[id][3], ((s * 6)) * 8, (3 * 8)); draw_tile(rightHalfTiles[3], (1 + (s * 6)) * 8, (3 * 8));
             }
         }
     }
@@ -197,7 +237,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -219,7 +259,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -241,7 +281,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -259,7 +299,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -277,7 +317,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -295,7 +335,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -313,7 +353,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -331,7 +371,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -349,7 +389,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -367,7 +407,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -385,7 +425,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -403,7 +443,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -421,7 +461,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -439,7 +479,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -458,7 +498,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -477,7 +517,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -496,7 +536,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -515,7 +555,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -534,7 +574,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -553,7 +593,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -572,7 +612,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -591,7 +631,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -610,7 +650,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -629,7 +669,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -648,7 +688,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_down();
@@ -667,7 +707,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_diagonal_up();
@@ -686,7 +726,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -719,7 +759,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -744,7 +784,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -769,7 +809,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -794,7 +834,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -819,7 +859,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -844,7 +884,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -869,7 +909,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -894,7 +934,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -919,7 +959,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -944,7 +984,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -970,7 +1010,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -996,7 +1036,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1022,7 +1062,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1047,7 +1087,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1076,7 +1116,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1104,7 +1144,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -1124,7 +1164,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -1145,7 +1185,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1176,7 +1216,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1197,7 +1237,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             for (int s = 0; s < Size + 1; s++)
             {
@@ -1219,7 +1259,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1249,7 +1289,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1280,7 +1320,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1303,7 +1343,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1329,7 +1369,7 @@ namespace ZeldaFullEditor
             addTiles(12, pos);
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1360,7 +1400,7 @@ namespace ZeldaFullEditor
             addTiles(12, pos);
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1391,7 +1431,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1419,7 +1459,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1445,7 +1485,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1468,7 +1508,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1493,7 +1533,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1518,7 +1558,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1543,7 +1583,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1568,7 +1608,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1593,7 +1633,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1618,7 +1658,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1644,7 +1684,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1667,7 +1707,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             // TODO:
@@ -1683,7 +1723,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             // TODO:
@@ -1700,7 +1740,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -1722,7 +1762,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1745,7 +1785,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1767,7 +1807,7 @@ namespace ZeldaFullEditor
             
             sort = Sorting.Horizontal;
         }
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1799,7 +1839,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1834,7 +1874,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1869,7 +1909,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1903,7 +1943,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1925,7 +1965,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1957,7 +1997,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -1988,7 +2028,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2010,7 +2050,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2031,7 +2071,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -2053,7 +2093,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -2074,7 +2114,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2094,7 +2134,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2114,7 +2154,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2134,7 +2174,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2155,7 +2195,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2187,7 +2227,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2219,7 +2259,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2251,7 +2291,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2275,7 +2315,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2300,7 +2340,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2328,7 +2368,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2356,7 +2396,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2385,7 +2425,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2409,7 +2449,7 @@ namespace ZeldaFullEditor
             allBgs = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2430,21 +2470,38 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             
             sort = Sorting.Vertical;
-
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
+
+            // TODO: Christmas beta specific.
+            Tile[] bottomHalfTiles = new Tile[4] { DungeonObjectData.tiles[id][4], DungeonObjectData.tiles[id][5], DungeonObjectData.tiles[id][6], DungeonObjectData.tiles[id][7] };
+            if (blockset == 0x16)
+            {
+                Tile temp = DungeonObjectData.tiles[id][4];
+                Tile temp1 = new Tile((ushort)(386), temp.palette, temp.Priority, temp.HFlip, false);
+
+                temp = DungeonObjectData.tiles[id][5];
+                Tile temp2 = new Tile((ushort)(387), temp.palette, temp.Priority, temp.HFlip, false);
+
+                temp = DungeonObjectData.tiles[id][6];
+                Tile temp3 = new Tile((ushort)(402), temp.palette, temp.Priority, temp.HFlip, false);
+
+                temp = DungeonObjectData.tiles[id][7];
+                Tile temp4 = new Tile((ushort)(403), temp.palette, temp.Priority, temp.HFlip, false);
+
+                bottomHalfTiles = new Tile[4] { temp1, temp2, temp3, temp4 };
+            }
 
             for (int s = 0; s < Size + 1; s++)
             {
                 draw_tile(DungeonObjectData.tiles[id][0], (0) * 8, ((s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][1], (1) * 8, ((s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][2], (2) * 8, ((s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][3], (3) * 8, ((s * 6)) * 8);
-                draw_tile(DungeonObjectData.tiles[id][4], (0) * 8, (1 + (s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][5], (1) * 8, (1 + (s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][6], (2) * 8, (1 + (s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][7], (3) * 8, (1 + (s * 6)) * 8);
+                draw_tile(bottomHalfTiles[0], (0) * 8, (1 + (s * 6)) * 8); draw_tile(bottomHalfTiles[1], (1) * 8, (1 + (s * 6)) * 8); draw_tile(bottomHalfTiles[2], (2) * 8, (1 + (s * 6)) * 8); draw_tile(bottomHalfTiles[3], (3) * 8, (1 + (s * 6)) * 8);
             }
         }
     }
-
 
     [Serializable]
     public class object_66 : Room_Object
@@ -2457,14 +2514,33 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
+
+            // TODO: Christmas beta specific.
+            Tile[] bottomHalfTiles = new Tile[4] { DungeonObjectData.tiles[id][4], DungeonObjectData.tiles[id][5], DungeonObjectData.tiles[id][6], DungeonObjectData.tiles[id][7] };
+            if (blockset == 0x16)
+            {
+                Tile temp = DungeonObjectData.tiles[id][4];
+                Tile temp1 = new Tile((ushort)(403), temp.palette, temp.Priority, temp.HFlip, false);
+
+                temp = DungeonObjectData.tiles[id][5];
+                Tile temp2 = new Tile((ushort)(402), temp.palette, temp.Priority, temp.HFlip, false);
+
+                temp = DungeonObjectData.tiles[id][6];
+                Tile temp3 = new Tile((ushort)(387), temp.palette, temp.Priority, temp.HFlip, false);
+
+                temp = DungeonObjectData.tiles[id][7];
+                Tile temp4 = new Tile((ushort)(386), temp.palette, temp.Priority, temp.HFlip, false);
+
+                bottomHalfTiles = new Tile[4] { temp1, temp2, temp3, temp4 };
+            }
 
             for (int s = 0; s < Size + 1; s++)
             {
                 draw_tile(DungeonObjectData.tiles[id][0], (0) * 8, ((s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][1], (1) * 8, ((s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][2], (2) * 8, ((s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][3], (3) * 8, ((s * 6)) * 8);
-                draw_tile(DungeonObjectData.tiles[id][4], (0) * 8, (1 + (s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][5], (1) * 8, (1 + (s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][6], (2) * 8, (1 + (s * 6)) * 8); draw_tile(DungeonObjectData.tiles[id][7], (3) * 8, (1 + (s * 6)) * 8);
+                draw_tile(bottomHalfTiles[0], (0) * 8, (1 + (s * 6)) * 8); draw_tile(bottomHalfTiles[1], (1) * 8, (1 + (s * 6)) * 8); draw_tile(bottomHalfTiles[2], (2) * 8, (1 + (s * 6)) * 8); draw_tile(bottomHalfTiles[3], (3) * 8, (1 + (s * 6)) * 8);
             }
         }
     }
@@ -2480,7 +2556,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2503,7 +2579,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2527,7 +2603,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2553,7 +2629,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2575,7 +2651,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2598,7 +2674,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2627,7 +2703,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2655,7 +2731,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2675,7 +2751,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2696,7 +2772,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2726,7 +2802,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2748,7 +2824,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -2769,7 +2845,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2799,7 +2875,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2829,7 +2905,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2854,7 +2930,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2885,7 +2961,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2915,7 +2991,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2945,7 +3021,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2967,7 +3043,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -2989,7 +3065,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3019,7 +3095,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3040,7 +3116,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3070,7 +3146,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3091,7 +3167,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3122,7 +3198,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3152,7 +3228,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3182,7 +3258,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3212,7 +3288,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3242,7 +3318,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3272,7 +3348,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3304,7 +3380,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3336,7 +3412,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3361,7 +3437,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3390,7 +3466,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3412,7 +3488,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3437,7 +3513,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3459,7 +3535,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 8; s++)
@@ -3482,7 +3558,7 @@ namespace ZeldaFullEditor
             LimitClass = DungeonLimits.GeneralManipulable;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3504,7 +3580,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3525,7 +3601,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s =
@@ -3552,7 +3628,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3580,7 +3656,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3609,7 +3685,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3637,7 +3713,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3665,7 +3741,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Vertical | Sorting.Dungeons | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3697,7 +3773,7 @@ namespace ZeldaFullEditor
 
 		}
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3721,7 +3797,7 @@ namespace ZeldaFullEditor
             LimitClass = DungeonLimits.GeneralManipulableLengthy;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3743,7 +3819,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3763,7 +3839,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3783,7 +3859,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3803,7 +3879,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3823,7 +3899,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3843,7 +3919,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3863,7 +3939,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3883,7 +3959,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3903,7 +3979,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -3924,7 +4000,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -3952,7 +4028,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             //height = (size + 10) * 8;
             //width = (size + 6) * 8;
@@ -3985,7 +4061,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4014,7 +4090,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             height = (Size + 10) * 8;
@@ -4045,7 +4121,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4088,7 +4164,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4116,7 +4192,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4145,7 +4221,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4174,7 +4250,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4203,7 +4279,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4232,7 +4308,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4261,7 +4337,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4293,7 +4369,7 @@ namespace ZeldaFullEditor
             diagonalFix = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4324,7 +4400,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -4344,7 +4420,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -4364,7 +4440,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -4385,7 +4461,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4407,7 +4483,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4430,7 +4506,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4459,7 +4535,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4483,7 +4559,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
 
             base.Draw();
@@ -4509,7 +4585,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4539,7 +4615,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             if (this.Size == 0)
@@ -4573,7 +4649,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             if (this.Size == 0)
@@ -4607,7 +4683,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4642,7 +4718,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4677,7 +4753,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4707,7 +4783,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4732,7 +4808,7 @@ namespace ZeldaFullEditor
 
 		}
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             for (int s = 0; s < Size + 1; s++)
@@ -4757,7 +4833,7 @@ namespace ZeldaFullEditor
 
 		}
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4780,7 +4856,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -4801,7 +4877,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -4822,7 +4898,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4856,7 +4932,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4925,7 +5001,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4960,7 +5036,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -4992,7 +5068,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
 
             base.Draw();
@@ -5035,7 +5111,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             int sizex = ((Size >> 2) & 0x03);
@@ -5073,7 +5149,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5112,7 +5188,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5150,7 +5226,7 @@ namespace ZeldaFullEditor
             //??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5188,7 +5264,7 @@ namespace ZeldaFullEditor
             //??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5226,7 +5302,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5263,7 +5339,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -5283,7 +5359,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -5309,7 +5385,7 @@ namespace ZeldaFullEditor
 
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5356,7 +5432,7 @@ namespace ZeldaFullEditor
 
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5400,7 +5476,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -5420,7 +5496,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -5441,7 +5517,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5479,7 +5555,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5514,7 +5590,7 @@ namespace ZeldaFullEditor
             name = Constants.Type1RoomObjectNames[0xD3];
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
         }
@@ -5528,7 +5604,7 @@ namespace ZeldaFullEditor
             name = Constants.Type1RoomObjectNames[0xD4];
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
         }
@@ -5542,7 +5618,7 @@ namespace ZeldaFullEditor
             name = Constants.Type1RoomObjectNames[0xD5];
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
         }
@@ -5556,7 +5632,7 @@ namespace ZeldaFullEditor
             name = Constants.Type1RoomObjectNames[0xD6];
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
         }
@@ -5574,7 +5650,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5609,7 +5685,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5648,7 +5724,7 @@ namespace ZeldaFullEditor
             showRectangle = true;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5686,7 +5762,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5723,7 +5799,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5766,7 +5842,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5865,7 +5941,7 @@ namespace ZeldaFullEditor
             addTiles(16, pos);
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5921,7 +5997,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5953,7 +6029,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -5991,7 +6067,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6029,7 +6105,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6067,7 +6143,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6105,7 +6181,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6143,7 +6219,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             int sizex = ((Size >> 2) & 0x03);
@@ -6180,7 +6256,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6218,7 +6294,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6256,7 +6332,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6295,7 +6371,7 @@ namespace ZeldaFullEditor
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 
@@ -6332,7 +6408,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6352,7 +6428,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6372,7 +6448,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6392,7 +6468,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6412,7 +6488,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6432,7 +6508,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6452,7 +6528,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6472,7 +6548,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6492,7 +6568,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6512,7 +6588,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6532,7 +6608,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6552,7 +6628,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6572,7 +6648,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6592,7 +6668,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6612,7 +6688,7 @@ namespace ZeldaFullEditor
              // ??
         }
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
@@ -6634,7 +6710,7 @@ namespace ZeldaFullEditor
 			LimitClass = DungeonLimits.GeneralManipulable;
 		}
 
-        public override void Draw()
+        public override void Draw(byte blockset = 0)
         {
             base.Draw();
 

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
     public static class DungeonObjectData
     {
         public static Tile[][] tiles = new Tile[0xF8][];
+
         public static void Load()
         {
             for (int i = 0; i < 0xF8; i++)
@@ -25,8 +20,10 @@ namespace ZeldaFullEditor.Data
             {
                 data[i] = (new Tile(ROM.DATA[pos + ((i * 2))], ROM.DATA[pos + ((i * 2)) + 1]));
             }
+
             return data;
         }
+
         /*
         public static byte[] subtype1_routines = new byte[0xF8]
         {
@@ -179,8 +176,8 @@ namespace ZeldaFullEditor.Data
             62,// RoomDraw_DownwardsBar2x5_1to16                    0x8F
             63,// RoomDraw_Downwards4x2_1to15or26                   0x90
         }
-
         */
+
         public static byte[] subtype1Lengths = new byte[0xF8]
         {
             04,08,08,08,08,08,08,04,04,05,05,05,05,05,05,05,

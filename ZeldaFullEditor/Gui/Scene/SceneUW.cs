@@ -1439,7 +1439,7 @@ namespace ZeldaFullEditor
             foreach (Room_Object roomObject in room.tilesLayoutObjects)
             {
                 roomObject.collisionPoint.Clear();
-                roomObject.Draw();
+                roomObject.Draw(mainForm.activeScene.room.blockset);
             }
 
             // Draw object on bitmap
@@ -1450,13 +1450,13 @@ namespace ZeldaFullEditor
                 if (roomObject.Layer != Room_Object.LayerType.BG3)
                 {
                     roomObject.collisionPoint.Clear();
-                    roomObject.Draw();
+                    roomObject.Draw(mainForm.activeScene.room.blockset);
                 }
 
                 if (roomObject.options == ObjectOption.Door)
                 {
                     roomObject.collisionPoint.Clear();
-                    roomObject.Draw();
+                    roomObject.Draw(mainForm.activeScene.room.blockset);
                 }
             }
 
@@ -1466,7 +1466,7 @@ namespace ZeldaFullEditor
                 if (roomObject.Layer == Room_Object.LayerType.BG3)
                 {
                     roomObject.collisionPoint.Clear();
-                    roomObject.Draw();
+                    roomObject.Draw(mainForm.activeScene.room.blockset);
                 }
             }
 
@@ -1475,7 +1475,7 @@ namespace ZeldaFullEditor
                 foreach (Room_Object roomObject in DungeonOverlays.loadedOverlay)
                 {
                     roomObject.collisionPoint.Clear();
-                    roomObject.Draw();
+                    roomObject.Draw(mainForm.activeScene.room.blockset);
                 }
             }
 

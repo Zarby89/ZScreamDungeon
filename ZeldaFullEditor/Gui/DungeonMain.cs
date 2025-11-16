@@ -3934,7 +3934,7 @@ namespace ZeldaFullEditor
             this.previewRoom.reloadLayout();
             foreach (Room_Object roomObject in this.previewRoom.tilesLayoutObjects)
             {
-                roomObject.Draw();
+                roomObject.Draw(this.activeScene.room.blockset);
             }
 
             // Draw object on bitmap.
@@ -3943,11 +3943,11 @@ namespace ZeldaFullEditor
                 // TODO: Can these ifs be merged?
                 if (roomObject.Layer != LayerType.BG3)
                 {
-                    roomObject.Draw();
+                    roomObject.Draw(this.activeScene.room.blockset);
                 }
                 else if (roomObject.options == ObjectOption.Door)
                 {
-                    roomObject.Draw();
+                    roomObject.Draw(this.activeScene.room.blockset);
                 }
             }
 
@@ -3956,7 +3956,7 @@ namespace ZeldaFullEditor
                 // Draw doors here since they'll all be put on bg3 anyways.
                 if (roomObject.Layer == LayerType.BG3)
                 {
-                    roomObject.Draw();
+                    roomObject.Draw(this.activeScene.room.blockset);
                 }
             }
 

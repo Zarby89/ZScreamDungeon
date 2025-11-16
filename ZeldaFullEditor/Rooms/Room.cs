@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using ZeldaFullEditor.Rooms;
 using static ZeldaFullEditor.Room_Object;
 
 namespace ZeldaFullEditor

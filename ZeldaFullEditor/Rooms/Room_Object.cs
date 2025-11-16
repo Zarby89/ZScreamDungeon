@@ -117,7 +117,6 @@ namespace ZeldaFullEditor
             UpdateSize();
             Size = previousSize;
             collisionPoint.Clear();
-            
         }
 
         public void getBaseSize()
@@ -138,13 +137,14 @@ namespace ZeldaFullEditor
             room = r;
         }
 
-        public virtual void Draw()
+        public virtual void Draw(byte blockset = 0)
         {
             if (room == null)
             {
                 room = DungeonsData.AllRooms[0];
                 
             }
+
             collisionPoint.Clear();
         }
 
@@ -196,10 +196,12 @@ namespace ZeldaFullEditor
             {
                 width = xx + 8;
             }
+
             if (height < yy + 8)
             {
                 height = yy + 8;
             }
+
             if (preview)
             {
                 if (xx < 57 && yy < 57 && xx >= 0 && yy >= 0)
