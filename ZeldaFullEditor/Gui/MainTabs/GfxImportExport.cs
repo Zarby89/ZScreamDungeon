@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -353,28 +354,16 @@ namespace ZeldaFullEditor.Gui
             ColorPalette colorPalette = GFX.allgfxBitmap.Palette;
             for (int i = 0; i < 16; i++)
             {
+                int index = rightSide ? i + (this.selectedPal * 16) + 8 : i + (this.selectedPal * 16);
+                index = index.Clamp(0, GFX.mapgfx16Bitmap.Palette.Entries.Count() - 1);
+
                 if (this.radioButton1.Checked)
                 {
-                    if (rightSide)
-                    {
-                        colorPalette.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + this.selectedPal * 16) + 8];
-                    }
-                    else
-                    {
-                        colorPalette.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(i + this.selectedPal * 16)];
-                    }
+                    colorPalette.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[index];
                 }
                 else
                 {
-
-                    if (rightSide)
-                    {
-                        colorPalette.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + this.selectedPal * 16) + 8];
-                    }
-                    else
-                    {
-                        colorPalette.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[(i + this.selectedPal * 16)];
-                    }
+                    colorPalette.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[index];
                 }
             }
 
@@ -685,7 +674,7 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void Paste4bppButton_Click(object sender, EventArgs e)
         {
             if (!GFX.isbpp3[selectedSheet])
             {
@@ -704,6 +693,7 @@ namespace ZeldaFullEditor.Gui
             if (bitmap.Size.Width != 128 || (bitmap.Size.Height != 40))
             {
                 MessageBox.Show("Your image must be 128x40 pixels or 128x72 for 2bpp", "Error");
+
                 return;
             }
 
