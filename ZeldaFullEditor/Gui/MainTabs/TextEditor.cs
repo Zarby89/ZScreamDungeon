@@ -1792,5 +1792,50 @@ namespace ZeldaFullEditor
             }
 
         }
+
+        private void TextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                if (AutoLinesBox.Checked)
+                {
+                    string temp = textBox1.Text;
+                    int loc = textBox1.SelectionStart;
+                    string temp2 = temp.Substring(0, loc);
+                    string temp3 = temp.Substring(loc);
+                    var lineCommands = Regex.Matches(temp2, @"\[[123V]\]");
+
+                    string addCommand = null;
+                    if (lineCommands.Count == 0)
+                    {
+                        addCommand = "[2]";
+                    }
+                    else
+                    {
+                        var last = lineCommands[lineCommands.Count - 1];
+                        switch (last.Value[1])
+                        {
+                            case '1':
+                                addCommand = "[2]";
+                                break;
+                            case '2':
+                                addCommand = "[3]";
+                                break;
+                            case '3':
+                            case 'V':
+                                addCommand = "[V]";
+                                break;
+                        }
+                    }
+
+                    if (addCommand != null)
+                    {
+                        textBox1.Text = string.Concat(temp2, "\r\n", addCommand, temp3);
+                        textBox1.SelectionStart = loc + 5;
+                        e.SuppressKeyPress = true;
+                    }
+                }
+            }
+        }
     }
 }
