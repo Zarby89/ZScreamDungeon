@@ -16,9 +16,20 @@
 
 RoomPointer = $258090
 
+; Restore original code at $01B95B (was inside collision loading loop)
 org $01B95B
+	db $A5, $B4, $C9, $00, $20, $D0, $03, $EE, $00, $02
+	; Equivalent to:
+	;   LDA.b $B4
+	;   CMP.w #$2000
+	;   BNE .more_to_go
+	;   INC.w $7E0200
+
+; New hook location at $01B986 (after collision table fully loaded)
+; This gets called once per complete collision load, not every iteration
+org $01B986
 	JSL CustomRoomCollision
-	NOP #6
+	NOP #$01
 
 org $258000
 CustomRoomCollision_easyout:
@@ -28,14 +39,20 @@ CustomRoomCollision_easyout:
 
 CustomRoomCollision:
 {
-	LDA $B4 : CMP.w #$2000 : BNE .notEndOfTable
-        
-        INC $0200
-    
-    .notEndOfTable
+	; Safety check: Only run if collision load is complete
+	LDA.w $0200
+	BEQ .alreadyDone
 
+	; Check if we already processed this room
 	REP #$30
-	LDA.b $A0
+	LDA.b $A0           ; Current room ID
+	CMP.l $7F2FFE       ; Last processed room (stored in WRAM)
+	BEQ .alreadyDone
+
+	; Mark this room as processed
+	STA.l $7F2FFE
+
+	; Continue with existing collision code
 	ASL
 	ADC.b $A0
 	TAX
@@ -80,6 +97,9 @@ CustomRoomCollision:
 
 .done
 	PLB
+	RTL
+
+.alreadyDone
 	RTL
 
 .new_rectangle

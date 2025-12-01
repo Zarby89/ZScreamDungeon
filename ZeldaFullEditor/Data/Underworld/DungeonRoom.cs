@@ -1127,48 +1127,68 @@ namespace ZeldaFullEditor.Data.Underworld
 		private List<CollisionRectangle> LoadCollisionLayout()
 		{
 			var ret = new List<CollisionRectangle>();
-			var freespace = new bool[CollisionMap.Length];
+			var processed = new bool[CollisionMap.Length];  // Track ALL processed tiles
 
 			for (ushort i = 0; i < CollisionMap.Length; i++)
 			{
-				byte? check = CollisionMap[i];
-
-				if (check == null || !freespace[i])
+				// Skip if already processed or null
+				if (processed[i] || CollisionMap[i] == null)
 				{
 					continue;
 				}
 
-				if (CollisionMap[i+1] == null && CollisionMap[i+64] == null)
+				byte value = (byte)CollisionMap[i];
+
+				// Try to find a rectangle starting at position i
+				int width = 1;
+				int height = 1;
+
+				// Find maximum width (stay within same row)
+				while ((i + width) < CollisionMap.Length &&
+					   (i / 64) == ((i + width) / 64) &&  // Stay on same row
+					   !processed[i + width] &&
+					   CollisionMap[i + width] != null &&
+					   (byte)CollisionMap[i + width] == value)
 				{
-					freespace[i] = true;
-					ret.Add(new CollisionRectangle(1, 1, i, (byte) check));
-					continue;
+					width++;
 				}
 
-				int rectumw = 1;
-				int rectumh = 64;
-
-				while (CollisionMap[i + rectumw] != null)
+				// Find maximum height that maintains the width
+				bool canExtendHeight = true;
+				while (canExtendHeight && (i + (height * 64)) < CollisionMap.Length)
 				{
-					rectumw++;
-				}
-
-				while  (((i + rectumh) < Constants.TilesPerTilemap)
-						&& CollisionMap[i + rectumh] != null)
-				{
-					rectumh += 64;
-				}
-
-				var rectumadd = new List<byte>();
-				for (int y = 0; y < rectumh; y += 64)
-				{
-					for (int x = 0; x < rectumw; x++)
+					// Check if entire next row matches
+					for (int x = 0; x < width; x++)
 					{
-						rectumadd.Add((byte) CollisionMap[i + x + y]);
+						int idx = i + x + (height * 64);
+						if (idx >= CollisionMap.Length ||
+							processed[idx] ||
+							CollisionMap[idx] == null ||
+							(byte)CollisionMap[idx] != value)
+						{
+							canExtendHeight = false;
+							break;
+						}
+					}
+					if (canExtendHeight)
+					{
+						height++;
 					}
 				}
 
-				ret.Add(new CollisionRectangle((byte) rectumw, (byte) (rectumh / 64), i, rectumadd.ToArray()));
+				// Create rectangle and mark all tiles as processed
+				var tileData = new List<byte>();
+				for (int y = 0; y < height; y++)
+				{
+					for (int x = 0; x < width; x++)
+					{
+						int idx = i + x + (y * 64);
+						processed[idx] = true;
+						tileData.Add(value);
+					}
+				}
+
+				ret.Add(new CollisionRectangle((byte)width, (byte)height, i, tileData.ToArray()));
 			}
 
 			return ret;
@@ -1396,7 +1416,9 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			foreach (var rectum in red)
 			{
-				ret.Add(rectum.Position);
+				// Write position as 2 bytes (little-endian) to match ASM expectations
+				ret.Add((byte)(rectum.Position & 0xFF));        // Low byte
+				ret.Add((byte)((rectum.Position >> 8) & 0xFF)); // High byte
 				ret.Add(rectum.Width);
 				ret.Add(rectum.Height);
 				ret.AddRange(rectum.TileData);
