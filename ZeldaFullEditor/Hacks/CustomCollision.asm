@@ -40,7 +40,7 @@ CustomRoomCollision_easyout:
 CustomRoomCollision:
 {
 	; Safety check: Only run if collision load is complete
-	LDA.w $0200
+	LDA.l $7E0200
 	BEQ .alreadyDone
 
 	; Check if we already processed this room
