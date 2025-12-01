@@ -345,4 +345,4 @@ ZeldaFullEditor/.editorconfig
 *.smc
 .vs/
 ZScreamSetup/
-ZeldaFullEditor/.vs/
+ZeldaFullEditor/.vs/checks.json
