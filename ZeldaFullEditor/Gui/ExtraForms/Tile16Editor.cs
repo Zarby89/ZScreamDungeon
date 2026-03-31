@@ -23,7 +23,265 @@ namespace ZeldaFullEditor.Gui
         Tile16 copiedTile;
 
         // TODO: Switch to entities.cs version, etc.
-        string[] tilesTypesNames = new string[0xFF];
+        string[] tilesTypesNames = new string[]
+            {
+                "00 - Nothing",
+                "01 - Collision",
+                "02 - Collision (short)",
+                "03 - Collision",
+                "04 - Collision (short ledge)",
+                "05 - Nothing",
+                "06 - Nothing",
+                "07 - Nothing",
+                "08 - Deep water",
+                "09 - Shallow water",
+                "0A - Short water ladder",
+                "0B - Collision / Deep water",
+                "0C - Overlay mask",
+                "0D - Spike floor",
+                "0E - GT ice",
+                "0F - Ice palace ice",
+                "10 - Slope ◤",
+                "11 - Slope ◥",
+                "12 - Slope ◣",
+                "13 - Slope ◢",
+                "14 - Nothing",
+                "15 - Nothing",
+                "16 - Nothing",
+                "17 - Nothing",
+                "18 - Slope ◤",
+                "19 - Slope ◥",
+                "1A - Slope ◣",
+                "1B - Slope ◢",
+                "1C - Layer 2 overlay",
+                "1D - North single-layer auto stairs",
+                "1E - North layer-swap auto stairs",
+                "1F - North layer-swap auto stairs",
+                "20 - Pit",
+                "21 - Nothing",
+                "22 - Manual stairs",
+                "23 - Pot switch",
+                "24 - Pressure switch",
+                "25 - Nothing",
+                "26 - Collision near stairs",
+                "27 - General hookable object",
+                "28 - North ledge",
+                "29 - South ledge",
+                "2A - East ledge",
+                "2B - West ledge",
+                "2C - ◤ ledge",
+                "2D - ◣ ledge",
+                "2E - ◥ ledge",
+                "2F - ◢ ledge",
+                "30 - Straight inter-room stairs south/up 0",
+                "31 - Straight inter-room stairs south/up 1",
+                "32 - Straight inter-room stairs south/up 2",
+                "33 - Straight inter-room stairs south/up 3",
+                "34 - Straight inter-room stairs north/down 0",
+                "35 - Straight inter-room stairs north/down 1",
+                "36 - Straight inter-room stairs north/down 2",
+                "37 - Straight inter-room stairs north/down 3",
+                "38 - Straight inter-room stairs north/down edge",
+                "39 - Straight inter-room stairs south/up edge",
+                "3A - Star tile (inactive on load)",
+                "3B - Star tile (active on load)",
+                "3C - Nothing",
+                "3D - South single-layer auto stairs",
+                "3E - South layer-swap auto stairs",
+                "3F - South layer-swap auto stairs",
+                "40 - Thick grass",
+                "41 - Nothing",
+                "42 - Gravestone / Tower of Hera ledge shadows",
+                "43 - Skull Woods entrance / Hera columns",
+                "44 - Spike",
+                "45 - Nothing",
+                "46 - Desert Tablet",
+                "47 - Nothing",
+                "48 - Diggable ground",
+                "49 - Nothing",
+                "4A - Diggable ground",
+                "4B - Warp tile",
+                "4C - Nothing / Square corner",
+                "4D - Nothing / Square corner",
+                "4E - Square corner",
+                "4F - Square corner",
+                "50 - Green bush",
+                "51 - Dark bush",
+                "52 - Gray rock",
+                "53 - Black rock",
+                "54 - Readable",
+                "55 - Big gray rock",
+                "56 - Big black rock",
+                "57 - Bonk rocks",
+                "58 - Chest 0",
+                "59 - Chest 1",
+                "5A - Chest 2",
+                "5B - Chest 3",
+                "5C - Chest 4",
+                "5D - Chest 5",
+                "5E - Spiral stairs",
+                "5F - Spiral stairs",
+                "60 - Rupee tile",
+                "61 - Nothing",
+                "62 - Bombable floor",
+                "63 - Minigame chest",
+                "64 - Nothing",
+                "65 - Nothing",
+                "66 - Crystal peg down",
+                "67 - Crystal peg up",
+                "68 - Upwards conveyor",
+                "69 - Downwards conveyor",
+                "6A - Leftwards conveyor",
+                "6B - Rightwards conveyor",
+                "6C - North vines",
+                "6D - South vines",
+                "6E - West vines",
+                "6F - East vines",
+                "70 - Manipulable 0",
+                "71 - Manipulable 1",
+                "72 - Manipulable 2",
+                "73 - Manipulable 3",
+                "74 - Manipulable 4",
+                "75 - Manipulable 5",
+                "76 - Manipulable 6",
+                "77 - Manipulable 7",
+                "78 - Manipulable 8",
+                "79 - Manipulable 9",
+                "7A - Manipulable A",
+                "7B - Manipulable B",
+                "7C - Manipulable C",
+                "7D - Manipulable D",
+                "7E - Manipulable E",
+                "7F - Manipulable F",
+                "80 - North/South door",
+                "81 - East/West door",
+                "82 - North/South shutter door",
+                "83 - East/West shutter door",
+                "84 - North/South layer 2 door",
+                "85 - East/West layer 2 door",
+                "86 - North/South layer 2 shutter door",
+                "87 - East/West layer 2 shutter door",
+                "88 - Some type of door",
+                "89 - East/West transport door",
+                "8A - Some type of door",
+                "8B - Some type of door",
+                "8C - Some type of door",
+                "8D - Some type of door",
+                "8E - Entrance door",
+                "8F - Entrance door",
+                "90 - Layer toggle shutter door",
+                "91 - Layer toggle shutter door",
+                "92 - Layer toggle shutter door",
+                "93 - Layer toggle shutter door",
+                "94 - Layer toggle shutter door",
+                "95 - Layer toggle shutter door",
+                "96 - Layer toggle shutter door",
+                "97 - Layer toggle shutter door",
+                "98 - Layer+Dungeon toggle shutter door",
+                "99 - Layer+Dungeon toggle shutter door",
+                "9A - Layer+Dungeon toggle shutter door",
+                "9B - Layer+Dungeon toggle shutter door",
+                "9C - Layer+Dungeon toggle shutter door",
+                "9D - Layer+Dungeon toggle shutter door",
+                "9E - Layer+Dungeon toggle shutter door",
+                "9F - Layer+Dungeon toggle shutter door",
+                "A0 - North/South Dungeon swap door",
+                "A1 - Dungeon toggle door",
+                "A2 - Dungeon toggle door",
+                "A3 - Dungeon toggle door",
+                "A4 - Dungeon toggle door",
+                "A5 - Dungeon toggle door",
+                "A6 - Nothing",
+                "A7 - Nothing",
+                "A8 - Layer+Dungeon toggle shutter door",
+                "A9 - Layer+Dungeon toggle shutter door",
+                "AA - Layer+Dungeon toggle shutter door",
+                "AB - Layer+Dungeon toggle shutter door",
+                "AC - Layer+Dungeon toggle shutter door",
+                "AD - Layer+Dungeon toggle shutter door",
+                "AE - Layer+Dungeon toggle shutter door",
+                "AF - Layer+Dungeon toggle shutter door",
+                "B0 - Somaria ─",
+                "B1 - Somaria │",
+                "B2 - Somaria ┌",
+                "B3 - Somaria └",
+                "B4 - Somaria ┐",
+                "B5 - Somaria ┘",
+                "B6 - Somaria ⍰ 1 way",
+                "B7 - Somaria ┬",
+                "B8 - Somaria ┴",
+                "B9 - Somaria ├",
+                "BA - Somaria ┤",
+                "BB - Somaria ┼",
+                "BC - Somaria ⍰ 2 way",
+                "BD - Somaria ┼ crossover",
+                "BE - Pipe entrance",
+                "BF - Nothing",
+                "C0 - Torch 0",
+                "C1 - Torch 1",
+                "C2 - Torch 2",
+                "C3 - Torch 3",
+                "C4 - Torch 4",
+                "C5 - Torch 5",
+                "C6 - Torch 6",
+                "C7 - Torch 7",
+                "C8 - Torch 8",
+                "C9 - Torch 9",
+                "CA - Torch A",
+                "CB - Torch B",
+                "CC - Torch C",
+                "CD - Torch D",
+                "CE - Torch E",
+                "CF - Torch F",
+                "D0 - Nothing",
+                "D1 - Nothing",
+                "D2 - Nothing",
+                "D3 - Nothing",
+                "D4 - Nothing",
+                "D5 - Nothing",
+                "D6 - Nothing",
+                "D7 - Nothing",
+                "D8 - Nothing",
+                "D9 - Nothing",
+                "DA - Nothing",
+                "DB - Nothing",
+                "DC - Nothing",
+                "DD - Nothing",
+                "DE - Nothing",
+                "DF - Nothing",
+                "E0 - Nothing",
+                "E1 - Nothing",
+                "E2 - Nothing",
+                "E3 - Nothing",
+                "E4 - Nothing",
+                "E5 - Nothing",
+                "E6 - Nothing",
+                "E7 - Nothing",
+                "E8 - Nothing",
+                "E9 - Nothing",
+                "EA - Nothing",
+                "EB - Nothing",
+                "EC - Nothing",
+                "ED - Nothing",
+                "EE - Nothing",
+                "EF - Nothing",
+                "F0 - Door 0 bottom",
+                "F1 - Door 1 bottom",
+                "F2 - Door 2 bottom",
+                "F3 - Door 3 bottom",
+                "F4 - Door X bottom",
+                "F5 - Door X bottom",
+                "F6 - Door X bottom",
+                "F7 - Door X bottom",
+                "F8 - Door 0 top",
+                "F9 - Door 1 top",
+                "FA - Door 2 top",
+                "FB - Door 3 top",
+                "FC - Door X top",
+                "FD - Door X top",
+                "FE - Door X top",
+                "FF - Door X top",
+            };
 
         private bool MadeChange = false;
         private bool cancelClosing = false;
@@ -655,84 +913,6 @@ namespace ZeldaFullEditor.Gui
 
         public void loadTilesNames()
         {
-            tilesTypesNames[0x00] = "0x00 - Normal tile(no interaction)";
-            tilesTypesNames[0x01] = "0x01 - Blocked";
-            tilesTypesNames[0x02] = "0x02 - Blocked)";
-            tilesTypesNames[0x03] = "0x03 - Blocked";
-            tilesTypesNames[0x04] = "0x04 - Normal? Unknown";
-            tilesTypesNames[0x05] = "0x05 - Normal tile(no interaction)";
-            tilesTypesNames[0x06] = "0x06 - Normal tile(no interaction)";
-            tilesTypesNames[0x07] = "0x07 - Normal tile(no interaction)";
-
-            tilesTypesNames[0x08] = "0x08 - Deep Water";
-            tilesTypesNames[0x09] = "0x09 - Shallow Water";
-
-            tilesTypesNames[0x0C] = "0x0C - Moving Floor";
-            tilesTypesNames[0x0D] = "0x0D - Sprite Floor";
-
-            tilesTypesNames[0x1C] = "0x1C - Top of in room staircase";
-
-            tilesTypesNames[0x20] = "0x20 - Hole Tile";
-            tilesTypesNames[0x22] = "0x22 - Wooden steps(slow you down)";
-            tilesTypesNames[0x27] = "0x27 - (empty chest and maybe others)";
-
-            tilesTypesNames[0x28] = "0x28 - Ledge leading up";
-            tilesTypesNames[0x29] = "0x29 - Ledge leading down";
-            tilesTypesNames[0x2A] = "0x2A - Ledge leading left";
-            tilesTypesNames[0x2B] = "0x2B - Ledge leading right";
-            tilesTypesNames[0x2C] = "0x2C - Ledge leading up + left";
-            tilesTypesNames[0x2D] = "0x2D - Ledge leading down + left";
-            tilesTypesNames[0x2E] = "0x2E - Ledge leading up + right";
-            tilesTypesNames[0x2F] = "0x2F - Ledge leading down + right";
-
-            tilesTypesNames[0x40] = "0x40 - Grass Tile";
-            tilesTypesNames[0x44] = "0x44 - Cactus Tile";
-            tilesTypesNames[0x48] = "0x48 - aftermath tiles of picking things up?";
-            tilesTypesNames[0x4A] = "0x4A - aftermath tiles of picking things up?";
-            tilesTypesNames[0x4B] = "0x4B - Warp Tile";
-            tilesTypesNames[0x4C] = "0x4C - Certain mountain tiles?";
-            tilesTypesNames[0x4D] = "0x4D - Certain mountain tiles?";
-            tilesTypesNames[0x4E] = "0x4E - Certain mountain tiles?";
-            tilesTypesNames[0x4F] = "0x4F - Certain mountain tiles?";
-
-            tilesTypesNames[0x50] = "0x50 - bush";
-            tilesTypesNames[0x51] = "0x51 - off color bush";
-            tilesTypesNames[0x52] = "0x52 - small light rock";
-            tilesTypesNames[0x53] = "0x53 - small heavy rock";
-            tilesTypesNames[0x54] = "0x54 - sign";
-            tilesTypesNames[0x55] = "0x55 - large light rock";
-            tilesTypesNames[0x56] = "0x56 - large heavy rock";
-
-            tilesTypesNames[0x58] = "0x58 - Chest block";
-            tilesTypesNames[0x59] = "0x59 - Chest block";
-            tilesTypesNames[0x5A] = "0x5A - Chest block";
-            tilesTypesNames[0x5B] = "0x5B - Chest block";
-            tilesTypesNames[0x5C] = "0x5C - Chest block";
-            tilesTypesNames[0x5D] = "0x5D - Chest block";
-
-            tilesTypesNames[0x63] = "0x63 - Minigame chest tile";
-            tilesTypesNames[0xB0] = "0xB0 - Hole Tile or Somaria?";
-
-            tilesTypesNames[0xC0] = "0xC0 - Torch";
-            tilesTypesNames[0xC1] = "0xC1 - Torch";
-            tilesTypesNames[0xC2] = "0xC2 - Torch";
-            tilesTypesNames[0xC3] = "0xC3 - Torch";
-            tilesTypesNames[0xC4] = "0xC4 - Torch";
-            tilesTypesNames[0xC5] = "0xC5 - Torch";
-            tilesTypesNames[0xC6] = "0xC6 - Torch";
-            tilesTypesNames[0xC7] = "0xC7 - Torch";
-            tilesTypesNames[0xC8] = "0xC8 - Torch";
-            tilesTypesNames[0xC9] = "0xC9 - Torch";
-            tilesTypesNames[0xCA] = "0xCA - Torch";
-            tilesTypesNames[0xCB] = "0xCB - Torch";
-            tilesTypesNames[0xCC] = "0xCC - Torch";
-            tilesTypesNames[0xCD] = "0xCD - Torch";
-            tilesTypesNames[0xCE] = "0xCE - Torch";
-            tilesTypesNames[0xCF] = "0xCF - Torch";
-
-            tilesTypesNames[0xF0] = "0xF0 - Key door 1";
-            tilesTypesNames[0xF1] = "0xF1 - Key door 2";
-
             tileTypeBox.Items.Clear();
             tileTypeBox.Items.AddRange(tilesTypesNames);
         }
