@@ -54,11 +54,10 @@ namespace ZeldaFullEditor.Data
         /// </summary>
         public bool PatchEnabled { get; set; } = true;
 
-        public AsmPatch(string filePath, string subfolder)
+        public AsmPatch(string filePath)
         {
             // filename provided contains path, but FileName contains only file name without path
             Dictionary<string, string> tempDefineData = new Dictionary<string, string>();
-            this.PatchFolder = subfolder;
             this.FileName = Path.GetFileName(filePath);
             WholePatch = File.ReadAllText(filePath);
             string[] allLines = WholePatch.Split('\n');
@@ -174,7 +173,7 @@ namespace ZeldaFullEditor.Data
                 WholePatch = WholePatch.Insert(pos, keyValue.Key + "= " + PatchDefines[keyValue.Key]["_VALUE"]);
             }
 
-            File.WriteAllText(projectPath + "\\Patches\\" + PatchFolder + "\\" + FileName, WholePatch);
+            File.WriteAllText(projectPath + "\\Patches\\" + "\\" + FileName, WholePatch);
         }
     }
 }

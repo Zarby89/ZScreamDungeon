@@ -28,28 +28,14 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         private void AsmPlugin_Load(object sender, EventArgs e)
         {
-            if (Directory.Exists("ZS_Patches"))
-            {
-                clientVersion = File.ReadAllText("ZS_Patches//Version.txt");
-            }
-
             LoadPatches();
-        }
-
-        private void patchFolderTabcontrol_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (patchFolderTabcontrol.TabPages.Count > 0)
-            {
-                patchListbox.SelectedIndex = -1;
-                UpdatePatchList();
-            }
         }
 
         private void UpdatePatchList()
         {
             patchListbox.Items.Clear(); // clear all items
+            patchListbox.Items.AddRange(PatchList.ToArray());
             patchListbox.DisplayMember = "PatchName";
-            patchListbox.Items.AddRange(PatchList.Where(x => x.PatchFolder == patchFolderTabcontrol.SelectedTab.Text).ToArray());
             for (int i = 0; i < patchListbox.Items.Count; i++)
             {
                 patchListbox.SetItemChecked(i, (patchListbox.Items[i] as AsmPatch).PatchEnabled);
@@ -457,49 +443,18 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             if (!Directory.Exists(ProjectPath + "\\Patches"))
             {
                 Directory.CreateDirectory(ProjectPath + "\\Patches");
-                Directory.CreateDirectory(ProjectPath + "\\Patches\\Misc");
-                Directory.CreateDirectory(ProjectPath + "\\Patches\\Hex Edits");
-                Directory.CreateDirectory(ProjectPath + "\\Patches\\Sprites");
-                Directory.CreateDirectory(ProjectPath + "\\Patches\\Items");
-                Directory.CreateDirectory(ProjectPath + "\\Patches\\Npcs");
-                Directory.CreateDirectory(ProjectPath + "\\Patches\\UNPATCHED");
             }
 
-            string[] folders = Directory.GetDirectories(ProjectPath + "\\Patches");
-
-            for (int i = 0; i < folders.Length; i++)
+            string[] patchfiles = Directory.GetFiles(ProjectPath + "\\Patches", "*.asm");
+            foreach (string patch in patchfiles)
             {
-                string name = Path.GetFileName(folders[i]);
-                if (name.Contains("UNPATCHED"))
-                {
-                    continue;
-                }
-
-                patchFolderTabcontrol.TabPages.Add(name);
-                string[] patchfiles = Directory.GetFiles(folders[i], "*.asm");
-                foreach (string patch in patchfiles)
-                {
-                    PatchList.Add(new AsmPatch(patch, name));
-                }
+                if (patch.Contains("generated.asm")) { continue; };
+                PatchList.Add(new AsmPatch(patch));
             }
 
-            if (patchFolderTabcontrol.TabPages.Count > 0)
-            {
-                UpdatePatchList();
-            }
+            UpdatePatchList();
         }
 
-        private void refreshPluginButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Do you want to save your current changes before reloading patches?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                SavePatches();
-            }
-            patchFolderTabcontrol.TabPages.Clear();
-            patchFolderTabcontrol.SelectedIndex = 0;
-            PatchList.Clear();
-            LoadPatches();
-        }
 
         private void SavePatches()
         {
@@ -518,97 +473,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             }
 
             File.WriteAllText(ProjectPath + "\\Patches\\generated.asm", generatedAsmFile.ToString());
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void UpdateButton_Click(object sender, EventArgs e)
-        {
-            using (WebClient client = new WebClient())
-            {
-                string serverVersion = client.DownloadString("https://raw.githubusercontent.com/Zarby89/ZScreamPatches/main/Version.txt");
-                if (serverVersion != clientVersion)
-                {
-                    if (MessageBox.Show("There is an update available!\r\nWould you like to download it now?", "Update!",MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        DownloadUpdate(client);
-                        if (!Directory.Exists("ZS_Patches"))
-                        {
-                            Directory.CreateDirectory("ZS_Patches");
-                        }
-
-                        File.WriteAllText("ZS_Patches//Version.txt", serverVersion); // Update the version !
-                        clientVersion = serverVersion;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No update available!");
-                }
-            }
-        }
-
-        private void DownloadUpdate(WebClient client)
-        {
-            if (Directory.Exists("Temp"))
-            {
-                Directory.Delete("Temp", true);
-                
-            }
-            //download the zip from the repo
-            //client.DownloadFile(@"https://github.com/Zarby89/ZScreamPatches/archive/refs/heads/main.zip", "TempDownloadPatches.zip");
-            //Thread.Sleep(100);
-            ZipFile.ExtractToDirectory("TempDownloadPatches.zip", "Temp\\");
-            File.Delete("TempDownloadPatches.zip");
-            CopyUpdate();
-            Directory.Delete("Temp", true);
-        }
-
-
-        private void CopyUpdate()
-        {
-            string[] folders = Directory.GetDirectories("Temp\\ZScreamPatches-main");
-            foreach (string folder in folders)
-            {
-                if (Directory.Exists("ZS_Patches\\" + Path.GetFileName(folder)))
-                {
-                    // if it exist then check all the files in it and copy them individually
-                    var files = Directory.EnumerateFiles("Temp\\ZScreamPatches-main");
-                    foreach (string file in files)
-                    {
-                        File.Copy(file, "ZS_Patches\\" + Path.GetFileName(folder) + "\\" + Path.GetFileName(file), true);
-                    }
-                }
-                else
-                {
-                    // if it doesn't exist just copy the entire folder
-                    Directory.Move(folder, "ZS_Patches\\" + Path.GetFileName(folder));
-                }
-            }
-        }
-
-        private void AddDirectoryButton_Click(object sender, EventArgs e)
-        {
-            AddDirectoryForm form = new AddDirectoryForm();
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                if (string.IsNullOrWhiteSpace(form.DirName))
-                {
-                    MessageBox.Show("The directory name cannot be empty!");
-                }
-                else if (Directory.Exists(ProjectPath + "\\Patches\\" + form.DirName))
-                {
-                    MessageBox.Show("That directory already exsits!");
-                }
-                else
-                {
-                    Directory.CreateDirectory(ProjectPath + "\\Patches\\" + form.DirName);
-                    patchFolderTabcontrol.TabPages.Add(form.DirName);
-                }
-            }
         }
 
         private int ReadStringInt(string s)
@@ -635,43 +499,25 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             this.Close();
         }
 
-        private void RemoveDirectoryButton_Click(object sender, EventArgs e)
+        private void morepatchButton_Click(object sender, EventArgs e)
         {
-            if (patchFolderTabcontrol.TabPages.Count == 1)
+            if (MessageBox.Show("This will bring you to the ZScreamPatches github to download more patch", "Open in browser",MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                MessageBox.Show("You must have at least one directory tab!", "Error");
-                return;
-            }
-
-            if (Directory.GetFiles(ProjectPath + "\\Patches\\" + patchFolderTabcontrol.SelectedTab.Text).Length > 0)
-            {
-                if (MessageBox.Show("The directory tab " + patchFolderTabcontrol.SelectedTab.Text + " is not empty.\r\nDeleting it will also delete all the patch files it contains.\r\nDo you wish to continue?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes);
-                {
-                    Directory.Delete(ProjectPath + "\\Patches\\" + patchFolderTabcontrol.SelectedTab.Text, true);
-                    patchFolderTabcontrol.TabPages.Remove(patchFolderTabcontrol.SelectedTab);
-                }
-            }
-            else
-            {
-                Directory.Delete(ProjectPath + "\\Patches\\" + patchFolderTabcontrol.SelectedTab.Text, true);
-                patchFolderTabcontrol.TabPages.Remove(patchFolderTabcontrol.SelectedTab);
-
-            }
-            UpdatePatchList();
-        }
-
-        private void removePluginButton_Click(object sender, EventArgs e)
-        {
-            if (selectedPatch != null)
-            {
-                File.Delete(selectedPatch.FileName);
-                PatchList.Remove(selectedPatch);
-                selectedPatch = null;
-                UpdatePatchList();
+                System.Diagnostics.Process.Start("https://github.com/Zarby89/ZScreamPatches");
             }
         }
 
-        private void addPluginButton_Click(object sender, EventArgs e)
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you want to save your current changes before reloading patches?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                SavePatches();
+            }
+            PatchList.Clear();
+            LoadPatches();
+        }
+
+        private void addasmPatchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog of = new OpenFileDialog())
             {
@@ -688,21 +534,21 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 }
                 if (of.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (string file in of.FileNames)
-                    {
-                        PatchList.Add(new AsmPatch(file, patchFolderTabcontrol.SelectedTab.Text));
-                    }
+                    PatchList.Add(new AsmPatch(of.FileName));
                 }
 
                 UpdatePatchList();
             }
         }
 
-        private void morepatchButton_Click(object sender, EventArgs e)
+        private void deleteSelectedPatchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("This will bring you to the ZScreamPatches github to download more patch", "Open in browser",MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (selectedPatch != null)
             {
-                System.Diagnostics.Process.Start("https://github.com/Zarby89/ZScreamPatches");
+                File.Delete(selectedPatch.FileName);
+                PatchList.Remove(selectedPatch);
+                selectedPatch = null;
+                UpdatePatchList();
             }
         }
     }

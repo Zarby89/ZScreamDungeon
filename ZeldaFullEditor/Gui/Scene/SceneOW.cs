@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.OWSceneModes;
 using ZeldaFullEditor.Properties;
@@ -74,6 +76,13 @@ namespace ZeldaFullEditor
         public List<OWNote> owNotesList = new List<OWNote>();
 
         public bool lowEndMode = false;
+        public Matrix matrix = new Matrix();
+
+        public Matrix inverseTransform;
+        public float scale = 1;
+        int prevScrollX = 0;
+        int prevScrollY = 0;
+
 
         public SceneOW(OverworldEditor f, Overworld ow, DungeonMain mform)
         {
@@ -139,14 +148,18 @@ namespace ZeldaFullEditor
 
             if (ModifierKeys == Keys.Shift)
             {
-                if (e.Delta < 0)
+                //matrix.Scale(4f, 4f);
+                //matrix.Translate(0, 1);
+                //Invalidate();
+                /*if (e.Delta < 0)
                 {
                     xPos += 128;
                 }
                 else
                 {
                     xPos -= 128;
-                }
+                }*/
+                
             }
             else
             {
@@ -154,12 +167,26 @@ namespace ZeldaFullEditor
                 {
                     if (e.Delta < 0)
                     {
-                        yPos += 48;
+                        matrix.Scale(0.5f, 0.5f);
+                        scale -= 1f;
                     }
                     else
                     {
-                        yPos -= 48;
+                        matrix.Scale(2, 2f);
+                        scale += 1f;
                     }
+                    float scaleScrollFix = (scale - 1);
+                    /*if (scale > 1)
+                    {
+                        owForm.splitContainer1.Panel2.SetAutoScrollMargin(0, 0);
+                    }
+                    else
+                    {
+                        owForm.splitContainer1.Panel2.SetAutoScrollMargin(0, 0);
+                    }*/
+                    
+                    OnScroll();
+                    Invalidate();
                 }
                 else
                 {
@@ -173,10 +200,27 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+            
 
             this.owForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
+            matrix.Translate(-(this.owForm.splitContainer1.Panel2.HorizontalScroll.Value - prevScrollX), -(this.owForm.splitContainer1.Panel2.VerticalScroll.Value - prevScrollY));
+            prevScrollX = this.owForm.splitContainer1.Panel2.HorizontalScroll.Value;
+            prevScrollY = this.owForm.splitContainer1.Panel2.VerticalScroll.Value;
+
+            Invalidate();
 
             //e.Delta
+        }
+        public void OnScroll()
+        {
+            if (scale > 1)
+            {
+                matrix.Translate(-(this.owForm.splitContainer1.Panel2.HorizontalScroll.Value - prevScrollX), -(this.owForm.splitContainer1.Panel2.VerticalScroll.Value - prevScrollY));
+            }
+            Invalidate(); // update gfx set the image matrix
+            // restore matrix position for next update
+            prevScrollX = this.owForm.splitContainer1.Panel2.HorizontalScroll.Value;
+            prevScrollY = this.owForm.splitContainer1.Panel2.VerticalScroll.Value;
         }
 
         public void updateMapGfx()
@@ -211,6 +255,12 @@ namespace ZeldaFullEditor
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            e.Location.Offset((int)scale, (int)scale);
+
+            Point[] mousePositionArray = { new Point(e.X, e.Y) };
+            inverseTransform.TransformPoints(mousePositionArray);
+            Point worldPosition = mousePositionArray[0];
+
             if (e.Button == MouseButtons.Middle)
             {
                 startingPoint = mainForm.PointToClient(Cursor.Position);
@@ -248,10 +298,10 @@ namespace ZeldaFullEditor
             switch (this.selectedMode)
             {
                 case ObjectMode.Tile:
-                    this.tilemode.OnMouseDown(e);
+                    this.tilemode.OnMouseDown(e, worldPosition);
                     break;
                 case ObjectMode.FillTile:
-                    this.tilemode.OnMouseDownFill(e);
+                    this.tilemode.OnMouseDownFill(e, worldPosition);
                     break;
 
                 case ObjectMode.Overlay:
@@ -303,6 +353,11 @@ namespace ZeldaFullEditor
         // TODO: Switch statements.
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
+
+            Point[] mousePositionArray = { new Point(e.X, e.Y) };
+            inverseTransform.TransformPoints(mousePositionArray);
+            Point worldPosition = mousePositionArray[0];
+
             if (e.Button == MouseButtons.Middle)
             {
                 pan = false;
@@ -316,7 +371,7 @@ namespace ZeldaFullEditor
 
             if (this.selectedMode == ObjectMode.Tile || this.selectedMode == ObjectMode.FillTile)
             {
-                this.tilemode.OnMouseUp(e);
+                this.tilemode.OnMouseUp(e, worldPosition);
 
                 text = "Selected Tile: " + selectedTile[0].ToString("X4") + "   Selected Map " + ow.AllMaps[selectedMap].ParentID.ToString("X2");
 
@@ -533,6 +588,12 @@ namespace ZeldaFullEditor
 
         private void onMouseMove(object sender, MouseEventArgs e)
         {
+
+            Point[] mousePositionArray = { new Point(e.X, e.Y) };
+            inverseTransform.TransformPoints(mousePositionArray);
+            Point worldPosition = mousePositionArray[0];
+
+
             if (pan)
             {
                 scrollingPoint = mainForm.PointToClient(Cursor.Position); // use mainform since it doesn't scroll!
@@ -566,7 +627,7 @@ namespace ZeldaFullEditor
             {
                 case ObjectMode.Tile:
                 case ObjectMode.FillTile:
-                    this.tilemode.OnMouseMove(e);
+                    this.tilemode.OnMouseMove(e, worldPosition);
                     break;
 
                 case ObjectMode.Overlay:
@@ -784,11 +845,19 @@ namespace ZeldaFullEditor
             return true;
         }
 
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
             Graphics g = e.Graphics;
+
+            g.Transform = matrix.Clone();
+
+
+            inverseTransform = matrix.Clone();
+            inverseTransform.Invert(); // Invert the matrix
+
 
             ColorMatrix cm = new ColorMatrix();
             ImageAttributes ia = new ImageAttributes();

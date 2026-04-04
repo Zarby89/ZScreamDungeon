@@ -28,35 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AsmPlugin));
             this.AcceptButton = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.PatchPanel = new System.Windows.Forms.Panel();
             this.propertyGroupbox = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.patchAuthorLabel = new System.Windows.Forms.Label();
             this.patchDescriptionTextbox = new System.Windows.Forms.TextBox();
             this.labelDescription = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.patchListbox = new System.Windows.Forms.CheckedListBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.RemoveDirectoryButton = new System.Windows.Forms.Button();
-            this.AddDirectoryButton = new System.Windows.Forms.Button();
-            this.removePluginButton = new System.Windows.Forms.Button();
-            this.addPluginButton = new System.Windows.Forms.Button();
-            this.patchFolderTabcontrol = new System.Windows.Forms.TabControl();
-            this.refreshPluginButton = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.UpdateButton = new System.Windows.Forms.Button();
-            this.CancelButton = new System.Windows.Forms.Button();
             this.morepatchButton = new System.Windows.Forms.Button();
+            this.CancelButton = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addasmPatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteSelectedPatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel4.SuspendLayout();
             this.PatchPanel.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // AcceptButton
@@ -75,22 +70,20 @@
             // 
             this.panel4.Controls.Add(this.PatchPanel);
             this.panel4.Controls.Add(this.panel1);
-            this.panel4.Controls.Add(this.patchFolderTabcontrol);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Location = new System.Drawing.Point(0, 24);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(856, 527);
+            this.panel4.Size = new System.Drawing.Size(856, 503);
             this.panel4.TabIndex = 8;
             // 
             // PatchPanel
             // 
             this.PatchPanel.Controls.Add(this.propertyGroupbox);
-            this.PatchPanel.Controls.Add(this.label1);
             this.PatchPanel.Controls.Add(this.panel3);
             this.PatchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PatchPanel.Location = new System.Drawing.Point(194, 26);
+            this.PatchPanel.Location = new System.Drawing.Point(194, 0);
             this.PatchPanel.Name = "PatchPanel";
-            this.PatchPanel.Size = new System.Drawing.Size(662, 501);
+            this.PatchPanel.Size = new System.Drawing.Size(662, 503);
             this.PatchPanel.TabIndex = 6;
             // 
             // propertyGroupbox
@@ -98,20 +91,10 @@
             this.propertyGroupbox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGroupbox.Location = new System.Drawing.Point(0, 94);
             this.propertyGroupbox.Name = "propertyGroupbox";
-            this.propertyGroupbox.Size = new System.Drawing.Size(662, 381);
+            this.propertyGroupbox.Size = new System.Drawing.Size(662, 409);
             this.propertyGroupbox.TabIndex = 9;
             this.propertyGroupbox.TabStop = false;
             this.propertyGroupbox.Text = "Patch configuration";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label1.Location = new System.Drawing.Point(0, 475);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(564, 26);
-            this.label1.TabIndex = 8;
-            this.label1.Text = resources.GetString("label1.Text");
             // 
             // panel3
             // 
@@ -157,11 +140,10 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.patchListbox);
-            this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 26);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(194, 501);
+            this.panel1.Size = new System.Drawing.Size(194, 503);
             this.panel1.TabIndex = 1;
             // 
             // patchListbox
@@ -170,92 +152,14 @@
             this.patchListbox.FormattingEnabled = true;
             this.patchListbox.Location = new System.Drawing.Point(0, 0);
             this.patchListbox.Name = "patchListbox";
-            this.patchListbox.Size = new System.Drawing.Size(194, 409);
+            this.patchListbox.Size = new System.Drawing.Size(194, 503);
             this.patchListbox.TabIndex = 2;
             this.patchListbox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.patchListbox_ItemCheck);
             this.patchListbox.SelectedIndexChanged += new System.EventHandler(this.patchListbox_SelectedIndexChanged);
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.RemoveDirectoryButton);
-            this.panel2.Controls.Add(this.AddDirectoryButton);
-            this.panel2.Controls.Add(this.removePluginButton);
-            this.panel2.Controls.Add(this.addPluginButton);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 409);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(194, 92);
-            this.panel2.TabIndex = 1;
-            // 
-            // RemoveDirectoryButton
-            // 
-            this.RemoveDirectoryButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.RemoveDirectoryButton.Location = new System.Drawing.Point(0, 69);
-            this.RemoveDirectoryButton.Name = "RemoveDirectoryButton";
-            this.RemoveDirectoryButton.Size = new System.Drawing.Size(194, 23);
-            this.RemoveDirectoryButton.TabIndex = 5;
-            this.RemoveDirectoryButton.Text = "Remove directory tab";
-            this.RemoveDirectoryButton.UseVisualStyleBackColor = true;
-            this.RemoveDirectoryButton.Click += new System.EventHandler(this.RemoveDirectoryButton_Click);
-            // 
-            // AddDirectoryButton
-            // 
-            this.AddDirectoryButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AddDirectoryButton.Location = new System.Drawing.Point(0, 46);
-            this.AddDirectoryButton.Name = "AddDirectoryButton";
-            this.AddDirectoryButton.Size = new System.Drawing.Size(194, 23);
-            this.AddDirectoryButton.TabIndex = 4;
-            this.AddDirectoryButton.Text = "Add directory tab";
-            this.AddDirectoryButton.UseVisualStyleBackColor = true;
-            this.AddDirectoryButton.Click += new System.EventHandler(this.AddDirectoryButton_Click);
-            // 
-            // removePluginButton
-            // 
-            this.removePluginButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.removePluginButton.Location = new System.Drawing.Point(0, 23);
-            this.removePluginButton.Name = "removePluginButton";
-            this.removePluginButton.Size = new System.Drawing.Size(194, 23);
-            this.removePluginButton.TabIndex = 3;
-            this.removePluginButton.Text = "Remove selected patch";
-            this.removePluginButton.UseVisualStyleBackColor = true;
-            this.removePluginButton.Click += new System.EventHandler(this.removePluginButton_Click);
-            // 
-            // addPluginButton
-            // 
-            this.addPluginButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.addPluginButton.Location = new System.Drawing.Point(0, 0);
-            this.addPluginButton.Name = "addPluginButton";
-            this.addPluginButton.Size = new System.Drawing.Size(194, 23);
-            this.addPluginButton.TabIndex = 2;
-            this.addPluginButton.Text = "Add ASM Patch(es)";
-            this.addPluginButton.UseVisualStyleBackColor = true;
-            this.addPluginButton.Click += new System.EventHandler(this.addPluginButton_Click);
-            // 
-            // patchFolderTabcontrol
-            // 
-            this.patchFolderTabcontrol.Dock = System.Windows.Forms.DockStyle.Top;
-            this.patchFolderTabcontrol.Location = new System.Drawing.Point(0, 0);
-            this.patchFolderTabcontrol.Name = "patchFolderTabcontrol";
-            this.patchFolderTabcontrol.SelectedIndex = 0;
-            this.patchFolderTabcontrol.Size = new System.Drawing.Size(856, 26);
-            this.patchFolderTabcontrol.TabIndex = 10;
-            this.patchFolderTabcontrol.SelectedIndexChanged += new System.EventHandler(this.patchFolderTabcontrol_SelectedIndexChanged);
-            // 
-            // refreshPluginButton
-            // 
-            this.refreshPluginButton.Location = new System.Drawing.Point(115, 1);
-            this.refreshPluginButton.Name = "refreshPluginButton";
-            this.refreshPluginButton.Size = new System.Drawing.Size(106, 23);
-            this.refreshPluginButton.TabIndex = 4;
-            this.refreshPluginButton.Text = "Refresh patches";
-            this.refreshPluginButton.UseVisualStyleBackColor = true;
-            this.refreshPluginButton.Click += new System.EventHandler(this.refreshPluginButton_Click);
-            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.morepatchButton);
-            this.panel5.Controls.Add(this.refreshPluginButton);
-            this.panel5.Controls.Add(this.UpdateButton);
             this.panel5.Controls.Add(this.CancelButton);
             this.panel5.Controls.Add(this.AcceptButton);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -264,17 +168,16 @@
             this.panel5.Size = new System.Drawing.Size(856, 24);
             this.panel5.TabIndex = 9;
             // 
-            // UpdateButton
+            // morepatchButton
             // 
-            this.UpdateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UpdateButton.Location = new System.Drawing.Point(274, 0);
-            this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(106, 23);
-            this.UpdateButton.TabIndex = 11;
-            this.UpdateButton.Text = "Check for update";
-            this.UpdateButton.UseVisualStyleBackColor = true;
-            this.UpdateButton.Visible = false;
-            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+            this.morepatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.morepatchButton.Location = new System.Drawing.Point(3, 0);
+            this.morepatchButton.Name = "morepatchButton";
+            this.morepatchButton.Size = new System.Drawing.Size(106, 23);
+            this.morepatchButton.TabIndex = 12;
+            this.morepatchButton.Text = "Get more patches";
+            this.morepatchButton.UseVisualStyleBackColor = true;
+            this.morepatchButton.Click += new System.EventHandler(this.morepatchButton_Click);
             // 
             // CancelButton
             // 
@@ -288,16 +191,46 @@
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // morepatchButton
+            // menuStrip1
             // 
-            this.morepatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.morepatchButton.Location = new System.Drawing.Point(3, 0);
-            this.morepatchButton.Name = "morepatchButton";
-            this.morepatchButton.Size = new System.Drawing.Size(106, 23);
-            this.morepatchButton.TabIndex = 12;
-            this.morepatchButton.Text = "Get more patches";
-            this.morepatchButton.UseVisualStyleBackColor = true;
-            this.morepatchButton.Click += new System.EventHandler(this.morepatchButton_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.refreshToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(856, 24);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addasmPatchToolStripMenuItem,
+            this.deleteSelectedPatchToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // addasmPatchToolStripMenuItem
+            // 
+            this.addasmPatchToolStripMenuItem.Name = "addasmPatchToolStripMenuItem";
+            this.addasmPatchToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.addasmPatchToolStripMenuItem.Text = "Add .asm patch";
+            this.addasmPatchToolStripMenuItem.Click += new System.EventHandler(this.addasmPatchToolStripMenuItem_Click);
+            // 
+            // deleteSelectedPatchToolStripMenuItem
+            // 
+            this.deleteSelectedPatchToolStripMenuItem.Name = "deleteSelectedPatchToolStripMenuItem";
+            this.deleteSelectedPatchToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.deleteSelectedPatchToolStripMenuItem.Text = "Delete selected patch";
+            this.deleteSelectedPatchToolStripMenuItem.Click += new System.EventHandler(this.deleteSelectedPatchToolStripMenuItem_Click);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // AsmPlugin
             // 
@@ -306,18 +239,21 @@
             this.ClientSize = new System.Drawing.Size(856, 551);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel5);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "AsmPlugin";
             this.Text = "ROM Patches";
             this.Load += new System.EventHandler(this.AsmPlugin_Load);
             this.panel4.ResumeLayout(false);
             this.PatchPanel.ResumeLayout(false);
-            this.PatchPanel.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -326,23 +262,19 @@
         private System.Windows.Forms.Button AcceptButton;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.TabControl patchFolderTabcontrol;
         private System.Windows.Forms.Panel PatchPanel;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TextBox patchDescriptionTextbox;
         private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.Label patchAuthorLabel;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button refreshPluginButton;
-        private System.Windows.Forms.Button removePluginButton;
-        private System.Windows.Forms.Button addPluginButton;
         private System.Windows.Forms.CheckedListBox patchListbox;
         private System.Windows.Forms.GroupBox propertyGroupbox;
-        private System.Windows.Forms.Button UpdateButton;
-        private System.Windows.Forms.Button RemoveDirectoryButton;
-        private System.Windows.Forms.Button AddDirectoryButton;
         private System.Windows.Forms.Button morepatchButton;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addasmPatchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteSelectedPatchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
     }
 }

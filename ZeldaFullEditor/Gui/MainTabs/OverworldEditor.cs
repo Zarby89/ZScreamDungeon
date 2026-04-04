@@ -166,6 +166,9 @@ namespace ZeldaFullEditor.Gui
 
             GFX.editort16Bitmap.Palette = this.scene.ow.AllMaps[this.scene.selectedMap].GFXBitmap.Palette;
             this.UpdateTiles();
+
+            splitContainer1.Panel2.AutoScroll = true;
+
             this.pictureBox1.Refresh();
         }
 
@@ -2545,5 +2548,12 @@ namespace ZeldaFullEditor.Gui
                 scene.selectedTile[1] = 3503;
             }
         }
+
+        private void splitContainer1_Panel2_Scroll(object sender, ScrollEventArgs e)
+        {
+            scene.OnScroll();
+        }
+
+
     }
 }

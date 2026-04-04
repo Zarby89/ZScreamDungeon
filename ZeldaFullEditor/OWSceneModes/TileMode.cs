@@ -94,15 +94,15 @@ namespace ZeldaFullEditor.OWSceneModes
 
         }
 
-        public void OnMouseDown(MouseEventArgs e)
+        public void OnMouseDown(MouseEventArgs e, Point worldPos)
         {
             //Buildtileset();
             //BuildTiles16Gfx();
 
             if (!scene.mouse_down)
             {
-                int tileX = (e.X / 16);
-                int tileY = (e.Y / 16);
+                int tileX = (worldPos.X / 16);
+                int tileY = (worldPos.Y / 16);
                 int superX = (tileX / 32);
                 int superY = (tileY / 32);
                 int mapId = (superY * 8) + superX;
@@ -222,15 +222,15 @@ namespace ZeldaFullEditor.OWSceneModes
         }
 
 
-        public void OnMouseDownFill(MouseEventArgs e)
+        public void OnMouseDownFill(MouseEventArgs e, Point worldPos)
         {
             //Buildtileset();
             //BuildTiles16Gfx();
 
             if (!scene.mouse_down)
             {
-                int tileX = (e.X / 16);
-                int tileY = (e.Y / 16);
+                int tileX = (worldPos.X / 16);
+                int tileY = (worldPos.Y / 16);
                 int superX = (tileX / 32);
                 int superY = (tileY / 32);
                 int mapId = (superY * 8) + superX;
@@ -321,12 +321,12 @@ namespace ZeldaFullEditor.OWSceneModes
         }
 
 
-        public void OnMouseUp(MouseEventArgs e)
+        public void OnMouseUp(MouseEventArgs e, Point worldPos)
         {
             if (scene.mouse_down)
             {
-                int tileX = (e.X / 16);
-                int tileY = (e.Y / 16);
+                int tileX = (worldPos.X / 16);
+                int tileY = (worldPos.Y / 16);
                 int superX = (tileX / 32);
                 int superY = (tileY / 32);
                 int mapId = (superY * 8) + superX + scene.ow.WorldOffset;
@@ -400,17 +400,17 @@ namespace ZeldaFullEditor.OWSceneModes
             //scene.mainForm.pictureGroupTiles.Refresh();
         }
 
-        public void OnMouseMove(MouseEventArgs e)
+        public void OnMouseMove(MouseEventArgs e, Point worldPos)
         {
             if (!scene.initialized)
             {
                 return;
             }
 
-            scene.mouseX_Real = e.X;
-            scene.mouseY_Real = e.Y;
-            int mouseTileX = e.X.Clamp(0, 4080) / 16;
-            int mouseTileY = e.Y.Clamp(0, 4080) / 16;
+            scene.mouseX_Real = worldPos.X;
+            scene.mouseY_Real = worldPos.Y;
+            int mouseTileX = worldPos.X.Clamp(0, 4080) / 16;
+            int mouseTileY = worldPos.Y.Clamp(0, 4080) / 16;
             int mapX = (mouseTileX / 32);
             int mapY = (mouseTileY / 32);
 
@@ -436,8 +436,8 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    int tileX = (e.X / 16);
-                    int tileY = (e.Y / 16);
+                    int tileX = (worldPos.X / 16);
+                    int tileY = (worldPos.Y / 16);
 
                     tileX = tileX.Clamp(0, 255);
                     tileY = tileY.Clamp(0, 255);
