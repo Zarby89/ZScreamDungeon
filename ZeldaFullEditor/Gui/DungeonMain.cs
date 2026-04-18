@@ -4992,8 +4992,10 @@ namespace ZeldaFullEditor
         {
             using (var ms = new FileStream("TestRoomData.dat", FileMode.Open, FileAccess.Read))
             {
+                #pragma warning disable SYSLIB0011
                 var formatter = new BinaryFormatter();
                 Room room = (Room)formatter.Deserialize(ms);
+                #pragma warning restore SYSLIB0011
                 this.activeScene.room = room;
                 Room rtc = null;
 

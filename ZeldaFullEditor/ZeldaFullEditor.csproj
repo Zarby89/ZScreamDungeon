@@ -1,21 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZScream</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <PublishUrl>C:\Users\adamo\Desktop\zscream\ZS3.2.4Beta\</PublishUrl>
@@ -34,30 +22,20 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>$(NoWarn);SYSLIB0011;WFO1000</NoWarn>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>bin\Release\Version3.2.4\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>true</Prefer32Bit>
-    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>ZeldaFullEditor.Program</StartupObject>
@@ -66,26 +44,12 @@
     <ApplicationIcon>screamlink.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>04C489A2A4F503757F45568FA161B416C2E6D403</ManifestCertificateThumbprint>
@@ -99,7 +63,6 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
@@ -107,742 +70,110 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="asar.cs" />
-    <Compile Include="ChestDraw.cs" />
-    <Compile Include="ColoringInfo.cs" />
-    <Compile Include="Data\AnimationFrame.cs" />
-    <Compile Include="Data\AsmPatch.cs" />
-    <Compile Include="Data\AsmPropertyType.cs" />
-    <Compile Include="Data\DefaultEntities.cs" />
-    <Compile Include="Data\DungeonMap.cs" />
-    <Compile Include="Data\DungeonObjectData.cs" />
-    <Compile Include="Data\EntityName.cs" />
-    <Compile Include="Data\Gravestone.cs" />
-    <Compile Include="Data\MapIcon.cs" />
-    <Compile Include="Data\MessageData.cs" />
-    <Compile Include="Data\OAMTile.cs" />
-    <Compile Include="Data\PrizePacks.cs" />
-    <Compile Include="Data\ScreenStrip.cs" />
-    <Compile Include="Data\SongAddress.cs" />
-    <Compile Include="Data\SpriteProperty.cs" />
-    <Compile Include="DrawingColor.cs" />
-    <Compile Include="DungeonOverlays.cs" />
-    <Compile Include="FastRomifier.cs" />
-    <Compile Include="FastRomifier.data.cs" />
-    <Compile Include="Gui\AddDirectoryForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\AddDirectoryForm.Designer.cs">
-      <DependentUpon>AddDirectoryForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\DamageClassControl.cs">
+    <Compile Update="Gui\DamageClassControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\DamageClassControl.Designer.cs">
-      <DependentUpon>DamageClassControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\DataExtractor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\DataExtractor.Designer.cs">
-      <DependentUpon>DataExtractor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExpandedManagement.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExpandedManagement.Designer.cs">
-      <DependentUpon>ExpandedManagement.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AnimationSetting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AnimationSetting.Designer.cs">
-      <DependentUpon>AnimationSetting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AsmPlugin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AsmPlugin.Designer.cs">
-      <DependentUpon>AsmPlugin.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ChestPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ChestPicker.Designer.cs">
-      <DependentUpon>ChestPicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\Chestviewer.cs">
+    <Compile Update="Gui\ExtraForms\Chestviewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\ExtraForms\Chestviewer.Designer.cs">
-      <DependentUpon>Chestviewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\CustomPanel.cs">
+    <Compile Update="Gui\CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\CustomTabControl.cs">
+    <Compile Update="Gui\CustomTabControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\CustomTabControl.Designer.cs">
-      <DependentUpon>CustomTabControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Data\SelectedObject.cs" />
-    <Compile Include="Data\DataRoom.cs" />
-    <Compile Include="DoAction.cs" />
-    <Compile Include="Data\DungeonsData.cs" />
-    <Compile Include="Data\Entrance.cs" />
-    <Compile Include="Data\EntranceOW.cs" />
-    <Compile Include="Data\ExitOW.cs" />
-    <Compile Include="GfxGroups.cs" />
-    <Compile Include="Gui\ExtraForms\DungeonObjEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\DungeonObjEditor.Designer.cs">
-      <DependentUpon>DungeonObjEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ExitEditorForm.Designer.cs">
-      <DependentUpon>ExitEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\EntranceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\EntranceForm.Designer.cs">
-      <DependentUpon>EntranceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\GlobalOptionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\GlobalOptionForm.Designer.cs">
-      <DependentUpon>GlobalOptionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AboutBox1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AboutBox1.Designer.cs">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AddSprite.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AddSprite.Designer.cs">
-      <DependentUpon>AddSprite.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AdvancedChestEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\AdvancedChestEditorForm.Designer.cs">
-      <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\CGRamViewer.cs">
+    <Compile Update="Gui\CGRamViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\CGRamViewer.Designer.cs">
-      <DependentUpon>CGRamViewer.cs</DependentUpon>
+    <Compile Update="Gui\ExtraForms\PrizePackBox.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.cs">
-      <SubType>Form</SubType>
+    <Compile Update="Gui\MainTabs\DungeonViewer.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.Designer.cs">
-      <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
+    <Compile Update="Gui\MainTabs\GfxEditor.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\ExtraForms\HexBox.cs">
+    <Compile Update="Gui\GfxGroupsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\GfxImportExport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\MusicEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\NamesEditorForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\NamesEditorFormFile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\ObjectDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\OverworldEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\PrizePacksEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\ScreenEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\SpriteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\PaletteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\VramViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\WindowPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\ObjectViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneOW.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\ExtraForms\NetHost.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\NetHost.Designer.cs">
-      <DependentUpon>NetHost.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\NetworkForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\NetworkForm.Designer.cs">
-      <DependentUpon>NetworkForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\OWMusicForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\OWMusicForm.Designer.cs">
-      <DependentUpon>OWMusicForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\PrizePackBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\PrizePackBox.Designer.cs">
-      <DependentUpon>PrizePackBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\SearchTilesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\SearchTilesForm.Designer.cs">
-      <DependentUpon>SearchTilesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\TransportForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\TransportForm.Designer.cs">
-      <DependentUpon>TransportForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ZsprImporter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ZsprImporter.Designer.cs">
-      <DependentUpon>ZsprImporter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ZSSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ZSSettings.Designer.cs">
-      <DependentUpon>ZSSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ZSUWProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ZSUWProperties.Designer.cs">
-      <DependentUpon>ZSUWProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ImportFromRom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ImportFromRom.Designer.cs">
-      <DependentUpon>ImportFromRom.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\DungeonViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\DungeonViewer.Designer.cs">
-      <DependentUpon>DungeonViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\EntrancePropertyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\EntrancePropertyForm.Designer.cs">
-      <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\GfxEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\GfxEditor.Designer.cs">
-      <DependentUpon>GfxEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\GfxGroupsForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\GfxGroupsForm.Designer.cs">
-      <DependentUpon>GfxGroupsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\GfxImportExport.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\GfxImportExport.Designer.cs">
-      <DependentUpon>GfxImportExport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\MusicEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\MusicEditor.Designer.cs">
-      <DependentUpon>MusicEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\NamesEditorForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\NamesEditorForm.Designer.cs">
-      <DependentUpon>NamesEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\NamesEditorFormFile.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\NamesEditorFormFile.Designer.cs">
-      <DependentUpon>NamesEditorFormFile.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\ObjectDesigner.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\ObjectDesigner.Designer.cs">
-      <DependentUpon>ObjectDesigner.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\OverworldEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\OverworldEditor.Designer.cs">
-      <DependentUpon>OverworldEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\PrizePacksEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\PrizePacksEditor.Designer.cs">
-      <DependentUpon>PrizePacksEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\ScreenEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\ScreenEditor.Designer.cs">
-      <DependentUpon>ScreenEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\MainTabs\SpriteEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\MainTabs\SpriteEditor.Designer.cs">
-      <DependentUpon>SpriteEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\NoteAdd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\NoteAdd.Designer.cs">
-      <DependentUpon>NoteAdd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\PaletteEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\PaletteEditor.Designer.cs">
-      <DependentUpon>PaletteEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\SaveSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\SaveSettings.Designer.cs">
-      <DependentUpon>SaveSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\SearchForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\SearchForm.Designer.cs">
-      <DependentUpon>SearchForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\TextEditorExtra\DictionariesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\TextEditorExtra\DictionariesForm.Designer.cs">
-      <DependentUpon>DictionariesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\Tile16Editor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\Tile16Editor.Designer.cs">
-      <DependentUpon>Tile16Editor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.Designer.cs">
-      <DependentUpon>MessageAsBytes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\VramViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\VramViewer.Designer.cs">
-      <DependentUpon>VramViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\WarpsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\WarpsForm.Designer.cs">
-      <DependentUpon>WarpsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\WindowPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\WindowPanel.Designer.cs">
-      <DependentUpon>WindowPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ImgClipboard.cs" />
-    <Compile Include="Data\OverlayData.cs" />
-    <Compile Include="Data\Overworld.cs" />
-    <Compile Include="Data\OverworldMap.cs" />
-    <Compile Include="IntFunctions.cs" />
-    <Compile Include="LogInfos.cs" />
-    <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
-    <Compile Include="OWSceneModes\DoorMode.cs" />
-    <Compile Include="OWSceneModes\EntranceMode.cs" />
-    <Compile Include="OWSceneModes\ExitMode.cs" />
-    <Compile Include="OWSceneModes\ItemMode.cs" />
-    <Compile Include="OWSceneModes\NoteMode.cs" />
-    <Compile Include="OWSceneModes\OverlayAnimationMode.cs" />
-    <Compile Include="OWSceneModes\OWNote.cs" />
-    <Compile Include="OWSceneModes\SpriteMode.cs" />
-    <Compile Include="OWSceneModes\OverlayMode.cs" />
-    <Compile Include="OWSceneModes\TileMode.cs" />
-    <Compile Include="OWSceneModes\GravestoneMode.cs" />
-    <Compile Include="OWSceneModes\TransportMode.cs" />
-    <Compile Include="Point3D.cs" />
-    <Compile Include="PointeredImage.cs" />
-    <Compile Include="Project.cs" />
-    <Compile Include="Gui\RoomMover.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\RoomMover.Designer.cs">
-      <DependentUpon>RoomMover.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NetZS.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Rooms\DungeonLimits.cs" />
-    <Compile Include="Rooms\Items\ItemsNames.cs" />
-    <Compile Include="Gui\ExtraForms\MovePointer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\MovePointer.Designer.cs">
-      <DependentUpon>MovePointer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ObjectMode.cs" />
-    <Compile Include="Gui\ObjectViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\ObjectViewer.Designer.cs">
-      <DependentUpon>ObjectViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Data\Palettes.cs" />
-    <Compile Include="Gui\PaletteViewer.cs" />
-    <Compile Include="ROMStructure.cs" />
-    <Compile Include="Gui\RoomLayout.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\RoomLayout.Designer.cs">
-      <DependentUpon>RoomLayout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Data\RoomPotSaveEditor.cs" />
-    <Compile Include="Rooms\Background2.cs" />
-    <Compile Include="Rooms\Chests\Chest.cs" />
-    <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Rooms\Items\Items_Draw.cs" />
-    <Compile Include="Rooms\Object_Draw\Doors_Draw.cs" />
-    <Compile Include="Gui\DungeonMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\DungeonMain.Designer.cs">
-      <DependentUpon>DungeonMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GFX.cs" />
-    <Compile Include="Gui\ExtraForms\GotoRoom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\GotoRoom.Designer.cs">
-      <DependentUpon>GotoRoom.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ROM.cs" />
-    <Compile Include="Rooms\Room.cs" />
-    <Compile Include="Rooms\RoomLayout.cs" />
-    <Compile Include="Rooms\Room_Name.cs" />
-    <Compile Include="Rooms\Sprites\Sprites_Names.cs" />
-    <Compile Include="Rooms\Object_Draw\Subtype1_Draw.cs" />
-    <Compile Include="Rooms\Object_Draw\Subtype2_Multiple.cs" />
-    <Compile Include="Rooms\Room_Object.cs" />
-    <Compile Include="Rooms\Object_Draw\Subtype3_Draw.cs" />
-    <Compile Include="Rooms\Sprites\Sprite.cs" />
-    <Compile Include="Save.cs" />
-    <Compile Include="Data\SaveObject.cs" />
-    <Compile Include="Gui\Scene\SceneOW.cs">
+    <Compile Update="Gui\Scene\SceneUW.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\Scene\SceneResizing.cs" />
-    <Compile Include="Gui\Scene\SceneUW.cs">
+    <Compile Update="Gui\Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\Scene\SceneBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="SpriteOWEditor.cs" />
-    <Compile Include="SpritesView.cs">
+    <Compile Update="SpritesView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SpritesView.Designer.cs">
-      <DependentUpon>SpritesView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Sprite_SubsetNames.cs" />
-    <Compile Include="Data\StringByte.cs" />
-    <Compile Include="Data\StringKey.cs" />
-    <Compile Include="Data\TagKey.cs" />
-    <Compile Include="Gui\MainTabs\TextEditor.cs">
+    <Compile Update="Gui\MainTabs\TextEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\MainTabs\TextEditor.Designer.cs">
-      <DependentUpon>TextEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Data\Tile.cs" />
-    <Compile Include="Data\Tile16.cs" />
-    <Compile Include="Data\Tile32.cs" />
-    <Compile Include="Data\TileInfo.cs" />
-    <Compile Include="Data\TilePos.cs" />
-    <Compile Include="Data\TileUndo.cs" />
-    <Compile Include="Data\TransportOW.cs" />
-    <Compile Include="T32UniqueCounter.cs" />
-    <Compile Include="UIText.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="VanillaROM.cs" />
-    <Compile Include="WriteType.cs" />
-    <Compile Include="ZCompressLibrary\Common.cs" />
-    <Compile Include="ZCompressLibrary\Compress.cs" />
-    <Compile Include="ZCompressLibrary\compression_piece.cs" />
-    <Compile Include="ZCompressLibrary\Decompress.cs" />
-    <Compile Include="ZCompressLibrary\fake_mem.cs" />
-    <Compile Include="ZSSerializer.cs" />
-    <EmbeddedResource Include="Gui\AddDirectoryForm.resx">
-      <DependentUpon>AddDirectoryForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\DamageClassControl.resx">
-      <DependentUpon>DamageClassControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\DataExtractor.resx">
-      <DependentUpon>DataExtractor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExpandedManagement.resx">
-      <DependentUpon>ExpandedManagement.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\AnimationSetting.resx">
-      <DependentUpon>AnimationSetting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\AsmPlugin.resx">
-      <DependentUpon>AsmPlugin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ChestPicker.resx">
-      <DependentUpon>ChestPicker.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\Chestviewer.resx">
-      <DependentUpon>Chestviewer.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\CustomTabControl.resx">
-      <DependentUpon>CustomTabControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\DungeonObjEditor.resx">
-      <DependentUpon>DungeonObjEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx">
-      <DependentUpon>EntranceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ExitEditorForm.resx">
-      <DependentUpon>ExitEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\GlobalOptionForm.resx">
-      <DependentUpon>GlobalOptionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\AboutBox1.resx">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\AddSprite.resx">
-      <DependentUpon>AddSprite.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\AdvancedChestEditorForm.resx">
-      <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\CGRamViewer.resx">
-      <DependentUpon>CGRamViewer.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\DungeonPropertiesForm.resx">
-      <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\DungeonMain.resx">
-      <DependentUpon>DungeonMain.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\HexBox.resx">
-      <DependentUpon>HexBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\NetHost.resx">
-      <DependentUpon>NetHost.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\NetworkForm.resx">
-      <DependentUpon>NetworkForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\OWMusicForm.resx">
-      <DependentUpon>OWMusicForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\PrizePackBox.resx">
-      <DependentUpon>PrizePackBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
-      <DependentUpon>SearchTilesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\TransportForm.resx">
-      <DependentUpon>TransportForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ZsprImporter.resx">
-      <DependentUpon>ZsprImporter.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ZSSettings.resx">
-      <DependentUpon>ZSSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ZSUWProperties.resx">
-      <DependentUpon>ZSUWProperties.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ImportFromRom.resx">
-      <DependentUpon>ImportFromRom.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\DungeonViewer.resx">
-      <DependentUpon>DungeonViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\EntrancePropertyForm.resx">
-      <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\GfxEditor.resx">
-      <DependentUpon>GfxEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\GfxGroupsForm.resx">
-      <DependentUpon>GfxGroupsForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\GfxImportExport.resx">
-      <DependentUpon>GfxImportExport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\GotoRoom.resx">
-      <DependentUpon>GotoRoom.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\MusicEditor.resx">
-      <DependentUpon>MusicEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\NamesEditorForm.resx">
-      <DependentUpon>NamesEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\NamesEditorFormFile.resx">
-      <DependentUpon>NamesEditorFormFile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\ObjectDesigner.resx">
-      <DependentUpon>ObjectDesigner.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\OverworldEditor.resx">
-      <DependentUpon>OverworldEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\PrizePacksEditor.resx">
-      <DependentUpon>PrizePacksEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\ScreenEditor.resx">
-      <DependentUpon>ScreenEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\SpriteEditor.resx">
-      <DependentUpon>SpriteEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\NoteAdd.resx">
-      <DependentUpon>NoteAdd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\PaletteEditor.resx">
-      <DependentUpon>PaletteEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\SaveSettings.resx">
-      <DependentUpon>SaveSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\SearchForm.resx">
-      <DependentUpon>SearchForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
-      <DependentUpon>DictionariesForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
-      <DependentUpon>Tile16Editor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\TextEditorExtra\MessageAsBytes.resx">
-      <DependentUpon>MessageAsBytes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\VramViewer.resx">
-      <DependentUpon>VramViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\WarpsForm.resx">
-      <DependentUpon>WarpsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\WindowPanel.resx">
-      <DependentUpon>WindowPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\MovePointer.resx">
-      <DependentUpon>MovePointer.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ObjectViewer.resx">
-      <DependentUpon>ObjectViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\RoomLayout.resx">
-      <DependentUpon>RoomLayout.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Scene\SceneOW.resx">
-      <DependentUpon>SceneOW.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Scene\SceneBase.resx">
-      <DependentUpon>SceneBase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Scene\SceneUW.resx">
-      <DependentUpon>SceneUW.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\RoomMover.resx">
-      <DependentUpon>RoomMover.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SpritesView.resx">
-      <DependentUpon>SpritesView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
-      <DependentUpon>TextEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include=".editorconfig" />
-    <None Include="packages.config" />
-    <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="ScratchPad.dat">
+    <None Update="GfxSheetExpanded.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="ZScreamUML.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <None Update="ScratchPad.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZCompressLibrary.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="zelda3compression.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="asar.dll">
@@ -867,19 +198,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
-    <None Include="Resources\arrow_Up_16xLG.png" />
-    <None Include="Resources\arrow_Next_16xMD.png" />
-    <None Include="Resources\arrow_Next_16xLG.png" />
-    <None Include="Resources\arrow_previous_16xLG.png" />
-    <None Include="Resources\arrow_Down_16xLG.png" />
     <Content Include="Resources\damageclass.png" />
-    <None Include="Resources\lwimage.png" />
-    <None Include="Resources\dwimage.png" />
-    <None Include="Resources\swimage.png" />
-    <None Include="Resources\lwimage1.png" />
-    <None Include="Resources\dwimage1.png" />
-    <None Include="Resources\swimage1.png" />
-    <None Include="Resources\Pen1.png" />
     <Content Include="ZS ROM MAP.txt" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -944,17 +263,9 @@
     <Content Include="ZSCustomOverworld.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\xbutton.png" />
-    <None Include="Resources\starn.bmp" />
-    <None Include="Resources\starl.bmp" />
-    <None Include="Resources\darkbg.png" />
-    <None Include="Resources\floorSelector.bmp" />
-    <None Include="Resources\floorselector.png" />
     <Content Include="spritesmove.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\Mblock.png" />
-    <None Include="Resources\spriteFont.png" />
     <Content Include="screamlink.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -972,12 +283,130 @@
   <ItemGroup>
     <Folder Include="ZS_Patches\UNPATCHED\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="Lidgren.Network" Version="1.0.2" />
+  </ItemGroup>
+  <ItemGroup Label="Compile items now included by globbing that were not in the original project file">
+    <Compile Remove="ZScreamer.cs" />
+    <Compile Remove="Utility\ZeldaException.cs" />
+    <Compile Remove="Utility\Utils.cs" />
+    <Compile Remove="Utility\UIText.cs" />
+    <Compile Remove="Utility\UIColors.cs" />
+    <Compile Remove="Utility\Structs\TilemapPosition.cs" />
+    <Compile Remove="Utility\Structs\Tile32.cs" />
+    <Compile Remove="Utility\Structs\Tile16.cs" />
+    <Compile Remove="Utility\Structs\Tile.cs" />
+    <Compile Remove="Utility\Structs\ROMAddress.cs" />
+    <Compile Remove="Utility\Structs\OAMTile.cs" />
+    <Compile Remove="Utility\Structs\OAMDrawInfo.cs" />
+    <Compile Remove="Utility\Structs\DrawInfo.cs" />
+    <Compile Remove="Utility\Sprite_SubsetNames.cs" />
+    <Compile Remove="Utility\SNESFunctions.cs" />
+    <Compile Remove="Utility\Palettes.cs" />
+    <Compile Remove="Utility\IntFunctions.cs" />
+    <Compile Remove="Utility\Interfaces\ITypeID.cs" />
+    <Compile Remove="Utility\Interfaces\ITilesTableBasedDraw.cs" />
+    <Compile Remove="Utility\Interfaces\IMultilayered.cs" />
+    <Compile Remove="Utility\Interfaces\IMouseCollidable.cs" />
+    <Compile Remove="Utility\Interfaces\IFreelyPlaceable.cs" />
+    <Compile Remove="Utility\Interfaces\IDrawableSprite.cs" />
+    <Compile Remove="Utility\Interfaces\IDelegatedDraw.cs" />
+    <Compile Remove="Utility\Interfaces\IByteable.cs" />
+    <Compile Remove="Utility\Interfaces\DungeonObject.cs" />
+    <Compile Remove="Utility\Enums\Worldiness.cs" />
+    <Compile Remove="Utility\Enums\TextView.cs" />
+    <Compile Remove="Utility\Enums\SpriteCategory.cs" />
+    <Compile Remove="Utility\Enums\SpecialObjectType.cs" />
+    <Compile Remove="Utility\Enums\RoomObjectCategory.cs" />
+    <Compile Remove="Utility\Enums\Lizard.cs" />
+    <Compile Remove="Utility\Enums\DungeonObjectSizeability.cs" />
+    <Compile Remove="Utility\Enums\DungeonObjectSet.cs" />
+    <Compile Remove="Utility\Enums\DungeonLimits.cs" />
+    <Compile Remove="Utility\Enums\DoorDirection.cs" />
+    <Compile Remove="Utility\Enums\DoorCategory.cs" />
+    <Compile Remove="Utility\EntityName.cs" />
+    <Compile Remove="Utility\DefaultEntities.cs" />
+    <Compile Remove="Utility\DataObjects\TilesList.cs" />
+    <Compile Remove="Utility\DataObjects\Point3D.cs" />
+    <Compile Remove="Utility\DataObjects\FloorNumber.cs" />
+    <Compile Remove="Utility\DataObjects\DoorTilesList.cs" />
+    <Compile Remove="Utility\DataObjects\AddressSet.cs" />
+    <Compile Remove="Utility\Constants.cs" />
+    <Compile Remove="Hacks\asar.cs" />
+    <Compile Remove="Gui\Scene\SceneUWnew.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWTorchMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWSpriteMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWSecretsMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWLayerMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWEntranceMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWDoorMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWCollisionMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\UWBlockMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\SceneMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWTransportMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWTileMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWSpriteMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWSecretsMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWOverlayMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWGravesMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWExitMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWEntranceMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\OWDoorMode.cs" />
+    <Compile Remove="Gui\Scene\SceneModes\ClipboardData\TileData.cs" />
+    <Compile Remove="Gui\Scene\Scene.cs" />
+    <Compile Remove="Gui\MainTabs\TextEditorMessages.cs" />
+    <Compile Remove="Gui\ExtraForms\MessageAsBytes.Designer.cs" />
+    <Compile Remove="Gui\ExtraForms\MessageAsBytes.cs" />
+    <Compile Remove="Gui\ExtraForms\DictionariesForm.Designer.cs" />
+    <Compile Remove="Gui\ExtraForms\DictionariesForm.cs" />
+    <Compile Remove="GraphicsManager.cs" />
+    <Compile Remove="GlobalSuppressions.cs" />
+    <Compile Remove="DungeonData.cs" />
+    <Compile Remove="Data\Underworld\RoomObjectTileLister.cs" />
+    <Compile Remove="Data\Underworld\RoomObject.cs" />
+    <Compile Remove="Data\Underworld\RoomLayout.cs" />
+    <Compile Remove="Data\Underworld\Room.cs" />
+    <Compile Remove="Data\Underworld\Entrance.cs" />
+    <Compile Remove="Data\Underworld\DungeonTorch.cs" />
+    <Compile Remove="Data\Underworld\DungeonSprite.cs" />
+    <Compile Remove="Data\Underworld\DungeonSecret.cs" />
+    <Compile Remove="Data\Underworld\DungeonRoomParts.cs" />
+    <Compile Remove="Data\Underworld\DungeonRoomChestsHandler.cs" />
+    <Compile Remove="Data\Underworld\DungeonRoom.cs" />
+    <Compile Remove="Data\Underworld\DungeonLayout.cs" />
+    <Compile Remove="Data\Underworld\DungeonDoor.cs" />
+    <Compile Remove="Data\Underworld\DungeonDestination.cs" />
+    <Compile Remove="Data\Underworld\DungeonChestItem.cs" />
+    <Compile Remove="Data\Underworld\DungeonBlock.cs" />
+    <Compile Remove="Data\Underworld\CollisionRectangle.cs" />
+    <Compile Remove="Data\Types\SpriteTypes.cs" />
+    <Compile Remove="Data\Types\SpriteDraw.cs" />
+    <Compile Remove="Data\Types\SecretItemType.cs" />
+    <Compile Remove="Data\Types\LayerMergeType.cs" />
+    <Compile Remove="Data\Types\ItemReceipt.cs" />
+    <Compile Remove="Data\Types\IEntityType.cs" />
+    <Compile Remove="Data\Types\DungeonObjectTypes.cs" />
+    <Compile Remove="Data\Types\DungeonObjectDraw.cs" />
+    <Compile Remove="Data\Types\DungeonDoorType.cs" />
+    <Compile Remove="Data\Types\DungeonDoorDraw.cs" />
+    <Compile Remove="Data\Overworld\OverworldTransport.cs" />
+    <Compile Remove="Data\Overworld\OverworldSprite.cs" />
+    <Compile Remove="Data\Overworld\OverworldSecret.cs" />
+    <Compile Remove="Data\Overworld\OverworldExit.cs" />
+    <Compile Remove="Data\Overworld\OverworldEntrance.cs" />
+    <Compile Remove="Data\Overworld\OverworldEntity.cs" />
+    <Compile Remove="Data\Overworld\OverworldDestination.cs" />
+    <Compile Remove="Data\Overworld\Overworld.cs" />
+    <Compile Remove="Data\Overworld\OverlayData.cs" />
+    <Compile Remove="Data\Overworld\Gravestone.cs" />
+    <Compile Remove="Data\OverlayTile.cs" />
+    <Compile Remove="Data\Misc\SpriteProperties.cs" />
+    <Compile Remove="Data\Misc\OverworldMap.cs" />
+    <Compile Remove="Data\Misc\MapIcon.cs" />
+    <Compile Remove="Data\Misc\DungeonMap.cs" />
+  </ItemGroup>
+  <ItemGroup Label="EmbeddedResource items now included by globbing that were not in the original project file">
+    <EmbeddedResource Remove="Gui\ExtraForms\MessageAsBytes.resx" />
+    <EmbeddedResource Remove="Gui\ExtraForms\DictionariesForm.resx" />
+  </ItemGroup>
 </Project>

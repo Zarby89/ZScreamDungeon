@@ -1,0 +1,25 @@
+{
+  "scenarioId": "dotnet-version-upgrade",
+  "operationId": "c132bd3e-dd32-4440-8571-0c30eec2f75a",
+  "description": "Upgrade .NET projects to newer .NET versions",
+  "startTime": "2026-04-18T11:54:06.6811573Z",
+  "lastUpdateTime": "2026-04-18T14:12:31.5448227Z",
+  "stage": "Assessment",
+  "properties": {
+    "task:02-update-tfm-and-sdk:startedAt": "2026-04-18T12:18:14.0728871Z",
+    "task:03-update-nuget-packages:startedAt": "2026-04-18T12:21:59.1203293Z",
+    "task:07-run-validation:startedAt": "2026-04-18T14:09:13.4381998Z",
+    "currentTask": "08-cleanup-and-document",
+    "task:05-build-and-fix-compile-errors:startedAt": "2026-04-18T12:31:33.7141496Z",
+    "task:06.04-ui-smoke-tests:startedAt": "2026-04-18T13:32:49.4167124Z",
+    "task:08-cleanup-and-document:startedAt": "2026-04-18T14:12:31.5448227Z",
+    "UpgradeTargetFramework": "net10.0",
+    "task:06.01-fix-designer-errors:startedAt": "2026-04-18T13:02:05.7104762Z",
+    "task:06-address-desktop-api-breaks:startedAt": "2026-04-18T13:09:19.6325780Z",
+    "task:04-enable-windows-desktop-support:startedAt": "2026-04-18T12:24:06.0156579Z",
+    "task:01-convert-to-sdk-style:startedAt": "2026-04-18T12:07:18.9604536Z",
+    "task:06.02-replace-legacy-controls:startedAt": "2026-04-18T13:10:52.2589616Z",
+    "task:06.03-update-gdi-usage:startedAt": "2026-04-18T13:19:00.1477495Z"
+  },
+  "folderPath": ""
+}

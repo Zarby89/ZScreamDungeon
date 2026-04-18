@@ -50,16 +50,17 @@ namespace ZeldaFullEditor
 		}
 
 
-		public static List<T> DeepCopy<T>(this List<T> me)
-		{
-			using (var ms = new System.IO.MemoryStream())
-			{
-				var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-				formatter.Serialize(ms, me);
-				ms.Position = 0;
-				return (List<T>) formatter.Deserialize(ms);
-			}
-		}
+using System.Text.Json;
+
+        public static T Clone<T>(T source)
+        {
+            if (source == null)
+                return default;
+
+            var json = JsonSerializer.Serialize(source);
+            return JsonSerializer.Deserialize<T>(json);
+        }
+
 
 		/// <summary>
 		/// Changes the given variable by a given magnitude based on the scroll wheel's delta.
