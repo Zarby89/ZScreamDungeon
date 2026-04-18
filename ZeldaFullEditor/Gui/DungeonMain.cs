@@ -3319,8 +3319,6 @@ namespace ZeldaFullEditor
                 {
                     sprite.subtype = (byte)this.spritesubtypeUpDown.Value;
                 }
-
-                Console.WriteLine("WTF?!?!?");
             }
         }
 

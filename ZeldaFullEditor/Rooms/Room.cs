@@ -1174,11 +1174,6 @@ namespace ZeldaFullEditor
 
             int objects_location = Utils.SnesToPc(tile_address);
 
-            if (objects_location == 0x52CA2)
-            {
-                Console.WriteLine("Room ID : " + index);
-            }
-
             if (floor)
             {
                 floor1 = (byte)(ROM.DATA[objects_location] & 0x0F);
@@ -1269,11 +1264,6 @@ namespace ZeldaFullEditor
                         posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
                         posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
                         sizeXY = 0;
-                    }
-
-                    if (oid == 0x31 || oid == 0x32)
-                    {
-                        Console.WriteLine("0x31 or 0x32 found in room  " + index.ToString("X3"));
                     }
 
                     Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
@@ -2796,27 +2786,6 @@ namespace ZeldaFullEditor
             staircase_plane[2] = (byte)((ROM.DATA[header_location + 7] >> 6) & 0x03);
             staircase_plane[3] = (byte)((ROM.DATA[header_location + 8]) & 0x03);
 
-            if (holewarp_plane == 2)
-            {
-                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
-            }
-            else if (staircase_plane[0] == 2)
-            {
-                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
-            }
-            else if (staircase_plane[1] == 2)
-            {
-                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
-            }
-            else if (staircase_plane[2] == 2)
-            {
-                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
-            }
-            else if (staircase_plane[3] == 2)
-            {
-                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
-            }
-
             holewarp = (ROM.DATA[header_location + 9]);
             staircase_rooms[0] = (ROM.DATA[header_location + 10]);
             staircase_rooms[1] = (ROM.DATA[header_location + 11]);
@@ -2972,7 +2941,6 @@ namespace ZeldaFullEditor
             pot_items = null;
             selectedObject = null;
 
-            Console.WriteLine("Room was deleted");
         }
     }
 
