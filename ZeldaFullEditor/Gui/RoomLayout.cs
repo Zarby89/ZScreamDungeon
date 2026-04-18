@@ -68,12 +68,12 @@ namespace ZeldaFullEditor
             List<SaveObject> data = new List<SaveObject>();
             while (br.BaseStream.Position != br.BaseStream.Length)
             {
-                data.Add(new SaveObject(br, typeof(Room_Object)));
+                data.Add(new SaveObject(br, 0));
             }
 
             foreach (SaveObject o in data)
             {
-                if (o.Type == typeof(Room_Object))
+                if (o.Type == 0)
                 {
                     Room_Object ro = scene.room.addObject(o.TileID, o.X, o.Y, o.Size, o.Layer);
                     if (ro != null)

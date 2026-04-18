@@ -5,7 +5,7 @@ using static ZeldaFullEditor.OverworldMap;
 namespace ZeldaFullEditor
 {
     [Serializable]
-    public class Sprite
+    public class Sprite : IClipboardable
     {
         public byte x, y, id;
         public byte nx, ny;
@@ -59,6 +59,19 @@ namespace ZeldaFullEditor
             }
 
             this.roomid = (short)room.index;
+        }
+
+        public SaveObject MakeClipboardItem()
+        {
+            return new SaveObject() {Type = 1, Subtype = subtype, ID = id, Layer = layer, X = x, Y = y };
+        }
+
+        public object Clone()
+        {
+            var copy = (Sprite)this.MemberwiseClone();
+            // Rectangle is a struct so boundingbox is copied by value.
+            // Room reference is kept (shared). No unmanaged resources to deep copy here.
+            return copy;
         }
 
         public Sprite(byte mapid, byte id, byte x, byte y, int map_x, int map_y)

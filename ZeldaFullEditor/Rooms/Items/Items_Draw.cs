@@ -3,7 +3,7 @@
 namespace ZeldaFullEditor
 {
     [Serializable]
-    public class PotItem
+    public class PotItem : IClipboardable
     {
         public byte x, y, id;
         public byte nx, ny;
@@ -20,6 +20,17 @@ namespace ZeldaFullEditor
             this.ny = y;
             this.bg2 = bg2;
             this.uniqueID = ROM.uniqueItemID++;
+        }
+
+        public object Clone()
+        {
+            var copy = (PotItem)this.MemberwiseClone();
+            return copy;
+        }
+
+        public SaveObject MakeClipboardItem()
+        {
+            return new SaveObject() {Type = 2, ID = id, Layer = (byte)(bg2?1:0), X = x, Y = y };
         }
 
         // Pots items

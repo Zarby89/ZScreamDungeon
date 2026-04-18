@@ -2826,14 +2826,98 @@ namespace ZeldaFullEditor
 
         public object Clone()
         {
-            using (var ms = new MemoryStream())
+            // Use MemberwiseClone with targeted deep copies for mutable collections.
+            // Avoid BinaryFormatter (obsolete) and perform controlled cloning.
+            var copy = (Room)this.MemberwiseClone();
+
+            // Deep-copy arrays
+            if (this.blocks != null) copy.blocks = (byte[])this.blocks.Clone();
+            if (this.collisionMap != null) copy.collisionMap = (byte[])this.collisionMap.Clone();
+            if (this.staircase_rooms != null) copy.staircase_rooms = (byte[])this.staircase_rooms.Clone();
+            if (this.staircase_plane != null) copy.staircase_plane = (byte[])this.staircase_plane.Clone();
+
+            // Deep-copy lists where practical; fall back to shallow copy of elements when no clone available.
+            copy.chest_list = new List<Chest>(this.chest_list?.Count ?? 0);
+            if (this.chest_list != null)
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, this);
-                ms.Position = 0;
-                Console.WriteLine("Size of serializing for room " + index.ToString() + " : " + ms.Length.ToString() + "Bytes");
-                return (Room)formatter.Deserialize(ms);
+                foreach (var item in this.chest_list)
+                {
+                    if (item is ICloneable ic)
+                        copy.chest_list.Add((Chest)ic.Clone());
+                    else
+                        copy.chest_list.Add(item);
+                }
             }
+
+            copy.tilesObjects = new List<Room_Object>(this.tilesObjects?.Count ?? 0);
+            if (this.tilesObjects != null)
+            {
+                foreach (var item in this.tilesObjects)
+                {
+                    if (item is ICloneable ic)
+                        copy.tilesObjects.Add((Room_Object)ic.Clone());
+                    else
+                        copy.tilesObjects.Add(item);
+                }
+            }
+
+            copy.tilesLayoutObjects = new List<Room_Object>(this.tilesLayoutObjects?.Count ?? 0);
+            if (this.tilesLayoutObjects != null)
+            {
+                foreach (var item in this.tilesLayoutObjects)
+                {
+                    if (item is ICloneable ic)
+                        copy.tilesLayoutObjects.Add((Room_Object)ic.Clone());
+                    else
+                        copy.tilesLayoutObjects.Add(item);
+                }
+            }
+
+            copy.sprites = new List<Sprite>(this.sprites?.Count ?? 0);
+            if (this.sprites != null)
+            {
+                foreach (var item in this.sprites)
+                {
+                    if (item is ICloneable ic)
+                        copy.sprites.Add((Sprite)ic.Clone());
+                    else
+                        copy.sprites.Add(item);
+                }
+            }
+
+            copy.pot_items = new List<PotItem>(this.pot_items?.Count ?? 0);
+            if (this.pot_items != null)
+            {
+                foreach (var item in this.pot_items)
+                {
+                    if (item is ICloneable ic)
+                        copy.pot_items.Add((PotItem)ic.Clone());
+                    else
+                        copy.pot_items.Add(item);
+                }
+            }
+
+            // Selected objects: keep references or clone if supported
+            copy.selectedObject = new List<object>(this.selectedObject?.Count ?? 0);
+            if (this.selectedObject != null)
+            {
+                foreach (var item in this.selectedObject)
+                {
+                    if (item is ICloneable ic)
+                        copy.selectedObject.Add(ic.Clone());
+                    else
+                        copy.selectedObject.Add(item);
+                }
+            }
+
+            // Copy value-type lists / structs
+            copy.collision_rectangles = this.collision_rectangles != null ? new List<CollisionRectangle>(this.collision_rectangles) : new List<CollisionRectangle>();
+            copy.staircaseRooms = this.staircaseRooms != null ? new List<StaircaseRoom>(this.staircaseRooms) : new List<StaircaseRoom>();
+
+            // Note: unmanaged resources (IntPtr, Bitmaps, etc.) are shared by shallow copy. If exclusive ownership is required,
+            // implement explicit cloning for those resources.
+
+            return copy;
         }
 
         public void CloneToFile(string file)
@@ -2919,6 +3003,11 @@ namespace ZeldaFullEditor
             this.x = x;
             this.y = y;
             this.name = name;
+        }
+
+        public object Clone()
+        {
+            return new StaircaseRoom(this.x, this.y, this.name);
         }
     }
 

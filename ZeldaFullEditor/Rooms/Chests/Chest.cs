@@ -18,6 +18,11 @@ namespace ZeldaFullEditor
             this.bigChest = bigChest;
         }
 
+        public object Clone()
+        {
+            return new Chest(this.x, this.y, this.item, this.bigChest, this.picker);
+        }
+
         // Chests Items
         public void ItemsDraw(byte id, int x, int y)
         {

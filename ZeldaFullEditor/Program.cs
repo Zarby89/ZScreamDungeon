@@ -10,6 +10,7 @@ namespace ZeldaFullEditor
     /// </summary>
     static class Program
     {
+        
         // var to keep track whether to show the console or not.
         // 0 = dont show.
         // 5 = show.
@@ -85,7 +86,9 @@ namespace ZeldaFullEditor
                     Environment.Exit(1);
                 }
             }
+            ApplicationConfiguration.Initialize();
 
+            Application.SetColorMode(SystemColorMode.Dark);
             // Run the app.
             Application.Run(new DungeonMain());
         }

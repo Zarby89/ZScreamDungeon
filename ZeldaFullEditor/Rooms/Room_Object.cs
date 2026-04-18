@@ -11,7 +11,7 @@ namespace ZeldaFullEditor
     ///		A class used to store the info for each dungeon object.
     /// </summary>
     [Serializable]
-    public unsafe class Room_Object
+    public unsafe class Room_Object : ICloneable, IClipboardable
     {
         // ==========================================================================================
         // Game Related Variables that are used to save data in the rom.
@@ -51,6 +51,25 @@ namespace ZeldaFullEditor
             ///     Background 3.
             /// </summary>
             BG3 = 2,
+        }
+
+        public object Clone()
+        {
+            // Shallow copy of the object, then deep-copy mutable lists
+            var copy = (Room_Object)this.MemberwiseClone();
+
+            if (this.tiles != null)
+            {
+                copy.tiles = new List<Tile>(this.tiles.Count);
+                foreach (var tile in this.tiles)
+                    copy.tiles.Add(tile);
+            }
+
+            if (this.collisionPoint != null)
+                copy.collisionPoint = new List<Point>(this.collisionPoint);
+
+            // Keep room reference as-is (shared)
+            return copy;
         }
 
         public byte Size { get; set; } // Size of the object
@@ -267,6 +286,11 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+        }
+
+        public SaveObject MakeClipboardItem()
+        {
+            return new SaveObject() { Type = 0, TileID = id, Layer = (byte)Layer, X = X, Y = Y, Size = Size, Options = options };
         }
     }
 

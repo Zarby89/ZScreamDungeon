@@ -1,5 +1,7 @@
 ﻿using System;
+using System.DirectoryServices;
 using System.IO;
+using System.Text;
 
 namespace ZeldaFullEditor
 {
@@ -57,56 +59,20 @@ namespace ZeldaFullEditor
         /// <summary>
         ///     Gets or sets the type of object (pot item, room object, or sprite).
         /// </summary>
-        public Type Type { get; set; }
+        public byte Type { get; set; }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SaveObject"/> class as a sprite.
-        /// </summary>
-        /// <param name="sprite"> The sprite. </param>
-        public SaveObject(Sprite sprite) // Sprite Format
+        public SaveObject() // Room_Object
         {
-            this.X = sprite.x;
-            this.Y = sprite.y;
-            this.ID = sprite.id;
-            this.Layer = sprite.layer;
-            this.Subtype = sprite.subtype;
-            this.Type = typeof(Sprite);
+            
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SaveObject"/> class as a room object.
-        /// </summary>
-        /// <param name="roomObject"> The room object. </param>
-        public SaveObject(Room_Object roomObject) // Room_Object
-        {
-            this.X = roomObject.X;
-            this.Y = roomObject.Y;
-            this.TileID = roomObject.id;
-            this.Layer = (byte)roomObject.Layer;
-            this.Size = roomObject.Size;
-            this.Options = roomObject.options;
-            this.Type = typeof(Room_Object);
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SaveObject"/> class as a pot item.
-        /// </summary>
-        /// <param name="potItem"> The pot item. </param>
-        public SaveObject(PotItem potItem) // Pot Item
-        {
-            this.X = potItem.x;
-            this.Y = potItem.y;
-            this.TileID = potItem.id;
-            this.Layer = (byte)(potItem.bg2 ? 1 : 0);
-            this.Type = typeof(PotItem);
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SaveObject"/> class.
         /// </summary>
         /// <param name="br"> The BinaryReader handeling the data from ROM. </param>
         /// <param name="type"> The type of object. </param>
-        public SaveObject(BinaryReader br, Type type) // From file
+        public SaveObject(BinaryReader br, byte type) // From file
         {
             this.TileID = (ushort)br.ReadInt16();
             this.X = br.ReadByte();
@@ -123,7 +89,7 @@ namespace ZeldaFullEditor
         /// <param name="bw"> A BinaryWriter that handles the writing to ROM. </param>
         public void SaveToFile(BinaryWriter bw)
         {
-            if (this.Type == typeof(Room_Object))
+            if (this.Type == 0)
             {
                 bw.Write(this.TileID);
                 bw.Write(this.X);
@@ -140,40 +106,50 @@ namespace ZeldaFullEditor
         ///     Returns all the data from the object as a string.
         /// </summary>
         /// <returns> A string with all the data from the object. </returns>
-        public override string ToString()
+        public void AddToClipboardBuilder(StringBuilder sb)
         {
-            string a = "NULLDAT";
-            if (this.Type == typeof(Sprite))
-            {
-                a += "S";
-                a += (char)this.ID;
-                a += (char)this.X;
-                a += (char)this.Y;
-                a += (char)this.Layer;
-                a += (char)this.Subtype;
-                a += "Z";
-            }
-            else if (this.Type == typeof(Room_Object))
-            {
-                a += "O";
-                a += (char)(this.TileID & 0xFF);
-                a += (char)(this.TileID >> 8);
-                a += (char)this.X;
-                a += (char)this.Y;
-                a += (char)this.Layer;
-                a += (char)this.Size;
-            }
-            else if (this.Type == typeof(PotItem))
-            {
-                a += "P";
-                a += (char)this.TileID;
-                a += (char)this.X;
-                a += (char)this.Y;
-                a += (char)this.Layer;
-                a += "ZZ";
-            }
 
-            return a;
+            if (this.Type == 1)
+            {
+                sb.Append("1");
+                sb.Append((char)(this.ID + 1));
+                sb.Append((char)(this.X + 1));
+                sb.Append((char)(this.Y + 1));
+                sb.Append((char)(this.Layer + 1));
+                sb.Append((char)(this.Subtype + 1));
+
+            }
+            else if (this.Type == 0)
+            {
+                sb.Append("0");
+                sb.Append((char)(TileID + 1));
+                sb.Append((char)(this.X + 1));
+                sb.Append((char)(this.Y + 1));
+                sb.Append((char)(this.Layer + 1));
+                sb.Append((char)(this.Size + 1));
+
+            }
+            else if (this.Type == 2)
+            {
+                sb.Append("2");
+                sb.Append((char)(this.ID + 1));
+                sb.Append((char)(this.X + 1));
+                sb.Append((char)(this.Y + 1));
+                sb.Append((char)(this.Layer + 1));
+            }
+            sb.Append("|");
+        }
+
+        public void BuildFromClipboard(string data)
+        {
+            /*if (data[0] == '0') // tileobject
+            {
+                TileID = (ushort)data[1];
+                X = (ushort)data[2];
+                Y = (ushort)data[3];
+                Layer = (ushort)data[4];
+                Size = (ushort)data[5];
+            }*/
         }
 
         /// <summary>

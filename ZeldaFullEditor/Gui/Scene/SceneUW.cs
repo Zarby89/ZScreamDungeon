@@ -2477,7 +2477,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            Refresh();
+            Invalidate();
         }
 
         public override void deleteSelected()
@@ -2516,33 +2516,75 @@ namespace ZeldaFullEditor
             SendObjectsData();
             room.selectedObject.Clear();
             DrawRoom();
-            Refresh();
+            Invalidate();
         }
 
         public override void paste()
         {
             if (!mouse_down)
             {
-                List<SaveObject> data = null;
-                try
+                if (!Clipboard.ContainsText())
                 {
-                    data = (List<SaveObject>)Clipboard.GetData("ObjectZ");
+                    return;
                 }
-                catch (Exception e)
+                List<SaveObject> dataObj = new List<SaveObject>();
+                string data = Clipboard.GetText();
+                if (!data.StartsWith("ZOBJ"))
                 {
-                    Console.WriteLine(e.Message);
+                    return;
                 }
 
-                if (data != null)
+                int pos = 4;
+                while(pos < data.Length-1)
                 {
-                    if (data.Count > 0)
+                    char objTypechar = (char)(data[pos]); // get the object type
+                    if (objTypechar == '0')
+                    {
+                        byte objTypeb = 0;
+                        ushort TileID = (ushort)(data[pos+1] - 1);
+                        byte X = (byte)(data[pos+2] - 1);
+                        byte Y = (byte)(data[pos+3] - 1);
+                        byte Layer = (byte)(data[pos+4] - 1);
+                        byte Size = (byte)(data[pos+5] - 1);
+                        pos+= 7; // skip the ('|')
+                        dataObj.Add(new SaveObject() {Type = objTypeb, TileID = TileID, X = X, Y = Y, Layer = Layer, Size = Size });
+                    }
+                    else if (objTypechar == '1')
+                    {
+                        byte objTypeb = 1;
+                        byte ID = (byte)(data[pos + 1] - 1);
+                        byte X = (byte)(data[pos + 2] - 1);
+                        byte Y = (byte)(data[pos + 3] - 1);
+                        byte Layer = (byte)(data[pos + 4] - 1);
+                        byte Subtype = (byte)(data[pos + 5] - 1);
+                        pos += 7; // skip the ('|')
+                        dataObj.Add(new SaveObject() { Type = objTypeb, ID = ID, X = X, Y = Y, Layer = Layer, Subtype = Subtype });
+                    }
+                    else if (objTypechar == '2')
+                    {
+                        byte objTypeb = 2;
+                        byte TileID = (byte)(data[pos + 1] - 1);
+                        byte X = (byte)(data[pos + 2] - 1);
+                        byte Y = (byte)(data[pos + 3] - 1);
+                        byte Layer = (byte)(data[pos + 4] - 1);
+   
+                        pos += 6; // skip the ('|')
+                        dataObj.Add(new SaveObject() { Type = objTypeb, TileID = TileID, ID = TileID, X = X, Y = Y, Layer = Layer });
+                    }
+
+                }
+
+
+                if (dataObj != null)
+                {
+                    if (dataObj.Count > 0)
                     {
                         int most_x = 512;
                         int most_y = 512;
 
-                        foreach (SaveObject o in data)
+                        foreach (SaveObject o in dataObj)
                         {
-                            if (data.Count > 0)
+                            if (dataObj.Count > 0)
                             {
                                 if (o.X < most_x)
                                 {
@@ -2561,16 +2603,16 @@ namespace ZeldaFullEditor
                         }
 
                         room.selectedObject.Clear();
-                        foreach (SaveObject o in data)
+                        foreach (SaveObject o in dataObj)
                         {
-                            if (o.Type == typeof(Sprite))
+                            if (o.Type == 1)
                             {
                                 selectedMode = ObjectMode.Spritemode;
                                 Sprite spr = (new Sprite(room, o.ID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Subtype, o.Layer));
                                 room.sprites.Add(spr);
                                 room.selectedObject.Add(spr);
                             }
-                            else if (o.Type == typeof(Room_Object))
+                            else if (o.Type == 0)
                             {
                                 if ((o.Options & ObjectOption.Door) == ObjectOption.Door)
                                 {
@@ -2620,7 +2662,7 @@ namespace ZeldaFullEditor
                                     }
                                 }
                             }
-                            else if (o.Type == typeof(PotItem))
+                            else if (o.Type == 2)
                             {
                                 selectedMode = ObjectMode.Itemmode;
                                 PotItem item = (new PotItem((byte)o.TileID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Layer == 1));
@@ -2643,28 +2685,17 @@ namespace ZeldaFullEditor
         public override void copy()
         {
             Clipboard.Clear();
-            List<SaveObject> odata = new List<SaveObject>();
-
-            foreach (var o in room.selectedObject)
+            StringBuilder sb = new StringBuilder();//(room.selectedObject.Count * 8);
+            sb.Append("ZOBJ");
+            //var list = room.selectedObject.Where(o is IClipboardable)
+            
+            foreach (IClipboardable o in room.selectedObject)
             {
-                if (o is Sprite objS)
-                {
-                    odata.Add(new SaveObject(objS));
-                    mouse_down = false;
-                }
-                if (o is PotItem objP)
-                {
-                    odata.Add(new SaveObject(objP));
-                    mouse_down = false;
-                }
-                if (o is Room_Object objR)
-                {
-                    odata.Add(new SaveObject(objR));
-                    mouse_down = false;
-                }
+                o.MakeClipboardItem().AddToClipboardBuilder(sb);
             }
+            mouse_down = false;
 
-            Clipboard.SetData("ObjectZ", odata);
+            Clipboard.SetText(sb.ToString());
         }
 
         // TODO copy
@@ -2677,7 +2708,7 @@ namespace ZeldaFullEditor
 
             while (br.BaseStream.Position != br.BaseStream.Length)
             {
-                data.Add(new SaveObject(br, typeof(Room_Object)));
+                data.Add(new SaveObject(br, 0));
             }
 
             if (data.Count > 0)
@@ -2707,13 +2738,13 @@ namespace ZeldaFullEditor
 
                 foreach (SaveObject o in data)
                 {
-                    if (o.Type == typeof(Sprite))
+                    if (o.Type == 1)
                     {
                         Sprite spr = (new Sprite(room, o.ID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Subtype, o.Layer));
                         room.sprites.Add(spr);
                         room.selectedObject.Add(spr);
                     }
-                    else if (o.Type == typeof(Room_Object))
+                    else if (o.Type == 0)
                     {
                         Room_Object ro = room.addObject(o.TileID, (byte)(o.X - most_x), (byte)(o.Y - most_y), o.Size, o.Layer);
                         if (ro != null)
@@ -2741,25 +2772,21 @@ namespace ZeldaFullEditor
             mainForm.CheckAnyChanges();
             //undoRooms.Add(r);
 
-            var odata = new List<SaveObject>();
-            foreach (var o in room.selectedObject)
+            Clipboard.Clear();
+            StringBuilder sb = new StringBuilder(room.selectedObject.Count * 8);
+            //var list = room.selectedObject.Where(o is IClipboardable)
+
+            foreach (IClipboardable o in room.selectedObject)
             {
-                if (o is Sprite objS)
-                {
-                    odata.Add(new SaveObject(objS));
-                }
-                if (o is PotItem objP)
-                {
-                    odata.Add(new SaveObject(objP));
-                }
-                if (o is Room_Object objR)
-                {
-                    odata.Add(new SaveObject(objR));
-                    objR.deleted = true;
-                }
+                o.MakeClipboardItem().AddToClipboardBuilder(sb);
+
+
             }
-            SendObjectsData();
-            Clipboard.SetData("ObjectZ", odata);
+            mouse_down = false;
+
+            Clipboard.SetText(sb.ToString());
+
+
 
             foreach (var o in room.selectedObject)
             {

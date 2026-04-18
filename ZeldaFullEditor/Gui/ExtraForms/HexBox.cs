@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -135,6 +136,14 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
             // Removed as its not necessary, can be set in the properties tab under text align.
             //this.TextAlign = HorizontalAlignment.Right;
+
+
+            // IF DARKMODE
+            this.BackColor = Color.FromArgb(45, 45, 48);
+            this.ForeColor = Color.White;
+            this.BorderStyle = BorderStyle.FixedSingle;
+
+
             this.CharacterCasing = CharacterCasing.Upper;
         }
 
