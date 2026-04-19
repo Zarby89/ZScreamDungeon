@@ -84,9 +84,6 @@ namespace ZeldaFullEditor
             this.AreaY = (byte)(Math.Abs(y - (mapY * 512)) / 16);
 
             this.IsHole = hole;
-
-            this.UniqueID = ROM.uniqueEntranceID;
-            ROM.uniqueEntranceID += 1;
         }
 
         /// <summary>

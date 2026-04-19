@@ -161,9 +161,6 @@ namespace ZeldaFullEditor
 
             this.AreaX = (byte)(Math.Abs(playerX - (mapX * 512)) / 16);
             this.AreaY = (byte)(Math.Abs(playerY - (mapY * 512)) / 16);
-
-            this.UniqueID = ROM.uniqueExitID;
-            ROM.uniqueExitID += 1;
         }
 
         /// <summary>

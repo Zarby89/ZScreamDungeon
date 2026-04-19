@@ -77,7 +77,6 @@ namespace ZeldaFullEditor
 
             this.GameX = (byte)(Math.Abs(x - (mapX * 512)) / 16);
             this.GameY = (byte)(Math.Abs(y - (mapY * 512)) / 16);
-            this.UniqueID = ROM.uniqueItemID++;
         }
 
         /// <summary>

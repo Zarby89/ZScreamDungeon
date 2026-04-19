@@ -845,39 +845,10 @@ namespace ZeldaFullEditor.Gui
             List<Tile16> zsnetTiles16 = new List<Tile16>();
             for (int i = 0; i < Constants.NumberOfMap16Ex; i++)
             {
-                if (NetZS.connected)
-                {
-                    if (scene.ow.Tile16List[i].GetLongData() != allTiles[i].GetLongData())
-                    {
-                        zsnetTiles16.Add(allTiles[i]);
-                        zsnetTiles16ID.Add((ushort)i);
-                    }
-                }
-
                 // Check all tiles that changed.
                 scene.ow.Tile16List[i] = allTiles[i];
             }
 
-            if (NetZS.connected)
-            {
-                NetZSBuffer buffer = new NetZSBuffer((short)((zsnetTiles16ID.Count * 10) + 8));
-                buffer.Write((byte)18); // tile data cmd
-                buffer.Write(NetZS.userID); // user id
-                buffer.Write((short)zsnetTiles16ID.Count);  // numbers of tiles changed
-                for (int i = 0; i < zsnetTiles16ID.Count; i++)
-                {
-                    buffer.Write(zsnetTiles16ID[i]);
-                    buffer.Write((ushort)zsnetTiles16[i].Tile0.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].Tile1.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].Tile2.toShort());
-                    buffer.Write((ushort)zsnetTiles16[i].Tile3.toShort());
-                }
-
-                NetOutgoingMessage msg = NetZS.client.CreateMessage();
-                msg.Write(buffer.buffer);
-                NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-                NetZS.client.FlushSendQueue();
-            }
 
             for (int i = 0; i < 0x200; i++)
             {

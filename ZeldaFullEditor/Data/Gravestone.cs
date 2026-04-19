@@ -43,7 +43,6 @@
             this.YTilePos = y.Clamp(0, 4088);
             this.TilemapPos = tilemapPos;
             this.GFX = gfx;
-            this.UniqueID = ROM.uniqueGraveID++;
         }
     }
 }

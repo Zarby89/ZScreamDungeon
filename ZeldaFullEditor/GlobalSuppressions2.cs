@@ -6,4 +6,5 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Interoperability", "CA1416:Valider la compatibilité de la plateforme", Justification = "<En attente>", Scope = "module")]
-
+[assembly: SuppressMessage("Design", "CA1060:Déplacer les P/Invoke vers une classe NativeMethods", Justification = "<En attente>", Scope = "module")]
+[assembly: SuppressMessage("Globalization", "CA2101:Spécifier le marshaling pour les arguments de chaîne P/Invoke", Justification = "<En attente>", Scope = "module")]

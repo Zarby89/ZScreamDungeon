@@ -103,7 +103,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 if (selectedTransport != null)
                 {
                     lastselectedTransport = selectedTransport;
-                    SendTransportData(selectedTransport);
                     selectedTransport = null;
                     scene.mouse_down = false;
                 }
@@ -174,8 +173,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
 
                 lastselectedTransport.updateMapStuff((byte)newMapID, scene.ow);
-
-                SendTransportData(lastselectedTransport);
             }
         }
 
@@ -275,37 +272,5 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        void SendTransportData(TransportOW transport)
-        {
-            if (!NetZS.connected)
-            {
-                return;
-            }
-
-            NetZSBuffer buffer = new NetZSBuffer(32);
-            buffer.Write((byte)10); // transport data
-            buffer.Write((byte)NetZS.userID); // user ID
-            buffer.Write((int)transport.ID);
-
-            buffer.Write((byte)transport.unk1);
-            buffer.Write((byte)transport.unk2);
-            buffer.Write((byte)transport.AreaX);
-            buffer.Write((byte)transport.AreaY);
-
-            buffer.Write((short)transport.vramLocation);
-            buffer.Write((short)transport.xScroll);
-            buffer.Write((short)transport.yScroll);
-            buffer.Write((short)transport.playerX);
-            buffer.Write((short)transport.playerY);
-            buffer.Write((short)transport.cameraX);
-            buffer.Write((short)transport.cameraY);
-            buffer.Write((short)transport.MapID);
-            buffer.Write((short)transport.whirlpoolPos);
-
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
-        }
     }
 }

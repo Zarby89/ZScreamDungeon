@@ -123,7 +123,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedEntrance = scene.ow.AllEntrances[i];
                         scene.mouse_down = true;
                         isLeftPress = true;
-                        SendEntranceData(selectedEntrance);
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         break;
                     }
@@ -373,7 +372,6 @@ namespace ZeldaFullEditor.OWSceneModes
             lastselectedEntrance.MapPos = 0xFFFF;
             lastselectedEntrance.EntranceID = 0;
             lastselectedEntrance.Deleted = true;
-            SendEntranceData(lastselectedEntrance);
             string tname = "OW[" + scene.owForm.owentrancesListbox.SelectedIndex.ToString("X2") + "] -> DELETED";
             scene.owForm.owentrancesListbox.Items[scene.owForm.owentrancesListbox.SelectedIndex] = tname;
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -419,7 +417,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     }
 
                     selectedEntrance.UpdateMapStuff(mapID, scene.ow.AllMaps[mapID].AreaSize);
-                    SendEntranceData(selectedEntrance);
                     selectedEntrance = null;
                     scene.mouse_down = false;
                     scene.owForm.owentrancesListbox_SelectedIndexChanged(null, null);
@@ -571,7 +568,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 lastselectedEntrance.MapID = ef.mapId;
                 lastselectedEntrance.X = ef.x.Clamp(0, 4080);
                 lastselectedEntrance.Y = ef.y.Clamp(0, 4080);
-                SendEntranceData(lastselectedEntrance);
             }
         }
 
@@ -705,30 +701,5 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        public void SendEntranceData(EntranceOW entrance)
-        {
-            if (!NetZS.connected)
-            {
-                return;
-            }
-
-            NetZSBuffer buffer = new NetZSBuffer(24);
-            buffer.Write((byte)06); // entrance data
-            buffer.Write((byte)NetZS.userID); //user ID
-            buffer.Write((int)entrance.UniqueID);
-            buffer.Write((byte)entrance.EntranceID);
-            buffer.Write((ushort)entrance.MapPos);
-            buffer.Write((int)entrance.X);
-            buffer.Write((int)entrance.Y);
-            buffer.Write((byte)entrance.AreaX); ;
-            buffer.Write((byte)entrance.AreaY);
-            buffer.Write((short)entrance.MapID);
-            buffer.Write((byte)(entrance.IsHole ? 1 : 0));
-            buffer.Write((byte)(entrance.Deleted ? 1 : 0));
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
-        }
     }
 }

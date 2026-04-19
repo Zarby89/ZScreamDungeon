@@ -80,7 +80,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 lastselectedItem = selectedItem;
                 isLeftPress = true;
                 scene.mouse_down = true;
-                SendItemData(lastselectedItem);
+
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
             }
         }
@@ -99,7 +99,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     selectedItem.UpdateMapStuff(mapID, scene.ow.AllMaps[mapID].AreaSize);
                     lastselectedItem = selectedItem;
-                    SendItemData(lastselectedItem);
                     selectedItem = null;
                 }
                 else
@@ -140,7 +139,6 @@ namespace ZeldaFullEditor.OWSceneModes
             lastselectedItem = selectedItem;
             isLeftPress = true;
             scene.mouse_down = true;
-            SendItemData(lastselectedItem);
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -175,7 +173,6 @@ namespace ZeldaFullEditor.OWSceneModes
             if (lastselectedItem != null)
             {
                 lastselectedItem.Deleted = true;
-                SendItemData(lastselectedItem);
                 scene.ow.AllItems.Remove(lastselectedItem);
                 lastselectedItem = null;
 
@@ -255,38 +252,5 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        public void SendItemData(RoomPotSaveEditor item)
-        {
-            if (!NetZS.connected)
-            {
-                return;
-            }
-
-            NetZSBuffer buffer = new NetZSBuffer(24);
-            buffer.Write((byte)09); // pot item data
-            buffer.Write((byte)NetZS.userID); //user ID
-            buffer.Write((int)item.UniqueID);
-            buffer.Write((byte)item.GameX);
-            buffer.Write((byte)item.GameY);
-            buffer.Write((byte)item.ID);
-            buffer.Write((int)item.X);
-            buffer.Write((int)item.Y);
-            buffer.Write((ushort)item.RoomMapID);
-            buffer.Write((byte)(item.BG2 ? 1 : 0));
-            buffer.Write((byte)(item.Deleted ? 1 : 0));
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
-            /*
-		public byte gameX, 
-			gameY, 
-			id;
-		public int x, 
-			y;
-		public bool bg2 = false;
-		public ushort roomMapId;
-			 */
-        }
     }
 }

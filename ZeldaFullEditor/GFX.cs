@@ -396,7 +396,6 @@ namespace ZeldaFullEditor
             byte[] bpp2Data = new byte[0x10000];
             byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
             int sheetPosition = 0;
-            int s2 = 0;
             // 8x8 tile
             for (int s = 0; s < Constants.NumberOfSheets; s++) // Per Sheet
             {

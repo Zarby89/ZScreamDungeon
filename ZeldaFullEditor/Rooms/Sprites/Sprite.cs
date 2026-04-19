@@ -48,8 +48,6 @@ namespace ZeldaFullEditor
             this.nx = x;
             this.ny = y;
             this.name = Sprites_Names.name[id];
-            this.uniqueID = ROM.uniqueSpriteID;
-            ROM.uniqueSpriteID += 1;
             if ((subtype & 0x07) == 0x07)
             {
                 if (id > 0 && id <= 0x1A)
@@ -86,8 +84,6 @@ namespace ZeldaFullEditor
             this.name = Sprites_Names.name[id];
             this.map_x = map_x.Clamp(0, 4080);
             this.map_y = map_y.Clamp(0, 4080);
-            this.uniqueID = ROM.uniqueSpriteID;
-            ROM.uniqueSpriteID += 1;
         }
 
         public void updateBBox()

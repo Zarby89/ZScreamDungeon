@@ -14,7 +14,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Lidgren.Network;
 using Microsoft.VisualBasic;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui;
@@ -119,11 +118,6 @@ namespace ZeldaFullEditor
         public bool propertiesChangedFromForm = false;
 
         public int gridSize = 8;
-
-        NetZS netZS;
-
-        internal Label networkstatusLabel = new Label();
-        internal Panel networkPanel;
 
         int romID = 00;
 
@@ -268,72 +262,18 @@ namespace ZeldaFullEditor
             }
         }
 
-        /*
-        Stopwatch sw = new Stopwatch();
-        */
-
         // TODO: Move that to the save class.
         public void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Save Functions
             // Expand ROM to 2MB
 
-            //sw.Reset();
-            //sw.Start();
-            if (!this.saveAs)
-            {
-                if (NetZS.connected)
-                {
-                    if (this.netZS.host == false)
-                    {
-                        // Request a save to the server!
-                        NetZSBuffer buffer = new NetZSBuffer(4);
-                        buffer.Write((byte)64); // Save request
-                        buffer.Write((byte)NetZS.userID); // User ID
-
-                        NetOutgoingMessage message = NetZS.client.CreateMessage();
-                        message.Write(buffer.buffer);
-                        _ = NetZS.client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
-                        NetZS.client.FlushSendQueue();
-                        return;
-                    }
-                }
-            }
-
             this.saveAs = false;
-
-            if (!NetZS.connected)
-            {
-                foreach (Room room in this.opened_rooms)
-                {
-                    if (room.has_changed)
-                    {
-                        foreach (TabPage tabPage in this.DunRoomTabControl.TabPages)
-                        {
-                            tabPage.Text = tabPage.Text.Trim('*');
-                        }
-
-                        DungeonsData.AllRooms[room.index] = (Room)room.Clone();
-                        room.has_changed = false;
-                        DungeonsData.AllRooms[room.index].has_changed = false;
-                    }
-                }
-            }
-
             this.anychange = false;
-            //DunRoomTabControl.Refresh();
-            //sw.Stop();
-            //Console.WriteLine("Saved all unsaved rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
-            //sw.Reset();
-            //sw.Start();
             byte[] romBackup = (byte[])ROM.DATA.Clone();
             Save save = new Save(DungeonsData.AllRooms, this);
-            //sw.Stop();
-            //Console.WriteLine("Saved all rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
-            //sw.Reset();
-            //sw.Start();
 
             // TODO:
             // from save settings not found ?:
@@ -794,35 +734,27 @@ namespace ZeldaFullEditor
             ROMStructure.loadDefaultProject();
 
             // TODO : Add Headered ROM.
-            if (!fromdata)
+            var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+            int size = (int)fileStream.Length;
+            if (fileStream.Length < 0x200000)
             {
-                var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-                int size = (int)fileStream.Length;
-                if (fileStream.Length < 0x200000)
-                {
-                    size = 0x200000;
-                }
+                size = 0x200000;
+            }
 
-                ROM.DATA = new byte[size];
-                if ((fileStream.Length & 0x200) == 0x200)
-                {
-                    size = (int)(fileStream.Length - 0x200);
-                    byte[] tempRomData = new byte[fileStream.Length];
-                    _ = fileStream.Read(tempRomData, 0, (int)fileStream.Length);
-                    Array.Copy(tempRomData, 0x200, ROM.DATA, 0, size);
-                }
-                else
-                {
-                    _ = fileStream.Read(ROM.DATA, 0, (int)fileStream.Length);
-                }
-
-                fileStream.Close();
+            ROM.DATA = new byte[size];
+            if ((fileStream.Length & 0x200) == 0x200)
+            {
+                size = (int)(fileStream.Length - 0x200);
+                byte[] tempRomData = new byte[fileStream.Length];
+                _ = fileStream.Read(tempRomData, 0, (int)fileStream.Length);
+                Array.Copy(tempRomData, 0x200, ROM.DATA, 0, size);
             }
             else
             {
-                ROM.DATA = new byte[0x200000];
-                Array.Copy(this.netZS.romData, 0, ROM.DATA, 0, this.netZS.romData.Length);
+                _ = fileStream.Read(ROM.DATA, 0, (int)fileStream.Length);
             }
+
+            fileStream.Close();
 
             DungeonObjectData.Load();
 
@@ -1752,7 +1684,6 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                this.activeScene.SendObjectsData();
                 this.activeScene.DrawRoom();
                 this.activeScene.Refresh();
                 this.activeScene.mouse_down = false;
@@ -1800,7 +1731,6 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                this.activeScene.SendObjectsData();
                 this.activeScene.DrawRoom();
                 this.activeScene.Refresh();
                 this.activeScene.mouse_down = false;
@@ -1902,7 +1832,6 @@ namespace ZeldaFullEditor
                     this.activeScene.updating_info = false;
                 }
 
-                this.activeScene.SendObjectsData();
                 this.activeScene.DrawRoom();
                 this.activeScene.Refresh();
             }
@@ -1921,7 +1850,6 @@ namespace ZeldaFullEditor
                         roomObject.Layer = LayerType.BG3;
                     }
 
-                    this.activeScene.SendObjectsData();
                     this.activeScene.updating_info = false;
                 }
 
@@ -2359,14 +2287,7 @@ namespace ZeldaFullEditor
             else
             {
                 Room room;
-                if (NetZS.connected)
-                {
-                    room = DungeonsData.AllRooms[roomId];
-                }
-                else
-                {
-                    room = (Room)DungeonsData.AllRooms[roomId].Clone();
-                }
+                room = (Room)DungeonsData.AllRooms[roomId].Clone();
 
                 this.opened_rooms.Add(room); // Add the double clicked room into rooms list.
                 this.activeScene.room = room;
@@ -2957,26 +2878,14 @@ namespace ZeldaFullEditor
             if (closedRoom != -1)
             {
                 this.opened_rooms.RemoveAt(closedRoom);
+                mapPicturebox.Refresh();
             }
+
         }
 
         // TODO: Copy.
         private void CloseTab(int i)
         {
-            if (NetZS.connected)
-            {
-                this.closeRoom((this.DunRoomTabControl.TabPages[i].Tag as Room).index);
-                this.DunRoomTabControl.TabPages.RemoveAt(i);
-                if (this.DunRoomTabControl.TabPages.Count == 0)
-                {
-                    this.DunRoomTabControl.Visible = false;
-                    this.activeScene.Clear();
-                    this.activeScene.room = null;
-                    this.activeScene.Refresh();
-                }
-
-                return;
-            }
 
             if ((this.DunRoomTabControl.TabPages[i].Tag as Room).has_changed)
             {
@@ -5906,90 +5815,22 @@ namespace ZeldaFullEditor
 
         private void HostToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NetHost netHost = new NetHost();
 
-            if (netHost.ShowDialog() == DialogResult.OK)
-            {
-                NetPeerConfiguration config = new NetPeerConfiguration("ZSCOOP");
-                config.Port = Convert.ToInt32(netHost.port);
-                config.MaximumConnections = 10;
-                config.EnableMessageType(NetIncomingMessageType.Data);
-                config.EnableMessageType(NetIncomingMessageType.WarningMessage);
-                config.EnableMessageType(NetIncomingMessageType.VerboseDebugMessage);
-                config.EnableMessageType(NetIncomingMessageType.ErrorMessage);
-                config.EnableMessageType(NetIncomingMessageType.Error);
-                config.EnableMessageType(NetIncomingMessageType.DebugMessage);
-                config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
-
-                this.netZS = new NetZS(this, true);
-                this.netZS.server = new NetServer(config);
-                this.netZS.server.Start();
-                NetZS.connected = true;
-
-                if (this.netZS.server.Status == NetPeerStatus.Running)
-                {
-                    Console.WriteLine("Server is running on port " + config.Port);
-                }
-                else
-                {
-                    Console.WriteLine("Server not started...");
-                }
-
-                this.networkBgWorker.RunWorkerAsync();
-                this.AddNetworkPanel();
-
-                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status}";
-            }
         }
 
         private void AddNetworkPanel()
         {
-            this.networkstatusLabel.Dock = DockStyle.Fill;
 
-            this.networkPanel = new Panel();
-            this.networkPanel.Height = 24;
-
-            this.networkPanel.Dock = DockStyle.Top;
-            this.networkPanel.Controls.Add(this.networkstatusLabel);
-            this.Controls.Add(this.networkPanel);
-            this.menuStrip1.SendToBack();
         }
 
         private void JoinToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var config = new NetPeerConfiguration("ZSCOOP");
 
-            config.AutoFlushSendQueue = false;
-            config.EnableMessageType(NetIncomingMessageType.Data);
-            config.EnableMessageType(NetIncomingMessageType.WarningMessage);
-            config.EnableMessageType(NetIncomingMessageType.VerboseDebugMessage);
-            config.EnableMessageType(NetIncomingMessageType.ErrorMessage);
-            config.EnableMessageType(NetIncomingMessageType.Error);
-            config.EnableMessageType(NetIncomingMessageType.DebugMessage);
-            config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
-
-            NetworkForm nf = new NetworkForm();
-
-            if (nf.ShowDialog() == DialogResult.OK)
-            {
-                this.netZS = new NetZS(this, false);
-                NetZS.client = new NetClient(config);
-                NetZS.client.Start();
-
-                _ = NetZS.client.Connect(new IPEndPoint(NetUtility.Resolve(nf.ip), Convert.ToInt32(nf.port)));
-                this.networkBgWorker.RunWorkerAsync();
-                NetZS.connected = true;
-                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus}";
-                this.AddNetworkPanel();
-            }
         }
 
         private void NetworkBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (NetZS.connected)
-            {
-                this.netZS.ReadIncomingMessages();
-            }
+
         }
 
         private void NetworkBgWorker2_DoWork(object sender, DoWorkEventArgs e)
@@ -5999,148 +5840,22 @@ namespace ZeldaFullEditor
 
         private void LoadTimer_Tick(object sender, EventArgs e)
         {
-            if (!NetZS.connected)
-            {
-                return;
-            }
 
-            Console.WriteLine("Attempt at loading project!");
-            this.LoadProject(string.Empty, true);
-            Console.WriteLine("AFTER project!");
-            //this.Enabled = true;
-
-            this.crc32timer.Enabled = true;
-            this.crc32timer.Start();
-
-            this.networkstatusLabel.Text = "Network Status : Connected";
-
-            byte[] data = new byte[02] { 0x80, 0x01 }; // Send signal we are no longer waiting!
-            NetOutgoingMessage netOutgoingMessage = NetZS.client.CreateMessage();
-            netOutgoingMessage.Write(data);
-            _ = NetZS.client.SendMessage(netOutgoingMessage, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
-            Console.WriteLine("Sent No waiting signal anymore");
-
-            this.loadTimer.Stop();
-            this.loadTimer.Enabled = false;
         }
 
         private void CRC32timer_Tick(object sender, EventArgs e)
         {
-            /*int checksum = 0;
-			for(int x = 0; x < 256; x++ )
-			{
-				for (int y = 0; y < 256; y++)
-				{
-					checksum += overworldEditor.scene.ow.allmapsTilesLW[x, y];
-				}
-			}
-			byte[] data = new byte[6] { 3, NetZS.userID, (byte) checksum, (byte) (checksum >> 8), (byte) (checksum >> 16), (byte) (checksum >> 24) };
 
-			// write CRC
-			NetOutgoingMessage msg = NetZS.client.CreateMessage();
-			msg.Write(data);
-			NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-			NetZS.client.FlushSendQueue();*/
-
-            if (!NetZS.connected)
-            {
-                return;
-            }
-
-            if (this.netZS.host)
-            {
-                this.networkstatusLabel.Text = $"Network Status : {netZS.server.Status}";
-            }
-            else
-            {
-                this.networkstatusLabel.Text = $"Network Status : {NetZS.client.ConnectionStatus}";
-            }
         }
 
         private void ExportImageMapMultipleROMsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /*	while(true)
-			{
-				string romDigit = romID.ToString("D2");
-				Console.WriteLine("Starting ROM " + romDigit);
-				if (romID >= 58)
-				{
-					exportPNGTimer.Stop();
-					exportPNGTimer.Enabled = false;
-					break;
-				}
 
-				FileStream fs = new FileStream(Path.GetDirectoryName(projectFilename) + "\\rom" + romDigit + ".sfc", FileMode.Open);
-				fs.Read(ROM.DATA, 0, ROM.DATA.Length);
-				fs.Close();
-
-				overworldEditor.overworld = new Overworld();
-				overworldEditor.InitOpen(this);
-
-				overworldEditor.scene.Refresh();
-
-				Thread.Sleep(500);
-
-				Bitmap temp = new Bitmap(4096, 4096);
-				Graphics g = Graphics.FromImage(temp);
-
-				if (OverworldEditor.UseAreaSpecificBgColor)
-				{
-					for (int i = 0; i < 64; i++)
-					{
-						int x = (i % 8) * 512;
-						int y = (i / 8) * 512;
-
-						int k = overworldEditor.overworld.allmaps[i].parent;
-						g.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[k]), new Rectangle(x, y, 512, 512));
-					}
-				}
-				else
-				{
-					g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
-				}
-
-				for (int i = 0; i < 64; i++)
-				{
-					int x = (i % 8) * 512;
-					int y = (i / 8) * 512;
-
-					g.DrawImage(overworldEditor.overworld.allmaps[i].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
-				}
-
-				temp.Save("MULTILW" + romDigit + ".png");
-				romID++;
-				Console.WriteLine("Starting exporting");
-
-				for (int i = 0; i < 159; i++)
-				{
-					overworldEditor.scene.ow.allmaps[i].tilesUsed = null;
-					overworldEditor.scene.ow.allmaps[i] = null;
-				}
-
-				overworldEditor.scene.ow.allBirds.Clear();
-				overworldEditor.scene.ow.allBirds = null;
-				overworldEditor.scene.ow.allentrances = null;
-				overworldEditor.scene.ow.allexits = null;
-				overworldEditor.scene.ow.allholes = null;
-				overworldEditor.scene.ow.allmaps = null;
-				overworldEditor.scene.ow.allmapsTilesDW = null;
-				overworldEditor.scene.ow.allmapsTilesLW = null;
-				overworldEditor.scene.ow.allmapsTilesSP = null;
-				overworldEditor.scene.ow.alloverlays = null;
-				overworldEditor.scene.ow.allWhirlpools = null;
-				overworldEditor.scene.ow.allTilesTypes = null;
-				overworldEditor.scene.ow.map16tiles = null;
-				overworldEditor.scene.ow.tiles32 = null;
-				overworldEditor.scene.ow = null;
-				overworldEditor.scene = null;
-			}*/
         }
 
         private void ExportPNGTimer_Tick(object sender, EventArgs e)
         {
-            // TODO: This?
+
         }
 
         private void SaveToNewROMToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6875,7 +6590,7 @@ namespace ZeldaFullEditor
                     "Success"
                 );
             }
-            
+
         }
 
         private void editorsTabControl_DrawItem(object sender, DrawItemEventArgs e)
@@ -6891,6 +6606,33 @@ namespace ZeldaFullEditor
             TabPage page = editorsTabControl.TabPages[e.Index];
             e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(45, 45, 48)), e.Bounds); // Dark background
             TextRenderer.DrawText(e.Graphics, page.Text, e.Font, e.Bounds, Color.White, TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter);*/
+        }
+
+        private void DungeonMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            /*textEditor.Dispose();
+            prizePackEditor.Dispose();
+            overworldEditor.Dispose();
+            gfxEditor.Dispose();
+            objDesigner.Dispose();
+            dungeonViewer.Dispose();
+            activeScene.Dispose();
+            layoutForm.Dispose();
+            chestPicker.Dispose();
+            xTabButton.Dispose();
+            ScreenEditor.Dispose();
+            musicEditor.Dispose();
+            spriteEditor.Dispose();*/
+            Dispose();
+
+        }
+
+        public new void Dispose()
+        {
+            // Dispose of unmanaged resources.
+            Dispose(true);
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
         }
     }
 }

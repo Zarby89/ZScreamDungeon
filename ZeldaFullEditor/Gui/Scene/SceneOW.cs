@@ -581,7 +581,6 @@ namespace ZeldaFullEditor
             }
 
             this.itemMode.lastselectedItem.ID = id;
-            this.itemMode.SendItemData(this.itemMode.lastselectedItem);
             this.InvalidateHighEnd();
         }
 
@@ -675,20 +674,14 @@ namespace ZeldaFullEditor
 
         public void Undo()
         {
-            if (!NetZS.connected)
-            {
-                this.tilemode.Undo();
-                this.InvalidateHighEnd();
-            }
+            this.tilemode.Undo();
+            this.InvalidateHighEnd();
         }
 
         public void Redo()
         {
-            if (!NetZS.connected)
-            {
-                this.tilemode.Redo();
-                this.InvalidateHighEnd();
-            }
+            this.tilemode.Redo();
+            this.InvalidateHighEnd();
         }
 
         public override void paste()

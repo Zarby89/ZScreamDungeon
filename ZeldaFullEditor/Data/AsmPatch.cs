@@ -40,11 +40,6 @@ namespace ZeldaFullEditor.Data
         internal string WholePatch;
 
         /// <summary>
-        ///     The folder the patch has been loaded from
-        /// </summary>
-        internal string PatchFolder;
-
-        /// <summary>
         ///     The filename only the patch has been loaded from
         /// </summary>
         internal string FileName;

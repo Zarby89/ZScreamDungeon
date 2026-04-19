@@ -102,9 +102,6 @@
     <Compile Update="Gui\MainTabs\DungeonViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Gui\MainTabs\GfxEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Update="Gui\GfxGroupsForm.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -25,6 +25,7 @@ Migrate project `ZeldaFullEditor` to .NET 10 (net10.0).
 ## Key Decisions Log
 - 2026-04-18: User requested migration of project `ZeldaFullEditor` to .NET 10. Defaulted to Automatic flow and created working branch `upgrade-to-NET10`.
 - 2026-04-18: Preference recorded — continue using System.Drawing.Common (Windows-only) and do not migrate to SkiaSharp/ImageSharp for now.
+- 2026-04-19: User briefly requested migration to SkiaSharp; request cancelled on 2026-04-19 — reverting to System.Drawing.Common (Windows-only).
 
 ## Next Steps
 - Proceeding to Stage 1 (Assessment): analyze projects for upgrade readiness and produce assessment.md.

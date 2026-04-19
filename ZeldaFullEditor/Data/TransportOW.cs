@@ -45,8 +45,6 @@ namespace ZeldaFullEditor
 
             this.AreaX = (byte)(Math.Abs(playerX - (mapX * 512)) / 16);
             this.AreaY = (byte)(Math.Abs(playerY - (mapY * 512)) / 16);
-
-            this.ID = ROM.uniqueTransportID++;
         }
 
         public void updateMapStuff(byte mapID, Overworld ow)

@@ -286,7 +286,6 @@ namespace ZeldaFullEditor.Gui
             {
                 OverworldMap mapParent = this.scene.ow.AllMaps[this.scene.ow.AllMaps[this.scene.selectedMap].ParentID];
                 this.UpdateMapProperties(mapParent);
-                this.SendMapProperties(mapParent);
                 if (ispalPreview)
                 {
                     OWProperty_MainPalette_MouseEnter(sender, null);
@@ -1334,10 +1333,6 @@ namespace ZeldaFullEditor.Gui
 
             int parentID = this.scene.ow.AllMaps[this.scene.selectedMap].ParentID;
             bool success = this.UpdateAreaSize(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex, this.scene.ow.AllMaps[parentID].AreaSize);
-            if (success)
-            {
-                this.SendLargeMapChanged(parentID, (AreaSizeEnum)this.AreaSizeComboBox.SelectedIndex);
-            }
         }
 
         public bool UpdateAreaSize(int mapID, AreaSizeEnum newAreaSize, AreaSizeEnum oldAreaSize)
@@ -2066,54 +2061,12 @@ namespace ZeldaFullEditor.Gui
 
         public void SendLargeMapChanged(int m, AreaSizeEnum areaSize)
         {
-            if (!NetZS.connected)
-            {
-                return;
-            }
 
-            NetZSBuffer buffer = new NetZSBuffer(8);
-            buffer.Write((byte)12); // sprite data
-            buffer.Write((byte)NetZS.userID); // user ID
-            buffer.Write((int)m);
-            buffer.Write((byte)areaSize); // is checked
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
         }
 
         public void SendMapProperties(OverworldMap map)
         {
-            if (!NetZS.connected)
-            {
-                return;
-            }
 
-            NetZSBuffer buffer = new NetZSBuffer(16);
-            buffer.Write((byte)13); // map properties
-            buffer.Write((byte)NetZS.userID); // user ID
-            buffer.Write((byte)map.Index);
-            buffer.Write((byte)map.AuxPalette);
-            buffer.Write((byte)map.GFX);
-            buffer.Write((short)map.MessageID);
-
-            if (map.Index >= 0x40)
-            {
-                buffer.Write((byte)0);
-                buffer.Write((byte)map.SpriteGFX[0]);
-                buffer.Write((byte)map.SpritePalette[0]);
-            }
-            else
-            {
-                buffer.Write((byte)this.scene.ow.GameState);
-                buffer.Write((byte)map.SpriteGFX[this.scene.ow.GameState]);
-                buffer.Write((byte)map.SpritePalette[this.scene.ow.GameState]);
-            }
-
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
         }
 
         private void music1Box_SelectedIndexChanged(object sender, EventArgs e)

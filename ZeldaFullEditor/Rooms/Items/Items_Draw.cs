@@ -19,7 +19,6 @@ namespace ZeldaFullEditor
             this.nx = x;
             this.ny = y;
             this.bg2 = bg2;
-            this.uniqueID = ROM.uniqueItemID++;
         }
 
         public object Clone()

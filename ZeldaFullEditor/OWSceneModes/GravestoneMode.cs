@@ -96,7 +96,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     this.selectedGrave.TilemapPos = (ushort)(((yy << 6) | (xx & 0x3F)) << 1);
 
                     this.lastselectedGrave = this.selectedGrave;
-                    this.SendGraveData(this.lastselectedGrave);
                     // this.selectedGrave = null;
                     this.scene.mouse_down = false;
                 }
@@ -146,26 +145,5 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        private void SendGraveData(Gravestone gravestone)
-        {
-            if (!NetZS.connected)
-            {
-                return;
-            }
-
-            NetZSBuffer buffer = new NetZSBuffer(24);
-            buffer.Write((byte)11); // grave data
-            buffer.Write((byte)NetZS.userID); //user ID
-            buffer.Write((int)gravestone.UniqueID);
-            buffer.Write((ushort)gravestone.YTilePos);
-            buffer.Write((ushort)gravestone.XTilePos);
-            buffer.Write((ushort)gravestone.TilemapPos);
-            buffer.Write((ushort)gravestone.GFX);
-
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
-        }
     }
 }

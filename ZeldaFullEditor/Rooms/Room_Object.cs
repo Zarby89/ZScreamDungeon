@@ -120,7 +120,6 @@ namespace ZeldaFullEditor
             this.oy = y;
             width = 8;
             height = 8;
-            uniqueID = ROM.uniqueRoomObjectID++;
         }
 
         public void getObjectSize()

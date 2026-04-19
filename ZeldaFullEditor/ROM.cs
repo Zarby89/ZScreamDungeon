@@ -18,13 +18,6 @@ namespace ZeldaFullEditor
 		private static string blockName = "";
 		public static bool AdvancedLogs = true;
 		public static List<LogInfos> advancedLogData = new List<LogInfos>();
-		public static int uniqueSpriteID = 0;
-		public static int uniqueItemID = 0;
-		public static int uniqueEntranceID = 0;
-		public static int uniqueExitID = 0;
-		public static int uniqueTransportID = 0;
-		public static int uniqueRoomObjectID = 0;
-		public static int uniqueGraveID = 0;
 		public static int spaceUsedOWSprites = 0;
 
 		public static void StartBlockLogWriting(string name, int addr)

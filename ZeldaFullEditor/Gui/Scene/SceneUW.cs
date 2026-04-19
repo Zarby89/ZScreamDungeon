@@ -74,22 +74,6 @@ namespace ZeldaFullEditor
                         }
                     }
 
-                    if (NetZS.connected)
-                    {
-                        NetZSBuffer buffer = new NetZSBuffer(12);
-                        buffer.Write((byte)20); // tile data cmd
-                        buffer.Write(NetZS.userID); // user id
-                        buffer.Write(room.index); //room index 4
-                        buffer.Write((room.selectedObject[0] as Room_Object).uniqueID); // 4
-                        buffer.Write((room.selectedObject[0] as Room_Object).Size); //byte
-
-                        NetOutgoingMessage msg = NetZS.client.CreateMessage();
-                        msg.Write(buffer.buffer);
-                        NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-                        NetZS.client.FlushSendQueue();
-                    }
-
-
                 }
             }
 
@@ -106,10 +90,7 @@ namespace ZeldaFullEditor
         {
             lastElement.UpdateSize();
 
-            if (NetZS.connected)
-            {
-                return; // prevent updating with mouse
-            }
+
             //if (8 != 0)
             //{
 
@@ -1969,13 +1950,6 @@ namespace ZeldaFullEditor
                         (o as Room_Object).oy = (o as Room_Object).Y;
                     }
 
-                    if (NetZS.connected)
-                    {
-                        SendObjectsData();
-                    }
-
-
-
                 }
                 else if (selectedMode == ObjectMode.Torchmode)
                 {
@@ -2513,7 +2487,6 @@ namespace ZeldaFullEditor
                 }
 
             }
-            SendObjectsData();
             room.selectedObject.Clear();
             DrawRoom();
             Invalidate();
@@ -2982,52 +2955,5 @@ namespace ZeldaFullEditor
             mainForm.UpdateUIForRoom(room, true);
         }
 
-        public void SendObjectsData()
-        {
-            if (!NetZS.connected)
-            {
-                return;
-            }
-            NetZSBuffer buffer = new NetZSBuffer((short)((room.selectedObject.Count * 15) + 12));
-            buffer.Write((byte)19); // tile data cmd
-            buffer.Write(NetZS.userID); // user id
-            buffer.Write(room.index); //room index 4
-            buffer.Write(room.selectedObject.Count); //4
-                                                     //DungeonsData.all_rooms[0].tilesObjects = DungeonsData.all_rooms[0].tilesObjects.OrderBy(x => x.posinarray);
-
-            foreach (object o in room.selectedObject)
-            {
-                Room_Object roomObject = o as Room_Object;
-
-                buffer.Write(roomObject.uniqueID); // 4bytes
-
-                buffer.Write(roomObject.id);
-                buffer.Write(roomObject.X);
-                buffer.Write(roomObject.Y);
-                buffer.Write(roomObject.ox);
-                buffer.Write(roomObject.oy);
-                buffer.Write((byte)roomObject.Layer);
-                buffer.Write(roomObject.Size);
-                buffer.Write((byte)(roomObject.deleted ? 1 : 0));
-                short zIndex = 0;
-
-                foreach (object ro in room.tilesObjects)
-                {
-                    if (ro == o)
-                    {
-                        break;
-                    }
-
-                    zIndex++;
-                }
-
-                buffer.Write(zIndex);
-            }
-
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
-        }
     }
 }

@@ -468,7 +468,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 if (patch.PatchEnabled)
                 {
                     string relativeFilename = patch.FileName.Substring(patch.FileName.IndexOf("Patches")+8);
-                    generatedAsmFile.AppendLine("incsrc \"" + patch.PatchFolder + "/" + patch.FileName + "\"");
+                    generatedAsmFile.AppendLine("incsrc" + patch.FileName);
                 }
             }
 

@@ -77,7 +77,6 @@ namespace ZeldaFullEditor.OWSceneModes
             Clipboard.Clear();
             int sd = lastselectedSprite.id;
             Clipboard.SetData("owsprite", sd);
-            SendSpriteData(lastselectedSprite);
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -100,7 +99,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.selectedFormSprite = null;
                 scene.mouse_down = true;
                 isLeftPress = true;
-                SendSpriteData(selectedSprite);
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
             }
         }
@@ -133,7 +131,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     selectedSprite.updateMapStuff(mapID, areaSize);
                     lastselectedSprite = selectedSprite;
-                    SendSpriteData(selectedSprite);
                     selectedSprite = null;
 
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -243,7 +240,6 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 int gs = scene.ow.GameState;
                 lastselectedSprite.deleted = true;
-                SendSpriteData(lastselectedSprite);
                 scene.ow.AllSprites[gs].Remove(lastselectedSprite);
 
                 lastselectedSprite = null;
@@ -425,29 +421,5 @@ namespace ZeldaFullEditor.OWSceneModes
         }
         */
 
-        private void SendSpriteData(Sprite spr)
-        {
-            if (!NetZS.connected)
-            {
-                return;
-            }
-
-            NetZSBuffer buffer = new NetZSBuffer(24);
-            buffer.Write((byte)07); // sprite data
-            buffer.Write((byte)NetZS.userID); //user ID
-            buffer.Write((int)spr.uniqueID);
-            buffer.Write((byte)scene.ow.GameState);
-            buffer.Write((byte)spr.id);
-            buffer.Write((byte)spr.MapID);
-            buffer.Write((int)spr.map_x);
-            buffer.Write((int)spr.map_y);
-            buffer.Write((byte)spr.x);
-            buffer.Write((byte)spr.y);
-            buffer.Write((byte)(spr.deleted ? 1 : 0));
-            NetOutgoingMessage msg = NetZS.client.CreateMessage();
-            msg.Write(buffer.buffer);
-            NetZS.client.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
-            NetZS.client.FlushSendQueue();
-        }
     }
 }

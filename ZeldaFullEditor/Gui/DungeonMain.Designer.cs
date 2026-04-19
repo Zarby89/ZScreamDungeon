@@ -418,9 +418,6 @@
             cGramViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             gfxGroupsetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             palettesEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            multiplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            hostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             jPDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mapDataFromJPdoNotUseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             captureMapJPdoNotUseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -443,6 +440,11 @@
             gorightButton = new System.Windows.Forms.Button();
             goupButton = new System.Windows.Forms.Button();
             panel3 = new System.Windows.Forms.Panel();
+            panel5 = new System.Windows.Forms.Panel();
+            hexbox4 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            hexbox3 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            hexbox2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+            hexbox1 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
             thumbnailBox = new System.Windows.Forms.PictureBox();
             warningLabel = new System.Windows.Forms.Label();
             mapPicturebox = new System.Windows.Forms.PictureBox();
@@ -491,6 +493,7 @@
             editorsTabControl.SuspendLayout();
             menuStrip1.SuspendLayout();
             panel3.SuspendLayout();
+            panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)thumbnailBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mapPicturebox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -2856,7 +2859,7 @@
             RoomProperty_Floor1.Location = new System.Drawing.Point(158, 72);
             RoomProperty_Floor1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             RoomProperty_Floor1.MaxLength = 2;
-            RoomProperty_Floor1.MaxValue = 0;
+            RoomProperty_Floor1.MaxValue = 15;
             RoomProperty_Floor1.MinValue = 0;
             RoomProperty_Floor1.Name = "RoomProperty_Floor1";
             RoomProperty_Floor1.Size = new System.Drawing.Size(57, 23);
@@ -3345,7 +3348,7 @@
             // menuStrip1
             // 
             menuStrip1.BackColor = System.Drawing.SystemColors.Control;
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, projectToolStripMenuItem, testToolStripMenuItem, roomToolStripMenuItem, dungeonViewToolStripMenuItem, naviguateToolStripMenuItem, overworldToolStripMenuItem, areaToolStripMenuItem, overworldViewToolStripMenuItem, windowToolStripMenuItem, multiplayerToolStripMenuItem, jPDebugToolStripMenuItem, ExperimentalToolStripMenuItem1, helpToolStripMenuItem, discordToolStripMenuItem });
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, projectToolStripMenuItem, testToolStripMenuItem, roomToolStripMenuItem, dungeonViewToolStripMenuItem, naviguateToolStripMenuItem, overworldToolStripMenuItem, areaToolStripMenuItem, overworldViewToolStripMenuItem, windowToolStripMenuItem, jPDebugToolStripMenuItem, ExperimentalToolStripMenuItem1, helpToolStripMenuItem, discordToolStripMenuItem });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -4569,27 +4572,6 @@
             palettesEditorToolStripMenuItem.Text = "Palettes Editor";
             palettesEditorToolStripMenuItem.Click += PalettesEditorToolStripMenuItem_Click;
             // 
-            // multiplayerToolStripMenuItem
-            // 
-            multiplayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { hostToolStripMenuItem, joinToolStripMenuItem });
-            multiplayerToolStripMenuItem.Name = "multiplayerToolStripMenuItem";
-            multiplayerToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
-            multiplayerToolStripMenuItem.Text = "Multiplayer";
-            // 
-            // hostToolStripMenuItem
-            // 
-            hostToolStripMenuItem.Name = "hostToolStripMenuItem";
-            hostToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
-            hostToolStripMenuItem.Text = "Host";
-            hostToolStripMenuItem.Click += HostToolStripMenuItem_Click;
-            // 
-            // joinToolStripMenuItem
-            // 
-            joinToolStripMenuItem.Name = "joinToolStripMenuItem";
-            joinToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
-            joinToolStripMenuItem.Text = "Join";
-            joinToolStripMenuItem.Click += JoinToolStripMenuItem_Click;
-            // 
             // jPDebugToolStripMenuItem
             // 
             jPDebugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { mapDataFromJPdoNotUseToolStripMenuItem1, captureMapJPdoNotUseToolStripMenuItem1, exportMapJPdoNotUseToolStripMenuItem1 });
@@ -4761,6 +4743,7 @@
             // panel3
             // 
             panel3.BackColor = System.Drawing.SystemColors.Control;
+            panel3.Controls.Add(panel5);
             panel3.Controls.Add(thumbnailBox);
             panel3.Controls.Add(warningLabel);
             panel3.Controls.Add(godownButton);
@@ -4777,6 +4760,98 @@
             panel3.Size = new System.Drawing.Size(313, 641);
             panel3.TabIndex = 64;
             panel3.Paint += panel3_Paint;
+            // 
+            // panel5
+            // 
+            panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            panel5.Controls.Add(hexbox4);
+            panel5.Controls.Add(hexbox3);
+            panel5.Controls.Add(hexbox2);
+            panel5.Controls.Add(hexbox1);
+            panel5.Location = new System.Drawing.Point(2, 581);
+            panel5.Name = "panel5";
+            panel5.Size = new System.Drawing.Size(164, 42);
+            panel5.TabIndex = 69;
+            // 
+            // hexbox4
+            // 
+            hexbox4.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+            hexbox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            hexbox4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            hexbox4.Decimal = false;
+            hexbox4.Digits = Gui.ExtraForms.Hexbox.HexDigits.Two;
+            hexbox4.ForeColor = System.Drawing.Color.White;
+            hexbox4.HexValue = 0;
+            hexbox4.Location = new System.Drawing.Point(125, 9);
+            hexbox4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            hexbox4.MaxLength = 2;
+            hexbox4.MaxValue = 255;
+            hexbox4.MinValue = 0;
+            hexbox4.Name = "hexbox4";
+            hexbox4.Size = new System.Drawing.Size(32, 23);
+            hexbox4.TabIndex = 91;
+            hexbox4.Text = "00";
+            hexbox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // hexbox3
+            // 
+            hexbox3.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+            hexbox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            hexbox3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            hexbox3.Decimal = false;
+            hexbox3.Digits = Gui.ExtraForms.Hexbox.HexDigits.Two;
+            hexbox3.ForeColor = System.Drawing.Color.White;
+            hexbox3.HexValue = 0;
+            hexbox3.Location = new System.Drawing.Point(85, 9);
+            hexbox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            hexbox3.MaxLength = 2;
+            hexbox3.MaxValue = 255;
+            hexbox3.MinValue = 0;
+            hexbox3.Name = "hexbox3";
+            hexbox3.Size = new System.Drawing.Size(32, 23);
+            hexbox3.TabIndex = 90;
+            hexbox3.Text = "00";
+            hexbox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // hexbox2
+            // 
+            hexbox2.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+            hexbox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            hexbox2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            hexbox2.Decimal = false;
+            hexbox2.Digits = Gui.ExtraForms.Hexbox.HexDigits.Two;
+            hexbox2.ForeColor = System.Drawing.Color.White;
+            hexbox2.HexValue = 0;
+            hexbox2.Location = new System.Drawing.Point(45, 9);
+            hexbox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            hexbox2.MaxLength = 2;
+            hexbox2.MaxValue = 255;
+            hexbox2.MinValue = 0;
+            hexbox2.Name = "hexbox2";
+            hexbox2.Size = new System.Drawing.Size(32, 23);
+            hexbox2.TabIndex = 89;
+            hexbox2.Text = "00";
+            hexbox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // hexbox1
+            // 
+            hexbox1.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+            hexbox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            hexbox1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            hexbox1.Decimal = false;
+            hexbox1.Digits = Gui.ExtraForms.Hexbox.HexDigits.Two;
+            hexbox1.ForeColor = System.Drawing.Color.White;
+            hexbox1.HexValue = 0;
+            hexbox1.Location = new System.Drawing.Point(5, 9);
+            hexbox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            hexbox1.MaxLength = 2;
+            hexbox1.MaxValue = 255;
+            hexbox1.MinValue = 0;
+            hexbox1.Name = "hexbox1";
+            hexbox1.Size = new System.Drawing.Size(32, 23);
+            hexbox1.TabIndex = 88;
+            hexbox1.Text = "00";
+            hexbox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // thumbnailBox
             // 
@@ -4944,6 +5019,7 @@
             Name = "DungeonMain";
             Text = "ThisTextIsHandledByTheConstructorAndWillShowThisInTheDesigner";
             FormClosing += zscreamForm_FormClosing_1;
+            FormClosed += DungeonMain_FormClosed;
             Load += Form1_Load;
             LocationChanged += DungeonMain_LocationChanged;
             SizeChanged += DungeonMain_SizeChanged;
@@ -5002,6 +5078,8 @@
             menuStrip1.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)thumbnailBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)mapPicturebox).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
@@ -5389,9 +5467,6 @@
         private System.Windows.Forms.ToolStripMenuItem showScratchPadGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showStairIndexToolStripMenuItem;
         private System.Windows.Forms.TabPage MusicEditor;
-        private System.Windows.Forms.ToolStripMenuItem multiplayerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem hostToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker networkBgWorker;
         private System.ComponentModel.BackgroundWorker networkBgWorker2;
         private System.Windows.Forms.Timer crc32timer;
@@ -5441,6 +5516,11 @@
         private System.Windows.Forms.Button gorightButton;
         private System.Windows.Forms.Button goleftButton;
         private System.Windows.Forms.Button godownButton;
+        private System.Windows.Forms.Panel panel5;
+        private Gui.ExtraForms.Hexbox hexbox4;
+        private Gui.ExtraForms.Hexbox hexbox3;
+        private Gui.ExtraForms.Hexbox hexbox2;
+        private Gui.ExtraForms.Hexbox hexbox1;
     }
 }
 
