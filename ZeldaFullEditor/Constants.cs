@@ -48,7 +48,7 @@ namespace ZeldaFullEditor
         public const int Tile16EdiorBitmapSize = 0x2000;
         public const int Tile16EdiorBitmapSizex2 = Tile16EdiorBitmapSize * 2;
 
-        public const int IndividualSheetsCollisions = 0x1417F8;
+        public const int IndividualSheetsCollisions = 0x141938;
         public const int Sheets4bpp = 0x1438F8;
 
         // TODO: zarby stop making magic numbers.

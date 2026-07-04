@@ -85,7 +85,7 @@ ExpandedSpritePalArray     = $7EFDC0 ; [0x40]
 ; ($0716 is labled as OWCameraBoundsSE in the disassembly).
 
 ; Hooks
-Sound_LoadLightWorldSongBank               = $008913 ; $000913
+Sound_LoadOverworldWorldSongBank           = $008913 ; $000913
 EnableForceBlank                           = $00893D ; $00093D
 GFXSheetPointers_sprite_bank               = $00CFF3 ; $004FF3
 GFXSheetPointers_sprite_high               = $00D0D2 ; $0050D2
@@ -300,6 +300,10 @@ PaletteData_owmain                         = $1BE6C8 ; $0DE6C8
 
 ; $1BC8B1
 !Func1BC8B1 = $01
+
+; Updates the OW tile attribution get function to use the new GFX sheet dependant tables.
+; $00082E
+!Func00882E = $01
 
 ; If 1, all of the default vanilla pool values will be applied. 00 by default.
 !UseVanillaPool = $00
@@ -943,6 +947,7 @@ Pool:
 
     ; SW
     db $3A, $3B, $3C, $3D, $47, $48, $3E, $5B
+    warnpc $288998
     
     ; This tells the game what each area's "parent" area is.
     ; For small areas this is it's own area number.
@@ -980,6 +985,7 @@ Pool:
     db $90, $91, $92, $93, $94, $95, $96, $97
     db $98, $99, $9A, $9B, $9C, $9D, $9E, $9F
     endif
+    warnpc $288A38
 
     ; Examples:
     ; These work in vanilla: │ These do not:
@@ -1054,6 +1060,7 @@ Pool:
     dw $0060, $0060, $0060, $0060, $0060, $0060, $0060, $0060
     dw $0060, $0060, $0060, $0060, $0060, $0060, $0060, $0060
     endif
+    warnpc $288B78
 
     org $288B78 ; $140B78
     .ByScreen2_New ; Transitioning left
@@ -1084,6 +1091,7 @@ Pool:
     dw $0040, $0040, $0040, $0040, $0040, $0040, $0040, $0040
     dw $0040, $0040, $0040, $0040, $0040, $0040, $0040, $0040
     endif
+    warnpc $288CB8
 
     org $288CB8 ; $140CB8
     .ByScreen3_New ; Transitioning down
@@ -1114,6 +1122,7 @@ Pool:
     dw $1800, $1800, $17C0, $1800, $1800, $1800, $1800, $1800
     dw $1800, $1800, $1800, $1800, $1800, $1800, $1800, $1800
     endif
+    warnpc $288DF8
 
     org $288DF8 ; $140DF8
     .ByScreen4_New ; Transitioning up
@@ -1144,6 +1153,7 @@ Pool:
     dw $1000, $1000, $1000, $1000, $1000, $1000, $1000, $1000
     dw $1000, $1000, $1000, $1000, $1000, $1000, $1000, $1000
     endif
+    warnpc $288F38
 
     ; UNUSED:
     ; The table OverworldTransitionPositionY found at $0128C4 was moved
@@ -1177,6 +1187,7 @@ Pool:
     dw $0400, $0400, $0400, $0400, $0400, $0400, $0400, $0400
     dw $0600, $0600, $0600, $0600, $0600, $0600, $0600, $0600
     endif
+    warnpc $289078
 
     ; UNUSED:
     ; The table OverworldTransitionPositionX found at 012944 was moved
@@ -1210,6 +1221,7 @@ Pool:
     dw $0000, $0200, $0400, $0600, $0800, $0A00, $0C00, $0E00
     dw $0000, $0200, $0400, $0600, $0800, $0A00, $0C00, $0E00
     endif
+    warnpc $2891B8
 
     ; The original trans_target_north table was moved here from $013EE2.
     ; The original 0x0080 bytes space is currently unused.
@@ -1242,6 +1254,7 @@ Pool:
     dw $0320, $0320, $0320, $0320, $0320, $0320, $0320, $0320
     dw $0520, $0520, $0520, $0520, $0520, $0520, $0520, $0520
     endif
+    warnpc $2892F8
 
     ; The original trans_target_west table was moved here from $013F62.
     ; The original 0x0080 bytes space is currently unused.
@@ -1274,6 +1287,7 @@ Pool:
     dw $FF00, $0100, $0300, $0500, $0700, $0900, $0B00, $0D00
     dw $FF00, $0100, $0300, $0500, $0700, $0900, $0B00, $0D00
     endif
+    warnpc $289438
 
     ; The original Overworld_SpritePointers_state_0 table was moved here from 
     ; $04C881. The original 0x0080 bytes space is currently unused.
@@ -1303,6 +1317,7 @@ Pool:
     dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
     dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
     endif
+    warnpc $289578
 
     ; The original Overworld_SpritePointers_state_1 table was moved here from 
     ; $04C901. The original 0x0120 bytes space is currently unused.
@@ -1332,6 +1347,7 @@ Pool:
     dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
     dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
     endif
+    warnpc $2896B8
    
     ; The original Overworld_SpritePointers_state_2 table was moved here from 
     ; $04CA21. The original 0x0120 bytes space is currently unused.
@@ -1361,11 +1377,12 @@ Pool:
     dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
     dw $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41, $CB41
     endif
+    warnpc $2897F8
 
     ; The original Overworld_SignText table was moved here from 
     ; $03F51D. The original 0x0120 bytes space is currently unused.
     org $2897F8 ; $1417F8
-    .Overworld_SignText_New:
+    .Overworld_SignText_New
     if !UseVanillaPool > 0
     dw $00A7, $00A7, $0048, $0040, $0040, $00A7, $00A7, $00A7
     dw $00A7, $00A7, $003C, $0040, $0040, $00A7, $00A7, $003E
@@ -1390,73 +1407,110 @@ Pool:
     dw $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7, $00A7
     dw $00A7, $00A7, $00A7, $00AE, $00A7, $00A7, $00A7, $00A7
     endif
+    warnpc $289938
+
+    ; Enough space for a total of 128 collision sheet
+    org $289938 ; $141938
+    .IndividualSheetsCollisions
+    skip $2000 ; 16x4 collisions map * 128 sheets of data
+    warnpc $28B938
 }
-
-
-IndividualSheetsCollisions: ; enough space for a total of 128 collision sheet
-skip $2000 ; 16x4 collisions map * 128 sheets of data
-
-Bpp4Sheets:
-skip $100
-db $FA, $FB, $FC, $FD, $FE, $FF, $DD
-warnpc $28BA38 ; $143A38
 
 ; ==============================================================================
 ; Start of function space.
 ; ==============================================================================
 
-org $00886E
-LDA.l $7EE800, X
-
-org $28BA40 ; $143A40
-NewCollisionLoad:
-;STZ.b $8B : STZ.w $040B
-;.NoReset
-PHX : PHY : PHP
-REP #$30 ; go in full16bit
-LDA.b $00 : PHA
-LDA.b $02 : PHA
-LDA.b $04 : PHA
-LDA.b $06 : PHA
-LDA.b $08 : PHA
-LDA.b $0A : PHA
-LDY.w #$0000 ; transfer offset
-
-;LDA.b $8A : ASL : ASL : ASL : DEC : TAX ; (map id * 8) - 1 since it's incremented in loop
-LDX.w #$FFFF
-.nextSheet
-LDA.w #$0020 : STA.b $00 ; nbr of bytes to transfer per sheet / 2
-INX
-LDA.w TransGFXModule_PriorSheets, X ; get sheet00 value
-AND.w #$00FF ; sheet value * 64
-XBA : LSR : LSR ; some boring math stuff
-CLC : ADC.w #(IndividualSheetsCollisions)
-STA.b $04 ; addr
-LDA.w #IndividualSheetsCollisions>>16 : STA.b $06 ; bank
-; Dest address
-LDA.w #$E800 : STA.b $07 ; addr
-LDA.w #$7E7E : STA.b $09 ; bank
-
---
-LDA.b [$04]
-STA.b [$07], Y
-INC.b $04 : INC.b $04
-INY : INY
-DEC $00 : BNE --
-CPY.w #$0200 : BCC .nextSheet
-
-PLA : STA.b $0A
-PLA : STA.b $08
-PLA : STA.b $06
-PLA : STA.b $04
-PLA : STA.b $02
-PLA : STA.b $00
-PLP : PLY : PLX
-RTL
-
-
+org $28BA00 ; $143A00
 
 pushpc
+
+; ==============================================================================
+
+if !Func00882E == 1
+
+; Replaces a function that decompresses animated tiles in certain mirror warp
+; conditions.
+org $00886E ; $00086E
+Overworld_GetTileAttrAtLocation_Interupt:
+{
+    LDA.l $7EE800, X
+}
+warnpc $00D872 ; $000872
+
+else
+
+org $00886E ; $00086E
+db $BF, $59, $94, $0E
+
+endif
+
+pullpc
+NewCollisionLoad:
+{
+    PHX : PHY : PHP
+
+    REP #$30
+
+    ; We need some work RAM so save what values were already there to the stack.
+    LDA.b $00 : PHA
+    LDA.b $02 : PHA
+    LDA.b $04 : PHA
+    LDA.b $06 : PHA
+    LDA.b $08 : PHA
+    LDA.b $0A : PHA
+
+    ; Source bank
+    LDA.w #Pool_IndividualSheetsCollisions>>16 : STA.b $06
+
+    ; Destination address
+    LDA.w #$E800 : STA.b $07 ; addr
+    LDA.w #$7E7E : STA.b $09 ; bank
+
+    ; Transfer offset
+    LDY.w #$0000
+
+    ; Start with sheet 0.
+    LDX.w #$0000
+
+    .nextSheet
+
+        ; Calculate the source address: (Sheet value * 64) + the location of the collision table.
+        LDA.w TransGFXModule_PriorSheets, X : AND.w #$00FF : XBA : LSR : LSR
+        CLC : ADC.w #(Pool_IndividualSheetsCollisions) : STA.b $04 ; addr
+
+        ; The number of bytes to transfer per sheet / 2.
+        LDA.w #$0020 : STA.b $00
+
+        --
+            ; Transfer 2 bytes at a time from the source to the destination.
+            LDA.b [$04] : STA.b [$07], Y
+
+            ; Increment the source address by 2.
+            INC.b $04 : INC.b $04
+
+            ; Increment the destination address by 2.
+            INY : INY
+        DEC $00 : BNE --
+
+        INX
+    ; Loop until we have loaded 0x0200 bytes.
+    CPY.w #$0200 : BCC .nextSheet
+
+    ; Restore the values that were saved to the stack.
+    PLA : STA.b $0A
+    PLA : STA.b $08
+    PLA : STA.b $06
+    PLA : STA.b $04
+    PLA : STA.b $02
+    PLA : STA.b $00
+
+    PLP : PLY : PLX
+
+    RTL
+}
+
+pushpc
+
 ; ==============================================================================
 
 if !Func00D8D5 == 1
@@ -1953,7 +2007,7 @@ Overworld_LoadMusicIfNeeded:
         
         LDA.b #$FF : STA.w SNES.APUIOPort0
         
-        JSL.l Sound_LoadLightWorldSongBank
+        JSL.l Sound_LoadOverworldWorldSongBank
         
         ; Re-enable NMI and joypad.
         LDA.b #$81 : STA.w SNES.NMIVHCountJoypadEnable
@@ -3169,9 +3223,10 @@ BlockGFXCheck:
     INY : CPY.b $06 : BCC .loop
 
     .twoReady
+
+    STY.w TransGFXModuleFrame
     
     JSL NewCollisionLoad
-    STY.w TransGFXModuleFrame
 
     RTS
 
@@ -4495,7 +4550,8 @@ InitTilesetsLongCalls:
 
     PLB
 
-    JSL NewCollisionLoad ; From Dungeon
+    JSL NewCollisionLoad
+
     ; $006282 Skip normal sheet load.
     JML.l $00E282
 }
@@ -4544,6 +4600,7 @@ AnimateMirrorWarp_DecompressNewTileSetsLongCalls:
     PLB
 
     JSL NewCollisionLoad
+
     ; $005949 Skip normal sheet load.
     JML.l $00D949
 }
@@ -4602,6 +4659,7 @@ AnimateMirrorWarp_DecompressBackgroundsALongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet2, Y
 
     .notFF2
+
     TAY
     STA.w TransGFXModule_PriorSheets+2
 
@@ -4635,6 +4693,7 @@ AnimateMirrorWarp_DecompressBackgroundsCLongCalls:
         LDA.w Pool_DefaultGFXGroups_sheet6, Y
 
     .notFF6
+
     TAY
     STA.w TransGFXModule_PriorSheets+6
 
@@ -4755,7 +4814,8 @@ OverworldHandleTransitions:
 
     ; Just makes sure we're not using a medallion or input is disabled.
     JSL.l Player_IsScreenTransitionPermitted : BCS .noTransition
-        STY.b $02 : STZ.b $03
+        STY.b $02
+        STZ.b $03
 
         JSR.w DeleteCertainAncillaeStopDashing
 
@@ -4855,6 +4915,7 @@ OverworldHandleTransitions:
         LDA.l OverworldPalettesScreenToSet_New, X
         JSL.l Overworld_LoadPalettes
         JSR.w Overworld_CgramAuxToMain
+
         RTS
 }
 warnpc $02AB08 ; $012B08
@@ -5232,6 +5293,7 @@ Copy0716:
 {
     LDA.b #$E4 : STA.w OWCameraBoundsS
                  STA.w OWCameraBoundsE
+
     RTL
 }
 
