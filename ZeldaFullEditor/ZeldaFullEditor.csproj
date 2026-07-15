@@ -801,6 +801,9 @@
     <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="alttp.4bpp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -815,6 +818,12 @@
     <None Include="ScratchPad.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="test2.4bpp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="test3.4bpp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ZScreamUML.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -823,6 +832,9 @@
   <ItemGroup>
     <Content Include="asar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bpp4.asm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="CustomCollision.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -4161,10 +4161,15 @@ db $03, $C6, $0E, $D0, $C0, $60
 
 endif
 
+
+
 pullpc
 NewLoadTransAuxGFX:
 {
     PHB : PHK : PLB
+
+
+
 
     LDA.b $1B : BNE .indoors
         LDA.w Pool_EnableTransitionGFXGroupLoad : BNE .notNormalLoad
@@ -4172,6 +4177,7 @@ NewLoadTransAuxGFX:
 
             PLB
             
+
             ; Replaced code:
             LDA.b #$60 : STA.b $01
 
@@ -4179,6 +4185,7 @@ NewLoadTransAuxGFX:
             JML.l LoadTransAuxGFX_return
 
     .notNormalLoad
+
 
     ; Setup the decompression buffer address.
     ; $00[3] = $7E6000
@@ -4203,7 +4210,7 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
-
+            JSR CheckSheet4bpp
     .noBgGfxChange3
 
     SEP #$10
@@ -4221,6 +4228,7 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
+            JSR CheckSheet4bpp
 
     .noBgGfxChange4
 
@@ -4239,6 +4247,7 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
+            JSR CheckSheet4bpp
 
     .noBgGfxChange5
 
@@ -4257,6 +4266,7 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
+            JSR CheckSheet4bpp
 
     .noBgGfxChange6
 
@@ -4338,6 +4348,22 @@ NewPrepTransAuxGFX:
 
     RTL
 }
+
+CheckSheet4bpp:
+    LDA.b $CA : AND.b #$40 : BEQ .decomp
+    REP #$30
+    ; Do vram transfer for 0x800 bytes
+    LDY.w #$0000
+    .loopcopy2
+    LDA.b [$C8], Y ; load from the ROM directly
+    STA.w $2118 ; store in vram
+    INY : INY
+    CPY.w #$0800 : BCC .loopcopy2
+    SEP #$30
+    PLA : PLA ;pop the rts
+    JML $00D786
+    .decomp
+    RTS
 
 pushpc
 
@@ -5824,3 +5850,5 @@ endif
 
 pullpc
 pullpc
+
+
