@@ -705,6 +705,9 @@ namespace ZeldaFullEditor
         {
             byte asmVersion = ROM.DATA[Constants.OverworldCustomASMHasBeenApplied];
 
+
+
+
             int previousPalId = 0;
             int previousSprPalId = 0;
             if (this.Index > 0)
@@ -870,6 +873,22 @@ namespace ZeldaFullEditor
             spr2 = Palettes.SpritesAux3Palettes[pal5];
 
             this.SetColorsPalette(main, animated, aux1, aux2, hud, bgr, spr, spr2);
+
+
+            if (asmVersion >= 5)
+            {
+                ColorPalette pal = ZeldaFullEditor.GFX.editort16Bitmap.Palette;
+                for (int i = 0; i < 128; i+=1)
+                {
+                    pal.Entries[i] = Palettes.OverworldMainPalettes[Index][i];
+                    pal.Entries[(i / 16) * 16] = Color.Transparent;
+                }
+
+                ZeldaFullEditor.GFX.mapgfx16Bitmap.Palette = pal;
+                ZeldaFullEditor.GFX.mapblockset16Bitmap.Palette = pal;
+                this.GFXBitmap.Palette = pal;
+                return;
+            }
         }
 
         /// <summary>
@@ -1202,20 +1221,6 @@ namespace ZeldaFullEditor
 
                 ZeldaFullEditor.GFX.mapgfx16Bitmap.Palette = pal;
                 ZeldaFullEditor.GFX.mapblockset16Bitmap.Palette = pal;
-
-                /*
-                for (int i = 0; i < 256; i++)
-                {
-                    if (index == 3)
-                    {
-                    }
-                    else if (index == 4)
-                    {
-                        pal.Entries[(i / 16) * 16] = Color.Transparent;
-                    }
-                }
-                */
-
                 this.GFXBitmap.Palette = pal;
             }
             catch (Exception)

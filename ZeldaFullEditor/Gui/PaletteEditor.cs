@@ -600,7 +600,16 @@ namespace ZeldaFullEditor.Gui
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWMain])
             {
                 selectedPalette = Palettes.OverworldMainPalettes[palettesTreeView.SelectedNode.Index];
-                selectedX = 7;
+
+                // ZS XMAS!
+                if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] >= 0x05)
+                {
+                    selectedX = 16;
+                }
+                else
+                {
+                    selectedX = 7;
+                }
             }
             else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes[Constants.PalName_OWAux])
             {

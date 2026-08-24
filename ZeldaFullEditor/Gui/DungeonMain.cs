@@ -6800,5 +6800,20 @@ namespace ZeldaFullEditor
                 zsImporter.ShowDialog();
             }
         }
+
+        private void convertPalettesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            int pos = 0;
+            foreach(OverworldMap om in overworldEditor.overworld.AllMaps)
+            {
+                om.LoadPalette();
+                ColorPalette cp = om.GFXBitmap.Palette;
+                Palettes.WritePalette(ROM.DATA, 0x240000+pos , cp.Entries);
+                pos += 256;
+            }
+
+
+        }
     }
 }

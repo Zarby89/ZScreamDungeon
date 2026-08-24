@@ -19,6 +19,9 @@ namespace ZeldaFullEditor
         ///      Gets or sets a 2 dimentional array containing the main overworld palettes.
         ///     35 colors each, 7x5 (0,2 on grid)
         /// </summary>
+        
+
+        //ZS XMAS use that for each OW screens
         public static Color[][] OverworldMainPalettes { get; set; } = new Color[Constants.OverworldMainPalettesMax][];
 
         /// <summary>
@@ -111,11 +114,28 @@ namespace ZeldaFullEditor
         /// <param name="romData"> The ROM to read from. </param>
         public static void CreateAllPalettes(byte[] romData)
         {
-            // 35 colors each, 7x5 (0,2 on grid).
-            for (int i = 0; i < OverworldMainPalettes.Length; i++)
+
+            // ZS XMAS!
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] >= 0x05)
             {
-                OverworldMainPalettes[i] = ReadPalette(romData, Constants.overworldPaletteMain + (i * (35 * 2)), 35);
+                OverworldMainPalettes = new Color[160][];
+                for (int i = 0; i < OverworldMainPalettes.Length; i++)
+                {
+                    OverworldMainPalettes[i] = ReadPalette(romData, 0x240000 + (i * (128 * 2)), 128);
+                }
+
             }
+            else
+            {
+                // 35 colors each, 7x5 (0,2 on grid).
+                for (int i = 0; i < OverworldMainPalettes.Length; i++)
+                {
+                    OverworldMainPalettes[i] = ReadPalette(romData, Constants.overworldPaletteMain + (i * (35 * 2)), 35);
+                }
+            }
+                
+
+
 
             // 21 colors each, 7x3 (8,2 and 8,5 on grid).
             for (int i = 0; i < OverworldAuxPalettes.Length; i++)

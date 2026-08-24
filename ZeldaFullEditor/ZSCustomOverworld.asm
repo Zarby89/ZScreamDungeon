@@ -458,10 +458,10 @@ Pool:
 
     ; This is a reserved value that ZS will write to when it has applied the
     ; ASM. That way the next time ZS loads the ROM it knows to read the custom
-    ; values instead of using the default ones. The current version is 03.
+    ; values instead of using the default ones. The current version is 05.
     org $288145 ; $140145
     .ZSAppliedASM ; 0x01
-    db $03
+    db $05
 
     ; When non 0 this will cause rain to appear on all areas in the beginning
     ; phase. Default is $FF.
@@ -3041,7 +3041,7 @@ NewOverworld_FinishTransGfx:
 
             ; Prep the new static gfx tile sets.
             JSR.w LoadTransMainGFX
-
+            
             ; A check to see if we need to Prep the GFX in the buffer. 
             ; Saves about a frame.
             LDA.b $04 : BEQ .dontPrep
@@ -3590,7 +3590,7 @@ PrepTransMainGFX:
     
     ; The first graphics pack always uses the higher 8 palette values.
     JSL.l Do3To4High16BitLONG
-
+    
     ; Number of tiles for next set is 0xC0.
     LDY.w #$00C0
     LDA.b $03
@@ -4223,9 +4223,6 @@ NewLoadTransAuxGFX:
 {
     PHB : PHK : PLB
 
-
-
-
     LDA.b $1B : BNE .indoors
         LDA.w Pool_EnableTransitionGFXGroupLoad : BNE .notNormalLoad
             .indoors
@@ -4396,9 +4393,9 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
 
 NewPrepTransAuxGFX:
 {
+    
     LDA.b $04 : BEQ .dontPrep
         JSL.l PrepTransAuxGFX
-
     .dontPrep
 
     RTL
@@ -4406,17 +4403,19 @@ NewPrepTransAuxGFX:
 
 CheckSheet4bpp:
     LDA.b $CA : AND.b #$40 : BEQ .decomp
-    REP #$30
-    ; Do vram transfer for 0x800 bytes
-    LDY.w #$0000
-    .loopcopy2
-    LDA.b [$C8], Y ; load from the ROM directly
-    STA.w $2118 ; store in vram
-    INY : INY
-    CPY.w #$0800 : BCC .loopcopy2
-    SEP #$30
-    PLA : PLA ;pop the rts
-    JML $00D786
+        REP #$30
+        ; Do vram transfer for 0x800 bytes
+        LDY.w #$0000
+        .loopcopy2
+        LDA.b [$C8], Y ; load from the ROM directly
+        STA.w $2118 ; store in vram
+        INY : INY
+        CPY.w #$0800 : BCC .loopcopy2
+        SEP #$30
+        PLA : PLA ;pop the rts
+
+        PLB
+        JML LoadTransAuxGFX_sprite_continue
     .decomp
     RTS
 
