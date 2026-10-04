@@ -1149,6 +1149,15 @@ namespace ZeldaFullEditor
         {
             base.Draw();
 
+            if (Size > DungeonsData.customObjects.Length-1)
+            {
+                draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 0 * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 1 * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 1 * 8);
+                return;
+            }
+
             int p = 0;
             int currentX = 0;
             int currentY = 0;

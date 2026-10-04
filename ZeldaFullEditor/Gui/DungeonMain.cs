@@ -6829,7 +6829,10 @@ namespace ZeldaFullEditor
             
             if (Directory.Exists("Objects"))
             {
-                DungeonsData.customObjects.Clear();
+
+                int c = Directory.EnumerateFiles("Objects").Count();
+                DungeonsData.customObjects = new byte[c][];
+
                 foreach (string fstring in Directory.EnumerateFiles("Objects"))
                 {
                     string fs = fstring.Remove(0, 8);
@@ -6848,10 +6851,9 @@ namespace ZeldaFullEditor
 
                     objsize = int.Parse(fs[0].ToString(), System.Globalization.NumberStyles.HexNumber);
 
-                    DungeonsData.customObjects.Add(File.ReadAllBytes(fstring));
+                    
 
-
-                    Console.WriteLine(objind.ToString("X2") + ", " + objsize.ToString("X2"));
+                    DungeonsData.customObjects[objsize] = (File.ReadAllBytes(fstring));
                 }
 
 
