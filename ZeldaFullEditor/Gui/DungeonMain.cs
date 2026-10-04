@@ -6830,30 +6830,58 @@ namespace ZeldaFullEditor
             if (Directory.Exists("Objects"))
             {
 
-                int c = Directory.EnumerateFiles("Objects").Count();
-                DungeonsData.customObjects = new byte[c][];
 
+                int count31 = 0;
+                int count32 = 0;
                 foreach (string fstring in Directory.EnumerateFiles("Objects"))
                 {
+
                     string fs = fstring.Remove(0, 8);
                     int objind = 0x31;
                     int objsize = 0x00;
                     if (fs.StartsWith("31")) // this is for object 31
                     {
+                        count31++;
                         objind = 0x31;
                         fs = fs.Remove(0, 3);
                     }
                     if (fs.StartsWith("32")) // this is for object 32
                     {
+                        count32++;
                         objind = 0x32;
                         fs = fs.Remove(0, 3);
                     }
+                }
 
-                    objsize = int.Parse(fs[0].ToString(), System.Globalization.NumberStyles.HexNumber);
+                DungeonsData.customObjects = new byte[count31][];
+                DungeonsData.customObjects2 = new byte[count32][];
+
+                foreach (string fstring in Directory.EnumerateFiles("Objects"))
+                {
+
+                    string fs = fstring.Remove(0, 8);
+                    int objind = 0x31;
+                    int objsize = 0x00;
+                    if (fs.StartsWith("31")) // this is for object 31
+                    {
+                        count31++;
+                        objind = 0x31;
+                        fs = fs.Remove(0, 3);
+                        objsize = int.Parse(fs[0].ToString(), System.Globalization.NumberStyles.HexNumber);
+                        DungeonsData.customObjects[objsize] = (File.ReadAllBytes(fstring));
+                    }
+                    if (fs.StartsWith("32")) // this is for object 32
+                    {
+                        count32++;
+                        objind = 0x32;
+                        fs = fs.Remove(0, 3);
+                        objsize = int.Parse(fs[0].ToString(), System.Globalization.NumberStyles.HexNumber);
+                        DungeonsData.customObjects2[objsize] = (File.ReadAllBytes(fstring));
+                    }
 
                     
 
-                    DungeonsData.customObjects[objsize] = (File.ReadAllBytes(fstring));
+                    
                 }
 
 

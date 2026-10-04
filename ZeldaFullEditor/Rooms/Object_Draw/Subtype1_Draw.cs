@@ -1206,27 +1206,38 @@ namespace ZeldaFullEditor
         {
             name = Constants.Type1RoomObjectNames[0x32];
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-             // ??
+            // ??
         }
 
         public override void Draw(byte blockset = 0)
         {
             base.Draw();
+
+            if (Size > DungeonsData.customObjects2.Length - 1)
+            {
+                draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 0 * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 1 * 8);
+                draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 1 * 8);
+                return;
+            }
+
             int p = 0;
             int currentX = 0;
             int currentY = 0;
 
         lineloop:
-            if (DungeonsData.customObjects[Size][p] != 0)
+            if (DungeonsData.customObjects2[Size][p] != 0)
             {
-                int s = DungeonsData.customObjects[Size][p];
-                int sk = DungeonsData.customObjects[Size][p + 1];
+                int s = DungeonsData.customObjects2[Size][p];
+                int sk = DungeonsData.customObjects2[Size][p + 1];
 
 
                 // loop
             tileloop:
                 p += 2;
-                Tile t = new Tile(DungeonsData.customObjects[Size][p], DungeonsData.customObjects[Size][p + 1]);
+                Tile t = new Tile(DungeonsData.customObjects2[Size][p], DungeonsData.customObjects2[Size][p + 1]);
+
                 draw_tile(t, currentX, currentY);
                 currentX += 8;
 

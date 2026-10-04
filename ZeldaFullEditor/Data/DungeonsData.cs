@@ -48,5 +48,6 @@ namespace ZeldaFullEditor
 
 
         public static byte[][] customObjects;
+        public static byte[][] customObjects2;
     }
 }
