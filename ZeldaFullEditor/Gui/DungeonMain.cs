@@ -808,6 +808,7 @@ namespace ZeldaFullEditor
                 ROM.DATA = new byte[0x200000];
                 Array.Copy(this.netZS.romData, 0, ROM.DATA, 0, this.netZS.romData.Length);
             }
+            LoadCustomTilesObjects();
 
             DungeonObjectData.Load();
 
@@ -6814,6 +6815,51 @@ namespace ZeldaFullEditor
             }
 
 
+        }
+
+        private void reloadTileObjectsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadCustomTilesObjects();
+        }
+
+
+
+        public void LoadCustomTilesObjects()
+        {
+            
+            if (Directory.Exists("Objects"))
+            {
+                DungeonsData.customObjects.Clear();
+                foreach (string fstring in Directory.EnumerateFiles("Objects"))
+                {
+                    string fs = fstring.Remove(0, 8);
+                    int objind = 0x31;
+                    int objsize = 0x00;
+                    if (fs.StartsWith("31")) // this is for object 31
+                    {
+                        objind = 0x31;
+                        fs = fs.Remove(0, 3);
+                    }
+                    if (fs.StartsWith("32")) // this is for object 32
+                    {
+                        objind = 0x32;
+                        fs = fs.Remove(0, 3);
+                    }
+
+                    objsize = int.Parse(fs[0].ToString(), System.Globalization.NumberStyles.HexNumber);
+
+                    DungeonsData.customObjects.Add(File.ReadAllBytes(fstring));
+
+
+                    Console.WriteLine(objind.ToString("X2") + ", " + objsize.ToString("X2"));
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("Objects folder do not exists inside ZScream folder");
+            }
         }
     }
 }

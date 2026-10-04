@@ -875,7 +875,7 @@ namespace ZeldaFullEditor
             this.SetColorsPalette(main, animated, aux1, aux2, hud, bgr, spr, spr2);
 
 
-            if (asmVersion >= 5)
+            if (asmVersion >= 5 && ROM.DATA.Length >= 3000000)
             {
                 ColorPalette pal = ZeldaFullEditor.GFX.editort16Bitmap.Palette;
                 for (int i = 0; i < 128; i+=1)

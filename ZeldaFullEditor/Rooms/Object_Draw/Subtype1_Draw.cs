@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
@@ -1147,10 +1148,45 @@ namespace ZeldaFullEditor
         public override void Draw(byte blockset = 0)
         {
             base.Draw();
-            draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
+
+            int p = 0;
+            int currentX = 0;
+            int currentY = 0;
+
+        lineloop:
+            if (DungeonsData.customObjects[Size][p] != 0)
+            {
+                int s = DungeonsData.customObjects[Size][p];
+                int sk = DungeonsData.customObjects[Size][p + 1];
+
+
+                // loop
+            tileloop:
+                p += 2;
+                Tile t = new Tile(DungeonsData.customObjects[Size][p], DungeonsData.customObjects[Size][p + 1]);
+
+                draw_tile(t, currentX, currentY);
+                currentX += 8;
+
+                s -= 1;
+                if ((s & 0x1F) == 0)
+                {
+                    currentY += 8;
+                    currentX = 0;
+                    p += 2;
+                    goto lineloop;
+                }
+
+                goto tileloop;
+
+            }
+
+
+
+            /*draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
             draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 0 * 8);
             draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 1 * 8);
-            draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 1 * 8);
+            draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 1 * 8);*/
         }
     }
 
@@ -1167,10 +1203,36 @@ namespace ZeldaFullEditor
         public override void Draw(byte blockset = 0)
         {
             base.Draw();
-            draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 0 * 8);
-            draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 0 * 8);
-            draw_tile(DungeonObjectData.tiles[id][0], 0 * 8, 1 * 8);
-            draw_tile(DungeonObjectData.tiles[id][0], 1 * 8, 1 * 8);
+            int p = 0;
+            int currentX = 0;
+            int currentY = 0;
+
+        lineloop:
+            if (DungeonsData.customObjects[Size][p] != 0)
+            {
+                int s = DungeonsData.customObjects[Size][p];
+                int sk = DungeonsData.customObjects[Size][p + 1];
+
+
+                // loop
+            tileloop:
+                p += 2;
+                Tile t = new Tile(DungeonsData.customObjects[Size][p], DungeonsData.customObjects[Size][p + 1]);
+                draw_tile(t, currentX, currentY);
+                currentX += 8;
+
+                s -= 1;
+                if ((s & 0x1F) == 0)
+                {
+                    currentY += 8;
+                    currentX = 0;
+                    p += 2;
+                    goto lineloop;
+                }
+
+                goto tileloop;
+
+            }
         }
     }
 

@@ -116,7 +116,7 @@ namespace ZeldaFullEditor
         {
 
             // ZS XMAS!
-            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] >= 0x05)
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] >= 0x05 && ROM.DATA.Length >= 3000000)
             {
                 OverworldMainPalettes = new Color[160][];
                 for (int i = 0; i < OverworldMainPalettes.Length; i++)
@@ -330,6 +330,18 @@ namespace ZeldaFullEditor
                     WritePalette(romData, auxAddr + (i * (21 * 2)), OverworldAuxPalettes[i]);
                 }
             }
+
+            // ZS XMAS!
+            if (ROM.DATA[Constants.OverworldCustomASMHasBeenApplied] >= 0x05 && ROM.DATA.Length >= 3000000)
+            {
+
+                for (int i = 0; i < OverworldMainPalettes.Length; i++)
+                {
+                     WritePalette(romData, 0x240000 + (i * (128 * 2)), OverworldMainPalettes[i]);
+                }
+
+            }
+
 
             // 7 colors each 7x1 (0,7 on grid).
             for (int i = 0; i < 14; i++)

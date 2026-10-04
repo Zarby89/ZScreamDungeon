@@ -717,7 +717,7 @@ namespace ZeldaFullEditor
                     }
                     else if (nothingObjects.Contains(o.id))
                     {
-                        drawText(e.Graphics, o.X * 8, o.Y * 8, o.id.ToString("X2") + "\nT" + o.Size);
+                        //drawText(e.Graphics, o.X * 8, o.Y * 8, o.id.ToString("X2") + "\nT" + o.Size);
                     }
                     else if (o.name == "Nothing")
                     {

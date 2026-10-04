@@ -1244,10 +1244,10 @@ namespace ZeldaFullEditor
                         sizeXY = 0;
                     }
 
-                    if (oid == 0x31 || oid == 0x32)
+                    /*if (oid == 0x31 || oid == 0x32)
                     {
                         Console.WriteLine("0x31 or 0x32 found in room  " + index.ToString("X3"));
-                    }
+                    }*/
 
                     Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
                     //GFX.objects[oid] = true;

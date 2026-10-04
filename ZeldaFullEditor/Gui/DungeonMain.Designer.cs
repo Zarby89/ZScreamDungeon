@@ -294,6 +294,7 @@
             this.memoryManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadTileObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -3457,7 +3458,8 @@
             this.loadNamesFileToolStripMenuItem,
             this.memoryManagementToolStripMenuItem,
             this.pluginsToolStripMenuItem,
-            this.toolStripMenuItem8});
+            this.toolStripMenuItem8,
+            this.reloadTileObjectsToolStripMenuItem});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -3498,6 +3500,13 @@
             this.toolStripMenuItem8.Size = new System.Drawing.Size(233, 22);
             this.toolStripMenuItem8.Text = "Import player sprite .zspr";
             this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
+            // 
+            // reloadTileObjectsToolStripMenuItem
+            // 
+            this.reloadTileObjectsToolStripMenuItem.Name = "reloadTileObjectsToolStripMenuItem";
+            this.reloadTileObjectsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.reloadTileObjectsToolStripMenuItem.Text = "Reload Tile Objects";
+            this.reloadTileObjectsToolStripMenuItem.Click += new System.EventHandler(this.reloadTileObjectsToolStripMenuItem_Click);
             // 
             // testToolStripMenuItem
             // 
@@ -5411,6 +5420,7 @@
         private System.Windows.Forms.Button godownButton;
         public System.Windows.Forms.Label label43;
         private System.Windows.Forms.ToolStripMenuItem convertPalettesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reloadTileObjectsToolStripMenuItem;
     }
 }
 

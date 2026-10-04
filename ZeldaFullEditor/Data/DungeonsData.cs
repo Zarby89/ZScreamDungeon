@@ -45,5 +45,8 @@ namespace ZeldaFullEditor
         public static byte[] GlobalDamages = new byte[0x80];
 
         public static byte[] BumpDamagesGroup = new byte[30];
+
+
+        public static List<byte[]> customObjects = new List<byte[]>();
     }
 }

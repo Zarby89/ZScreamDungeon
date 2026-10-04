@@ -98,7 +98,7 @@ namespace ZeldaFullEditor
 
         public Tile(byte b1, byte b2) // Tile from game data
         {
-            this.id = (ushort)(((b2 & 0x01) << 8) + (b1));
+            this.id = (ushort)(((b2 & 0x03) << 8) + (b1));
             this.vflip = (b2 & 0x80) == 0x80;
             this.hflip = (b2 & 0x40) == 0x40;
             this.priority = (b2 & 0x20) == 0x20;

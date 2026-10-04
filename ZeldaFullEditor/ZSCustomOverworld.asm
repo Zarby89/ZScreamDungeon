@@ -3041,7 +3041,7 @@ NewOverworld_FinishTransGfx:
 
             ; Prep the new static gfx tile sets.
             JSR.w LoadTransMainGFX
-            
+
             ; A check to see if we need to Prep the GFX in the buffer. 
             ; Saves about a frame.
             LDA.b $04 : BEQ .dontPrep
@@ -3277,7 +3277,7 @@ CheckForChangeGraphicsTransitionLoad:
 
                         ; Run the modified routine that loads the buffer
                         ; and normal color ram.
-                        JSL.l Palette_OverworldBgMain2
+                        ;JSL.l Palette_OverworldBgMain2
 
                 .dontUpdateMain1
 
@@ -3590,7 +3590,7 @@ PrepTransMainGFX:
     
     ; The first graphics pack always uses the higher 8 palette values.
     JSL.l Do3To4High16BitLONG
-    
+
     ; Number of tiles for next set is 0xC0.
     LDY.w #$00C0
     LDA.b $03
@@ -4216,8 +4216,6 @@ db $03, $C6, $0E, $D0, $C0, $60
 
 endif
 
-
-
 pullpc
 NewLoadTransAuxGFX:
 {
@@ -4229,7 +4227,6 @@ NewLoadTransAuxGFX:
 
             PLB
             
-
             ; Replaced code:
             LDA.b #$60 : STA.b $01
 
@@ -4237,7 +4234,6 @@ NewLoadTransAuxGFX:
             JML.l LoadTransAuxGFX_return
 
     .notNormalLoad
-
 
     ; Setup the decompression buffer address.
     ; $00[3] = $7E6000
@@ -4262,7 +4258,7 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
-            JSR CheckSheet4bpp
+
     .noBgGfxChange3
 
     SEP #$10
@@ -4280,7 +4276,6 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
-            JSR CheckSheet4bpp
 
     .noBgGfxChange4
 
@@ -4299,7 +4294,6 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
-            JSR CheckSheet4bpp
 
     .noBgGfxChange5
 
@@ -4318,7 +4312,6 @@ NewLoadTransAuxGFX:
             INC.b $04
             
             JSL.l Decomp_bg_variableLONG
-            JSR CheckSheet4bpp
 
     .noBgGfxChange6
 
@@ -4393,31 +4386,13 @@ NMI_UpdateChr_Bg2HalfAndAnimatedLONG:
 
 NewPrepTransAuxGFX:
 {
-    
     LDA.b $04 : BEQ .dontPrep
         JSL.l PrepTransAuxGFX
+
     .dontPrep
 
     RTL
 }
-
-CheckSheet4bpp:
-    LDA.b $CA : AND.b #$40 : BEQ .decomp
-        REP #$30
-        ; Do vram transfer for 0x800 bytes
-        LDY.w #$0000
-        .loopcopy2
-        LDA.b [$C8], Y ; load from the ROM directly
-        STA.w $2118 ; store in vram
-        INY : INY
-        CPY.w #$0800 : BCC .loopcopy2
-        SEP #$30
-        PLA : PLA ;pop the rts
-
-        PLB
-        JML LoadTransAuxGFX_sprite_continue
-    .decomp
-    RTS
 
 pushpc
 
@@ -5913,3 +5888,67 @@ pullpc
 pullpc
 
 
+
+org $1BEEC7
+LoadAllMainPal:
+
+REP #$30
+LDX.w #$0000
+LDA.w #$0048
+STA.b $02
+
+
+LDA.b $8A : XBA ; map index * 256
+CLC : ADC.w #$8000  : STA.b $00
+
+LDA.b $8A : AND.w #$0080 : BEQ +
+JMP $EF0E ; goto next unused code
++
+
+JMP $EEEA ; continue code in that section of unused code
+
+
+org $1BEEEA
+INC.b $00
+INC.b $00
+INX
+INX
+.next_color
+LDA.b [$00]
+STA.l $7EC300,X
+
+INC.b $00
+INC.b $00
+
+INX
+INX
+CPX.w #$0100
+BCC .next_color
+SEP #$30
+RTL
+
+
+org $1BEF0E
+INC.b $02 ; increase bank to 49 for special world
+LDA.b $00 : SEC : SBC.w #$8000 : STA.b $00
+JMP $EEEA
+
+
+org $1BEEA8
+RTL ; prevent anim palette from loading
+
+org $1BEEE8
+RTL ; prevent aux1 from loading
+
+org $1BEF0C
+RTL ; prevent aux2 from loading
+
+
+
+org $0ED5DF
+JSL LoadAllMainPal
+NOP #$08
+
+
+;org $28BCCB ; line 3280 of ZSCustomOverworld that will need to be removed
+;NOP #$04
