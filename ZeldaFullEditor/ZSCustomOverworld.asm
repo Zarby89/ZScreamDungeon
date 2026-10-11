@@ -1409,10 +1409,12 @@ Pool:
     endif
     warnpc $289938
 
-    ; Enough space for a total of 128 collision sheet
+    ; Enough space for a total of 128 collision sheets. 16x4 collisions map * 128 sheets of data.
     org $289938 ; $141938
     .IndividualSheetsCollisions
-    skip $2000 ; 16x4 collisions map * 128 sheets of data
+    if !UseVanillaPool > 0
+    incsrc "VanillaSheetCollision.asm"
+    endif
     warnpc $28B938
 }
 
