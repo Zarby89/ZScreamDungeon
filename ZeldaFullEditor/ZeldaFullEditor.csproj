@@ -868,7 +868,9 @@
     <None Include="Resources\dwimage1.png" />
     <None Include="Resources\swimage1.png" />
     <None Include="Resources\Pen1.png" />
-    <Content Include="VanillaSheetCollision.asm" />
+    <Content Include="VanillaSheetCollision.asm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ZS ROM MAP.txt" />
     <Content Include="ZS_Patches\Hex Edits\Misc Small Patches.asm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
