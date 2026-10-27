@@ -24,6 +24,7 @@
         CollisionMap,
         OverlayAnimation,
         Notemode,
-        FillTile
+        FillTile,
+        Tile8Mode
     }
 }

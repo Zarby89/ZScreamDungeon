@@ -90,6 +90,10 @@ namespace ZeldaFullEditor
         public static IntPtr roomBg2Ptr = Marshal.AllocHGlobal(512 * 512);
         public static Bitmap roomBg2Bitmap;
 
+        public static ushort[] tilesBg8Buffer = new ushort[4096];
+        public static IntPtr roomBg8Ptr = Marshal.AllocHGlobal(512 * 512);
+        public static Bitmap roomBg8Bitmap;
+
         public static ushort[] tilesObjectsBuffer = new ushort[4096];
         public static IntPtr roomObjectsPtr = Marshal.AllocHGlobal(512 * 512);
         public static Bitmap roomObjectsBitmap;
@@ -207,11 +211,49 @@ namespace ZeldaFullEditor
             }
         }
 
+        public static unsafe void DrawBG8()
+        {
+            var alltilesData = (byte*)currentgfx16Ptr.ToPointer();
+            byte* ptr = (byte*)roomBg8Ptr.ToPointer();
+
+            for (int yy = 0; yy < 64; yy++) // for each tile on the tile buffer
+            {
+                for (int xx = 0; xx < 64; xx++)
+                {
+                    if (tilesBg8Buffer[xx + (yy * 64)] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
+                    {
+                        TileInfo t = gettilesinfo(tilesBg8Buffer[xx + (yy * 64)]);
+
+                        for (var yl = 0; yl < 8; yl++)
+                        {
+                            for (var xl = 0; xl < 4; xl++)
+                            {
+
+                                int mx = xl * (1 - t.HS) + (3 - xl) * (t.HS);
+                                int my = yl * (1 - t.VS) + (7 - yl) * (t.VS);
+
+                                // Formula information to get tile index position in the array
+                                //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                                int tx = ((t.id / 16) * 512) + ((t.id - ((t.id / 16) * 16)) * 4);
+                                var pixel = alltilesData[tx + (yl * 64) + xl];
+                                //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+
+                                int index = (xx * 8) + (yy * 4096) + ((mx * 2) + (my * 512));
+                                ptr[index + t.HS ^ 1] = (byte)((pixel & 0x0F) + t.palette * 16);
+                                ptr[index + t.HS] = (byte)(((pixel >> 4) & 0x0F) + t.palette * 16);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public static void initGfx()
         {
             roomBgLayoutBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBgLayoutPtr);
             roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg1Ptr);
             roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
+            roomBg8Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg8Ptr);
             allgfxBitmap = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
             allgfx2bppBitmap = new Bitmap(128, 640, 64, PixelFormat.Format4bppIndexed, allgfx2bpp16Ptr);
             //allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
@@ -262,6 +304,7 @@ namespace ZeldaFullEditor
             {
                 tilesBg1Buffer[i] = 0xFFFF;
                 tilesBg2Buffer[i] = 0xFFFF;
+                tilesBg8Buffer[i] = 0xFFFF;
             }
         }
 

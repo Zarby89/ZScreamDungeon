@@ -15,6 +15,7 @@ using System.Text;
 using System.Windows.Forms;
 using Lidgren.Network;
 using Microsoft.VisualBasic;
+using ZCompressLibrary;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.ExtraForms;
@@ -22,6 +23,7 @@ using ZeldaFullEditor.Gui.MainTabs;
 using ZeldaFullEditor.Properties;
 using static ZeldaFullEditor.OverworldMap;
 using static ZeldaFullEditor.Room_Object;
+
 
 namespace ZeldaFullEditor
 {
@@ -119,6 +121,8 @@ namespace ZeldaFullEditor
 
         internal Label networkstatusLabel = new Label();
         internal Panel networkPanel;
+
+        PointeredImage ptr8x8Image = new PointeredImage(128, 512);
 
         int romID = 00;
 
@@ -1256,6 +1260,7 @@ namespace ZeldaFullEditor
             this.toolStripButton1.Enabled = true;
             this.searchButton.Enabled = true;
             this.collisionModeButton.Enabled = true;
+            this.tile8ModeButton.Enabled = true;
 
             foreach (object menuItem in this.editToolStripMenuItem.DropDownItems)
             {
@@ -1371,6 +1376,10 @@ namespace ZeldaFullEditor
                 this.tileTypeCombobox.SelectedIndex = 0;
                 this.collisionMapPanel.Visible = true;
             }
+            else if (this.tile8ModeButton.Checked)
+            {
+                this.SetmodeAllScene(ObjectMode.Tile8Mode);
+            }
         }
 
         public void Update_modes_buttons(object sender, EventArgs e)
@@ -1378,7 +1387,7 @@ namespace ZeldaFullEditor
             this.activeScene.selectedDragObject = null;
             this.activeScene.selectedDragSprite = null;
 
-            for (int i = 8; i < 20; i++)
+            for (int i = 8; i < 21; i++)
             {
                 (this.toolStrip1.Items[i] as ToolStripButton).Checked = false;
             }
@@ -2041,7 +2050,7 @@ namespace ZeldaFullEditor
             this.setEntranceProperties(entrance, cameraTriggerX, cameraTriggerY);
         }
 
-        public void setEntranceProperties(Entrance entrance, int cameraTriggerX, int cameraTriggerY)
+        public unsafe void setEntranceProperties(Entrance entrance, int cameraTriggerX, int cameraTriggerY)
         {
             //propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
             this.entranceProperty_bg.Checked = false;
@@ -2375,6 +2384,10 @@ namespace ZeldaFullEditor
                 {
                     this.activeScene.room.reloadGfx();
                 }
+
+
+
+
 
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(this.activeScene.room.palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(this.activeScene.room.palette);
@@ -6889,6 +6902,175 @@ namespace ZeldaFullEditor
             else
             {
                 MessageBox.Show("Objects folder do not exists inside ZScream folder");
+            }
+        }
+
+        private void editBox8x8_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+            e.Graphics.SmoothingMode = SmoothingMode.None;
+
+            e.Graphics.DrawImage(GFX.editort16Bitmap, new Rectangle(0,0,256,1024));
+
+
+            int y = (edit8x8tileid / 16);
+            int x = edit8x8tileid - (y * 16);
+            e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * 16, y * 16, 16, 16));
+        }
+        int edit8x8tileid = 0;
+        int edit8x8palid = 2;
+        bool fromForm = false;
+        private void editBox8x8_MouseDown(object sender, MouseEventArgs e)
+        {
+            fromForm = true;
+            int tid = (e.X / 16) + ((e.Y / 16) * 16);
+            
+            if (tid < 512)
+            {
+                edit8x8tileid = tid;
+            }
+
+            if (e.Button == MouseButtons.Right)
+            {
+                editBox8x8.Invalidate();
+            }
+
+            fromForm = false;
+
+            refreshbutton_Click(null, e);
+        }
+
+        private unsafe void refreshbutton_Click(object sender, EventArgs e)
+        {
+
+
+            activeScene.room.reloadGfx();
+            byte* sheetsData = (byte*)GFX.currentgfx16Ptr.ToPointer();
+
+
+            //ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out ushort tempTile);
+            int mx = 0;
+            int my = 0;
+            int o = 0;
+            //tile8selected = tempTile;
+            if (edit8x8mxCheckbox.Checked)
+            {
+                mx = 1;
+            }
+            if (edit8x8myCheckbox.Checked)
+            {
+                my = 1;
+            }
+            if (edit8x8priorityCheckbox.Checked)
+            {
+                o = 1;
+            }
+
+            byte p = (byte)(edit8x8palid & 0x07);
+            activeScene.selectedtile8 = (ushort)(edit8x8tileid | (p<<10) | (mx<<14) | my<<15 | o<<13);
+            byte* destPtr = (byte*)GFX.editort16Ptr.ToPointer();
+            byte* srcPtr = (byte*)GFX.currentgfx16Ptr.ToPointer();
+            int xx = 0;
+            int yy = 0;
+
+            for (int i = 0; i < 1024; i++)
+            {
+                for (var y = 0; y < 8; y++)
+                {
+                    for (var x = 0; x < 4; x++)
+                    {
+                        CopyTile(x, y, xx, yy, i, p, destPtr, srcPtr);
+                    }
+                }
+
+                xx += 8;
+                if (xx >= 128)
+                {
+                    yy += 1024;
+                    xx = 0;
+                }
+            }
+
+            GFX.editort16Bitmap.Palette = GFX.roomBg1Bitmap.Palette;
+
+            editBox8x8.Invalidate();
+        }
+
+        private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, byte* gfx16Pointer, byte* gfx8Pointer)
+        {
+            int mx = x;
+            int my = y;
+            byte r = 0;
+
+            if (edit8x8mxCheckbox.Checked)
+            {
+                mx = 3 - x;
+                r = 1;
+            }
+            if (edit8x8myCheckbox.Checked)
+            {
+                my = 7 - y;
+            }
+
+            int tx = ((id / 16) * 512) + ((id - ((id / 16) * 16)) * 4);
+            var index = xx + yy + (mx * 2) + (my * 128);
+            var pixel = gfx8Pointer[tx + (y * 64) + x];
+
+            gfx16Pointer[index + r ^ 1] = (byte)((pixel & 0x0F) + p * 16);
+            gfx16Pointer[index + r] = (byte)(((pixel >> 4) & 0x0F) + p * 16);
+        }
+
+        private void edit8x8mxCheckbox_CheckStateChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void edit8x8mxCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            refreshbutton_Click(null, e);
+
+        }
+
+        private void edit8x8palettebox_MouseDown(object sender, MouseEventArgs e)
+        {
+            edit8x8palid = e.Y/16;
+            refreshbutton_Click(null, e);
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+
+                byte[] target = new byte[GFX.tilesBg8Buffer.Length * sizeof(ushort)];
+                Buffer.BlockCopy(GFX.tilesBg8Buffer, 0, target, 0, target.Length);
+                File.WriteAllBytes(sfd.FileName, ZCompressLibrary.Compress.ALTTPCompressOverworld(target, 0, target.Length));
+            }
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog sfd = new OpenFileDialog();
+
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+
+                //ushort[] target = new ushort[GFX.tilesBg8Buffer.Length * sizeof(byte)];
+                int csize = 0;
+                Buffer.BlockCopy(ZCompressLibrary.Decompress.ALTTPDecompressGraphics(File.ReadAllBytes(sfd.FileName),0,0x2000,ref csize), 0, GFX.tilesBg8Buffer, 0, GFX.tilesBg8Buffer.Length);
+                
+                //Compress.ALTTPCompressGraphics(target, 0, target.Length);
+
+                //File.WriteAllBytes(sfd.FileName, target);
+
+
+
             }
         }
     }

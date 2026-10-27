@@ -29,6 +29,8 @@ namespace ZeldaFullEditor
         int rmx = 0;
         int rmy = 0;
 
+        public ushort selectedtile8 = 0;
+
         private static readonly List<ushort> nothingObjects = new List<ushort> {0x31, 0x32, 0x54, 0x57, 0x58, 0x59, 0x5A, 0x6E, 0x6F, 0x72, 0x7E, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xAD, 0xAE, 0xAF, 0xBE, 0xBF, 0xCB, 0xCC, 0xCF, 0xD0, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7 };
 
         private const int garbageobjdata = -999999;
@@ -489,6 +491,8 @@ namespace ZeldaFullEditor
                 }
             }
 
+
+
             if (!colliding_chest)
             {
                 this.mainForm.toolTip1.Hide(this);
@@ -496,6 +500,36 @@ namespace ZeldaFullEditor
 
             if (this.mouse_down) // Slowdown problem in save caused by something here
             {
+
+                if (selectedMode == ObjectMode.Tile8Mode)
+                {
+
+                    int px = e.X / 8;
+                    int py = e.Y / 8;
+
+                    if (mainForm.x2zoom)
+                    {
+                        px = e.X / 16;
+                        py = e.Y / 16;
+                    }
+
+                    if (ModifierKeys == Keys.Control)
+                    {
+                        if (px != last_mx || py != last_my)
+                        {
+                            GFX.tilesBg8Buffer[px + (py * 64)] = 0xFFFF;
+                        }
+                    }
+                    else
+                    {
+                        if (px != last_mx || py != last_my)
+                        {
+                            GFX.tilesBg8Buffer[px + (py * 64)] = selectedtile8;
+                        }
+                    }
+
+                }
+
                 /* updating_info = true; */
 
                 this.setMouseSizeMode(e); // Define the size of mx,my for each mode
@@ -625,10 +659,13 @@ namespace ZeldaFullEditor
             if (room.bg2 != Background2.Translucent || room.bg2 != Background2.Transparent || room.bg2 != Background2.OnTop || room.bg2 != Background2.Off)
             {
                 gfx.DrawImage(GFX.roomBg2Bitmap, 0, 0);
+
             }
 
             //e.Graphics.DrawImage(GFX.roomBgLayoutBitmap,0,0);
             gfx.DrawImage(GFX.roomBg1Bitmap, 0, 0);
+
+            gfx.DrawImage(GFX.roomBg8Bitmap, 0, 0);
 
             if (room.bg2 == Background2.Translucent || room.bg2 == Background2.Transparent)
             {
@@ -1264,6 +1301,39 @@ namespace ZeldaFullEditor
                         room.collisionMap[px + (py * 64)] = (byte)mainForm.tileTypeCombobox.SelectedIndex;
                     }
                 }
+                else if (selectedMode == ObjectMode.Tile8Mode)
+                {
+                    
+                    
+
+                    int px = e.X / 8;
+                    int py = e.Y / 8;
+                    
+                    if (mainForm.x2zoom)
+                    {
+                        px = e.X / 16;
+                        py = e.Y / 16;
+                    }
+                    dragx = px;
+                    dragy = py;
+
+                    if (ModifierKeys == Keys.Control)
+                    {
+                        GFX.tilesBg8Buffer[px + (py * 64)] = 0xFFFF;
+                    }
+                    else
+                    {
+                        if (e.Button == MouseButtons.Right)
+                        {
+                            selectedtile8 = GFX.tilesBg8Buffer[px + (py * 64)];
+                        }
+                        else
+                        {
+                            GFX.tilesBg8Buffer[px + (py * 64)] = selectedtile8;
+                        }
+                    }
+                    
+                }
 
                 mouse_down = true;
                 move_x = 0;
@@ -1397,11 +1467,14 @@ namespace ZeldaFullEditor
         {
             byte* bg1data = (byte*)GFX.roomBg1Ptr.ToPointer();
             byte* bg2data = (byte*)GFX.roomBg2Ptr.ToPointer();
+            byte* bg8data = (byte*)GFX.roomBg8Ptr.ToPointer();
+
 
             for (int i = 0; i < 512 * 512; i++)
             {
                 bg1data[i] = 0;
                 bg2data[i] = 0;
+                bg8data[i] = 0;
             }
         }
 
@@ -1428,11 +1501,17 @@ namespace ZeldaFullEditor
                 {
                     room.DrawFloor2();
                 }
+                SetPalettesBG8Transparent();
             }
             else
             {
                 SetPalettesBlack();
+                SetPalettesBG8Transparent();
             }
+
+
+            
+
 
             room.reloadLayout();
 
@@ -1487,6 +1566,14 @@ namespace ZeldaFullEditor
             {
                 GFX.DrawBG2();
             }
+
+            // ADD CONDITION
+            //if (showLayer2)
+            //{
+                GFX.DrawBG8();
+            //}
+
+
             if (mainForm.showSprite)
             {
                 room.drawSprites();
@@ -1600,7 +1687,41 @@ namespace ZeldaFullEditor
 
             GFX.roomBg1Bitmap.Palette = palettes;
             GFX.roomBg2Bitmap.Palette = palettes;
+            GFX.roomBg8Bitmap.Palette = palettes;
             GFX.roomBgLayoutBitmap.Palette = palettes;
+        }
+
+        public void SetPalettesBG8Transparent()
+        {
+            int pindex = 0;
+            ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
+            for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+                {
+                    palettes.Entries[pindex++] = GFX.loadedPalettes[x, y];
+                }
+            }
+
+            for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
+                {
+                    if (pindex < 256)
+                    {
+                        palettes.Entries[pindex++] = GFX.loadedSprPalettes[x, y];
+                    }
+                }
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                palettes.Entries[i * 16] = Color.Transparent;
+                palettes.Entries[(i * 16) + 8] = Color.Transparent;
+            }
+
+            GFX.roomBg8Bitmap.Palette = palettes;
+
         }
 
         public void SetPalettesBlack()
@@ -1623,6 +1744,7 @@ namespace ZeldaFullEditor
 
             GFX.roomBg1Bitmap.Palette = palettes;
             GFX.roomBg2Bitmap.Palette = palettes;
+           // GFX.roomBg8Bitmap.Palette = palettes;
             GFX.roomBgLayoutBitmap.Palette = palettes;
         }
 
@@ -1742,6 +1864,10 @@ namespace ZeldaFullEditor
                             mainForm.groupselectedcontextMenu.Items[0].Visible = false;
 
                             break;
+                        case ObjectMode.Tile8Mode:
+
+                            break;
+
                     }
 
 
