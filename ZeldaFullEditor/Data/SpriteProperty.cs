@@ -51,7 +51,7 @@ namespace ZeldaFullEditor.Data
 
         internal bool Deflectarrows { get; set; } = false;
 
-        internal bool ZeroDamageOverride { get; set; } = false;
+        internal bool AllowNondamagingHits { get; set; } = false;
 
         internal bool DieLikeABoss { get; set; } = false;
 
@@ -126,7 +126,7 @@ namespace ZeldaFullEditor.Data
             // $0B6B
             TileHitBox = addr0DB53F.GetHighNibble(); // Bit shifted to make it easier to set later. Before we save to rom we shift it back.
             Deflectarrows = addr0DB53F.BitIsOn(0x08);
-            ZeroDamageOverride = addr0DB53F.BitIsOn(0x04);
+            AllowNondamagingHits = addr0DB53F.BitIsOn(0x04);
             DieLikeABoss = addr0DB53F.BitIsOn(0x02);
             Invertpitbehavior = addr0DB53F.BitIsOn(0x01);
 
@@ -172,7 +172,7 @@ namespace ZeldaFullEditor.Data
 			byte addr0DB44C = (byte) (IntFunctions.MakeBitfield(bit7: Singlelayercollision, bit6: Ignoredbykillrooms, bit5: StayActiveOffScreen) | Hitbox);
 
 			// $0B6B
-			byte addr0DB53F = (byte) ((TileHitBox << 4) | IntFunctions.MakeBitfield(bit3: Deflectarrows, bit2: ZeroDamageOverride, bit1: DieLikeABoss, bit0: Invertpitbehavior));
+			byte addr0DB53F = (byte) ((TileHitBox << 4) | IntFunctions.MakeBitfield(bit3: Deflectarrows, bit2: AllowNondamagingHits, bit1: DieLikeABoss, bit0: Invertpitbehavior));
 
 			// $0BE0
 			byte addr0DB632 = (byte) (IntFunctions.MakeBitfield(bit7: IgnorePitConveyors, bit6: CheckForWater, bit5: BlockedByShield, bit4: AltDamageSound) | PrizePack);

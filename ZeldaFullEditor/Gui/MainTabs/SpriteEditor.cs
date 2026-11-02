@@ -55,7 +55,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             recoilwithoutcollisionCheckbox.Checked = selectedProperty.RecoilWithoutCollision;
             invertpitbehaviorCheckbox.Checked = selectedProperty.Invertpitbehavior;
             dielikeabossCheckbox.Checked = selectedProperty.DieLikeABoss;
-            overrideslashimmunityCheckbox.Checked = selectedProperty.ZeroDamageOverride;
+            allownondamagingCheckbox.Checked = selectedProperty.AllowNondamagingHits;
             deflectarrowsCheckbox.Checked = selectedProperty.Deflectarrows;
             persistoffscreenowCheckbox.Checked = selectedProperty.StayActiveOffScreen;
             ignoredbykillroomsCheckbox.Checked = selectedProperty.Ignoredbykillrooms;
@@ -132,7 +132,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             selectedProperty.RecoilWithoutCollision = recoilwithoutcollisionCheckbox.Checked;
             selectedProperty.Invertpitbehavior = invertpitbehaviorCheckbox.Checked;
             selectedProperty.DieLikeABoss = dielikeabossCheckbox.Checked;
-            selectedProperty.ZeroDamageOverride = overrideslashimmunityCheckbox.Checked;
+            selectedProperty.AllowNondamagingHits = allownondamagingCheckbox.Checked;
             selectedProperty.Deflectarrows = deflectarrowsCheckbox.Checked;
             selectedProperty.StayActiveOffScreen = persistoffscreenowCheckbox.Checked;
             selectedProperty.Ignoredbykillrooms = ignoredbykillroomsCheckbox.Checked;
