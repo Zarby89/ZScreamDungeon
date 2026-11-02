@@ -17,6 +17,7 @@ namespace ZeldaFullEditor.Gui.MainTabs {
 
 
 		public void Initialize() {
+            return; // TODO implement
 			int rarityx = Utils.SnesToPc(0x06FA5C);
 			int prizesx = Utils.SnesToPc(0x06FA72);
 
