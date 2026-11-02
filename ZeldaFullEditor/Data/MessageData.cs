@@ -55,14 +55,19 @@ namespace ZeldaFullEditor.Data
         /// <param name="parsedData"> The parsed data (bytes). </param>
         public MessageData(int id, int address, string rawString, byte[] rawData, string parsedString, byte[] parsedData)
         {
-            this.ID = id;
-            this.Address = address;
-            this.Data = rawData;
-            this.DataParsed = parsedData;
-            this.RawString = rawString;
-            this.ContentsParsed = parsedString;
-            this.Height = ((Regex.Matches(rawString, @"\[1\]|\[2\]|\[3\]|\[V\]").Count) * 13)+14;
+            ID = id;
+            Address = address;
+            Data = rawData;
+            DataParsed = parsedData;
+            RawString = rawString;
+            ContentsParsed = parsedString;
+            RecalculateHeight();
         }
+
+        internal static readonly Regex NewLineTokens = new Regex(@"\[[123V]\]", RegexOptions.Compiled);
+        private static readonly Regex AddNewLines = new Regex(@"\r\n", RegexOptions.Compiled);
+
+
 
         /// <summary>
         ///     Sets all the message data based on the given message string.
@@ -71,46 +76,29 @@ namespace ZeldaFullEditor.Data
         // TODO: Make this use Refresh() in the next version when actual functional changes are valid.
         public void SetMessage(string messageString)
         {
-            this.ContentsParsed = messageString;
-            this.RawString = this.OptimizeMessageForDictionary(messageString);
-            this.RecalculateData();
-            this.Height = ((Regex.Matches(RawString, @"\[1\]|\[2\]|\[3\]|\[V\]").Count) * 13) + 14;
-        }
-
-		/// <summary>
-		/// Refreshes the message entirely by reoptimizing it for the dictionary and recalculating the data.
-		/// </summary>
-		public void Refresh()
-		{
-			RawString = OptimizeMessageForDictionary(ContentsParsed);
-			RecalculateData();
-		}
-
-		/// <summary>
-		///     Returns the parsed message as a string.
-		/// </summary>
-		/// <returns> A string. </returns>
-		public override string ToString()
-        {
-            return string.Format("{0:X3} - {1}", this.ID, this.ContentsParsed);
+            ContentsParsed = AddNewLines.Replace(messageString, string.Empty);
+            RawString = OptimizeMessageForDictionary(messageString);
+            RecalculateData();
+            RecalculateHeight();
         }
 
         /// <summary>
-        ///     Returns a string with all of the available data in the message.
+        /// Refreshes the message entirely by reoptimizing it for the dictionary and recalculating the data.
+        /// </summary>
+        public void Refresh()
+        {
+            RawString = OptimizeMessageForDictionary(ContentsParsed);
+            RecalculateData();
+            RecalculateHeight();
+        }
+
+        /// <summary>
+        ///     Returns the parsed message as a string.
         /// </summary>
         /// <returns> A string. </returns>
-        public string GetReadableDumpedContents()
+        public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder((this.Data.Length * 2) + 1);
-            foreach (byte b in this.Data)
-            {
-                stringBuilder.Append(b.ToString("X2"));
-                stringBuilder.Append(" ");
-            }
-
-            stringBuilder.Append(TextEditor.MessageTerminator.ToString("X2"));
-
-            return string.Format("[[[[\r\nMessage {0:X3}]]]]\r\n[Contents]\r\n{1}\r\n\r\n[Data]\r\n{2}\r\n\r\n\r\n\r\n", this.ID, TextEditor.AddNewLinesToCommands(this.ContentsParsed), stringBuilder.ToString());
+            return string.Format("{0:X3} - {1}", ID, ContentsParsed);
         }
 
         /// <summary>
@@ -120,13 +108,18 @@ namespace ZeldaFullEditor.Data
         // TODO: INTERPOLATE
         public string GetDumpedContents()
         {
-            return string.Format("{0:X3} : {1}\r\n\r\n", this.ID, this.ContentsParsed);
+            return string.Format("{0:X3} : {1}\r\n\r\n", ID, ContentsParsed);
         }
 
         private void RecalculateData()
         {
-            this.Data = TextEditor.ParseMessageToData(this.RawString);
-            this.DataParsed = TextEditor.ParseMessageToData(this.ContentsParsed);
+            Data = TextEditor.ParseMessageToData(RawString);
+            DataParsed = TextEditor.ParseMessageToData(ContentsParsed);
+        }
+
+        private void RecalculateHeight()
+        {
+            Height = (NewLineTokens.Matches(RawString).Count * 13) + 14;
         }
 
         private string OptimizeMessageForDictionary(string messageString)

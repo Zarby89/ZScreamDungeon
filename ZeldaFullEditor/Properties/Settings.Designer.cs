@@ -22,8 +22,104 @@ namespace ZeldaFullEditor.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("Lime")]
+		public global::System.Drawing.Color SelectedRoomOutline {
+			get {
+				return ((global::System.Drawing.Color) (this["SelectedRoomOutline"]));
+			}
+			set {
+				this["SelectedRoomOutline"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("LimeGreen")]
+		public global::System.Drawing.Color OpenedRoomOutline {
+			get {
+				return ((global::System.Drawing.Color) (this["OpenedRoomOutline"]));
+			}
+			set {
+				this["OpenedRoomOutline"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("DarkTurquoise")]
+		public global::System.Drawing.Color ExportedRoomOutline {
+			get {
+				return ((global::System.Drawing.Color) (this["ExportedRoomOutline"]));
+			}
+			set {
+				this["ExportedRoomOutline"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("SeaGreen")]
+		public global::System.Drawing.Color OpenedExportedRoomOutline {
+			get {
+				return ((global::System.Drawing.Color) (this["OpenedExportedRoomOutline"]));
+			}
+			set {
+				this["OpenedExportedRoomOutline"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("2")]
+		public int SelectedRoomOutlineSize {
+			get {
+				return ((int) (this["SelectedRoomOutlineSize"]));
+			}
+			set {
+				this["SelectedRoomOutlineSize"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("2")]
+		public int OpenedRoomOutlineSize {
+			get {
+				return ((int) (this["OpenedRoomOutlineSize"]));
+			}
+			set {
+				this["OpenedRoomOutlineSize"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("2")]
+		public int ExportedRoomOutlineSize {
+			get {
+				return ((int) (this["ExportedRoomOutlineSize"]));
+			}
+			set {
+				this["ExportedRoomOutlineSize"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("2")]
+		public int OpenedExportedRoomOutlineSize {
+			get {
+				return ((int) (this["OpenedExportedRoomOutlineSize"]));
+			}
+			set {
+				this["OpenedExportedRoomOutlineSize"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool spriteText {
@@ -88,7 +184,7 @@ namespace ZeldaFullEditor.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool spriteShow {
             get {
-                return ((bool)(this["spriteShow"]));
+                return ((bool) (this["spriteShow"]));
             }
             set {
                 this["spriteShow"] = value;

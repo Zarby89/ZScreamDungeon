@@ -151,10 +151,14 @@
     <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\MessageData.cs" />
     <Compile Include="Data\OAMTile.cs" />
+    <Compile Include="Data\PrizePacks.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Data\SongAddress.cs" />
     <Compile Include="Data\SpriteProperty.cs" />
+    <Compile Include="DrawingColor.cs" />
     <Compile Include="DungeonOverlays.cs" />
+    <Compile Include="FastRomifier.cs" />
+    <Compile Include="FastRomifier.data.cs" />
     <Compile Include="Gui\AddDirectoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -295,6 +299,12 @@
     <Compile Include="Gui\ExtraForms\OWMusicForm.Designer.cs">
       <DependentUpon>OWMusicForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\PrizePackBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\PrizePackBox.Designer.cs">
+      <DependentUpon>PrizePackBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\SearchTilesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -390,6 +400,12 @@
     </Compile>
     <Compile Include="Gui\MainTabs\OverworldEditor.Designer.cs">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\MainTabs\PrizePacksEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\PrizePacksEditor.Designer.cs">
+      <DependentUpon>PrizePacksEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\MainTabs\ScreenEditor.cs">
       <SubType>UserControl</SubType>
@@ -592,6 +608,7 @@
     <Compile Include="T32UniqueCounter.cs" />
     <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="VanillaROM.cs" />
     <Compile Include="WriteType.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
@@ -676,6 +693,9 @@
     <EmbeddedResource Include="Gui\ExtraForms\OWMusicForm.resx">
       <DependentUpon>OWMusicForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\PrizePackBox.resx">
+      <DependentUpon>PrizePackBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\SearchTilesForm.resx">
       <DependentUpon>SearchTilesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -730,6 +750,9 @@
     <EmbeddedResource Include="Gui\MainTabs\OverworldEditor.resx">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\PrizePacksEditor.resx">
+      <DependentUpon>PrizePacksEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\ScreenEditor.resx">
       <DependentUpon>ScreenEditor.cs</DependentUpon>
@@ -801,6 +824,7 @@
     <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">

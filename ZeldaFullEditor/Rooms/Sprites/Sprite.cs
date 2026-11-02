@@ -101,6 +101,15 @@ namespace ZeldaFullEditor
             }
         }
 
+
+        public void DrawAsBox(bool picker = false) {
+			// ZARBY TODO THIS PLEASE
+			// draw a 16x16 box with the sprite ID in the middle!!!!!
+			// TODO this should be empty until a better solution that doesn't put it in SceneUW is found
+
+			boundingbox = new Rectangle(x * 16, y * 16, 16, 16);
+		}
+
         public void Draw(bool picker = false)
         {
 

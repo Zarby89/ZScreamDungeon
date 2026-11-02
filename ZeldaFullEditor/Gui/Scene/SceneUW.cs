@@ -750,14 +750,6 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (mainForm.showSpriteText)
-            {
-                foreach (Sprite spr in room.sprites)
-                {
-                    drawText(g, spr.nx * 16, spr.ny * 16, spr.name);
-                }
-            }
-
             if (mainForm.showChestText)
             {
                 foreach (Chest c in room.chest_list)
@@ -766,7 +758,37 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (mainForm.showItemsText)
+
+
+
+            if (mainForm.showSprite > 0) {
+                int sprShowIndex = 0;
+                foreach (Sprite spr in room.sprites) {
+
+                    // TODO this would be better done elsewhere, but whatever for now
+
+                    if (mainForm.showSprite == 1) {
+						g.FillRectangle(Constants.VibrantMagenta200, spr.nx * 16, spr.ny * 16, 16, 16);
+						g.DrawRectangle(Constants.VibrantMagenta200, spr.nx * 16, spr.ny * 16, 16, 16);
+
+						drawText(g, spr.nx * 16 + 4, spr.ny * 16 + 4,
+							mainForm.showSpriteText ? spr.name : $"{spr.id:X2}");
+
+					} else if (mainForm.showSpriteText) {
+                        drawText(g, spr.nx * 16, spr.ny * 16, spr.name);
+                    }
+
+                    if (mainForm.showSpriteIndexUW) {
+						if (!spr.IsOverlord) {
+							drawText(g, (spr.nx * 16) + 8, (spr.ny * 16) - 8, $"{sprShowIndex:X1}");
+							sprShowIndex++;
+						}
+					}
+                }
+            }
+
+
+			if (mainForm.showItemsText)
             {
                 foreach (PotItem c in room.pot_items)
                 {
@@ -822,7 +844,7 @@ namespace ZeldaFullEditor
                 {
                     //for (int i = 0; i < 12; i++)
                     //{
-                    g.DrawRectangles(Constants.ThirdGreenPen, doorArray);
+                    g.DrawRectangles(Constants.ThirdGreen, doorArray);
                     //drawText(g,doorArray)
                     //}
                 }
@@ -1486,10 +1508,16 @@ namespace ZeldaFullEditor
             {
                 GFX.DrawBG2();
             }
-            if (mainForm.showSprite)
-            {
-                room.drawSprites();
-            }
+
+            switch (mainForm.showSprite) {
+                case 1:
+					room.drawSpritesAsBoxes();
+					break;
+
+                case 2:
+					room.drawSprites();
+					break;
+			}
             if (mainForm.showChest)
             {
                 drawChests();
@@ -1555,12 +1583,12 @@ namespace ZeldaFullEditor
 
                 for (int x = 0; x < wh; x++)
                 {
-                    graphics.DrawLine(Constants.HalfWhitePen, x * s, 0, x * s, 512);
+                    graphics.DrawLine(Constants.HalfWhite, x * s, 0, x * s, 512);
                 }
 
                 for (int y = 0; y < wh; y++)
                 {
-                    graphics.DrawLine(Constants.HalfWhitePen, 0, y * s, 512, y * s);
+                    graphics.DrawLine(Constants.HalfWhite, 0, y * s, 512, y * s);
                 }
             }
         }

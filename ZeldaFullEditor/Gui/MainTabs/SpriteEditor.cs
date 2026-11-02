@@ -55,9 +55,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
             recoilwithoutcollisionCheckbox.Checked = selectedProperty.RecoilWithoutCollision;
             invertpitbehaviorCheckbox.Checked = selectedProperty.Invertpitbehavior;
             dielikeabossCheckbox.Checked = selectedProperty.DieLikeABoss;
-            overrideslashimmunityCheckbox.Checked = selectedProperty.ZeroDamageOverride;
+            allownondamagingCheckbox.Checked = selectedProperty.AllowNondamagingHits;
             deflectarrowsCheckbox.Checked = selectedProperty.Deflectarrows;
-            persistoffscreenowCheckbox.Checked = selectedProperty.Persistoffscreenow;
+            persistoffscreenowCheckbox.Checked = selectedProperty.StayActiveOffScreen;
             ignoredbykillroomsCheckbox.Checked = selectedProperty.Ignoredbykillrooms;
             singlelayercollisionCheckbox.Checked = selectedProperty.Singlelayercollision;
             graphicspageCheckbox.Checked = selectedProperty.GraphicsPage;
@@ -66,7 +66,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             immuneswordhammerCheckbox.Checked = selectedProperty.ImmuneToSwordHammer;
             projectilelikecollisionCheckbox.Checked = selectedProperty.ProjectileLikeCollision;
             dieoffscreenCheckbox.Checked = selectedProperty.DieOffScreen;
-            activeoffscreenCheckbox.Checked = selectedProperty.ActiveOffScreen;
+            activeoffscreenCheckbox.Checked = selectedProperty.RemainAliveOffScreenOnOverworld;
             bossdamagesoundCheckbox.Checked = selectedProperty.AltDamageSound;
             blockedbyshieldCheckbox.Checked = selectedProperty.BlockedByShield;
             checkforwaterCheckbox.Checked = selectedProperty.CheckForWater;
@@ -132,9 +132,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
             selectedProperty.RecoilWithoutCollision = recoilwithoutcollisionCheckbox.Checked;
             selectedProperty.Invertpitbehavior = invertpitbehaviorCheckbox.Checked;
             selectedProperty.DieLikeABoss = dielikeabossCheckbox.Checked;
-            selectedProperty.ZeroDamageOverride = overrideslashimmunityCheckbox.Checked;
+            selectedProperty.AllowNondamagingHits = allownondamagingCheckbox.Checked;
             selectedProperty.Deflectarrows = deflectarrowsCheckbox.Checked;
-            selectedProperty.Persistoffscreenow = persistoffscreenowCheckbox.Checked;
+            selectedProperty.StayActiveOffScreen = persistoffscreenowCheckbox.Checked;
             selectedProperty.Ignoredbykillrooms = ignoredbykillroomsCheckbox.Checked;
             selectedProperty.Singlelayercollision = singlelayercollisionCheckbox.Checked;
             selectedProperty.GraphicsPage = graphicspageCheckbox.Checked;
@@ -143,7 +143,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
             selectedProperty.ImmuneToSwordHammer = immuneswordhammerCheckbox.Checked;
             selectedProperty.ProjectileLikeCollision = projectilelikecollisionCheckbox.Checked;
             selectedProperty.DieOffScreen = dieoffscreenCheckbox.Checked;
-            selectedProperty.ActiveOffScreen = activeoffscreenCheckbox.Checked;
+            selectedProperty.RemainAliveOffScreenOnOverworld = activeoffscreenCheckbox.Checked;
             selectedProperty.AltDamageSound = bossdamagesoundCheckbox.Checked;
             selectedProperty.BlockedByShield = blockedbyshieldCheckbox.Checked;
             selectedProperty.CheckForWater = checkforwaterCheckbox.Checked;

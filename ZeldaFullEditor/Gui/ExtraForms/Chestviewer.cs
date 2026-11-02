@@ -51,7 +51,7 @@ namespace ZeldaFullEditor
                 e.Graphics.DrawImage(GFX.previewChestsBitmap[o.item], new Point((xpos * 64) + 24, (ypos * 64) + 8));
                 if (selectedObject == o)
                 {
-                    e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
+                    e.Graphics.FillRectangle(Constants.FifthBlue, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
                 }
 
                 e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));

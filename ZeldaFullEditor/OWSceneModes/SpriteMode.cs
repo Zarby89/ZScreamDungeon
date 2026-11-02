@@ -290,7 +290,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
             if (scene.lowEndMode)
             {
-                Brush bgrBrush = Constants.VibrantMagenta200Brush;
+                Brush bgrBrush = Constants.VibrantMagenta200;
                 g.CompositingMode = CompositingMode.SourceOver;
 
                 for (int i = 0; i < scene.ow.AllSprites[scene.ow.GameState].Count; i++)
@@ -322,7 +322,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         */
 
                         g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(spr.map_x, spr.map_y, 16, 16));
                         scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
                     }
                 }
@@ -331,7 +331,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
             else
             {
-                Brush bgrBrush = Constants.VibrantMagenta200Brush;
+                Brush bgrBrush = Constants.VibrantMagenta200;
                 g.CompositingMode = CompositingMode.SourceOver;
 
                 for (int i = 0; i < scene.ow.AllSprites[scene.ow.GameState].Count; i++)
@@ -358,7 +358,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         */
 
                         g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-                        g.DrawRectangle(Constants.Black200Pen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
+                        g.DrawRectangle(Constants.Black200, new Rectangle(spr.map_x, spr.map_y, 16, 16));
                         scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
                     }
                 }
