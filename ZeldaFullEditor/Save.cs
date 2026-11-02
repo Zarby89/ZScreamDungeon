@@ -935,6 +935,7 @@ namespace ZeldaFullEditor
 
 
 		public bool SavePrizePacks() {
+            return true; // TODO implement
 
             ROM.Write2(Utils.SnesToPc(0x06FA5C), PrizePacks.PrizePackRarities);
 
