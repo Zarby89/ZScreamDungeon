@@ -3,6 +3,8 @@ using static ZeldaFullEditor.OverworldMap;
 
 namespace ZeldaFullEditor
 {
+
+    // TODO POST MIGRATION - make these properties
     public class TransportOW
     {
         public ushort
@@ -49,6 +51,8 @@ namespace ZeldaFullEditor
             ID = ROM.uniqueTransportID++;
         }
 
+        // TODO POST MIGRATION - better method name
+        // TODO POST MIGRATION - clean up bit manipulation
         public void updateMapStuff(byte mapID, Overworld ow)
         {
             AreaSizeEnum areaSize = ow.AllMaps[mapID].AreaSize;

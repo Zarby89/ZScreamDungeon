@@ -25,6 +25,8 @@ using static ZeldaFullEditor.Room_Object;
 
 namespace ZeldaFullEditor
 {
+    // TODO POST MIGRATION - turn fields into properties
+    // TODO POST MIGRATION - clean up this.
     /// <summary>
     ///		Main ZScream form, everything runs from here.
     /// </summary>
@@ -108,6 +110,7 @@ namespace ZeldaFullEditor
         private ushort[,] lwmdata = new ushort[512, 512];
         private ushort[,] dwmdata = new ushort[512, 512];
 
+        // TODO POST MIGRATION - inline arrays
         private byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
         private byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
 
@@ -925,6 +928,7 @@ namespace ZeldaFullEditor
             GFX.previewChestsPtr = new IntPtr[76];
             GFX.previewChestsBitmap = new Bitmap[76];
 
+            // TODO - don't alloc inside a loop like this and leave it hanging...
             for (int i = 0; i < 600; i++)
             {
                 GFX.previewObjectsPtr[i] = Marshal.AllocHGlobal(64 * 64);
@@ -951,6 +955,7 @@ namespace ZeldaFullEditor
             this.InitObjectsList();
             this.spritesView1.items.Clear();
 
+            // TODO AddRange
             foreach (Sprite sprite in this.listofspritesobjects)
             {
                 this.spritesView1.items.Add((sprite));
@@ -1144,6 +1149,7 @@ namespace ZeldaFullEditor
             for (int i = 0; i < 0x07; i++)
             {
                 DungeonsData.StartingEntrances[i] = new Entrance((byte)i, true);
+                // TODO POST MIGRATION - string interpolation
                 string tname = "[" + i.ToString("X2") + "] -> ";
                 foreach (DataRoom dataRoom in ROMStructure.dungeonsRoomList)
                 {
@@ -1189,6 +1195,7 @@ namespace ZeldaFullEditor
             this.selectedEntrance = DungeonsData.Entrances[0];
         }
 
+        // TODO POST MIGRATION - string interpolation
         public void RenameEntrancesList()
         {
 
@@ -1568,6 +1575,8 @@ namespace ZeldaFullEditor
             this.saveLayout();
         }
 
+
+        // TODO POST MIGRATION - Clipboard.GetData is deprecated
         public void saveLayout(bool clipboard = true)
         {
             List<SaveObject> data = new List<SaveObject>();
@@ -2703,6 +2712,7 @@ namespace ZeldaFullEditor
             this.activeScene.Refresh();
         }
 
+        // TODO POST MIGRATION - string interpolation
         public void UpdateUIForRoom(Room room, bool prevent = true)
         {
             this.propertiesChangedFromForm = prevent;
@@ -5052,7 +5062,6 @@ namespace ZeldaFullEditor
 
         /// <summary>
         ///     Runs when the save only maps button is clicked.
-        ///     Jared_Brian_: changed so that nothing will write to the ROM if the SaveTiles() function fails.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -6099,6 +6108,7 @@ namespace ZeldaFullEditor
             // TODO: This?
         }
 
+        // TODO clean up these magic numbers
         private void SaveToNewROMToolStripMenuItem_Click(object sender, EventArgs e)
         {
             byte[] ROMBACKUP = new byte[0x200000];
@@ -6357,8 +6367,11 @@ namespace ZeldaFullEditor
             // TODO: This?
         }
 
+
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            // TODO POST MIGRATION - static readonly
             byte[] bosses = { 0x09, 0x53, 0x54, 0x88, 0x8C, 0x92, 0xA2, 0xBD, 0xCB, 0xCE };
 
             // Calculate a bunch of stuff.
@@ -6540,6 +6553,7 @@ namespace ZeldaFullEditor
             }
         }
 
+        // TODO POST MIGRATION - optimize all the *32
         //8192
         private void showUniqueTile32ToolStripMenuItem_Click(object sender, EventArgs e)
         {

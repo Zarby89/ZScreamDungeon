@@ -6,8 +6,11 @@ using System.Text;
 
 namespace ZeldaFullEditor
 {
-	// have a "set up consecutive writes" thing, where ROM class will handle all address increments
-	public static class ROM
+    // TODO POST MIGRATION - turn fields into properties
+    // TODO POST MIGRATION - use BinaryPrimitives for writes
+
+    // have a "set up consecutive writes" thing, where ROM class will handle all address increments
+    public static class ROM
 	{
 		public static volatile byte[] DATA;
 		public static byte[] DATA2;

@@ -10,6 +10,7 @@ using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
+    // TODO POST MIGRATION - make these fields properties
     public class EntranceMode
     {
         SceneOW scene;
@@ -81,6 +82,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                         }
 
+                        // TODO POST MIGRATION - clean up bit manipulation
                         scene.ow.AllHoles[i].Deleted = false;
                         scene.ow.AllHoles[i].MapID = mapID;
                         scene.ow.AllHoles[i].X = (ushort)((mxRightclick / 16) * 16).Clamp(0, 4080);
@@ -111,6 +113,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             mapID = (byte)(scene.mapHover + scene.ow.WorldOffset);
                         }
 
+                        // TODO POST MIGRATION - clean up bit manipulation
                         scene.ow.AllEntrances[i].Deleted = false;
                         scene.ow.AllEntrances[i].MapID = mapID;
                         scene.ow.AllEntrances[i].X = (ushort)((mxRightclick / 16) * 16).Clamp(0, 4080);
@@ -272,7 +275,8 @@ namespace ZeldaFullEditor.OWSceneModes
             }
 
             g.DrawImage(GFX.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-
+            // TODO POST MIGRATION - make this a public static ROS property
+            // TODO POST MIGRATION - clean up bit manipulation
             if (scene.mainForm.previewRoom.bg2 == Background2.Translucent || scene.mainForm.previewRoom.bg2 == Background2.Transparent)
             {
                 float[][] matrixItems ={
@@ -283,7 +287,6 @@ namespace ZeldaFullEditor.OWSceneModes
                new float[] {0, 0, 0, 0, 1}};
                 ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
 
-                // Create an ImageAttributes object and set its color matrix.
                 ImageAttributes imageAtt = new ImageAttributes();
 
                 imageAtt.SetColorMatrix
@@ -379,6 +382,7 @@ namespace ZeldaFullEditor.OWSceneModes
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
+        // TODO POST MIGRATION - clean up bit manipulation
         public void onMouseMove(MouseEventArgs e)
         {
             int mouseTileX = e.X.Clamp(0, 4080) / 16;
@@ -504,6 +508,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
+        // TODO POST MIGRATION - remove magic word
         private void entranceAdd_Click(object sender, EventArgs e)
         {
             string temp = sender.ToString();
@@ -518,6 +523,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
+        // TODO POST MIGRATION - clean up bit manipulation
         private void insertEntrance_Click(object sender, EventArgs e)
         {
             bool found = false;
@@ -575,6 +581,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
+        // TODO POST MIGRATION - string interpolation
         public void Draw(Graphics g)
         {
             if (scene.lowEndMode)

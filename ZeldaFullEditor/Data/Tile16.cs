@@ -1,5 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
+    // TODO POST MIGRATION - clean up this.
     /// <summary>
     ///     A class to contain individual Tile16 data.
     /// </summary>

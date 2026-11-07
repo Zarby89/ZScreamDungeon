@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	// @author: scawful
-	public class CollisionRectangle
+    // TODO POST MIGRATION - we don't @author files
+    // @author: scawful
+    public class CollisionRectangle
 	{
 		public byte Width { get; set; }
 		public byte Height { get; set; }

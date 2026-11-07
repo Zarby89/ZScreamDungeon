@@ -38,7 +38,8 @@ namespace ZeldaFullEditor.Data
 			drawopp(ZS, door);
 		}
 
-		public static DungeonDoorDraw GetDirectionFromToken(byte b)
+        // TODO POST MIGRATION - make this an enum
+        public static DungeonDoorDraw GetDirectionFromToken(byte b)
 		{
 			switch (b)
 			{

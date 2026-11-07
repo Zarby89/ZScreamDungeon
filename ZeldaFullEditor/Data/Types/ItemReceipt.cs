@@ -100,7 +100,9 @@ namespace ZeldaFullEditor.Data
 		public static readonly ItemReceipt Receipt4A = new ItemReceipt(0x4A, ItemReceiptDraw4A);
 		public static readonly ItemReceipt Receipt4B = new ItemReceipt(0x4B, ItemReceiptDraw4B);
 
-		public static ItemReceipt GetTypeFromID(int id)
+
+        // TODO POST MIGRATION make this a table
+        public static ItemReceipt GetTypeFromID(int id)
 		{
 			switch (id)
 			{
@@ -184,7 +186,8 @@ namespace ZeldaFullEditor.Data
 			return null;
 		}
 
-		public static unsafe void DrawTiles(ZScreamer ZS, DungeonChestItem sec, params OAMDrawInfo[] instructions)
+        // TODO POST MIGRATION - Sheeter?
+        public static unsafe void DrawTiles(ZScreamer ZS, DungeonChestItem sec, params OAMDrawInfo[] instructions)
 		{
 			var alltilesData = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer();
 
@@ -544,7 +547,7 @@ namespace ZeldaFullEditor.Data
 
 
 
-
+        // TODO wtf???? make this generic
 		public static void ItemReceiptDraw00(ZScreamer ZS, DungeonChestItem d)
 		{
 			DrawTiles(ZS, d, new OAMDrawInfo());

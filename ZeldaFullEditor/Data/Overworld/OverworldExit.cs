@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	[Serializable]
+    // TODO POST MIGRATION - clean up this.
+    [Serializable]
 	public class OverworldExit : OverworldDestination, IMouseCollidable, IFreelyPlaceable
 	{
 		public byte unk1 { get; set; }

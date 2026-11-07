@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public class DungeonBlock : IDungeonPlaceable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
+    // TODO POST MIGRATION - fix and use or remove
+    public class DungeonBlock : IDungeonPlaceable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
 		private byte gridx, gridy;
 		private const int Scale = 8;
@@ -15,7 +16,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte GridX
 		{
 			get => gridx;
-			set => gridy = value;
+			set => gridy = value; // TODO wrong
 		}
 
 		public byte GridY

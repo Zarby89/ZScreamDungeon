@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
+// TODO POST MIGRATION - turn fields into properties
+// TODO POST MIGRATION - change Marshal.AllocHGlobal to NativeMemory.AlignedAlloc
+// TODO POST MIGRATION - Sheeter
+
 // TODO clean up all the magic numbers
 namespace ZeldaFullEditor
 {

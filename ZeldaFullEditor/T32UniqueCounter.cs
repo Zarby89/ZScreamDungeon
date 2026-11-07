@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor
 {
+
+    // TODO POST MIGRATION - turn fields into properties
+    // TODO POST MIGRATION - clean up this.
     public class T32UniqueCounter
     {
         public int x = 0;

@@ -7,6 +7,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+// TODO POST MIGRATION - clean up bit manipulation
+// TODO POST MIGRATION - change Marshal.AllocHGlobal to NativeMemory.AlignedAlloc
+// TODO POST MIGRATION - turn fields into properties
+// TODO POST MIGRATION - turn fixed size arrays into InlineArray
+
 public unsafe class PointeredImage
     {
 

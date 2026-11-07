@@ -2,6 +2,9 @@
 
 namespace ZeldaFullEditor
 {
+    // TODO POST MIGRATION - consider turning this into a struct
+    // TODO POST MIGRATION - remove backing fields
+
     // Tiles Information
     // iiiiiiii vhoopppc
     // i = tile index

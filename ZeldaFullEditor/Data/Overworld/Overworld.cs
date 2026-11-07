@@ -15,7 +15,8 @@ using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
-	public class Overworld
+    // TODO POST MIGRATION - turn fields into properties
+    public class Overworld
 	{
 		public List<Tile16> Tile16List;
 		public List<Tile32> Tile32List;

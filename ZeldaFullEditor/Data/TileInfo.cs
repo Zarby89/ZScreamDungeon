@@ -1,5 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
+    // TODO POST MIGRATION - remove backing fields
     public class TileInfo
     {
         private bool o, h, v;

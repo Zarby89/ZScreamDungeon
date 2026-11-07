@@ -3,11 +3,13 @@ using System.Drawing;
 
 namespace ZeldaFullEditor
 {
-	public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable
+    // TODO POST MIGRATION - remove backing fields
+    public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable
 	{
 		private ushort globalx, globaly;
 		private byte mapx, mapy;
 
+        // TODO cache hitbox
 		public Rectangle SquareHitbox => new Rectangle(GlobalX, GlobalY, 16, 16);
 
 		public ushort GlobalX {

@@ -1,5 +1,7 @@
 ﻿namespace ZeldaFullEditor
 {
+    // TODO POST MIGRATION - turn fields into properties
+    // TODO POST MIGRATION - clean up this.
     class ChestDraw
     {
         public int x, y;
