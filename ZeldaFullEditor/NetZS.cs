@@ -512,20 +512,20 @@ namespace ZeldaFullEditor.Properties
             int uId = buffer.ReadInt(); // item unique id
             TransportOW[] transports = form.overworldEditor.scene.ow.AllWhirlpools.Where(x => x.ID == uId).ToArray();
             TransportOW transport = transports[0];
-            transport.unk1 = buffer.ReadByte();
-            transport.unk2 = buffer.ReadByte();
+            transport._unk1 = buffer.ReadByte();
+            transport._unk2 = buffer.ReadByte();
             transport.AreaX = buffer.ReadByte();
             transport.AreaY = buffer.ReadByte();
 
-            transport.vramLocation = buffer.ReadUShort();
-            transport.xScroll = buffer.ReadUShort();
-            transport.yScroll = buffer.ReadUShort();
-            transport.playerX = buffer.ReadUShort();
-            transport.playerY = buffer.ReadUShort();
-            transport.cameraX = buffer.ReadUShort();
-            transport.cameraY = buffer.ReadUShort();
-            transport.MapID = buffer.ReadUShort();
-            transport.whirlpoolPos = buffer.ReadUShort();
+            transport._vramLocation = buffer.ReadUShort();
+            transport._xScroll = buffer.ReadUShort();
+            transport._yScroll = buffer.ReadUShort();
+            transport._playerX = buffer.ReadUShort();
+            transport._playerY = buffer.ReadUShort();
+            transport._cameraX = buffer.ReadUShort();
+            transport._cameraY = buffer.ReadUShort();
+            transport._mapId = buffer.ReadUShort();
+            transport._whirlpoolPos = buffer.ReadUShort();
 
             form.overworldEditor.scene.Invalidate();
             Console.WriteLine("Transport " + uId + " changed!");

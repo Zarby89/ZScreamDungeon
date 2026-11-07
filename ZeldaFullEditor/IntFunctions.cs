@@ -53,46 +53,15 @@
 				(bit7 ? (1 << 7) : 0));
 		}
 
+        // TODO get rid of these for Math.Clamp
 		public static int Clamp(this int v, int min, int max)
 		{
-			if (v > max)
-			{
-				return max;
-			}
-			else if (v < min)
-			{
-				return min;
-			}
-
-			return v;
-		}
-
-		public static ushort Clamp(this ushort v, ushort min, ushort max)
-		{
-			if (v > max)
-			{
-				return max;
-			}
-			else if (v < min)
-			{
-				return min;
-			}
-
-			return v;
-		}
+            return Math.Clamp(v, min, max);
+        }
 
 		public static byte Clamp(this byte v, byte min, byte max)
 		{
-			if (v > max)
-			{
-				v = max;
-			}
-			else if (v < min)
-			{
-				v = min;
-			}
-
-			return v;
-		}
+            return Math.Clamp(v, min, max);
+        }
 	}
 }

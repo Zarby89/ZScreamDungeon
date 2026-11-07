@@ -64,20 +64,20 @@ namespace ZeldaFullEditor
         /// <param name="bg2"> Whether the Item is on BG2 or not. </param>
         public RoomPotSaveEditor(byte id, ushort roomMapId, int x, int y, bool bg2)
         {
-            this.ID = id;
-            this.X = x.Clamp(0, 4080);
-            this.Y = y.Clamp(0, 4080);
-            this.BG2 = bg2;
-            this.RoomMapID = roomMapId;
+            ID = id;
+            X = x.Clamp(0, 4080);
+            Y = y.Clamp(0, 4080);
+            BG2 = bg2;
+            RoomMapID = roomMapId;
 
             int fakeID = roomMapId % 0x40;
 
             int mapX = fakeID - ((fakeID / 8) * 8);
             int mapY = fakeID / 8;
 
-            this.GameX = (byte)(Math.Abs(x - (mapX * 512)) / 16);
-            this.GameY = (byte)(Math.Abs(y - (mapY * 512)) / 16);
-            this.UniqueID = ROM.uniqueItemID++;
+            GameX = (byte)(Math.Abs(x - (mapX * 512)) / 16);
+            GameY = (byte)(Math.Abs(y - (mapY * 512)) / 16);
+            UniqueID = ROM.uniqueItemID++;
         }
 
         /// <summary>
@@ -86,37 +86,37 @@ namespace ZeldaFullEditor
         /// <param name="roomMapId"> The dungeon room ID or overworld area ID where the item was moved to. </param>
         public void UpdateMapStuff(short roomMapId, AreaSizeEnum areaSize)
         {
-            this.RoomMapID = (ushort)roomMapId;
+            RoomMapID = (ushort)roomMapId;
 
             roomMapId %= 0x40;
 
             int mapX = roomMapId - ((roomMapId / 8) * 8);
             int mapY = roomMapId / 8;
 
-            this.GameX = (byte)(Math.Abs(this.X - (mapX * 512)) / 16);
-            this.GameY = (byte)(Math.Abs(this.Y - (mapY * 512)) / 16);
+            GameX = (byte)(Math.Abs(X - (mapX * 512)) / 16);
+            GameY = (byte)(Math.Abs(Y - (mapY * 512)) / 16);
 
-            this.GameX = this.GameX.Clamp(0, 63);
-            this.GameY = this.GameY.Clamp(0, 63);
+            GameX = GameX.Clamp(0, 63);
+            GameY = GameY.Clamp(0, 63);
 
             // If we are on a large map:
             switch (areaSize)
             {
                 case AreaSizeEnum.SmallArea:
-                    this.GameX = this.GameX.Clamp(0, 31);
-                    this.GameY = this.GameY.Clamp(0, 31);
+                    GameX = GameX.Clamp(0, 31);
+                    GameY = GameY.Clamp(0, 31);
                     break;
 
                 case AreaSizeEnum.WideArea:
-                    this.GameY = this.GameY.Clamp(0, 31);
+                    GameY = GameY.Clamp(0, 31);
                     break;
 
                 case AreaSizeEnum.TallArea:
-                    this.GameX = this.GameX.Clamp(0, 31);
+                    GameX = GameX.Clamp(0, 31);
                     break;
             }
 
-            Console.WriteLine("Item:      0x" + this.ID.ToString("X2") + " MapId: 0x" + this.RoomMapID.ToString("X2") + " X: " + this.GameX + " Y: " + this.GameY);
+            Console.WriteLine("Item:      0x" + ID.ToString("X2") + " MapId: 0x" + RoomMapID.ToString("X2") + " X: " + GameX + " Y: " + GameY);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace ZeldaFullEditor
         /// <returns> A new copy of this item. </returns>
         public RoomPotSaveEditor Copy()
         {
-            return new RoomPotSaveEditor(this.ID, this.RoomMapID, this.X, this.Y, this.BG2);
+            return new RoomPotSaveEditor(ID, RoomMapID, X, Y, BG2);
         }
     }
 }

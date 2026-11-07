@@ -71,37 +71,37 @@ namespace ZeldaFullEditor
         public byte layout
         {
             get => _layout;
-            set => _layout = Utils.Clamp(value, 0, 7);
+            set => _layout = Math.Clamp(value, 0, 7);
         }
 
         public byte floor1
         {
             get => _floor1;
-            set => _floor1 = Utils.Clamp(value, 0, 15);
+            set => _floor1 = Math.Clamp(value, 0, 15);
         }
 
         public byte floor2
         {
             get => _floor2;
-            set => _floor2 = Utils.Clamp(value, 0, 15);
+            set => _floor2 = Math.Clamp(value, 0, 15);
         }
 
         public byte blockset
         {
             get => _blockset;
-            set => _blockset = Utils.Clamp(value, 0, 23);
+            set => _blockset = Math.Clamp(value, 0, 23);
         }
 
         public byte spriteset
         {
             get => _spriteset;
-            set => _spriteset = Utils.Clamp(value, 0, 64);
+            set => _spriteset = Math.Clamp(value, 0, 64);
         }
 
         public byte palette
         {
             get => _palette;
-            set => _palette = Utils.Clamp(value, 0, 71);
+            set => _palette = Math.Clamp(value, 0, 71);
         }
 
         public Background2 bg2
@@ -124,37 +124,37 @@ namespace ZeldaFullEditor
         public short messageid
         {
             get => _messageid;
-            set => _messageid = Utils.Clamp(value, 0, 397);
+            set => _messageid = Math.Clamp(value, 0, 397);
         }
 
         public byte holewarp
         {
             get => _holewarp;
-            set => _holewarp = Utils.Clamp(value, 0, 255);
+            set => _holewarp = value;
         }
 
         public byte staircase1
         {
             get => staircase_rooms[0];
-            set => staircase_rooms[0] = Utils.Clamp(value, 0, 255);
+            set => staircase_rooms[0] = value;
         }
 
         public byte staircase2
         {
             get => staircase_rooms[1];
-            set => staircase_rooms[1] = Utils.Clamp(value, 0, 255);
+            set => staircase_rooms[1] = value;
         }
 
         public byte staircase3
         {
             get => staircase_rooms[2];
-            set => staircase_rooms[2] = Utils.Clamp(value, 0, 255);
+            set => staircase_rooms[2] = value;
         }
 
         public byte staircase4
         {
             get => staircase_rooms[3];
-            set => staircase_rooms[3] = Utils.Clamp(value, 0, 255);
+            set => staircase_rooms[3] = value;
         }
 
         public byte holewarp_plane

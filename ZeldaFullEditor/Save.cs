@@ -1381,25 +1381,25 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0x11; i++)
             {
-                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].MapID, true, "MapId");
+                ROM.WriteShort(Constants.OWExitMapIdWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._mapId, true, "MapId");
 
-                ROM.WriteShort(Constants.OWExitXScrollWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].xScroll, true, "XScroll");
+                ROM.WriteShort(Constants.OWExitXScrollWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._xScroll, true, "XScroll");
 
-                ROM.WriteShort(Constants.OWExitYScrollWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].yScroll, true, "YScroll");
+                ROM.WriteShort(Constants.OWExitYScrollWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._yScroll, true, "YScroll");
 
-                ROM.WriteShort(Constants.OWExitXCameraWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].cameraX, true, "XCamera");
+                ROM.WriteShort(Constants.OWExitXCameraWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._cameraX, true, "XCamera");
 
-                ROM.WriteShort(Constants.OWExitYCameraWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].cameraY, true, "YCamera");
+                ROM.WriteShort(Constants.OWExitYCameraWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._cameraY, true, "YCamera");
 
-                ROM.WriteShort(Constants.OWExitVramWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].vramLocation, true, "VRAM");
+                ROM.WriteShort(Constants.OWExitVramWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._vramLocation, true, "VRAM");
 
-                ROM.WriteShort(Constants.OWExitXPlayerWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].playerX, true, "XPlayer");
+                ROM.WriteShort(Constants.OWExitXPlayerWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._playerX, true, "XPlayer");
 
-                ROM.WriteShort(Constants.OWExitYPlayerWhirlpool + (i * 2), scene.ow.AllWhirlpools[i].playerY, true, "YPlayer");
+                ROM.WriteShort(Constants.OWExitYPlayerWhirlpool + (i * 2), scene.ow.AllWhirlpools[i]._playerY, true, "YPlayer");
 
                 if (i > 8)
                 {
-                    ROM.WriteShort(Constants.OWWhirlpoolPosition + ((i - 9) * 2), scene.ow.AllWhirlpools[i].whirlpoolPos, true, "Pos");
+                    ROM.WriteShort(Constants.OWWhirlpoolPosition + ((i - 9) * 2), scene.ow.AllWhirlpools[i]._whirlpoolPos, true, "Pos");
                 }
             }
 

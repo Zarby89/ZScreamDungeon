@@ -18,9 +18,9 @@ namespace ZeldaFullEditor.OWSceneModes
 
         bool isLeftPress = false;
 
-        public EntranceMode(SceneOW scene)
+        public EntranceMode(SceneOW p_scene)
         {
-            this.scene = scene;
+            scene = p_scene;
         }
 
         public void Copy()

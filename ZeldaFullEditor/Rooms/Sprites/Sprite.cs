@@ -37,44 +37,41 @@ namespace ZeldaFullEditor
         int width = 16;
         int height = 16;
 
-        public Sprite(Room room, byte id, byte x, byte y, byte subtype, byte layer)
+        public Sprite(Room roomObj, byte sprid, byte xpos, byte ypos, byte sprSubtype, byte sprLayer)
         {
-            this.id = id;
-            this.x = x;
-            this.y = y;
-            this.room = room;
-            this.subtype = subtype;
-            this.layer = layer;
-            this.nx = x;
-            this.ny = y;
-            this.name = Sprites_Names.name[id];
-            this.uniqueID = ROM.uniqueSpriteID;
-            ROM.uniqueSpriteID += 1;
-            if ((subtype & 0x07) == 0x07)
+            id = sprid;
+            x = xpos;
+            y = ypos;
+            room = roomObj;
+            subtype = sprSubtype;
+            layer = sprLayer;
+            nx = xpos;
+            ny = ypos;
+            name = Sprites_Names.name[sprid];
+            uniqueID = ROM.uniqueSpriteID++;
+
+            if ((sprSubtype & 0x07) == 0x07)
             {
-                if (id > 0 && id <= 0x1A)
+                if (sprid > 0 && sprid <= 0x1A)
                 {
-                    this.name = Sprites_Names.overlordnames[id - 1];
+                    name = Sprites_Names.overlordnames[sprid - 1];
                 }
             }
 
-            this.roomid = (short)room.index;
+            roomid = (short)roomObj.index;
         }
 
-        public Sprite(byte mapid, byte id, byte x, byte y, int map_x, int map_y)
+        public Sprite(byte mapid, byte sprid, byte xpos, byte ypos, int mapXpos, int mapYpos)
         {
             onOverworld = true;
-            this.MapID = mapid;
-            this.id = id;
-            this.x = x;
-            this.y = y;
-            this.nx = x;
-            this.ny = y;
-            this.name = Sprites_Names.name[id];
-            this.map_x = map_x.Clamp(0, 4080);
-            this.map_y = map_y.Clamp(0, 4080);
-            this.uniqueID = ROM.uniqueSpriteID;
-            ROM.uniqueSpriteID += 1;
+            MapID = mapid;
+            id = sprid;
+            nx = x = xpos;
+            ny = y = ypos;
+            name = Sprites_Names.name[sprid];
+            map_x = mapXpos.Clamp(0, 4080);
+            map_y = mapYpos.Clamp(0, 4080);
+            uniqueID = ROM.uniqueSpriteID++;
         }
 
         public void updateBBox()
@@ -104,9 +101,9 @@ namespace ZeldaFullEditor
         public void Draw(bool picker = false)
         {
 
-            byte x = this.nx;
-            byte y = this.ny;
-            this.picker = picker;
+            byte x = nx;
+            byte y = ny;
+            picker = picker;
 
             if (overlord == 0x07)
             {
@@ -142,7 +139,7 @@ namespace ZeldaFullEditor
                     drawSpriteTile((x * 16), (y * 16), 4, 4, 5);
                 }
 
-                if (nx != this.x || ny != this.y)
+                if (nx != x || ny != y)
                 {
                     boundingbox = new Rectangle((lowerX + (nx * 16)), (lowerY + (ny * 16)), width, height);
                 }
@@ -1256,21 +1253,21 @@ namespace ZeldaFullEditor
 
                 if (!iskey)
                 {
-                    if (lowerX > (x - (this.nx * 16)))
+                    if (lowerX > (x - (nx * 16)))
                     {
-                        lowerX = (x - (this.nx * 16));
+                        lowerX = (x - (nx * 16));
                     }
-                    if (lowerY > (y - (this.ny * 16)))
+                    if (lowerY > (y - (ny * 16)))
                     {
-                        lowerY = (y - (this.ny * 16));
+                        lowerY = (y - (ny * 16));
                     }
-                    if (higherX < x + (sizex * 8) - (this.nx * 16))
+                    if (higherX < x + (sizex * 8) - (nx * 16))
                     {
-                        higherX = x + (sizex * 8) - (this.nx * 16);
+                        higherX = x + (sizex * 8) - (nx * 16);
                     }
-                    if (higherY < y + (sizey * 8) - (this.ny * 16))
+                    if (higherY < y + (sizey * 8) - (ny * 16))
                     {
-                        higherY = y + (sizey * 8) - (this.ny * 16);
+                        higherY = y + (sizey * 8) - (ny * 16);
                     }
 
                     width = (higherX - lowerX);
@@ -1363,39 +1360,41 @@ namespace ZeldaFullEditor
             }
         }
 
+        // TODO rename
         public void updateMapStuff(short mapId, AreaSizeEnum areaSize)
         {
-            this.MapID = (byte)mapId;
+            MapID = (byte)mapId;
 
             mapId %= 0x40;
 
+            // TODO streamline bit twiddling
             int mx = mapId - ((mapId / 8) * 8);
             int my = (mapId / 8);
 
-            this.x = (byte)((this.map_x - (mx * 512)) / 16);
-            this.y = (byte)((this.map_y - (my * 512)) / 16);
+            x = (byte)((map_x - (mx * 512)) / 16);
+            y = (byte)((map_y - (my * 512)) / 16);
             
-            this.x = this.x.Clamp(0, 63);
-            this.y = this.y.Clamp(0, 63);
+            x = x.Clamp(0, 63);
+            y = y.Clamp(0, 63);
 
             // If we are on a large map:
             switch (areaSize)
             {
                 case AreaSizeEnum.SmallArea:
-                    this.x = this.x.Clamp(0, 31);
-                    this.y = this.y.Clamp(0, 31);
+                    x = x.Clamp(0, 31);
+                    y = y.Clamp(0, 31);
                     break;
 
                 case AreaSizeEnum.WideArea:
-                    this.y = this.y.Clamp(0, 31);
+                    y = y.Clamp(0, 31);
                     break;
 
                 case AreaSizeEnum.TallArea:
-                    this.x = this.x.Clamp(0, 31);
+                    x = x.Clamp(0, 31);
                     break;
             }
 
-            Console.WriteLine("Sprite:    0x" + this.id.ToString("X2") + " MapId: 0x" + this.MapID.ToString("X2") + " X: " + this.x + " Y: " + this.y);
+            Console.WriteLine("Sprite:    0x" + id.ToString("X2") + " MapId: 0x" + MapID.ToString("X2") + " X: " + x + " Y: " + y);
         }
     }
 }

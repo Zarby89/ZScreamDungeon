@@ -1514,7 +1514,7 @@ namespace ZeldaFullEditor.Gui
                 Console.WriteLine("Total holes moved: " + movedObjectCount);
 
                 movedObjectCount = 0;
-                foreach (TransportOW bird in this.scene.ow.AllBirds.Where(x => x.MapID == mapID))
+                foreach (TransportOW bird in this.scene.ow.AllBirds.Where(x => x._mapId == mapID))
                 {
                     // If the AreaX is >= 32 we need to add 1.
                     int pos = bird.AreaX >= 32 ? 1 : 0;
@@ -1530,7 +1530,7 @@ namespace ZeldaFullEditor.Gui
                 Console.WriteLine("Total brids moved: " + movedObjectCount);
 
                 movedObjectCount = 0;
-                foreach (TransportOW whirlpool in this.scene.ow.AllWhirlpools.Where(x => x.MapID == mapID))
+                foreach (TransportOW whirlpool in this.scene.ow.AllWhirlpools.Where(x => x._mapId == mapID))
                 {
                     // If the AreaX is >= 32 we need to add 1.
                     int pos = whirlpool.AreaX >= 32 ? 1 : 0;
@@ -1641,12 +1641,12 @@ namespace ZeldaFullEditor.Gui
                     hole.UpdateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, newAreaSize);
                 }
 
-                foreach (TransportOW transport in this.scene.ow.AllBirds.Where(x => x.MapID == currentArea))
+                foreach (TransportOW transport in this.scene.ow.AllBirds.Where(x => x._mapId == currentArea))
                 {
                     transport.updateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, this.scene.ow);
                 }
 
-                foreach (TransportOW transport in this.scene.ow.AllWhirlpools.Where(x => x.MapID == currentArea))
+                foreach (TransportOW transport in this.scene.ow.AllWhirlpools.Where(x => x._mapId == currentArea))
                 {
                     transport.updateMapStuff(this.scene.ow.AllMaps[currentArea].ParentID, this.scene.ow);
                 }

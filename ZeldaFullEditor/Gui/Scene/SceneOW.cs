@@ -434,9 +434,9 @@ namespace ZeldaFullEditor
                 if (this.transportMode.lastselectedTransport != null)
                 {
                     this.owForm.SetSelectedObjectLabels(
-                        this.transportMode.lastselectedTransport.MapID,
-                        this.transportMode.lastselectedTransport.playerX,
-                        this.transportMode.lastselectedTransport.playerY);
+                        this.transportMode.lastselectedTransport._mapId,
+                        this.transportMode.lastselectedTransport._playerX,
+                        this.transportMode.lastselectedTransport._playerY);
                 }
             }
             else if (this.selectedMode == ObjectMode.Gravestone)

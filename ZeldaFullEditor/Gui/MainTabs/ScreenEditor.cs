@@ -10,7 +10,6 @@ using System.Text;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Properties;
-using static ZeldaFullEditor.Point3D;
 
 namespace ZeldaFullEditor.Gui.MainTabs
 {
