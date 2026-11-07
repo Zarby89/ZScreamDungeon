@@ -71,37 +71,37 @@ namespace ZeldaFullEditor
         public byte layout
         {
             get => _layout;
-            set => _layout = Math.Clamp(value, 0, 7);
+            set => _layout = byte.Clamp(value, 0, 7);
         }
 
         public byte floor1
         {
             get => _floor1;
-            set => _floor1 = Math.Clamp(value, 0, 15);
+            set => _floor1 = byte.Clamp(value, 0, 15);
         }
 
         public byte floor2
         {
             get => _floor2;
-            set => _floor2 = Math.Clamp(value, 0, 15);
+            set => _floor2 = byte.Clamp(value, 0, 15);
         }
 
         public byte blockset
         {
             get => _blockset;
-            set => _blockset = Math.Clamp(value, 0, 23);
+            set => _blockset = byte.Clamp(value, 0, 23);
         }
 
         public byte spriteset
         {
             get => _spriteset;
-            set => _spriteset = Math.Clamp(value, 0, 64);
+            set => _spriteset = byte.Clamp(value, 0, 64);
         }
 
         public byte palette
         {
             get => _palette;
-            set => _palette = Math.Clamp(value, 0, 71);
+            set => _palette = byte.Clamp(value, 0, 71);
         }
 
         public Background2 bg2
@@ -124,7 +124,7 @@ namespace ZeldaFullEditor
         public short messageid
         {
             get => _messageid;
-            set => _messageid = Math.Clamp(value, 0, 397);
+            set => _messageid = short.Clamp(value, 0, 397);
         }
 
         public byte holewarp
@@ -288,7 +288,7 @@ namespace ZeldaFullEditor
                 this.tile_data = td;
             }
 
-            public string ToString()
+            public override string ToString()
             {
                 string temp = "[width: " + this.width + " height: " + this.height + " index_data: " + this.index_data + " TileData: ";
                 foreach (ushort u in tile_data)

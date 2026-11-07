@@ -16,11 +16,11 @@
 
     public class Face3D
     {
-        public sbyte[] Vertex { get; set; }
+        public sbyte[] Vertices { get; set; }
 
-        public Face3D(sbyte[] vertex)
+        public Face3D(sbyte[] vertices)
         {
-            Vertex = vertex;
+            Vertices = vertices;
         }
     }
 }

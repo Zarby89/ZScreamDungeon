@@ -169,8 +169,8 @@ namespace ZeldaFullEditor.OWSceneModes
                         lastselectedTransport._playerY -= 512; 
                     }
 
-                    lastselectedTransport._playerX = Math.Clamp(lastselectedTransport._playerX, 0, 2040);
-                    lastselectedTransport._playerY = Math.Clamp(lastselectedTransport._playerY, 0, 2040);
+                    lastselectedTransport._playerX = ushort.Clamp(lastselectedTransport._playerX, 0, 2040);
+                    lastselectedTransport._playerY = ushort.Clamp(lastselectedTransport._playerY, 0, 2040);
                 }
 
                 lastselectedTransport.updateMapStuff((byte)newMapID, scene.ow);

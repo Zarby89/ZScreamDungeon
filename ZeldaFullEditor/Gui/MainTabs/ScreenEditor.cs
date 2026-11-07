@@ -2759,18 +2759,18 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 if (triforceRadio.Checked)
                 {
-                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].y, 4, 4));
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Y, 4, 4));
                     if (selectedVertex == triforceVertices[i])
                     {
-                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].y, 4, 4));
+                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Y, 4, 4));
                     }
                 }
                 else
                 {
-                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].y, 4, 4));
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Y, 4, 4));
                     if (selectedVertex == crystalVertices[i])
                     {
-                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].y, 4, 4));
+                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Y, 4, 4));
                     }
                 }
             }
@@ -2782,18 +2782,18 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 if (triforceRadio.Checked)
                 {
-                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Z, 4, 4));
                     if (selectedVertex == triforceVertices[i])
                     {
-                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
+                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Z, 4, 4));
                     }
                 }
                 else
                 {
-                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].z, 4, 4));
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Z, 4, 4));
                     if (selectedVertex == crystalVertices[i])
                     {
-                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].z, 4, 4));
+                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Z, 4, 4));
                     }
                 }
             }
@@ -2805,20 +2805,20 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 if (triforceRadio.Checked)
                 {
-                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].Z, 126 + triforceVertices[i].Y, 4, 4));
 
                     if (selectedVertex == triforceVertices[i])
                     {
-                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].Z, 126 + triforceVertices[i].Y, 4, 4));
                     }
                 }
                 else
                 {
-                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].z, 126 + crystalVertices[i].y, 4, 4));
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].Z, 126 + crystalVertices[i].Y, 4, 4));
 
                     if (selectedVertex == crystalVertices[i])
                     {
-                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].z, 126 + crystalVertices[i].y, 4, 4));
+                        e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].Z, 126 + crystalVertices[i].Y, 4, 4));
                     }
                 }
             }
@@ -2831,9 +2831,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 if (triforceRadio.Checked)
                 {
                     // e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
-                    if (e.X >= triforceVertices[i].x + 124 && e.X <= triforceVertices[i].x + 130)
+                    if (e.X >= triforceVertices[i].X + 124 && e.X <= triforceVertices[i].X + 130)
                     {
-                        if (e.Y >= triforceVertices[i].y + 124 && e.Y <= triforceVertices[i].y + 130)
+                        if (e.Y >= triforceVertices[i].Y + 124 && e.Y <= triforceVertices[i].Y + 130)
                         {
                             selectedVertex = triforceVertices[i];
                         }
@@ -2842,9 +2842,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 else
                 {
                     // e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
-                    if (e.X >= crystalVertices[i].x + 124 && e.X <= crystalVertices[i].x + 130)
+                    if (e.X >= crystalVertices[i].X + 124 && e.X <= crystalVertices[i].X + 130)
                     {
-                        if (e.Y >= crystalVertices[i].y + 124 && e.Y <= crystalVertices[i].y + 130)
+                        if (e.Y >= crystalVertices[i].Y + 124 && e.Y <= crystalVertices[i].Y + 130)
                         {
                             selectedVertex = crystalVertices[i];
                         }
@@ -2862,8 +2862,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             if (mdown)
             {
-                selectedVertex.x = (sbyte)(e.X - 128);
-                selectedVertex.y = (sbyte)(e.Y - 128);
+                selectedVertex.X = (sbyte)(e.X - 128);
+                selectedVertex.Y = (sbyte)(e.Y - 128);
                 triforcebox1.Refresh();
                 triforcebox2.Refresh();
                 triforcebox3.Refresh();
@@ -2882,9 +2882,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 for (int i = 0; i < 6; i++)
                 {
                     // e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
-                    if (e.X >= triforceVertices[i].x + 124 && e.X <= triforceVertices[i].x + 130)
+                    if (e.X >= triforceVertices[i].X + 124 && e.X <= triforceVertices[i].X + 130)
                     {
-                        if (e.Y >= triforceVertices[i].z + 124 && e.Y <= triforceVertices[i].z + 130)
+                        if (e.Y >= triforceVertices[i].Z + 124 && e.Y <= triforceVertices[i].Z + 130)
                         {
                             selectedVertex = triforceVertices[i];
                         }
@@ -2896,9 +2896,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 for (int i = 0; i < 6; i++)
                 {
                     // e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
-                    if (e.X >= crystalVertices[i].x + 124 && e.X <= crystalVertices[i].x + 130)
+                    if (e.X >= crystalVertices[i].X + 124 && e.X <= crystalVertices[i].X + 130)
                     {
-                        if (e.Y >= crystalVertices[i].z + 124 && e.Y <= crystalVertices[i].z + 130)
+                        if (e.Y >= crystalVertices[i].Z + 124 && e.Y <= crystalVertices[i].Z + 130)
                         {
                             selectedVertex = crystalVertices[i];
                         }
@@ -2919,9 +2919,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 if (triforceRadio.Checked)
                 {
                     // e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
-                    if (e.X >= triforceVertices[i].z + 124 && e.X <= triforceVertices[i].z + 130)
+                    if (e.X >= triforceVertices[i].Z + 124 && e.X <= triforceVertices[i].Z + 130)
                     {
-                        if (e.Y >= triforceVertices[i].y + 124 && e.Y <= triforceVertices[i].y + 130)
+                        if (e.Y >= triforceVertices[i].Y + 124 && e.Y <= triforceVertices[i].Y + 130)
                         {
                             selectedVertex = triforceVertices[i];
                         }
@@ -2930,9 +2930,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 else
                 {
                     // e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
-                    if (e.X >= crystalVertices[i].z + 124 && e.X <= crystalVertices[i].z + 130)
+                    if (e.X >= crystalVertices[i].Z + 124 && e.X <= crystalVertices[i].Z + 130)
                     {
-                        if (e.Y >= crystalVertices[i].y + 124 && e.Y <= crystalVertices[i].y + 130)
+                        if (e.Y >= crystalVertices[i].Y + 124 && e.Y <= crystalVertices[i].Y + 130)
                         {
                             selectedVertex = crystalVertices[i];
                         }
@@ -2961,8 +2961,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             if (mdown)
             {
-                selectedVertex.x = (sbyte)((e.X - 128));
-                selectedVertex.z = (sbyte)((e.Y - 128));
+                selectedVertex.X = (sbyte)((e.X - 128));
+                selectedVertex.Z = (sbyte)((e.Y - 128));
                 triforcebox1.Refresh();
                 triforcebox2.Refresh();
                 triforcebox3.Refresh();
@@ -2973,8 +2973,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             if (mdown)
             {
-                selectedVertex.z = (sbyte)(e.X - 128);
-                selectedVertex.y = (sbyte)(e.Y - 128);
+                selectedVertex.Z = (sbyte)(e.X - 128);
+                selectedVertex.Y = (sbyte)(e.Y - 128);
                 triforcebox1.Refresh();
                 triforcebox2.Refresh();
                 triforcebox3.Refresh();
@@ -3073,15 +3073,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 sb.Append("g Triforce\r\n");
                 for (int i = 0; i < triforceVertices.Length; i++)
                 {
-                    sb.Append("v " + triforceVertices[i].x + " " + triforceVertices[i].y + " " + triforceVertices[i].z + "\r\n");
+                    sb.Append("v " + triforceVertices[i].X + " " + triforceVertices[i].Y + " " + triforceVertices[i].Z + "\r\n");
                 }
 
                 for (int i = 0; i < triforceface3Ds.Length; i++)
                 {
                     sb.Append("f ");
-                    for (int j = 0; j < triforceface3Ds[i].vertex.Length; j++)
+                    for (int j = 0; j < triforceface3Ds[i].Vertices.Length; j++)
                     {
-                        sb.Append(triforceface3Ds[i].vertex[j] + 1 + " ");
+                        sb.Append(triforceface3Ds[i].Vertices[j] + 1 + " ");
                     }
 
                     sb.Append("\r\n");
@@ -3092,15 +3092,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 sb.Append("g Crystal\r\n");
                 for (int i = 0; i < crystalVertices.Length; i++)
                 {
-                    sb.Append("v " + crystalVertices[i].x + " " + crystalVertices[i].y + " " + crystalVertices[i].z + "\r\n");
+                    sb.Append("v " + crystalVertices[i].X + " " + crystalVertices[i].Y + " " + crystalVertices[i].Z + "\r\n");
                 }
 
                 for (int i = 0; i < crystalface3Ds.Length; i++)
                 {
                     sb.Append("f ");
-                    for (int j = 0; j < crystalface3Ds[i].vertex.Length; j++)
+                    for (int j = 0; j < crystalface3Ds[i].Vertices.Length; j++)
                     {
-                        sb.Append((crystalface3Ds[i].vertex[j] + 1) + " ");
+                        sb.Append((crystalface3Ds[i].Vertices[j] + 1) + " ");
                     }
                     sb.Append("\r\n");
                 }

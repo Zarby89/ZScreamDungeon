@@ -94,6 +94,21 @@ namespace ZeldaFullEditor
             return ret;
         }
 
+        /// <summary>
+        /// Adds a little-endian short to the list as individual bytes.
+        /// </summary>
+        public static void Add(this List<byte> me, ushort val)
+        {
+            me.Add((byte) val);
+            me.Add((byte) (val >> 8));
+        }
+
+        public static void DrawFilledRectangleWithOutline(this Graphics g, Rectangle r, Pen outline, Brush fill)
+        {
+            g.FillRectangle(fill, r);
+            g.DrawRectangle(outline, r);
+        }
+
         public static string[] CreateIndexedList(string[] a)
         {
             int i = 0;

@@ -34,8 +34,8 @@ namespace ZeldaFullEditor
             _vramLocation = vramLocation;
             _xScroll = xScroll;
             _yScroll = yScroll;
-            _playerX = Math.Clamp(playerX, 0, 4088);
-            _playerY = Math.Clamp(playerY, 0, 4088);
+            _playerX = ushort.Clamp(playerX, 0, 4088);
+            _playerY = ushort.Clamp(playerY, 0, 4088);
             _cameraX = cameraX;
             _cameraY = cameraY;
             _unk1 = unk1;

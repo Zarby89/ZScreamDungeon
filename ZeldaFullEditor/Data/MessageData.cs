@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Controls;
 
 namespace ZeldaFullEditor.Data
 {
@@ -61,7 +60,7 @@ namespace ZeldaFullEditor.Data
             this.DataParsed = parsedData;
             this.RawString = rawString;
             this.ContentsParsed = parsedString;
-            this.Height = ((Regex.Matches(rawString, @"\[1\]|\[2\]|\[3\]|\[V\]").Count) * 13)+14;
+            this.Height = ((Regex.Matches(rawString, @"\[1\]|\[2\]|\[3\]|\[V\]").Count) * 13) + 14;
         }
 
         /// <summary>
@@ -77,20 +76,20 @@ namespace ZeldaFullEditor.Data
             this.Height = ((Regex.Matches(RawString, @"\[1\]|\[2\]|\[3\]|\[V\]").Count) * 13) + 14;
         }
 
-		/// <summary>
-		/// Refreshes the message entirely by reoptimizing it for the dictionary and recalculating the data.
-		/// </summary>
-		public void Refresh()
-		{
-			RawString = OptimizeMessageForDictionary(ContentsParsed);
-			RecalculateData();
-		}
+        /// <summary>
+        /// Refreshes the message entirely by reoptimizing it for the dictionary and recalculating the data.
+        /// </summary>
+        public void Refresh()
+        {
+            RawString = OptimizeMessageForDictionary(ContentsParsed);
+            RecalculateData();
+        }
 
-		/// <summary>
-		///     Returns the parsed message as a string.
-		/// </summary>
-		/// <returns> A string. </returns>
-		public override string ToString()
+        /// <summary>
+        ///     Returns the parsed message as a string.
+        /// </summary>
+        /// <returns> A string. </returns>
+        public override string ToString()
         {
             return string.Format("{0:X3} - {1}", this.ID, this.ContentsParsed);
         }

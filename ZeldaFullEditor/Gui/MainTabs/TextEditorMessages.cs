@@ -15,12 +15,11 @@ namespace ZeldaFullEditor
 {
 	public partial class TextEditor
 	{
-		private const string BANKToken = "BANK";
 		private const byte BANKID = 0x80;
 
-		private static readonly TextElement DictionaryElement = new TextElement(0x80, DICTIONARYTOKEN, true, "Dictionary");
+		private static readonly TextElement DictionaryElement = new TextElement(0x80, DictionaryToken, true, "Dictionary");
 
-		private static readonly TextElement[] TCommands = new TextElement[] {
+		private static readonly TextElement[] TextCommands = new TextElement[] {
 			new TextElement(0x6B, "W", true, "Window border"),
 			new TextElement(0x6D, "P", true, "Window position"),
 			new TextElement(0x6E, "SPD", true, "Scroll speed"),
@@ -41,7 +40,7 @@ namespace ZeldaFullEditor
 			new TextElement(0x68, "CH2I", false, "Choose 2 indented"),
 			new TextElement(0x69, "CHI", false, "Choose item"),
 			new TextElement(0x67, "IMG", false, "Next attract image"),
-			new TextElement(BANKID, BANKToken, false, "Bank marker (automatic)"),
+			new TextElement(BANKID, BankSwapToken, false, "Bank marker (automatic)"),
 			new TextElement(0x70, "NONO", false, "Crash"),
 		};
 
@@ -155,64 +154,7 @@ namespace ZeldaFullEditor
 				{ 0x66, '_' },
 		};
 
-		internal class MessageData
-		{
-			public int ID { get; }
-			public string Contents { get; private set; }
-			public string ContentsParsed { get; private set; }
-			public byte[] Data { get; private set; }
-			public byte[] DataParsed { get; private set; }
-
-			public MessageData(int i, string sraw, byte[] draw, string spar, byte[] dpar)
-			{
-				ID = i;
-				Data = draw;
-				DataParsed = dpar;
-				Contents = sraw;
-				ContentsParsed = spar;
-			}
-
-			public void SetMessage(string s)
-			{
-				ContentsParsed = s;
-				Contents = OptimizeMessageForDictionary(s);
-				RecalculateData();
-			}
-
-			private void RecalculateData()
-			{
-				Data = ParseMessageToData(Contents);
-				DataParsed = ParseMessageToData(ContentsParsed);
-			}
-
-			public override string ToString()
-			{
-				return $"{ID:X3} - {ContentsParsed}";
-			}
-
-			public string GetReadableDumpedContents()
-			{
-				StringBuilder d = new StringBuilder(Data.Length * 2 + 1);
-				foreach (byte b in Data)
-				{
-					d.Append(b.ToString("X2"));
-					d.Append(" ");
-				}
-
-				return string.Format("[[[[\r\nMessage {0:X3}]]]]\r\n[Contents]\r\n{1}\r\n\r\n[Data]\r\n{2}\r\n\r\n\r\n\r\n",
-					ID,
-					AddNewLinesToCommands(ContentsParsed),
-					d.ToString()
-					);
-			}
-
-			public string GetDumpedContents()
-			{
-				return string.Format("{0:X3} : {1}\r\n\r\n", ID, ContentsParsed);
-			}
-		}
-
-		private class TextElement
+		public class TextElement
 		{
 			public string Token { get; }
 			public string Pattern { get; }
@@ -267,14 +209,14 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		private class ParsedElement
+		public class ParsedElement
 		{
-			public TextElement Parent { get; }
+			public TextElement ElementType { get; }
 			public byte Value { get; }
 
 			public ParsedElement(TextElement t, byte v)
 			{
-				Parent = t;
+				ElementType = t;
 				Value = v;
 			}
 		}
@@ -284,7 +226,8 @@ namespace ZeldaFullEditor
 		public class DictionaryEntry
 		{
 			public byte ID { get; }
-			public string Contents { get; }
+            public int RealID => ID + DictionaryBase;
+            public string Contents { get; }
 			public byte[] Data { get; }
 			public int Length { get; }
 
@@ -295,7 +238,7 @@ namespace ZeldaFullEditor
 				Contents = s;
 				ID = i;
 				Length = s.Length;
-				Token = $"[{DICTIONARYTOKEN}:{ID:X2}]";
+				Token = $"[{DictionaryToken}:{ID:X2}]";
 				Data = ParseMessageToData(Contents);
 			}
 
@@ -307,7 +250,11 @@ namespace ZeldaFullEditor
 			public string ReplaceInstancesOfIn(string s)
 			{
 				return s.Replace(Contents, Token);
-			}
-		}
+            }
+            public string ToPrettyString()
+            {
+                return $"{ID:X2} [{ID + DictionaryBase:X2}] - {Contents.Replace(" ", "[Space]")}";
+            }
+        }
 	}
 }

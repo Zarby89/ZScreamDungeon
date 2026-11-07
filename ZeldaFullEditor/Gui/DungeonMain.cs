@@ -2032,8 +2032,8 @@ namespace ZeldaFullEditor
 
             // 128 - 383 is the valid X range where the camera can be placed and 112 - 392 is the valid Y range where the camera can be placed.
             // Any less or more than the valid would result in the camera showing outside of the room and the camera not clipping correctly to walls.
-            int cameraTriggerX = Math.Clamp((ushort)mouseX, Constants.CameraTriggerXLow, Constants.CameraTriggerXHigh);
-            int cameraTriggerY = Math.Clamp((ushort)mouseY, Constants.CameraTriggerYLow, Constants.CameraTriggerYHigh);
+            int cameraTriggerX = ushort.Clamp((ushort)mouseX, Constants.CameraTriggerXLow, Constants.CameraTriggerXHigh);
+            int cameraTriggerY = ushort.Clamp((ushort)mouseY, Constants.CameraTriggerYLow, Constants.CameraTriggerYHigh);
 
             // Add 7 so that it rounds correctly one block to the right.
             cameraTriggerX += 7;

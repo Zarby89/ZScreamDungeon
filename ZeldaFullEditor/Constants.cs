@@ -543,27 +543,27 @@ namespace ZeldaFullEditor
         /// 128 is the valid low X range where the camera can be placed.
         /// Any less than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
         /// </summary>
-        public static int CameraTriggerXLow = 128;
+        public const int CameraTriggerXLow = 128;
 
         /// <summary>
         /// 383 is the valid high X range where the camera can be placed.
         /// Any more than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
         /// </summary>
-        public static int CameraTriggerXHigh = 383;
+        public const int CameraTriggerXHigh = 383;
 
         /// <summary>
         /// 112 is the valid low Y range where the camera can be placed.
         /// Any less than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
         /// </summary>
-        public static int CameraTriggerYLow = 112;
+        public const int CameraTriggerYLow = 112;
 
         /// <summary>
         /// 392 is the valid high Y range where the camera can be placed.
         /// Any more than the valid amount would result in the camera showing outside of the room and the camera not clipping correctly to walls.
         /// </summary>
-        public static int CameraTriggerYHigh = 392;
-        public static int entrance_gfx_group = 0x005D97;
+        public const int CameraTriggerYHigh = 392;
 
+        public static int entrance_gfx_group = 0x005D97;
 
         public static int entrance_room = 0x014813; // 0x14577 // Word value for each room
         public static int entrance_scrolledge = 0x01491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
@@ -889,6 +889,7 @@ namespace ZeldaFullEditor
             }
         }
 
+        // TODO extract to own file
         // ===========================================================================================
         // Things
         // ===========================================================================================
