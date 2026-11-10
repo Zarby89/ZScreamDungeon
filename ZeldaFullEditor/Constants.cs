@@ -1246,7 +1246,7 @@ namespace ZeldaFullEditor
              "Orange pegs ↔",
              "Invisible floor ↔",
              "Fake pressure plates ↔",
-             "Fake pots ↔",
+             "Pots ↔",
              "Hammer pegs ↔",
              "Nothing",
              "Nothing",
